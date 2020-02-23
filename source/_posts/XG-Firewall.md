@@ -1,7 +1,8 @@
 ---
 title: XG-Firewall
 date: 2020-02-23 09:57:41
-tags:["XGFirewall"]
+tags:
+ - XGFirewall
 ---
 
 SOPHOS XG Firewall v18の導入
