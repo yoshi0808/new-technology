@@ -14,8 +14,8 @@ timezone: Asia/Tokyo
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://yoshi0808.github.io
-root: /
+url: http://yoshi0808.github.io/new-technology/
+root: /new-technology/
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 pretty_urls:
@@ -100,6 +100,6 @@ theme: clean-blog
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: https://github.com/yoshi0808/yoshi0808.github.io.git
-  branch: master
+  repo: https://github.com/yoshi0808/new-technology.git
+  branch: gh-pages
 
