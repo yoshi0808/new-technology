@@ -14,7 +14,7 @@ menu_title: Device,Network,Code,etc...
 # URL of the Home page image
 #index_cover: https://www.codeblocq.com/assets/projects/hexo-theme-clean-blog/img/home-bg.jpg
 
-index_cover: ./img/home-bg.jpg
+index_cover: /new-technology/img/home-bg.jpg
 # Default post title
 default_post_title: Untitled
 
