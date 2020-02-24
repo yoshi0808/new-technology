@@ -9,7 +9,7 @@ description: IT
 menu_title: 
 keywords:
 author: Yoshi0808
-language: ja
+language: en
 timezone: Asia/Tokyo
 
 # URL
@@ -94,7 +94,7 @@ ignore:
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: light
+theme: indigo
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
