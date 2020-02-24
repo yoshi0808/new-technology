@@ -3,6 +3,7 @@ title: XG Firewall
 date: 2020-02-23 09:57:41
 tags:
  - XG Firewall
+comments: false
 ---
 
 Sophos XG Firewall v18の導入
