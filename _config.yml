@@ -103,3 +103,8 @@ deploy:
   repo: https://github.com/yoshi0808/new-technology.git
   branch: gh-pages
 
+feed:
+  type: atom
+  path: atom.xml
+  limit: 20
+
