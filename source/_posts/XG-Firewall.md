@@ -3,6 +3,8 @@ title: XG Firewall
 date: 2020-02-23 09:57:41
 tags:
  - XG Firewall
+categories:
+ - Security
 comments: false
 ---
 
