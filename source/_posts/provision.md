@@ -5,7 +5,7 @@ tags:
  - XG Firewall
 categories:
  - Security
-comments: false
+#comments: false
 ---
 
 # Firewallのためのハードウェアの準備

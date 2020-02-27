@@ -5,7 +5,7 @@ tags:
  - XG Firewall
 categories:
  - Security
-comments: false
+#comments: false
 ---
 
 # Sophos XG Firewall v18の導入
