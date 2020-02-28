@@ -1,5 +1,5 @@
 ---
-title: categories
-layout: categories
+title: カテゴリ
+type: "categories"
 comments: false
 ---
