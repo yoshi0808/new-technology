@@ -9,7 +9,7 @@ description: IT
 menu_title: 
 keywords:
 author: 吉（よし）
-language: en
+language: ja
 timezone: Asia/Tokyo
 
 # URL
@@ -94,7 +94,7 @@ ignore:
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: indigo
+theme: clean-blog
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
