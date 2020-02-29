@@ -4,7 +4,7 @@
 
 # Site
 title: Home Technology Blog
-subtitle: 家庭向けITについて綴ってみる
+subtitle: Device,Network,Code,etc... 
 description: IT 
 menu_title: 
 keywords:
@@ -108,4 +108,6 @@ feed:
   path: atom.xml
   limit: 20
 
+sitemap:
+  path: sitemap.xml
 

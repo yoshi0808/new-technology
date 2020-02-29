@@ -8,16 +8,24 @@ categories:
 date: 2020-02-29 13:23:22
 ---
 
+{% note primary %}
+
 ## インストールの前に
+
+{% endnote %}
+
 
  　XG Firewallの導入に必須というわけでは無いですが、ハイスペックのマシンにXGだけというのも勿体ない気がして仮想環境（ESXi）を構築し、その上にXGをインストールする事にしました。
 
 　この個人向け（無償版）ESXiのインストールに関するドキュメントは正直解りやすい場所に掲載されてないのですが、[VMWareのブログ](https://blogs.vmware.com/jp-cim/2014/05/vspherehypervisor.html)から辿ると良いです。
 <!-- more -->
 
----
+{% note primary %}
 
 ## 準備
+
+{% endnote %}
+
 
 - ESXiをインストールする予定の2つのNICを持ったPC1台と、ISOファイルをインストールするためのUSBメディアを用意して下さい。
 - VMWareのアカウント（無償）を作成して下さい。
@@ -25,12 +33,13 @@ date: 2020-02-29 13:23:22
   
 {% youtube 7gYnyIaQH9A %}
 
----
+{% note primary %}
 
 ## ESXiのインストール
 
----
- 以下のビデオを参考にして下さい。
+{% endnote %}
+
+　以下のビデオを参考にして下さい。
 
 <iframe src='https://players.brightcove.net/1534342432001/Byh3doRJx_default/index.html?videoId=5738631329001' allowfullscreen frameborder=0></iframe>
 
@@ -42,4 +51,4 @@ date: 2020-02-29 13:23:22
 
 {% asset_img setup_esxi.png alt %}
 
- セットアップ終了後は、上記のようなネットワーク構成となります。USBメディアを抜いて再起動後、ESXiの画面にIPアドレスが表示されます。同一ネットワークに接続されているPCなどから、そのIPアドレスにブラウザで接続して下さい。ログインは、ユーザー名がroot、パスワードはセットアップで指定したものになります。
+ 　セットアップ終了後は、上記のようなネットワーク構成となります。USBメディアを抜いて再起動後、ESXiの画面にIPアドレスが表示されます。同一ネットワークに接続されているPCなどから、そのIPアドレスにブラウザで接続して下さい。ログインは、ユーザー名がroot、パスワードはセットアップで指定したものになります。
