@@ -94,8 +94,8 @@ footer:
 # CC licenses are available in 39 languages, you can find the specific and correct abbreviation you need on https://creativecommons.org
 creative_commons:
   license: by-nc-sa
-  sidebar: true
-  post: false
+  sidebar: false
+  post: true
   language:
 
 
@@ -172,7 +172,7 @@ avatar:
   # Replace the default image and set the url here.
   url: /images/fuku.jpg
   # If true, the avatar will be dispalyed in circle.
-  rounded: false
+  rounded: true
   # If true, the avatar will be rotated with the cursor.
   rotated: false
 
