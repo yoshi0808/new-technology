@@ -2,6 +2,6 @@
   "filters": {},
   "rules": {
     "preset-jtf-style": true,
-    "preset-ja-technical-writing": true
+    "preset-ja-technical-writing": true,
   }
 }
