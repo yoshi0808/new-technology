@@ -1,5 +1,5 @@
 ---
-title: ESXi
+title: VMware vSphere Hypervisor（ESXi）のインストール
 tags:
   - XG Firewall
   - ESXi
@@ -7,9 +7,6 @@ categories:
   - Software
 date: 2020-02-29 13:23:22
 ---
-
-
-# VMware vSphere Hypervisor（ESXi）のインストール
 
 ## インストールの前に
 
