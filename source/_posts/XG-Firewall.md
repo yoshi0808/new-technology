@@ -7,7 +7,7 @@ categories:
   - Security
 #comments: false
 ---
-{% note primary %}
+{% note primary no-icon %}
 
 ## 導入の背景
 
@@ -21,7 +21,7 @@ categories:
 
 {% asset_img xg.png %}
 
-{% note primary %}
+{% note primary no-icon %}
 
 ## 主な機能
 
@@ -38,7 +38,7 @@ categories:
 8. DNAT（Destination NAT※いわゆるInbound接続・ポート解放）
 9. DNS/DHCP(IPv4,IPv6)
 
-{% note primary %}
+{% note primary no-icon %}
 
 ## XG Firewall導入のメリット
 
@@ -52,7 +52,7 @@ categories:
 6. VPNにおいてパスワード＋ワンタイムパスワードによる認証が可能（Windows、Mac、iOS、Android）。
 7. エラーをフックし、メールでの通知が行える。
 
-{% note primary %}
+{% note primary no-icon %}
 
 ## XG Firewall導入のデメリット
 

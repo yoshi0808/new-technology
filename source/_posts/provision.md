@@ -7,7 +7,7 @@ categories:
  - Security
 #comments: false
 ---
-{% note primary %}
+{% note primary no-icon %}
 
 ## ネットワーク構成
 
@@ -19,7 +19,7 @@ categories:
 
 　この構成はXGのWan側とXGのLan側と2つのネットワークを持つ事になり、XGには2枚のネットワークカード（以下、NIC）あるいは、2つ以上のPortを持っているNICを1枚用意する事になります。XGのWan側のインタフェースは、ホームゲートウェイからDHCPでプライベートIPアドレスやDNSを割り当てられます。そして、Lan側のPCやスマホのために、XGはあらかじめユーザが決めたプライベートネットワークアドレスを割り当てます。XGはこのIP割り当てのためのDHCP機能やDNS機能を持っています。また、スマホのネット接続のために無線ルータを別途用意する必要があり、この場合は無線ルータをブリッジモードでセットアップする事になります。
 
-{% note primary %}
+{% note primary no-icon %}
 
 ## ハードウェア構成の検討
 
@@ -37,7 +37,7 @@ categories:
 
 　これ以外にも、[Shuttle](https://shuttle-japan.jp/)という会社のベアボーンをXG向けに使っている方もいらっしゃるようです。いずれにしてもESXiを使う場合は、NICの種類を選ぶという事もあり、Hyper-Vの方が身近な存在なのでしょうか。
 
-{% note primary %}
+{% note primary no-icon %}
 
 ## 番外編
 
