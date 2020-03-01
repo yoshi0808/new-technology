@@ -26,8 +26,8 @@ date: 2020-02-29 13:23:22
 {% endnote %}
 
 - ESXiをインストールする予定の2つのNICを持ったPC1台と、ISOファイルをインストールするためのUSBメディアを用意してください。
-- VMWareのアカウント（無償）を作成してください。
-- VMWwareサイトにログイン後、製品（vSphere Hypervisor v6.7）のダウンロードをしたら、ISOファイルをRufusを使ってUSBメディアに書き出します。
+- VMwareのアカウント（無償）を作成してください。
+- VMwareサイトにログイン後、製品（vSphere Hypervisor v6.7）のダウンロードをしたら、ISOファイルをRufusを使ってUSBメディアに書き出します。
   
 {% youtube 7gYnyIaQH9A %}
 

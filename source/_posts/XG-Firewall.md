@@ -27,7 +27,6 @@ categories:
 
 {% endnote %}
 
-
 1. Firewall機能（IPフィルター、Portフィルター）
 2. IPS/WAF(WAFは面倒）
 3. DDoS対策機能（個人には不要）
