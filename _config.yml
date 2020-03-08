@@ -3,12 +3,12 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Home Technology Blog
+title: New Technologies for home
 subtitle: Device,Network,Code,etc... 
 description: IT 
 menu_title: 
 keywords:
-author: 吉（よし）
+author: 阿部　吉伸(Yoshinobu ABE)
 language: ja
 timezone: Asia/Tokyo
 
@@ -31,6 +31,7 @@ category_dir: categories
 code_dir: downloads/code
 i18n_dir: :lang
 skip_render:
+about_dir: about
 
 # Writing
 new_post_name: :title.md # File name of new posts
