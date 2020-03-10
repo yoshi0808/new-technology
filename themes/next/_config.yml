@@ -599,7 +599,7 @@ comments:
 
 # Disqus
 disqus:
-  enable: true
+  enable: false
   shortname: yoshi0808
   count: true
   #post_meta_order: 0
