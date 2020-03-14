@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/new-technology/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/new-technology/css/main.css">
+
+
+<link rel="stylesheet" href="/new-technology/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","scheme":"Gemini","version":"7.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="少し高度なITをテーマに、個人向け（家庭向け）のIT導入を中心にポストしていきたいと考えてます。最近ではフルスタックエンジニアと呼ぶのでしょうか、これまでの自身の仕事はプログラミング・ネットワーク・サーバ構築・セキュリティと、広く浅くITに関わってきました。エンジニアとしての仕事からは最近かなり遠ざかってますが、自分なりに新しい技術の習得も兼ねて、ブログ形式で掲載できればとおもいます。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="はじめに">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/02/22/%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB/index.html">
+<meta property="og:site_name" content="New technologies in our life">
+<meta property="og:description" content="少し高度なITをテーマに、個人向け（家庭向け）のIT導入を中心にポストしていきたいと考えてます。最近ではフルスタックエンジニアと呼ぶのでしょうか、これまでの自身の仕事はプログラミング・ネットワーク・サーバ構築・セキュリティと、広く浅くITに関わってきました。エンジニアとしての仕事からは最近かなり遠ざかってますが、自分なりに新しい技術の習得も兼ねて、ブログ形式で掲載できればとおもいます。">
+<meta property="og:locale" content="ja_JP">
+<meta property="article:published_time" content="2020-02-22T06:18:16.000Z">
+<meta property="article:modified_time" content="2020-03-14T10:09:24.727Z">
+<meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2020/02/22/%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>はじめに | New technologies in our life</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-159928165-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-159928165-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/new-technology/atom.xml" title="New technologies in our life" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="ナビゲーションバーの切り替え">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/new-technology/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">New technologies in our life</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">Device,Network,Code,etc...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/new-technology/" rel="section"><i class="fa fa-fw fa-home"></i>ホーム</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/new-technology/about/" rel="section"><i class="fa fa-fw fa-user"></i>about</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/new-technology/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>タグ</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/new-technology/categories/" rel="section"><i class="fa fa-fw fa-th"></i>カテゴリ</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/new-technology/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>アーカイブ</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="検索…" spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="ja">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2020/02/22/%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/new-technology/images/yoshi.png">
+      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
+      <meta itemprop="description" content="IT">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="New technologies in our life">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          はじめに
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">投稿日</span>
+
+              <time title="作成日：2020-02-22 15:18:16" itemprop="dateCreated datePublished" datetime="2020-02-22T15:18:16+09:00">2020-02-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">編集日</span>
+                <time title="修正日：2020-03-14 19:09:24" itemprop="dateModified" datetime="2020-03-14T19:09:24+09:00">2020-03-14</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>　少し高度なITをテーマに、個人向け（家庭向け）のIT導入を中心にポストしていきたいと考えてます。最近ではフルスタックエンジニアと呼ぶのでしょうか、これまでの自身の仕事はプログラミング・ネットワーク・サーバ構築・セキュリティと、広く浅くITに関わってきました。エンジニアとしての仕事からは最近かなり遠ざかってますが、自分なりに新しい技術の習得も兼ねて、ブログ形式で掲載できればとおもいます。</p>
+<a id="more"></a>
+
+<p>　単純にインストールして「できました」ではなく、導入後のITの使い方こそが重要と考えています。最近は個人利用に限り利用無償のソフトウェアが増えてきました。また、商用利用であっても無償となるオープンソースソフトウェアの活用も見逃せません。これは大変ありがたい話で、座学ではなかなか理解が進まない固有技術であっても、こういった無料のプロダクトを通じて知見を高める事が可能となっています。</p>
+<p>　ここでは、エンタープライズやミッションクリティカルなITに関するテーマは扱いません。私自身実務でITに関わっていますが、実務とは少し距離を置いたところで、自己啓発と家庭向けのIT活用を考えたいと思っています。</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>著者： </strong>阿部　吉伸(Yoshinobu ABE)
+  </li>
+  <li class="post-copyright-link">
+    <strong>記事へのリンク：</strong>
+    <a href="https://yoshi0808.github.io/new-technology/2020/02/22/%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB/" title="はじめに">https://yoshi0808.github.io/new-technology/2020/02/22/はじめに/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>著作権表示： </strong>このブログ内のすべての記事は、特別な記載がない限り <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> の下のライセンスで保護されています。また、掲載している画像の著作権は各権利所有者に帰属します。記事の内容や掲載画像に問題がありましたら、ご連絡ください。<br><b>免責事項：</b> このブログに掲載された内容によって生じた損害等の一切の責任を負いかねますのでご了承ください。また、このブログのコンテンツや情報において、可能な限り正確な情報を掲載するよう努めておりますが、誤情報が入り込んだり、情報が古くなったりする場合があります。必ずしも正確性を保証するものではありません。また合法性や安全性なども保証しません。なお、プライバシーポリシーは、メニューの'about'からご確認いただけます。
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/new-technology/2020/02/23/XG-Firewall/" rel="next" title="Sophos XG Firewallの導入">
+      Sophos XG Firewallの導入 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          見出し
+        </li>
+        <li class="sidebar-nav-overview">
+          概要
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="阿部　吉伸(Yoshinobu ABE)"
+      src="/new-technology/images/yoshi.png">
+  <p class="site-author-name" itemprop="name">阿部　吉伸(Yoshinobu ABE)</p>
+  <div class="site-description" itemprop="description">IT</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/new-technology/archives/">
+        
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">ポスト</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/new-technology/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">カテゴリ</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/new-technology/tags/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">タグ</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yoshi0808" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yoshi0808" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yoshi0808.blog@gmail.com" title="E-Mail → mailto:yoshi0808.blog@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/new-technology/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">阿部　吉伸(Yoshinobu ABE)</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">テーマ – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.1
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/new-technology/lib/anime.min.js"></script>
+  <script src="/new-technology/lib/velocity/velocity.min.js"></script>
+  <script src="/new-technology/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/new-technology/js/utils.js"></script>
+
+<script src="/new-technology/js/motion.js"></script>
+
+
+<script src="/new-technology/js/schemes/pisces.js"></script>
+
+
+<script src="/new-technology/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/new-technology/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
