@@ -1,617 +1,274 @@
 <?xml version="1.0" encoding="utf-8"?>
-<search>
-  <entry>
-    <title>XG Firewall v18のポリシーをカスタマイズする</title>
-    <url>/new-technology/2020/03/14/customize-policy/</url>
-    <content><![CDATA[<div class="note primary no-icon">
-            <h2 id="ポリシーのカスタマイズ"><a href="#ポリシーのカスタマイズ" class="headerlink" title="ポリシーのカスタマイズ"></a>ポリシーのカスタマイズ</h2>
-          </div>
-
-<p>　XGにおけるWebのポリシーというのはコンテンツのカテゴリを意味します。ギャンブル、アダルトからネットショッピングやチャットやWebメールまで多岐に渡ります。こちらは個人によって定義が異なるとおもいますので、実例を示しながら、ご自身の考えに基づいて設定を進めていく事になります。まずはそのカスタマイズを行っていきます。左ペインの「Web」をクリックします。</p>
-<a id="more"></a>
-
-
-
-<p>　先ほど設定した「Default Policy」の内容がまず最初に表示されているとおもいます。初期値では、「Blocked URLs for Default Policy」と2番目の行に「Risky Downloads」および「Suspicious（※怪しいもの）」が選択されています。</p>
-<p>　今回、カスタマイズとして、一旦「Risky Downloads」および「Suspicious」を外すためにトグルをOffにします。また、「Nudity and Adult content」の行のOn/OffのトグルをOnにします。そして右下の「変更を適用」をクリックするとポリシーの修正が有効になります。「Risky Downloads」および「Suspicious」を外すのは、Google検索で「広告」という表示のあるページが正しく表示出来ないためです。事後の対応が出来た際、改めて加える事にします。</p>
-<div class="note primary no-icon">
-            <h2 id="外部データベース（ドメインリスト）を取り込む"><a href="#外部データベース（ドメインリスト）を取り込む" class="headerlink" title="外部データベース（ドメインリスト）を取り込む"></a>外部データベース（ドメインリスト）を取り込む</h2>
-          </div>
-<p>　XGのデータベースだけでも十分なのですが、外部のデータベース（ドメインのリスト形式）を取り込む事が可能です。ここではサンプル的に<a href="https://280blocker.net/" target="_blank" rel="noopener">280blocker | モバイル広告ブロッカー</a>のデータを取り込んでみます。利用については、<a href="https://280blocker.net/download/" target="_blank" rel="noopener">ダウンロードのページ</a>の注意事項の確認をいただき、ご自身で利用の判断をお願いします。今回はあくまでXGの機能の紹介という事で説明させていただきます。私自身このデータベースの精度などについての評価をしておりませんのでご承知おきください。</p>
-<ol>
-<li>ダウンロードするデータとして「広告ドメインリスト（リスト形式）」をダウンロードします</li>
-<li>XGの左ペインのWebを選択し、「カテゴリ」のタブをクリックします</li>
-<li>名前は「280blocker」とします</li>
-<li>分類は「Objectionable」とします</li>
-<li>設定のカテゴリはローカルのラジオボタンを選択します</li>
-<li>domainのインポートから、先ほどダウンロードしたファイルを選択し取り込みます</li>
-<li>「保存」ボタンをクリックします</li>
-</ol>
-<p>　次にWebのユーザーアクティビティの設定です。</p>
-
-
-<ol>
-<li>画面右上の「追加」ボタンをクリックします</li>
-<li>名前は「280blocker」とします</li>
-<li>先ほど「カテゴリ」で作成した280blockerを選択し適用します</li>
-<li>最後に保存ボタンを押します</li>
-</ol>
-<p>　さて、再びWebのポリシータブをクリックし、「Default Policy」の内容を表示します。ここで右側の編集（ペンのアイコン）を選択します。</p>
-
-
-<ol>
-<li>ルールの追加ボタンを押すと、先頭にルールが作成されます</li>
-<li>先頭ルールのアクティビティを選択し「すべてのトラフィック」を削除し、「280blocker」を追加します</li>
-<li>アクションは「HTTPをブロックする」というデフォルトのままです</li>
-<li>ステータスのトグルをOnにしてください</li>
-<li>最後に画面を下にスクロールし、保存ボタンをクリックします</li>
-</ol>
-<p>　こういったデータベースはさまざまな目的で個人向けにあれば良いのですが、なかなか入手が難しいところではあります。DNSにも危険IPや危険ドメインを排除する機能を持つPublicDNSもあります。但し、そういったDNSを利用する事でその個人が興味を持つドメインなどプライバシーが筒抜けになってしまいますので利用も難しいと考えています。</p>
-]]></content>
+<search> 
+  
+  
+    
+    <entry>
+      <title>XG Firewall v18のポリシーをカスタマイズする</title>
+      <link href="/new-technology/2020/03/14/customize-policy/"/>
+      <url>/new-technology/2020/03/14/customize-policy/</url>
+      
+        <content type="html"><![CDATA[<div class="note primary no-icon">            <h2 id="ポリシーのカスタマイズ"><a href="#ポリシーのカスタマイズ" class="headerlink" title="ポリシーのカスタマイズ"></a>ポリシーのカスタマイズ</h2>          </div><p>　XGにおけるWebのポリシーというのはコンテンツのカテゴリを意味します。ギャンブル、アダルトからネットショッピングやチャットやWebメールまで多岐に渡ります。こちらは個人によって定義が異なるとおもいますので、実例を示しながら、ご自身の考えに基づいて設定を進めていく事になります。まずはそのカスタマイズを行っていきます。左ペインの「Web」をクリックします。</p><a id="more"></a><p>　先ほど設定した「Default Policy」の内容がまず最初に表示されているとおもいます。初期値では、「Blocked URLs for Default Policy」と2番目の行に「Risky Downloads」および「Suspicious（※怪しいもの）」が選択されています。</p><p>　今回、カスタマイズとして、一旦「Risky Downloads」および「Suspicious」を外すためにトグルをOffにします。また、「Nudity and Adult content」の行のOn/OffのトグルをOnにします。そして右下の「変更を適用」をクリックするとポリシーの修正が有効になります。「Risky Downloads」および「Suspicious」を外すのは、Google検索で「広告」という表示のあるページが正しく表示出来ないためです。事後の対応が出来た際、改めて加える事にします。</p><div class="note primary no-icon">            <h2 id="外部データベース（ドメインリスト）を取り込む"><a href="#外部データベース（ドメインリスト）を取り込む" class="headerlink" title="外部データベース（ドメインリスト）を取り込む"></a>外部データベース（ドメインリスト）を取り込む</h2>          </div><p>　XGのデータベースだけでも十分なのですが、外部のデータベース（ドメインのリスト形式）を取り込む事が可能です。ここではサンプル的に<a href="https://280blocker.net/" target="_blank" rel="noopener">280blocker | モバイル広告ブロッカー</a>のデータを取り込んでみます。利用については、<a href="https://280blocker.net/download/" target="_blank" rel="noopener">ダウンロードのページ</a>の注意事項の確認をいただき、ご自身で利用の判断をお願いします。今回はあくまでXGの機能の紹介という事で説明させていただきます。私自身このデータベースの精度などについての評価をしておりませんのでご承知おきください。</p><ol><li>ダウンロードするデータとして「広告ドメインリスト（リスト形式）」をダウンロードします</li><li>XGの左ペインのWebを選択し、「カテゴリ」のタブをクリックします</li><li>名前は「280blocker」とします</li><li>分類は「Objectionable」とします</li><li>設定のカテゴリはローカルのラジオボタンを選択します</li><li>domainのインポートから、先ほどダウンロードしたファイルを選択し取り込みます</li><li>「保存」ボタンをクリックします</li></ol><p>　次にWebのユーザーアクティビティの設定です。</p><ol><li>画面右上の「追加」ボタンをクリックします</li><li>名前は「280blocker」とします</li><li>先ほど「カテゴリ」で作成した280blockerを選択し適用します</li><li>最後に保存ボタンを押します</li></ol><p>　さて、再びWebのポリシータブをクリックし、「Default Policy」の内容を表示します。ここで右側の編集（ペンのアイコン）を選択します。</p><ol><li>ルールの追加ボタンを押すと、先頭にルールが作成されます</li><li>先頭ルールのアクティビティを選択し「すべてのトラフィック」を削除し、「280blocker」を追加します</li><li>アクションは「HTTPをブロックする」というデフォルトのままです</li><li>ステータスのトグルをOnにしてください</li><li>最後に画面を下にスクロールし、保存ボタンをクリックします</li></ol><p>　こういったデータベースはさまざまな目的で個人向けにあれば良いのですが、なかなか入手が難しいところではあります。DNSにも危険IPや危険ドメインを排除する機能を持つPublicDNSもあります。但し、そういったDNSを利用する事でその個人が興味を持つドメインなどプライバシーが筒抜けになってしまいますので利用も難しいと考えています。</p>]]></content>
+      
+      
       <categories>
-        <category>Software</category>
+          
+          <category> Software </category>
+          
       </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>XG Firewall v18のOutboundルールを新規作成する</title>
-    <url>/new-technology/2020/03/14/rule-policy2/</url>
-    <content><![CDATA[<div class="note primary no-icon">
-            <h2 id="Traffic-to-Wanルールの作成"><a href="#Traffic-to-Wanルールの作成" class="headerlink" title="Traffic to Wanルールの作成"></a>Traffic to Wanルールの作成</h2>
-          </div>
-
-<p>　いよいよ、実際の基本的なルールを作成します。ルールとポリシーのメニューから、「ファイアウォールルールの追加」ボタンを押し、「新しいファイアウォールルール」を選択します。<br>　ルール名にはここでは「Defualt Outbound」とします。ルールグループは「自動」のままで構いません。アクションは「許可する」のままです。ファイアウォールのログは出力するようにチェックしておきます。現時点で「選択した条件に一致しないため、ルールを既存のグループに追加できません」との表示がありますが、その下のルール設定に進みます。</p>
-<a id="more"></a>
-
-<img src="/new-technology/2020/03/14/rule-policy2/rule1.png" class="" title="alt">
-
-<p> 　送信元ゾーンには、LANを設定します。今後、VPNを使う方はVPNも加えてください。宛先ゾーンはWANを指定します。その他は変更しません。これを設定した段階で上部に表示されていた注意メッセージが「このルールは自動的にルールグループTraffic to WANに追加されます」という表記に変わります。</p>
-<p>　続いて、アプリケーションファイアウォールの設定です。</p>
-<img src="/new-technology/2020/03/14/rule-policy2/rule2.png" class="" title="alt">
-
-<p>　セキュリティの「Webフィルタリング」をクリックし、詳細メニューをオープンします。</p>
-<ul>
-<li>Webポリシーは「Default Policy」を選択します</li>
-<li>「HTTPおよび復号化したHTTPSをスキャン」をチェックします</li>
-<li>「FTPのマルウェアをスキャン」をチェックします</li>
-<li>QUICプロトコルのブロックは任意選択です<br>  Googleのサービスで利用されています。私はチェックしています。Google自体は問題ないですがそのプロトコルを利用した悪質なサイトがFirewallを回避するリスクを減らすという意味で選択しています</li>
-<li>その他のセキュリティ機能でアプリケーションコントロールを選択します<br>  私は「Block very high risk(Risk Level 5) apps」を選択しています</li>
-<li>IPSは「lantowan_general」を選択します<br>  保存ボタンをクリックし、ルールの追加が行われます。これでXG Firewall ｖ18の最低限度の設定を終えた事になります</li>
-</ul>
-<div class="note primary no-icon">
-            <h2 id="NATルールの設定"><a href="#NATルールの設定" class="headerlink" title="NATルールの設定"></a>NATルールの設定</h2>
-          </div>
-
-<p>　ルールとポリシーのメニューには、ファイアウォールルールとSSL/TLSインスペクションルール、NATに関する「NATルール」設定があります。今回は設定変更しませんが、上記のルールに相当する、「Default SNAT IPv4」というNATルールがあります。これはデフォルトで作成されているもので、LAN側のプライベートIPアドレスからWANへ出ていく時に、グローバルIPへと変換するためのNATの仕組みが記述されています。今回はホームゲートウェイの内側なので、ホームゲートウェイが割り当てたプライベートネットワークアドレスに変換されて、XGのWAN側にパケットが送出されます。XGの基本ですが、ルールは上から順に実行される事になります。従い、今後このルールは一番下にあるべきであり、その上に個別のルールを記載していく事になります。<br>　なお、v17以前からの互換性としてLinkedNATという機能が提供されています。これは、ファイアウォールルールとNATとを1対1で結びつけるものです。v17からバージョンアップした際は、マイグレーションプロセスによって、ルールとリンクされたNATが1つづつ作成されます。複雑な環境でなければNATのルールは1つで十分ですので、今回、OutboundのアクセスについてはLinkedNATの機能は使わず設定を行っていきます。</p>
-]]></content>
+      
+      
+        <tags>
+            
+            <tag> XG Firewall </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>XG Firewall v18のOutboundルールを新規作成する</title>
+      <link href="/new-technology/2020/03/14/rule-policy2/"/>
+      <url>/new-technology/2020/03/14/rule-policy2/</url>
+      
+        <content type="html"><![CDATA[<div class="note primary no-icon">            <h2 id="Traffic-to-Wanルールの作成"><a href="#Traffic-to-Wanルールの作成" class="headerlink" title="Traffic to Wanルールの作成"></a>Traffic to Wanルールの作成</h2>          </div><p>　いよいよ、実際の基本的なルールを作成します。ルールとポリシーのメニューから、「ファイアウォールルールの追加」ボタンを押し、「新しいファイアウォールルール」を選択します。<br>　ルール名にはここでは「Defualt Outbound」とします。ルールグループは「自動」のままで構いません。アクションは「許可する」のままです。ファイアウォールのログは出力するようにチェックしておきます。現時点で「選択した条件に一致しないため、ルールを既存のグループに追加できません」との表示がありますが、その下のルール設定に進みます。</p><a id="more"></a><img src="/new-technology/2020/03/14/rule-policy2/rule1.png" class="" title="alt"><p> 　送信元ゾーンには、LANを設定します。今後、VPNを使う方はVPNも加えてください。宛先ゾーンはWANを指定します。その他は変更しません。これを設定した段階で上部に表示されていた注意メッセージが「このルールは自動的にルールグループTraffic to WANに追加されます」という表記に変わります。</p><p>　続いて、アプリケーションファイアウォールの設定です。</p><img src="/new-technology/2020/03/14/rule-policy2/rule2.png" class="" title="alt"><p>　セキュリティの「Webフィルタリング」をクリックし、詳細メニューをオープンします。</p><ul><li>Webポリシーは「Default Policy」を選択します</li><li>「HTTPおよび復号化したHTTPSをスキャン」をチェックします</li><li>「FTPのマルウェアをスキャン」をチェックします</li><li>QUICプロトコルのブロックは任意選択です<br>  Googleのサービスで利用されています。私はチェックしています。Google自体は問題ないですがそのプロトコルを利用した悪質なサイトがFirewallを回避するリスクを減らすという意味で選択しています</li><li>その他のセキュリティ機能でアプリケーションコントロールを選択します<br>  私は「Block very high risk(Risk Level 5) apps」を選択しています</li><li>IPSは「lantowan_general」を選択します<br>  保存ボタンをクリックし、ルールの追加が行われます。これでXG Firewall ｖ18の最低限度の設定を終えた事になります</li></ul><div class="note primary no-icon">            <h2 id="NATルールの設定"><a href="#NATルールの設定" class="headerlink" title="NATルールの設定"></a>NATルールの設定</h2>          </div><p>　ルールとポリシーのメニューには、ファイアウォールルールとSSL/TLSインスペクションルール、NATに関する「NATルール」設定があります。今回は設定変更しませんが、上記のルールに相当する、「Default SNAT IPv4」というNATルールがあります。これはデフォルトで作成されているもので、LAN側のプライベートIPアドレスからWANへ出ていく時に、グローバルIPへと変換するためのNATの仕組みが記述されています。今回はホームゲートウェイの内側なので、ホームゲートウェイが割り当てたプライベートネットワークアドレスに変換されて、XGのWAN側にパケットが送出されます。XGの基本ですが、ルールは上から順に実行される事になります。従い、今後このルールは一番下にあるべきであり、その上に個別のルールを記載していく事になります。<br>　なお、v17以前からの互換性としてLinkedNATという機能が提供されています。これは、ファイアウォールルールとNATとを1対1で結びつけるものです。v17からバージョンアップした際は、マイグレーションプロセスによって、ルールとリンクされたNATが1つづつ作成されます。複雑な環境でなければNATのルールは1つで十分ですので、今回、OutboundのアクセスについてはLinkedNATの機能は使わず設定を行っていきます。</p>]]></content>
+      
+      
       <categories>
-        <category>Software</category>
+          
+          <category> Software </category>
+          
       </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>XG Firewall v18のルールとポリシーについて</title>
-    <url>/new-technology/2020/03/14/rule-policy1/</url>
-    <content><![CDATA[<div class="note primary no-icon">
-            <h2 id="ルールとポリシーの機能説明"><a href="#ルールとポリシーの機能説明" class="headerlink" title="ルールとポリシーの機能説明"></a>ルールとポリシーの機能説明</h2>
-          </div>
-
-<p>　さて、いよいよFirewallの具体的な設定に入っていきます。ご存知の方も多いかとおもいますが、Firewallというものは、TCP/UDPのレイヤ3またはレイヤ4の制御が一般的です。つまりhttpsであればPort443、ssh（セキュアシェル）であればPort22などです。そしてそのPortに対し、通過させるか拒否するかを決めるものです。<br>　XG Firewallはレイヤ7、つまりアプリケーションの中身まで見て可否を判断する事が可能となります。サイトがどういうサービスを提供しているかジャンル分けされており、好ましくないサイトには接続しないように設定が出来ます。<br>　あやしい振る舞いをするアプリケーションの挙動を見ていると、httpsの443で繋いでみてダメだったら一般的なProxyである8080などからの接続を試み、さらにダメならPort80と続きます。次に接続ドメインを変えたりするなど、ありとあらゆる手段を使って外部との接続を試みようとします。このような問題のあるアプリケーションをインストールしない事が一番良いのですが、なかなか個人での判断は難しいところです。でもどんな手を使おうが、世界の様々なファイル交換サイトへのアクセスは禁じるという設定が行える事で一定の抑止力が発揮できます。</p>
-<a id="more"></a>
-<p>　まず、XGのインストール直後は内部（LAN）からインターネット（WAN）への接続（今後Outboundという表現を使います）は、好ましくないサイト以外は全て通します。前述したレイヤ3、レイヤ4については一切制約は掛かっていません。原則Outboundの通信は通すというのが最初の状態です。逆インターネットから内部のサーバに向けた接続（今後Inboundという表現を使います）は行えず、ひとつの接続対象毎に都度設定を行なっていく事になります。</p>
-<p>　左ペインのルールとポリシーを選択し、デフォルトの設定を見てみましょう。ルールグループというグループ化されたルールがあります。</p>
-<img src="/new-technology/2020/03/14/rule-policy1/rule_menu.png" class="" title="alt">
-
-<ul>
-<li><p>Traffic to Internal Zone<br>Firewallの内側（内部のLANにサーバを立てる場合）にアクセスするルールを記載します（Inbound）。</p>
-</li>
-<li><p>Traffic to Wan<br>インターネットにアクセスするルールを記載します（Outbound）。</p>
-</li>
-<li><p>Traffic to DMZ<br>今回は使いません。そもそもは業務上サーバを立てる場合はDMZにWebサーバやメールサーバを配置し、内部クライアントとは分離するのが業務上一般的です。今回の設定では、個人でそこまでは不要としています。</p>
-</li>
-<li><p>Default Network Policy<br>上から順にルールを実行してきて、全てすり抜けるとここに到達します。全て許可するルールとなっています。業務で利用する場合は、デフォルトは破棄する設定を行うのが一般的です。こちらも個人向けとして全て通す設定を行い、Traffice to Wanのルールである程度厳格なルールを設定していきたいとおもいます。一番右の（•••）マークでルールのOn/Offをトグルで切り替えられるようになっており、「すべてをドロップ」は無効となっています。</p>
-</li>
-</ul>
-<p>　次にDefault Network Policyを見てみます。</p>
-<div class="note primary no-icon">
-            <h2 id="デフォルトポリシーの機能説明"><a href="#デフォルトポリシーの機能説明" class="headerlink" title="デフォルトポリシーの機能説明"></a>デフォルトポリシーの機能説明</h2>
-          </div>
-<img src="/new-technology/2020/03/14/rule-policy1/rule1.png" class="" title="alt">
-
-<p>　このルールでは、上述したルールグループは「なし」となっているので、グループから外れて単独で存在しています。そして、このルールは「許可する」となっています。なお、「破棄する」は無応答で相手はタイムアウトを待つ事になります。「拒否する」は接続要求をAcceptせず、接続を確立させません。</p>
-<p>　次にInbound、Outboundの組み合わせになります。</p>
-<img src="/new-technology/2020/03/14/rule-policy1/rule2.png" class="" title="alt">
-
-<p>　ここでは、LANからWANへの通信を対象としています。サービスはプロトコルの設定をするのですが、「ftp」や「ntp」など、サービスとして登録でき登録方法もシンプルになっています。今回は何も変更しません。</p>
-<p>　次に、アプリケーションFirewallの設定です。</p>
-<img src="/new-technology/2020/03/14/rule-policy1/rule3.png" class="" title="alt">
-<p>　一旦、ここはhttpを対象に少し甘めの設定に変更します。先ほども述べたとおり、Traffic to Wanでhttpsを対象に厳しいルールを作成していきます。意外とアプリケーションFirewallのルールで通信出来なくなったりする機会が増えます。一時的に通すなどルールを変更したい場合は、ルールを一旦Offにするなどして、このデフォルトルールを通す運用を行なっていく事になります。Webポリシー/IPS/アプリケーションコントロールなど複数箇所で接続出来ない要素があります。ひとつひとつ切り分けしていると手間が掛かるので、Firewallのログで拒否または破棄となったルールを無効にして、短時間このルールを生かす運用を行うという事です。<br>　Webポリシーは、Default PolicyからAllow Allとします。広告のタグがヘッダに含まれているとFirewallは律儀にRejectしてしまい、サイトが正しく表示できなくなるためです。<br>　アプリケーションコントロールとIPSはデフォルトのままにしますが、お好みで変更しても構いません。ただアプリケーションコントロールは実行可能ファイルだと取り込めないなどやはり厳しいところもありますので、いろいろ設定して試して下さい。<br>　IPSの機能について補足します。「DPIエンジンでなくWEBプロキシを使用する」はv18では全て利用しないという前提で進めます。「webプロキシでのフィルタリング中にHTTPSを複合化する」も利用しないという前提で進めます。これは前バージョンのv17までは主流だったものですが、v18の機能であるDPIエンジンを最大限活用したいと考えています。</p>
-]]></content>
+      
+      
+        <tags>
+            
+            <tag> XG Firewall </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>XG Firewall v18のルールとポリシーについて</title>
+      <link href="/new-technology/2020/03/14/rule-policy1/"/>
+      <url>/new-technology/2020/03/14/rule-policy1/</url>
+      
+        <content type="html"><![CDATA[<div class="note primary no-icon">            <h2 id="ルールとポリシーの機能説明"><a href="#ルールとポリシーの機能説明" class="headerlink" title="ルールとポリシーの機能説明"></a>ルールとポリシーの機能説明</h2>          </div><p>　さて、いよいよFirewallの具体的な設定に入っていきます。ご存知の方も多いかとおもいますが、Firewallというものは、TCP/UDPのレイヤ3またはレイヤ4の制御が一般的です。つまりhttpsであればPort443、ssh（セキュアシェル）であればPort22などです。そしてそのPortに対し、通過させるか拒否するかを決めるものです。<br>　XG Firewallはレイヤ7、つまりアプリケーションの中身まで見て可否を判断する事が可能となります。サイトがどういうサービスを提供しているかジャンル分けされており、好ましくないサイトには接続しないように設定が出来ます。<br>　あやしい振る舞いをするアプリケーションの挙動を見ていると、httpsの443で繋いでみてダメだったら一般的なProxyである8080などからの接続を試み、さらにダメならPort80と続きます。次に接続ドメインを変えたりするなど、ありとあらゆる手段を使って外部との接続を試みようとします。このような問題のあるアプリケーションをインストールしない事が一番良いのですが、なかなか個人での判断は難しいところです。でもどんな手を使おうが、世界の様々なファイル交換サイトへのアクセスは禁じるという設定が行える事で一定の抑止力が発揮できます。</p><a id="more"></a><p>　まず、XGのインストール直後は内部（LAN）からインターネット（WAN）への接続（今後Outboundという表現を使います）は、好ましくないサイト以外は全て通します。前述したレイヤ3、レイヤ4については一切制約は掛かっていません。原則Outboundの通信は通すというのが最初の状態です。逆インターネットから内部のサーバに向けた接続（今後Inboundという表現を使います）は行えず、ひとつの接続対象毎に都度設定を行なっていく事になります。</p><p>　左ペインのルールとポリシーを選択し、デフォルトの設定を見てみましょう。ルールグループというグループ化されたルールがあります。</p><img src="/new-technology/2020/03/14/rule-policy1/rule_menu.png" class="" title="alt"><ul><li><p>Traffic to Internal Zone<br>Firewallの内側（内部のLANにサーバを立てる場合）にアクセスするルールを記載します（Inbound）。</p></li><li><p>Traffic to Wan<br>インターネットにアクセスするルールを記載します（Outbound）。</p></li><li><p>Traffic to DMZ<br>今回は使いません。そもそもは業務上サーバを立てる場合はDMZにWebサーバやメールサーバを配置し、内部クライアントとは分離するのが業務上一般的です。今回の設定では、個人でそこまでは不要としています。</p></li><li><p>Default Network Policy<br>上から順にルールを実行してきて、全てすり抜けるとここに到達します。全て許可するルールとなっています。業務で利用する場合は、デフォルトは破棄する設定を行うのが一般的です。こちらも個人向けとして全て通す設定を行い、Traffice to Wanのルールである程度厳格なルールを設定していきたいとおもいます。一番右の（•••）マークでルールのOn/Offをトグルで切り替えられるようになっており、「すべてをドロップ」は無効となっています。</p></li></ul><p>　次にDefault Network Policyを見てみます。</p><div class="note primary no-icon">            <h2 id="デフォルトポリシーの機能説明"><a href="#デフォルトポリシーの機能説明" class="headerlink" title="デフォルトポリシーの機能説明"></a>デフォルトポリシーの機能説明</h2>          </div><img src="/new-technology/2020/03/14/rule-policy1/rule1.png" class="" title="alt"><p>　このルールでは、上述したルールグループは「なし」となっているので、グループから外れて単独で存在しています。そして、このルールは「許可する」となっています。なお、「破棄する」は無応答で相手はタイムアウトを待つ事になります。「拒否する」は接続要求をAcceptせず、接続を確立させません。</p><p>　次にInbound、Outboundの組み合わせになります。</p><img src="/new-technology/2020/03/14/rule-policy1/rule2.png" class="" title="alt"><p>　ここでは、LANからWANへの通信を対象としています。サービスはプロトコルの設定をするのですが、「ftp」や「ntp」など、サービスとして登録でき登録方法もシンプルになっています。今回は何も変更しません。</p><p>　次に、アプリケーションFirewallの設定です。</p><img src="/new-technology/2020/03/14/rule-policy1/rule3.png" class="" title="alt"><p>　一旦、ここはhttpを対象に少し甘めの設定に変更します。先ほども述べたとおり、Traffic to Wanでhttpsを対象に厳しいルールを作成していきます。意外とアプリケーションFirewallのルールで通信出来なくなったりする機会が増えます。一時的に通すなどルールを変更したい場合は、ルールを一旦Offにするなどして、このデフォルトルールを通す運用を行なっていく事になります。Webポリシー/IPS/アプリケーションコントロールなど複数箇所で接続出来ない要素があります。ひとつひとつ切り分けしていると手間が掛かるので、Firewallのログで拒否または破棄となったルールを無効にして、短時間このルールを生かす運用を行うという事です。<br>　Webポリシーは、Default PolicyからAllow Allとします。広告のタグがヘッダに含まれているとFirewallは律儀にRejectしてしまい、サイトが正しく表示できなくなるためです。<br>　アプリケーションコントロールとIPSはデフォルトのままにしますが、お好みで変更しても構いません。ただアプリケーションコントロールは実行可能ファイルだと取り込めないなどやはり厳しいところもありますので、いろいろ設定して試して下さい。<br>　IPSの機能について補足します。「DPIエンジンでなくWEBプロキシを使用する」はv18では全て利用しないという前提で進めます。「webプロキシでのフィルタリング中にHTTPSを複合化する」も利用しないという前提で進めます。これは前バージョンのv17までは主流だったものですが、v18の機能であるDPIエンジンを最大限活用したいと考えています。</p>]]></content>
+      
+      
       <categories>
-        <category>Software</category>
+          
+          <category> Software </category>
+          
       </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>XG Firewall v18のメイン画面と特徴について</title>
-    <url>/new-technology/2020/03/08/XG-MainPage/</url>
-    <content><![CDATA[<div class="note primary no-icon">
-            <h2 id="XG-v18のメインページの説明"><a href="#XG-v18のメインページの説明" class="headerlink" title="XG v18のメインページの説明"></a>XG v18のメインページの説明</h2>
-          </div>
-
-<p> 　XGの管理画面にログインすると、Controle Centerの表示となります。ここでは今の全体のFirewallの状況が示されます。個人向けには相当なボリュームの内容で圧巻です。個人向けに一部機能は制限されているので、不要な項目もたくさんありますが、Home Editionとして必要なものを見ていく事にしましょう。<br> <a id="more"></a></p>
-<img src="/new-technology/2020/03/08/XG-MainPage/main1.png" class="" title="alt">
-
-<ul>
-<li>左上のシステムのアイコンは通常緑色です。</li>
-<li>ネットワーク攻撃やブロックされたアプリなどが画面中央に赤色で表示されます。</li>
-</ul>
-<p>左ペインを見ていきます。</p>
-<table>
-<thead>
-<tr>
-<th>項目</th>
-<th>内容</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>ルールとポリシー</td>
-<td>Firewallのルールを決める一番重要なメニューです</td>
-</tr>
-<tr>
-<td>web</td>
-<td>コンテンツの種類によってアクセス制御を行うメニューです</td>
-</tr>
-<tr>
-<td>ネットワーク</td>
-<td>インストール後、ネットワークの変更を行う時に、それなりに頻度の高いメニューになります</td>
-</tr>
-<tr>
-<td>認証</td>
-<td>VPNを使う時にワンタイムパスワードを併用する際利用します</td>
-</tr>
-<tr>
-<td>ホストとサービス</td>
-<td>自分のFW配下にあるクライアントを登録する時に使用します</td>
-</tr>
-<tr>
-<td>管理</td>
-<td>このFirewallのデバイスの管理を行います</td>
-</tr>
-</tbody></table>
-<ul>
-<li><p>右上のログビューアをクリックすると別画面でFirewallのログがポップアップします。</p>
-<p>　表向きにはあまり変わったように見えません。しかし内部のアーキテクチャは非常に大きな変更がなされており、Firewallのルール設定も複雑になっています。そして、v17と比較し、（私の感覚ですが）非常に高速になっています。</p>
-</li>
-</ul>
-<div class="note primary no-icon">
-            <h2 id="XG-v18の変更について"><a href="#XG-v18の変更について" class="headerlink" title="XG v18の変更について"></a>XG v18の変更について</h2>
-          </div>
-
-<p>　Sophos社による英語の動画解説が<a href="https://vimeo.com/387247792" target="_blank" rel="noopener">https://vimeo.com</a>にあります。英語ですが、インフラ系のITに関わっている方であれば、内容は理解してもらえるかとおもいます。そしてv17との比較についても説明されているので、具体的にｖ18の設定を開始するにあたり、非常に理解が進みます。</p>
-<div class="note primary no-icon">
-            <h2 id="XG-v18の大幅な性能向上"><a href="#XG-v18の大幅な性能向上" class="headerlink" title="XG v18の大幅な性能向上"></a>XG v18の大幅な性能向上</h2>
-          </div>
-
-<p>　さて、初めてインストールされる方は非常に圧倒されているところだとはおもいます。昔からv17以前のXGを使っている方のために、私がお伝えしたいのは、ｖ18から採用されている<span class="label info">XStreamアーキテクチャ</span>です。全て暗号化されたhttpsプロトコルの様々なアプリケーションを高速かつ適切に判断し、脅威から保護する仕組みとなっています。</p>
-<p>以下、Sophosのサイトから引用します。</p>
-<blockquote class="blockquote-center"><p>XG Firewallの全く新しいXstreamアーキテクチャは、きわめて高いレベルの可視性、保護、およびパフォーマンスを提供します</p>
-</blockquote> 
-
-<blockquote>
-<span class="label info">Xstream TLS インスペクション</span>
-<p>TLS 1.3 をサポートするネットワーク上の全ての暗号化されたトラフィックに業界をリードするパフォーマンスと可視性を提供</p>
-</blockquote>
-<blockquote>
-<span class="label info">Xstream DPI エンジン</span>
-<p>単一のストリーミングエンジンで高性能なディープパケット保護を実現し、既知および未知の脅威をすべて阻止</p>
-</blockquote>
-<blockquote>
-<span class="label info">Xstream Network Flow FastPath</span>
-<p>信頼性が高く重要なクラウド、SaaS、VoIP アプリケーショントラフィックを高速化して、最適なパフォーマンスを実現</p>
-</blockquote>
-<p>参考までに、今回の構築する環境で実際に計測したSpeedtest.netの速度チェックのキャプチャ画像です。</p>
-<img src="/new-technology/2020/03/08/XG-MainPage/speedtest.png" class="" title="alt">
-
-<p>環境は以下の通りです。</p>
-<ul>
-<li>ネット回線： auひかり5Gbps</li>
-<li>XGのマシンスペック： Core i7メモリ16Gbyte（<span class="label warning">XG Home Editionは6Gbyteメモリ上限となる制約があります</span>）</li>
-<li>仮想環境： ESXi6.7</li>
-<li>ネットワークカード： intel X550-T2</li>
-<li>クライアントPC： CeleronG3900という3年前の一般的なクライアントに5GbpsのNIC(Aquantia AQtion 5G Network Adapter)を刺したもの</li>
-</ul>
-<p>　クライアント側のCPUで頭打ちになっており、XGは素晴らしい性能を持っています（もちろん業務向けとしては単一のセッションだけで評価は出来ませんが）。v17まではほぼProxyサーバとしての動作でしたが、v18はPort80および443に限らず、httpsの流れるデータをリアルタイムで精査しているようです。私は製品のベータ版である、アーリーアクセスプログラムに参加していましたが、テストの最終局面でスピードが劇的に改善した時は感動しました。個人向けにこういった素晴らしい製品が使えるのは本当にありがたく感じます。</p>
-]]></content>
+      
+      
+        <tags>
+            
+            <tag> XG Firewall </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>XG Firewall v18のメイン画面と特徴について</title>
+      <link href="/new-technology/2020/03/08/XG-MainPage/"/>
+      <url>/new-technology/2020/03/08/XG-MainPage/</url>
+      
+        <content type="html"><![CDATA[<div class="note primary no-icon">            <h2 id="XG-v18のメインページの説明"><a href="#XG-v18のメインページの説明" class="headerlink" title="XG v18のメインページの説明"></a>XG v18のメインページの説明</h2>          </div><p> 　XGの管理画面にログインすると、Controle Centerの表示となります。ここでは今の全体のFirewallの状況が示されます。個人向けには相当なボリュームの内容で圧巻です。個人向けに一部機能は制限されているので、不要な項目もたくさんありますが、Home Editionとして必要なものを見ていく事にしましょう。<br> <a id="more"></a></p><img src="/new-technology/2020/03/08/XG-MainPage/main1.png" class="" title="alt"><ul><li>左上のシステムのアイコンは通常緑色です。</li><li>ネットワーク攻撃やブロックされたアプリなどが画面中央に赤色で表示されます。</li></ul><p>左ペインを見ていきます。</p><table><thead><tr><th>項目</th><th>内容</th></tr></thead><tbody><tr><td>ルールとポリシー</td><td>Firewallのルールを決める一番重要なメニューです</td></tr><tr><td>web</td><td>コンテンツの種類によってアクセス制御を行うメニューです</td></tr><tr><td>ネットワーク</td><td>インストール後、ネットワークの変更を行う時に、それなりに頻度の高いメニューになります</td></tr><tr><td>認証</td><td>VPNを使う時にワンタイムパスワードを併用する際利用します</td></tr><tr><td>ホストとサービス</td><td>自分のFW配下にあるクライアントを登録する時に使用します</td></tr><tr><td>管理</td><td>このFirewallのデバイスの管理を行います</td></tr></tbody></table><ul><li><p>右上のログビューアをクリックすると別画面でFirewallのログがポップアップします。</p><p>　表向きにはあまり変わったように見えません。しかし内部のアーキテクチャは非常に大きな変更がなされており、Firewallのルール設定も複雑になっています。そして、v17と比較し、（私の感覚ですが）非常に高速になっています。</p></li></ul><div class="note primary no-icon">            <h2 id="XG-v18の変更について"><a href="#XG-v18の変更について" class="headerlink" title="XG v18の変更について"></a>XG v18の変更について</h2>          </div><p>　Sophos社による英語の動画解説が<a href="https://vimeo.com/387247792" target="_blank" rel="noopener">https://vimeo.com</a>にあります。英語ですが、インフラ系のITに関わっている方であれば、内容は理解してもらえるかとおもいます。そしてv17との比較についても説明されているので、具体的にｖ18の設定を開始するにあたり、非常に理解が進みます。</p><div class="note primary no-icon">            <h2 id="XG-v18の大幅な性能向上"><a href="#XG-v18の大幅な性能向上" class="headerlink" title="XG v18の大幅な性能向上"></a>XG v18の大幅な性能向上</h2>          </div><p>　さて、初めてインストールされる方は非常に圧倒されているところだとはおもいます。昔からv17以前のXGを使っている方のために、私がお伝えしたいのは、ｖ18から採用されている<span class="label info">XStreamアーキテクチャ</span>です。全て暗号化されたhttpsプロトコルの様々なアプリケーションを高速かつ適切に判断し、脅威から保護する仕組みとなっています。</p><p>以下、Sophosのサイトから引用します。</p><blockquote class="blockquote-center"><p>XG Firewallの全く新しいXstreamアーキテクチャは、きわめて高いレベルの可視性、保護、およびパフォーマンスを提供します</p></blockquote> <blockquote><span class="label info">Xstream TLS インスペクション</span><p>TLS 1.3 をサポートするネットワーク上の全ての暗号化されたトラフィックに業界をリードするパフォーマンスと可視性を提供</p></blockquote><blockquote><span class="label info">Xstream DPI エンジン</span><p>単一のストリーミングエンジンで高性能なディープパケット保護を実現し、既知および未知の脅威をすべて阻止</p></blockquote><blockquote><span class="label info">Xstream Network Flow FastPath</span><p>信頼性が高く重要なクラウド、SaaS、VoIP アプリケーショントラフィックを高速化して、最適なパフォーマンスを実現</p></blockquote><p>参考までに、今回の構築する環境で実際に計測したSpeedtest.netの速度チェックのキャプチャ画像です。</p><img src="/new-technology/2020/03/08/XG-MainPage/speedtest.png" class="" title="alt"><p>環境は以下の通りです。</p><ul><li>ネット回線： auひかり5Gbps</li><li>XGのマシンスペック： Core i7メモリ16Gbyte（<span class="label warning">XG Home Editionは6Gbyteメモリ上限となる制約があります</span>）</li><li>仮想環境： ESXi6.7</li><li>ネットワークカード： intel X550-T2</li><li>クライアントPC： CeleronG3900という3年前の一般的なクライアントに5GbpsのNIC(Aquantia AQtion 5G Network Adapter)を刺したもの</li></ul><p>　クライアント側のCPUで頭打ちになっており、XGは素晴らしい性能を持っています（もちろん業務向けとしては単一のセッションだけで評価は出来ませんが）。v17まではほぼProxyサーバとしての動作でしたが、v18はPort80および443に限らず、httpsの流れるデータをリアルタイムで精査しているようです。私は製品のベータ版である、アーリーアクセスプログラムに参加していましたが、テストの最終局面でスピードが劇的に改善した時は感動しました。個人向けにこういった素晴らしい製品が使えるのは本当にありがたく感じます。</p>]]></content>
+      
+      
       <categories>
-        <category>Software</category>
+          
+          <category> Software </category>
+          
       </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>XG FirewallをESXi仮想マシン上にインストールする</title>
-    <url>/new-technology/2020/03/06/InstallXG2/</url>
-    <content><![CDATA[<div class="note primary no-icon">
-            <h2 id="仮想マシンの電源をオンにする前に"><a href="#仮想マシンの電源をオンにする前に" class="headerlink" title="仮想マシンの電源をオンにする前に"></a>仮想マシンの電源をオンにする前に</h2>
-          </div>
-
-<p>　PCのブラウザで表示しているESXiの管理画面から、作成した仮想マシンの電源をオンにできます。これで設定されたISOファイルからブートさせる事になります。ESXiをセットアップした機器にモニタを接続する必要はありません。前回までの記事で、新たにクライアントが利用するネットワークアドレスを決めました。XGのデフォルトである172.16.16.0/24を使うか、自分が新たに決めたアドレス（ex. 192.168.1.0/24）になります。今回のケースでは、ホームゲートウェイとXGのWANとの間が、192.168.0.0/24のネットワーク、LAN側は192.168.1.0/24として説明を進めます。<br>　いよいよ、仮想マシンの電源をオンにしてセットアップを開始します。</p>
-<a id="more"></a>
-
-<div class="note primary no-icon">
-            <h2 id="仮想マシンの電源をオンにする"><a href="#仮想マシンの電源をオンにする" class="headerlink" title="仮想マシンの電源をオンにする"></a>仮想マシンの電源をオンにする</h2>
-          </div>
-
-<p>　さて、ESXiの管理コンソールからXGの仮想マシンを選んでパワーオンをクリックします。</p>
-<p>Sophos FIRMWARE INSTALLERが起動します。<br>インストールを開始すると（仮想マシンに割り当てた）ディスクが全てフォーマットされ、ファームウェアがインストールされていきます。<br>press y to rebootでリブートします。<br>再起動後、さらにdefault conifgをインストールするとの表示がされ、やがてパスワード入力画面になります。最初のパスワードはadminです。まずライセンスを受け入れる画面となります。続いて、ネットワークの設定を変更します。</p>
-<img src="/new-technology/2020/03/06/InstallXG2/conf.png" class="" title="alt">
-
-<p>1.Network Configurationを選び、次の画面で、1.Interface Configurationを選びます。以下の表示がEnterを押下する毎に変わります。</p>
-<ul>
-<li>LAN側のIP割り振り状態（ここでは変更できません）。</li>
-<li>WAN側のIP割り振り状態（変更不可。ホームゲートウェイからのプライベートIPが割り当てられています）。</li>
-<li>Set IPv4 Address(y/n)と出るので、変更する場合は、y＋Enterします。</li>
-<li>IPv6は後で設定するので空Enterで構いません。</li>
-</ul>
-<p>この状態で一旦IPの設定を終えたら、クライアントPCのブラウザからXGに対して接続し、セットアップを続けていきます。ここではXGのIPアドレスを192.168.1.2にしたと仮定して進めます。</p>
-  <div class="note warning">
-            <p>WANのIPが割り振られていない場合は、後続のセットアップでライセンスの確認ができません。事後にもライセンス登録は可能ですが、初期のうちに課題を解決しておきましょう。</p>
-          </div>
-
-<div class="note primary no-icon">
-            <h2 id="XG-Firewallの初期設定を行う"><a href="#XG-Firewallの初期設定を行う" class="headerlink" title="XG Firewallの初期設定を行う"></a>XG Firewallの初期設定を行う</h2>
-          </div>
-
-<p>　ブラウザで、<a href="https://192.168.1.2:4444" target="_blank" rel="noopener">https://192.168.1.2:4444</a>を開き初期設定を行っていきます。自己証明書でもあり、ブラウザのワーニングが表示されますが、了解のうえ進んでください。</p>
-<img src="/new-technology/2020/03/06/InstallXG2/setup1.png" class="" title="alt">
-
-<p> ここでは、右上のプルダウンで日本語に変更しておくと良いでしょう。<br> 続いて、以下の項目を設定していきます。</p>
-<ul>
-<li>管理者パスワード</li>
-<li>タイムゾーン</li>
-<li>登録メールで届いたシリアル番号を入力します</li>
-</ul>
-<img src="/new-technology/2020/03/06/InstallXG2/setup2.png" class="" title="alt">
-
-<ul>
-<li>ゲートウェイとしてルーターモードを選択します</li>
-<li>LAN側に割り振るDHCPのIP範囲を設定します</li>
-</ul>
-<img src="/new-technology/2020/03/06/InstallXG2/setup3.png" class="" title="alt">
-
-<ul>
-<li>ネットワークプロテクションはSandStormを除き選択します。仮に選択してもホームユースでは解除されます。</li>
-</ul>
-<img src="/new-technology/2020/03/06/InstallXG2/setup4.png" class="" title="alt">
-
-<p>　続いての画面のメールセットアップですが、昨今、自宅からSMTPによるインターネットへのメール送信はSPAMの扱いと疑われ、OP25と称してブロックされているのが実態です。Gmailをお持ちであれば、Gmailをメールの送信者にしておくと比較的簡単に送信できます。メールの受信者は、色々なイベント通知が発生した時に確認するアドレスですので、携帯などのアドレスが候補に挙げられます。</p>
-<img src="/new-technology/2020/03/06/InstallXG2/setup5.png" class="" title="alt">
-
-<p> 　いよいよ、セットアップも最後の仕上げです。5分程度と言いつつ、もう少し掛かる場合がありますので、ブラウザのリロードをせずそのまま待ちます。その後管理画面のリロードが入りますが、XGの管理サイトは自己証明書のためにブラウザのワーニングが出た画面で止まっている場合があります。</p>
-<img src="/new-technology/2020/03/06/InstallXG2/setup6.png" class="" title="alt">
-
-<p> 　さて、いよいよログイン画面です。固定IPにして設定してきたPCも、XGのDHCP機能によって、IPアドレスが割り当て可能となっています。PCの設定をDHCPにして確認して下さい。そして、インターネットにも接続出来ている事を確認して下さい。現段階では、基本はOutboundの通信は全て通す設定になっているので確認が出来たら、ホームゲートウェイに接続されている他の機器などをXGのLAN側に繋いで下さい。なお、この状態ではIP解放をしているサーバーはInternetからは参照出来ないため、事後に設定を行います。</p>
-]]></content>
+      
+      
+        <tags>
+            
+            <tag> XG Firewall </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>XG FirewallをESXi仮想マシン上にインストールする</title>
+      <link href="/new-technology/2020/03/06/InstallXG2/"/>
+      <url>/new-technology/2020/03/06/InstallXG2/</url>
+      
+        <content type="html"><![CDATA[<div class="note primary no-icon">            <h2 id="仮想マシンの電源をオンにする前に"><a href="#仮想マシンの電源をオンにする前に" class="headerlink" title="仮想マシンの電源をオンにする前に"></a>仮想マシンの電源をオンにする前に</h2>          </div><p>　PCのブラウザで表示しているESXiの管理画面から、作成した仮想マシンの電源をオンにできます。これで設定されたISOファイルからブートさせる事になります。ESXiをセットアップした機器にモニタを接続する必要はありません。前回までの記事で、新たにクライアントが利用するネットワークアドレスを決めました。XGのデフォルトである172.16.16.0/24を使うか、自分が新たに決めたアドレス（ex. 192.168.1.0/24）になります。今回のケースでは、ホームゲートウェイとXGのWANとの間が、192.168.0.0/24のネットワーク、LAN側は192.168.1.0/24として説明を進めます。<br>　いよいよ、仮想マシンの電源をオンにしてセットアップを開始します。</p><a id="more"></a><div class="note primary no-icon">            <h2 id="仮想マシンの電源をオンにする"><a href="#仮想マシンの電源をオンにする" class="headerlink" title="仮想マシンの電源をオンにする"></a>仮想マシンの電源をオンにする</h2>          </div><p>　さて、ESXiの管理コンソールからXGの仮想マシンを選んでパワーオンをクリックします。</p><p>Sophos FIRMWARE INSTALLERが起動します。<br>インストールを開始すると（仮想マシンに割り当てた）ディスクが全てフォーマットされ、ファームウェアがインストールされていきます。<br>press y to rebootでリブートします。<br>再起動後、さらにdefault conifgをインストールするとの表示がされ、やがてパスワード入力画面になります。最初のパスワードはadminです。まずライセンスを受け入れる画面となります。続いて、ネットワークの設定を変更します。</p><img src="/new-technology/2020/03/06/InstallXG2/conf.png" class="" title="alt"><p>1.Network Configurationを選び、次の画面で、1.Interface Configurationを選びます。以下の表示がEnterを押下する毎に変わります。</p><ul><li>LAN側のIP割り振り状態（ここでは変更できません）。</li><li>WAN側のIP割り振り状態（変更不可。ホームゲートウェイからのプライベートIPが割り当てられています）。</li><li>Set IPv4 Address(y/n)と出るので、変更する場合は、y＋Enterします。</li><li>IPv6は後で設定するので空Enterで構いません。</li></ul><p>この状態で一旦IPの設定を終えたら、クライアントPCのブラウザからXGに対して接続し、セットアップを続けていきます。ここではXGのIPアドレスを192.168.1.2にしたと仮定して進めます。</p>  <div class="note warning">            <p>WANのIPが割り振られていない場合は、後続のセットアップでライセンスの確認ができません。事後にもライセンス登録は可能ですが、初期のうちに課題を解決しておきましょう。</p>          </div><div class="note primary no-icon">            <h2 id="XG-Firewallの初期設定を行う"><a href="#XG-Firewallの初期設定を行う" class="headerlink" title="XG Firewallの初期設定を行う"></a>XG Firewallの初期設定を行う</h2>          </div><p>　ブラウザで、<a href="https://192.168.1.2:4444" target="_blank" rel="noopener">https://192.168.1.2:4444</a>を開き初期設定を行っていきます。自己証明書でもあり、ブラウザのワーニングが表示されますが、了解のうえ進んでください。</p><img src="/new-technology/2020/03/06/InstallXG2/setup1.png" class="" title="alt"><p> ここでは、右上のプルダウンで日本語に変更しておくと良いでしょう。<br> 続いて、以下の項目を設定していきます。</p><ul><li>管理者パスワード</li><li>タイムゾーン</li><li>登録メールで届いたシリアル番号を入力します</li></ul><img src="/new-technology/2020/03/06/InstallXG2/setup2.png" class="" title="alt"><ul><li>ゲートウェイとしてルーターモードを選択します</li><li>LAN側に割り振るDHCPのIP範囲を設定します</li></ul><img src="/new-technology/2020/03/06/InstallXG2/setup3.png" class="" title="alt"><ul><li>ネットワークプロテクションはSandStormを除き選択します。仮に選択してもホームユースでは解除されます。</li></ul><img src="/new-technology/2020/03/06/InstallXG2/setup4.png" class="" title="alt"><p>　続いての画面のメールセットアップですが、昨今、自宅からSMTPによるインターネットへのメール送信はSPAMの扱いと疑われ、OP25と称してブロックされているのが実態です。Gmailをお持ちであれば、Gmailをメールの送信者にしておくと比較的簡単に送信できます。メールの受信者は、色々なイベント通知が発生した時に確認するアドレスですので、携帯などのアドレスが候補に挙げられます。</p><img src="/new-technology/2020/03/06/InstallXG2/setup5.png" class="" title="alt"><p> 　いよいよ、セットアップも最後の仕上げです。5分程度と言いつつ、もう少し掛かる場合がありますので、ブラウザのリロードをせずそのまま待ちます。その後管理画面のリロードが入りますが、XGの管理サイトは自己証明書のためにブラウザのワーニングが出た画面で止まっている場合があります。</p><img src="/new-technology/2020/03/06/InstallXG2/setup6.png" class="" title="alt"><p> 　さて、いよいよログイン画面です。固定IPにして設定してきたPCも、XGのDHCP機能によって、IPアドレスが割り当て可能となっています。PCの設定をDHCPにして確認して下さい。そして、インターネットにも接続出来ている事を確認して下さい。現段階では、基本はOutboundの通信は全て通す設定になっているので確認が出来たら、ホームゲートウェイに接続されている他の機器などをXGのLAN側に繋いで下さい。なお、この状態ではIP解放をしているサーバーはInternetからは参照出来ないため、事後に設定を行います。</p>]]></content>
+      
+      
       <categories>
-        <category>Security</category>
+          
+          <category> Security </category>
+          
       </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>XG Firewallのインストール（事前準備）</title>
-    <url>/new-technology/2020/03/06/InstallXG/</url>
-    <content><![CDATA[<div class="note primary no-icon">
-            <h2 id="XG-Firewallのダウンロード"><a href="#XG-Firewallのダウンロード" class="headerlink" title="XG Firewallのダウンロード"></a>XG Firewallのダウンロード</h2>
-          </div>
-<p>　Sophosのサイトの<a href="https://www.sophos.com/ja-jp/products/free-tools.aspx" target="_blank" rel="noopener">（無償ツール）</a>より、「Sophos XG Firewall Home Edition」モジュールのダウンロードを行います。氏名、勤務先メールアドレスとありますが、ホームユースなので、遠慮なくGmailなどのアドレスを登録します。あっさりとISOファイルのダウンロードボタンが表示されると共に、メール宛にライセンス番号が送られてきます。<br>　送られてきたメールの本文には、「利用条件としては、あくまで家庭での個人的な使用に限って無料です」と丁寧な日本語で記載されています。</p>
-<a id="more"></a>
-<p> 　ダウンロードはISOイメージです。2020年3月6日時点では、最新のバージョンはv17.5のようです。ただし、Sophosからのお知らせに<a href="https://community.sophos.com/products/xg-firewall/b/blog/posts/sophos-xg-firewall-v18-is-now-available" target="_blank" rel="noopener">v18がリリースされたとの記載</a>があるため、こちらのISOファイルからインストールします。As usual, this firmware update is no charge for all licensed XG Firewall customers. とありますし問題なさそうです。VMware向けのテンプレートもダウンロード出来るようですが、仮想環境ではなくいきなり物理PCにインストールする方のために、ISOファイルからのセットアップ手順であった方が良いですね。上記のリンクから、SW-18.0.0_GA-Build321-321.isoをダウンロードして下さい。</p>
-<p> 　いつも使っているPC（Windowsなど）から、ESXi管理画面にログインします。ESXiの管理画面の左ペインのストレージからデフォルトのストレージである、datastore1を選択し、データストアブラウザをクリックして下さい。次にアップロードボタンをクリックし、ダウンロードされたSW-18.0.0_GA-Build321-321.isoファイルをアップロードして下さい。</p>
- <img src="/new-technology/2020/03/06/InstallXG/datastore.png" class="" title="alt">
-<p> 　</p>
-<div class="note primary no-icon">
-            <h2 id="XG-Firewall仮想マシンの作成"><a href="#XG-Firewall仮想マシンの作成" class="headerlink" title="XG Firewall仮想マシンの作成"></a>XG Firewall仮想マシンの作成</h2>
-          </div>
-<p> 　<br> 　さて、ここから仮想マシンの初期設定です。</p>
-<ol>
-<li>ESXiの管理画面の仮想マシンから新規仮想マシンを選択します。</li>
-<li>仮想マシンの作成を選択し、次へのボタンを押します。</li>
-<li>仮想マシンの名前を決め、ゲストOSを選択します。OSファミリはLinuxで、OSバージョンはその他のLinux3.x（64ビット）を選択します。※以下の図では、その他のLinux4.x（64ビット）を選択しています。</li>
-</ol>
-<img src="/new-technology/2020/03/06/InstallXG/vm2.png" class="" title="alt">
-
-<ol>
-<li>ストレージを確認し、次へのボタンを押します。</li>
-</ol>
-<img src="/new-technology/2020/03/06/InstallXG/vm3.png" class="" title="alt">
-
-<ol>
-<li>ここでは、ネットワークカードの追加をし、WAN側のNICを追加します。ネットワークアダプタの詳細（▶︎マークをクリック）でドライバがE1000を確認して下さい。まずは安定性優先のためにE1000を選ぶ事をお勧めします。</li>
-</ol>
-<img src="/new-technology/2020/03/06/InstallXG/vm4.png" class="" title="alt">
-
-<ol>
-<li>また、仮想CD-ROMにXG Firewallのインストールイメージ（isoファイル）をマウントします。</li>
-</ol>
-<img src="/new-technology/2020/03/06/InstallXG/vm4-1.png" class="" title="alt">
-
-<ol start="7">
-<li>起動オプションのファームウェアはEFIからBIOSに変更して下さい。</li>
-</ol>
-<img src="/new-technology/2020/03/06/InstallXG/vm5.png" class="" title="alt">
-
-<ol start="8">
-<li>さて、最終確認です。今回のプロビジョニングはシック（Lazy Zeroed）となっています。</li>
-</ol>
-<img src="/new-technology/2020/03/06/InstallXG/vm6.png" class="" title="alt">
-
-<ol start="9">
-<li>最後に完了ボタンを押します。これで仮想マシンが作成されます。</li>
-</ol>
-<img src="/new-technology/2020/03/06/InstallXG/vm7.png" class="" title="alt">
-
-<p>　いったんここまでで仮想マシンの作成は終了となります。なお、仮想マシンを選択した状態で「アクション」という歯車マークがあります。これをクリックして、コンソール→VMRCのダウンロードを選択し、VMware Remote Consoleをインストールして下さい。これがあるとブラウザから仮想マシンの画面がポップアップし、仮想マシンを操作出来るようになります。</p>
-<p>余談ですが、もし物理マシンに直接USBメモリ等でXGをインストールする場合は、対象マシンのBIOS設定でUEFIのチェックを外して下さい。</p>
-<p>＜補足＞</p>
-<p>　ESXiの知識がある方であれば、今回のｖ18よりその他のLinux4.x以降（64ビット）を選択可能なようですので、そちらを選んでみて下さい。また、NICのドライバについては、速度の面で有利なVMXNET3を選択可能です。まだ私自身もVMXNET3の検証は十分に行えていません。</p>
-]]></content>
+      
+      
+        <tags>
+            
+            <tag> XG Firewall </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>XG Firewallのインストール（事前準備）</title>
+      <link href="/new-technology/2020/03/06/InstallXG/"/>
+      <url>/new-technology/2020/03/06/InstallXG/</url>
+      
+        <content type="html"><![CDATA[<div class="note primary no-icon">            <h2 id="XG-Firewallのダウンロード"><a href="#XG-Firewallのダウンロード" class="headerlink" title="XG Firewallのダウンロード"></a>XG Firewallのダウンロード</h2>          </div><p>　Sophosのサイトの<a href="https://www.sophos.com/ja-jp/products/free-tools.aspx" target="_blank" rel="noopener">（無償ツール）</a>より、「Sophos XG Firewall Home Edition」モジュールのダウンロードを行います。氏名、勤務先メールアドレスとありますが、ホームユースなので、遠慮なくGmailなどのアドレスを登録します。あっさりとISOファイルのダウンロードボタンが表示されると共に、メール宛にライセンス番号が送られてきます。<br>　送られてきたメールの本文には、「利用条件としては、あくまで家庭での個人的な使用に限って無料です」と丁寧な日本語で記載されています。</p><a id="more"></a><p> 　ダウンロードはISOイメージです。2020年3月6日時点では、最新のバージョンはv17.5のようです。ただし、Sophosからのお知らせに<a href="https://community.sophos.com/products/xg-firewall/b/blog/posts/sophos-xg-firewall-v18-is-now-available" target="_blank" rel="noopener">v18がリリースされたとの記載</a>があるため、こちらのISOファイルからインストールします。As usual, this firmware update is no charge for all licensed XG Firewall customers. とありますし問題なさそうです。VMware向けのテンプレートもダウンロード出来るようですが、仮想環境ではなくいきなり物理PCにインストールする方のために、ISOファイルからのセットアップ手順であった方が良いですね。上記のリンクから、SW-18.0.0_GA-Build321-321.isoをダウンロードして下さい。</p><p> 　いつも使っているPC（Windowsなど）から、ESXi管理画面にログインします。ESXiの管理画面の左ペインのストレージからデフォルトのストレージである、datastore1を選択し、データストアブラウザをクリックして下さい。次にアップロードボタンをクリックし、ダウンロードされたSW-18.0.0_GA-Build321-321.isoファイルをアップロードして下さい。</p> <img src="/new-technology/2020/03/06/InstallXG/datastore.png" class="" title="alt"><p> 　</p><div class="note primary no-icon">            <h2 id="XG-Firewall仮想マシンの作成"><a href="#XG-Firewall仮想マシンの作成" class="headerlink" title="XG Firewall仮想マシンの作成"></a>XG Firewall仮想マシンの作成</h2>          </div><p> 　<br> 　さて、ここから仮想マシンの初期設定です。</p><ol><li>ESXiの管理画面の仮想マシンから新規仮想マシンを選択します。</li><li>仮想マシンの作成を選択し、次へのボタンを押します。</li><li>仮想マシンの名前を決め、ゲストOSを選択します。OSファミリはLinuxで、OSバージョンはその他のLinux3.x（64ビット）を選択します。※以下の図では、その他のLinux4.x（64ビット）を選択しています。</li></ol><img src="/new-technology/2020/03/06/InstallXG/vm2.png" class="" title="alt"><ol><li>ストレージを確認し、次へのボタンを押します。</li></ol><img src="/new-technology/2020/03/06/InstallXG/vm3.png" class="" title="alt"><ol><li>ここでは、ネットワークカードの追加をし、WAN側のNICを追加します。ネットワークアダプタの詳細（▶︎マークをクリック）でドライバがE1000を確認して下さい。まずは安定性優先のためにE1000を選ぶ事をお勧めします。</li></ol><img src="/new-technology/2020/03/06/InstallXG/vm4.png" class="" title="alt"><ol><li>また、仮想CD-ROMにXG Firewallのインストールイメージ（isoファイル）をマウントします。</li></ol><img src="/new-technology/2020/03/06/InstallXG/vm4-1.png" class="" title="alt"><ol start="7"><li>起動オプションのファームウェアはEFIからBIOSに変更して下さい。</li></ol><img src="/new-technology/2020/03/06/InstallXG/vm5.png" class="" title="alt"><ol start="8"><li>さて、最終確認です。今回のプロビジョニングはシック（Lazy Zeroed）となっています。</li></ol><img src="/new-technology/2020/03/06/InstallXG/vm6.png" class="" title="alt"><ol start="9"><li>最後に完了ボタンを押します。これで仮想マシンが作成されます。</li></ol><img src="/new-technology/2020/03/06/InstallXG/vm7.png" class="" title="alt"><p>　いったんここまでで仮想マシンの作成は終了となります。なお、仮想マシンを選択した状態で「アクション」という歯車マークがあります。これをクリックして、コンソール→VMRCのダウンロードを選択し、VMware Remote Consoleをインストールして下さい。これがあるとブラウザから仮想マシンの画面がポップアップし、仮想マシンを操作出来るようになります。</p><p>余談ですが、もし物理マシンに直接USBメモリ等でXGをインストールする場合は、対象マシンのBIOS設定でUEFIのチェックを外して下さい。</p><p>＜補足＞</p><p>　ESXiの知識がある方であれば、今回のｖ18よりその他のLinux4.x以降（64ビット）を選択可能なようですので、そちらを選んでみて下さい。また、NICのドライバについては、速度の面で有利なVMXNET3を選択可能です。まだ私自身もVMXNET3の検証は十分に行えていません。</p>]]></content>
+      
+      
       <categories>
-        <category>Security</category>
+          
+          <category> Security </category>
+          
       </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>VMware vSphere Hypervisor（ESXi）の設定</title>
-    <url>/new-technology/2020/03/01/esxi-conf/</url>
-    <content><![CDATA[<div class="note primary no-icon">
-            <h2 id="ネットワークの確認"><a href="#ネットワークの確認" class="headerlink" title="ネットワークの確認"></a>ネットワークの確認</h2>
-          </div>
-
-<ol>
-<li><p>ESXiのWeb管理画面にログイン後、左ペインの「ネットワーク」をクリック</p>
-</li>
-<li><p>「物理NIC」のタブをクリック<br>　以下の画面のように、ESXiに認識されているNICの一覧がリストされます。</p>
-<a id="more"></a>
-<img src="/new-technology/2020/03/01/esxi-conf/conf_esxi.png" class="" title="alt">
-<p>1GbpsのNICであれば、ドライバーはne1000として認識されています。（環境にもより異なりますが）vmnic0、vmnic1という物理NICが2つ表示されている事を確認してください。</p>
-<div class="note warning">
-            <p>物理NICが1つしかない場合は、XG Firewallのセットアップはできません。</p>
-          </div>
-
-</li>
-</ol>
-<div class="note primary no-icon">
-            <h2 id="ESXiを利用したXG-Firewallの最終構成"><a href="#ESXiを利用したXG-Firewallの最終構成" class="headerlink" title="ESXiを利用したXG Firewallの最終構成"></a>ESXiを利用したXG Firewallの最終構成</h2>
-          </div>
-
-<p>　ESXiにおけるネットワークの構成は、物理NICと仮想スイッチとの関係を理解する事が必要です。以下の図のように、ESXiにおける物理NICはケーブルとして見立て、実際に仮想マシンが複数台存在する事を鑑み、ESXiの中にスイッチングハブが存在していると考えてください。</p>
-<img src="/new-technology/2020/03/01/esxi-conf/vswitch.png" class="" title="alt">
-
- <div class="note info">
-            <p>便宜上、構成図にLinuxの仮想マシンを記載していますが、これまでのセットアップでは存在していません。</p>
-          </div>
-
-<div class="note primary no-icon">
-            <h2 id="現時点でのセットアップ状況の確認"><a href="#現時点でのセットアップ状況の確認" class="headerlink" title="現時点でのセットアップ状況の確認"></a>現時点でのセットアップ状況の確認</h2>
-          </div>
-
-<p>　ここまでのセットアップで、以下の構成になっています。</p>
-<ul>
-<li>物理NICであるvmnic0、vmnic1</li>
-<li>バーチャルスイッチのvSwitch0</li>
-<li>ネットワークポート（仮想IP）として、Lan側の管理用のManagement Networkおよびデフォルトで仮想マシンのために作成されているVM Network</li>
-</ul>
-<div class="note primary no-icon">
-            <h2 id="Wanのための仮想スイッチの作成"><a href="#Wanのための仮想スイッチの作成" class="headerlink" title="Wanのための仮想スイッチの作成"></a>Wanのための仮想スイッチの作成</h2>
-          </div>
-
-<img src="/new-technology/2020/03/01/esxi-conf/vswitch1.png" class="" title="alt">
-
-<p> 次に、XGのWan側インタフェースを担う仮想スイッチを追加し、LanとWanとのネットワークポートを追加する事になります（赤字の部分）。</p>
-<ol>
-<li>ESXiの管理画面の左ペイン、ネットワークをクリック、続いて仮想スイッチのタブをクリックします。</li>
-<li>標準仮想スイッチの追加をクリックします。</li>
-<li>Wan側の仮想スイッチを作成するため、ここでは、vSwitch1と命名します。MTUは1500のままで構いません。</li>
-</ol>
-<p>これで、以下の通り、仮想スイッチの作成は完了です。</p>
-<img src="/new-technology/2020/03/01/esxi-conf/vswitch2.png" class="" title="alt">
-
-<div class="note primary no-icon">
-            <h2 id="ネットワークポートの作成"><a href="#ネットワークポートの作成" class="headerlink" title="ネットワークポートの作成"></a>ネットワークポートの作成</h2>
-          </div>
-
-<ol>
-<li>vSwitch1をクリックし、物理NICのWan向けである、vmnic1と関連付けられている事を確認してください。</li>
-<li>XGのLanとWanのネットワークポートを作成します。左ペインのネットワークからポートグループのタブをクリックし、ポートグループの追加を選択します。</li>
-<li>新規ポートグループとして、LanはここではXG-Lanと命名し作成します。Lanなので、vSwitch0を関連づけます。</li>
-<li>続いてWanのために、XG-Wanと命名し、vSwitch1と関連づけます。</li>
-</ol>
-<p>　これらの設定が終わり、Lan側のネットワーク構成は以下の通りとなります。</p>
-<img src="/new-technology/2020/03/01/esxi-conf/vswitch3.png" class="" title="alt">
-
-<p>　また、Wan側のネットワーク構成は以下の通りです。</p>
-<img src="/new-technology/2020/03/01/esxi-conf/vswitch4.png" class="" title="alt">
-
-<p>　これで、ESXiのネットワーク設定は完了となります。<br>　面倒ですが、一旦またPCのネットワークを元に戻し、ホームゲートウェイに接続しネットに繋ぎます。そしてXG Firewallのモジュールをダウンロードしてまいりましょう。</p>
-]]></content>
+      
+      
+        <tags>
+            
+            <tag> XG Firewall </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>VMware vSphere Hypervisor（ESXi）の設定</title>
+      <link href="/new-technology/2020/03/01/esxi-conf/"/>
+      <url>/new-technology/2020/03/01/esxi-conf/</url>
+      
+        <content type="html"><![CDATA[<div class="note primary no-icon">            <h2 id="ネットワークの確認"><a href="#ネットワークの確認" class="headerlink" title="ネットワークの確認"></a>ネットワークの確認</h2>          </div><ol><li><p>ESXiのWeb管理画面にログイン後、左ペインの「ネットワーク」をクリック</p></li><li><p>「物理NIC」のタブをクリック<br>　以下の画面のように、ESXiに認識されているNICの一覧がリストされます。</p><a id="more"></a><img src="/new-technology/2020/03/01/esxi-conf/conf_esxi.png" class="" title="alt"><p>1GbpsのNICであれば、ドライバーはne1000として認識されています。（環境にもより異なりますが）vmnic0、vmnic1という物理NICが2つ表示されている事を確認してください。</p><div class="note warning">            <p>物理NICが1つしかない場合は、XG Firewallのセットアップはできません。</p>          </div></li></ol><div class="note primary no-icon">            <h2 id="ESXiを利用したXG-Firewallの最終構成"><a href="#ESXiを利用したXG-Firewallの最終構成" class="headerlink" title="ESXiを利用したXG Firewallの最終構成"></a>ESXiを利用したXG Firewallの最終構成</h2>          </div><p>　ESXiにおけるネットワークの構成は、物理NICと仮想スイッチとの関係を理解する事が必要です。以下の図のように、ESXiにおける物理NICはケーブルとして見立て、実際に仮想マシンが複数台存在する事を鑑み、ESXiの中にスイッチングハブが存在していると考えてください。</p><img src="/new-technology/2020/03/01/esxi-conf/vswitch.png" class="" title="alt"> <div class="note info">            <p>便宜上、構成図にLinuxの仮想マシンを記載していますが、これまでのセットアップでは存在していません。</p>          </div><div class="note primary no-icon">            <h2 id="現時点でのセットアップ状況の確認"><a href="#現時点でのセットアップ状況の確認" class="headerlink" title="現時点でのセットアップ状況の確認"></a>現時点でのセットアップ状況の確認</h2>          </div><p>　ここまでのセットアップで、以下の構成になっています。</p><ul><li>物理NICであるvmnic0、vmnic1</li><li>バーチャルスイッチのvSwitch0</li><li>ネットワークポート（仮想IP）として、Lan側の管理用のManagement Networkおよびデフォルトで仮想マシンのために作成されているVM Network</li></ul><div class="note primary no-icon">            <h2 id="Wanのための仮想スイッチの作成"><a href="#Wanのための仮想スイッチの作成" class="headerlink" title="Wanのための仮想スイッチの作成"></a>Wanのための仮想スイッチの作成</h2>          </div><img src="/new-technology/2020/03/01/esxi-conf/vswitch1.png" class="" title="alt"><p> 次に、XGのWan側インタフェースを担う仮想スイッチを追加し、LanとWanとのネットワークポートを追加する事になります（赤字の部分）。</p><ol><li>ESXiの管理画面の左ペイン、ネットワークをクリック、続いて仮想スイッチのタブをクリックします。</li><li>標準仮想スイッチの追加をクリックします。</li><li>Wan側の仮想スイッチを作成するため、ここでは、vSwitch1と命名します。MTUは1500のままで構いません。</li></ol><p>これで、以下の通り、仮想スイッチの作成は完了です。</p><img src="/new-technology/2020/03/01/esxi-conf/vswitch2.png" class="" title="alt"><div class="note primary no-icon">            <h2 id="ネットワークポートの作成"><a href="#ネットワークポートの作成" class="headerlink" title="ネットワークポートの作成"></a>ネットワークポートの作成</h2>          </div><ol><li>vSwitch1をクリックし、物理NICのWan向けである、vmnic1と関連付けられている事を確認してください。</li><li>XGのLanとWanのネットワークポートを作成します。左ペインのネットワークからポートグループのタブをクリックし、ポートグループの追加を選択します。</li><li>新規ポートグループとして、LanはここではXG-Lanと命名し作成します。Lanなので、vSwitch0を関連づけます。</li><li>続いてWanのために、XG-Wanと命名し、vSwitch1と関連づけます。</li></ol><p>　これらの設定が終わり、Lan側のネットワーク構成は以下の通りとなります。</p><img src="/new-technology/2020/03/01/esxi-conf/vswitch3.png" class="" title="alt"><p>　また、Wan側のネットワーク構成は以下の通りです。</p><img src="/new-technology/2020/03/01/esxi-conf/vswitch4.png" class="" title="alt"><p>　これで、ESXiのネットワーク設定は完了となります。<br>　面倒ですが、一旦またPCのネットワークを元に戻し、ホームゲートウェイに接続しネットに繋ぎます。そしてXG Firewallのモジュールをダウンロードしてまいりましょう。</p>]]></content>
+      
+      
       <categories>
-        <category>Software</category>
+          
+          <category> Software </category>
+          
       </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-        <tag>ESXi</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>VMware vSphere Hypervisor（ESXi）のインストール</title>
-    <url>/new-technology/2020/02/29/esxi/</url>
-    <content><![CDATA[<div class="note primary no-icon">
-            <h2 id="インストールの前に"><a href="#インストールの前に" class="headerlink" title="インストールの前に"></a>インストールの前に</h2>
-          </div>
-
-<p> 　XG Firewallの導入に必須というわけではないですが、バックアップや異なるバージョンの同居など色々便利なので、仮想環境（ESXi）を構築しその上にXGをインストールします。</p>
-<p>　この個人向け（無償版）ESXiのインストールに関するドキュメントは正直解りやすい場所に掲載されてないのですが、<a href="https://blogs.vmware.com/jp-cim/2014/05/vspherehypervisor.html" target="_blank" rel="noopener" title="vmware">VMWareのブログ</a>から辿ると良いです。</p>
-<a id="more"></a>
-
-<div class="note primary no-icon">
-            <h2 id="準備"><a href="#準備" class="headerlink" title="準備"></a>準備</h2>
-          </div>
-
-<ul>
-<li>ESXiをインストールする予定の2つのNICを持ったPC1台と、ISOファイルをインストールするためのUSBメディアを用意してください。</li>
-<li>VMwareのアカウント（無償）を作成してください。</li>
-<li>VMwareサイトにログイン後、製品（vSphere Hypervisor v6.7）のダウンロードをしたら、ISOファイルをRufusを使ってUSBメディアに書き出します。</li>
-</ul>
-<div class="video-container"><iframe src="https://www.youtube.com/embed/7gYnyIaQH9A" frameborder="0" loading="lazy" allowfullscreen></iframe></div>
-
-<div class="note primary no-icon">
-            <h2 id="ESXiのインストール"><a href="#ESXiのインストール" class="headerlink" title="ESXiのインストール"></a>ESXiのインストール</h2>
-          </div>
-
-<p>　以下のビデオを参考にしてください。</p>
-<iframe src='https://players.brightcove.net/1534342432001/Byh3doRJx_default/index.html?videoId=5738631329001' allowfullscreen frameborder=0></iframe>
-
-<p>　まず、注意点ですが、いつも使っているネットワークとは別のネットワークのIPアドレスを振ってセットアップします。いつもが192.168.0.0/24なら、今回は仮に192.168.1.0/24のネットワークに配置する予定としてESXiをセットアップする事にしましょう。これまでのネットワークにXG Firewallを挟み込む事になり、従来のネットワークはXGのWAN側とホームゲートウェイに利用され、XGのLAN側は新しいネットワークになるためです。新たにXGのLAN側と同じネットワークにESXiの管理ネットワークを構築する必要があります。なお、XGのLAN側のデフォルトIPアドレスは、172.16.16.16となっています。従って、XGのIPもセットアップ時に192.168.1.0/24のネットワークに変更する事とします。</p>
-<ul>
-<li>USBメディアをESXiをインストールするPCに挿し、USBからブートし、セットアップを開始してください。</li>
-<li>vCenterは個人向けには使いませんので無視してください。</li>
-<li>NICが2枚ある事を前提にすると、Esxiの管理画面はLAN側のNICを対象とするように設定してください。今の時点では、WANは使いません。新しく振ったIP（192.168.1.1/24）をESXiの管理用IPとして、セットアップします。</li>
-<li>上記のビデオ（2:40前後の説明）では「冗長化のために」と説明がありますが、今回は冗長化を使いません。通常LAN側のvmnic0を管理用のNICとしてセットアップしてください。また、VLANも使いません。</li>
-<li>ESXi6.7では、vSphere Clientは使いません。インストールしたESXiのLAN側のIPアドレスに対してブラウザで接続し、ESXiのWeb管理画面で設定を行います。</li>
-</ul>
-<img src="/new-technology/2020/02/29/esxi/setup_esxi.png" class="" title="alt">
-
-<p> 　セットアップ終了後は、上記のようなネットワーク構成となります。USBメディアを抜いて再起動後、ESXiの画面にIPアドレスが表示されます。ホームゲートウェイに繋っていたPCをネットワークから外し、ESXiのLAN側のNICと繋ぎます。PCのIPを変更（例えば、192.168.1.101/24）し、ESXiのIPアドレスにブラウザで接続してください。ログインは、ユーザー名がroot、パスワードはセットアップで指定したものになります。</p>
-]]></content>
+      
+      
+        <tags>
+            
+            <tag> XG Firewall </tag>
+            
+            <tag> ESXi </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>VMware vSphere Hypervisor（ESXi）のインストール</title>
+      <link href="/new-technology/2020/02/29/esxi/"/>
+      <url>/new-technology/2020/02/29/esxi/</url>
+      
+        <content type="html"><![CDATA[<div class="note primary no-icon">            <h2 id="インストールの前に"><a href="#インストールの前に" class="headerlink" title="インストールの前に"></a>インストールの前に</h2>          </div><p> 　XG Firewallの導入に必須というわけではないですが、バックアップや異なるバージョンの同居など色々便利なので、仮想環境（ESXi）を構築しその上にXGをインストールします。</p><p>　この個人向け（無償版）ESXiのインストールに関するドキュメントは正直解りやすい場所に掲載されてないのですが、<a href="https://blogs.vmware.com/jp-cim/2014/05/vspherehypervisor.html" target="_blank" rel="noopener" title="vmware">VMWareのブログ</a>から辿ると良いです。</p><a id="more"></a><div class="note primary no-icon">            <h2 id="準備"><a href="#準備" class="headerlink" title="準備"></a>準備</h2>          </div><ul><li>ESXiをインストールする予定の2つのNICを持ったPC1台と、ISOファイルをインストールするためのUSBメディアを用意してください。</li><li>VMwareのアカウント（無償）を作成してください。</li><li>VMwareサイトにログイン後、製品（vSphere Hypervisor v6.7）のダウンロードをしたら、ISOファイルをRufusを使ってUSBメディアに書き出します。</li></ul><div class="video-container"><iframe src="https://www.youtube.com/embed/7gYnyIaQH9A" frameborder="0" loading="lazy" allowfullscreen></iframe></div><div class="note primary no-icon">            <h2 id="ESXiのインストール"><a href="#ESXiのインストール" class="headerlink" title="ESXiのインストール"></a>ESXiのインストール</h2>          </div><p>　以下のビデオを参考にしてください。</p><iframe src='https://players.brightcove.net/1534342432001/Byh3doRJx_default/index.html?videoId=5738631329001' allowfullscreen frameborder=0></iframe><p>　まず、注意点ですが、いつも使っているネットワークとは別のネットワークのIPアドレスを振ってセットアップします。いつもが192.168.0.0/24なら、今回は仮に192.168.1.0/24のネットワークに配置する予定としてESXiをセットアップする事にしましょう。これまでのネットワークにXG Firewallを挟み込む事になり、従来のネットワークはXGのWAN側とホームゲートウェイに利用され、XGのLAN側は新しいネットワークになるためです。新たにXGのLAN側と同じネットワークにESXiの管理ネットワークを構築する必要があります。なお、XGのLAN側のデフォルトIPアドレスは、172.16.16.16となっています。従って、XGのIPもセットアップ時に192.168.1.0/24のネットワークに変更する事とします。</p><ul><li>USBメディアをESXiをインストールするPCに挿し、USBからブートし、セットアップを開始してください。</li><li>vCenterは個人向けには使いませんので無視してください。</li><li>NICが2枚ある事を前提にすると、Esxiの管理画面はLAN側のNICを対象とするように設定してください。今の時点では、WANは使いません。新しく振ったIP（192.168.1.1/24）をESXiの管理用IPとして、セットアップします。</li><li>上記のビデオ（2:40前後の説明）では「冗長化のために」と説明がありますが、今回は冗長化を使いません。通常LAN側のvmnic0を管理用のNICとしてセットアップしてください。また、VLANも使いません。</li><li>ESXi6.7では、vSphere Clientは使いません。インストールしたESXiのLAN側のIPアドレスに対してブラウザで接続し、ESXiのWeb管理画面で設定を行います。</li></ul><img src="/new-technology/2020/02/29/esxi/setup_esxi.png" class="" title="alt"><p> 　セットアップ終了後は、上記のようなネットワーク構成となります。USBメディアを抜いて再起動後、ESXiの画面にIPアドレスが表示されます。ホームゲートウェイに繋っていたPCをネットワークから外し、ESXiのLAN側のNICと繋ぎます。PCのIPを変更（例えば、192.168.1.101/24）し、ESXiのIPアドレスにブラウザで接続してください。ログインは、ユーザー名がroot、パスワードはセットアップで指定したものになります。</p>]]></content>
+      
+      
       <categories>
-        <category>Software</category>
+          
+          <category> Software </category>
+          
       </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-        <tag>ESXi</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>PC（ハードウェア）の準備</title>
-    <url>/new-technology/2020/02/25/provision/</url>
-    <content><![CDATA[<div class="note primary no-icon">
-            <h2 id="ネットワーク構成"><a href="#ネットワーク構成" class="headerlink" title="ネットワーク構成"></a>ネットワーク構成</h2>
-          </div>
-
-<p>　まず、XG Firewall(以下、XG)を導入した場合のネットワーク構成は以下の図のようになります。一般的にはプロバイダーから貸与されるホームゲートウェイ（外側の光モデム等は省略）に直接PCを繋ぐか、ホームゲートウェイの無線機能でPCやスマホを接続する事になります。XGを導入する場合は、ホームゲートウェイとPCの間にXGを挟み込む形になります。XGは無線機能を持っていないので、HUBを用意しPCを繋ぐか、無線LAN経由でアクセスする事になります。</p>
-<a id="more"></a>
- <img src="/new-technology/2020/02/25/provision/network.png" class="" title="alt">  
-
-<p>　この構成はXGのWan側とXGのLan側と2つのネットワークを持つ事になり、XGには2枚のネットワークカード（以下、NIC）あるいは、2つ以上のPortを持っているNICを1枚用意する事になります。XGのWan側のインタフェースは、ホームゲートウェイからDHCPでプライベートIPアドレスやDNSを割り当てられます。そして、Lan側のPCやスマホのために、XGはあらかじめユーザが決めたプライベートネットワークアドレスを割り当てます。XGはこのIP割り当てのためのDHCP機能やDNS機能を持っています。また、スマホのネット接続のために無線ルータを別途用意する必要があり、この場合は無線ルータをブリッジモードでセットアップする事になります。</p>
-<div class="note primary no-icon">
-            <h2 id="ハードウェア構成の検討"><a href="#ハードウェア構成の検討" class="headerlink" title="ハードウェア構成の検討"></a>ハードウェア構成の検討</h2>
-          </div>
-
-<p>　上記の構成のために、2つのネットワークPortを持ったPCが1台必要になります。XGの制約としては、6Gbyteのメモリ上限とCPUが4coreまでとなります。物理サーバにそのままXGをインストールしても良いし、ESXi等の仮想ソフトの上にVMを構築しても良いです。ESXiの場合は、ネットワークカード（NIC）の種類を選ぶらしく、intel製が好ましいという伝説があります。一般的には、以下のものが安全策で好まれるようで、自分も昔はこのNICを2枚差してXGを使っていました。</p>
-<div class="amazlet-box" style="margin-bottom:0px;"><div class="amazlet-image" style="float:left;margin:0px 12px 1px 0px;"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/B00UGGX406/amazletjp-22/ref=nosim/" name="amazletlink" target="_blank"><img src="https://images-fe.ssl-images-amazon.com/images/I/31N8VAJQceL._SL160_.jpg" alt="インテル EXPI9301CT GigabitCT Desktop Adapter PCI-Express1x GbE" style="border: none;" /></a></div><div class="amazlet-info" style="line-height:120%; margin-bottom: 10px"><div class="amazlet-name" style="margin-bottom:10px;line-height:120%"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/B00UGGX406/amazletjp-22/ref=nosim/" name="amazletlink" target="_blank">インテル EXPI9301CT GigabitCT Desktop Adapter PCI-Express1x GbE</a><div class="amazlet-powered-date" style="font-size:80%;margin-top:5px;line-height:120%">posted with <a href="http://www.amazlet.com/" title="amazlet" target="_blank">amazlet</a> at 20.02.26</div></div><div class="amazlet-detail">Intel <br />売り上げランキング: 301,753<br /></div><div class="amazlet-sub-info" style="float: left;"><div class="amazlet-link" style="margin-top: 5px"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/B00UGGX406/amazletjp-22/ref=nosim/" name="amazletlink" target="_blank">Amazon.co.jpで詳細を見る</a></div></div></div><div class="amazlet-footer" style="clear: left"></div></div>
-
-<p>　今は、プロバイダーをauひかりにし、5Gbpsの契約になっているため、10GbpsのNICを使っています。もちろん、1Gbps以上の能力があったところで、個人にはそんなに太い回線は必要ありませんが・・・。なお、今現在は、ESXiで以下のNICを利用しています。</p>
-<div class="amazlet-box" style="margin-bottom:0px;"><div class="amazlet-image" style="float:left;margin:0px 12px 1px 0px;"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/B01EJ4B394" name="amazletlink" target="_blank"><img src="https://images-fe.ssl-images-amazon.com/images/I/41GIXbi1guL._SL160_.jpg" alt="Intel X550-T2 Ethernet 10000 Mbit/s Internal" style="border: none;" /></a></div><div class="amazlet-info" style="line-height:120%; margin-bottom: 10px"><div class="amazlet-name" style="margin-bottom:10px;line-height:120%"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/B01EJ4B394" name="amazletlink" target="_blank">Intel X550-T2 Ethernet 10000 Mbit/s Internal</a><div class="amazlet-powered-date" style="font-size:80%;margin-top:5px;line-height:120%">posted with <a href="http://www.amazlet.com/" title="amazlet" target="_blank">amazlet</a> at 20.02.26</div></div><div class="amazlet-detail">Intel <br />売り上げランキング: 116,540<br /></div><div class="amazlet-sub-info" style="float: left;"><div class="amazlet-link" style="margin-top: 5px"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/B01EJ4B394" name="amazletlink" target="_blank">Amazon.co.jpで詳細を見る</a></div></div></div><div class="amazlet-footer" style="clear: left"></div></div>
-
-<p>　このNICだと、1つのPCI Expressバスにこのカード1枚を刺し、WanとLanのインタフェースを用意できます。</p>
-<p>　これ以外にも、<a href="https://shuttle-japan.jp/" target="_blank" rel="noopener">Shuttle</a>という会社のベアボーンをXG向けに使っている方もいらっしゃるようです。いずれにしてもESXiを使う場合は、NICの種類を選ぶという事もあり、Hyper-Vの方が身近な存在なのでしょうか。</p>
-<div class="note primary no-icon">
-            <h2 id="番外編"><a href="#番外編" class="headerlink" title="番外編"></a>番外編</h2>
-          </div>
-
-<p>　なお、番外編として、当初使っていた<del>バッタもん</del>小型PCも紹介したいとおもいます。</p>
-<div class="amazlet-box" style="margin-bottom:0px;"><div class="amazlet-image" style="float:left;margin:0px 12px 1px 0px;"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/B07SNS9D9N" name="amazletlink" target="_blank"><img src="https://images-fe.ssl-images-amazon.com/images/I/41O4MQkV5VL._SL160_.jpg" alt="Intel NUC Kit Celeron J1900搭載 4LAN 4G RAM 60G SSDポータブルMini PC 小型デスクトップPC ファンレスPC" style="border: none;" /></a></div><div class="amazlet-info" style="line-height:120%; margin-bottom: 10px"><div class="amazlet-name" style="margin-bottom:10px;line-height:120%"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/B07SNS9D9N" name="amazletlink" target="_blank">Intel NUC Kit Celeron J1900搭載 4LAN 4G RAM 60G SSDポータブルMini PC 小型デスクトップPC ファンレスPC</a><div class="amazlet-powered-date" style="font-size:80%;margin-top:5px;line-height:120%">posted with <a href="http://www.amazlet.com/" title="amazlet" target="_blank">amazlet</a> at 20.02.26</div></div><div class="amazlet-detail"> <br />売り上げランキング: 40,945<br /></div><div class="amazlet-sub-info" style="float: left;"><div class="amazlet-link" style="margin-top: 5px"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/B07SNS9D9N" name="amazletlink" target="_blank">Amazon.co.jpで詳細を見る</a></div></div></div><div class="amazlet-footer" style="clear: left"></div></div>
-
-<p>　XCYという会社のPCなんですが、これはもう、怪しさ満点です。一応1GbpsのネットワークPortが4つも付いているし、それなりに安いし、魅力的に映りました。この時は仮想環境を使わず、物理に直接インストールして実際にXGを使ってました。が、speedtest.netでパフォーマンスが200Mbps程度しか出なかったので、結局それなりのスペック（Core i7）のマシンを購入してセットアップし直した経緯があります。ファンレスという記載もありますが、「<strong>ファンが付いてないだけ</strong>」です。<strong>すごく、熱いです・・・</strong>。取り敢えず、チャレンジャーを自負する方は試してみても良いのではないでしょうか。</p>
-]]></content>
+      
+      
+        <tags>
+            
+            <tag> XG Firewall </tag>
+            
+            <tag> ESXi </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>PC（ハードウェア）の準備</title>
+      <link href="/new-technology/2020/02/25/provision/"/>
+      <url>/new-technology/2020/02/25/provision/</url>
+      
+        <content type="html"><![CDATA[<div class="note primary no-icon">            <h2 id="ネットワーク構成"><a href="#ネットワーク構成" class="headerlink" title="ネットワーク構成"></a>ネットワーク構成</h2>          </div><p>　まず、XG Firewall(以下、XG)を導入した場合のネットワーク構成は以下の図のようになります。一般的にはプロバイダーから貸与されるホームゲートウェイ（外側の光モデム等は省略）に直接PCを繋ぐか、ホームゲートウェイの無線機能でPCやスマホを接続する事になります。XGを導入する場合は、ホームゲートウェイとPCの間にXGを挟み込む形になります。XGは無線機能を持っていないので、HUBを用意しPCを繋ぐか、無線LAN経由でアクセスする事になります。</p><a id="more"></a> <img src="/new-technology/2020/02/25/provision/network.png" class="" title="alt">  <p>　この構成はXGのWan側とXGのLan側と2つのネットワークを持つ事になり、XGには2枚のネットワークカード（以下、NIC）あるいは、2つ以上のPortを持っているNICを1枚用意する事になります。XGのWan側のインタフェースは、ホームゲートウェイからDHCPでプライベートIPアドレスやDNSを割り当てられます。そして、Lan側のPCやスマホのために、XGはあらかじめユーザが決めたプライベートネットワークアドレスを割り当てます。XGはこのIP割り当てのためのDHCP機能やDNS機能を持っています。また、スマホのネット接続のために無線ルータを別途用意する必要があり、この場合は無線ルータをブリッジモードでセットアップする事になります。</p><div class="note primary no-icon">            <h2 id="ハードウェア構成の検討"><a href="#ハードウェア構成の検討" class="headerlink" title="ハードウェア構成の検討"></a>ハードウェア構成の検討</h2>          </div><p>　上記の構成のために、2つのネットワークPortを持ったPCが1台必要になります。XGの制約としては、6Gbyteのメモリ上限とCPUが4coreまでとなります。物理サーバにそのままXGをインストールしても良いし、ESXi等の仮想ソフトの上にVMを構築しても良いです。ESXiの場合は、ネットワークカード（NIC）の種類を選ぶらしく、intel製が好ましいという伝説があります。一般的には、以下のものが安全策で好まれるようで、自分も昔はこのNICを2枚差してXGを使っていました。</p><div class="amazlet-box" style="margin-bottom:0px;"><div class="amazlet-image" style="float:left;margin:0px 12px 1px 0px;"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/B00UGGX406/amazletjp-22/ref=nosim/" name="amazletlink" target="_blank"><img src="https://images-fe.ssl-images-amazon.com/images/I/31N8VAJQceL._SL160_.jpg" alt="インテル EXPI9301CT GigabitCT Desktop Adapter PCI-Express1x GbE" style="border: none;" /></a></div><div class="amazlet-info" style="line-height:120%; margin-bottom: 10px"><div class="amazlet-name" style="margin-bottom:10px;line-height:120%"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/B00UGGX406/amazletjp-22/ref=nosim/" name="amazletlink" target="_blank">インテル EXPI9301CT GigabitCT Desktop Adapter PCI-Express1x GbE</a><div class="amazlet-powered-date" style="font-size:80%;margin-top:5px;line-height:120%">posted with <a href="http://www.amazlet.com/" title="amazlet" target="_blank">amazlet</a> at 20.02.26</div></div><div class="amazlet-detail">Intel <br />売り上げランキング: 301,753<br /></div><div class="amazlet-sub-info" style="float: left;"><div class="amazlet-link" style="margin-top: 5px"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/B00UGGX406/amazletjp-22/ref=nosim/" name="amazletlink" target="_blank">Amazon.co.jpで詳細を見る</a></div></div></div><div class="amazlet-footer" style="clear: left"></div></div><p>　今は、プロバイダーをauひかりにし、5Gbpsの契約になっているため、10GbpsのNICを使っています。もちろん、1Gbps以上の能力があったところで、個人にはそんなに太い回線は必要ありませんが・・・。なお、今現在は、ESXiで以下のNICを利用しています。</p><div class="amazlet-box" style="margin-bottom:0px;"><div class="amazlet-image" style="float:left;margin:0px 12px 1px 0px;"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/B01EJ4B394" name="amazletlink" target="_blank"><img src="https://images-fe.ssl-images-amazon.com/images/I/41GIXbi1guL._SL160_.jpg" alt="Intel X550-T2 Ethernet 10000 Mbit/s Internal" style="border: none;" /></a></div><div class="amazlet-info" style="line-height:120%; margin-bottom: 10px"><div class="amazlet-name" style="margin-bottom:10px;line-height:120%"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/B01EJ4B394" name="amazletlink" target="_blank">Intel X550-T2 Ethernet 10000 Mbit/s Internal</a><div class="amazlet-powered-date" style="font-size:80%;margin-top:5px;line-height:120%">posted with <a href="http://www.amazlet.com/" title="amazlet" target="_blank">amazlet</a> at 20.02.26</div></div><div class="amazlet-detail">Intel <br />売り上げランキング: 116,540<br /></div><div class="amazlet-sub-info" style="float: left;"><div class="amazlet-link" style="margin-top: 5px"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/B01EJ4B394" name="amazletlink" target="_blank">Amazon.co.jpで詳細を見る</a></div></div></div><div class="amazlet-footer" style="clear: left"></div></div><p>　このNICだと、1つのPCI Expressバスにこのカード1枚を刺し、WanとLanのインタフェースを用意できます。</p><p>　これ以外にも、<a href="https://shuttle-japan.jp/" target="_blank" rel="noopener">Shuttle</a>という会社のベアボーンをXG向けに使っている方もいらっしゃるようです。いずれにしてもESXiを使う場合は、NICの種類を選ぶという事もあり、Hyper-Vの方が身近な存在なのでしょうか。</p><div class="note primary no-icon">            <h2 id="番外編"><a href="#番外編" class="headerlink" title="番外編"></a>番外編</h2>          </div><p>　なお、番外編として、当初使っていた<del>バッタもん</del>小型PCも紹介したいとおもいます。</p><div class="amazlet-box" style="margin-bottom:0px;"><div class="amazlet-image" style="float:left;margin:0px 12px 1px 0px;"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/B07SNS9D9N" name="amazletlink" target="_blank"><img src="https://images-fe.ssl-images-amazon.com/images/I/41O4MQkV5VL._SL160_.jpg" alt="Intel NUC Kit Celeron J1900搭載 4LAN 4G RAM 60G SSDポータブルMini PC 小型デスクトップPC ファンレスPC" style="border: none;" /></a></div><div class="amazlet-info" style="line-height:120%; margin-bottom: 10px"><div class="amazlet-name" style="margin-bottom:10px;line-height:120%"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/B07SNS9D9N" name="amazletlink" target="_blank">Intel NUC Kit Celeron J1900搭載 4LAN 4G RAM 60G SSDポータブルMini PC 小型デスクトップPC ファンレスPC</a><div class="amazlet-powered-date" style="font-size:80%;margin-top:5px;line-height:120%">posted with <a href="http://www.amazlet.com/" title="amazlet" target="_blank">amazlet</a> at 20.02.26</div></div><div class="amazlet-detail"> <br />売り上げランキング: 40,945<br /></div><div class="amazlet-sub-info" style="float: left;"><div class="amazlet-link" style="margin-top: 5px"><a href="http://www.amazon.co.jp/exec/obidos/ASIN/B07SNS9D9N" name="amazletlink" target="_blank">Amazon.co.jpで詳細を見る</a></div></div></div><div class="amazlet-footer" style="clear: left"></div></div><p>　XCYという会社のPCなんですが、これはもう、怪しさ満点です。一応1GbpsのネットワークPortが4つも付いているし、それなりに安いし、魅力的に映りました。この時は仮想環境を使わず、物理に直接インストールして実際にXGを使ってました。が、speedtest.netでパフォーマンスが200Mbps程度しか出なかったので、結局それなりのスペック（Core i7）のマシンを購入してセットアップし直した経緯があります。ファンレスという記載もありますが、「<strong>ファンが付いてないだけ</strong>」です。<strong>すごく、熱いです・・・</strong>。取り敢えず、チャレンジャーを自負する方は試してみても良いのではないでしょうか。</p>]]></content>
+      
+      
       <categories>
-        <category>Security</category>
+          
+          <category> Security </category>
+          
       </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Sophos XG Firewallの導入</title>
-    <url>/new-technology/2020/02/23/XG-Firewall/</url>
-    <content><![CDATA[<div class="note primary no-icon">
-            <h2 id="導入の背景"><a href="#導入の背景" class="headerlink" title="導入の背景"></a>導入の背景</h2>
-          </div>
-<p>元々、家庭用の無線ルータだけではセキュリティが不足していると考えてる人は多いとおもいます。私の場合、個人で持っているファイル位であれば、盗られたところで大きな問題になるわけでなし、と大きく構えておりました。数年前よりランサムウェア等の脅威が出てきた事で、それなりの対策が必要と感じてきました。街のwifiからも自宅のリソースに安全に接続したり、家のサーバーを踏み台にしてネットに繋げたいという欲も出てきて、今度はVPNが欲しいなと思い始めました。</p>
-<a id="more"></a>
-<p>　そもそも、iCloudかOneDriveあたりに必要なファイルはどーんと置いておけばいいんですが、漏洩よりも万が一のロストが不安です。それなりの容量だと、クラウドのお金も掛かりますしね。<br>　オンプレの場合は盗難や火事というリスクもあり、人によって考え方は異なりますが、利便性と安全性のバランスを取る事を目指す事になるのでしょう。個人のセキュリティというものは、ビジネスにおけるリスクを極限まで抑制するという考えではなく、何かプラス α の安心感を求める程度という目線を目指す事になるのかとおもいます。Sophos社が提供する<a href="https://www.sophos.com/ja-jp/products/free-tools.aspx" target="_blank" rel="noopener">Sophos XG Firewall Home Edition</a>は、業務用ながら個人向けには無料という事もあって、最良のセキュリティ防御の手段と考えています。かれこれ1年半くらいでしょうか。ずっと使わせてもらってます。</p>
-<p>　v18が発表されて、大幅に機能強化されたのは良かったのですが、残念ながら設定方法が難しくなってしまいました。こんなに高機能なものを無料で使わせて頂いてるのだから、何か貢献すべきと考え、設定内容等を公開していく事にしました。スキマ時間に書いているのでスピードが遅いのはどうかご容赦ください。</p>
-<img src="/new-technology/2020/02/23/XG-Firewall/xg.png" class="">
-
-<div class="note primary no-icon">
-            <h2 id="主な機能"><a href="#主な機能" class="headerlink" title="主な機能"></a>主な機能</h2>
-          </div>
-
-<ol>
-<li>Firewall機能（IPフィルター、Portフィルター）</li>
-<li>IPS/WAF(WAFは面倒です）</li>
-<li>DDoS対策機能（個人には不要とおもいます）</li>
-<li>国別フィルター（IPv4のみ）</li>
-<li>VPN（2要素認証対応）</li>
-<li>DNAT（Destination NAT※LANのサーバをネットに解放）</li>
-<li>DNS/DHCP(IPv4,IPv6)</li>
-</ol>
-<p>　細かな説明については、<a href="https://jscom.jp/wp-content/uploads/pamphlet_sophos_020pdf.pdf" target="_blank" rel="noopener">こちら</a>を見て下さい。</p>
-<div class="note primary no-icon">
-            <h2 id="XG-Firewall導入のメリット"><a href="#XG-Firewall導入のメリット" class="headerlink" title="XG Firewall導入のメリット"></a>XG Firewall導入のメリット</h2>
-          </div>
-
-<ol>
-<li>ドメイン単位にWebサイト毎のカテゴリがされているので、ギャンブルやゲーム、アダルトなどのカテゴリで禁止ルールを設定可能</li>
-<li>接続したくない国に対してアクセス制限ができる。Webブラウジングはもちろん、自宅にサーバーを建てた場合の接続元を日本からのみに絞る事も可能（IPv4のみ）</li>
-<li>IPS（Intrusion Prevention System）によるSSL通信の中身を検査できる</li>
-<li>ログ機能が充実している</li>
-<li>VPNにおいてパスワード＋ワンタイムパスワードによる認証が可能（Windows、Mac、iOS、Android）</li>
-<li>エラーをフックし、メールでの通知が行える</li>
-</ol>
-<div class="note primary no-icon">
-            <h2 id="XG-Firewall導入のデメリット"><a href="#XG-Firewall導入のデメリット" class="headerlink" title="XG Firewall導入のデメリット"></a>XG Firewall導入のデメリット</h2>
-          </div>
-
-<ol>
-<li>新しいPCが必要（もちろん新品である必要はありませんが）。2枚のネットワークインタフェースが必要</li>
-<li>ネットのパフォーマンスが犠牲になる。回線帯域よりもレイテンシ（遅延）が大きくなると想定される</li>
-<li>XG Firewallによる保護はエンドポイントの保護を完全に不要にするものではないため、従来通りウィルス対策ソフトはインストールが必要（と考えています）</li>
-</ol>
-<hr>
-<p>システム要件は以下の通りとなっています（XG Firewallの<a href="https://www.sophos.com/ja-jp/products/free-tools/sophos-xg-firewall-home-edition.aspx" target="_blank" rel="noopener">ダウンロードページ</a>より引用）。</p>
-<blockquote>
-<p>2つのネットワークインターフェースのあるIntel互換コンピュータ。(XG Firewall Home Editionをインストールすると、コンピュータにある既存のOSやファイルは上書きされます）<br>Home Editionは、4コア、および6GBのRAMまでの環境に対応しています。この条件を超えるコンピュータも使用可能ですが、XG Firewall Home Editionは、上限を超える容量を活用できません。</p>
-</blockquote>
-<p>　家庭向けとしては、技術面でかなりハードルは高いです。しかし、業務用ファイアウォールが家庭で使えるというのは非常に魅力です。興味のある方はお付き合い頂ければとおもいます。</p>
-]]></content>
+      
+      
+        <tags>
+            
+            <tag> XG Firewall </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Sophos XG Firewallの導入</title>
+      <link href="/new-technology/2020/02/23/XG-Firewall/"/>
+      <url>/new-technology/2020/02/23/XG-Firewall/</url>
+      
+        <content type="html"><![CDATA[<div class="note primary no-icon">            <h2 id="導入の背景"><a href="#導入の背景" class="headerlink" title="導入の背景"></a>導入の背景</h2>          </div><p>元々、家庭用の無線ルータだけではセキュリティが不足していると考えてる人は多いとおもいます。私の場合、個人で持っているファイル位であれば、盗られたところで大きな問題になるわけでなし、と大きく構えておりました。数年前よりランサムウェア等の脅威が出てきた事で、それなりの対策が必要と感じてきました。街のwifiからも自宅のリソースに安全に接続したり、家のサーバーを踏み台にしてネットに繋げたいという欲も出てきて、今度はVPNが欲しいなと思い始めました。</p><a id="more"></a><p>　そもそも、iCloudかOneDriveあたりに必要なファイルはどーんと置いておけばいいんですが、漏洩よりも万が一のロストが不安です。それなりの容量だと、クラウドのお金も掛かりますしね。<br>　オンプレの場合は盗難や火事というリスクもあり、人によって考え方は異なりますが、利便性と安全性のバランスを取る事を目指す事になるのでしょう。個人のセキュリティというものは、ビジネスにおけるリスクを極限まで抑制するという考えではなく、何かプラス α の安心感を求める程度という目線を目指す事になるのかとおもいます。Sophos社が提供する<a href="https://www.sophos.com/ja-jp/products/free-tools.aspx" target="_blank" rel="noopener">Sophos XG Firewall Home Edition</a>は、業務用ながら個人向けには無料という事もあって、最良のセキュリティ防御の手段と考えています。かれこれ1年半くらいでしょうか。ずっと使わせてもらってます。</p><p>　v18が発表されて、大幅に機能強化されたのは良かったのですが、残念ながら設定方法が難しくなってしまいました。こんなに高機能なものを無料で使わせて頂いてるのだから、何か貢献すべきと考え、設定内容等を公開していく事にしました。スキマ時間に書いているのでスピードが遅いのはどうかご容赦ください。</p><img src="/new-technology/2020/02/23/XG-Firewall/xg.png" class=""><div class="note primary no-icon">            <h2 id="主な機能"><a href="#主な機能" class="headerlink" title="主な機能"></a>主な機能</h2>          </div><ol><li>Firewall機能（IPフィルター、Portフィルター）</li><li>IPS/WAF(WAFは面倒です）</li><li>DDoS対策機能（個人には不要とおもいます）</li><li>国別フィルター（IPv4のみ）</li><li>VPN（2要素認証対応）</li><li>DNAT（Destination NAT※LANのサーバをネットに解放）</li><li>DNS/DHCP(IPv4,IPv6)</li></ol><p>　細かな説明については、<a href="https://jscom.jp/wp-content/uploads/pamphlet_sophos_020pdf.pdf" target="_blank" rel="noopener">こちら</a>を見て下さい。</p><div class="note primary no-icon">            <h2 id="XG-Firewall導入のメリット"><a href="#XG-Firewall導入のメリット" class="headerlink" title="XG Firewall導入のメリット"></a>XG Firewall導入のメリット</h2>          </div><ol><li>ドメイン単位にWebサイト毎のカテゴリがされているので、ギャンブルやゲーム、アダルトなどのカテゴリで禁止ルールを設定可能</li><li>接続したくない国に対してアクセス制限ができる。Webブラウジングはもちろん、自宅にサーバーを建てた場合の接続元を日本からのみに絞る事も可能（IPv4のみ）</li><li>IPS（Intrusion Prevention System）によるSSL通信の中身を検査できる</li><li>ログ機能が充実している</li><li>VPNにおいてパスワード＋ワンタイムパスワードによる認証が可能（Windows、Mac、iOS、Android）</li><li>エラーをフックし、メールでの通知が行える</li></ol><div class="note primary no-icon">            <h2 id="XG-Firewall導入のデメリット"><a href="#XG-Firewall導入のデメリット" class="headerlink" title="XG Firewall導入のデメリット"></a>XG Firewall導入のデメリット</h2>          </div><ol><li>新しいPCが必要（もちろん新品である必要はありませんが）。2枚のネットワークインタフェースが必要</li><li>ネットのパフォーマンスが犠牲になる。回線帯域よりもレイテンシ（遅延）が大きくなると想定される</li><li>XG Firewallによる保護はエンドポイントの保護を完全に不要にするものではないため、従来通りウィルス対策ソフトはインストールが必要（と考えています）</li></ol><hr><p>システム要件は以下の通りとなっています（XG Firewallの<a href="https://www.sophos.com/ja-jp/products/free-tools/sophos-xg-firewall-home-edition.aspx" target="_blank" rel="noopener">ダウンロードページ</a>より引用）。</p><blockquote><p>2つのネットワークインターフェースのあるIntel互換コンピュータ。(XG Firewall Home Editionをインストールすると、コンピュータにある既存のOSやファイルは上書きされます）<br>Home Editionは、4コア、および6GBのRAMまでの環境に対応しています。この条件を超えるコンピュータも使用可能ですが、XG Firewall Home Editionは、上限を超える容量を活用できません。</p></blockquote><p>　家庭向けとしては、技術面でかなりハードルは高いです。しかし、業務用ファイアウォールが家庭で使えるというのは非常に魅力です。興味のある方はお付き合い頂ければとおもいます。</p>]]></content>
+      
+      
       <categories>
-        <category>Security</category>
+          
+          <category> Security </category>
+          
       </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>はじめに</title>
-    <url>/new-technology/2020/02/22/%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB/</url>
-    <content><![CDATA[<p>　少し高度なITをテーマに、個人向け（家庭向け）のIT導入を中心にポストしていきたいと考えてます。最近ではフルスタックエンジニアと呼ぶのでしょうか、これまでの自身の仕事はプログラミング・ネットワーク・サーバ構築・セキュリティと、広く浅くITに関わってきました。エンジニアとしての仕事からは最近かなり遠ざかってますが、自分なりに新しい技術の習得も兼ねて、ブログ形式で掲載できればとおもいます。</p>
-<a id="more"></a>
-
-<p>　単純にインストールして「できました」ではなく、導入後のITの使い方こそが重要と考えています。最近は個人利用に限り利用無償のソフトウェアが増えてきました。また、商用利用であっても無償となるオープンソースソフトウェアの活用も見逃せません。これは大変ありがたい話で、座学ではなかなか理解が進まない固有技術であっても、こういった無料のプロダクトを通じて知見を高める事が可能となっています。</p>
-<p>　ここでは、エンタープライズやミッションクリティカルなITに関するテーマは扱いません。私自身実務でITに関わっていますが、実務とは少し距離を置いたところで、自己啓発と家庭向けのIT活用を考えたいと思っています。</p>
-]]></content>
-  </entry>
+      
+      
+        <tags>
+            
+            <tag> XG Firewall </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>はじめに</title>
+      <link href="/new-technology/2020/02/22/%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB/"/>
+      <url>/new-technology/2020/02/22/%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB/</url>
+      
+        <content type="html"><![CDATA[<p>　少し高度なITをテーマに、個人向け（家庭向け）のIT導入を中心にポストしていきたいと考えてます。最近ではフルスタックエンジニアと呼ぶのでしょうか、これまでの自身の仕事はプログラミング・ネットワーク・サーバ構築・セキュリティと、広く浅くITに関わってきました。エンジニアとしての仕事からは最近かなり遠ざかってますが、自分なりに新しい技術の習得も兼ねて、ブログ形式で掲載できればとおもいます。</p><a id="more"></a><p>　単純にインストールして「できました」ではなく、導入後のITの使い方こそが重要と考えています。最近は個人利用に限り利用無償のソフトウェアが増えてきました。また、商用利用であっても無償となるオープンソースソフトウェアの活用も見逃せません。これは大変ありがたい話で、座学ではなかなか理解が進まない固有技術であっても、こういった無料のプロダクトを通じて知見を高める事が可能となっています。</p><p>　ここでは、エンタープライズやミッションクリティカルなITに関するテーマは扱いません。私自身実務でITに関わっていますが、実務とは少し距離を置いたところで、自己啓発と家庭向けのIT活用を考えたいと思っています。</p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+  
+  
 </search>
