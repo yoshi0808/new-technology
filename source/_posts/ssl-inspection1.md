@@ -3,7 +3,7 @@ title: XG Firewall v18のSSLインスペクションの設定
 tags:
   - XG Firewall
 categories:
-  - Software
+  - Security
 date: 2020-03-20 21:32:29
 ---
 

@@ -4,7 +4,7 @@ tags:
   - XG Firewall
   - ESXi
 categories:
-  - Software
+  - Security
 date: 2020-02-29 13:23:22
 ---
 

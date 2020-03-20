@@ -4,7 +4,7 @@ date: 2020-03-14 13:51:51
 tags:
   - XG Firewall
 categories:
-  - Software
+  - Security
 ---
 
 {% note primary no-icon %}
