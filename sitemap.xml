@@ -2,37 +2,51 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://yoshi0808.github.io/new-technology/2020/03/08/XG-MainPage/</loc>
+    
+    <lastmod>2020-03-20T12:47:11.296Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/</loc>
     
-    <lastmod>2020-03-20T12:36:55.860Z</lastmod>
+    <lastmod>2020-03-20T12:46:52.174Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection/</loc>
     
-    <lastmod>2020-03-20T12:20:18.076Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/03/14/customize-policy/</loc>
-    
-    <lastmod>2020-03-20T10:54:25.589Z</lastmod>
+    <lastmod>2020-03-20T12:46:42.648Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/2020/03/14/rule-policy2/</loc>
     
-    <lastmod>2020-03-20T08:47:44.289Z</lastmod>
+    <lastmod>2020-03-20T12:46:33.847Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/2020/03/14/rule-policy1/</loc>
     
-    <lastmod>2020-03-15T00:24:11.168Z</lastmod>
+    <lastmod>2020-03-20T12:46:23.006Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/2020/02/29/esxi/</loc>
+    
+    <lastmod>2020-03-20T12:45:40.031Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/2020/03/14/customize-policy/</loc>
+    
+    <lastmod>2020-03-20T12:44:55.047Z</lastmod>
     
   </url>
   
@@ -72,23 +86,9 @@
   </url>
   
   <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/02/29/esxi/</loc>
-    
-    <lastmod>2020-03-14T10:09:24.711Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/</loc>
     
     <lastmod>2020-03-14T10:09:24.692Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/03/08/XG-MainPage/</loc>
-    
-    <lastmod>2020-03-14T10:09:24.662Z</lastmod>
     
   </url>
   

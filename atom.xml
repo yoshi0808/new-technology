@@ -6,7 +6,7 @@
   <link href="/new-technology/atom.xml" rel="self"/>
   
   <link href="https://yoshi0808.github.io/new-technology/"/>
-  <updated>2020-03-20T12:36:55.860Z</updated>
+  <updated>2020-03-20T12:46:52.174Z</updated>
   <id>https://yoshi0808.github.io/new-technology/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/"/>
     <id>https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/</id>
     <published>2020-03-20T12:32:29.000Z</published>
-    <updated>2020-03-20T12:36:55.860Z</updated>
+    <updated>2020-03-20T12:46:52.174Z</updated>
     
     <content type="html"><![CDATA[<div class="note primary no-icon">            <h2 id="SSL-TLSインスペクションの対象とするホストを登録する"><a href="#SSL-TLSインスペクションの対象とするホストを登録する" class="headerlink" title="SSL/TLSインスペクションの対象とするホストを登録する"></a>SSL/TLSインスペクションの対象とするホストを登録する</h2>          </div><p>　SSLインスペクションの設定にあたり、XGのルート証明書をインストール出来る事が前提と書きました。XGがSSLインスペクションを使えるクライアントかどうかを判断するにはIPアドレスで判断する事になります。いつも固定IPアドレスにするためには、クライアントのIPをスタティックに割り振るか、DHCPのIP割り振りを常に固定にする方法の2通りがあります。DHCPによって固定IPを割り振るために、クライアントのMACアドレスを調べておく必要があります。</p><a id="more"></a><p>　左ペインのネットワークからDHCPのタブをクリックし、「Default DHCP Server」をクリックします。そこには、「スタティックIP_MACマッピング」があるので、DHCPで自動リースをしている以外のIPアドレスをスタティックに割り振って登録してください。管理の一例としては以下の通りです。</p><ul><li>動的なDHCPを192.168.2.101〜192.168.2.128</li><li>証明書が登録可能なIPをstaticで192.168.2.129〜192.168.2.192</li></ul><p>　ここは完全に個人の「決め」です。さて、上記で証明書がインストール出来る端末群を「IPホスト」としてXGに登録しましょう。左ペインの「ホストとサービス」から、IPホストのタブをクリックし追加ボタンをクリックします。以下の通り、ホストのIPの範囲を示す名前を入力し、IPの範囲を入力して保存ボタンをクリックします。</p><img src="/new-technology/2020/03/20/ssl-inspection1/host.png" class="" title="alt"><div class="note primary no-icon">            <h2 id="ファイアウォールルールの設定（確認）"><a href="#ファイアウォールルールの設定（確認）" class="headerlink" title="ファイアウォールルールの設定（確認）"></a>ファイアウォールルールの設定（確認）</h2>          </div><p>　左ペインのルールとポリシーからルールとポリシーを選択します。以前の記事「XG Firewall v18のOutboundルールを新規作成する」で、デフォルトのルール「To_Internet」を作成しました。<br> <a href="/new-technology/2020/03/14/rule-policy2/" title="XG Firewall v18のOutboundルールを新規作成する">XG Firewall v18のOutboundルールを新規作成する</a><br>Traffic to WANのグループ配下にルールがある事を確認してください。この設定は今回修正しません。</p><div class="note primary no-icon">            <h2 id="SSL-TLSインスペクションルールの設定"><a href="#SSL-TLSインスペクションルールの設定" class="headerlink" title="SSL/TLSインスペクションルールの設定"></a>SSL/TLSインスペクションルールの設定</h2>          </div><p>　左ペインのルールとポリシーからSSL/TLSインスペクションルールをクリックします。</p><ol><li>画面右側の追加ボタンをクリックします</li><li>ルール名を入力します。ここでは「Catch_SSL」とします</li><li>ルールの位置は「最下位」のままにします</li><li>処理は「復号化」を選択します</li><li>復号化のプロファイルは<span class="label info">Strict Compliance</span>を選択します</li><li>送信元の送信ゾーンは、LANとVPNを選択します</li><li>送信元ネットワークとデバイスは、任意を外し、先ほどの「CA_Client_IPv4」を選択します</li><li>宛先とサービスの宛先ゾーンは、WANを選択します</li><li>最後に保存ボタンをクリックします</li></ol><p>　暗号化のプロファイルの<span class="label info">Strict Compliance</span>は一番厳しいものです。左ペインのプロファイルの「復号化のプロファイル」を見てもらうと分かりますが、TLS1.0と1.1を認めないという事です。主要なブラウザは2020年上半期にTLS1.0と1.1を無効化するので、この設定が主流になるとおもいます。そうはいっても色々不便であれば、他のプロファイルに変更するか、該当のサイトが安全と分かっている場合は除外する等の対応が可能となります。なお、TLSの無効化については、<a href="https://www.cybertrust.co.jp/blog/ssl/regulations/disable-tls10.html" target="_blank" rel="noopener">サイバートラスト社の記事</a>が参考になります。<br>　これでSSLの復号化の設定は完了です。</p><div class="note primary no-icon">            <h2 id="XGのルート証明書をクライアントにインストールする"><a href="#XGのルート証明書をクライアントにインストールする" class="headerlink" title="XGのルート証明書をクライアントにインストールする"></a>XGのルート証明書をクライアントにインストールする</h2>          </div><p>　左ペインの一番下の証明書から、認証局（CA）をクリックします。この中に<span class="label info">Security Appliance_SSL_CA</span>という名前の証明書があります。今回これをクライアントに配布していく事になります。右の下向きの矢印があるダウンロードを選択してクライアントにルート証明書をダウンロードします。<span class="label info">Security Appliance_SSL_CA.pem</span>という名前になります。</p><img src="/new-technology/2020/03/20/ssl-inspection1/certificate.png" class="" title="alt"><p>　ルート証明書をダウンロードした後のクライアントインストールについては、Sophosのサイトにある<a href="https://community.sophos.com/kb/ja-jp/123048" target="_blank" rel="noopener">Sophos XG Firewall: SSL CA 証明書のインストールガイド</a>を参照ください。手順書ではOSにインストールするのとは別に、ブラウザにもインストールする手順となっていますが、今日現在では不要のようです。FirefoxとEdgeではそのままXGの証明書が使われている事が確認出来ています。以下はWindowsの画面ですが、インストール後は、以下の通りブラウザの鍵マークをクリックする事でXGの証明書によって再署名されている事が確認出来ます。XGのログイン後のコントロールセンターの左上にライセンスナンバーが記載されていますが、実際の証明書でもそのナンバーが確認出来ます。</p><img src="/new-technology/2020/03/20/ssl-inspection1/installed_cert.png" class="" title="alt"><p>　なお、macOSの場合は以下のようにキーチェーンアクセスから証明書を「常に信頼する」設定を加えます。こちらもブラウザ毎に設定の必要は無さそうです。</p><img src="/new-technology/2020/03/20/ssl-inspection1/mac_ca.png" class="" title="alt"><img src="/new-technology/2020/03/20/ssl-inspection1/mac_ca1.png" class="" title="alt"><p> なお、iOSについては、「ファイル」アプリを使います。</p><ol><li>iCloud Driveに証明書を配置します</li><li>「ファイル」アプリを起動します。iCloud Driveから証明書ファイルをタップしダウンロードします</li><li>「プロファイルがダウンロードされました」と表示されます</li><li>設定アプリを起動します</li><li>「設定」→「一般」→「プロファイル」と進みます</li><li>ダウンロード済プロファイルに、<span class="label info">Sophos SSL CA_xxxx</span>が表示されているので、タップします</li><li>画面右上の「インストール」をタップします</li><li>iOSのパスコードを入力します</li><li>右上のインストールを再度タップし、インストールを完了します</li><li>「設定」→「一般」→「情報」と進みます</li><li>画面の一番下の「証明書信頼設定」をタップします</li><li><span class="label info">Sophos SSL CA_xxxx</span>が表示されているので、スイッチを右側に移動させオン（緑色点灯）します</li></ol><p>　これで一旦は証明書のインストールは完了です。この証明書のインストールがXG Firewallの設定で一番大切、かつ面倒なところになります。しかし、まだ微調整など必要なケースがあり設定は続きます。</p>]]></content>
     
@@ -36,7 +36,7 @@
     </summary>
     
     
-      <category term="Software" scheme="https://yoshi0808.github.io/new-technology/categories/Software/"/>
+      <category term="Security" scheme="https://yoshi0808.github.io/new-technology/categories/Security/"/>
     
     
       <category term="XG Firewall" scheme="https://yoshi0808.github.io/new-technology/tags/XG-Firewall/"/>
@@ -48,7 +48,7 @@
     <link href="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection/"/>
     <id>https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection/</id>
     <published>2020-03-20T05:23:53.000Z</published>
-    <updated>2020-03-20T12:20:18.076Z</updated>
+    <updated>2020-03-20T12:46:42.648Z</updated>
     
     <content type="html"><![CDATA[<div class="note primary no-icon">            <h2 id="SSLインスペクションとは"><a href="#SSLインスペクションとは" class="headerlink" title="SSLインスペクションとは"></a>SSLインスペクションとは</h2>          </div><p>　XGで設定の難易度が難しくなるのはこの部分です。上記までの基本ルールとは別に、SSLを解読して検査する設定を行う事になります。今日でもSSLという呼び方は定着していますが、TLS（Transport Layer Security）とも呼ばれます。XGの最も素晴らしい機能の1つがSSLを解読する安全装置です。この安全装置の事を、「IPS」（Intrusion Prevension System）と呼びます。そして、その解読方法として「SSLインスペクション」という方式が採用されています。</p><a id="more"></a><p>　このSSLインスペクションについては、解りやすい文献がありますので紹介します。セキュリティベンダーの（株）ラック社から提供されているドキュメントです。</p><blockquote><p>出典：株式会社ラック<a href="https://www.lac.co.jp/library/pdf/ssl_guidebook.pdf" target="_blank" rel="noopener">【「常時SSL化」時代に向けたセキュリティ対策指南書】</a></p></blockquote><p>　特にP13に記載されているSSLインペクションゾーンの仕事をしてくれるのがXGの役割です。</p><div class="note primary no-icon">            <h2 id="SSLインスペクションの設定にあたって"><a href="#SSLインスペクションの設定にあたって" class="headerlink" title="SSLインスペクションの設定にあたって"></a>SSLインスペクションの設定にあたって</h2>          </div><p>　まず、SSLインスペクションが行える前提として、XGのルート証明書をクライアントにインストールしなくてはなりません。それができないとhttpsのトラフィックを復号化出来ないためです。復号化については、以下の端末で検証をしています。</p><ul><li>Windows</li><li>macOS</li><li>iOS</li></ul><p>　なお、Linuxでも可能なようですが、私の方で検証は出来ていません。またAndroidには証明書はインストール出来ますが、Chrome以外のアプリで証明書を信頼する事が出来ず、実質SSLインスペクションは使えません。他の家電TVなども難しいと考えてください。httpsの復号化が出来ずともドメインやIP単位での制限は可能なので、家電のネット利用であっても、Firewallの利用価値は高いとおもいます。</p><p>　SSLインスペクションを設定後、ブラウザのURLの鍵マークにカーソルを合わせるとそのサイトで利用している本来の認証局ではなく、以下のようにXGの認証局が有効となっている事が分かります。</p><img src="/new-technology/2020/03/20/ssl-inspection/ssl-inspection.png" class="" title="alt">]]></content>
     
@@ -63,7 +63,7 @@
     </summary>
     
     
-      <category term="Software" scheme="https://yoshi0808.github.io/new-technology/categories/Software/"/>
+      <category term="Security" scheme="https://yoshi0808.github.io/new-technology/categories/Security/"/>
     
     
       <category term="XG Firewall" scheme="https://yoshi0808.github.io/new-technology/tags/XG-Firewall/"/>
@@ -75,7 +75,7 @@
     <link href="https://yoshi0808.github.io/new-technology/2020/03/14/customize-policy/"/>
     <id>https://yoshi0808.github.io/new-technology/2020/03/14/customize-policy/</id>
     <published>2020-03-14T04:51:51.000Z</published>
-    <updated>2020-03-20T10:54:25.589Z</updated>
+    <updated>2020-03-20T12:44:55.047Z</updated>
     
     <content type="html"><![CDATA[<div class="note primary no-icon">            <h2 id="ポリシーのカスタマイズ"><a href="#ポリシーのカスタマイズ" class="headerlink" title="ポリシーのカスタマイズ"></a>ポリシーのカスタマイズ</h2>          </div><p>　XGにおけるWebのポリシーというのはコンテンツのカテゴリを意味します。ギャンブル、アダルトからネットショッピングやチャットやWebメールまで多岐に渡ります。こちらは個人によって定義が異なるとおもいますので、実例を示しながら、ご自身の考えに基づいて設定を進めていく事になります。まずはそのカスタマイズを行っていきます。左ペインの「Web」をクリックします。</p><a id="more"></a><p>　先ほど設定した「Default Policy」の内容がまず最初に表示されているとおもいます。初期値では、「Blocked URLs for Default Policy」と2番目の行に「Risky Downloads」および「Suspicious（※怪しいもの）」が選択されています。</p><p>「Nudity and Adult content」の行のOn/OffのトグルをOnにします。そして右下の「変更を適用」をクリックするとポリシーの修正が有効になります。「Risky Downloads」および「Suspicious」が含まれていると、Google検索で「広告」という表示のあるページを正しく表示出来ない場合があります。今後説明するSSLインスペクションの対応が出来た際に改めて加える事とし、一旦「Risky Downloads」および「Suspicious」を外すなど好みで調整してみてください。Suspiciousに広告のWebサイトが含まれるためこのような挙動となります。</p><div class="note primary no-icon">            <h2 id="外部データベース（ドメインリスト）を取り込む"><a href="#外部データベース（ドメインリスト）を取り込む" class="headerlink" title="外部データベース（ドメインリスト）を取り込む"></a>外部データベース（ドメインリスト）を取り込む</h2>          </div><p>　XGのデータベースだけでも十分なのですが、外部のデータベース（ドメインのリスト形式）を取り込む事が可能です。ここではサンプル的に<a href="https://280blocker.net/" target="_blank" rel="noopener">280blocker | モバイル広告ブロッカー</a>のデータを取り込んでみます。利用については、<a href="https://280blocker.net/download/" target="_blank" rel="noopener">ダウンロードのページ</a>の注意事項の確認をいただき、ご自身で利用の判断をお願いします。今回はあくまでXGの機能の紹介という事で説明させていただきます。私自身このデータベースの精度などについての評価をしておりませんのでご承知おきください。</p><ol><li>ダウンロードするデータとして「広告ドメインリスト（リスト形式）」をダウンロードします</li><li>XGの左ペインのWebを選択し、「カテゴリ」のタブをクリックします</li><li>名前は「280blocker」とします</li><li>分類は「Objectionable」とします</li><li>設定のカテゴリはローカルのラジオボタンを選択します</li><li>domainのインポートから、先ほどダウンロードしたファイルを選択し取り込みます</li><li>「保存」ボタンをクリックします</li></ol><p>　次にWebのユーザーアクティビティの設定です。</p><ol><li>画面右上の「追加」ボタンをクリックします</li><li>名前は「280blocker」とします</li><li>先ほど「カテゴリ」で作成した280blockerを選択し適用します</li><li>最後に保存ボタンを押します</li></ol><p>　さて、再びWebのポリシータブをクリックし、「Default Policy」の内容を表示します。ここで右側の編集（ペンのアイコン）を選択します。</p><ol><li>ルールの追加ボタンを押すと、先頭にルールが作成されます</li><li>先頭ルールのアクティビティを選択し「すべてのトラフィック」を削除し、「280blocker」を追加します</li><li>アクションは「HTTPをブロックする」というデフォルトのままです</li><li>ステータスのトグルをOnにしてください</li><li>最後に画面を下にスクロールし、保存ボタンをクリックします</li></ol><p>　こういったデータベースはさまざまな目的で個人向けにあれば良いのですが、なかなか入手が難しいところではあります。DNSにも危険IPや危険ドメインを排除する機能を持つPublicDNSもあります。但し、そういったDNSを利用する事でその個人が興味を持つドメインなどプライバシーが筒抜けになってしまいますので利用も難しいと考えています。</p>]]></content>
     
@@ -90,7 +90,7 @@
     </summary>
     
     
-      <category term="Software" scheme="https://yoshi0808.github.io/new-technology/categories/Software/"/>
+      <category term="Security" scheme="https://yoshi0808.github.io/new-technology/categories/Security/"/>
     
     
       <category term="XG Firewall" scheme="https://yoshi0808.github.io/new-technology/tags/XG-Firewall/"/>
@@ -102,7 +102,7 @@
     <link href="https://yoshi0808.github.io/new-technology/2020/03/14/rule-policy2/"/>
     <id>https://yoshi0808.github.io/new-technology/2020/03/14/rule-policy2/</id>
     <published>2020-03-14T02:12:50.000Z</published>
-    <updated>2020-03-20T08:47:44.289Z</updated>
+    <updated>2020-03-20T12:46:33.847Z</updated>
     
     <content type="html"><![CDATA[<div class="note primary no-icon">            <h2 id="Traffic-to-Wanルールの作成"><a href="#Traffic-to-Wanルールの作成" class="headerlink" title="Traffic to Wanルールの作成"></a>Traffic to Wanルールの作成</h2>          </div><p>　いよいよ、実際の基本的なルールを作成します。ルールとポリシーのメニューから、「ファイアウォールルールの追加」ボタンを押し、「新しいファイアウォールルール」を選択します。<br>　ルール名にはここでは「To_Internet」とします。ルールグループは「自動」のままで構いません。アクションは「許可する」のままです。ファイアウォールのログは出力するようにチェックしておきます。現時点で「選択した条件に一致しないため、ルールを既存のグループに追加できません」との表示がありますが、その下のルール設定に進みます。</p><a id="more"></a><img src="/new-technology/2020/03/14/rule-policy2/rule1.png" class="" title="alt"><p> 　送信元ゾーンには、LANを設定します。今後、VPNを使う方はVPNも加えてください。宛先ゾーンはWANを指定します。その他は変更しません。これを設定した段階で上部に表示されていた注意メッセージが「このルールは自動的にルールグループTraffic to WANに追加されます」という表記に変わります。</p><p>　続いて、アプリケーションファイアウォールの設定です。</p><img src="/new-technology/2020/03/14/rule-policy2/rule2.png" class="" title="alt"><p>　セキュリティの「Webフィルタリング」をクリックし、詳細メニューをオープンします。</p><ul><li>Webポリシーは「Default Policy」を選択します</li><li>「HTTPおよび復号化したHTTPSをスキャン」をチェックします</li><li>「FTPのマルウェアをスキャン」をチェックします</li><li>QUICプロトコルのブロックは任意選択です<br>  Googleのサービスで利用されています。私はチェックしています。Google自体は問題ないですがそのプロトコルを利用した悪質なサイトがFirewallを回避するリスクを減らすという意味で選択しています</li><li>その他のセキュリティ機能でアプリケーションコントロールを選択します<br>  私は「Block very high risk(Risk Level 5) apps」を選択しています</li><li>IPSは「lantowan_general」を選択します<br>  保存ボタンをクリックし、ルールの追加が行われます。これでXG Firewall ｖ18の最低限度の設定を終えた事になります</li></ul><div class="note primary no-icon">            <h2 id="NATルールの設定"><a href="#NATルールの設定" class="headerlink" title="NATルールの設定"></a>NATルールの設定</h2>          </div><p>　ルールとポリシーのメニューには、ファイアウォールルールとSSL/TLSインスペクションルール、NATに関する「NATルール」設定があります。今回は設定変更しませんが、上記のルールに相当する、「Default SNAT IPv4」というNATルールがあります。これはデフォルトで作成されているもので、LAN側のプライベートIPアドレスからWANへ出ていく時に、グローバルIPへと変換するためのNATの仕組みが記述されています。今回はホームゲートウェイの内側なので、ホームゲートウェイが割り当てたプライベートネットワークアドレスに変換されて、XGのWAN側にパケットが送出されます。XGの基本ですが、ルールは上から順に実行される事になります。従い、デフォルトルールは一番下にあるべきであり、その上に個別のルールを記載していく事になります。<br>　なお、LinkedNATという機能が提供されています。これは、ファイアウォールルールとNATとを1対1で結びつけるものです。最初から存在しているデフォルトルール、それに加えv17からバージョンアップした際はマイグレーションプロセスによって、ルールとリンクされたNATが1つづつ作成されます。複雑な環境でなければNATのルールは1つで十分です。ルールの1つ1つにNATルールがたくさんあると、NATルールが解りづらくなってしまいます。今回は、OutboundのアクセスについてはLinkedNATの機能の利用は最低限に留め、設定を行っていきます。</p>]]></content>
     
@@ -117,7 +117,7 @@
     </summary>
     
     
-      <category term="Software" scheme="https://yoshi0808.github.io/new-technology/categories/Software/"/>
+      <category term="Security" scheme="https://yoshi0808.github.io/new-technology/categories/Security/"/>
     
     
       <category term="XG Firewall" scheme="https://yoshi0808.github.io/new-technology/tags/XG-Firewall/"/>
@@ -129,7 +129,7 @@
     <link href="https://yoshi0808.github.io/new-technology/2020/03/14/rule-policy1/"/>
     <id>https://yoshi0808.github.io/new-technology/2020/03/14/rule-policy1/</id>
     <published>2020-03-14T00:23:01.000Z</published>
-    <updated>2020-03-15T00:24:11.168Z</updated>
+    <updated>2020-03-20T12:46:23.006Z</updated>
     
     <content type="html"><![CDATA[<div class="note primary no-icon">            <h2 id="ルールとポリシーの機能説明"><a href="#ルールとポリシーの機能説明" class="headerlink" title="ルールとポリシーの機能説明"></a>ルールとポリシーの機能説明</h2>          </div><p>　さて、いよいよFirewallの具体的な設定に入っていきます。ご存知の方も多いかとおもいますが、Firewallというものは、TCP/UDPのレイヤ3またはレイヤ4の制御が一般的です。つまりhttpsであればPort443、ssh（セキュアシェル）であればPort22などです。そしてそのPortに対し、通過させるか拒否するかを決めるものです。<br>　XG Firewallはレイヤ7、つまりアプリケーションの中身まで見て可否を判断する事が可能となります。サイトがどういうサービスを提供しているかジャンル分けされており、好ましくないサイトには接続しないように設定が出来ます。<br>　あやしい振る舞いをするアプリケーションの挙動を見ていると、httpsの443で繋いでみてダメだったら一般的なProxyである8080などからの接続を試み、さらにダメならPort80と続きます。次に接続ドメインを変えたりするなど、ありとあらゆる手段を使って外部との接続を試みようとします。このような問題のあるアプリケーションをインストールしない事が一番良いのですが、なかなか個人での判断は難しいところです。でもどんな手を使おうが、世界の様々なファイル交換サイトへのアクセスは禁じるという設定が行える事で一定の抑止力が発揮できます。</p><a id="more"></a><p>　まず、XGのインストール直後は内部（LAN）からインターネット（WAN）への接続（今後Outboundという表現を使います）は、好ましくないサイト以外は全て通します。前述したレイヤ3、レイヤ4については一切制約は掛かっていません。原則Outboundの通信は通すというのが最初の状態です。逆インターネットから内部のサーバに向けた接続（今後Inboundという表現を使います）は行えず、ひとつの接続対象毎に都度設定を行なっていく事になります。</p><p>　左ペインのルールとポリシーを選択し、デフォルトの設定を見てみましょう。ルールグループというグループ化されたルールがあります。</p><img src="/new-technology/2020/03/14/rule-policy1/rule_menu.png" class="" title="alt"><ul><li><p>Traffic to Internal Zone<br>Firewallの内側（内部のLANにサーバを立てる場合）にアクセスするルールを記載します（Inbound）。</p></li><li><p>Traffic to Wan<br>インターネットにアクセスするルールを記載します（Outbound）。</p></li><li><p>Traffic to DMZ<br>今回は使いません。そもそもは業務上サーバを立てる場合はDMZにWebサーバやメールサーバを配置し、内部クライアントとは分離するのが業務上一般的です。今回の設定では、個人でそこまでは不要としています。</p></li><li><p>Default Network Policy<br>上から順にルールを実行してきて、全てすり抜けるとここに到達します。全て許可するルールとなっています。業務で利用する場合は、デフォルトは破棄する設定を行うのが一般的です。こちらも個人向けとして全て通す設定を行い、Traffice to Wanのルールである程度厳格なルールを設定していきたいとおもいます。一番右の（•••）マークでルールのOn/Offをトグルで切り替えられるようになっており、「すべてをドロップ」は無効となっています。</p></li></ul><p>　次にDefault Network Policyを見てみます。</p><div class="note primary no-icon">            <h2 id="デフォルトポリシーの機能説明"><a href="#デフォルトポリシーの機能説明" class="headerlink" title="デフォルトポリシーの機能説明"></a>デフォルトポリシーの機能説明</h2>          </div><img src="/new-technology/2020/03/14/rule-policy1/rule1.png" class="" title="alt"><p>　このルールでは、上述したルールグループは「なし」となっているので、グループから外れて単独で存在しています。そして、このルールは「許可する」となっています。なお、「破棄する」は無応答で相手はタイムアウトを待つ事になります。「拒否する」は接続要求をAcceptせず、接続を確立させません。</p><p>　次にInbound、Outboundの組み合わせになります。</p><img src="/new-technology/2020/03/14/rule-policy1/rule2.png" class="" title="alt"><p>　ここでは、LANからWANへの通信を対象としています。サービスはプロトコルの設定をするのですが、「ftp」や「ntp」など、サービスとして登録でき登録方法もシンプルになっています。今回は何も変更しません。</p><p>　次に、アプリケーションFirewallの設定です。</p><img src="/new-technology/2020/03/14/rule-policy1/rule3.png" class="" title="alt"><p>　一旦、ここはhttpを対象に少し甘めの設定に変更します。先ほども述べたとおり、Traffic to Wanでhttpsを対象に厳しいルールを作成していきます。意外とアプリケーションFirewallのルールで通信出来なくなったりする機会が増えます。一時的に通すなどルールを変更したい場合は、ルールを一旦Offにするなどして、このデフォルトルールを通す運用を行なっていく事になります。Webポリシー/IPS/アプリケーションコントロールなど複数箇所で接続出来ない要素があります。ひとつひとつ切り分けしていると手間が掛かるので、Firewallのログで拒否または破棄となったルールを無効にして、短時間このルールを生かす運用を行うという事です。<br>　Webポリシーは、Default PolicyからAllow Allとします。広告のタグがヘッダに含まれているとFirewallは律儀にRejectしてしまい、サイトが正しく表示できなくなるためです。<br>　アプリケーションコントロールとIPSはデフォルトのままにしますが、お好みで変更しても構いません。ただアプリケーションコントロールは実行可能ファイルだと取り込めないなどやはり厳しいところもありますので、いろいろ設定して試して下さい。<br>　IPSの機能について補足します。「DPIエンジンでなくWEBプロキシを使用する」はv18では全て利用しないという前提で進めます。「webプロキシでのフィルタリング中にHTTPSを復号化する」も利用しないという前提で進めます。これは前バージョンのv17までは主流だったものですが、v18の機能であるDPIエンジンを最大限活用したいと考えています。</p>]]></content>
     
@@ -144,7 +144,7 @@
     </summary>
     
     
-      <category term="Software" scheme="https://yoshi0808.github.io/new-technology/categories/Software/"/>
+      <category term="Security" scheme="https://yoshi0808.github.io/new-technology/categories/Security/"/>
     
     
       <category term="XG Firewall" scheme="https://yoshi0808.github.io/new-technology/tags/XG-Firewall/"/>
@@ -156,7 +156,7 @@
     <link href="https://yoshi0808.github.io/new-technology/2020/03/08/XG-MainPage/"/>
     <id>https://yoshi0808.github.io/new-technology/2020/03/08/XG-MainPage/</id>
     <published>2020-03-08T11:56:35.000Z</published>
-    <updated>2020-03-14T10:09:24.662Z</updated>
+    <updated>2020-03-20T12:47:11.296Z</updated>
     
     <content type="html"><![CDATA[<div class="note primary no-icon">            <h2 id="XG-v18のメインページの説明"><a href="#XG-v18のメインページの説明" class="headerlink" title="XG v18のメインページの説明"></a>XG v18のメインページの説明</h2>          </div><p> 　XGの管理画面にログインすると、Controle Centerの表示となります。ここでは今の全体のFirewallの状況が示されます。個人向けには相当なボリュームの内容で圧巻です。個人向けに一部機能は制限されているので、不要な項目もたくさんありますが、Home Editionとして必要なものを見ていく事にしましょう。<br> <a id="more"></a></p><img src="/new-technology/2020/03/08/XG-MainPage/main1.png" class="" title="alt"><ul><li>左上のシステムのアイコンは通常緑色です。</li><li>ネットワーク攻撃やブロックされたアプリなどが画面中央に赤色で表示されます。</li></ul><p>左ペインを見ていきます。</p><table><thead><tr><th>項目</th><th>内容</th></tr></thead><tbody><tr><td>ルールとポリシー</td><td>Firewallのルールを決める一番重要なメニューです</td></tr><tr><td>web</td><td>コンテンツの種類によってアクセス制御を行うメニューです</td></tr><tr><td>ネットワーク</td><td>インストール後、ネットワークの変更を行う時に、それなりに頻度の高いメニューになります</td></tr><tr><td>認証</td><td>VPNを使う時にワンタイムパスワードを併用する際利用します</td></tr><tr><td>ホストとサービス</td><td>自分のFW配下にあるクライアントを登録する時に使用します</td></tr><tr><td>管理</td><td>このFirewallのデバイスの管理を行います</td></tr></tbody></table><ul><li><p>右上のログビューアをクリックすると別画面でFirewallのログがポップアップします。</p><p>　表向きにはあまり変わったように見えません。しかし内部のアーキテクチャは非常に大きな変更がなされており、Firewallのルール設定も複雑になっています。そして、v17と比較し、（私の感覚ですが）非常に高速になっています。</p></li></ul><div class="note primary no-icon">            <h2 id="XG-v18の変更について"><a href="#XG-v18の変更について" class="headerlink" title="XG v18の変更について"></a>XG v18の変更について</h2>          </div><p>　Sophos社による英語の動画解説が<a href="https://vimeo.com/387247792" target="_blank" rel="noopener">https://vimeo.com</a>にあります。英語ですが、インフラ系のITに関わっている方であれば、内容は理解してもらえるかとおもいます。そしてv17との比較についても説明されているので、具体的にｖ18の設定を開始するにあたり、非常に理解が進みます。</p><div class="note primary no-icon">            <h2 id="XG-v18の大幅な性能向上"><a href="#XG-v18の大幅な性能向上" class="headerlink" title="XG v18の大幅な性能向上"></a>XG v18の大幅な性能向上</h2>          </div><p>　さて、初めてインストールされる方は非常に圧倒されているところだとはおもいます。昔からv17以前のXGを使っている方のために、私がお伝えしたいのは、ｖ18から採用されている<span class="label info">XStreamアーキテクチャ</span>です。全て暗号化されたhttpsプロトコルの様々なアプリケーションを高速かつ適切に判断し、脅威から保護する仕組みとなっています。</p><p>以下、Sophosのサイトから引用します。</p><blockquote class="blockquote-center"><p>XG Firewallの全く新しいXstreamアーキテクチャは、きわめて高いレベルの可視性、保護、およびパフォーマンスを提供します</p></blockquote> <blockquote><span class="label info">Xstream TLS インスペクション</span><p>TLS 1.3 をサポートするネットワーク上の全ての暗号化されたトラフィックに業界をリードするパフォーマンスと可視性を提供</p></blockquote><blockquote><span class="label info">Xstream DPI エンジン</span><p>単一のストリーミングエンジンで高性能なディープパケット保護を実現し、既知および未知の脅威をすべて阻止</p></blockquote><blockquote><span class="label info">Xstream Network Flow FastPath</span><p>信頼性が高く重要なクラウド、SaaS、VoIP アプリケーショントラフィックを高速化して、最適なパフォーマンスを実現</p></blockquote><p>参考までに、今回の構築する環境で実際に計測したSpeedtest.netの速度チェックのキャプチャ画像です。</p><img src="/new-technology/2020/03/08/XG-MainPage/speedtest.png" class="" title="alt"><p>環境は以下の通りです。</p><ul><li>ネット回線： auひかり5Gbps</li><li>XGのマシンスペック： Core i7メモリ16Gbyte（<span class="label warning">XG Home Editionは6Gbyteメモリ上限となる制約があります</span>）</li><li>仮想環境： ESXi6.7</li><li>ネットワークカード： intel X550-T2</li><li>クライアントPC： CeleronG3900という3年前の一般的なクライアントに5GbpsのNIC(Aquantia AQtion 5G Network Adapter)を刺したもの</li></ul><p>　クライアント側のCPUで頭打ちになっており、XGは素晴らしい性能を持っています（もちろん業務向けとしては単一のセッションだけで評価は出来ませんが）。v17まではほぼProxyサーバとしての動作でしたが、v18はPort80および443に限らず、httpsの流れるデータをリアルタイムで精査しているようです。私は製品のベータ版である、アーリーアクセスプログラムに参加していましたが、テストの最終局面でスピードが劇的に改善した時は感動しました。個人向けにこういった素晴らしい製品が使えるのは本当にありがたく感じます。</p>]]></content>
     
@@ -171,7 +171,7 @@
     </summary>
     
     
-      <category term="Software" scheme="https://yoshi0808.github.io/new-technology/categories/Software/"/>
+      <category term="Security" scheme="https://yoshi0808.github.io/new-technology/categories/Security/"/>
     
     
       <category term="XG Firewall" scheme="https://yoshi0808.github.io/new-technology/tags/XG-Firewall/"/>
@@ -268,7 +268,7 @@
     <link href="https://yoshi0808.github.io/new-technology/2020/02/29/esxi/"/>
     <id>https://yoshi0808.github.io/new-technology/2020/02/29/esxi/</id>
     <published>2020-02-29T04:23:22.000Z</published>
-    <updated>2020-03-14T10:09:24.711Z</updated>
+    <updated>2020-03-20T12:45:40.031Z</updated>
     
     <content type="html"><![CDATA[<div class="note primary no-icon">            <h2 id="インストールの前に"><a href="#インストールの前に" class="headerlink" title="インストールの前に"></a>インストールの前に</h2>          </div><p> 　XG Firewallの導入に必須というわけではないですが、バックアップや異なるバージョンの同居など色々便利なので、仮想環境（ESXi）を構築しその上にXGをインストールします。</p><p>　この個人向け（無償版）ESXiのインストールに関するドキュメントは正直解りやすい場所に掲載されてないのですが、<a href="https://blogs.vmware.com/jp-cim/2014/05/vspherehypervisor.html" target="_blank" rel="noopener" title="vmware">VMWareのブログ</a>から辿ると良いです。</p><a id="more"></a><div class="note primary no-icon">            <h2 id="準備"><a href="#準備" class="headerlink" title="準備"></a>準備</h2>          </div><ul><li>ESXiをインストールする予定の2つのNICを持ったPC1台と、ISOファイルをインストールするためのUSBメディアを用意してください。</li><li>VMwareのアカウント（無償）を作成してください。</li><li>VMwareサイトにログイン後、製品（vSphere Hypervisor v6.7）のダウンロードをしたら、ISOファイルをRufusを使ってUSBメディアに書き出します。</li></ul><div class="video-container"><iframe src="https://www.youtube.com/embed/7gYnyIaQH9A" frameborder="0" loading="lazy" allowfullscreen></iframe></div><div class="note primary no-icon">            <h2 id="ESXiのインストール"><a href="#ESXiのインストール" class="headerlink" title="ESXiのインストール"></a>ESXiのインストール</h2>          </div><p>　以下のビデオを参考にしてください。</p><iframe src='https://players.brightcove.net/1534342432001/Byh3doRJx_default/index.html?videoId=5738631329001' allowfullscreen frameborder=0></iframe><p>　まず、注意点ですが、いつも使っているネットワークとは別のネットワークのIPアドレスを振ってセットアップします。いつもが192.168.0.0/24なら、今回は仮に192.168.1.0/24のネットワークに配置する予定としてESXiをセットアップする事にしましょう。これまでのネットワークにXG Firewallを挟み込む事になり、従来のネットワークはXGのWAN側とホームゲートウェイに利用され、XGのLAN側は新しいネットワークになるためです。新たにXGのLAN側と同じネットワークにESXiの管理ネットワークを構築する必要があります。なお、XGのLAN側のデフォルトIPアドレスは、172.16.16.16となっています。従って、XGのIPもセットアップ時に192.168.1.0/24のネットワークに変更する事とします。</p><ul><li>USBメディアをESXiをインストールするPCに挿し、USBからブートし、セットアップを開始してください。</li><li>vCenterは個人向けには使いませんので無視してください。</li><li>NICが2枚ある事を前提にすると、Esxiの管理画面はLAN側のNICを対象とするように設定してください。今の時点では、WANは使いません。新しく振ったIP（192.168.1.1/24）をESXiの管理用IPとして、セットアップします。</li><li>上記のビデオ（2:40前後の説明）では「冗長化のために」と説明がありますが、今回は冗長化を使いません。通常LAN側のvmnic0を管理用のNICとしてセットアップしてください。また、VLANも使いません。</li><li>ESXi6.7では、vSphere Clientは使いません。インストールしたESXiのLAN側のIPアドレスに対してブラウザで接続し、ESXiのWeb管理画面で設定を行います。</li></ul><img src="/new-technology/2020/02/29/esxi/setup_esxi.png" class="" title="alt"><p> 　セットアップ終了後は、上記のようなネットワーク構成となります。USBメディアを抜いて再起動後、ESXiの画面にIPアドレスが表示されます。ホームゲートウェイに繋っていたPCをネットワークから外し、ESXiのLAN側のNICと繋ぎます。PCのIPを変更（例えば、192.168.1.101/24）し、ESXiのIPアドレスにブラウザで接続してください。ログインは、ユーザー名がroot、パスワードはセットアップで指定したものになります。</p>]]></content>
     
@@ -284,7 +284,7 @@
     </summary>
     
     
-      <category term="Software" scheme="https://yoshi0808.github.io/new-technology/categories/Software/"/>
+      <category term="Security" scheme="https://yoshi0808.github.io/new-technology/categories/Security/"/>
     
     
       <category term="XG Firewall" scheme="https://yoshi0808.github.io/new-technology/tags/XG-Firewall/"/>

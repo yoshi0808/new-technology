@@ -77,7 +77,7 @@
 <p>　これで一旦は証明書のインストールは完了です。この証明書のインストールがXG Firewallの設定で一番大切、かつ面倒なところになります。しかし、まだ微調整など必要なケースがあり設定は続きます。</p>
 ]]></content>
       <categories>
-        <category>Software</category>
+        <category>Security</category>
       </categories>
       <tags>
         <tag>XG Firewall</tag>
@@ -111,7 +111,7 @@
 <img src="/new-technology/2020/03/20/ssl-inspection/ssl-inspection.png" class="" title="alt">
 ]]></content>
       <categories>
-        <category>Software</category>
+        <category>Security</category>
       </categories>
       <tags>
         <tag>XG Firewall</tag>
@@ -166,7 +166,7 @@
 <p>　こういったデータベースはさまざまな目的で個人向けにあれば良いのですが、なかなか入手が難しいところではあります。DNSにも危険IPや危険ドメインを排除する機能を持つPublicDNSもあります。但し、そういったDNSを利用する事でその個人が興味を持つドメインなどプライバシーが筒抜けになってしまいますので利用も難しいと考えています。</p>
 ]]></content>
       <categories>
-        <category>Software</category>
+        <category>Security</category>
       </categories>
       <tags>
         <tag>XG Firewall</tag>
@@ -204,7 +204,7 @@
 <p>　ルールとポリシーのメニューには、ファイアウォールルールとSSL/TLSインスペクションルール、NATに関する「NATルール」設定があります。今回は設定変更しませんが、上記のルールに相当する、「Default SNAT IPv4」というNATルールがあります。これはデフォルトで作成されているもので、LAN側のプライベートIPアドレスからWANへ出ていく時に、グローバルIPへと変換するためのNATの仕組みが記述されています。今回はホームゲートウェイの内側なので、ホームゲートウェイが割り当てたプライベートネットワークアドレスに変換されて、XGのWAN側にパケットが送出されます。XGの基本ですが、ルールは上から順に実行される事になります。従い、デフォルトルールは一番下にあるべきであり、その上に個別のルールを記載していく事になります。<br>　なお、LinkedNATという機能が提供されています。これは、ファイアウォールルールとNATとを1対1で結びつけるものです。最初から存在しているデフォルトルール、それに加えv17からバージョンアップした際はマイグレーションプロセスによって、ルールとリンクされたNATが1つづつ作成されます。複雑な環境でなければNATのルールは1つで十分です。ルールの1つ1つにNATルールがたくさんあると、NATルールが解りづらくなってしまいます。今回は、OutboundのアクセスについてはLinkedNATの機能の利用は最低限に留め、設定を行っていきます。</p>
 ]]></content>
       <categories>
-        <category>Software</category>
+        <category>Security</category>
       </categories>
       <tags>
         <tag>XG Firewall</tag>
@@ -249,7 +249,7 @@
 <p>　一旦、ここはhttpを対象に少し甘めの設定に変更します。先ほども述べたとおり、Traffic to Wanでhttpsを対象に厳しいルールを作成していきます。意外とアプリケーションFirewallのルールで通信出来なくなったりする機会が増えます。一時的に通すなどルールを変更したい場合は、ルールを一旦Offにするなどして、このデフォルトルールを通す運用を行なっていく事になります。Webポリシー/IPS/アプリケーションコントロールなど複数箇所で接続出来ない要素があります。ひとつひとつ切り分けしていると手間が掛かるので、Firewallのログで拒否または破棄となったルールを無効にして、短時間このルールを生かす運用を行うという事です。<br>　Webポリシーは、Default PolicyからAllow Allとします。広告のタグがヘッダに含まれているとFirewallは律儀にRejectしてしまい、サイトが正しく表示できなくなるためです。<br>　アプリケーションコントロールとIPSはデフォルトのままにしますが、お好みで変更しても構いません。ただアプリケーションコントロールは実行可能ファイルだと取り込めないなどやはり厳しいところもありますので、いろいろ設定して試して下さい。<br>　IPSの機能について補足します。「DPIエンジンでなくWEBプロキシを使用する」はv18では全て利用しないという前提で進めます。「webプロキシでのフィルタリング中にHTTPSを復号化する」も利用しないという前提で進めます。これは前バージョンのv17までは主流だったものですが、v18の機能であるDPIエンジンを最大限活用したいと考えています。</p>
 ]]></content>
       <categories>
-        <category>Software</category>
+        <category>Security</category>
       </categories>
       <tags>
         <tag>XG Firewall</tag>
@@ -347,7 +347,7 @@
 <p>　クライアント側のCPUで頭打ちになっており、XGは素晴らしい性能を持っています（もちろん業務向けとしては単一のセッションだけで評価は出来ませんが）。v17まではほぼProxyサーバとしての動作でしたが、v18はPort80および443に限らず、httpsの流れるデータをリアルタイムで精査しているようです。私は製品のベータ版である、アーリーアクセスプログラムに参加していましたが、テストの最終局面でスピードが劇的に改善した時は感動しました。個人向けにこういった素晴らしい製品が使えるのは本当にありがたく感じます。</p>
 ]]></content>
       <categories>
-        <category>Software</category>
+        <category>Security</category>
       </categories>
       <tags>
         <tag>XG Firewall</tag>
@@ -613,7 +613,7 @@
 <p> 　セットアップ終了後は、上記のようなネットワーク構成となります。USBメディアを抜いて再起動後、ESXiの画面にIPアドレスが表示されます。ホームゲートウェイに繋っていたPCをネットワークから外し、ESXiのLAN側のNICと繋ぎます。PCのIPを変更（例えば、192.168.1.101/24）し、ESXiのIPアドレスにブラウザで接続してください。ログインは、ユーザー名がroot、パスワードはセットアップで指定したものになります。</p>
 ]]></content>
       <categories>
-        <category>Software</category>
+        <category>Security</category>
       </categories>
       <tags>
         <tag>XG Firewall</tag>
