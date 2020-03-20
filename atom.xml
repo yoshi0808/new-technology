@@ -6,7 +6,7 @@
   <link href="/new-technology/atom.xml" rel="self"/>
   
   <link href="https://yoshi0808.github.io/new-technology/"/>
-  <updated>2020-03-14T10:09:24.692Z</updated>
+  <updated>2020-03-20T12:36:55.860Z</updated>
   <id>https://yoshi0808.github.io/new-technology/</id>
   
   <author>
@@ -17,13 +17,67 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>XG Firewall v18のSSLインスペクションの設定</title>
+    <link href="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/"/>
+    <id>https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/</id>
+    <published>2020-03-20T12:32:29.000Z</published>
+    <updated>2020-03-20T12:36:55.860Z</updated>
+    
+    <content type="html"><![CDATA[<div class="note primary no-icon">            <h2 id="SSL-TLSインスペクションの対象とするホストを登録する"><a href="#SSL-TLSインスペクションの対象とするホストを登録する" class="headerlink" title="SSL/TLSインスペクションの対象とするホストを登録する"></a>SSL/TLSインスペクションの対象とするホストを登録する</h2>          </div><p>　SSLインスペクションの設定にあたり、XGのルート証明書をインストール出来る事が前提と書きました。XGがSSLインスペクションを使えるクライアントかどうかを判断するにはIPアドレスで判断する事になります。いつも固定IPアドレスにするためには、クライアントのIPをスタティックに割り振るか、DHCPのIP割り振りを常に固定にする方法の2通りがあります。DHCPによって固定IPを割り振るために、クライアントのMACアドレスを調べておく必要があります。</p><a id="more"></a><p>　左ペインのネットワークからDHCPのタブをクリックし、「Default DHCP Server」をクリックします。そこには、「スタティックIP_MACマッピング」があるので、DHCPで自動リースをしている以外のIPアドレスをスタティックに割り振って登録してください。管理の一例としては以下の通りです。</p><ul><li>動的なDHCPを192.168.2.101〜192.168.2.128</li><li>証明書が登録可能なIPをstaticで192.168.2.129〜192.168.2.192</li></ul><p>　ここは完全に個人の「決め」です。さて、上記で証明書がインストール出来る端末群を「IPホスト」としてXGに登録しましょう。左ペインの「ホストとサービス」から、IPホストのタブをクリックし追加ボタンをクリックします。以下の通り、ホストのIPの範囲を示す名前を入力し、IPの範囲を入力して保存ボタンをクリックします。</p><img src="/new-technology/2020/03/20/ssl-inspection1/host.png" class="" title="alt"><div class="note primary no-icon">            <h2 id="ファイアウォールルールの設定（確認）"><a href="#ファイアウォールルールの設定（確認）" class="headerlink" title="ファイアウォールルールの設定（確認）"></a>ファイアウォールルールの設定（確認）</h2>          </div><p>　左ペインのルールとポリシーからルールとポリシーを選択します。以前の記事「XG Firewall v18のOutboundルールを新規作成する」で、デフォルトのルール「To_Internet」を作成しました。<br> <a href="/new-technology/2020/03/14/rule-policy2/" title="XG Firewall v18のOutboundルールを新規作成する">XG Firewall v18のOutboundルールを新規作成する</a><br>Traffic to WANのグループ配下にルールがある事を確認してください。この設定は今回修正しません。</p><div class="note primary no-icon">            <h2 id="SSL-TLSインスペクションルールの設定"><a href="#SSL-TLSインスペクションルールの設定" class="headerlink" title="SSL/TLSインスペクションルールの設定"></a>SSL/TLSインスペクションルールの設定</h2>          </div><p>　左ペインのルールとポリシーからSSL/TLSインスペクションルールをクリックします。</p><ol><li>画面右側の追加ボタンをクリックします</li><li>ルール名を入力します。ここでは「Catch_SSL」とします</li><li>ルールの位置は「最下位」のままにします</li><li>処理は「復号化」を選択します</li><li>復号化のプロファイルは<span class="label info">Strict Compliance</span>を選択します</li><li>送信元の送信ゾーンは、LANとVPNを選択します</li><li>送信元ネットワークとデバイスは、任意を外し、先ほどの「CA_Client_IPv4」を選択します</li><li>宛先とサービスの宛先ゾーンは、WANを選択します</li><li>最後に保存ボタンをクリックします</li></ol><p>　暗号化のプロファイルの<span class="label info">Strict Compliance</span>は一番厳しいものです。左ペインのプロファイルの「復号化のプロファイル」を見てもらうと分かりますが、TLS1.0と1.1を認めないという事です。主要なブラウザは2020年上半期にTLS1.0と1.1を無効化するので、この設定が主流になるとおもいます。そうはいっても色々不便であれば、他のプロファイルに変更するか、該当のサイトが安全と分かっている場合は除外する等の対応が可能となります。なお、TLSの無効化については、<a href="https://www.cybertrust.co.jp/blog/ssl/regulations/disable-tls10.html" target="_blank" rel="noopener">サイバートラスト社の記事</a>が参考になります。<br>　これでSSLの復号化の設定は完了です。</p><div class="note primary no-icon">            <h2 id="XGのルート証明書をクライアントにインストールする"><a href="#XGのルート証明書をクライアントにインストールする" class="headerlink" title="XGのルート証明書をクライアントにインストールする"></a>XGのルート証明書をクライアントにインストールする</h2>          </div><p>　左ペインの一番下の証明書から、認証局（CA）をクリックします。この中に<span class="label info">Security Appliance_SSL_CA</span>という名前の証明書があります。今回これをクライアントに配布していく事になります。右の下向きの矢印があるダウンロードを選択してクライアントにルート証明書をダウンロードします。<span class="label info">Security Appliance_SSL_CA.pem</span>という名前になります。</p><img src="/new-technology/2020/03/20/ssl-inspection1/certificate.png" class="" title="alt"><p>　ルート証明書をダウンロードした後のクライアントインストールについては、Sophosのサイトにある<a href="https://community.sophos.com/kb/ja-jp/123048" target="_blank" rel="noopener">Sophos XG Firewall: SSL CA 証明書のインストールガイド</a>を参照ください。手順書ではOSにインストールするのとは別に、ブラウザにもインストールする手順となっていますが、今日現在では不要のようです。FirefoxとEdgeではそのままXGの証明書が使われている事が確認出来ています。以下はWindowsの画面ですが、インストール後は、以下の通りブラウザの鍵マークをクリックする事でXGの証明書によって再署名されている事が確認出来ます。XGのログイン後のコントロールセンターの左上にライセンスナンバーが記載されていますが、実際の証明書でもそのナンバーが確認出来ます。</p><img src="/new-technology/2020/03/20/ssl-inspection1/installed_cert.png" class="" title="alt"><p>　なお、macOSの場合は以下のようにキーチェーンアクセスから証明書を「常に信頼する」設定を加えます。こちらもブラウザ毎に設定の必要は無さそうです。</p><img src="/new-technology/2020/03/20/ssl-inspection1/mac_ca.png" class="" title="alt"><img src="/new-technology/2020/03/20/ssl-inspection1/mac_ca1.png" class="" title="alt"><p> なお、iOSについては、「ファイル」アプリを使います。</p><ol><li>iCloud Driveに証明書を配置します</li><li>「ファイル」アプリを起動します。iCloud Driveから証明書ファイルをタップしダウンロードします</li><li>「プロファイルがダウンロードされました」と表示されます</li><li>設定アプリを起動します</li><li>「設定」→「一般」→「プロファイル」と進みます</li><li>ダウンロード済プロファイルに、<span class="label info">Sophos SSL CA_xxxx</span>が表示されているので、タップします</li><li>画面右上の「インストール」をタップします</li><li>iOSのパスコードを入力します</li><li>右上のインストールを再度タップし、インストールを完了します</li><li>「設定」→「一般」→「情報」と進みます</li><li>画面の一番下の「証明書信頼設定」をタップします</li><li><span class="label info">Sophos SSL CA_xxxx</span>が表示されているので、スイッチを右側に移動させオン（緑色点灯）します</li></ol><p>　これで一旦は証明書のインストールは完了です。この証明書のインストールがXG Firewallの設定で一番大切、かつ面倒なところになります。しかし、まだ微調整など必要なケースがあり設定は続きます。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;div class=&quot;note primary no-icon&quot;&gt;
+            &lt;h2 id=&quot;SSL-TLSインスペクションの対象とするホストを登録する&quot;&gt;&lt;a href=&quot;#SSL-TLSインスペクションの対象とするホストを登録する&quot; class=&quot;headerlink&quot; title=&quot;SSL/TLSインスペクションの対象とするホストを登録する&quot;&gt;&lt;/a&gt;SSL/TLSインスペクションの対象とするホストを登録する&lt;/h2&gt;
+          &lt;/div&gt;
+
+&lt;p&gt;　SSLインスペクションの設定にあたり、XGのルート証明書をインストール出来る事が前提と書きました。XGがSSLインスペクションを使えるクライアントかどうかを判断するにはIPアドレスで判断する事になります。いつも固定IPアドレスにするためには、クライアントのIPをスタティックに割り振るか、DHCPのIP割り振りを常に固定にする方法の2通りがあります。DHCPによって固定IPを割り振るために、クライアントのMACアドレスを調べておく必要があります。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Software" scheme="https://yoshi0808.github.io/new-technology/categories/Software/"/>
+    
+    
+      <category term="XG Firewall" scheme="https://yoshi0808.github.io/new-technology/tags/XG-Firewall/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>XG Firewall v18のSSLインスペクションについて</title>
+    <link href="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection/"/>
+    <id>https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection/</id>
+    <published>2020-03-20T05:23:53.000Z</published>
+    <updated>2020-03-20T12:20:18.076Z</updated>
+    
+    <content type="html"><![CDATA[<div class="note primary no-icon">            <h2 id="SSLインスペクションとは"><a href="#SSLインスペクションとは" class="headerlink" title="SSLインスペクションとは"></a>SSLインスペクションとは</h2>          </div><p>　XGで設定の難易度が難しくなるのはこの部分です。上記までの基本ルールとは別に、SSLを解読して検査する設定を行う事になります。今日でもSSLという呼び方は定着していますが、TLS（Transport Layer Security）とも呼ばれます。XGの最も素晴らしい機能の1つがSSLを解読する安全装置です。この安全装置の事を、「IPS」（Intrusion Prevension System）と呼びます。そして、その解読方法として「SSLインスペクション」という方式が採用されています。</p><a id="more"></a><p>　このSSLインスペクションについては、解りやすい文献がありますので紹介します。セキュリティベンダーの（株）ラック社から提供されているドキュメントです。</p><blockquote><p>出典：株式会社ラック<a href="https://www.lac.co.jp/library/pdf/ssl_guidebook.pdf" target="_blank" rel="noopener">【「常時SSL化」時代に向けたセキュリティ対策指南書】</a></p></blockquote><p>　特にP13に記載されているSSLインペクションゾーンの仕事をしてくれるのがXGの役割です。</p><div class="note primary no-icon">            <h2 id="SSLインスペクションの設定にあたって"><a href="#SSLインスペクションの設定にあたって" class="headerlink" title="SSLインスペクションの設定にあたって"></a>SSLインスペクションの設定にあたって</h2>          </div><p>　まず、SSLインスペクションが行える前提として、XGのルート証明書をクライアントにインストールしなくてはなりません。それができないとhttpsのトラフィックを復号化出来ないためです。復号化については、以下の端末で検証をしています。</p><ul><li>Windows</li><li>macOS</li><li>iOS</li></ul><p>　なお、Linuxでも可能なようですが、私の方で検証は出来ていません。またAndroidには証明書はインストール出来ますが、Chrome以外のアプリで証明書を信頼する事が出来ず、実質SSLインスペクションは使えません。他の家電TVなども難しいと考えてください。httpsの復号化が出来ずともドメインやIP単位での制限は可能なので、家電のネット利用であっても、Firewallの利用価値は高いとおもいます。</p><p>　SSLインスペクションを設定後、ブラウザのURLの鍵マークにカーソルを合わせるとそのサイトで利用している本来の認証局ではなく、以下のようにXGの認証局が有効となっている事が分かります。</p><img src="/new-technology/2020/03/20/ssl-inspection/ssl-inspection.png" class="" title="alt">]]></content>
+    
+    <summary type="html">
+    
+      &lt;div class=&quot;note primary no-icon&quot;&gt;
+            &lt;h2 id=&quot;SSLインスペクションとは&quot;&gt;&lt;a href=&quot;#SSLインスペクションとは&quot; class=&quot;headerlink&quot; title=&quot;SSLインスペクションとは&quot;&gt;&lt;/a&gt;SSLインスペクションとは&lt;/h2&gt;
+          &lt;/div&gt;
+
+&lt;p&gt;　XGで設定の難易度が難しくなるのはこの部分です。上記までの基本ルールとは別に、SSLを解読して検査する設定を行う事になります。今日でもSSLという呼び方は定着していますが、TLS（Transport Layer Security）とも呼ばれます。XGの最も素晴らしい機能の1つがSSLを解読する安全装置です。この安全装置の事を、「IPS」（Intrusion Prevension System）と呼びます。そして、その解読方法として「SSLインスペクション」という方式が採用されています。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Software" scheme="https://yoshi0808.github.io/new-technology/categories/Software/"/>
+    
+    
+      <category term="XG Firewall" scheme="https://yoshi0808.github.io/new-technology/tags/XG-Firewall/"/>
+    
+  </entry>
+  
+  <entry>
     <title>XG Firewall v18のポリシーをカスタマイズする</title>
     <link href="https://yoshi0808.github.io/new-technology/2020/03/14/customize-policy/"/>
     <id>https://yoshi0808.github.io/new-technology/2020/03/14/customize-policy/</id>
     <published>2020-03-14T04:51:51.000Z</published>
-    <updated>2020-03-14T10:09:24.692Z</updated>
+    <updated>2020-03-20T10:54:25.589Z</updated>
     
-    <content type="html"><![CDATA[<div class="note primary no-icon">            <h2 id="ポリシーのカスタマイズ"><a href="#ポリシーのカスタマイズ" class="headerlink" title="ポリシーのカスタマイズ"></a>ポリシーのカスタマイズ</h2>          </div><p>　XGにおけるWebのポリシーというのはコンテンツのカテゴリを意味します。ギャンブル、アダルトからネットショッピングやチャットやWebメールまで多岐に渡ります。こちらは個人によって定義が異なるとおもいますので、実例を示しながら、ご自身の考えに基づいて設定を進めていく事になります。まずはそのカスタマイズを行っていきます。左ペインの「Web」をクリックします。</p><a id="more"></a><p>　先ほど設定した「Default Policy」の内容がまず最初に表示されているとおもいます。初期値では、「Blocked URLs for Default Policy」と2番目の行に「Risky Downloads」および「Suspicious（※怪しいもの）」が選択されています。</p><p>　今回、カスタマイズとして、一旦「Risky Downloads」および「Suspicious」を外すためにトグルをOffにします。また、「Nudity and Adult content」の行のOn/OffのトグルをOnにします。そして右下の「変更を適用」をクリックするとポリシーの修正が有効になります。「Risky Downloads」および「Suspicious」を外すのは、Google検索で「広告」という表示のあるページが正しく表示出来ないためです。事後の対応が出来た際、改めて加える事にします。</p><div class="note primary no-icon">            <h2 id="外部データベース（ドメインリスト）を取り込む"><a href="#外部データベース（ドメインリスト）を取り込む" class="headerlink" title="外部データベース（ドメインリスト）を取り込む"></a>外部データベース（ドメインリスト）を取り込む</h2>          </div><p>　XGのデータベースだけでも十分なのですが、外部のデータベース（ドメインのリスト形式）を取り込む事が可能です。ここではサンプル的に<a href="https://280blocker.net/" target="_blank" rel="noopener">280blocker | モバイル広告ブロッカー</a>のデータを取り込んでみます。利用については、<a href="https://280blocker.net/download/" target="_blank" rel="noopener">ダウンロードのページ</a>の注意事項の確認をいただき、ご自身で利用の判断をお願いします。今回はあくまでXGの機能の紹介という事で説明させていただきます。私自身このデータベースの精度などについての評価をしておりませんのでご承知おきください。</p><ol><li>ダウンロードするデータとして「広告ドメインリスト（リスト形式）」をダウンロードします</li><li>XGの左ペインのWebを選択し、「カテゴリ」のタブをクリックします</li><li>名前は「280blocker」とします</li><li>分類は「Objectionable」とします</li><li>設定のカテゴリはローカルのラジオボタンを選択します</li><li>domainのインポートから、先ほどダウンロードしたファイルを選択し取り込みます</li><li>「保存」ボタンをクリックします</li></ol><p>　次にWebのユーザーアクティビティの設定です。</p><ol><li>画面右上の「追加」ボタンをクリックします</li><li>名前は「280blocker」とします</li><li>先ほど「カテゴリ」で作成した280blockerを選択し適用します</li><li>最後に保存ボタンを押します</li></ol><p>　さて、再びWebのポリシータブをクリックし、「Default Policy」の内容を表示します。ここで右側の編集（ペンのアイコン）を選択します。</p><ol><li>ルールの追加ボタンを押すと、先頭にルールが作成されます</li><li>先頭ルールのアクティビティを選択し「すべてのトラフィック」を削除し、「280blocker」を追加します</li><li>アクションは「HTTPをブロックする」というデフォルトのままです</li><li>ステータスのトグルをOnにしてください</li><li>最後に画面を下にスクロールし、保存ボタンをクリックします</li></ol><p>　こういったデータベースはさまざまな目的で個人向けにあれば良いのですが、なかなか入手が難しいところではあります。DNSにも危険IPや危険ドメインを排除する機能を持つPublicDNSもあります。但し、そういったDNSを利用する事でその個人が興味を持つドメインなどプライバシーが筒抜けになってしまいますので利用も難しいと考えています。</p>]]></content>
+    <content type="html"><![CDATA[<div class="note primary no-icon">            <h2 id="ポリシーのカスタマイズ"><a href="#ポリシーのカスタマイズ" class="headerlink" title="ポリシーのカスタマイズ"></a>ポリシーのカスタマイズ</h2>          </div><p>　XGにおけるWebのポリシーというのはコンテンツのカテゴリを意味します。ギャンブル、アダルトからネットショッピングやチャットやWebメールまで多岐に渡ります。こちらは個人によって定義が異なるとおもいますので、実例を示しながら、ご自身の考えに基づいて設定を進めていく事になります。まずはそのカスタマイズを行っていきます。左ペインの「Web」をクリックします。</p><a id="more"></a><p>　先ほど設定した「Default Policy」の内容がまず最初に表示されているとおもいます。初期値では、「Blocked URLs for Default Policy」と2番目の行に「Risky Downloads」および「Suspicious（※怪しいもの）」が選択されています。</p><p>「Nudity and Adult content」の行のOn/OffのトグルをOnにします。そして右下の「変更を適用」をクリックするとポリシーの修正が有効になります。「Risky Downloads」および「Suspicious」が含まれていると、Google検索で「広告」という表示のあるページを正しく表示出来ない場合があります。今後説明するSSLインスペクションの対応が出来た際に改めて加える事とし、一旦「Risky Downloads」および「Suspicious」を外すなど好みで調整してみてください。Suspiciousに広告のWebサイトが含まれるためこのような挙動となります。</p><div class="note primary no-icon">            <h2 id="外部データベース（ドメインリスト）を取り込む"><a href="#外部データベース（ドメインリスト）を取り込む" class="headerlink" title="外部データベース（ドメインリスト）を取り込む"></a>外部データベース（ドメインリスト）を取り込む</h2>          </div><p>　XGのデータベースだけでも十分なのですが、外部のデータベース（ドメインのリスト形式）を取り込む事が可能です。ここではサンプル的に<a href="https://280blocker.net/" target="_blank" rel="noopener">280blocker | モバイル広告ブロッカー</a>のデータを取り込んでみます。利用については、<a href="https://280blocker.net/download/" target="_blank" rel="noopener">ダウンロードのページ</a>の注意事項の確認をいただき、ご自身で利用の判断をお願いします。今回はあくまでXGの機能の紹介という事で説明させていただきます。私自身このデータベースの精度などについての評価をしておりませんのでご承知おきください。</p><ol><li>ダウンロードするデータとして「広告ドメインリスト（リスト形式）」をダウンロードします</li><li>XGの左ペインのWebを選択し、「カテゴリ」のタブをクリックします</li><li>名前は「280blocker」とします</li><li>分類は「Objectionable」とします</li><li>設定のカテゴリはローカルのラジオボタンを選択します</li><li>domainのインポートから、先ほどダウンロードしたファイルを選択し取り込みます</li><li>「保存」ボタンをクリックします</li></ol><p>　次にWebのユーザーアクティビティの設定です。</p><ol><li>画面右上の「追加」ボタンをクリックします</li><li>名前は「280blocker」とします</li><li>先ほど「カテゴリ」で作成した280blockerを選択し適用します</li><li>最後に保存ボタンを押します</li></ol><p>　さて、再びWebのポリシータブをクリックし、「Default Policy」の内容を表示します。ここで右側の編集（ペンのアイコン）を選択します。</p><ol><li>ルールの追加ボタンを押すと、先頭にルールが作成されます</li><li>先頭ルールのアクティビティを選択し「すべてのトラフィック」を削除し、「280blocker」を追加します</li><li>アクションは「HTTPをブロックする」というデフォルトのままです</li><li>ステータスのトグルをOnにしてください</li><li>最後に画面を下にスクロールし、保存ボタンをクリックします</li></ol><p>　こういったデータベースはさまざまな目的で個人向けにあれば良いのですが、なかなか入手が難しいところではあります。DNSにも危険IPや危険ドメインを排除する機能を持つPublicDNSもあります。但し、そういったDNSを利用する事でその個人が興味を持つドメインなどプライバシーが筒抜けになってしまいますので利用も難しいと考えています。</p>]]></content>
     
     <summary type="html">
     
@@ -48,9 +102,9 @@
     <link href="https://yoshi0808.github.io/new-technology/2020/03/14/rule-policy2/"/>
     <id>https://yoshi0808.github.io/new-technology/2020/03/14/rule-policy2/</id>
     <published>2020-03-14T02:12:50.000Z</published>
-    <updated>2020-03-15T00:33:40.341Z</updated>
+    <updated>2020-03-20T08:47:44.289Z</updated>
     
-    <content type="html"><![CDATA[<div class="note primary no-icon">            <h2 id="Traffic-to-Wanルールの作成"><a href="#Traffic-to-Wanルールの作成" class="headerlink" title="Traffic to Wanルールの作成"></a>Traffic to Wanルールの作成</h2>          </div><p>　いよいよ、実際の基本的なルールを作成します。ルールとポリシーのメニューから、「ファイアウォールルールの追加」ボタンを押し、「新しいファイアウォールルール」を選択します。<br>　ルール名にはここでは「Defualt Outbound」とします。ルールグループは「自動」のままで構いません。アクションは「許可する」のままです。ファイアウォールのログは出力するようにチェックしておきます。現時点で「選択した条件に一致しないため、ルールを既存のグループに追加できません」との表示がありますが、その下のルール設定に進みます。</p><a id="more"></a><img src="/new-technology/2020/03/14/rule-policy2/rule1.png" class="" title="alt"><p> 　送信元ゾーンには、LANを設定します。今後、VPNを使う方はVPNも加えてください。宛先ゾーンはWANを指定します。その他は変更しません。これを設定した段階で上部に表示されていた注意メッセージが「このルールは自動的にルールグループTraffic to WANに追加されます」という表記に変わります。</p><p>　続いて、アプリケーションファイアウォールの設定です。</p><img src="/new-technology/2020/03/14/rule-policy2/rule2.png" class="" title="alt"><p>　セキュリティの「Webフィルタリング」をクリックし、詳細メニューをオープンします。</p><ul><li>Webポリシーは「Default Policy」を選択します</li><li>「HTTPおよび復号化したHTTPSをスキャン」をチェックします</li><li>「FTPのマルウェアをスキャン」をチェックします</li><li>QUICプロトコルのブロックは任意選択です<br>  Googleのサービスで利用されています。私はチェックしています。Google自体は問題ないですがそのプロトコルを利用した悪質なサイトがFirewallを回避するリスクを減らすという意味で選択しています</li><li>その他のセキュリティ機能でアプリケーションコントロールを選択します<br>  私は「Block very high risk(Risk Level 5) apps」を選択しています</li><li>IPSは「lantowan_general」を選択します<br>  保存ボタンをクリックし、ルールの追加が行われます。これでXG Firewall ｖ18の最低限度の設定を終えた事になります</li></ul><div class="note primary no-icon">            <h2 id="NATルールの設定"><a href="#NATルールの設定" class="headerlink" title="NATルールの設定"></a>NATルールの設定</h2>          </div><p>　ルールとポリシーのメニューには、ファイアウォールルールとSSL/TLSインスペクションルール、NATに関する「NATルール」設定があります。今回は設定変更しませんが、上記のルールに相当する、「Default SNAT IPv4」というNATルールがあります。これはデフォルトで作成されているもので、LAN側のプライベートIPアドレスからWANへ出ていく時に、グローバルIPへと変換するためのNATの仕組みが記述されています。今回はホームゲートウェイの内側なので、ホームゲートウェイが割り当てたプライベートネットワークアドレスに変換されて、XGのWAN側にパケットが送出されます。XGの基本ですが、ルールは上から順に実行される事になります。従い、デフォルトルールは一番下にあるべきであり、その上に個別のルールを記載していく事になります。<br>　なお、LinkedNATという機能が提供されています。これは、ファイアウォールルールとNATとを1対1で結びつけるものです。最初から存在しているデフォルトルール、それに加えv17からバージョンアップした際はマイグレーションプロセスによって、ルールとリンクされたNATが1つづつ作成されます。複雑な環境でなければNATのルールは1つで十分です。ルールの1つ1つにNATルールがたくさんあると、NATルールが解りづらくなってしまいます。今回は、OutboundのアクセスについてはLinkedNATの機能の利用は最低限に留め、設定を行っていきます。</p>]]></content>
+    <content type="html"><![CDATA[<div class="note primary no-icon">            <h2 id="Traffic-to-Wanルールの作成"><a href="#Traffic-to-Wanルールの作成" class="headerlink" title="Traffic to Wanルールの作成"></a>Traffic to Wanルールの作成</h2>          </div><p>　いよいよ、実際の基本的なルールを作成します。ルールとポリシーのメニューから、「ファイアウォールルールの追加」ボタンを押し、「新しいファイアウォールルール」を選択します。<br>　ルール名にはここでは「To_Internet」とします。ルールグループは「自動」のままで構いません。アクションは「許可する」のままです。ファイアウォールのログは出力するようにチェックしておきます。現時点で「選択した条件に一致しないため、ルールを既存のグループに追加できません」との表示がありますが、その下のルール設定に進みます。</p><a id="more"></a><img src="/new-technology/2020/03/14/rule-policy2/rule1.png" class="" title="alt"><p> 　送信元ゾーンには、LANを設定します。今後、VPNを使う方はVPNも加えてください。宛先ゾーンはWANを指定します。その他は変更しません。これを設定した段階で上部に表示されていた注意メッセージが「このルールは自動的にルールグループTraffic to WANに追加されます」という表記に変わります。</p><p>　続いて、アプリケーションファイアウォールの設定です。</p><img src="/new-technology/2020/03/14/rule-policy2/rule2.png" class="" title="alt"><p>　セキュリティの「Webフィルタリング」をクリックし、詳細メニューをオープンします。</p><ul><li>Webポリシーは「Default Policy」を選択します</li><li>「HTTPおよび復号化したHTTPSをスキャン」をチェックします</li><li>「FTPのマルウェアをスキャン」をチェックします</li><li>QUICプロトコルのブロックは任意選択です<br>  Googleのサービスで利用されています。私はチェックしています。Google自体は問題ないですがそのプロトコルを利用した悪質なサイトがFirewallを回避するリスクを減らすという意味で選択しています</li><li>その他のセキュリティ機能でアプリケーションコントロールを選択します<br>  私は「Block very high risk(Risk Level 5) apps」を選択しています</li><li>IPSは「lantowan_general」を選択します<br>  保存ボタンをクリックし、ルールの追加が行われます。これでXG Firewall ｖ18の最低限度の設定を終えた事になります</li></ul><div class="note primary no-icon">            <h2 id="NATルールの設定"><a href="#NATルールの設定" class="headerlink" title="NATルールの設定"></a>NATルールの設定</h2>          </div><p>　ルールとポリシーのメニューには、ファイアウォールルールとSSL/TLSインスペクションルール、NATに関する「NATルール」設定があります。今回は設定変更しませんが、上記のルールに相当する、「Default SNAT IPv4」というNATルールがあります。これはデフォルトで作成されているもので、LAN側のプライベートIPアドレスからWANへ出ていく時に、グローバルIPへと変換するためのNATの仕組みが記述されています。今回はホームゲートウェイの内側なので、ホームゲートウェイが割り当てたプライベートネットワークアドレスに変換されて、XGのWAN側にパケットが送出されます。XGの基本ですが、ルールは上から順に実行される事になります。従い、デフォルトルールは一番下にあるべきであり、その上に個別のルールを記載していく事になります。<br>　なお、LinkedNATという機能が提供されています。これは、ファイアウォールルールとNATとを1対1で結びつけるものです。最初から存在しているデフォルトルール、それに加えv17からバージョンアップした際はマイグレーションプロセスによって、ルールとリンクされたNATが1つづつ作成されます。複雑な環境でなければNATのルールは1つで十分です。ルールの1つ1つにNATルールがたくさんあると、NATルールが解りづらくなってしまいます。今回は、OutboundのアクセスについてはLinkedNATの機能の利用は最低限に留め、設定を行っていきます。</p>]]></content>
     
     <summary type="html">
     
@@ -58,7 +112,7 @@
             &lt;h2 id=&quot;Traffic-to-Wanルールの作成&quot;&gt;&lt;a href=&quot;#Traffic-to-Wanルールの作成&quot; class=&quot;headerlink&quot; title=&quot;Traffic to Wanルールの作成&quot;&gt;&lt;/a&gt;Traffic to Wanルールの作成&lt;/h2&gt;
           &lt;/div&gt;
 
-&lt;p&gt;　いよいよ、実際の基本的なルールを作成します。ルールとポリシーのメニューから、「ファイアウォールルールの追加」ボタンを押し、「新しいファイアウォールルール」を選択します。&lt;br&gt;　ルール名にはここでは「Defualt Outbound」とします。ルールグループは「自動」のままで構いません。アクションは「許可する」のままです。ファイアウォールのログは出力するようにチェックしておきます。現時点で「選択した条件に一致しないため、ルールを既存のグループに追加できません」との表示がありますが、その下のルール設定に進みます。&lt;/p&gt;
+&lt;p&gt;　いよいよ、実際の基本的なルールを作成します。ルールとポリシーのメニューから、「ファイアウォールルールの追加」ボタンを押し、「新しいファイアウォールルール」を選択します。&lt;br&gt;　ルール名にはここでは「To_Internet」とします。ルールグループは「自動」のままで構いません。アクションは「許可する」のままです。ファイアウォールのログは出力するようにチェックしておきます。現時点で「選択した条件に一致しないため、ルールを既存のグループに追加できません」との表示がありますが、その下のルール設定に進みます。&lt;/p&gt;
     
     </summary>
     

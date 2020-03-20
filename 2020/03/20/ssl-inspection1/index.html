@@ -20,28 +20,26 @@
     var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","scheme":"Gemini","version":"7.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="ネットワークの確認              ESXiのWeb管理画面にログイン後、左ペインの「ネットワーク」をクリック  「物理NIC」のタブをクリック　以下の画面のように、ESXiに認識されているNICの一覧がリストされます。">
+  <meta name="description" content="SSL&#x2F;TLSインスペクションの対象とするホストを登録する             　SSLインスペクションの設定にあたり、XGのルート証明書をインストール出来る事が前提と書きました。XGがSSLインスペクションを使えるクライアントかどうかを判断するにはIPアドレスで判断する事になります。いつも固定IPアドレスにするためには、クライアントのIPをスタティックに割り振るか、">
 <meta property="og:type" content="article">
-<meta property="og:title" content="VMware vSphere Hypervisor（ESXi）の設定">
-<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/index.html">
+<meta property="og:title" content="XG Firewall v18のSSLインスペクションの設定">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/index.html">
 <meta property="og:site_name" content="New technologies in our life">
-<meta property="og:description" content="ネットワークの確認              ESXiのWeb管理画面にログイン後、左ペインの「ネットワーク」をクリック  「物理NIC」のタブをクリック　以下の画面のように、ESXiに認識されているNICの一覧がリストされます。">
+<meta property="og:description" content="SSL&#x2F;TLSインスペクションの対象とするホストを登録する             　SSLインスペクションの設定にあたり、XGのルート証明書をインストール出来る事が前提と書きました。XGがSSLインスペクションを使えるクライアントかどうかを判断するにはIPアドレスで判断する事になります。いつも固定IPアドレスにするためには、クライアントのIPをスタティックに割り振るか、">
 <meta property="og:locale" content="ja_JP">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/conf_esxi.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/vswitch.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/vswitch1.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/vswitch2.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/vswitch3.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/vswitch4.png">
-<meta property="article:published_time" content="2020-03-01T00:30:49.000Z">
-<meta property="article:modified_time" content="2020-03-14T10:09:24.692Z">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/host.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/certificate.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/installed_cert.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/mac_ca.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/mac_ca1.png">
+<meta property="article:published_time" content="2020-03-20T12:32:29.000Z">
+<meta property="article:modified_time" content="2020-03-20T12:36:55.860Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
-<meta property="article:tag" content="ESXi">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/conf_esxi.png">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/host.png">
 
-<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/">
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/">
 
 
 <script id="page-configurations">
@@ -53,7 +51,7 @@
   };
 </script>
 
-  <title>VMware vSphere Hypervisor（ESXi）の設定 | New technologies in our life</title>
+  <title>XG Firewall v18のSSLインスペクションの設定 | New technologies in our life</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-159928165-1"></script>
     <script>
@@ -209,7 +207,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="ja">
-    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/new-technology/images/yoshi.png">
@@ -222,7 +220,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          VMware vSphere Hypervisor（ESXi）の設定
+          XG Firewall v18のSSLインスペクションの設定
         </h1>
 
         <div class="post-meta">
@@ -231,16 +229,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">投稿日</span>
+              
 
-              <time title="作成日：2020-03-01 09:30:49" itemprop="dateCreated datePublished" datetime="2020-03-01T09:30:49+09:00">2020-03-01</time>
+              <time title="作成日：2020-03-20 21:32:29 / 修正日：21:36:55" itemprop="dateCreated datePublished" datetime="2020-03-20T21:32:29+09:00">2020-03-20</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">編集日</span>
-                <time title="修正日：2020-03-14 19:09:24" itemprop="dateModified" datetime="2020-03-14T19:09:24+09:00">2020-03-14</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -263,75 +255,77 @@
 
       
         <div class="note primary no-icon">
-            <h2 id="ネットワークの確認"><a href="#ネットワークの確認" class="headerlink" title="ネットワークの確認"></a>ネットワークの確認</h2>
+            <h2 id="SSL-TLSインスペクションの対象とするホストを登録する"><a href="#SSL-TLSインスペクションの対象とするホストを登録する" class="headerlink" title="SSL/TLSインスペクションの対象とするホストを登録する"></a>SSL/TLSインスペクションの対象とするホストを登録する</h2>
           </div>
 
-<ol>
-<li><p>ESXiのWeb管理画面にログイン後、左ペインの「ネットワーク」をクリック</p>
-</li>
-<li><p>「物理NIC」のタブをクリック<br>　以下の画面のように、ESXiに認識されているNICの一覧がリストされます。</p>
+<p>　SSLインスペクションの設定にあたり、XGのルート証明書をインストール出来る事が前提と書きました。XGがSSLインスペクションを使えるクライアントかどうかを判断するにはIPアドレスで判断する事になります。いつも固定IPアドレスにするためには、クライアントのIPをスタティックに割り振るか、DHCPのIP割り振りを常に固定にする方法の2通りがあります。DHCPによって固定IPを割り振るために、クライアントのMACアドレスを調べておく必要があります。</p>
 <a id="more"></a>
-<img src="/new-technology/2020/03/01/esxi-conf/conf_esxi.png" class="" title="alt">
-<p>1GbpsのNICであれば、ドライバーはne1000として認識されています。（環境にもより異なりますが）vmnic0、vmnic1という物理NICが2つ表示されている事を確認してください。</p>
-<div class="note warning">
-            <p>物理NICが1つしかない場合は、XG Firewallのセットアップはできません。</p>
+<p>　左ペインのネットワークからDHCPのタブをクリックし、「Default DHCP Server」をクリックします。そこには、「スタティックIP_MACマッピング」があるので、DHCPで自動リースをしている以外のIPアドレスをスタティックに割り振って登録してください。管理の一例としては以下の通りです。</p>
+<ul>
+<li>動的なDHCPを192.168.2.101〜192.168.2.128</li>
+<li>証明書が登録可能なIPをstaticで192.168.2.129〜192.168.2.192</li>
+</ul>
+<p>　ここは完全に個人の「決め」です。さて、上記で証明書がインストール出来る端末群を「IPホスト」としてXGに登録しましょう。左ペインの「ホストとサービス」から、IPホストのタブをクリックし追加ボタンをクリックします。以下の通り、ホストのIPの範囲を示す名前を入力し、IPの範囲を入力して保存ボタンをクリックします。</p>
+<img src="/new-technology/2020/03/20/ssl-inspection1/host.png" class="" title="alt">
+
+
+<div class="note primary no-icon">
+            <h2 id="ファイアウォールルールの設定（確認）"><a href="#ファイアウォールルールの設定（確認）" class="headerlink" title="ファイアウォールルールの設定（確認）"></a>ファイアウォールルールの設定（確認）</h2>
           </div>
+
+<p>　左ペインのルールとポリシーからルールとポリシーを選択します。以前の記事「XG Firewall v18のOutboundルールを新規作成する」で、デフォルトのルール「To_Internet」を作成しました。<br> <a href="/new-technology/2020/03/14/rule-policy2/" title="XG Firewall v18のOutboundルールを新規作成する">XG Firewall v18のOutboundルールを新規作成する</a><br>Traffic to WANのグループ配下にルールがある事を確認してください。この設定は今回修正しません。</p>
+<div class="note primary no-icon">
+            <h2 id="SSL-TLSインスペクションルールの設定"><a href="#SSL-TLSインスペクションルールの設定" class="headerlink" title="SSL/TLSインスペクションルールの設定"></a>SSL/TLSインスペクションルールの設定</h2>
+          </div>
+
+<p>　左ペインのルールとポリシーからSSL/TLSインスペクションルールをクリックします。</p>
+
+
+<ol>
+<li>画面右側の追加ボタンをクリックします</li>
+<li>ルール名を入力します。ここでは「Catch_SSL」とします</li>
+<li>ルールの位置は「最下位」のままにします</li>
+<li>処理は「復号化」を選択します</li>
+<li>復号化のプロファイルは<span class="label info">Strict Compliance</span>を選択します</li>
+<li>送信元の送信ゾーンは、LANとVPNを選択します</li>
+<li>送信元ネットワークとデバイスは、任意を外し、先ほどの「CA_Client_IPv4」を選択します</li>
+<li>宛先とサービスの宛先ゾーンは、WANを選択します</li>
+<li>最後に保存ボタンをクリックします</li>
+</ol>
+<p>　暗号化のプロファイルの<span class="label info">Strict Compliance</span>は一番厳しいものです。左ペインのプロファイルの「復号化のプロファイル」を見てもらうと分かりますが、TLS1.0と1.1を認めないという事です。主要なブラウザは2020年上半期にTLS1.0と1.1を無効化するので、この設定が主流になるとおもいます。そうはいっても色々不便であれば、他のプロファイルに変更するか、該当のサイトが安全と分かっている場合は除外する等の対応が可能となります。なお、TLSの無効化については、<a href="https://www.cybertrust.co.jp/blog/ssl/regulations/disable-tls10.html" target="_blank" rel="noopener">サイバートラスト社の記事</a>が参考になります。<br>　これでSSLの復号化の設定は完了です。</p>
+<div class="note primary no-icon">
+            <h2 id="XGのルート証明書をクライアントにインストールする"><a href="#XGのルート証明書をクライアントにインストールする" class="headerlink" title="XGのルート証明書をクライアントにインストールする"></a>XGのルート証明書をクライアントにインストールする</h2>
+          </div>
+
+<p>　左ペインの一番下の証明書から、認証局（CA）をクリックします。この中に<span class="label info">Security Appliance_SSL_CA</span>という名前の証明書があります。今回これをクライアントに配布していく事になります。右の下向きの矢印があるダウンロードを選択してクライアントにルート証明書をダウンロードします。<span class="label info">Security Appliance_SSL_CA.pem</span>という名前になります。</p>
+<img src="/new-technology/2020/03/20/ssl-inspection1/certificate.png" class="" title="alt">
+
+<p>　ルート証明書をダウンロードした後のクライアントインストールについては、Sophosのサイトにある<a href="https://community.sophos.com/kb/ja-jp/123048" target="_blank" rel="noopener">Sophos XG Firewall: SSL CA 証明書のインストールガイド</a>を参照ください。手順書ではOSにインストールするのとは別に、ブラウザにもインストールする手順となっていますが、今日現在では不要のようです。FirefoxとEdgeではそのままXGの証明書が使われている事が確認出来ています。以下はWindowsの画面ですが、インストール後は、以下の通りブラウザの鍵マークをクリックする事でXGの証明書によって再署名されている事が確認出来ます。XGのログイン後のコントロールセンターの左上にライセンスナンバーが記載されていますが、実際の証明書でもそのナンバーが確認出来ます。</p>
+<img src="/new-technology/2020/03/20/ssl-inspection1/installed_cert.png" class="" title="alt">
+
+<p>　なお、macOSの場合は以下のようにキーチェーンアクセスから証明書を「常に信頼する」設定を加えます。こちらもブラウザ毎に設定の必要は無さそうです。</p>
+<img src="/new-technology/2020/03/20/ssl-inspection1/mac_ca.png" class="" title="alt">
+
+<img src="/new-technology/2020/03/20/ssl-inspection1/mac_ca1.png" class="" title="alt">
+
+<p> なお、iOSについては、「ファイル」アプリを使います。</p>
+<ol>
+<li>iCloud Driveに証明書を配置します</li>
+<li>「ファイル」アプリを起動します。iCloud Driveから証明書ファイルをタップしダウンロードします</li>
+<li>「プロファイルがダウンロードされました」と表示されます</li>
+<li>設定アプリを起動します</li>
+<li>「設定」→「一般」→「プロファイル」と進みます</li>
+<li>ダウンロード済プロファイルに、<span class="label info">Sophos SSL CA_xxxx</span>が表示されているので、タップします</li>
+<li>画面右上の「インストール」をタップします</li>
+<li>iOSのパスコードを入力します</li>
+<li>右上のインストールを再度タップし、インストールを完了します</li>
+<li>「設定」→「一般」→「情報」と進みます</li>
+<li>画面の一番下の「証明書信頼設定」をタップします</li>
+<li><span class="label info">Sophos SSL CA_xxxx</span>が表示されているので、スイッチを右側に移動させオン（緑色点灯）します
 
 </li>
 </ol>
-<div class="note primary no-icon">
-            <h2 id="ESXiを利用したXG-Firewallの最終構成"><a href="#ESXiを利用したXG-Firewallの最終構成" class="headerlink" title="ESXiを利用したXG Firewallの最終構成"></a>ESXiを利用したXG Firewallの最終構成</h2>
-          </div>
-
-<p>　ESXiにおけるネットワークの構成は、物理NICと仮想スイッチとの関係を理解する事が必要です。以下の図のように、ESXiにおける物理NICはケーブルとして見立て、実際に仮想マシンが複数台存在する事を鑑み、ESXiの中にスイッチングハブが存在していると考えてください。</p>
-<img src="/new-technology/2020/03/01/esxi-conf/vswitch.png" class="" title="alt">
-
- <div class="note info">
-            <p>便宜上、構成図にLinuxの仮想マシンを記載していますが、これまでのセットアップでは存在していません。</p>
-          </div>
-
-<div class="note primary no-icon">
-            <h2 id="現時点でのセットアップ状況の確認"><a href="#現時点でのセットアップ状況の確認" class="headerlink" title="現時点でのセットアップ状況の確認"></a>現時点でのセットアップ状況の確認</h2>
-          </div>
-
-<p>　ここまでのセットアップで、以下の構成になっています。</p>
-<ul>
-<li>物理NICであるvmnic0、vmnic1</li>
-<li>バーチャルスイッチのvSwitch0</li>
-<li>ネットワークポート（仮想IP）として、Lan側の管理用のManagement Networkおよびデフォルトで仮想マシンのために作成されているVM Network</li>
-</ul>
-<div class="note primary no-icon">
-            <h2 id="Wanのための仮想スイッチの作成"><a href="#Wanのための仮想スイッチの作成" class="headerlink" title="Wanのための仮想スイッチの作成"></a>Wanのための仮想スイッチの作成</h2>
-          </div>
-
-<img src="/new-technology/2020/03/01/esxi-conf/vswitch1.png" class="" title="alt">
-
-<p> 次に、XGのWan側インタフェースを担う仮想スイッチを追加し、LanとWanとのネットワークポートを追加する事になります（赤字の部分）。</p>
-<ol>
-<li>ESXiの管理画面の左ペイン、ネットワークをクリック、続いて仮想スイッチのタブをクリックします。</li>
-<li>標準仮想スイッチの追加をクリックします。</li>
-<li>Wan側の仮想スイッチを作成するため、ここでは、vSwitch1と命名します。MTUは1500のままで構いません。</li>
-</ol>
-<p>これで、以下の通り、仮想スイッチの作成は完了です。</p>
-<img src="/new-technology/2020/03/01/esxi-conf/vswitch2.png" class="" title="alt">
-
-<div class="note primary no-icon">
-            <h2 id="ネットワークポートの作成"><a href="#ネットワークポートの作成" class="headerlink" title="ネットワークポートの作成"></a>ネットワークポートの作成</h2>
-          </div>
-
-<ol>
-<li>vSwitch1をクリックし、物理NICのWan向けである、vmnic1と関連付けられている事を確認してください。</li>
-<li>XGのLanとWanのネットワークポートを作成します。左ペインのネットワークからポートグループのタブをクリックし、ポートグループの追加を選択します。</li>
-<li>新規ポートグループとして、LanはここではXG-Lanと命名し作成します。Lanなので、vSwitch0を関連づけます。</li>
-<li>続いてWanのために、XG-Wanと命名し、vSwitch1と関連づけます。</li>
-</ol>
-<p>　これらの設定が終わり、Lan側のネットワーク構成は以下の通りとなります。</p>
-<img src="/new-technology/2020/03/01/esxi-conf/vswitch3.png" class="" title="alt">
-
-<p>　また、Wan側のネットワーク構成は以下の通りです。</p>
-<img src="/new-technology/2020/03/01/esxi-conf/vswitch4.png" class="" title="alt">
-
-<p>　これで、ESXiのネットワーク設定は完了となります。<br>　面倒ですが、一旦またPCのネットワークを元に戻し、ホームゲートウェイに接続しネットに繋ぎます。そしてXG Firewallのモジュールをダウンロードしてまいりましょう。</p>
+<p>　これで一旦は証明書のインストールは完了です。この証明書のインストールがXG Firewallの設定で一番大切、かつ面倒なところになります。しかし、まだ微調整など必要なケースがあり設定は続きます。</p>
 
     </div>
 
@@ -347,7 +341,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>記事へのリンク：</strong>
-    <a href="https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/" title="VMware vSphere Hypervisor（ESXi）の設定">https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/</a>
+    <a href="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/" title="XG Firewall v18のSSLインスペクションの設定">https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/</a>
   </li>
   <li class="post-copyright-license">
     <strong>著作権表示： </strong>このブログ内のすべての記事は、特別な記載がない限り <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> の下のライセンスで保護されています。また、掲載している画像の著作権は各権利所有者に帰属します。記事の内容や掲載画像に問題がありましたら、ご連絡ください。<br><b>免責事項：</b> このブログに掲載された内容によって生じた損害等の一切の責任を負いかねますのでご了承ください。また、このブログのコンテンツや情報において、可能な限り正確な情報を掲載するよう努めておりますが、誤情報が入り込んだり、情報が古くなったりする場合があります。必ずしも正確性を保証するものではありません。また合法性や安全性なども保証しません。なお、プライバシーポリシーは、メニューの'about'からご確認いただけます。
@@ -359,7 +353,6 @@
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/new-technology/tags/XG-Firewall/" rel="tag"># XG Firewall</a>
-              <a href="/new-technology/tags/ESXi/" rel="tag"># ESXi</a>
           </div>
 
         
@@ -368,13 +361,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/new-technology/2020/02/29/esxi/" rel="prev" title="VMware vSphere Hypervisor（ESXi）のインストール">
-      <i class="fa fa-chevron-left"></i> VMware vSphere Hypervisor（ESXi）のインストール
+    <a href="/new-technology/2020/03/20/ssl-inspection/" rel="prev" title="XG Firewall v18のSSLインスペクションについて">
+      <i class="fa fa-chevron-left"></i> XG Firewall v18のSSLインスペクションについて
     </a></div>
-      <div class="post-nav-item">
-    <a href="/new-technology/2020/03/06/InstallXG/" rel="next" title="XG Firewallのインストール（事前準備）">
-      XG Firewallのインストール（事前準備） <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -434,7 +424,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ネットワークの確認"><span class="nav-number">1.</span> <span class="nav-text">ネットワークの確認</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXiを利用したXG-Firewallの最終構成"><span class="nav-number">2.</span> <span class="nav-text">ESXiを利用したXG Firewallの最終構成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#現時点でのセットアップ状況の確認"><span class="nav-number">3.</span> <span class="nav-text">現時点でのセットアップ状況の確認</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Wanのための仮想スイッチの作成"><span class="nav-number">4.</span> <span class="nav-text">Wanのための仮想スイッチの作成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ネットワークポートの作成"><span class="nav-number">5.</span> <span class="nav-text">ネットワークポートの作成</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#SSL-TLSインスペクションの対象とするホストを登録する"><span class="nav-number">1.</span> <span class="nav-text">SSL&#x2F;TLSインスペクションの対象とするホストを登録する</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ファイアウォールルールの設定（確認）"><span class="nav-number">2.</span> <span class="nav-text">ファイアウォールルールの設定（確認）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSL-TLSインスペクションルールの設定"><span class="nav-number">3.</span> <span class="nav-text">SSL&#x2F;TLSインスペクションルールの設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XGのルート証明書をクライアントにインストールする"><span class="nav-number">4.</span> <span class="nav-text">XGのルート証明書をクライアントにインストールする</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
