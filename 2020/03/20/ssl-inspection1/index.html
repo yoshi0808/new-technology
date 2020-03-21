@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/mac_ca.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/mac_ca1.png">
 <meta property="article:published_time" content="2020-03-20T12:32:29.000Z">
-<meta property="article:modified_time" content="2020-03-20T12:46:52.174Z">
+<meta property="article:modified_time" content="2020-03-21T02:25:24.162Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -229,10 +229,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">投稿日</span>
-              
 
-              <time title="作成日：2020-03-20 21:32:29 / 修正日：21:46:52" itemprop="dateCreated datePublished" datetime="2020-03-20T21:32:29+09:00">2020-03-20</time>
+              <time title="作成日：2020-03-20 21:32:29" itemprop="dateCreated datePublished" datetime="2020-03-20T21:32:29+09:00">2020-03-20</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">編集日</span>
+                <time title="修正日：2020-03-21 11:25:24" itemprop="dateModified" datetime="2020-03-21T11:25:24+09:00">2020-03-21</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -300,7 +306,7 @@
 <p>　左ペインの一番下の証明書から、認証局（CA）をクリックします。この中に<span class="label info">Security Appliance_SSL_CA</span>という名前の証明書があります。今回これをクライアントに配布していく事になります。右の下向きの矢印があるダウンロードを選択してクライアントにルート証明書をダウンロードします。<span class="label info">Security Appliance_SSL_CA.pem</span>という名前になります。</p>
 <img src="/new-technology/2020/03/20/ssl-inspection1/certificate.png" class="" title="alt">
 
-<p>　ルート証明書をダウンロードした後のクライアントインストールについては、Sophosのサイトにある<a href="https://community.sophos.com/kb/ja-jp/123048" target="_blank" rel="noopener">Sophos XG Firewall: SSL CA 証明書のインストールガイド</a>を参照ください。手順書ではOSにインストールするのとは別に、ブラウザにもインストールする手順となっていますが、今日現在では不要のようです。FirefoxとEdgeではそのままXGの証明書が使われている事が確認出来ています。以下はWindowsの画面ですが、インストール後は、以下の通りブラウザの鍵マークをクリックする事でXGの証明書によって再署名されている事が確認出来ます。XGのログイン後のコントロールセンターの左上にライセンスナンバーが記載されていますが、実際の証明書でもそのナンバーが確認出来ます。</p>
+<p>　ルート証明書をダウンロードした後のクライアントインストールについては、Sophosのサイトにある<a href="https://community.sophos.com/kb/ja-jp/123048" target="_blank" rel="noopener">Sophos XG Firewall: SSL CA 証明書のインストールガイド</a>を参照ください。特にOSへの登録が必須です。FirefoxとEdgeではそのままXGの証明書が使われている事が確認出来ています。以下はWindowsの画面ですが、インストール後は、以下の通りブラウザの鍵マークをクリックする事でXGの証明書によって再署名されている事が確認出来ます。XGのログイン後のコントロールセンターの左上にライセンスナンバーが記載されていますが、実際の証明書でもそのナンバーが確認出来ます。</p>
 <img src="/new-technology/2020/03/20/ssl-inspection1/installed_cert.png" class="" title="alt">
 
 <p>　なお、macOSの場合は以下のようにキーチェーンアクセスから証明書を「常に信頼する」設定を加えます。こちらもブラウザ毎に設定の必要は無さそうです。</p>
@@ -364,7 +370,10 @@
     <a href="/new-technology/2020/03/20/ssl-inspection/" rel="prev" title="XG Firewall v18のSSLインスペクションについて">
       <i class="fa fa-chevron-left"></i> XG Firewall v18のSSLインスペクションについて
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/new-technology/2020/03/21/ssl-inspection2/" rel="next" title="XG Firewall v18のSSLインスペクションの動作確認と調整">
+      XG Firewall v18のSSLインスペクションの動作確認と調整 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -440,7 +449,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/new-technology/archives/">
         
-          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-count">14</span>
           <span class="site-state-item-name">ポスト</span>
         </a>
       </div>
