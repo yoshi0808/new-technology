@@ -17,6 +17,8 @@ categories:
 <!-- more -->
 　[eicarのダウンロードページ](https://2016.eicar.org/85-0-Download.html)に行くと、「IMPORTANT NOTE」とhttp、httpsの以下それぞれの種類の合計8つのダウンロードリンクがあります。
 
+{% asset_img eicar.png alt %}
+
 1. 実行ファイル
 2. 実行ファイルをtxtに拡張子を変えたもの
 3. zipに圧縮したもの
@@ -39,7 +41,10 @@ categories:
 1. TLSが正当ではないと判断される
 2. XGの署名がアプリケーションに認められない
 
-　上記1については、XGの画面右上にログビューアというものがあるのでビューアからSSL/TLSインスペクションを選択します。私の環境では、norton.comが該当しています。TLSでエラーログが出力されていて、当該ドメインが安全と判断をするなら、以下の例外処置が行えます。Web→URLグループの{% label info@Local TLS Exclusion List %}にドメインを追加する事でSSLインスペクションが行われません。
+　上記1については、XGの画面右上にログビューアというものがあるのでビューアからSSL/TLSインスペクションを選択します。私の環境では、norton.comが該当しています。TLSでエラーログが出力されていて、当該ドメインが安全と判断をするなら、以下の例外処置が行えます。Web→URLグループの{% label info@Local TLS Exclusion List %}にドメインを追加する事でSSLインスペクションが行われません。以下の通り、SSLインスペクションルール画面では、デフォルトの除外項目に{% label info@Local TLS Exclusion List %}が含まれています。
+{% asset_img inspection-rule.png alt %}
+{% asset_img inspection-rule1.png alt %}
+
 　もう1つは対応が少し難しいのですが、アプリケーション自体が、OSにインストールされた証明書などを認めていないケースです。こちらはアプリケーションの内部に証明書を保持しており、その証明書の正当性を確認しているケースです。以下の例ではpython関連のモジュールをアップグレードするケースで以下のエラーが発生します。
 
 ```bash
