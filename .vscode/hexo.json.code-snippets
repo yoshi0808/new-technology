@@ -1,0 +1,74 @@
+{
+	// Place your new-technology ワークスペース snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and 
+	// description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope 
+	// is left empty or omitted, the snippet gets applied to all languages. The prefix is what is 
+	// used to trigger the snippet and the body will be expanded and inserted. Possible variables are: 
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. 
+	// Placeholders with the same ids are connected.
+	// Example:
+	// "Print to console": {
+	// 	"scope": "javascript,typescript",
+	// 	"prefix": "log",
+	// 	"body": [
+	// 		"console.log('$1');",
+	// 		"$2"
+	// 	],
+	// 	"description": "Log output to console"
+	// }
+	"Insert to img": {
+		"prefix": ">img",
+		"body": [
+			"{% asset_img $1.png alt %}"
+		],
+		"description": "{% asset_img filename.png alt %}"
+	},
+	"Label default Insert to": {
+		"prefix": ">label default",
+		"body": [
+			"{% label default @$1 %}"
+		],
+		"description": "Insert to default label"
+	},
+	"Label primary Insert to": {
+		"prefix": ">label primary",
+		"body": [
+			"{% label primary @$1 %}"
+		],
+		"description": "Insert to primary label"
+	},
+	"Label success Insert to": {
+		"prefix": ">label success",
+		"body": [
+			"{% label success @$1 %}"
+		],
+		"description": "Insert to success label"
+	},
+	"Label info Insert to": {
+		"prefix": ">label info",
+		"body": [
+			"{% label info @$1 %}"
+		],
+		"description": "Insert to info label"
+	},
+	"Label warning Insert to": {
+		"prefix": ">label warning",
+		"body": [
+			"{% label warning @$1 %}"
+		],
+		"description": "Insert to warning label"
+	},
+	"Label danger Insert to": {
+		"prefix": ">label danger",
+		"body": [
+			"{% label danger @$1 %}"
+		],
+		"description": "Insert to danger label"
+	},
+	"Insert to video": {
+		"prefix": ">video",
+		"body": [
+			"{% video $1 %}"
+		],
+		"description": "{% video url %}"
+	}
+}
