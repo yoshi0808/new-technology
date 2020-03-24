@@ -6,7 +6,7 @@
   <link href="/new-technology/atom.xml" rel="self"/>
   
   <link href="https://yoshi0808.github.io/new-technology/"/>
-  <updated>2020-03-22T05:47:16.045Z</updated>
+  <updated>2020-03-24T13:47:19.988Z</updated>
   <id>https://yoshi0808.github.io/new-technology/</id>
   
   <author>
@@ -15,6 +15,38 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>XG Firewall Sophos Communityについて</title>
+    <link href="https://yoshi0808.github.io/new-technology/2020/03/24/SophosCommunity/"/>
+    <id>https://yoshi0808.github.io/new-technology/2020/03/24/SophosCommunity/</id>
+    <published>2020-03-24T12:03:02.665Z</published>
+    <updated>2020-03-24T13:47:19.988Z</updated>
+    
+    <content type="html"><![CDATA[<div class="note primary no-icon">            <h2 id="Sophos-Communityで情報を調べる"><a href="#Sophos-Communityで情報を調べる" class="headerlink" title="Sophos Communityで情報を調べる"></a>Sophos Communityで情報を調べる</h2>          </div><p>　XG Firewall Home EditionはSophosによるサポートがなく、ユーザコミュニティの相互サポートによって成り立っています。そもそもこんなに素晴らしいソフトウェアが無料なのですから、それだけでも感謝すべき事ではありますが。サポートサイトは英語が中心ですが、セキュリティに関するビジネスをしている方とかも積極的に参加しているようで、勉強になります。</p><blockquote><p><a href="https://community.sophos.com/" target="_blank" rel="noopener">Sophos Community（英語）</a></p></blockquote><a id="more"></a><p>　さて、直接XGの話ではありませんが、ここ数日話題になっているドイツ製翻訳ソフトの<span class="label info">DeepL</span>が素晴らしいです。私はGoogle翻訳をずっと使っていましたが、こちらも使い勝手が良く便利です。<br>　Windows、macのアプリケーションとしてインストールする事が出来ます。利用は無償（高機能な有償のpro版もあります）で、例えばブラウザで翻訳箇所を選択しCtrl+c(macはcommand+c)を2回押下するとDeepLが起動し、英訳と日本語が併記されます。</p><p>　DeepLのダウンロードは<a href="https://www.deepl.com/app" target="_blank" rel="noopener">こちら</a>です。</p><p>　これまで私がブログで書いてきたｖ18のSSL/TLSインスペクションですが、いろいろ難しいところもあり、このブログで全てを説明するのは到底無理があります。Communityの素晴らしい知見を活用すべく、翻訳ソフトを利用して理解を深めていただければとおもいます。</p><blockquote><p><a href="https://community.sophos.com/products/xg-firewall/f/recommended-reads/118753/sophos-xg-firewall-v18-troubleshooting-problems-with-the-dpi-engine" target="_blank" rel="noopener">Sophos XG Firewall v18: DPI エンジンのトラブルシューティング</a></p></blockquote><p>　アプリでCtrl+cを2回押下して先頭部分の抜粋を抜粋します。</p><p>　ぜひ、翻訳ソフトのDeepLを活用しながら、XGやSSLインスペクションの理解を深めていただければとおもいます。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;div class=&quot;note primary no-icon&quot;&gt;
+            &lt;h2 id=&quot;Sophos-Communityで情報を調べる&quot;&gt;&lt;a href=&quot;#Sophos-Communityで情報を調べる&quot; class=&quot;headerlink&quot; title=&quot;Sophos Communityで情報を調べる&quot;&gt;&lt;/a&gt;Sophos Communityで情報を調べる&lt;/h2&gt;
+          &lt;/div&gt;
+
+&lt;p&gt;　XG Firewall Home EditionはSophosによるサポートがなく、ユーザコミュニティの相互サポートによって成り立っています。そもそもこんなに素晴らしいソフトウェアが無料なのですから、それだけでも感謝すべき事ではありますが。サポートサイトは英語が中心ですが、セキュリティに関するビジネスをしている方とかも積極的に参加しているようで、勉強になります。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;a href=&quot;https://community.sophos.com/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Sophos Community（英語）&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+    
+      <category term="Security" scheme="https://yoshi0808.github.io/new-technology/categories/Security/"/>
+    
+    
+      <category term="XG Firewall" scheme="https://yoshi0808.github.io/new-technology/tags/XG-Firewall/"/>
+    
+      <category term="Deepl" scheme="https://yoshi0808.github.io/new-technology/tags/Deepl/"/>
+    
+  </entry>
   
   <entry>
     <title>XG Firewall v18のSSLインスペクションの動作確認と調整</title>

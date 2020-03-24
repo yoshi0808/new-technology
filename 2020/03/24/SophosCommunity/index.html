@@ -20,22 +20,21 @@
     var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","scheme":"Gemini","version":"7.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="導入の背景            元々、家庭用の無線ルータだけではセキュリティが不足していると考えてる人は多いとおもいます。私の場合、個人で持っているファイル位であれば、盗られたところで大きな問題になるわけでなし、と大きく構えておりました。数年前よりランサムウェア等の脅威が出てきた事で、それなりの対策が必要と感じてきました。街のwifiからも自宅のリソースに安全に接続した">
+  <meta name="description" content="Sophos Communityで情報を調べる             　XG Firewall Home EditionはSophosによるサポートがなく、ユーザコミュニティの相互サポートによって成り立っています。そもそもこんなに素晴らしいソフトウェアが無料なのですから、それだけでも感謝すべき事ではありますが。サポートサイトは英語が中心ですが、セキュリティに関するビジネ">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Sophos XG Firewallの導入">
-<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/02/23/XG-Firewall/index.html">
+<meta property="og:title" content="XG Firewall Sophos Communityについて">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/03/24/SophosCommunity/index.html">
 <meta property="og:site_name" content="New technologies in our life">
-<meta property="og:description" content="導入の背景            元々、家庭用の無線ルータだけではセキュリティが不足していると考えてる人は多いとおもいます。私の場合、個人で持っているファイル位であれば、盗られたところで大きな問題になるわけでなし、と大きく構えておりました。数年前よりランサムウェア等の脅威が出てきた事で、それなりの対策が必要と感じてきました。街のwifiからも自宅のリソースに安全に接続した">
+<meta property="og:description" content="Sophos Communityで情報を調べる             　XG Firewall Home EditionはSophosによるサポートがなく、ユーザコミュニティの相互サポートによって成り立っています。そもそもこんなに素晴らしいソフトウェアが無料なのですから、それだけでも感謝すべき事ではありますが。サポートサイトは英語が中心ですが、セキュリティに関するビジネ">
 <meta property="og:locale" content="ja_JP">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/02/23/XG-Firewall/xg.png">
-<meta property="article:published_time" content="2020-02-23T00:57:41.000Z">
-<meta property="article:modified_time" content="2020-03-14T10:09:24.660Z">
+<meta property="article:published_time" content="2020-03-24T12:03:02.665Z">
+<meta property="article:modified_time" content="2020-03-24T13:47:19.988Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
+<meta property="article:tag" content="Deepl">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2020/02/23/XG-Firewall/xg.png">
 
-<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2020/02/23/XG-Firewall/">
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2020/03/24/SophosCommunity/">
 
 
 <script id="page-configurations">
@@ -47,7 +46,7 @@
   };
 </script>
 
-  <title>Sophos XG Firewallの導入 | New technologies in our life</title>
+  <title>XG Firewall Sophos Communityについて | New technologies in our life</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-159928165-1"></script>
     <script>
@@ -203,7 +202,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="ja">
-    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2020/02/23/XG-Firewall/">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2020/03/24/SophosCommunity/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/new-technology/images/yoshi.png">
@@ -216,7 +215,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Sophos XG Firewallの導入
+          XG Firewall Sophos Communityについて
         </h1>
 
         <div class="post-meta">
@@ -225,16 +224,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">投稿日</span>
+              
 
-              <time title="作成日：2020-02-23 09:57:41" itemprop="dateCreated datePublished" datetime="2020-02-23T09:57:41+09:00">2020-02-23</time>
+              <time title="作成日：2020-03-24 21:03:02 / 修正日：22:47:19" itemprop="dateCreated datePublished" datetime="2020-03-24T21:03:02+09:00">2020-03-24</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">編集日</span>
-                <time title="修正日：2020-03-14 19:09:24" itemprop="dateModified" datetime="2020-03-14T19:09:24+09:00">2020-03-14</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -257,55 +250,24 @@
 
       
         <div class="note primary no-icon">
-            <h2 id="導入の背景"><a href="#導入の背景" class="headerlink" title="導入の背景"></a>導入の背景</h2>
-          </div>
-<p>元々、家庭用の無線ルータだけではセキュリティが不足していると考えてる人は多いとおもいます。私の場合、個人で持っているファイル位であれば、盗られたところで大きな問題になるわけでなし、と大きく構えておりました。数年前よりランサムウェア等の脅威が出てきた事で、それなりの対策が必要と感じてきました。街のwifiからも自宅のリソースに安全に接続したり、家のサーバーを踏み台にしてネットに繋げたいという欲も出てきて、今度はVPNが欲しいなと思い始めました。</p>
-<a id="more"></a>
-<p>　そもそも、iCloudかOneDriveあたりに必要なファイルはどーんと置いておけばいいんですが、漏洩よりも万が一のロストが不安です。それなりの容量だと、クラウドのお金も掛かりますしね。<br>　オンプレの場合は盗難や火事というリスクもあり、人によって考え方は異なりますが、利便性と安全性のバランスを取る事を目指す事になるのでしょう。個人のセキュリティというものは、ビジネスにおけるリスクを極限まで抑制するという考えではなく、何かプラス α の安心感を求める程度という目線を目指す事になるのかとおもいます。Sophos社が提供する<a href="https://www.sophos.com/ja-jp/products/free-tools.aspx" target="_blank" rel="noopener">Sophos XG Firewall Home Edition</a>は、業務用ながら個人向けには無料という事もあって、最良のセキュリティ防御の手段と考えています。かれこれ1年半くらいでしょうか。ずっと使わせてもらってます。</p>
-<p>　v18が発表されて、大幅に機能強化されたのは良かったのですが、残念ながら設定方法が難しくなってしまいました。こんなに高機能なものを無料で使わせて頂いてるのだから、何か貢献すべきと考え、設定内容等を公開していく事にしました。スキマ時間に書いているのでスピードが遅いのはどうかご容赦ください。</p>
-<img src="/new-technology/2020/02/23/XG-Firewall/xg.png" class="">
-
-<div class="note primary no-icon">
-            <h2 id="主な機能"><a href="#主な機能" class="headerlink" title="主な機能"></a>主な機能</h2>
+            <h2 id="Sophos-Communityで情報を調べる"><a href="#Sophos-Communityで情報を調べる" class="headerlink" title="Sophos Communityで情報を調べる"></a>Sophos Communityで情報を調べる</h2>
           </div>
 
-<ol>
-<li>Firewall機能（IPフィルター、Portフィルター）</li>
-<li>IPS/WAF(WAFは面倒です）</li>
-<li>DDoS対策機能（個人には不要とおもいます）</li>
-<li>国別フィルター（IPv4のみ）</li>
-<li>VPN（2要素認証対応）</li>
-<li>DNAT（Destination NAT※LANのサーバをネットに解放）</li>
-<li>DNS/DHCP(IPv4,IPv6)</li>
-</ol>
-<p>　細かな説明については、<a href="https://jscom.jp/wp-content/uploads/pamphlet_sophos_020pdf.pdf" target="_blank" rel="noopener">こちら</a>を見て下さい。</p>
-<div class="note primary no-icon">
-            <h2 id="XG-Firewall導入のメリット"><a href="#XG-Firewall導入のメリット" class="headerlink" title="XG Firewall導入のメリット"></a>XG Firewall導入のメリット</h2>
-          </div>
-
-<ol>
-<li>ドメイン単位にWebサイト毎のカテゴリがされているので、ギャンブルやゲーム、アダルトなどのカテゴリで禁止ルールを設定可能</li>
-<li>接続したくない国に対してアクセス制限ができる。Webブラウジングはもちろん、自宅にサーバーを建てた場合の接続元を日本からのみに絞る事も可能（IPv4のみ）</li>
-<li>IPS（Intrusion Prevention System）によるSSL通信の中身を検査できる</li>
-<li>ログ機能が充実している</li>
-<li>VPNにおいてパスワード＋ワンタイムパスワードによる認証が可能（Windows、Mac、iOS、Android）</li>
-<li>エラーをフックし、メールでの通知が行える</li>
-</ol>
-<div class="note primary no-icon">
-            <h2 id="XG-Firewall導入のデメリット"><a href="#XG-Firewall導入のデメリット" class="headerlink" title="XG Firewall導入のデメリット"></a>XG Firewall導入のデメリット</h2>
-          </div>
-
-<ol>
-<li>新しいPCが必要（もちろん新品である必要はありませんが）。2枚のネットワークインタフェースが必要</li>
-<li>ネットのパフォーマンスが犠牲になる。回線帯域よりもレイテンシ（遅延）が大きくなると想定される</li>
-<li>XG Firewallによる保護はエンドポイントの保護を完全に不要にするものではないため、従来通りウィルス対策ソフトはインストールが必要（と考えています）</li>
-</ol>
-<hr>
-<p>システム要件は以下の通りとなっています（XG Firewallの<a href="https://www.sophos.com/ja-jp/products/free-tools/sophos-xg-firewall-home-edition.aspx" target="_blank" rel="noopener">ダウンロードページ</a>より引用）。</p>
+<p>　XG Firewall Home EditionはSophosによるサポートがなく、ユーザコミュニティの相互サポートによって成り立っています。そもそもこんなに素晴らしいソフトウェアが無料なのですから、それだけでも感謝すべき事ではありますが。サポートサイトは英語が中心ですが、セキュリティに関するビジネスをしている方とかも積極的に参加しているようで、勉強になります。</p>
 <blockquote>
-<p>2つのネットワークインターフェースのあるIntel互換コンピュータ。(XG Firewall Home Editionをインストールすると、コンピュータにある既存のOSやファイルは上書きされます）<br>Home Editionは、4コア、および6GBのRAMまでの環境に対応しています。この条件を超えるコンピュータも使用可能ですが、XG Firewall Home Editionは、上限を超える容量を活用できません。</p>
+<p><a href="https://community.sophos.com/" target="_blank" rel="noopener">Sophos Community（英語）</a></p>
 </blockquote>
-<p>　家庭向けとしては、技術面でかなりハードルは高いです。しかし、業務用ファイアウォールが家庭で使えるというのは非常に魅力です。興味のある方はお付き合い頂ければとおもいます。</p>
+<a id="more"></a>
+<p>　さて、直接XGの話ではありませんが、ここ数日話題になっているドイツ製翻訳ソフトの<span class="label info">DeepL</span>が素晴らしいです。私はGoogle翻訳をずっと使っていましたが、こちらも使い勝手が良く便利です。<br>　Windows、macのアプリケーションとしてインストールする事が出来ます。利用は無償（高機能な有償のpro版もあります）で、例えばブラウザで翻訳箇所を選択しCtrl+c(macはcommand+c)を2回押下するとDeepLが起動し、英訳と日本語が併記されます。</p>
+<p>　DeepLのダウンロードは<a href="https://www.deepl.com/app" target="_blank" rel="noopener">こちら</a>です。</p>
+<p>　これまで私がブログで書いてきたｖ18のSSL/TLSインスペクションですが、いろいろ難しいところもあり、このブログで全てを説明するのは到底無理があります。Communityの素晴らしい知見を活用すべく、翻訳ソフトを利用して理解を深めていただければとおもいます。</p>
+<blockquote>
+<p><a href="https://community.sophos.com/products/xg-firewall/f/recommended-reads/118753/sophos-xg-firewall-v18-troubleshooting-problems-with-the-dpi-engine" target="_blank" rel="noopener">Sophos XG Firewall v18: DPI エンジンのトラブルシューティング</a></p>
+</blockquote>
+<p>　アプリでCtrl+cを2回押下して先頭部分の抜粋を抜粋します。</p>
+
+
+<p>　ぜひ、翻訳ソフトのDeepLを活用しながら、XGやSSLインスペクションの理解を深めていただければとおもいます。</p>
 
     </div>
 
@@ -321,7 +283,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>記事へのリンク：</strong>
-    <a href="https://yoshi0808.github.io/new-technology/2020/02/23/XG-Firewall/" title="Sophos XG Firewallの導入">https://yoshi0808.github.io/new-technology/2020/02/23/XG-Firewall/</a>
+    <a href="https://yoshi0808.github.io/new-technology/2020/03/24/SophosCommunity/" title="XG Firewall Sophos Communityについて">https://yoshi0808.github.io/new-technology/2020/03/24/SophosCommunity/</a>
   </li>
   <li class="post-copyright-license">
     <strong>著作権表示： </strong>このブログ内のすべての記事は、特別な記載がない限り <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> の下のライセンスで保護されています。また、掲載している画像の著作権は各権利所有者に帰属します。記事の内容や掲載画像に問題がありましたら、ご連絡ください。<br><b>免責事項：</b> このブログに掲載された内容によって生じた損害等の一切の責任を負いかねますのでご了承ください。また、このブログのコンテンツや情報において、可能な限り正確な情報を掲載するよう努めておりますが、誤情報が入り込んだり、情報が古くなったりする場合があります。必ずしも正確性を保証するものではありません。また合法性や安全性なども保証しません。なお、プライバシーポリシーは、メニューの'about'からご確認いただけます。
@@ -333,6 +295,7 @@
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/new-technology/tags/XG-Firewall/" rel="tag"># XG Firewall</a>
+              <a href="/new-technology/tags/Deepl/" rel="tag"># Deepl</a>
           </div>
 
         
@@ -341,13 +304,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/new-technology/2020/02/22/%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB/" rel="prev" title="はじめに">
-      <i class="fa fa-chevron-left"></i> はじめに
+    <a href="/new-technology/2020/03/21/ssl-inspection2/" rel="prev" title="XG Firewall v18のSSLインスペクションの動作確認と調整">
+      <i class="fa fa-chevron-left"></i> XG Firewall v18のSSLインスペクションの動作確認と調整
     </a></div>
-      <div class="post-nav-item">
-    <a href="/new-technology/2020/02/25/provision/" rel="next" title="PC（ハードウェア）の準備">
-      PC（ハードウェア）の準備 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -407,7 +367,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#導入の背景"><span class="nav-number">1.</span> <span class="nav-text">導入の背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#主な機能"><span class="nav-number">2.</span> <span class="nav-text">主な機能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG-Firewall導入のメリット"><span class="nav-number">3.</span> <span class="nav-text">XG Firewall導入のメリット</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG-Firewall導入のデメリット"><span class="nav-number">4.</span> <span class="nav-text">XG Firewall導入のデメリット</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Sophos-Communityで情報を調べる"><span class="nav-number">1.</span> <span class="nav-text">Sophos Communityで情報を調べる</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
