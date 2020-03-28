@@ -2,10 +2,12 @@
 title: XG Firewall Sophos Communityについて
 tags:
   - XG Firewall
-  - Deepl
+  - DeepL
 categories:
   - Security
+date: 2020-03-26 18:27:32
 ---
+
 
 {% note primary no-icon %}
 
