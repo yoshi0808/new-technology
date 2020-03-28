@@ -2,7 +2,6 @@
 title: XG Firewall VPNについて
 tags:
   - XG Firewall
-  - DeepL
 categories:
   - Security
   - VPN
