@@ -20,28 +20,23 @@
     var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","scheme":"Gemini","version":"7.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="ネットワークの確認              ESXiのWeb管理画面にログイン後、左ペインの「ネットワーク」をクリック  「物理NIC」のタブをクリック　以下の画面のように、ESXiに認識されているNICの一覧がリストされます。">
+  <meta name="description" content="スマホからXG Firewall VPNに接続する事前準備             　前回までの記事でPC（WindowsおよびmacOS）からXGのIPSec VPNにワンタイムパスワードを使って安全に接続できるようになりました。ここでは引き続き、スマホからVPNに接続できるように設定していきます。この記事では、XG側に一通りVPNの設定が終わっている事を前提としていま">
 <meta property="og:type" content="article">
-<meta property="og:title" content="VMware vSphere Hypervisor（ESXi）の設定">
-<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/index.html">
+<meta property="og:title" content="XG Firewall VPNにスマホから接続する">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/03/31/vpn-iphone/index.html">
 <meta property="og:site_name" content="New technologies in our life">
-<meta property="og:description" content="ネットワークの確認              ESXiのWeb管理画面にログイン後、左ペインの「ネットワーク」をクリック  「物理NIC」のタブをクリック　以下の画面のように、ESXiに認識されているNICの一覧がリストされます。">
+<meta property="og:description" content="スマホからXG Firewall VPNに接続する事前準備             　前回までの記事でPC（WindowsおよびmacOS）からXGのIPSec VPNにワンタイムパスワードを使って安全に接続できるようになりました。ここでは引き続き、スマホからVPNに接続できるように設定していきます。この記事では、XG側に一通りVPNの設定が終わっている事を前提としていま">
 <meta property="og:locale" content="ja_JP">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/conf_esxi.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/vswitch.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/vswitch1.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/vswitch2.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/vswitch3.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/vswitch4.png">
-<meta property="article:published_time" content="2020-03-01T00:30:49.000Z">
-<meta property="article:modified_time" content="2020-03-14T10:09:24.692Z">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/31/vpn-iphone/iphone.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/31/vpn-iphone/android.png">
+<meta property="article:published_time" content="2020-03-31T10:44:58.000Z">
+<meta property="article:modified_time" content="2020-03-31T10:44:59.005Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
-<meta property="article:tag" content="ESXi">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/conf_esxi.png">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2020/03/31/vpn-iphone/iphone.png">
 
-<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/">
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2020/03/31/vpn-iphone/">
 
 
 <script id="page-configurations">
@@ -53,7 +48,7 @@
   };
 </script>
 
-  <title>VMware vSphere Hypervisor（ESXi）の設定 | New technologies in our life</title>
+  <title>XG Firewall VPNにスマホから接続する | New technologies in our life</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-159928165-1"></script>
     <script>
@@ -209,7 +204,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="ja">
-    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2020/03/31/vpn-iphone/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/new-technology/images/yoshi.png">
@@ -222,7 +217,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          VMware vSphere Hypervisor（ESXi）の設定
+          XG Firewall VPNにスマホから接続する
         </h1>
 
         <div class="post-meta">
@@ -231,23 +226,25 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">投稿日</span>
+              
 
-              <time title="作成日：2020-03-01 09:30:49" itemprop="dateCreated datePublished" datetime="2020-03-01T09:30:49+09:00">2020-03-01</time>
+              <time title="作成日：2020-03-31 19:44:58 / 修正日：19:44:59" itemprop="dateCreated datePublished" datetime="2020-03-31T19:44:58+09:00">2020-03-31</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">編集日</span>
-                <time title="修正日：2020-03-14 19:09:24" itemprop="dateModified" datetime="2020-03-14T19:09:24+09:00">2020-03-14</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">カテゴリ</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/new-technology/categories/Software/" itemprop="url" rel="index"><span itemprop="name">Software</span></a>
+                  <a href="/new-technology/categories/Security/" itemprop="url" rel="index"><span itemprop="name">Security</span></a>
+                </span>
+                  、
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/new-technology/categories/Security/VPN/" itemprop="url" rel="index"><span itemprop="name">VPN</span></a>
+                </span>
+                  、
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/new-technology/categories/Security/VPN/%E3%83%AF%E3%83%B3%E3%82%BF%E3%82%A4%E3%83%A0%E3%83%91%E3%82%B9%E3%83%AF%E3%83%BC%E3%83%89/" itemprop="url" rel="index"><span itemprop="name">ワンタイムパスワード</span></a>
                 </span>
             </span>
 
@@ -263,75 +260,89 @@
 
       
         <div class="note primary no-icon">
-            <h2 id="ネットワークの確認"><a href="#ネットワークの確認" class="headerlink" title="ネットワークの確認"></a>ネットワークの確認</h2>
+            <h2 id="スマホからXG-Firewall-VPNに接続する事前準備"><a href="#スマホからXG-Firewall-VPNに接続する事前準備" class="headerlink" title="スマホからXG Firewall VPNに接続する事前準備"></a>スマホからXG Firewall VPNに接続する事前準備</h2>
           </div>
 
-<ol>
-<li><p>ESXiのWeb管理画面にログイン後、左ペインの「ネットワーク」をクリック</p>
-</li>
-<li><p>「物理NIC」のタブをクリック<br>　以下の画面のように、ESXiに認識されているNICの一覧がリストされます。</p>
-<a id="more"></a>
-<img src="/new-technology/2020/03/01/esxi-conf/conf_esxi.png" class="" title="alt">
-<p>1GbpsのNICであれば、ドライバーはne1000として認識されています。（環境にもより異なりますが）vmnic0、vmnic1という物理NICが2つ表示されている事を確認してください。</p>
-<div class="note warning">
-            <p>物理NICが1つしかない場合は、XG Firewallのセットアップはできません。</p>
-          </div>
-
-</li>
-</ol>
-<div class="note primary no-icon">
-            <h2 id="ESXiを利用したXG-Firewallの最終構成"><a href="#ESXiを利用したXG-Firewallの最終構成" class="headerlink" title="ESXiを利用したXG Firewallの最終構成"></a>ESXiを利用したXG Firewallの最終構成</h2>
-          </div>
-
-<p>　ESXiにおけるネットワークの構成は、物理NICと仮想スイッチとの関係を理解する事が必要です。以下の図のように、ESXiにおける物理NICはケーブルとして見立て、実際に仮想マシンが複数台存在する事を鑑み、ESXiの中にスイッチングハブが存在していると考えてください。</p>
-<img src="/new-technology/2020/03/01/esxi-conf/vswitch.png" class="" title="alt">
-
- <div class="note info">
-            <p>便宜上、構成図にLinuxの仮想マシンを記載していますが、これまでのセットアップでは存在していません。</p>
-          </div>
-
-<div class="note primary no-icon">
-            <h2 id="現時点でのセットアップ状況の確認"><a href="#現時点でのセットアップ状況の確認" class="headerlink" title="現時点でのセットアップ状況の確認"></a>現時点でのセットアップ状況の確認</h2>
-          </div>
-
-<p>　ここまでのセットアップで、以下の構成になっています。</p>
+<p>　前回までの記事でPC（WindowsおよびmacOS）からXGの<span class="label info">IPSec VPN</span>にワンタイムパスワードを使って安全に接続できるようになりました。ここでは引き続き、スマホからVPNに接続できるように設定していきます。この記事では、XG側に一通りVPNの設定が終わっている事を前提としています。改めて以下の記事も参考にしてください。</p>
+<p>　 <a href="/new-technology/2020/03/28/vpn/" title="XG Firewall VPNについて">XG Firewall VPNについて</a><br>　 <a href="/new-technology/2020/03/28/vpnotp/" title="XG Firewall VPNにワンタイムパスワードを設定する">XG Firewall VPNにワンタイムパスワードを設定する</a></p>
+<p>　前提条件は以下の通りです。なお、この記事では、ワンタイムパスワードを必ず必須とはしていません。私としてはセキュアなワンタイムパスワードを使ってVPNに接続する事をお勧めします。</p>
 <ul>
-<li>物理NICであるvmnic0、vmnic1</li>
-<li>バーチャルスイッチのvSwitch0</li>
-<li>ネットワークポート（仮想IP）として、Lan側の管理用のManagement Networkおよびデフォルトで仮想マシンのために作成されているVM Network</li>
+<li>XGにVPN(Sophos Connect)の設定を終えている</li>
+<li>XGの外側（インターネット側）にホームゲートウェイがあり、ホームゲートウェイからXGに対し必要なVPNのパケットを転送出来ている<a id="more"></a>
+
+</li>
 </ul>
 <div class="note primary no-icon">
-            <h2 id="Wanのための仮想スイッチの作成"><a href="#Wanのための仮想スイッチの作成" class="headerlink" title="Wanのための仮想スイッチの作成"></a>Wanのための仮想スイッチの作成</h2>
+            <h2 id="iOS-iPhone-からVPN接続のための設定を行う"><a href="#iOS-iPhone-からVPN接続のための設定を行う" class="headerlink" title="iOS(iPhone)からVPN接続のための設定を行う"></a>iOS(iPhone)からVPN接続のための設定を行う</h2>
           </div>
 
-<img src="/new-technology/2020/03/01/esxi-conf/vswitch1.png" class="" title="alt">
+<p>　まず、<span class="label info">PC</span>から<span class="label info">LAN</span>環境にて、XGのユーザーポータル<code>https://XGのIPアドレス/</code>に接続します。ユーザーポータルには、前回までに作成したVPNユーザーでログインします。ポータルのログイン後には、以下の画面のように、iPhone（iOS）のIPSec VPNに必要な設定ファイルをダウンロードできるようになっています。</p>
+<img src="/new-technology/2020/03/31/vpn-iphone/iphone.png" class="" title="alt">
 
-<p> 次に、XGのWan側インタフェースを担う仮想スイッチを追加し、LanとWanとのネットワークポートを追加する事になります（赤字の部分）。</p>
-<ol>
-<li>ESXiの管理画面の左ペイン、ネットワークをクリック、続いて仮想スイッチのタブをクリックします。</li>
-<li>標準仮想スイッチの追加をクリックします。</li>
-<li>Wan側の仮想スイッチを作成するため、ここでは、vSwitch1と命名します。MTUは1500のままで構いません。</li>
-</ol>
-<p>これで、以下の通り、仮想スイッチの作成は完了です。</p>
-<img src="/new-technology/2020/03/01/esxi-conf/vswitch2.png" class="" title="alt">
+<div class="note warning">
+            <p>ダウンロードした設定ファイルは一部修正が必要ですので、PCからダウンロード・修正の後、iOSにインストールする事をお勧めします。</p>
+          </div>
 
+<p>　ファイルをダウンロードしたらメモ帳やテキストエディットなどで設定ファイルを開きます。以下はファイルの先頭からの抜粋ですが、11行目にXGのWAN側のIPアドレスが記載されている行があります。内容は以下の通りです。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plist</span> <span class="attr">version</span>=<span class="string">"1.0"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">key</span>&gt;</span>PayloadContent<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">key</span>&gt;</span>IPSec<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">key</span>&gt;</span>AuthenticationMethod<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">string</span>&gt;</span>SharedSecret<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">key</span>&gt;</span>RemoteAddress<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">string</span>&gt;</span>192.168.x.x<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>　上記のIPアドレスをXGで設定してあるダイナミックDNSのホスト名に書き換えます（Sophos社が提供しているダイナミックDNSであれば、xxxx.myfirewall.coです）。その後、ファイルを保存し、iCloudまたはメールなどでiPhoneに転送し、iPhoneから設定ファイルをインストールします。macOSだとFinderからファイルを選んでAirDropでiPhoneに送信すると簡単ですね。iPhoneではプロファイルのインストール時には、最初にiPhoneのパスワードを求められますのでiPhoneのパスワードを入力します。<br>　次にXGの接続ユーザーのパスワードを求められますが、ここはワンタイムパスワードの有無で設定が異なります。</p>
+<ul>
+<li>以下の場合は、XGの接続ユーザーのパスワードを入力します<ul>
+<li>ワンタイムパスワードは利用しない</li>
+<li>iPhoneにパスワードを記憶させたい</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>以下の場合は、パスワードを入力せずプロファイルのインストールを完了させます<ul>
+<li>ワンタイムパスワードを利用する</li>
+<li>iPhoneにパスワードを記憶させたくない</li>
+</ul>
+</li>
+</ul>
+<p>　これでプロファイルのインストールは完了です。</p>
 <div class="note primary no-icon">
-            <h2 id="ネットワークポートの作成"><a href="#ネットワークポートの作成" class="headerlink" title="ネットワークポートの作成"></a>ネットワークポートの作成</h2>
+            <h2 id="iOS-iPhone-からVPNに接続する"><a href="#iOS-iPhone-からVPNに接続する" class="headerlink" title="iOS(iPhone)からVPNに接続する"></a>iOS(iPhone)からVPNに接続する</h2>
           </div>
 
-<ol>
-<li>vSwitch1をクリックし、物理NICのWan向けである、vmnic1と関連付けられている事を確認してください。</li>
-<li>XGのLanとWanのネットワークポートを作成します。左ペインのネットワークからポートグループのタブをクリックし、ポートグループの追加を選択します。</li>
-<li>新規ポートグループとして、LanはここではXG-Lanと命名し作成します。Lanなので、vSwitch0を関連づけます。</li>
-<li>続いてWanのために、XG-Wanと命名し、vSwitch1と関連づけます。</li>
-</ol>
-<p>　これらの設定が終わり、Lan側のネットワーク構成は以下の通りとなります。</p>
-<img src="/new-technology/2020/03/01/esxi-conf/vswitch3.png" class="" title="alt">
+<p>　早速、iPhoneからVPNに接続します。設定アプリからVPNを選択、XGの接続先が選択されている状態で<span class="label info">状況</span>のトグルスイッチをオンにします。パスワードが設定済みの方は1秒も掛からず、すぐにXGへの接続が完了します。<br>　ワンタイムパスワードを設定している方、或いはパスワードを記憶させていない方は、パスワード入力のポップアップが表示されます。ワンタイムパスワードは、パスワードのあと続けてワンタイムパスワードの6つの数字を続けて入力します。一旦ポップアップが表示されると他のアプリに切り替えられないので一旦キャンセルします。ワンタイムパスワードアプリで6桁の数字を記憶するかコピーするなどし、最大30秒以内で設定アプリに再度切り替え、VPNのパスワードを完成させ接続する事になります。<br>　ちょっと最後が慌ただしいのですが、iPhoneからXGのVPNに接続できる環境が整いました。</p>
+<div class="note primary no-icon">
+            <h2 id="AndroidからVPN接続のための設定を行う"><a href="#AndroidからVPN接続のための設定を行う" class="headerlink" title="AndroidからVPN接続のための設定を行う"></a>AndroidからVPN接続のための設定を行う</h2>
+          </div>
 
-<p>　また、Wan側のネットワーク構成は以下の通りです。</p>
-<img src="/new-technology/2020/03/01/esxi-conf/vswitch4.png" class="" title="alt">
-
-<p>　これで、ESXiのネットワーク設定は完了となります。<br>　面倒ですが、一旦またPCのネットワークを元に戻し、ホームゲートウェイに接続しネットに繋ぎます。そしてXG Firewallのモジュールをダウンロードしてまいりましょう。</p>
+<p>　AndroidからVPNに接続する場合は、以下の設定を行います。今回の実例はAndroidのバージョン9のタブレットで説明します。機種によって操作は異なるかとおもいますが、ご容赦ください。<br>　無線とネットワーク→VPN→<span class="label info">VPNネットワークの追加</span>をタップします。</p>
+<table>
+<thead>
+<tr>
+<th>説明</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>名前</td>
+<td>接続名を入力します</td>
+</tr>
+<tr>
+<td>タイプ</td>
+<td><span class="label info">IPSec Xauth PSK</span>を選択します</td>
+</tr>
+<tr>
+<td>サーバー</td>
+<td>xxx.myfirewall.coなどのダイナミックDNSのホスト名を入力します</td>
+</tr>
+<tr>
+<td>IPSec ID</td>
+<td>空白のままで構いません</td>
+</tr>
+<tr>
+<td>IPSec事前共有鍵</td>
+<td>XGで設定した共有鍵を入力します</td>
+</tr>
+</tbody></table>
+<img src="/new-technology/2020/03/31/vpn-iphone/android.png" class="" title="alt">
+<p>　この後、ユーザーIDとパスワードを入力し、接続します。iOSと同様に、ワンタイムパスワードを利用する場合は、パスワードの後ろにワンタイムパスワード（6桁の数字）を続けて入力します。こちらも接続は一瞬で完了します。</p>
+<p>　これで、スマホからもXGのVPNに接続する事が出来ました。スマホからXG Firewallを活用した安全なネットアクセスや宅内に設置してあるサーバーの操作ができるのは大変魅力的だとおもいます。</p>
 
     </div>
 
@@ -347,7 +358,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>記事へのリンク：</strong>
-    <a href="https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/" title="VMware vSphere Hypervisor（ESXi）の設定">https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/</a>
+    <a href="https://yoshi0808.github.io/new-technology/2020/03/31/vpn-iphone/" title="XG Firewall VPNにスマホから接続する">https://yoshi0808.github.io/new-technology/2020/03/31/vpn-iphone/</a>
   </li>
   <li class="post-copyright-license">
     <strong>著作権表示： </strong>このブログ内のすべての記事は、特別な記載がない限り <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> の下のライセンスで保護されています。また、掲載している画像の著作権は各権利所有者に帰属します。記事の内容や掲載画像に問題がありましたら、ご連絡ください。<br><b>免責事項：</b> このブログに掲載された内容によって生じた損害等の一切の責任を負いかねますのでご了承ください。また、このブログのコンテンツや情報において、可能な限り正確な情報を掲載するよう努めておりますが、誤情報が入り込んだり、情報が古くなったりする場合があります。必ずしも正確性を保証するものではありません。また合法性や安全性なども保証しません。なお、プライバシーポリシーは、メニューの'about'からご確認いただけます。
@@ -359,7 +370,6 @@
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/new-technology/tags/XG-Firewall/" rel="tag"># XG Firewall</a>
-              <a href="/new-technology/tags/ESXi/" rel="tag"># ESXi</a>
           </div>
 
         
@@ -368,13 +378,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/new-technology/2020/02/29/esxi/" rel="prev" title="VMware vSphere Hypervisor（ESXi）のインストール">
-      <i class="fa fa-chevron-left"></i> VMware vSphere Hypervisor（ESXi）のインストール
+    <a href="/new-technology/2020/03/28/vpnotp/" rel="prev" title="XG Firewall VPNにワンタイムパスワードを設定する">
+      <i class="fa fa-chevron-left"></i> XG Firewall VPNにワンタイムパスワードを設定する
     </a></div>
-      <div class="post-nav-item">
-    <a href="/new-technology/2020/03/06/InstallXG/" rel="next" title="XG Firewallのインストール（事前準備）">
-      XG Firewallのインストール（事前準備） <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -434,7 +441,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ネットワークの確認"><span class="nav-number">1.</span> <span class="nav-text">ネットワークの確認</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXiを利用したXG-Firewallの最終構成"><span class="nav-number">2.</span> <span class="nav-text">ESXiを利用したXG Firewallの最終構成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#現時点でのセットアップ状況の確認"><span class="nav-number">3.</span> <span class="nav-text">現時点でのセットアップ状況の確認</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Wanのための仮想スイッチの作成"><span class="nav-number">4.</span> <span class="nav-text">Wanのための仮想スイッチの作成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ネットワークポートの作成"><span class="nav-number">5.</span> <span class="nav-text">ネットワークポートの作成</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#スマホからXG-Firewall-VPNに接続する事前準備"><span class="nav-number">1.</span> <span class="nav-text">スマホからXG Firewall VPNに接続する事前準備</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iOS-iPhone-からVPN接続のための設定を行う"><span class="nav-number">2.</span> <span class="nav-text">iOS(iPhone)からVPN接続のための設定を行う</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iOS-iPhone-からVPNに接続する"><span class="nav-number">3.</span> <span class="nav-text">iOS(iPhone)からVPNに接続する</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AndroidからVPN接続のための設定を行う"><span class="nav-number">4.</span> <span class="nav-text">AndroidからVPN接続のための設定を行う</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
