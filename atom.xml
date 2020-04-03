@@ -6,7 +6,7 @@
   <link href="/new-technology/atom.xml" rel="self"/>
   
   <link href="https://yoshi0808.github.io/new-technology/"/>
-  <updated>2020-03-31T10:44:59.005Z</updated>
+  <updated>2020-04-03T13:24:39.268Z</updated>
   <id>https://yoshi0808.github.io/new-technology/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>XG Firewallに通知設定を行う</title>
+    <link href="https://yoshi0808.github.io/new-technology/2020/04/03/Notifications/"/>
+    <id>https://yoshi0808.github.io/new-technology/2020/04/03/Notifications/</id>
+    <published>2020-04-03T13:24:39.000Z</published>
+    <updated>2020-04-03T13:24:39.268Z</updated>
+    
+    <content type="html"><![CDATA[<div class="note primary no-icon">            <h2 id="イベント発生時にメールを通知するよう設定する"><a href="#イベント発生時にメールを通知するよう設定する" class="headerlink" title="イベント発生時にメールを通知するよう設定する"></a>イベント発生時にメールを通知するよう設定する</h2>          </div><p>　XGはクリティカルなエラー発生や、マルウェア検知、VPNの接続時など設定したイベントに応じてメールで通知する事が可能です。ファームウェアのバージョンアップなども、この通知の仕組みで知らせてくれるようになります。</p><a id="more"></a><p>　XG Firewallのセットアップ時に通知用のメールアドレスを設定しました。ですがそのままだとメール通知がされない事とおもいます。プロバイダをはじめ、どこのサービスでも、SPAM対策がなされており、簡単にメールを送る事は出来なくなっています。<br> これは、<span class="label info">Outbound Port 25 Blocking</span>と呼ばれています。<br>  この回避策として、2段階認証がなされているGoogleアカウントを使う事で、メール通知が可能となります。</p><div class="note primary no-icon">            <h2 id="Gmailからメールを通知する設定を行う"><a href="#Gmailからメールを通知する設定を行う" class="headerlink" title="Gmailからメールを通知する設定を行う"></a>Gmailからメールを通知する設定を行う</h2>          </div><ol><li>Googleアカウントをお持ちでない方はアカウントを作成し、あらかじめ2段階認証の設定を行ってください。次に<a href="https://myaccount.google.com/?tab=kk" target="_blank" rel="noopener">Googleアカウントのページ</a>に行き、左ペインの<span class="label info">セキュリティ</span>をクリックしてください。</li><li>アプリパスワードをクリックします。</li></ol><img src="/new-technology/2020/04/03/Notifications/googleacount.png" class="" title="alt"><ol start="3"><li>Googleアカウントのパスワードで認証します</li><li><span class="label info">アプリ パスワードを生成するアプリとデバイスを選択してください。</span>という説明があるので、そこでXG用のパスワードと分かるように以下を入力してください</li><li>アプリを選択　→　メールを選択します</li><li>デバイスを選択　→　その他（名前を選択）を選択します</li></ol><img src="/new-technology/2020/04/03/Notifications/googleacount1.png" class="" title="alt"><ol start="7"><li>名前をXG Firewallのものと分かるように入力します</li><li>生成ボタンをクリックします</li><li>生成されたアプリパスワードが表示されます</li><li>パスワードを控えておきます</li><li>完了ボタンをクリックし、Googleでの設定を終了します</li></ol><img src="/new-technology/2020/04/03/Notifications/googleacount2.png" class="" title="alt"><p>　続いて、XG側の設定となります。左ペインの<span class="label info">管理</span>から、<span class="label info">通知の設定</span>をクリックします。<br>　以下の通り、<span class="label info">外部メールサーバー</span>を選択し、先ほどのgmailアカウントに関する情報を入力していきます。</p><img src="/new-technology/2020/04/03/Notifications/googleacount3.png" class="" title="alt"><table><thead><tr><th>説明</th><th>内容</th></tr></thead><tbody><tr><td>メールサーバーアドレス</td><td>smtp.gmail.com</td></tr><tr><td>ポート</td><td>587</td></tr><tr><td>ユーザ名</td><td><a href="mailto:your_account@gmail.com">your_account@gmail.com</a></td></tr><tr><td>パスワード</td><td>Googleで取得した16桁のアプリパスワード</td></tr><tr><td>接続のセキュリティ</td><td>STARTTLS</td></tr><tr><td>送信元メールアドレス</td><td><a href="mailto:your_account@gmail.com">your_account@gmail.com</a></td></tr><tr><td>メールアドレスに通知を送信</td><td>通知を受け取りたいメールアドレス</td></tr><tr><td>管理インターフェースのIPアドレス</td><td>WANのIPアドレスを選択</td></tr></tbody></table><p>　最後に適用をクリックします。その後通知ボタンをクリックしてみます。無事通知されたでしょうか。</p><div class="note primary no-icon">            <h2 id="メール通知するイベントを選択する"><a href="#メール通知するイベントを選択する" class="headerlink" title="メール通知するイベントを選択する"></a>メール通知するイベントを選択する</h2>          </div><p>　XGの左ペインから<span class="label info">システムサービス</span>→<span class="label info">通知リスト</span>と進みます。<br>　以下の通り、イベント毎に通知が設定可能となっているので、<span class="label info">メール通知</span>のトグルスイッチをオンにして、好みの通知について選択してください。</p><img src="/new-technology/2020/04/03/Notifications/notify.png" class="" title="alt"><p>　リスク観点で考えると、以下の内容をオンにしておくのがお勧めです。</p><ul><li>Adminのサインイン失敗</li><li>新しいファームウェアの通知</li><li>システム関連（起動、CPU高、シグネチャ更新失敗）</li><li>VPNの接続</li></ul><p>　これまでの設定では、VPNについて、事前共有鍵＋パスワード＋ワンタイムパスワードを設定してきました。この内容はもはや鉄壁といえる内容であり、通知は不要な気もします。しかし、スマホから公衆WIFIへのアクセスなど、少し安全面は犠牲にしてもワンタイムパスワード無しで、簡単、かつ素早くVPNに接続したいというケースを次の記事で紹介したいとおもいます。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;div class=&quot;note primary no-icon&quot;&gt;
+            &lt;h2 id=&quot;イベント発生時にメールを通知するよう設定する&quot;&gt;&lt;a href=&quot;#イベント発生時にメールを通知するよう設定する&quot; class=&quot;headerlink&quot; title=&quot;イベント発生時にメールを通知するよう設定する&quot;&gt;&lt;/a&gt;イベント発生時にメールを通知するよう設定する&lt;/h2&gt;
+          &lt;/div&gt;
+&lt;p&gt;　XGはクリティカルなエラー発生や、マルウェア検知、VPNの接続時など設定したイベントに応じてメールで通知する事が可能です。ファームウェアのバージョンアップなども、この通知の仕組みで知らせてくれるようになります。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Security" scheme="https://yoshi0808.github.io/new-technology/categories/Security/"/>
+    
+    
+      <category term="XG Firewall" scheme="https://yoshi0808.github.io/new-technology/tags/XG-Firewall/"/>
+    
+  </entry>
   
   <entry>
     <title>XG Firewall VPNにスマホから接続する</title>
