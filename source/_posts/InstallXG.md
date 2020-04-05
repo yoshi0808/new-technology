@@ -1,5 +1,5 @@
 ---
-title: XG Firewallのインストール（事前準備）
+title: XG Firewall v18のインストール（事前準備）
 date: 2020-03-06 18:12:36
 tags:
   - XG Firewall
@@ -7,6 +7,15 @@ categories:
   - Security
 #comments: false
 ---
+{% note success  %}
+
+## この記事で実現する内容について
+
+　Firewall v18をESXi（ｖ6.7）で稼働させるためのインストールイメージ（isoファイル）をダウンロードし、ESXi上で、XGのための仮想マシンを構築できるようになります。
+
+{% endnote %}
+
+<!-- more -->
 {% note primary no-icon %}
 
 ## XG Firewallのダウンロード
@@ -66,6 +75,5 @@ categories:
 
 　余談ですが、もし物理マシンに直接USBメモリ等でXGをインストールする場合は、対象マシンのBIOS設定でUEFIのチェックを外して下さい。
 
-＜補足＞
-
+※補足
 　Intelの10GbpsのNICをお使いの方は、速度の面で有利なVMXNET3ドライバを選択可能です。

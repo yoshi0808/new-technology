@@ -17,7 +17,7 @@ categories:
 　そもそも、iCloudかOneDriveあたりに必要なファイルはどーんと置いておけばいいんですが、漏洩よりも万が一のロストが不安です。それなりの容量だと、クラウドのお金も掛かりますしね。
 　オンプレの場合は盗難や火事というリスクもあり、人によって考え方は異なりますが、利便性と安全性のバランスを取る事を目指す事になるのでしょう。個人のセキュリティというものは、ビジネスにおけるリスクを極限まで抑制するという考えではなく、何かプラス α の安心感を求める程度という目線を目指す事になるのかとおもいます。Sophos社が提供する[Sophos XG Firewall Home Edition](https://www.sophos.com/ja-jp/products/free-tools.aspx)は、業務用ながら個人向けには無料という事もあって、最良のセキュリティ防御の手段と考えています。かれこれ1年半くらいでしょうか。ずっと使わせてもらってます。
 
-　v18が発表されて、大幅に機能強化されたのは良かったのですが、残念ながら設定方法が難しくなってしまいました。こんなに高機能なものを無料で使わせて頂いてるのだから、何か貢献すべきと考え、設定内容等を公開していく事にしました。スキマ時間に書いているのでスピードが遅いのはどうかご容赦ください。
+　ｖ18が発表されて、大幅に機能強化されたのは良かったのですが、残念ながら設定方法が難しくなってしまいました。こんなに高機能なものを無料で使わせて頂いてるのだから、何か貢献すべきと考え、設定内容等を公開していく事にしました。スキマ時間に書いているのでスピードが遅いのはどうかご容赦ください。
 
 {% asset_img xg.png %}
 
@@ -67,3 +67,23 @@ categories:
 >Home Editionは、4コア、および6GBのRAMまでの環境に対応しています。この条件を超えるコンピュータも使用可能ですが、XG Firewall Home Editionは、上限を超える容量を活用できません。
 
 　家庭向けとしては、技術面でかなりハードルは高いです。しかし、業務用ファイアウォールが家庭で使えるというのは非常に魅力です。興味のある方はお付き合い頂ければとおもいます。
+
+※XG Firewall v18の記事一覧
+
+- {% post_link provision %}
+- {% post_link esxi %}
+- {% post_link esxi-conf %}
+- {% post_link InstallXG %}
+- {% post_link InstallXG2 %}
+- {% post_link XG-MainPage %}
+- {% post_link rule-policy1 %}
+- {% post_link rule-policy2 %}
+- {% post_link customize-policy %}
+- {% post_link ssl-inspection %}
+- {% post_link ssl-inspection1 %}
+- {% post_link ssl-inspection2 %}
+- {% post_link SophosCommunity %}
+- {% post_link vpn %}
+- {% post_link vpnotp %}
+- {% post_link vpn-iphone %}
+- {% post_link Notifications %}

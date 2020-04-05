@@ -11,7 +11,7 @@ date: 2020-03-20 14:23:53
 
 ## この記事で実現する内容について
 
-　XG Firewall V18で利用されているSSL/TLSインスペクションについて、PCやiPhone等（Windows/macOS/iOS）を防御する仕組み、および必要となる対応概要を学びます。
+　XG Firewall v18で利用されているSSL/TLSインスペクションについて、PCやiPhone等（Windows/macOS/iOS）を防御する仕組み、および必要となる対応概要を学びます。
 
 {% endnote %}
 <!-- more -->
@@ -31,11 +31,11 @@ date: 2020-03-20 14:23:53
 
 {% note primary no-icon %}
 
-## XG Firewall V18利用のメリット
+## XG Firewall v18利用のメリット
 
 {% endnote %}
 
-　XGでは暗号化された通信を高速に解読し、ウィルスやマルウェアのダウンロードをPCやスマホが受信する前に防ぐ事が可能となります。V18では、全く新しい{% label info @XStreamアーキテクチャ %}によって、この解読（SSLインスペクション）の速度が大幅に向上しました。
+　XGでは暗号化された通信を高速に解読し、ウィルスやマルウェアのダウンロードをPCやスマホが受信する前に防ぐ事が可能となります。v18では、全く新しい{% label info @XStreamアーキテクチャ %}によって、この解読（SSLインスペクション）の速度が大幅に向上しました。
 
 {% note primary no-icon %}
 
