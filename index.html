@@ -212,7 +212,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/new-technology/2020/04/03/Notifications/" class="post-title-link" itemprop="url">XG Firewallに通知設定を行う</a>
+            <a href="/new-technology/2020/04/03/Notifications/" class="post-title-link" itemprop="url">XG Firewallの通知設定を行う</a>
         </h1>
 
         <div class="post-meta">
@@ -224,6 +224,13 @@
 
               <time title="作成日：2020-04-03 22:24:39" itemprop="dateCreated datePublished" datetime="2020-04-03T22:24:39+09:00">2020-04-03</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">編集日</span>
+                <time title="修正日：2020-04-04 10:49:24" itemprop="dateModified" datetime="2020-04-04T10:49:24+09:00">2020-04-04</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -245,10 +252,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <div class="note primary no-icon">
-            <h2 id="イベント発生時にメールを通知するよう設定する"><a href="#イベント発生時にメールを通知するよう設定する" class="headerlink" title="イベント発生時にメールを通知するよう設定する"></a>イベント発生時にメールを通知するよう設定する</h2>
+          <div class="note success">
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>XG Firewallで重要なエラーが発生した場合、VPNの接続通知、バージョンアップの通知をメールで受信できるようになります。</p>
           </div>
-<p>　XGはクリティカルなエラー発生や、マルウェア検知、VPNの接続時など設定したイベントに応じてメールで通知する事が可能です。ファームウェアのバージョンアップなども、この通知の仕組みで知らせてくれるようになります。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/new-technology/2020/04/03/Notifications/#more" rel="contents">
@@ -298,10 +304,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">投稿日</span>
-              
 
-              <time title="作成日：2020-03-31 19:44:58 / 修正日：19:44:59" itemprop="dateCreated datePublished" datetime="2020-03-31T19:44:58+09:00">2020-03-31</time>
+              <time title="作成日：2020-03-31 19:44:58" itemprop="dateCreated datePublished" datetime="2020-03-31T19:44:58+09:00">2020-03-31</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">編集日</span>
+                <time title="修正日：2020-04-04 11:36:36" itemprop="dateModified" datetime="2020-04-04T11:36:36+09:00">2020-04-04</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -331,16 +343,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <div class="note primary no-icon">
-            <h2 id="スマホからXG-Firewall-VPNに接続する事前準備"><a href="#スマホからXG-Firewall-VPNに接続する事前準備" class="headerlink" title="スマホからXG Firewall VPNに接続する事前準備"></a>スマホからXG Firewall VPNに接続する事前準備</h2>
+          <div class="note success">
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>スマホ（iPhone、Android）からXG FirewallのVPNへ接続できるようになります。ワンタイムパスワードの設定も可能です。</p>
           </div>
-
-<p>　前回までの記事でPC（WindowsおよびmacOS）からXGの<span class="label info">IPSec VPN</span>にワンタイムパスワードを使って安全に接続できるようになりました。ここでは引き続き、スマホからVPNに接続できるように設定していきます。この記事では、XG側に一通りVPNの設定が終わっている事を前提としています。改めて以下の記事も参考にしてください。</p>
-<p>　 <a href="/new-technology/2020/03/28/vpn/" title="XG Firewall VPNについて">XG Firewall VPNについて</a><br>　 <a href="/new-technology/2020/03/28/vpnotp/" title="XG Firewall VPNにワンタイムパスワードを設定する">XG Firewall VPNにワンタイムパスワードを設定する</a></p>
-<p>　前提条件は以下の通りです。なお、この記事では、ワンタイムパスワードを必ず必須とはしていません。私としてはセキュアなワンタイムパスワードを使ってVPNに接続する事をお勧めします。</p>
-<ul>
-<li>XGにVPN(Sophos Connect)の設定を終えている</li>
-<li>XGの外側（インターネット側）にホームゲートウェイがあり、ホームゲートウェイからXGに対し必要なVPNのパケットを転送出来ている
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/new-technology/2020/03/31/vpn-iphone/#more" rel="contents">
@@ -398,7 +403,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">編集日</span>
-                <time title="修正日：2020-03-29 12:34:55" itemprop="dateModified" datetime="2020-03-29T12:34:55+09:00">2020-03-29</time>
+                <time title="修正日：2020-04-04 11:15:12" itemprop="dateModified" datetime="2020-04-04T11:15:12+09:00">2020-04-04</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -429,11 +434,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <div class="note primary no-icon">
-            <h2 id="XGが提供するVPNのワンタイムパスワードについて"><a href="#XGが提供するVPNのワンタイムパスワードについて" class="headerlink" title="XGが提供するVPNのワンタイムパスワードについて"></a>XGが提供するVPNのワンタイムパスワードについて</h2>
+          <div class="note success">
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>PC（Windows、macOS）からXG FirewallのVPNへ接続しているユーザーに、スマホを使ったワンタイムパスワードによる認証機能を追加し、セキュリティを高められるようになります。</p>
           </div>
-
-<p>　XGのVPNにおいて、SSL-VPNとIPSecはワンタイムパスワードが設定できます。SSHのように、パスワードに加え、事前共有鍵を持つ事でずいぶんセキュリティは高まります。しかし、さらにワンタイムパスワードを加える事で、侵入者に突破される可能性はほぼ無いものと考えます。出先や多くの人がいる場所で端末に対し、IDとパスワードを入力するのも大きなリスクです。端末が指紋認証などで守られている前提で、XGのSophos ConnectはIDおよびパスワードを接続アプリケーションに保存しておけますので、ワンタイムパスワードのみでVPNに接続できます。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/new-technology/2020/03/28/vpnotp/#more" rel="contents">
@@ -483,10 +486,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">投稿日</span>
-              
 
-              <time title="作成日：2020-03-28 11:41:42 / 修正日：13:35:09" itemprop="dateCreated datePublished" datetime="2020-03-28T11:41:42+09:00">2020-03-28</time>
+              <time title="作成日：2020-03-28 11:41:42" itemprop="dateCreated datePublished" datetime="2020-03-28T11:41:42+09:00">2020-03-28</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">編集日</span>
+                <time title="修正日：2020-04-04 11:36:51" itemprop="dateModified" datetime="2020-04-04T11:36:51+09:00">2020-04-04</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -512,11 +521,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <div class="note primary no-icon">
-            <h2 id="XG-FirewallのVPNについて"><a href="#XG-FirewallのVPNについて" class="headerlink" title="XG FirewallのVPNについて"></a>XG FirewallのVPNについて</h2>
+          <div class="note success">
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>外出先から、PC（Windows、macOS）を使い、宅内にあるXG FirewallのVPNへ接続できるようになります。それによりウィルスおよびマルウェア対策やWebフィルタなどを含んだ安全なネット閲覧や、宅内のLANリソースへリモートアクセス出来るようになります。</p>
           </div>
-
-<p>　XGのVPNはプロトコルが何種類かあります。一般的なSSL-VPN,L2TP,PPTP、そしてSophosConnectというIPSecベースのものがあります。SophosConnectは速く安定しているため、ここではSophosConnectのVPN導入について説明します。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/new-technology/2020/03/28/vpn/#more" rel="contents">
@@ -655,7 +662,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">編集日</span>
-                <time title="修正日：2020-03-22 14:47:16" itemprop="dateModified" datetime="2020-03-22T14:47:16+09:00">2020-03-22</time>
+                <time title="修正日：2020-04-04 11:37:27" itemprop="dateModified" datetime="2020-04-04T11:37:27+09:00">2020-04-04</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -678,11 +685,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <div class="note primary no-icon">
-            <h2 id="SSL-TLSインスペクションの動作確認"><a href="#SSL-TLSインスペクションの動作確認" class="headerlink" title="SSL/TLSインスペクションの動作確認"></a>SSL/TLSインスペクションの動作確認</h2>
+          <div class="note success">
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>XG FirewallのSSL/TLSインスペクションを使う事によって、何らかの理由で接続出来なくなったサイトについて、ドメイン単位でSSLインスペクションの除外設定が行えるようになります。</p>
           </div>
-
-<p>　さて、前回まで長かった設定も終わったのでIPS（Intrusion Prevension System）によるSSLインスペクションでの動作確認をしていきましょう。最初はテストマルウェアの検知についてです。有名どころでは、<a href="https://www.eicar.org/" target="_blank" rel="noopener">eicar</a>のテストマルウェアが挙げられます。早速、ダウンロードページにまいりましょう。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/new-technology/2020/03/21/ssl-inspection2/#more" rel="contents">
@@ -740,7 +745,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">編集日</span>
-                <time title="修正日：2020-03-22 11:53:50" itemprop="dateModified" datetime="2020-03-22T11:53:50+09:00">2020-03-22</time>
+                <time title="修正日：2020-04-05 08:46:31" itemprop="dateModified" datetime="2020-04-05T08:46:31+09:00">2020-04-05</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -763,11 +768,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <div class="note primary no-icon">
-            <h2 id="SSL-TLSインスペクションの対象とするホストを登録する"><a href="#SSL-TLSインスペクションの対象とするホストを登録する" class="headerlink" title="SSL/TLSインスペクションの対象とするホストを登録する"></a>SSL/TLSインスペクションの対象とするホストを登録する</h2>
+          <div class="note success">
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>XG Firewall V18のSSL/TLSインスペクションを使い、暗号化されたSSL通信を解読します。これにより、ウィルスやマルウェアなどの脅威を通信中に検出し、PCやiPhone等（Windows、macOS、iOS）が攻撃を受ける前に防御する事が出来るようになります。</p>
           </div>
-
-<p>　SSLインスペクションの設定にあたり、XGのルート証明書をインストール出来る事が前提と書きました。XGがSSLインスペクションを使えるクライアントかどうかを判断するにはIPアドレスで判断する事になります。いつも固定IPアドレスにするためには、クライアントのIPをスタティックに割り振るか、DHCPのIP割り振りを常に固定にする方法の2通りがあります。DHCPによって固定IPを割り振るために、クライアントのMACアドレスを調べておく必要があります。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/new-technology/2020/03/20/ssl-inspection1/#more" rel="contents">
@@ -817,10 +820,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">投稿日</span>
-              
 
-              <time title="作成日：2020-03-20 14:23:53 / 修正日：21:46:42" itemprop="dateCreated datePublished" datetime="2020-03-20T14:23:53+09:00">2020-03-20</time>
+              <time title="作成日：2020-03-20 14:23:53" itemprop="dateCreated datePublished" datetime="2020-03-20T14:23:53+09:00">2020-03-20</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">編集日</span>
+                <time title="修正日：2020-04-05 09:08:50" itemprop="dateModified" datetime="2020-04-05T09:08:50+09:00">2020-04-05</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -842,11 +851,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <div class="note primary no-icon">
-            <h2 id="SSLインスペクションとは"><a href="#SSLインスペクションとは" class="headerlink" title="SSLインスペクションとは"></a>SSLインスペクションとは</h2>
+          <div class="note success">
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　XG Firewall V18で利用されているSSL/TLSインスペクションについて、PCやiPhone等（Windows/macOS/iOS）を防御する仕組み、および必要となる対応概要を学びます。</p>
           </div>
-
-<p>　XGで設定の難易度が難しくなるのはこの部分です。上記までの基本ルールとは別に、SSLを解読して検査する設定を行う事になります。今日でもSSLという呼び方は定着していますが、TLS（Transport Layer Security）とも呼ばれます。XGの最も素晴らしい機能の1つがSSLを解読する安全装置です。この安全装置の事を、「IPS」（Intrusion Prevension System）と呼びます。そして、その解読方法として「SSLインスペクション」という方式が採用されています。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/new-technology/2020/03/20/ssl-inspection/#more" rel="contents">

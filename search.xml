@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>XG Firewallに通知設定を行う</title>
+    <title>XG Firewallの通知設定を行う</title>
     <url>/new-technology/2020/04/03/Notifications/</url>
-    <content><![CDATA[<div class="note primary no-icon">
-            <h2 id="イベント発生時にメールを通知するよう設定する"><a href="#イベント発生時にメールを通知するよう設定する" class="headerlink" title="イベント発生時にメールを通知するよう設定する"></a>イベント発生時にメールを通知するよう設定する</h2>
+    <content><![CDATA[<div class="note success">
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>XG Firewallで重要なエラーが発生した場合、VPNの接続通知、バージョンアップの通知をメールで受信できるようになります。</p>
           </div>
-<p>　XGはクリティカルなエラー発生や、マルウェア検知、VPNの接続時など設定したイベントに応じてメールで通知する事が可能です。ファームウェアのバージョンアップなども、この通知の仕組みで知らせてくれるようになります。</p>
+
 <a id="more"></a>
-<p>　XG Firewallのセットアップ時に通知用のメールアドレスを設定しました。ですがそのままだとメール通知がされない事とおもいます。プロバイダをはじめ、どこのサービスでも、SPAM対策がなされており、簡単にメールを送る事は出来なくなっています。<br> これは、<span class="label info">Outbound Port 25 Blocking</span>と呼ばれています。<br>  この回避策として、2段階認証がなされているGoogleアカウントを使う事で、メール通知が可能となります。</p>
+<p>　XG Firewallのセットアップ時に通知用のメールアドレスを設定しました。ですがそのままだとメール通知がされません。プロバイダをはじめ、どこのサービスでも、SPAM対策がなされており、簡単にメールを送る事は出来なくなっています。<br> これは、<span class="label info">Outbound Port 25 Blocking</span>と呼ばれています。<br>  この回避策として、2段階認証がなされているGoogleアカウントを使う事で、メール通知が可能となります。</p>
 <div class="note primary no-icon">
             <h2 id="Gmailからメールを通知する設定を行う"><a href="#Gmailからメールを通知する設定を行う" class="headerlink" title="Gmailからメールを通知する設定を行う"></a>Gmailからメールを通知する設定を行う</h2>
           </div>
@@ -94,7 +94,7 @@
 <li>システム関連（起動、CPU高、シグネチャ更新失敗）</li>
 <li>VPNの接続</li>
 </ul>
-<p>　これまでの設定では、VPNについて、事前共有鍵＋パスワード＋ワンタイムパスワードを設定してきました。この内容はもはや鉄壁といえる内容であり、通知は不要な気もします。しかし、スマホから公衆WIFIへのアクセスなど、少し安全面は犠牲にしてもワンタイムパスワード無しで、簡単、かつ素早くVPNに接続したいというケースを次の記事で紹介したいとおもいます。</p>
+<p>　これまでの設定では、VPNについて、事前共有鍵＋パスワード＋ワンタイムパスワードを設定してきました。この内容はもはや鉄壁といえる内容であり、通知は不要な気もします。しかし、スマホから公衆WIFIへのアクセスなど、少し安全面は犠牲にしてもワンタイムパスワード無しで簡単かつ素早くVPNに接続したいというケースを次の記事で紹介したいとおもいます。</p>
 ]]></content>
       <categories>
         <category>Security</category>
@@ -106,18 +106,21 @@
   <entry>
     <title>XG Firewall VPNにスマホから接続する</title>
     <url>/new-technology/2020/03/31/vpn-iphone/</url>
-    <content><![CDATA[<div class="note primary no-icon">
+    <content><![CDATA[<div class="note success">
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>スマホ（iPhone、Android）からXG FirewallのVPNへ接続できるようになります。ワンタイムパスワードの設定も可能です。</p>
+          </div>
+<a id="more"></a>
+
+<div class="note primary no-icon">
             <h2 id="スマホからXG-Firewall-VPNに接続する事前準備"><a href="#スマホからXG-Firewall-VPNに接続する事前準備" class="headerlink" title="スマホからXG Firewall VPNに接続する事前準備"></a>スマホからXG Firewall VPNに接続する事前準備</h2>
           </div>
 
-<p>　前回までの記事でPC（WindowsおよびmacOS）からXGの<span class="label info">IPSec VPN</span>にワンタイムパスワードを使って安全に接続できるようになりました。ここでは引き続き、スマホからVPNに接続できるように設定していきます。この記事では、XG側に一通りVPNの設定が終わっている事を前提としています。改めて以下の記事も参考にしてください。</p>
+<p>　前回の記事でPC（WindowsおよびmacOS）からXGの<span class="label info">VPN（Sophos Connect）</span>にワンタイムパスワードを使って安全に接続できるようになりました。ここでは、スマホからVPNへ接続できるように設定していきます。この記事では、XG側に一通りVPNの設定が終わっている事を前提としています。以下の記事も参考にしてください。</p>
 <p>　 <a href="/new-technology/2020/03/28/vpn/" title="XG Firewall VPNについて">XG Firewall VPNについて</a><br>　 <a href="/new-technology/2020/03/28/vpnotp/" title="XG Firewall VPNにワンタイムパスワードを設定する">XG Firewall VPNにワンタイムパスワードを設定する</a></p>
-<p>　前提条件は以下の通りです。なお、この記事では、ワンタイムパスワードを必ず必須とはしていません。私としてはセキュアなワンタイムパスワードを使ってVPNに接続する事をお勧めします。</p>
+<p>　前提条件は以下の通りです。なお、この記事では、ワンタイムパスワードを必ず必須とはしていません。PCとは異なり、移動しながら使うスマホは毎回ワンタイムパスワードを入力するのでは利便性に欠けます。ここは利便性とセキュリティの安全面を比較し判断という事になるかとおもいます。</p>
 <ul>
 <li>XGにVPN(Sophos Connect)の設定を終えている</li>
-<li>XGの外側（インターネット側）にホームゲートウェイがあり、ホームゲートウェイからXGに対し必要なVPNのパケットを転送出来ている<a id="more"></a>
-
-</li>
+<li>XGの外側（インターネット側）にホームゲートウェイがあり、ホームゲートウェイからXGに対し必要なVPNのパケットを転送出来ている</li>
 </ul>
 <div class="note primary no-icon">
             <h2 id="iOS-iPhone-からVPN接続のための設定を行う"><a href="#iOS-iPhone-からVPN接続のための設定を行う" class="headerlink" title="iOS(iPhone)からVPN接続のための設定を行う"></a>iOS(iPhone)からVPN接続のための設定を行う</h2>
@@ -133,7 +136,7 @@
 <p>　ファイルをダウンロードしたらメモ帳やテキストエディットなどで設定ファイルを開きます。以下はファイルの先頭からの抜粋ですが、11行目にXGのWAN側のIPアドレスが記載されている行があります。内容は以下の通りです。</p>
 <figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plist</span> <span class="attr">version</span>=<span class="string">"1.0"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">key</span>&gt;</span>PayloadContent<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">key</span>&gt;</span>IPSec<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">key</span>&gt;</span>AuthenticationMethod<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">string</span>&gt;</span>SharedSecret<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">key</span>&gt;</span>RemoteAddress<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">string</span>&gt;</span>192.168.x.x<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<p>　上記のIPアドレスをXGで設定してあるダイナミックDNSのホスト名に書き換えます（Sophos社が提供しているダイナミックDNSであれば、xxxx.myfirewall.coです）。その後、ファイルを保存し、iCloudまたはメールなどでiPhoneに転送し、iPhoneから設定ファイルをインストールします。macOSだとFinderからファイルを選んでAirDropでiPhoneに送信すると簡単ですね。iPhoneではプロファイルのインストール時には、最初にiPhoneのパスワードを求められますのでiPhoneのパスワードを入力します。<br>　次にXGの接続ユーザーのパスワードを求められますが、ここはワンタイムパスワードの有無で設定が異なります。</p>
+<p>　上記のIPアドレスをXGで設定してあるダイナミックDNSのホスト名に書き換えます（Sophos社が提供しているダイナミックDNSであれば、xxxx.myfirewall.coです）。その後、ファイルを保存し、iCloudまたはメールなどでiPhoneに転送し、iPhoneから設定ファイルをインストールします。macOSだとFinderからファイルを選んでAirDropでiPhoneに送信すると簡単ですね。iPhoneではプロファイルのインストール時には、最初にiPhoneのパスワードを求められますのでiPhoneのパスワードを入力します。<br>　次にXGの接続ユーザーのパスワードを求められますが、ここはワンタイムパスワードの有無で設定が異なります。前回の記事ではワンタイムパスワードが必要なユーザーを作成しましたが、ワンタイムパスワードが不要であれば、ワンタイムパスワードを使わないユーザーを改めて作成してください。</p>
 <ul>
 <li>以下の場合は、XGの接続ユーザーのパスワードを入力します<ul>
 <li>ワンタイムパスワードは利用しない</li>
@@ -153,7 +156,7 @@
             <h2 id="iOS-iPhone-からVPNに接続する"><a href="#iOS-iPhone-からVPNに接続する" class="headerlink" title="iOS(iPhone)からVPNに接続する"></a>iOS(iPhone)からVPNに接続する</h2>
           </div>
 
-<p>　早速、iPhoneからVPNに接続します。設定アプリからVPNを選択、XGの接続先が選択されている状態で<span class="label info">状況</span>のトグルスイッチをオンにします。パスワードが設定済みの方は1秒も掛からず、すぐにXGへの接続が完了します。<br>　ワンタイムパスワードを設定している方、或いはパスワードを記憶させていない方は、パスワード入力のポップアップが表示されます。ワンタイムパスワードは、パスワードのあと続けてワンタイムパスワードの6つの数字を続けて入力します。一旦ポップアップが表示されると他のアプリに切り替えられないので一旦キャンセルします。ワンタイムパスワードアプリで6桁の数字を記憶するかコピーするなどし、最大30秒以内で設定アプリに再度切り替え、VPNのパスワードを完成させ接続する事になります。<br>　ちょっと最後が慌ただしいのですが、iPhoneからXGのVPNに接続できる環境が整いました。</p>
+<p>　早速、iPhoneからVPNに接続します。設定アプリからVPNを選択、XGの接続先が選択されている状態で<span class="label info">状況</span>のトグルスイッチをオンにします。パスワードが設定済みの方は1秒も掛からず、すぐにXGへの接続が完了します。<br>　ワンタイムパスワードを設定している方、或いはパスワードを記憶させていない方は、パスワード入力のポップアップが表示されます。ワンタイムパスワードは、パスワードのあと続けてワンタイムパスワードの6つの数字を続けて入力します。一旦ポップアップが表示されると他のアプリに切り替えられないので一旦キャンセルします。ワンタイムパスワードアプリで6桁の数字を記憶するかコピーするなどし、最大30秒以内で設定アプリに再度切り替え、VPNのパスワードを完成させ接続する事になります。<br>　ちょっと最後が慌ただしいのですが、iPhoneからXGのVPNへ接続できるようになりました。</p>
 <div class="note primary no-icon">
             <h2 id="AndroidからVPN接続のための設定を行う"><a href="#AndroidからVPN接続のための設定を行う" class="headerlink" title="AndroidからVPN接続のための設定を行う"></a>AndroidからVPN接続のための設定を行う</h2>
           </div>
@@ -203,13 +206,16 @@
   <entry>
     <title>XG Firewall VPNにワンタイムパスワードを設定する</title>
     <url>/new-technology/2020/03/28/vpnotp/</url>
-    <content><![CDATA[<div class="note primary no-icon">
+    <content><![CDATA[<div class="note success">
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>PC（Windows、macOS）からXG FirewallのVPNへ接続しているユーザーに、スマホを使ったワンタイムパスワードによる認証機能を追加し、セキュリティを高められるようになります。</p>
+          </div>
+<a id="more"></a>
+
+<div class="note primary no-icon">
             <h2 id="XGが提供するVPNのワンタイムパスワードについて"><a href="#XGが提供するVPNのワンタイムパスワードについて" class="headerlink" title="XGが提供するVPNのワンタイムパスワードについて"></a>XGが提供するVPNのワンタイムパスワードについて</h2>
           </div>
 
 <p>　XGのVPNにおいて、SSL-VPNとIPSecはワンタイムパスワードが設定できます。SSHのように、パスワードに加え、事前共有鍵を持つ事でずいぶんセキュリティは高まります。しかし、さらにワンタイムパスワードを加える事で、侵入者に突破される可能性はほぼ無いものと考えます。出先や多くの人がいる場所で端末に対し、IDとパスワードを入力するのも大きなリスクです。端末が指紋認証などで守られている前提で、XGのSophos ConnectはIDおよびパスワードを接続アプリケーションに保存しておけますので、ワンタイムパスワードのみでVPNに接続できます。</p>
-<a id="more"></a>
-
 <div class="note primary no-icon">
             <h2 id="ワンタイムパスワードのアプリケーションについて"><a href="#ワンタイムパスワードのアプリケーションについて" class="headerlink" title="ワンタイムパスワードのアプリケーションについて"></a>ワンタイムパスワードのアプリケーションについて</h2>
           </div>
@@ -274,13 +280,16 @@
   <entry>
     <title>XG Firewall VPNについて</title>
     <url>/new-technology/2020/03/28/vpn/</url>
-    <content><![CDATA[<div class="note primary no-icon">
+    <content><![CDATA[<div class="note success">
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>外出先から、PC（Windows、macOS）を使い、宅内にあるXG FirewallのVPNへ接続できるようになります。それによりウィルスおよびマルウェア対策やWebフィルタなどを含んだ安全なネット閲覧や、宅内のLANリソースへリモートアクセス出来るようになります。</p>
+          </div>
+<a id="more"></a>
+
+<div class="note primary no-icon">
             <h2 id="XG-FirewallのVPNについて"><a href="#XG-FirewallのVPNについて" class="headerlink" title="XG FirewallのVPNについて"></a>XG FirewallのVPNについて</h2>
           </div>
 
 <p>　XGのVPNはプロトコルが何種類かあります。一般的なSSL-VPN,L2TP,PPTP、そしてSophosConnectというIPSecベースのものがあります。SophosConnectは速く安定しているため、ここではSophosConnectのVPN導入について説明します。</p>
-<a id="more"></a>
-
 <div class="note primary no-icon">
             <h2 id="Sophos-Connectの事前確認"><a href="#Sophos-Connectの事前確認" class="headerlink" title="Sophos Connectの事前確認"></a>Sophos Connectの事前確認</h2>
           </div>
@@ -448,12 +457,17 @@
   <entry>
     <title>XG Firewall v18のSSLインスペクションの動作確認と調整</title>
     <url>/new-technology/2020/03/21/ssl-inspection2/</url>
-    <content><![CDATA[<div class="note primary no-icon">
+    <content><![CDATA[<div class="note success">
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>XG FirewallのSSL/TLSインスペクションを使う事によって、何らかの理由で接続出来なくなったサイトについて、ドメイン単位でSSLインスペクションの除外設定が行えるようになります。</p>
+          </div>
+<a id="more"></a>
+
+<div class="note primary no-icon">
             <h2 id="SSL-TLSインスペクションの動作確認"><a href="#SSL-TLSインスペクションの動作確認" class="headerlink" title="SSL/TLSインスペクションの動作確認"></a>SSL/TLSインスペクションの動作確認</h2>
           </div>
 
 <p>　さて、前回まで長かった設定も終わったのでIPS（Intrusion Prevension System）によるSSLインスペクションでの動作確認をしていきましょう。最初はテストマルウェアの検知についてです。有名どころでは、<a href="https://www.eicar.org/" target="_blank" rel="noopener">eicar</a>のテストマルウェアが挙げられます。早速、ダウンロードページにまいりましょう。</p>
-<a id="more"></a>
+<!-- more -->
 <p>　<a href="https://2016.eicar.org/85-0-Download.html" target="_blank" rel="noopener">eicarのダウンロードページ</a>に行くと、「IMPORTANT NOTE」とhttp、httpsの以下それぞれの種類の合計8つのダウンロードリンクがあります。</p>
 <img src="/new-technology/2020/03/21/ssl-inspection2/eicar.png" class="" title="alt">
 
@@ -522,12 +536,20 @@
   <entry>
     <title>XG Firewall v18のSSLインスペクションの設定</title>
     <url>/new-technology/2020/03/20/ssl-inspection1/</url>
-    <content><![CDATA[<div class="note primary no-icon">
-            <h2 id="SSL-TLSインスペクションの対象とするホストを登録する"><a href="#SSL-TLSインスペクションの対象とするホストを登録する" class="headerlink" title="SSL/TLSインスペクションの対象とするホストを登録する"></a>SSL/TLSインスペクションの対象とするホストを登録する</h2>
+    <content><![CDATA[<div class="note success">
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>XG Firewall V18のSSL/TLSインスペクションを使い、暗号化されたSSL通信を解読します。これにより、ウィルスやマルウェアなどの脅威を通信中に検出し、PCやiPhone等（Windows、macOS、iOS）が攻撃を受ける前に防御する事が出来るようになります。</p>
+          </div>
+<a id="more"></a>
+
+<div class="note primary no-icon">
+            <h2 id="SSL-TLSインスペクションの対象とするホストの明確化"><a href="#SSL-TLSインスペクションの対象とするホストの明確化" class="headerlink" title="SSL/TLSインスペクションの対象とするホストの明確化"></a>SSL/TLSインスペクションの対象とするホストの明確化</h2>
           </div>
 
-<p>　SSLインスペクションの設定にあたり、XGのルート証明書をインストール出来る事が前提と書きました。XGがSSLインスペクションを使えるクライアントかどうかを判断するにはIPアドレスで判断する事になります。いつも固定IPアドレスにするためには、クライアントのIPをスタティックに割り振るか、DHCPのIP割り振りを常に固定にする方法の2通りがあります。DHCPによって固定IPを割り振るために、クライアントのMACアドレスを調べておく必要があります。</p>
-<a id="more"></a>
+<p>　SSLインスペクションの設定にあたり、PC等にXGのルート証明書をインストールする事が前提となります。SSLインスペクションの対象となる機器のみSSLの複合化を行う必要があるため、当該機器のIPアドレス群をXGに認識させておく必要があります。いつも固定IPアドレスにするためには、IPをスタティックに割り振るか、DHCPのIP割り振りを常に固定にする方法の2通りがあります。DHCPによって固定IPを割り振るために、クライアントのMACアドレスを調べておく必要があります。</p>
+<div class="note primary no-icon">
+            <h2 id="SSL-TLSインスペクションの対象とするホストをDHCPで登録する"><a href="#SSL-TLSインスペクションの対象とするホストをDHCPで登録する" class="headerlink" title="SSL/TLSインスペクションの対象とするホストをDHCPで登録する"></a>SSL/TLSインスペクションの対象とするホストをDHCPで登録する</h2>
+          </div>
+
 <p>　左ペインのネットワークからDHCPのタブをクリックし、「Default DHCP Server」をクリックします。そこには、「スタティックIP_MACマッピング」があるので、DHCPで自動リースをしている以外のIPアドレスをスタティックに割り振って登録してください。管理の一例としては以下の通りです。</p>
 <ul>
 <li>動的なDHCPを192.168.2.101〜192.168.2.128</li>
@@ -565,7 +587,7 @@
 <p>　左ペインの一番下の証明書から、認証局（CA）をクリックします。この中に<span class="label info">Security Appliance_SSL_CA</span>という名前の証明書があります。今回これをクライアントに配布していく事になります。右の下向きの矢印があるダウンロードを選択してクライアントにルート証明書をダウンロードします。<span class="label info">Security Appliance_SSL_CA.pem</span>という名前になります。</p>
 <img src="/new-technology/2020/03/20/ssl-inspection1/certificate.png" class="" title="alt">
 
-<p>　ルート証明書をダウンロードした後のクライアントインストールについては、Sophosのサイトにある<a href="https://community.sophos.com/kb/ja-jp/123048" target="_blank" rel="noopener">Sophos XG Firewall: SSL CA 証明書のインストールガイド</a>を参照ください。特にOSへの登録が必須です。FirefoxとEdgeではそのままXGの証明書が使われている事が確認出来ています。以下はWindowsの画面ですが、インストール後は、以下の通りブラウザの鍵マークをクリックする事でXGの証明書によって再署名されている事が確認出来ます。XGのログイン後のコントロールセンターの左上にライセンスナンバーが記載されていますが、実際の証明書でもそのナンバーが確認出来ます。</p>
+<p>　ルート証明書をダウンロードした後のクライアントインストールについては、Sophosのサイトにある<a href="https://community.sophos.com/kb/ja-jp/123048" target="_blank" rel="noopener">Sophos XG Firewall: SSL CA 証明書のインストールガイド</a>を参照ください。OSへの登録が必須となります。以下はWindowsの画面ですが、インストール後は、ブラウザの鍵マークをクリックする事でXGの証明書によって再署名されている事が確認出来ます。XGのログイン後のコントロールセンターの左上にライセンスナンバーが記載されていますが、実際の証明書でもそのナンバーが確認出来ます。</p>
 <img src="/new-technology/2020/03/20/ssl-inspection1/installed_cert.png" class="" title="alt">
 
 <p>　なお、macOSの場合は以下のようにキーチェーンアクセスから証明書を「常に信頼する」設定を加えます。こちらもブラウザ毎に設定の必要は無さそうです。</p>
@@ -602,17 +624,25 @@
   <entry>
     <title>XG Firewall v18のSSLインスペクションについて</title>
     <url>/new-technology/2020/03/20/ssl-inspection/</url>
-    <content><![CDATA[<div class="note primary no-icon">
+    <content><![CDATA[<div class="note success">
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　XG Firewall V18で利用されているSSL/TLSインスペクションについて、PCやiPhone等（Windows/macOS/iOS）を防御する仕組み、および必要となる対応概要を学びます。</p>
+          </div>
+<a id="more"></a>
+
+<div class="note primary no-icon">
             <h2 id="SSLインスペクションとは"><a href="#SSLインスペクションとは" class="headerlink" title="SSLインスペクションとは"></a>SSLインスペクションとは</h2>
           </div>
 
-<p>　XGで設定の難易度が難しくなるのはこの部分です。上記までの基本ルールとは別に、SSLを解読して検査する設定を行う事になります。今日でもSSLという呼び方は定着していますが、TLS（Transport Layer Security）とも呼ばれます。XGの最も素晴らしい機能の1つがSSLを解読する安全装置です。この安全装置の事を、「IPS」（Intrusion Prevension System）と呼びます。そして、その解読方法として「SSLインスペクション」という方式が採用されています。</p>
-<a id="more"></a>
-<p>　このSSLインスペクションについては、解りやすい文献がありますので紹介します。セキュリティベンダーの（株）ラック社から提供されているドキュメントです。</p>
+<p>　XGで設定の難易度が高くなるのはこの部分です。上記までの基本ルールとは別に、SSLを解読して検査する設定を行う事になります。今日でもSSLという呼び方は定着していますが、TLS（Transport Layer Security）とも呼ばれます。XGの最も素晴らしい機能の1つがSSLを解読する安全装置です。この安全装置の事を、「IPS」（Intrusion Prevension System）と呼びます。そして、その解読方法として「SSLインスペクション」という方式が採用されています。<br>　このSSLインスペクションについては、解りやすい文献がありますので紹介します。セキュリティベンダーの（株）ラック社から提供されているドキュメントです。</p>
 <blockquote>
 <p>出典：株式会社ラック<a href="https://www.lac.co.jp/library/pdf/ssl_guidebook.pdf" target="_blank" rel="noopener">【「常時SSL化」時代に向けたセキュリティ対策指南書】</a></p>
 </blockquote>
 <p>　特にP13に記載されているSSLインペクションゾーンの仕事をしてくれるのがXGの役割です。</p>
+<div class="note primary no-icon">
+            <h2 id="XG-Firewall-V18利用のメリット"><a href="#XG-Firewall-V18利用のメリット" class="headerlink" title="XG Firewall V18利用のメリット"></a>XG Firewall V18利用のメリット</h2>
+          </div>
+
+<p>　XGでは暗号化された通信を高速に解読し、ウィルスやマルウェアのダウンロードをPCやスマホが受信する前に防ぐ事が可能となります。V18では、全く新しい<span class="label info">XStreamアーキテクチャ</span>によって、この解読（SSLインスペクション）の速度が大幅に向上しました。</p>
 <div class="note primary no-icon">
             <h2 id="SSLインスペクションの設定にあたって"><a href="#SSLインスペクションの設定にあたって" class="headerlink" title="SSLインスペクションの設定にあたって"></a>SSLインスペクションの設定にあたって</h2>
           </div>
@@ -625,6 +655,8 @@
 <p>　なお、Linuxでも可能なようですが、私の方で検証は出来ていません。またAndroidには証明書はインストール出来ますが、Chrome以外のアプリで証明書を信頼する事が出来ず、実質SSLインスペクションは使えません。他の家電TVなども難しいと考えてください。httpsの復号化が出来ずともドメインやIP単位での制限は可能なので、家電のネット利用であっても、Firewallの利用価値は高いとおもいます。</p>
 <p>　SSLインスペクションを設定後、ブラウザのURLの鍵マークにカーソルを合わせるとそのサイトで利用している本来の認証局ではなく、以下のようにXGの認証局が有効となっている事が分かります。</p>
 <img src="/new-technology/2020/03/20/ssl-inspection/ssl-inspection.png" class="" title="alt">
+
+<p>　PCに、XGのルート証明書が登録されていない状態でSSLインスペクションを行うと、ブラウザは「信頼されないサイト」として警告を発します。XGが悪意を持って成りすましを行っている事ではない事を証明するために、PC等にルート証明書をインストールし信頼させる事により、安全な通信であるとブラウザが判断できるようになります。</p>
 ]]></content>
       <categories>
         <category>Security</category>

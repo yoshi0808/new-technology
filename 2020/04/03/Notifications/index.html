@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","scheme":"Gemini","version":"7.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="イベント発生時にメールを通知するよう設定する            　XGはクリティカルなエラー発生や、マルウェア検知、VPNの接続時など設定したイベントに応じてメールで通知する事が可能です。ファームウェアのバージョンアップなども、この通知の仕組みで知らせてくれるようになります。">
+  <meta name="description" content="この記事で実現する内容についてXG Firewallで重要なエラーが発生した場合、VPNの接続通知、バージョンアップの通知をメールで受信できるようになります。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="XG Firewallに通知設定を行う">
+<meta property="og:title" content="XG Firewallの通知設定を行う">
 <meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/04/03/Notifications/index.html">
 <meta property="og:site_name" content="New technologies in our life">
-<meta property="og:description" content="イベント発生時にメールを通知するよう設定する            　XGはクリティカルなエラー発生や、マルウェア検知、VPNの接続時など設定したイベントに応じてメールで通知する事が可能です。ファームウェアのバージョンアップなども、この通知の仕組みで知らせてくれるようになります。">
+<meta property="og:description" content="この記事で実現する内容についてXG Firewallで重要なエラーが発生した場合、VPNの接続通知、バージョンアップの通知をメールで受信できるようになります。">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/04/03/Notifications/googleacount.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/04/03/Notifications/googleacount1.png">
@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/04/03/Notifications/googleacount3.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/04/03/Notifications/notify.png">
 <meta property="article:published_time" content="2020-04-03T13:24:39.000Z">
-<meta property="article:modified_time" content="2020-04-03T13:24:39.268Z">
+<meta property="article:modified_time" content="2020-04-04T01:49:24.831Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -51,7 +51,7 @@
   };
 </script>
 
-  <title>XG Firewallに通知設定を行う | New technologies in our life</title>
+  <title>XG Firewallの通知設定を行う | New technologies in our life</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-159928165-1"></script>
     <script>
@@ -220,7 +220,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          XG Firewallに通知設定を行う
+          XG Firewallの通知設定を行う
         </h1>
 
         <div class="post-meta">
@@ -232,6 +232,13 @@
 
               <time title="作成日：2020-04-03 22:24:39" itemprop="dateCreated datePublished" datetime="2020-04-03T22:24:39+09:00">2020-04-03</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">編集日</span>
+                <time title="修正日：2020-04-04 10:49:24" itemprop="dateModified" datetime="2020-04-04T10:49:24+09:00">2020-04-04</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -253,12 +260,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <div class="note primary no-icon">
-            <h2 id="イベント発生時にメールを通知するよう設定する"><a href="#イベント発生時にメールを通知するよう設定する" class="headerlink" title="イベント発生時にメールを通知するよう設定する"></a>イベント発生時にメールを通知するよう設定する</h2>
+        <div class="note success">
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>XG Firewallで重要なエラーが発生した場合、VPNの接続通知、バージョンアップの通知をメールで受信できるようになります。</p>
           </div>
-<p>　XGはクリティカルなエラー発生や、マルウェア検知、VPNの接続時など設定したイベントに応じてメールで通知する事が可能です。ファームウェアのバージョンアップなども、この通知の仕組みで知らせてくれるようになります。</p>
+
 <a id="more"></a>
-<p>　XG Firewallのセットアップ時に通知用のメールアドレスを設定しました。ですがそのままだとメール通知がされない事とおもいます。プロバイダをはじめ、どこのサービスでも、SPAM対策がなされており、簡単にメールを送る事は出来なくなっています。<br> これは、<span class="label info">Outbound Port 25 Blocking</span>と呼ばれています。<br>  この回避策として、2段階認証がなされているGoogleアカウントを使う事で、メール通知が可能となります。</p>
+<p>　XG Firewallのセットアップ時に通知用のメールアドレスを設定しました。ですがそのままだとメール通知がされません。プロバイダをはじめ、どこのサービスでも、SPAM対策がなされており、簡単にメールを送る事は出来なくなっています。<br> これは、<span class="label info">Outbound Port 25 Blocking</span>と呼ばれています。<br>  この回避策として、2段階認証がなされているGoogleアカウントを使う事で、メール通知が可能となります。</p>
 <div class="note primary no-icon">
             <h2 id="Gmailからメールを通知する設定を行う"><a href="#Gmailからメールを通知する設定を行う" class="headerlink" title="Gmailからメールを通知する設定を行う"></a>Gmailからメールを通知する設定を行う</h2>
           </div>
@@ -344,7 +351,7 @@
 <li>システム関連（起動、CPU高、シグネチャ更新失敗）</li>
 <li>VPNの接続</li>
 </ul>
-<p>　これまでの設定では、VPNについて、事前共有鍵＋パスワード＋ワンタイムパスワードを設定してきました。この内容はもはや鉄壁といえる内容であり、通知は不要な気もします。しかし、スマホから公衆WIFIへのアクセスなど、少し安全面は犠牲にしてもワンタイムパスワード無しで、簡単、かつ素早くVPNに接続したいというケースを次の記事で紹介したいとおもいます。</p>
+<p>　これまでの設定では、VPNについて、事前共有鍵＋パスワード＋ワンタイムパスワードを設定してきました。この内容はもはや鉄壁といえる内容であり、通知は不要な気もします。しかし、スマホから公衆WIFIへのアクセスなど、少し安全面は犠牲にしてもワンタイムパスワード無しで簡単かつ素早くVPNに接続したいというケースを次の記事で紹介したいとおもいます。</p>
 
     </div>
 
@@ -360,7 +367,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>記事へのリンク：</strong>
-    <a href="https://yoshi0808.github.io/new-technology/2020/04/03/Notifications/" title="XG Firewallに通知設定を行う">https://yoshi0808.github.io/new-technology/2020/04/03/Notifications/</a>
+    <a href="https://yoshi0808.github.io/new-technology/2020/04/03/Notifications/" title="XG Firewallの通知設定を行う">https://yoshi0808.github.io/new-technology/2020/04/03/Notifications/</a>
   </li>
   <li class="post-copyright-license">
     <strong>著作権表示： </strong>このブログ内のすべての記事は、特別な記載がない限り <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> の下のライセンスで保護されています。また、掲載している画像の著作権は各権利所有者に帰属します。記事の内容や掲載画像に問題がありましたら、ご連絡ください。<br><b>免責事項：</b> このブログに掲載された内容によって生じた損害等の一切の責任を負いかねますのでご了承ください。また、このブログのコンテンツや情報において、可能な限り正確な情報を掲載するよう努めておりますが、誤情報が入り込んだり、情報が古くなったりする場合があります。必ずしも正確性を保証するものではありません。また合法性や安全性なども保証しません。なお、プライバシーポリシーは、メニューの'about'からご確認いただけます。
@@ -443,7 +450,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#イベント発生時にメールを通知するよう設定する"><span class="nav-number">1.</span> <span class="nav-text">イベント発生時にメールを通知するよう設定する</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Gmailからメールを通知する設定を行う"><span class="nav-number">2.</span> <span class="nav-text">Gmailからメールを通知する設定を行う</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#メール通知するイベントを選択する"><span class="nav-number">3.</span> <span class="nav-text">メール通知するイベントを選択する</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#この記事で実現する内容について"><span class="nav-number">1.</span> <span class="nav-text">この記事で実現する内容について</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Gmailからメールを通知する設定を行う"><span class="nav-number">2.</span> <span class="nav-text">Gmailからメールを通知する設定を行う</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#メール通知するイベントを選択する"><span class="nav-number">3.</span> <span class="nav-text">メール通知するイベントを選択する</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

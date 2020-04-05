@@ -20,16 +20,16 @@
     var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","scheme":"Gemini","version":"7.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="SSLインスペクションとは             　XGで設定の難易度が難しくなるのはこの部分です。上記までの基本ルールとは別に、SSLを解読して検査する設定を行う事になります。今日でもSSLという呼び方は定着していますが、TLS（Transport Layer Security）とも呼ばれます。XGの最も素晴らしい機能の1つがSSLを解読する安全装置です。この安全装置">
+  <meta name="description" content="この記事で実現する内容について　XG Firewall V18で利用されているSSL&#x2F;TLSインスペクションについて、PCやiPhone等（Windows&#x2F;macOS&#x2F;iOS）を防御する仕組み、および必要となる対応概要を学びます。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="XG Firewall v18のSSLインスペクションについて">
 <meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection/index.html">
 <meta property="og:site_name" content="New technologies in our life">
-<meta property="og:description" content="SSLインスペクションとは             　XGで設定の難易度が難しくなるのはこの部分です。上記までの基本ルールとは別に、SSLを解読して検査する設定を行う事になります。今日でもSSLという呼び方は定着していますが、TLS（Transport Layer Security）とも呼ばれます。XGの最も素晴らしい機能の1つがSSLを解読する安全装置です。この安全装置">
+<meta property="og:description" content="この記事で実現する内容について　XG Firewall V18で利用されているSSL&#x2F;TLSインスペクションについて、PCやiPhone等（Windows&#x2F;macOS&#x2F;iOS）を防御する仕組み、および必要となる対応概要を学びます。">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection/ssl-inspection.png">
 <meta property="article:published_time" content="2020-03-20T05:23:53.000Z">
-<meta property="article:modified_time" content="2020-03-20T12:46:42.648Z">
+<meta property="article:modified_time" content="2020-04-05T00:08:50.642Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -225,10 +225,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">投稿日</span>
-              
 
-              <time title="作成日：2020-03-20 14:23:53 / 修正日：21:46:42" itemprop="dateCreated datePublished" datetime="2020-03-20T14:23:53+09:00">2020-03-20</time>
+              <time title="作成日：2020-03-20 14:23:53" itemprop="dateCreated datePublished" datetime="2020-03-20T14:23:53+09:00">2020-03-20</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">編集日</span>
+                <time title="修正日：2020-04-05 09:08:50" itemprop="dateModified" datetime="2020-04-05T09:08:50+09:00">2020-04-05</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -250,17 +256,25 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <div class="note primary no-icon">
+        <div class="note success">
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　XG Firewall V18で利用されているSSL/TLSインスペクションについて、PCやiPhone等（Windows/macOS/iOS）を防御する仕組み、および必要となる対応概要を学びます。</p>
+          </div>
+<a id="more"></a>
+
+<div class="note primary no-icon">
             <h2 id="SSLインスペクションとは"><a href="#SSLインスペクションとは" class="headerlink" title="SSLインスペクションとは"></a>SSLインスペクションとは</h2>
           </div>
 
-<p>　XGで設定の難易度が難しくなるのはこの部分です。上記までの基本ルールとは別に、SSLを解読して検査する設定を行う事になります。今日でもSSLという呼び方は定着していますが、TLS（Transport Layer Security）とも呼ばれます。XGの最も素晴らしい機能の1つがSSLを解読する安全装置です。この安全装置の事を、「IPS」（Intrusion Prevension System）と呼びます。そして、その解読方法として「SSLインスペクション」という方式が採用されています。</p>
-<a id="more"></a>
-<p>　このSSLインスペクションについては、解りやすい文献がありますので紹介します。セキュリティベンダーの（株）ラック社から提供されているドキュメントです。</p>
+<p>　XGで設定の難易度が高くなるのはこの部分です。上記までの基本ルールとは別に、SSLを解読して検査する設定を行う事になります。今日でもSSLという呼び方は定着していますが、TLS（Transport Layer Security）とも呼ばれます。XGの最も素晴らしい機能の1つがSSLを解読する安全装置です。この安全装置の事を、「IPS」（Intrusion Prevension System）と呼びます。そして、その解読方法として「SSLインスペクション」という方式が採用されています。<br>　このSSLインスペクションについては、解りやすい文献がありますので紹介します。セキュリティベンダーの（株）ラック社から提供されているドキュメントです。</p>
 <blockquote>
 <p>出典：株式会社ラック<a href="https://www.lac.co.jp/library/pdf/ssl_guidebook.pdf" target="_blank" rel="noopener">【「常時SSL化」時代に向けたセキュリティ対策指南書】</a></p>
 </blockquote>
 <p>　特にP13に記載されているSSLインペクションゾーンの仕事をしてくれるのがXGの役割です。</p>
+<div class="note primary no-icon">
+            <h2 id="XG-Firewall-V18利用のメリット"><a href="#XG-Firewall-V18利用のメリット" class="headerlink" title="XG Firewall V18利用のメリット"></a>XG Firewall V18利用のメリット</h2>
+          </div>
+
+<p>　XGでは暗号化された通信を高速に解読し、ウィルスやマルウェアのダウンロードをPCやスマホが受信する前に防ぐ事が可能となります。V18では、全く新しい<span class="label info">XStreamアーキテクチャ</span>によって、この解読（SSLインスペクション）の速度が大幅に向上しました。</p>
 <div class="note primary no-icon">
             <h2 id="SSLインスペクションの設定にあたって"><a href="#SSLインスペクションの設定にあたって" class="headerlink" title="SSLインスペクションの設定にあたって"></a>SSLインスペクションの設定にあたって</h2>
           </div>
@@ -273,6 +287,8 @@
 <p>　なお、Linuxでも可能なようですが、私の方で検証は出来ていません。またAndroidには証明書はインストール出来ますが、Chrome以外のアプリで証明書を信頼する事が出来ず、実質SSLインスペクションは使えません。他の家電TVなども難しいと考えてください。httpsの復号化が出来ずともドメインやIP単位での制限は可能なので、家電のネット利用であっても、Firewallの利用価値は高いとおもいます。</p>
 <p>　SSLインスペクションを設定後、ブラウザのURLの鍵マークにカーソルを合わせるとそのサイトで利用している本来の認証局ではなく、以下のようにXGの認証局が有効となっている事が分かります。</p>
 <img src="/new-technology/2020/03/20/ssl-inspection/ssl-inspection.png" class="" title="alt">
+
+<p>　PCに、XGのルート証明書が登録されていない状態でSSLインスペクションを行うと、ブラウザは「信頼されないサイト」として警告を発します。XGが悪意を持って成りすましを行っている事ではない事を証明するために、PC等にルート証明書をインストールし信頼させる事により、安全な通信であるとブラウザが判断できるようになります。</p>
 
     </div>
 
@@ -374,7 +390,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#SSLインスペクションとは"><span class="nav-number">1.</span> <span class="nav-text">SSLインスペクションとは</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSLインスペクションの設定にあたって"><span class="nav-number">2.</span> <span class="nav-text">SSLインスペクションの設定にあたって</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#この記事で実現する内容について"><span class="nav-number">1.</span> <span class="nav-text">この記事で実現する内容について</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSLインスペクションとは"><span class="nav-number">2.</span> <span class="nav-text">SSLインスペクションとは</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG-Firewall-V18利用のメリット"><span class="nav-number">3.</span> <span class="nav-text">XG Firewall V18利用のメリット</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSLインスペクションの設定にあたって"><span class="nav-number">4.</span> <span class="nav-text">SSLインスペクションの設定にあたって</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
