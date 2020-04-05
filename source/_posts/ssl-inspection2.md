@@ -7,6 +7,15 @@ categories:
   - Security
 ---
 
+{% note success  %}
+
+## この記事で実現する内容について
+
+XG FirewallのSSL/TLSインスペクションを使う事によって、何らかの理由で接続出来なくなったサイトについて、ドメイン単位でSSLインスペクションの除外設定が行えるようになります。
+
+{% endnote %}
+<!-- more -->
+
 {% note primary no-icon %}
 
 ## SSL/TLSインスペクションの動作確認
@@ -42,6 +51,7 @@ categories:
 2. XGの署名がアプリケーションに認められない
 
 　上記1については、XGの画面右上にログビューアというものがあるのでビューアからSSL/TLSインスペクションを選択します。私の環境では、norton.comが該当しています。TLSでエラーログが出力されていて、当該ドメインが安全と判断をするなら、以下の例外処置が行えます。Web→URLグループの{% label info@Local TLS Exclusion List %}にドメインを追加する事でSSLインスペクションが行われません。以下の通り、SSLインスペクションルール画面では、デフォルトの除外項目に{% label info@Local TLS Exclusion List %}が含まれています。
+
 {% asset_img inspection-rule.png alt %}
 {% asset_img inspection-rule1.png alt %}
 

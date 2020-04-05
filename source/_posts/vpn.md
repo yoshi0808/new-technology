@@ -8,6 +8,14 @@ categories:
 date: 2020-03-28 11:41:42
 ---
 
+{% note success  %}
+
+## この記事で実現する内容について
+
+外出先から、PC（Windows、macOS）を使い、宅内にあるXG FirewallのVPNへ接続できるようになります。それによりウィルスおよびマルウェア対策やWebフィルタなどを含んだ安全なネット閲覧や、宅内のLANリソースへリモートアクセス出来るようになります。
+
+{% endnote %}
+<!-- more -->
 
 {% note primary no-icon %}
 
@@ -16,8 +24,6 @@ date: 2020-03-28 11:41:42
 {% endnote %}
 
 　XGのVPNはプロトコルが何種類かあります。一般的なSSL-VPN,L2TP,PPTP、そしてSophosConnectというIPSecベースのものがあります。SophosConnectは速く安定しているため、ここではSophosConnectのVPN導入について説明します。
-
-<!-- more -->
 
 {% note primary no-icon %}
 
