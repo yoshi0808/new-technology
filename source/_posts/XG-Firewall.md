@@ -87,3 +87,4 @@ categories:
 - {% post_link vpnotp %}
 - {% post_link vpn-iphone %}
 - {% post_link Notifications %}
+- {% post_link dnat %}
