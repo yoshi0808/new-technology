@@ -31,7 +31,7 @@ date: 2020-04-18 21:16:31
 
 　ULAは、MACアドレスと時刻からおおよそ一意となるIPv6アドレスを作成する事が可能となります。アドレスは、fd::/8から始まる48ビットのプリフィックス（prefix）を持ちます。従い、fdxx:xxxx:xxxx::/48のプリフィックスに対して、以下のとおりのサブネットの範囲を持ちます。
 
-　fdxx:xxxx:xxxx:0000 〜 fdxx:xxxx:xxxx:ffff
+　fdxx:xxxx:xxxx:0000::/64 〜 fdxx:xxxx:xxxx:ffff::/64
 
 {% note primary no-icon %}
 
