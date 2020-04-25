@@ -15,7 +15,7 @@
 
 <p>　いつかは枯渇すると言われているIPv4アドレスですが、欧州を管轄するRIPE NCCから、2019年11月25日に欧州のIPv4アドレスが枯渇したと発表されました。インターネットにいきなり大きく影響が出てくる事はありませんが、これからは徐々にIPv4だけでは接続出来ないサイトが出てくるものと思われます。</p>
 <p>　IPv6の接続方式は、PPPoEの接続方法とIPoEの2通りの接続方法があります。プロトコル自体に優劣はさほどありません。いろいろな記事ではPPPoEが劣っているという書き振りを見かける事が多いのですが、これは大手回線業者の固有事情によるものです。実態としては単にIPv6のユーザーが少なく、途中のネットワークが空いている事が多いだけで、プロトコルとして高速なわけではありません。ただ現状の環境からすると、IPv6ネットワークはまだ将来を見据えて余裕がある状態である事は間違いなく、混雑しづらい状況にあります。</p>
-<p>　IPv6は実質無限といっていいほどのアドレス空間を持ちます。IPアドレスは例を挙げると、<span class="label info">2001:0db8:0000:0000:3456:0000:0000:0000</span>のように表記が長く、管理する側もIPv4に比べて大変です。ホームユーザーとしては、宅内のIPアドレス管理の主体はIPv4としつつ、IPv6のサイトへのアクセスも可能というくらいに考えておく事が必要です。<br>　インターネットの接続業者によってはネット契約とは別にIPv6を改めて申し込む必要があります。大半の接続業者ではIPv6の利用は無料になっているとおもいます。</p>
+<p>　IPv6は実質無限といっていいほどのアドレス空間を持ちます。IPアドレスは例を挙げると、<span class="label info">2001:0db8:0000:0000:3456:0000:0000:0000</span>のように表記が長く、管理する側もIPv4に比べて大変です。ホームユーザーとしては、宅内のIPアドレス管理の主体はIPv4としつつ、IPv6のサイトへのアクセスも可能というくらいに考えておく事が必要です。<br>　インターネットの接続業者によってはネット契約とは別にIPv6を改めて申し込む必要があります。大半の接続業者ではIPv6の利用は無料です。</p>
 <div class="note primary no-icon">
             <h2 id="IPv6の設定にあたって"><a href="#IPv6の設定にあたって" class="headerlink" title="IPv6の設定にあたって"></a>IPv6の設定にあたって</h2>
           </div>
@@ -36,10 +36,10 @@
 <img src="/new-technology/2020/04/25/xg-ipv6-1/network.png" class="" title="alt">
 
 <ol>
-<li><span class="label info">IPv6</span>のチェックボックスをOnにします</li>
-<li>IPの割り当てはDHCPを選びます</li>
+<li><span class="label info">IPv6設定</span>のチェックボックスをOnにします</li>
+<li><span class="label info">IPの割り当て</span>はDHCPを選びます</li>
 <li><span class="label info">モード</span>は<span class="label info">手動</span>、<span class="label info">ステートレス</span>、<span class="label info">DHCPから他の設定を承認</span>を選択します</li>
-<li>ゲートウェイ名は<span class="label info">IPv6_GW</span>など、自由に命名してください</li>
+<li><span class="label info">ゲートウェイ名</span>は<span class="label info">IPv6_GW</span>など、自由に命名してください</li>
 <li><span class="label info">保存</span>をクリックすると下記の確認画面が表示されます
 <img src="/new-technology/2020/04/25/xg-ipv6-1/update.png" class="" title="alt"></li>
 <li><span class="label info">インターフェースを更新</span>をクリックすると、以下の通り、パブリックIPv6アドレスがHGWより割り当てられます
