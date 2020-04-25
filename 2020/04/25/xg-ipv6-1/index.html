@@ -20,24 +20,28 @@
     var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","scheme":"Muse","version":"7.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="この記事で実現する内容についてXG FirewallのSSL&#x2F;TLSインスペクションを使う事によって、何らかの理由で接続出来なくなったサイトについて、ドメイン単位でSSLインスペクションの除外設定が行えるようになります。">
+  <meta name="description" content="この記事で実現する内容　XG FirewallからホームゲートウェイとをIPv6で接続し、IPv6ホストの名前解決が行えるか確認します。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="XG Firewall v18のSSLインスペクションの動作確認と調整">
-<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/03/21/ssl-inspection2/index.html">
+<meta property="og:title" content="XG FirewallでIPv6の設定を行う（前半）">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/04/25/xg-ipv6-1/index.html">
 <meta property="og:site_name" content="New technologies in our life">
-<meta property="og:description" content="この記事で実現する内容についてXG FirewallのSSL&#x2F;TLSインスペクションを使う事によって、何らかの理由で接続出来なくなったサイトについて、ドメイン単位でSSLインスペクションの除外設定が行えるようになります。">
+<meta property="og:description" content="この記事で実現する内容　XG FirewallからホームゲートウェイとをIPv6で接続し、IPv6ホストの名前解決が行えるか確認します。">
 <meta property="og:locale" content="ja_JP">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/21/ssl-inspection2/eicar.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/21/ssl-inspection2/inspection-rule.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/21/ssl-inspection2/inspection-rule1.png">
-<meta property="article:published_time" content="2020-03-20T23:57:45.000Z">
-<meta property="article:modified_time" content="2020-04-05T01:46:13.790Z">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/04/25/xg-ipv6-1/network.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/04/25/xg-ipv6-1/update.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/04/25/xg-ipv6-1/update2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/04/25/xg-ipv6-1/update3.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/04/25/xg-ipv6-1/diag.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/04/25/xg-ipv6-1/diag2.png">
+<meta property="article:published_time" content="2020-04-25T06:00:17.000Z">
+<meta property="article:modified_time" content="2020-04-25T06:00:17.262Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
+<meta property="article:tag" content="IPv6">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2020/03/21/ssl-inspection2/eicar.png">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2020/04/25/xg-ipv6-1/network.png">
 
-<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2020/03/21/ssl-inspection2/">
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2020/04/25/xg-ipv6-1/">
 
 
 <script id="page-configurations">
@@ -49,7 +53,7 @@
   };
 </script>
 
-  <title>XG Firewall v18のSSLインスペクションの動作確認と調整 | New technologies in our life</title>
+  <title>XG FirewallでIPv6の設定を行う（前半） | New technologies in our life</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-159928165-1"></script>
     <script>
@@ -208,7 +212,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="ja">
-    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2020/03/21/ssl-inspection2/">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2020/04/25/xg-ipv6-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/new-technology/images/yoshi.png">
@@ -221,7 +225,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          XG Firewall v18のSSLインスペクションの動作確認と調整
+          XG FirewallでIPv6の設定を行う（前半）
         </h1>
 
         <div class="post-meta">
@@ -231,15 +235,8 @@
               </span>
               <span class="post-meta-item-text">投稿日</span>
 
-              <time title="作成日：2020-03-21 08:57:45" itemprop="dateCreated datePublished" datetime="2020-03-21T08:57:45+09:00">2020-03-21</time>
+              <time title="作成日：2020-04-25 15:00:17" itemprop="dateCreated datePublished" datetime="2020-04-25T15:00:17+09:00">2020-04-25</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">編集日</span>
-                <time title="修正日：2020-04-05 10:46:13" itemprop="dateModified" datetime="2020-04-05T10:46:13+09:00">2020-04-05</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -262,73 +259,68 @@
 
       
         <div class="note success">
-            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>XG FirewallのSSL/TLSインスペクションを使う事によって、何らかの理由で接続出来なくなったサイトについて、ドメイン単位でSSLインスペクションの除外設定が行えるようになります。</p>
+            <h2 id="この記事で実現する内容"><a href="#この記事で実現する内容" class="headerlink" title="この記事で実現する内容"></a>この記事で実現する内容</h2><p>　XG FirewallからホームゲートウェイとをIPv6で接続し、IPv6ホストの名前解決が行えるか確認します。</p>
           </div>
+
 <a id="more"></a>
 
 <div class="note primary no-icon">
-            <h2 id="SSL-TLSインスペクションの動作確認"><a href="#SSL-TLSインスペクションの動作確認" class="headerlink" title="SSL/TLSインスペクションの動作確認"></a>SSL/TLSインスペクションの動作確認</h2>
+            <h2 id="IPv6を取り巻く環境"><a href="#IPv6を取り巻く環境" class="headerlink" title="IPv6を取り巻く環境"></a>IPv6を取り巻く環境</h2>
           </div>
 
-<p>　さて、前回まで長かった設定も終わったのでIPS（Intrusion Prevension System）によるSSLインスペクションでの動作確認をしていきましょう。最初はテストマルウェアの検知についてです。有名どころでは、<a href="https://www.eicar.org/" target="_blank" rel="noopener">eicar</a>のテストマルウェアが挙げられます。早速、ダウンロードページにまいりましょう。</p>
-<!-- more -->
-<p>　<a href="https://2016.eicar.org/85-0-Download.html" target="_blank" rel="noopener">eicarのダウンロードページ</a>に行くと、「IMPORTANT NOTE」とhttp、httpsの以下それぞれの種類の合計8つのダウンロードリンクがあります。</p>
-<img src="/new-technology/2020/03/21/ssl-inspection2/eicar.png" class="" title="alt">
-
-<ol>
-<li>実行ファイル</li>
-<li>実行ファイルをtxtに拡張子を変えたもの</li>
-<li>zipに圧縮したもの</li>
-<li>zipの二重圧縮</li>
-</ol>
-<p>　実行ファイルについては、マルウェアを検知する前にXGのポリシーによっては、実行ファイルをダウンロード出来ないという表示になる可能性があります。その際はWebのポリシーで修正するか、ルールとポリシーを修正し実行ファイルを一時的に許可し、確認してみて下さい。</p>
-<p>　結論から言えば、XGはこの8つを全て検出し、ブラウザにはXGによるマルウェア検知のエラー画面が表示されます。PCに入っているウィルス対策ソフトが検知する以前にダウンロードは行わない挙動となります。また、XGの証明書を導入していない機器からのアクセスについてはhttpのものは検出できますが、httpsのダウンロードはマルウェアを検出できません。</p>
-<p>　IPSは速度と検出能力という相反する事を同時に成り立たせなくてはいけません。上記のようにマルウェアの検出は可能ですが、あくまで通信で怪しいものをカットする程度に考え、クライアントにはウィルス対策ソフトやマルウェア対策ソフトの導入をお勧めします。Sophosは個人向けに無償のウィルス対策ソフトを提供していますが、個人的には異なる会社のソフトを組み合わせて使う事をお勧めします。</p>
+<p>　いつかは枯渇すると言われているIPv4アドレスですが、欧州を管轄するRIPE NCCから、2019年11月25日に欧州のIPv4アドレスが枯渇したと発表されました。インターネットにいきなり大きく影響が出てくる事はありませんが、これからは徐々にIPv4だけでは接続出来ないサイトが出てくるものと思われます。</p>
+<p>　IPv6の接続方式は、PPPoEの接続方法とIPoEの2通りの接続方法があります。プロトコル自体に優劣はさほどありません。いろいろな記事ではPPPoEが劣っているという書き振りを見かける事が多いのですが、これは大手回線業者の固有事情によるものです。実態としては単にIPv6のユーザーが少なく、途中のネットワークが空いている事が多いだけで、プロトコルとして高速なわけではありません。ただ現状の環境からすると、IPv6ネットワークはまだ将来を見据えて余裕がある状態である事は間違いなく、混雑しづらい状況にあります。</p>
+<p>　IPv6は実質無限といっていいほどのアドレス空間を持ちます。IPアドレスは例を挙げると、<span class="label info">2001:0db8:0000:0000:3456:0000:0000:0000</span>のように表記が長く、管理する側もIPv4に比べて大変です。ホームユーザーとしては、宅内のIPアドレス管理の主体はIPv4としつつ、IPv6のサイトへのアクセスも可能というくらいに考えておく事が必要です。<br>　インターネットの接続業者によってはネット契約とは別にIPv6を改めて申し込む必要があります。大半の接続業者ではIPv6の利用は無料になっているとおもいます。</p>
 <div class="note primary no-icon">
-            <h2 id="SSL-TLSインスペクションの除外設定"><a href="#SSL-TLSインスペクションの除外設定" class="headerlink" title="SSL/TLSインスペクションの除外設定"></a>SSL/TLSインスペクションの除外設定</h2>
+            <h2 id="IPv6の設定にあたって"><a href="#IPv6の設定にあたって" class="headerlink" title="IPv6の設定にあたって"></a>IPv6の設定にあたって</h2>
           </div>
 
-<p>　SSLインスペクションでは、本来正しいサイトにも関わらず、ポリシーが厳しすぎる事以外にもうまく接続できないという問題も発生します。</p>
+<p>　XG FirewallはIPv6に対応しています。回線業者およびプロバイダがIPv6のサポートをしている前提で、ホームゲートウェイ（HGW）に接続する形態を想定しています。XGからHGWには普通にIPv6としてのネットワーク通信を行います。そういう意味ではIPoEとも言えます。貸与されているHGWとXGとのIPv6接続が正しく行えるかが最初のハードルとなります。この記事では、ホームゲートウェイからXGにてIPv6アドレスを割り当てられ、XGからIPv6でインターネットへのアクセスが可能か確認します。</p>
+<p>　また、制約としてAndoroidはXGの構成によってはIPv6を使えない可能性があります。</p>
+<div class="note primary no-icon">
+            <h2 id="ホームゲートウェイからIPv6アドレスの配布を受ける"><a href="#ホームゲートウェイからIPv6アドレスの配布を受ける" class="headerlink" title="ホームゲートウェイからIPv6アドレスの配布を受ける"></a>ホームゲートウェイからIPv6アドレスの配布を受ける</h2>
+          </div>
+
+<p>　HGWから配布されるIPアドレスは、従来のIPv4であればDHCPの機能となりますが、IPv6の場合は以下の2通りがあります。</p>
 <ol>
-<li>TLSが正当ではないと判断される</li>
-<li>XGの署名がアプリケーションに認められない</li>
+<li>DHCPv6</li>
+<li>Router Advertisement</li>
 </ol>
-<p>　上記1については、XGの画面右上にログビューアというものがあるのでビューアからSSL/TLSインスペクションを選択します。私の環境では、norton.comが該当しています。TLSでエラーログが出力されていて、当該ドメインが安全と判断をするなら、以下の例外処置が行えます。Web→URLグループの<span class="label info">Local TLS Exclusion List</span>にドメインを追加する事でSSLインスペクションが行われません。以下の通り、SSLインスペクションルール画面では、デフォルトの除外項目に<span class="label info">Local TLS Exclusion List</span>が含まれています。</p>
-<img src="/new-technology/2020/03/21/ssl-inspection2/inspection-rule.png" class="" title="alt">
-<img src="/new-technology/2020/03/21/ssl-inspection2/inspection-rule1.png" class="" title="alt">
+<p>　最近の機械だとHGWに設定する箇所もなく、IPv6の契約があれば、プロバイダからIPoEでIPv6の接続が可能になっている状況もあるようです。XGは、上記いずれの方法でもHGWからのパブリックIPアドレスを受け取れるようです。</p>
+<p>　XGのPort2（WAN側）でIPv6の設定を行います。XGの左ペインメニューから、<span class="label info">ネットワーク</span>の<span class="label info">インターフェース</span>を選び、<span class="label info">Port2</span>をクリックします。</p>
+<img src="/new-technology/2020/04/25/xg-ipv6-1/network.png" class="" title="alt">
 
-<p>　もう1つは対応が少し難しいのですが、アプリケーション自体が、OSにインストールされた証明書などを認めていないケースです。こちらはアプリケーションの内部に証明書を保持しており、その証明書の正当性を確認しているケースです。以下の例ではpython関連のモジュールをアップグレードするケースで以下のエラーが発生します。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;pip3 install --upgrade pip</span><br><span class="line"></span><br><span class="line">WARNING: Retrying (Retry(total=4, connect=None, <span class="built_in">read</span>=None, redirect=None, status=None))</span><br><span class="line">after connection broken by <span class="string">'SSLError(SSLCertVerificationError(1,  </span></span><br><span class="line"><span class="string">'</span>[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get <span class="built_in">local</span> issuer certificate (_ssl.c:1076)<span class="string">'))'</span>: /simple/pip/</span><br></pre></td></tr></table></figure>
+<ol>
+<li><span class="label info">IPv6</span>のチェックボックスをOnにします</li>
+<li>IPの割り当てはDHCPを選びます</li>
+<li><span class="label info">モード</span>は<span class="label info">手動</span>、<span class="label info">ステートレス</span>、<span class="label info">DHCPから他の設定を承認</span>を選択します</li>
+<li>ゲートウェイ名は<span class="label info">IPv6_GW</span>など、自由に命名してください</li>
+<li><span class="label info">保存</span>をクリックすると下記の確認画面が表示されます
+<img src="/new-technology/2020/04/25/xg-ipv6-1/update.png" class="" title="alt"></li>
+<li><span class="label info">インターフェースを更新</span>をクリックすると、以下の通り、パブリックIPv6アドレスがHGWより割り当てられます
+ <img src="/new-technology/2020/04/25/xg-ipv6-1/update2.png" class="" title="alt">
 
-<p>　上記のように、この場合は当該ドメインのSSLインスペクションを外す事になりますが、どのドメインかが分からないという難しさがあります。この場合は色々調べなくてはなりません。あくまで一例ですが除外しておいた方が良いドメインを列挙してみます。</p>
-<table>
-<thead>
-<tr>
-<th>ドメイン</th>
-<th>内容</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>pypi.org, pythonhosted.org</td>
-<td>Python関連</td>
-</tr>
-<tr>
-<td>npmjs.org</td>
-<td>Node.js関連</td>
-</tr>
-<tr>
-<td>auone.jp, paypay.ne.jp, merpay.com</td>
-<td>〜pay関連</td>
-</tr>
-<tr>
-<td>norton.com</td>
-<td>Norton AntiVirus関連</td>
-</tr>
-<tr>
-<td>d.line-scdn.net</td>
-<td>LINE動画</td>
-</tr>
-</tbody></table>
+</li>
+</ol>
+<p>　続いてDNSの設定です。XGの左ペインメニューから<span class="label info">ネットワーク</span>を選び、<span class="label info">DNS</span>をクリックします。IPv6の項目があり、初期設定ではスタティックの設定となっています。HGWの<span class="label info">fe80:</span>からはじまるリンクローカルアドレス、またはホームゲートウェイのパブリックIPアドレスが指定されています。もしHGWからリンクローカルIPアドレスが配布されている場合は、その値を削除しプロバイダが提供するDNSのIPアドレスを調べ、そのIPを設定してみて下さい。これはHGWの種類やプロバイダなど環境によって異なりますので、この設定でうまくいかない場合は、IPv6でもDHCPの設定を行うなどしてみてください。</p>
+<p>　ここの設定が難しいのは以下の通りと考えています。</p>
+<ol>
+<li>HGWからIPアドレスを配布する時に、ゲートウェイやDNSの情報も配布されますが、その方法は複数あります。</li>
+<li>単にクライアントがHGWのDNSを参照してインターネットに接続するのは問題ありませんが、XGの配下のさらに別ネットワークの端末がHGWのfe80::/16から始まるリンクローカルアドレスには、セグメントを超えてアクセスする事は出来ません。</li>
+<li>IPv6のパブリックIPアドレスはもちろんその時々で変わる可能性があります。従いDNSとして、HGWの持つパブリックIPアドレスをクライアントに配布出来ません。</li>
+</ol>
+<p>　これらの問題に対処するため、私は手動でプロバイダのDNSのIPアドレスを設定しています。</p>
+ <img src="/new-technology/2020/04/25/xg-ipv6-1/update3.png" class="" title="alt">
+
+<p>　また、HGWに対してXGからDNSクエリを実行したところで結局はプロバイダのDNSへ問い合わせする事になります。従い効率化のために、私はXGのIPv4DNSもプロバイダのDNSを指定しています。実運用としてプロバイダのDNSのIPアドレスは殆ど変更される事がありません。</p>
+<p>　環境によっては少し難しいIPv6設定ですが、次に設定が環境と合っているか診断を行います。</p>
+<p>　XGの左ペインメニューから<span class="label info">診断</span>を選んでください。<span class="label info">名前参照</span>から、<span class="label info">DNSサーバーIP</span>を<span class="label info">すべての設定済みサーバーを使用して参照</span>を選択し、<span class="label info">名前参照</span>をクリックしてください。</p>
+ <img src="/new-technology/2020/04/25/xg-ipv6-1/diag.png" class="" title="alt">
+
+<p>　正常な場合は以下の通り、設定したIPv4とIPv6のDNSでipv6.google.comの名前解決をした結果と計測時間を表示します。</p>
+ <img src="/new-technology/2020/04/25/xg-ipv6-1/diag2.png" class="" title="alt">
+
+<p>　診断結果がうまくいかない場合は、先のDNS設定と、HGWからのIP配布方法などの設定をいくつか試してみてください。</p>
 
     </div>
 
@@ -344,7 +336,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>記事へのリンク：</strong>
-    <a href="https://yoshi0808.github.io/new-technology/2020/03/21/ssl-inspection2/" title="XG Firewall v18のSSLインスペクションの動作確認と調整">https://yoshi0808.github.io/new-technology/2020/03/21/ssl-inspection2/</a>
+    <a href="https://yoshi0808.github.io/new-technology/2020/04/25/xg-ipv6-1/" title="XG FirewallでIPv6の設定を行う（前半）">https://yoshi0808.github.io/new-technology/2020/04/25/xg-ipv6-1/</a>
   </li>
   <li class="post-copyright-license">
     <strong>著作権表示： </strong>このブログ内のすべての記事は、特別な記載がない限り <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> の下のライセンスで保護されています。また、掲載している画像の著作権は各権利所有者に帰属します。記事の内容や掲載画像に問題がありましたら、ご連絡ください。<br><b>免責事項：</b> このブログに掲載された内容によって生じた損害等の一切の責任を負いかねますのでご了承ください。また、このブログのコンテンツや情報において、可能な限り正確な情報を掲載するよう努めておりますが、誤情報が入り込んだり、情報が古くなったりする場合があります。必ずしも正確性を保証するものではありません。また合法性や安全性なども保証しません。なお、プライバシーポリシーは、メニューの'about'からご確認いただけます。
@@ -356,6 +348,7 @@
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/new-technology/tags/XG-Firewall/" rel="tag"># XG Firewall</a>
+              <a href="/new-technology/tags/IPv6/" rel="tag"># IPv6</a>
           </div>
 
         
@@ -364,13 +357,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/new-technology/2020/03/20/ssl-inspection1/" rel="prev" title="XG Firewall v18のSSLインスペクションの設定">
-      <i class="fa fa-chevron-left"></i> XG Firewall v18のSSLインスペクションの設定
+    <a href="/new-technology/2020/04/18/ipv6/" rel="prev" title="IPv6のUnique Local Addressを生成する">
+      <i class="fa fa-chevron-left"></i> IPv6のUnique Local Addressを生成する
     </a></div>
-      <div class="post-nav-item">
-    <a href="/new-technology/2020/03/26/SophosCommunity/" rel="next" title="XG Firewall Sophos Communityについて">
-      XG Firewall Sophos Communityについて <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -430,7 +420,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#この記事で実現する内容について"><span class="nav-number">1.</span> <span class="nav-text">この記事で実現する内容について</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSL-TLSインスペクションの動作確認"><span class="nav-number">2.</span> <span class="nav-text">SSL&#x2F;TLSインスペクションの動作確認</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSL-TLSインスペクションの除外設定"><span class="nav-number">3.</span> <span class="nav-text">SSL&#x2F;TLSインスペクションの除外設定</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#この記事で実現する内容"><span class="nav-number">1.</span> <span class="nav-text">この記事で実現する内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IPv6を取り巻く環境"><span class="nav-number">2.</span> <span class="nav-text">IPv6を取り巻く環境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IPv6の設定にあたって"><span class="nav-number">3.</span> <span class="nav-text">IPv6の設定にあたって</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ホームゲートウェイからIPv6アドレスの配布を受ける"><span class="nav-number">4.</span> <span class="nav-text">ホームゲートウェイからIPv6アドレスの配布を受ける</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

@@ -171,7 +171,7 @@ body {
   background: var(--body-bg-color);
   color: var(--text-color);
   font-family: Lato, sans-serif;
-  font-size: 1em;
+  font-size: 0.9em;
   line-height: 2;
 }
 @media (max-width: 991px) {
@@ -1264,7 +1264,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #137db8;
+  background: #a199e9;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -1584,6 +1584,16 @@ pre .javascript .function {
     left: 20px;
     opacity: 0.8;
   }
+}
+.reading-progress-bar {
+  background: #37c6c0;
+  display: block;
+  height: 3px;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 0;
+  z-index: 1500;
 }
 .post-body {
   font-family: Lato, sans-serif;
