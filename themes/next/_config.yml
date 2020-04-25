@@ -384,7 +384,7 @@ back2top:
 
 # Reading progress bar
 reading_progress:
-  enable: false
+  enable: true
   # Available values: top | bottom
   position: top
   color: "#37c6c0"
@@ -434,7 +434,7 @@ font:
   global:
     external: true
     family: Lato
-    size: 0.8em
+    size: 0.9
 
   # Font settings for site title (.site-title).
   title:
@@ -452,6 +452,7 @@ font:
   posts:
     external: true
     family:
+
 
   # Font settings for <code> and code blocks.
   codes:
