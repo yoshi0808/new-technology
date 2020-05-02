@@ -39,7 +39,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/04/29/xg-ipv6-2/rule2.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/04/29/xg-ipv6-2/rule3.png">
 <meta property="article:published_time" content="2020-04-29T11:13:18.000Z">
-<meta property="article:modified_time" content="2020-04-29T11:29:27.079Z">
+<meta property="article:modified_time" content="2020-05-02T02:04:53.242Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta property="article:tag" content="IPv6">
@@ -244,10 +244,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">投稿日</span>
-              
 
-              <time title="作成日：2020-04-29 20:13:18 / 修正日：20:29:27" itemprop="dateCreated datePublished" datetime="2020-04-29T20:13:18+09:00">2020-04-29</time>
+              <time title="作成日：2020-04-29 20:13:18" itemprop="dateCreated datePublished" datetime="2020-04-29T20:13:18+09:00">2020-04-29</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">編集日</span>
+                <time title="修正日：2020-05-02 11:04:53" itemprop="dateModified" datetime="2020-05-02T11:04:53+09:00">2020-05-02</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -348,7 +354,27 @@
 
 </li>
 </ol>
-<h3 id="RAの設定"><a href="#RAの設定" class="headerlink" title="RAの設定"></a>RAの設定</h3><p>　クライアントにDNSの通知を行うため、RAの設定を行います。DHCPで明示的にIPv6アドレスを指定しないクライアントはRAにより自身のIPv6アドレスを自動生成しつつ、DNSの情報を受け取ります。今回は、原則DHCPv6の情報を元にIPv6アドレスが割り当てられます。RAはDNSの通知に使われます。</p>
+<h3 id="RAの設定"><a href="#RAの設定" class="headerlink" title="RAの設定"></a>RAの設定</h3><p>　クライアントにDNSの通知を行うため、RAの設定を行います。DHCPで明示的にIPv6アドレスを指定しないクライアントはRAにより自身のIPv6アドレスを自動生成しつつ、ゲートウェイ、DNSの情報を受け取ります。</p>
+<p>　RAでは、マネージドフラグ（Mフラグ）、アザーフラグ（Oフラグ）という言葉が登場します。</p>
+<table>
+<thead>
+<tr>
+<th>Flgの説明</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Mフラグ</td>
+<td>DHCPv6によって明示的に割り当てたステートフルなIPv6アドレス（ON）にする（※IPv4のDHCPと同じ）か、RAによってPrefixが通知され、クライアントは自分のMACアドレスから生成するステートレスIPアドレスにする（OFF）かを決めます</td>
+</tr>
+<tr>
+<td>Oフラグ</td>
+<td>IPアドレス以外の情報をDHCPv6サーバから取得する（ON）、取得せず手動設定（OFF）</td>
+</tr>
+</tbody></table>
+<p>　比較的時間の流れがゆっくりなIPv6において、最近のトレンドとしては、DHCPv6を使わずRAのみとする（Mフラグ＝OFF、Oフラグ＝ON）が定番です。長いIPv6アドレスの管理は大変なので、この設定が一番楽な管理方法です。しかし、私のXGに関する記事ではSSLインスペクションを最も重要視しています。MACアドレスをベースにIPv6が生成されてしまうと、証明書が登録されている端末かどうかの判断が行えなくなるので、これだと困るのです。それで非常に面倒なのですが、Mフラグ＝ONでステートフルなIPv6アドレスとする必要があります。OフラグがOFFの場合はDNSの情報は手動設定となっていますが、古い端末でない限りはDNSの情報は取得できます。</p>
+<p>　OフラグがOFFの場合はステートフルなプロトコルを受け付け出来ないという解釈です。ここでは、ステートフルなDHCPv6で全てを管理するという事で、Mフラグ＝ON、Oフラグ＝ONという結論となります。やや管理者寄りの理論ですね<sup><a href="#note2">2</a></sup>。</p>
+<p> また、IPv6では上述した通り、一時アドレスというものが出てきます（XG上では匿名）。これを認めると管理下にないIPv6アドレスで通信が行われ、SSLインスペクションを迂回されてしまいますからこの一時アドレスの設定もOFFにします。</p>
 <p>　XGの左ペインメニューの<span class="label info">ネットワーク</span>から、<span class="label info">IPv6ルーターアドバタイズ</span>を選択し、追加ボタンをクリックし、以下の図のように登録していきます。</p>
 <img src="/new-technology/2020/04/29/xg-ipv6-2/ra.png" class="" title="alt">
 
@@ -420,7 +446,8 @@
 <img src="/new-technology/2020/04/29/xg-ipv6-2/rule3.png" class="" title="alt">
 
 <p>　上記の通り、同じホストでもIPv4とIPv6の通信が混在している事、またSSLインスペクションの対象/対象外についてもログの内容を見て確認できます。</p>
-<p><small id="note1">[1]<br>　ULAの48ビットに対するネットワークアドレスとして、fdxx:xxxx:xxxx:0000を使うため、複数のサブネットを扱う場合、実際に使うアドレスはfdxx:xxxx:xxxx:1::/64とするのが一般的です。今回は個人向けの一例として出来るだけ簡素化する事を目的とし、このような設定にしています。そういう私も自分の環境では、Prefixの後半16ビットは0001としています。</small></p>
+<p><small id="note1">[1]<br>　ULAの48ビットに対するネットワークアドレスとして、fdxx:xxxx:xxxx:0000を使うため、複数のサブネットを扱う場合、実際に使うアドレスはfdxx:xxxx:xxxx:1::/64とするのが一般的です。今回は個人向けの一例として出来るだけ簡素化する事を目的とし、このような設定にしています。そういう私も自分の環境では、Prefixの後半16ビットは0001以降の数字を使っています。</small></p>
+<p><small id="note2">[2]<br>　DHCPv6とRAの戦いというものがあって、RA派は合理化を目指す方向です。ネットワーク管理者がIPアドレスの管理をすべきでサーバー管理者がやるべきでないという感じの論調で、たしかにそうだなとも思えます。DHCPv6派は、なんといっても、クライアントが勝手に決めるのは困る、と。本質的にはやっぱりここなんですよね。SSLインスペクションを迂回されても困りますし。XGには頑張ってもらって、もう少し簡単に証明書が入っている端末を区別するための機能が欲しいなと思うところです。</small></p>
 
     </div>
 
@@ -560,6 +587,9 @@
       </span>
       <span class="links-of-author-item">
         <a href="mailto:yoshi0808.blog@gmail.com" title="E-Mail → mailto:yoshi0808.blog@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yoshi0808_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yoshi0808_" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
       </span>
   </div>
   <div class="cc-license motion-element" itemprop="license">
