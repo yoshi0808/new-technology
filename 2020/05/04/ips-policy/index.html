@@ -20,21 +20,22 @@
     var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","scheme":"Muse","version":"7.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="この記事で実現する内容について個人向けのユニークなIPv6アドレスが必要となった場合、自分の持つ機器のMACアドレスを用いて、Unique Local Address（ULA）を生成します。プログラムの実行が必要なので、外部サイトのJDoodleサイト上でPython3のコードを実行してULAを求めます。">
+  <meta name="description" content="XG FirewallのIPS Policyを確認する　XG Firewallの複数あるIPS Policyについて中身の確認をし、防御対象について理解を深めます。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="IPv6のUnique Local Addressを生成する">
-<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/04/18/ipv6/index.html">
+<meta property="og:title" content="XG FirewallでIPSのポリシーを確認する">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/05/04/ips-policy/index.html">
 <meta property="og:site_name" content="New technologies in our life">
-<meta property="og:description" content="この記事で実現する内容について個人向けのユニークなIPv6アドレスが必要となった場合、自分の持つ機器のMACアドレスを用いて、Unique Local Address（ULA）を生成します。プログラムの実行が必要なので、外部サイトのJDoodleサイト上でPython3のコードを実行してULAを求めます。">
+<meta property="og:description" content="XG FirewallのIPS Policyを確認する　XG Firewallの複数あるIPS Policyについて中身の確認をし、防御対象について理解を深めます。">
 <meta property="og:locale" content="ja_JP">
-<meta property="article:published_time" content="2020-04-18T12:16:31.000Z">
-<meta property="article:modified_time" content="2020-04-25T06:52:57.618Z">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/04/ips-policy/lanwan.png">
+<meta property="article:published_time" content="2020-05-04T00:00:00.000Z">
+<meta property="article:modified_time" content="2020-05-04T04:08:12.063Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
-<meta property="article:tag" content="IPv6">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2020/05/04/ips-policy/lanwan.png">
 
-<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2020/04/18/ipv6/">
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2020/05/04/ips-policy/">
 
 
 <script id="page-configurations">
@@ -46,7 +47,7 @@
   };
 </script>
 
-  <title>IPv6のUnique Local Addressを生成する | New technologies in our life</title>
+  <title>XG FirewallでIPSのポリシーを確認する | New technologies in our life</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-159928165-1"></script>
     <script>
@@ -210,7 +211,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="ja">
-    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2020/04/18/ipv6/">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2020/05/04/ips-policy/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/new-technology/images/yoshi.png">
@@ -223,7 +224,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          IPv6のUnique Local Addressを生成する
+          XG FirewallでIPSのポリシーを確認する
         </h1>
 
         <div class="post-meta">
@@ -232,23 +233,17 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">投稿日</span>
+              
 
-              <time title="作成日：2020-04-18 21:16:31" itemprop="dateCreated datePublished" datetime="2020-04-18T21:16:31+09:00">2020-04-18</time>
+              <time title="作成日：2020-05-04 09:00:00 / 修正日：13:08:12" itemprop="dateCreated datePublished" datetime="2020-05-04T09:00:00+09:00">2020-05-04</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">編集日</span>
-                <time title="修正日：2020-04-25 15:52:57" itemprop="dateModified" datetime="2020-04-25T15:52:57+09:00">2020-04-25</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">カテゴリ</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/new-technology/categories/Code/" itemprop="url" rel="index"><span itemprop="name">Code</span></a>
+                  <a href="/new-technology/categories/Security/" itemprop="url" rel="index"><span itemprop="name">Security</span></a>
                 </span>
             </span>
 
@@ -264,50 +259,199 @@
 
       
         <div class="note success">
-            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>個人向けのユニークなIPv6アドレスが必要となった場合、自分の持つ機器のMACアドレスを用いて、Unique Local Address（ULA）を生成します。プログラムの実行が必要なので、外部サイトの<a href="https://www.jdoodle.com/" target="_blank" rel="noopener">JDoodle</a>サイト上でPython3のコードを実行してULAを求めます。</p>
+            <h2 id="XG-FirewallのIPS-Policyを確認する"><a href="#XG-FirewallのIPS-Policyを確認する" class="headerlink" title="XG FirewallのIPS Policyを確認する"></a>XG FirewallのIPS Policyを確認する</h2><p>　XG Firewallの複数あるIPS Policyについて中身の確認をし、防御対象について理解を深めます。</p>
           </div>
+
 <a id="more"></a>
 
 <div class="note primary no-icon">
-            <h2 id="IPv6-Unique-Local-Address-ULA-について"><a href="#IPv6-Unique-Local-Address-ULA-について" class="headerlink" title="IPv6 Unique Local Address(ULA)について"></a>IPv6 Unique Local Address(ULA)について</h2>
+            <h2 id="XGのIPSポリシーについて"><a href="#XGのIPSポリシーについて" class="headerlink" title="XGのIPSポリシーについて"></a>XGのIPSポリシーについて</h2>
           </div>
 
-<p>　IPv6はその広大なアドレス空間により、NATを必要としません。個人向けのインターネットサービスにおいても、多くのプロバイダでパブリックIPv6が振られ、NAT変換無しでインターネットに接続できます。ただし個人向け環境においての実運用としては、パブリックIPアドレスが変わった場合に宅内のIPアドレスも変更しなければならず、内側のホスト間通信の運用が困難になります。</p>
-<p>　Firewallなど内部ホストを管理する必要のあるネットワークでは、IPv4のプライベートIPに近い考えであるIPv6のULAを使い、インターネットに対してはNAT変換を行うという方法が考えられます。厳密には、ULA≠プライベートIPアドレスなので、外部のサイトとは重複しないアドレスを利用する事が求められます。また、IPv6アドレスそのものについての説明は割愛します。</p>
-<p>　ULAは、MACアドレスと時刻からおおよそ一意となるIPv6アドレスを作成する事が可能となります。アドレスは、fd00::/8から始まる48ビットのプリフィックス（prefix）を持ちます。従い、fdxx:xxxx:xxxx::/48のプリフィックスに対して、以下のとおりのサブネットの範囲を持ちます。</p>
-<p>fdxx:xxxx:xxxx:0000::/64<br>         ~<br>fdxx:xxxx:xxxx:ffff::/64</p>
-<div class="note primary no-icon">
-            <h2 id="IPv6-ULAの生成を行う"><a href="#IPv6-ULAの生成を行う" class="headerlink" title="IPv6 ULAの生成を行う"></a>IPv6 ULAの生成を行う</h2>
-          </div>
-
-<p>　<a href="https://www.jdoodle.com/" target="_blank" rel="noopener">JDoodle(www.jdoodle.com)</a>サイトに配置したULAを算出するPythonプログラムを実行します。JDoodleは、教育用としてプログラムソースコードを登録すると、プログラムが実行できる機能を提供しています。</p>
-<p>　このページでは、JDoodleサイトを埋め込んで表示しております。ここで入力されたデータはJDoodleに渡され、実行される事をご承知おきください。<sup><a href="#note1">1</a></sup></p>
-<p>　最初にIPv6を割り振りたいホストのMACアドレスを調べておいて下さい。算出時にMACアドレスを入力するので、<span class="label info">XX:XX:XX:XX:XX:XX</span>または<span class="label info">XX-XX-XX-XX-XX-XX</span>と表示されているMACアドレスを予めコピーしてください。大文字小文字はどちらでも構いません。また、仮想環境でサーバーなどを構築されている場合は仮想MACアドレスではなく、物理MACアドレスを採用される事をお勧めします。</p>
-<p>　以下にPython3のソースコードとその下に3つの項目があります。</p>
-<ol>
-<li>入力エリア　<span class="label info">Stdin Inputs</span></li>
-<li>実行ボタン　<span class="label info">▶︎Execute</span></li>
-<li>実行結果　<span class="label info">Result</span></li>
-</ol>
-<div data-pym-src="https://www.jdoodle.com/embed/v0/20tR?stdin=1&arg=0"></div>
-
-<p>　上記の<span class="label info">Stdin Inputs</span>に直接入力が可能です。MACアドレスを貼り付け、<span class="label info">▶︎Execute</span>ボタンをクリックしてください。<br>　<span class="label info">Result</span>に、以下の4つの項目が表示されます。MACアドレスが正しく入力されなかった場合は、Bad MAC Adderssと表示されます。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Input MAC address:</span><br><span class="line">ULA Prefix        -&gt; fd00:1234:5678::/48</span><br><span class="line">First Subnet      -&gt; fd00:1234:5678::/64</span><br><span class="line">Last Subnet       -&gt; fd00:1234:5678:ffff::/64</span><br><span class="line">First IPv6 Address-&gt; fd00:1234:5678::1/64</span><br></pre></td></tr></table></figure>
-
-<p>　これで他とのIPv6アドレスの重複が極めて少ないULAの生成ができました。</p>
-<div class="note primary no-icon">
-            <h2 id="IPv6-ULAの生成ソースコードについて"><a href="#IPv6-ULAの生成ソースコードについて" class="headerlink" title="IPv6 ULAの生成ソースコードについて"></a>IPv6 ULAの生成ソースコードについて</h2>
-          </div>
-
-<p>　ソースコードは<a href="https://github.com/yoshi0808/ula-generator" target="_blank" rel="noopener">Github</a>にあります。</p>
+<p>　このブログでのXGインストールの記事、<a href="/new-technology/2020/03/14/rule-policy2/" title="XG Firewall v18のOutboundルールを新規作成する">XG Firewall v18のOutboundルールを新規作成する</a> では、IPS Policyの選択として、<span class="label info">lantowan_general</span>を設定しました。前回はまずセットアップを完了させる事を目的に、あまり十分な説明をしていませんでしたので、改めて中身の確認をしていきます。</p>
+<p>　XGのIPSポリシーは、以下の種類を保持しています。</p>
 <ul>
-<li>RFC4193に基づき生成しています</li>
-<li>MACアドレスから<span class="label info">Modified EUI-64</span>を生成するにあたり、RFC4291に基づき生成しています</li>
-<li>本来はNTPを利用してハッシュキーの一部に利用しますが、通信は行わずホストの時間を取得し、NTP時刻に変換しています</li>
-<li>NTPは64ビットのデータ型となっており、2036年にオーバーフローします。しかし、RFC4330で定義されているように再び0から開始し、正しく動く処理をしています</li>
+<li>DMZ TO LAN</li>
+<li>DMZ TO WAN</li>
+<li>LAN TO DMZ</li>
+<li>LAN TO WAN</li>
+<li>WAN TO DMZ</li>
+<li>WAN TO LAN</li>
+<li>dmzpolicy</li>
+<li>generalpolicy</li>
+<li>lantowan general</li>
+<li>lantowan strict</li>
 </ul>
-<p><small id="note1">[1]JDoodleの利用規約などを探してみましたが見つかりませんでした。学生向けに教育用としての利用を想定されているようです。このブログの目的から鑑み、利用目的が逸脱している事は無いと考え、利用させていただいております。</small></p>
-<script src="https://www.jdoodle.com/assets/jdoodle-pym.min.js" type="text/javascript"></script>
+<p>　前半の6つはそれぞれの接続形態に合わせたポリシーです。LAN TO WANでは、ブラウザやアプリからインターネットに接続する場合の攻撃を想定した防御ポリシーとなっています。XGの左ペインメニューの<span class="label info">侵入防御</span>から<span class="label info">IPSポリシー</span>を選択し、さらにLAN TO WANを選択すると、以下の画面が表示されます。</p>
+<img src="/new-technology/2020/05/04/ips-policy/lanwan.png" class="" title="alt">
+
+<p>　このポリシーは、<span class="label info">カテゴリ</span>、<span class="label info">重要度</span>、<span class="label info">プラットフォーム</span>、<span class="label info">対象</span>というそれぞれのメニューに分かれています。これはブラウザなどのクライアントを対象として、WindowsやLinuxのクライアントOSが確認できます。macOSはありませんが、実際にAll Clientとして組み込まれているようです。正直このポリシーはどのような意図で作成されたのかはちょっとわかりません。なぜWindowsとLinuxだけを切り出しているのでしょうか。さらに、前半6つのポリシーはカスタマイズ出来ません。</p>
+<p>　その下にあるdmzpolicy〜lantowan strictの4つのポリシーの中身はフィルタの種類の名前が異なっていますが、7126個あるXGのIPSポリシーが全て選択されており、4つのポリシーの中身は全く同じで何を選んでも変わりません。XGの昔からの伝統でそのようなカスタマイズ前提のポリシーになっています。</p>
+<p>　これらの事実からみて、明らかに不要なポリシーを外せばパフォーマンスアップが期待されます。ですが、XGではその部分はさすがに工夫されていて、ポリシーを絞ったとしても殆ど効果はありません。もちろん、Solarisを個人で導入する人は稀でしょうが、下手にカスタマイズするよりは原則あるポリシーをそのまま使っても全く変わりません。これらの議論は、以下のSophos Communityの記事が参考になります。</p>
+<blockquote>
+<p>　<a href="https://community.sophos.com/products/xg-firewall/f/intrusion-prevention/98717/please-clarify-ips-policies" target="_blank" rel="noopener">Please clarify IPS Policies?</a></p>
+</blockquote>
+<blockquote class="blockquote-center"><p>IPSを使用した場合のスループットのボトルネックに関しては、XGはsnortを使用していますが、SGシリーズを含む通常のファイアウォールに加えていくつかの工夫をしています。</p>
+</blockquote>
+
+<p>　XGのIPSはオープンソースのセキュリティソフトであるsnortを使っているようです。私の検証では、下手にポリシーを絞り込むとかえってパフォーマンスが出なくなるように見えます（何10回も繰り返し統計をとったわけではありません）。lantowan generalなどの全く絞り込まないポリシーで全く不都合がない事と、XGで新しく自動追加されたポリシーが既存のフィルタで無効とならないようにするため、このままフィルタせずに利用しています。</p>
+<p>　合計7126個のポリシーですが、これに過剰な期待は禁物です。話は変わりますが、Webサーバーのシェアは2017年に過半数を占めていたApacheは2020年4月には38.7％までシェアを落としています。代わりに高速性が売りのnginxが、足元32.1%までシェアを伸ばしています。</p>
+<blockquote class="blockquote-center"><p><strong>Historical quarterly trends in the usage statistics of web servers</strong></p>
+<p>This report shows the historical trends in the usage of web servers since April 2017.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>2017 1 Apr</th>
+<th>2018 1 Apr</th>
+<th>2019 1 Apr</th>
+<th>2020 1 Apr</th>
+<th>2020 4 May</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Apache</strong></td>
+<td><strong>50.1%</strong></td>
+<td>46.9%</td>
+<td>43.8%</td>
+<td>39.5%</td>
+<td><strong>38.7%</strong></td>
+</tr>
+<tr>
+<td><strong>Nginx</strong></td>
+<td><strong>33.1%</strong></td>
+<td>37.7%</td>
+<td>41.6%</td>
+<td>31.7%</td>
+<td><strong>32.1%</strong></td>
+</tr>
+<tr>
+<td><strong>Cloudflare Server</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td>13.6%</td>
+<td>14.0%</td>
+</tr>
+<tr>
+<td><strong>Microsoft-IIS</strong></td>
+<td>11.4%</td>
+<td>10.0%</td>
+<td>8.7%</td>
+<td>8.3%</td>
+<td>8.1%</td>
+</tr>
+<tr>
+<td><strong>LiteSpeed</strong></td>
+<td>2.5%</td>
+<td>3.2%</td>
+<td>4.0%</td>
+<td>6.3%</td>
+<td>6.5%</td>
+</tr>
+<tr>
+<td><strong>Google Servers</strong></td>
+<td>1.3%</td>
+<td>1.0%</td>
+<td>0.9%</td>
+<td>1.1%</td>
+<td>1.1%</td>
+</tr>
+<tr>
+<td><strong>Node.js</strong></td>
+<td>0.3%</td>
+<td>0.4%</td>
+<td>0.7%</td>
+<td>0.8%</td>
+<td>0.8%</td>
+</tr>
+<tr>
+<td><strong>Tomcat</strong></td>
+<td>0.6%</td>
+<td>0.5%</td>
+<td>0.4%</td>
+<td>0.2%</td>
+<td>0.2%</td>
+</tr>
+<tr>
+<td><strong>Apache Traffic Server</strong></td>
+<td>0.3%</td>
+<td>0.3%</td>
+<td>0.5%</td>
+<td>0.1%</td>
+<td>0.1%</td>
+</tr>
+<tr>
+<td><strong>Cowboy</strong></td>
+<td>0.1%</td>
+<td>0.1%</td>
+<td>0.1%</td>
+<td>0.1%</td>
+<td>0.1%</td>
+</tr>
+<tr>
+<td><strong>Tengine</strong></td>
+<td>0.2%</td>
+<td>0.2%</td>
+<td>0.1%</td>
+<td>0.1%</td>
+<td>0.1%</td>
+</tr>
+<tr>
+<td><strong>IdeaWebServer</strong></td>
+<td>0.3%</td>
+<td>0.3%</td>
+<td>0.3%</td>
+<td>0.1%</td>
+<td>0.1%</td>
+</tr>
+<tr>
+<td><strong>Kestrel</strong></td>
+<td></td>
+<td>&lt;0.1%</td>
+<td>0.1%</td>
+<td>0.1%</td>
+<td>0.1%</td>
+</tr>
+<tr>
+<td><strong>ArvanNginx</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td>&lt;0.1%</td>
+<td>0.1%</td>
+</tr>
+<tr>
+<td><strong>Lighttpd</strong></td>
+<td>0.1%</td>
+<td>0.1%</td>
+<td>0.1%</td>
+<td>&lt;0.1%</td>
+<td>&lt;0.1%</td>
+</tr>
+<tr>
+<td><strong>Oracle Servers</strong></td>
+<td>0.1%</td>
+<td>&lt;0.1%</td>
+<td>&lt;0.1%</td>
+<td>&lt;0.1%</td>
+<td>&lt;0.1%</td>
+</tr>
+<tr>
+<td><strong>IBM Servers</strong></td>
+<td>0.1%</td>
+<td>&lt;0.1%</td>
+<td>&lt;0.1%</td>
+<td>&lt;0.1%</td>
+<td>&lt;0.1%</td>
+</tr>
+</tbody></table>
+</blockquote> 
+
+<p><a href="https://w3techs.com/technologies/history_overview/web_server/ms/q" target="_blank" rel="noopener">https://w3techs.com/technologies/history_overview/web_server/ms/q</a></p>
+<p>「パッチが多いのでアパッチ」と揶揄される事もありますが、XGのIPSにも178個のアパッチ用ポリシーがあります。一方、nginxは、まだ歴史が浅いという事もありますが、XGのポリシーを検索してみると4つしか見つかりません。全ての製品の脆弱性をXGがカバー出来るかといえば難しく、やはり利用しているプロダクトの製品パッチを適用するのが本筋です。</p>
+<p>　再びホームユーザーとしての話に戻しますと、原則、Windows10やmacOS、スマホは脆弱性に対するパッチとして自動更新の機能があるので、それを行うのが確実です。むしろ危ないのは自動更新にしていないOSであったり、IoT機器・無線ルーター・NAS・家電などです。昨今、数多くの脆弱性が発見され、パッチが出ている現況においては、IPSに全ての製品の脆弱性の保護を頼るのは厳しいと考えます。きちんとベンダーからの通知システムを活用し、適切なパッチを適用する事が何よりも重要です。私はIT機器やソフトウェアを導入する場合には、こういったパッチが迅速に提供されるもの、また自動更新や通知の仕組みがあるものを選定するようにしています。そういう意味では、家電などはOSやシステム等の情報も少ないのが実情です。XGのIPSはあくまで補助的に使い、日常ログの確認も併せて行いたいところです。</p>
+<p>　XGのIPSはこれだけにの機能に限らず、レイヤ7のファイアウォール機能として立派に役目を果たしてくれます。怪しいサイトに接続しない事は本人の心がけも重要ですが、XGである程度そういったサイトを遠ざける事も出来ます。2要素認証のように、面倒ではありますが複数の管理策を重ねる事と、日頃のログの確認や情報をウォッチする事が防御を高める事につながります。</p>
 
     </div>
 
@@ -323,7 +467,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>記事へのリンク：</strong>
-    <a href="https://yoshi0808.github.io/new-technology/2020/04/18/ipv6/" title="IPv6のUnique Local Addressを生成する">https://yoshi0808.github.io/new-technology/2020/04/18/ipv6/</a>
+    <a href="https://yoshi0808.github.io/new-technology/2020/05/04/ips-policy/" title="XG FirewallでIPSのポリシーを確認する">https://yoshi0808.github.io/new-technology/2020/05/04/ips-policy/</a>
   </li>
   <li class="post-copyright-license">
     <strong>著作権表示： </strong>このブログ内のすべての記事は、特別な記載がない限り <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> の下のライセンスで保護されています。また、免責事項・プライバシーポリシーについては、メニューのディスクレーマーをご覧ください。
@@ -335,7 +479,6 @@
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/new-technology/tags/XG-Firewall/" rel="tag"># XG Firewall</a>
-              <a href="/new-technology/tags/IPv6/" rel="tag"># IPv6</a>
           </div>
 
         
@@ -344,13 +487,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/new-technology/2020/04/11/dnat/" rel="prev" title="XG Firewall V18でLAN内のホストをインターネットに公開する">
-      <i class="fa fa-chevron-left"></i> XG Firewall V18でLAN内のホストをインターネットに公開する
+    <a href="/new-technology/2020/04/29/xg-ipv6-2/" rel="prev" title="XG FirewallでIPv6の設定を行う（後半）">
+      <i class="fa fa-chevron-left"></i> XG FirewallでIPv6の設定を行う（後半）
     </a></div>
-      <div class="post-nav-item">
-    <a href="/new-technology/2020/04/25/xg-ipv6-1/" rel="next" title="XG FirewallでIPv6の設定を行う（前半）">
-      XG FirewallでIPv6の設定を行う（前半） <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -410,7 +550,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#この記事で実現する内容について"><span class="nav-number">1.</span> <span class="nav-text">この記事で実現する内容について</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IPv6-Unique-Local-Address-ULA-について"><span class="nav-number">2.</span> <span class="nav-text">IPv6 Unique Local Address(ULA)について</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IPv6-ULAの生成を行う"><span class="nav-number">3.</span> <span class="nav-text">IPv6 ULAの生成を行う</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IPv6-ULAの生成ソースコードについて"><span class="nav-number">4.</span> <span class="nav-text">IPv6 ULAの生成ソースコードについて</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#XG-FirewallのIPS-Policyを確認する"><span class="nav-number">1.</span> <span class="nav-text">XG FirewallのIPS Policyを確認する</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XGのIPSポリシーについて"><span class="nav-number">2.</span> <span class="nav-text">XGのIPSポリシーについて</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
