@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","scheme":"Muse","version":"7.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="この記事で実現する内容について個人向けのユニークなIPv6アドレスが必要となった場合、自分の持つ機器のMACアドレスを用いて、Unique Local Address（ULA）を生成します。プログラムの実行が必要なので、外部サイトのJDoodleサイト上でPython3のコードを実行してULAを求めます。">
+  <meta name="description" content="この記事で実現する内容についてホームユーザー向けのユニークなIPv6アドレスが必要となった場合、自分の持つ機器のMACアドレスを用いて、Unique Local Address（ULA）を生成します。プログラムの実行が必要なので、外部サイトのJDoodleサイト上でPython3のコードを実行してULAを求めます。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="IPv6のUnique Local Addressを生成する">
 <meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/04/18/ipv6/index.html">
 <meta property="og:site_name" content="New technologies in our life">
-<meta property="og:description" content="この記事で実現する内容について個人向けのユニークなIPv6アドレスが必要となった場合、自分の持つ機器のMACアドレスを用いて、Unique Local Address（ULA）を生成します。プログラムの実行が必要なので、外部サイトのJDoodleサイト上でPython3のコードを実行してULAを求めます。">
+<meta property="og:description" content="この記事で実現する内容についてホームユーザー向けのユニークなIPv6アドレスが必要となった場合、自分の持つ機器のMACアドレスを用いて、Unique Local Address（ULA）を生成します。プログラムの実行が必要なので、外部サイトのJDoodleサイト上でPython3のコードを実行してULAを求めます。">
 <meta property="og:locale" content="ja_JP">
 <meta property="article:published_time" content="2020-04-18T12:16:31.000Z">
-<meta property="article:modified_time" content="2020-04-25T06:52:57.618Z">
+<meta property="article:modified_time" content="2020-05-04T04:25:57.129Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta property="article:tag" content="IPv6">
@@ -240,7 +240,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">編集日</span>
-                <time title="修正日：2020-04-25 15:52:57" itemprop="dateModified" datetime="2020-04-25T15:52:57+09:00">2020-04-25</time>
+                <time title="修正日：2020-05-04 13:25:57" itemprop="dateModified" datetime="2020-05-04T13:25:57+09:00">2020-05-04</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -264,7 +264,7 @@
 
       
         <div class="note success">
-            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>個人向けのユニークなIPv6アドレスが必要となった場合、自分の持つ機器のMACアドレスを用いて、Unique Local Address（ULA）を生成します。プログラムの実行が必要なので、外部サイトの<a href="https://www.jdoodle.com/" target="_blank" rel="noopener">JDoodle</a>サイト上でPython3のコードを実行してULAを求めます。</p>
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>ホームユーザー向けのユニークなIPv6アドレスが必要となった場合、自分の持つ機器のMACアドレスを用いて、Unique Local Address（ULA）を生成します。プログラムの実行が必要なので、外部サイトの<a href="https://www.jdoodle.com/" target="_blank" rel="noopener">JDoodle</a>サイト上でPython3のコードを実行してULAを求めます。</p>
           </div>
 <a id="more"></a>
 
@@ -272,7 +272,7 @@
             <h2 id="IPv6-Unique-Local-Address-ULA-について"><a href="#IPv6-Unique-Local-Address-ULA-について" class="headerlink" title="IPv6 Unique Local Address(ULA)について"></a>IPv6 Unique Local Address(ULA)について</h2>
           </div>
 
-<p>　IPv6はその広大なアドレス空間により、NATを必要としません。個人向けのインターネットサービスにおいても、多くのプロバイダでパブリックIPv6が振られ、NAT変換無しでインターネットに接続できます。ただし個人向け環境においての実運用としては、パブリックIPアドレスが変わった場合に宅内のIPアドレスも変更しなければならず、内側のホスト間通信の運用が困難になります。</p>
+<p>　IPv6はその広大なアドレス空間により、NATを必要としません。ホームユーザー向けのインターネットサービスにおいても、多くのプロバイダでパブリックIPv6が振られ、NAT変換無しでインターネットに接続できます。ただしホームユーザー環境においての実運用としては、パブリックIPアドレスが変わった場合に宅内のIPアドレスも変更しなければならず、内側のホスト間通信の運用が困難になります。</p>
 <p>　Firewallなど内部ホストを管理する必要のあるネットワークでは、IPv4のプライベートIPに近い考えであるIPv6のULAを使い、インターネットに対してはNAT変換を行うという方法が考えられます。厳密には、ULA≠プライベートIPアドレスなので、外部のサイトとは重複しないアドレスを利用する事が求められます。また、IPv6アドレスそのものについての説明は割愛します。</p>
 <p>　ULAは、MACアドレスと時刻からおおよそ一意となるIPv6アドレスを作成する事が可能となります。アドレスは、fd00::/8から始まる48ビットのプリフィックス（prefix）を持ちます。従い、fdxx:xxxx:xxxx::/48のプリフィックスに対して、以下のとおりのサブネットの範囲を持ちます。</p>
 <p>fdxx:xxxx:xxxx:0000::/64<br>         ~<br>fdxx:xxxx:xxxx:ffff::/64</p>

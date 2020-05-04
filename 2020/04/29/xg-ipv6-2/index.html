@@ -39,7 +39,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/04/29/xg-ipv6-2/rule2.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/04/29/xg-ipv6-2/rule3.png">
 <meta property="article:published_time" content="2020-04-29T11:13:18.000Z">
-<meta property="article:modified_time" content="2020-05-02T02:04:53.242Z">
+<meta property="article:modified_time" content="2020-05-04T04:29:43.799Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta property="article:tag" content="IPv6">
@@ -252,7 +252,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">編集日</span>
-                <time title="修正日：2020-05-02 11:04:53" itemprop="dateModified" datetime="2020-05-02T11:04:53+09:00">2020-05-02</time>
+                <time title="修正日：2020-05-04 13:29:43" itemprop="dateModified" datetime="2020-05-04T13:29:43+09:00">2020-05-04</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -446,8 +446,8 @@
 <img src="/new-technology/2020/04/29/xg-ipv6-2/rule3.png" class="" title="alt">
 
 <p>　上記の通り、同じホストでもIPv4とIPv6の通信が混在している事、またSSLインスペクションの対象/対象外についてもログの内容を見て確認できます。</p>
-<p><small id="note1">[1]<br>　ULAの48ビットに対するネットワークアドレスとして、fdxx:xxxx:xxxx:0000を使うため、複数のサブネットを扱う場合、実際に使うアドレスはfdxx:xxxx:xxxx:1::/64とするのが一般的です。今回は個人向けの一例として出来るだけ簡素化する事を目的とし、このような設定にしています。そういう私も自分の環境では、Prefixの後半16ビットは0001以降の数字を使っています。</small></p>
-<p><small id="note2">[2]<br>　DHCPv6とRAの戦いというものがあって、RA派は合理化を目指す方向です。ネットワーク管理者がIPアドレスの管理をすべきでサーバー管理者がやるべきでないという感じの論調で、たしかにそうだなとも思えます。DHCPv6派は、なんといっても、クライアントが勝手に決めるのは困る、と。本質的にはやっぱりここなんですよね。SSLインスペクションを迂回されても困りますし。XGには頑張ってもらって、もう少し簡単に証明書が入っている端末を区別するための機能が欲しいなと思うところです。</small></p>
+<p><small id="note1">[1]<br>　ULAの48ビットに対するネットワークアドレスとして、fdxx:xxxx:xxxx:0000を使うため、複数のサブネットを扱う場合、実際に使うアドレスはfdxx:xxxx:xxxx:1::/64とするのが一般的です。今回はホームユーザー向けの一例として出来るだけ簡素化する事を目的とし、このような設定にしています。そういう私も自分の環境では、Prefixの後半16ビットは0001以降の数字を使っています。</small></p>
+<p><small id="note2">[2]<br>　DHCPv6とRAの戦いというものがあって、RA派は合理化を目指す方向です。ネットワーク管理者がIPアドレスの管理をすべきでサーバー管理者がやるべきでないという感じの論調で、たしかにそうだなとも思えます。DHCPv6派はなんといっても、クライアントが勝手に決めるのは困る、と。本質的にはやっぱりここなんですよね。SSLインスペクションを迂回されても困りますし。XGには頑張ってもらって、もう少し簡単に証明書が入っている端末を区別するための機能が欲しいとおもいます。</small></p>
 
     </div>
 
