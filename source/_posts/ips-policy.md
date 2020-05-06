@@ -25,17 +25,18 @@ date: 2020-05-04 09:00:00
 
 　このブログでのXGインストールの記事、{% post_link rule-policy2 %} では、IPS Policyの選択として、{% label info @lantowan_general %}を設定しました。前回はまずセットアップを完了させる事を目的に、あまり十分な説明をしていませんでしたので、改めて中身の確認をしていきます。
 
-　XGのIPSポリシーは、以下の種類を保持しています。
- - DMZ TO LAN
- - DMZ TO WAN
- - LAN TO DMZ
- - LAN TO WAN
- - WAN TO DMZ
- - WAN TO LAN
- - dmzpolicy
- - generalpolicy
- - lantowan general
- - lantowan strict
+　XGのIPSポリシーは、左ペインメニューの{% label info @侵入防御 %}の{% label info @IPSポリシー %}から確認できます。デフォルトで登録されているものには、以下の内容があります。
+
+- DMZ TO LAN
+- DMZ TO WAN
+- LAN TO DMZ
+- LAN TO WAN
+- WAN TO DMZ
+- WAN TO LAN
+- dmzpolicy
+- generalpolicy
+- lantowan general
+- lantowan strict
 
 　前半の6つはそれぞれの接続形態に合わせたポリシーです。LAN TO WANでは、ブラウザやアプリからインターネットに接続する場合の攻撃を想定した防御ポリシーとなっています。XGの左ペインメニューの{% label info @侵入防御 %}から{% label info @IPSポリシー %}を選択し、さらにLAN TO WANを選択すると、以下の画面が表示されます。
 
