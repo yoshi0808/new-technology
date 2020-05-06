@@ -29,8 +29,8 @@
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/06/web-application-filter/onedrive.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/06/web-application-filter/appfilter2.png">
-<meta property="article:published_time" content="2020-05-06T00:53:42.355Z">
-<meta property="article:modified_time" content="2020-05-06T04:13:23.654Z">
+<meta property="article:published_time" content="2020-05-06T05:54:00.000Z">
+<meta property="article:modified_time" content="2020-05-06T05:55:08.724Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -236,7 +236,7 @@
               <span class="post-meta-item-text">投稿日</span>
               
 
-              <time title="作成日：2020-05-06 09:53:42 / 修正日：13:13:23" itemprop="dateCreated datePublished" datetime="2020-05-06T09:53:42+09:00">2020-05-06</time>
+              <time title="作成日：2020-05-06 14:54:00 / 修正日：14:55:08" itemprop="dateCreated datePublished" datetime="2020-05-06T14:54:00+09:00">2020-05-06</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -269,10 +269,10 @@
             <h2 id="XGのWebフィルターについて"><a href="#XGのWebフィルターについて" class="headerlink" title="XGのWebフィルターについて"></a>XGのWebフィルターについて</h2>
           </div>
 
-<p>　XGでの左ペインのメニューでは、<span class="label info">Web</span>、<span class="label info">アプリケーション</span>とそれぞれ分かれています。Webではサイトのカテゴリが分かれていて、そのサイトのカテゴリによっては接続させないという使い方が一般的な使い方のように見えます。これらのポリシーは、<a href="https://community.sophos.com/kb/ja-jp/134155" target="_blank" rel="noopener">Sophosのサイト「Sophos XG Firewall: Web カテゴリ」</a>にも日本語の解説があります。サイトのカテゴリについては、ビジネス、ギャンブル、ゲーム、アダルト、ファイナンス等多岐に渡ります。ホームユーザーとしてはいわゆる怪しいサイトや過度な広告をフィルタする事が主目的になるかとおもいます。</p>
-<p>　上記サイトのポリシーを眺めていると疑問に感じるところがあります。「ActiveX」、「Applets」、「SpamURLs」です。サイトのポリシーで判断しているのかと思いきや、ActiveXやAppletは単純にサーバー名とは関係ありません。企業やサイトの目的ではなく、そこに配置したコンテンツの内容まで判断するように見えます。サイトのカテゴリに関係なく、そこにSpamがある場合は排除される事のようですから、そのあとのフォルダ構成を含めたURLまで対象としているように見えます。</p>
-<p>　上記<span class="label info">Sophos XG Firewall:Webカテゴリ</span>には記載がないものの、XGの左ペインメニューの<span class="label info">Web</span>の<span class="label info">ファイルタイプ</span>の内容には、ファイル拡張子、MIMEヘッダーの情報が並びます。そしてここにはzipファイルなどの<span class="label info">Compressed Files</span>、Windowsの実行ファイルである<span class="label info">Executable File</span>などの項目が並んでいます。</p>
-<p>　ホームユーザーとしては、ZipファイルやExeファイルが使えないと不便なのでフィルタする事は考えにくいですが、何らかのMIMEタイプを拒否するポリシーを作成する場合は有効に機能しそうです。最終的には、Webフィルターは以下の種類の分類となります。</p>
+<p>　XGの左ペインメニューでは、<span class="label info">Web</span>、<span class="label info">アプリケーション</span>とそれぞれ分かれています。<span class="label info">Web</span>ではサイトのカテゴリが分かれていて、そのサイトのカテゴリによっては閲覧させないという使い方が一般的な使い方のように見えます。これらのポリシーは、<a href="https://community.sophos.com/kb/ja-jp/134155" target="_blank" rel="noopener">Sophosのサイト「Sophos XG Firewall: Web カテゴリ」</a>にも日本語の解説があります。サイトのカテゴリについては、ビジネス、ギャンブル、ゲーム、アダルト、ファイナンス等多岐に渡ります。ホームユーザーとしてはいわゆる怪しいサイトや過度な広告をフィルタする事が主目的になるかとおもいます。</p>
+<p>　上記サイトのポリシーを眺めていると疑問に感じるところがあります。「ActiveX」、「Applets」、「SpamURLs」です。サイトのポリシーで判断しているのかと思いきや、ActiveXやAppletは単純にサーバー名とも関係ありません。企業やサイトの目的ではなく、そこに配置したコンテンツの内容まで判断するように見えます。サイトのカテゴリに関係なく、そこにSpamがある場合は排除される事のようですから、そのあとのフォルダ構成を含めたURLまで対象としているように見えます。</p>
+<p>　上記サイトの<span class="label info">Sophos XG Firewall:Webカテゴリ</span>には記載がないものの、XGの左ペインメニューの<span class="label info">Web</span>の<span class="label info">ファイルタイプ</span>の内容には、ファイル拡張子、MIMEヘッダーの情報が並びます。そしてここにはZIPファイルなどの<span class="label info">Compressed Files</span>、Windowsの実行ファイルである<span class="label info">Executable File</span>などの項目が並んでいます。</p>
+<p>　ホームユーザーとしては、ZIPファイルやEXEファイルが使えないと不便なのでフィルタする事は考えにくいですが、何らかのMIMEタイプを拒否するポリシーを作成する場合は有効に機能しそうです。最終的には、Webフィルターは以下の種類の分類となります。</p>
 <ul>
 <li>Webカテゴリ</li>
 <li>URLグループ（自身で作成したURLの集まり）、280blockerなどのURLデータベースもこのグループ</li>
@@ -311,7 +311,7 @@
 <p>　アプリケーションフィルターの中には、<span class="label info">EXE File Download</span>というフィルタも存在しますが、あくまで汎用的なものであって、全てのいかなるアプリケーションからのEXEファイルのダウンロードを禁止できるものではありません。</p>
 <p>　これらを理解できても、それを実践するのは難しいものです。ホームユーザーとしてリスクを抑制しつつ利便性を高めるには、どのようなフィルターを作っていくべきでしょうか。たくさん存在するアプリケーションを都度設定するのは管理も非常に大変で現実的ではありません。</p>
 <p>　Webのカテゴリについては、個人の考え方でいろいろなフィルタの組み合わせがあるでしょう。そちらについてはご自身のポリシーでカスタマイズいただければとおもいます。</p>
-<p>　但し脆弱性や攻撃から身を守るという課題については、ある程度のスタンダードはあるかとおもいますので、Sophos Communityなどの情報を頼りにホームユーザーのためのお勧め設定について次回に記載します。</p>
+<p>　但し攻撃から身を守るという課題については、ある程度のスタンダードはあるかとおもいますので、Sophos Communityなどの情報を頼りにホームユーザーのためのお勧め設定について次回に記載したいとおもいます。</p>
 
     </div>
 

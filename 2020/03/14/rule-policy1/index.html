@@ -32,7 +32,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/14/rule-policy1/rule2.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/14/rule-policy1/rule3.png">
 <meta property="article:published_time" content="2020-03-14T00:23:01.000Z">
-<meta property="article:modified_time" content="2020-05-04T04:30:38.695Z">
+<meta property="article:modified_time" content="2020-05-06T05:57:24.446Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -244,7 +244,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">編集日</span>
-                <time title="修正日：2020-05-04 13:30:38" itemprop="dateModified" datetime="2020-05-04T13:30:38+09:00">2020-05-04</time>
+                <time title="修正日：2020-05-06 14:57:24" itemprop="dateModified" datetime="2020-05-06T14:57:24+09:00">2020-05-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -305,8 +305,8 @@
 <p>　次に、アプリケーションFirewallの設定です。</p>
 <img src="/new-technology/2020/03/14/rule-policy1/rule3.png" class="" title="alt">
 <p>　デフォルトは少し甘めの設定に変更します。先ほども述べたとおり、Traffic to Wanで個別のポリシーを作成するなどして厳しいルールにします。そうすると意外とアプリケーションFirewallのルールで通信出来なくなったりする機会が増えます。一時的に通すなどルールを変更したい場合は、その厳しいルールを一旦Offにするなどして、このデフォルトルールを通す運用を行っていく事になります。<br>　理由は、Webポリシー/IPS/アプリケーションコントロールなど複数箇所で接続出来ない要素があります。ひとつひとつ切り分けしていると手間が掛かるので、Firewallのログで拒否または破棄となったルールを無効にして、短時間このルールを生かす運用を行うという事です。</p>
-<p>　Webポリシーは、Default PolicyからAllow Allとします。広告のタグがヘッダに含まれているとFirewallは律儀にRejectしてしまい、サイトが正しく表示できなくなるためです。</p>
-<p>　アプリケーションコントロールとIPSはデフォルトのままにしますが、お好みで変更しても構いません。ただアプリケーションコントロールは実行可能ファイルだと取り込めないなどやはり厳しいところもありますので、いろいろ設定して試して下さい。</p>
+<p>　Webポリシーは、Default PolicyからAllow Allとします。広告のタグがヘッダに含まれているとFirewallは律儀にRejectしてしまい、サイトが正しく表示できなくなるためです。これらは当初セットアップのための暫定設定と理解下さい。</p>
+<p>　アプリケーションコントロールとIPSはデフォルトのままにしますが、お好みで変更しても構いません。ただアプリケーションコントロールは実行可能ファイルだと取り込めないなどやはり厳しいところもありますので、いろいろ設定して試して下さい。これは後日改めて設定を見直した投稿をしたいとおもいます。</p>
 <p>　IPSの機能について補足します。「DPIエンジンでなくWEBプロキシを使用する」はv18では全て利用しないという前提で進めます。「webプロキシでのフィルタリング中にHTTPSを復号化する」も利用しないという前提で進めます。これは前バージョンのV17まではメインの方式で、Port80およびPort443を対象としていました。v18の機能であるDPIエンジンはPortに依存しないのでこの機能を最大限活用したいと考えています。</p>
 
     </div>
