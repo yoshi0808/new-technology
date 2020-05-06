@@ -4,6 +4,7 @@ tags:
   - XG Firewall
 categories:
   - Security
+date: 2020-05-06 14:54:00
 ---
 
 {% note success  %}

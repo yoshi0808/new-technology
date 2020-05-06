@@ -42,7 +42,7 @@ categories:
 - QUICプロトコルのブロックは任意選択です
     Googleのサービスで利用されています。私はチェックしています。Google自体は問題ないですがそのプロトコルを利用した悪質なサイトがFirewallを回避するリスクを減らすという意味で選択しています
 - その他のセキュリティ機能でアプリケーションコントロールを選択します
-    私は「Block very high risk(Risk Level 5) apps」を選択しています
+    初期の暫定設定として「Block very high risk(Risk Level 5) apps」を選択します
 - IPSは「lantowan_general」を選択します
     保存ボタンをクリックし、ルールの追加が行われます。これでXG Firewall ｖ18の最低限度の設定を終えた事になります
 

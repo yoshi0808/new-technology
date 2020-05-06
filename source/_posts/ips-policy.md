@@ -9,7 +9,7 @@ date: 2020-05-04 09:00:00
 
 {% note success  %}
 
-## XG FirewallのIPS Policyを確認する
+## この記事で実現する内容について
 
 　XG Firewallの複数あるIPS Policyについて中身の確認をし、防御対象について理解を深めます。
 
