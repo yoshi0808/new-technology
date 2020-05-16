@@ -236,7 +236,8 @@
             <h2 id="その他DNSに関して補足すること"><a href="#その他DNSに関して補足すること" class="headerlink" title="その他DNSに関して補足すること"></a>その他DNSに関して補足すること</h2>
           </div>
 
-<p>　GoogleDNSのDoHはRFC8484に従っていない独自プロトコルを使えるという事実があります。このため、GoogleDNSのIPアドレスを<span class="label info">ルールとポリシー</span>で、拒否する設定を加えても良いでしょう。</p>
+<p>　GoogleDNSのDoHはRFC8484に従っていない独自プロトコルを使えるという事実があります。世界中のパブリックDNSを全て把握するのは困難ですが、Sophosの以下の記事を参考にWebフィルタのURLグループにパブリックDNSのドメインを登録し、拒否する設定を加えても良いでしょう。</p>
+<p><a href="https://community.sophos.com/kb/en-us/134644" target="_blank" rel="noopener">DNS over HTTPS (DoH) for web security</a></p>
 ]]></content>
       <categories>
         <category>Security</category>
@@ -455,7 +456,10 @@
 <li><a href="/new-technology/2020/04/18/ipv6/" title="IPv6のUnique Local Addressを生成する">IPv6のUnique Local Addressを生成する</a></li>
 <li><a href="/new-technology/2020/04/25/xg-ipv6-1/" title="XG FirewallでIPv6の設定を行う（前半）">XG FirewallでIPv6の設定を行う（前半）</a></li>
 <li><a href="/new-technology/2020/04/29/xg-ipv6-2/" title="XG FirewallでIPv6の設定を行う（後半）">XG FirewallでIPv6の設定を行う（後半）</a></li>
-<li><a href="/new-technology/2020/05/04/ips-policy/" title="XG FirewallでIPSのポリシーを確認する">XG FirewallでIPSのポリシーを確認する</a>
+<li><a href="/new-technology/2020/05/04/ips-policy/" title="XG FirewallでIPSのポリシーを確認する">XG FirewallでIPSのポリシーを確認する</a></li>
+<li><a href="/new-technology/2020/05/06/web-application-filter/" title="XG FirewallのWebフィルターとアプリケーションフィルタについて">XG FirewallのWebフィルターとアプリケーションフィルタについて</a></li>
+<li><a href="/new-technology/2020/05/09/best-practice/" title="XG Firewall V18の設定におけるベストプラクティス">XG Firewall V18の設定におけるベストプラクティス</a></li>
+<li><a href="/new-technology/2020/05/16/Intercept-DNS/" title="XG Firewall V18で正しいDNS利用を強制する">XG Firewall V18で正しいDNS利用を強制する</a>
 </li>
 </ul>
 ]]></content>
