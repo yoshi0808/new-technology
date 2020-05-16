@@ -92,3 +92,6 @@ categories:
 - {% post_link xg-ipv6-1 %}
 - {% post_link xg-ipv6-2 %}
 - {% post_link ips-policy %}
+- {% post_link web-application-filter %}
+- {% post_link best-practice %}
+- {% post_link Intercept-DNS %}
