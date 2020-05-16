@@ -142,4 +142,6 @@ The best protection is to use XG as dns server, configure dns request routing an
 
 {% endnote %}
 
-　GoogleDNSのDoHはRFC8484に従っていない独自プロトコルを使えるという事実があります。このため、GoogleDNSのIPアドレスを{% label info @ルールとポリシー %}で、拒否する設定を加えても良いでしょう。
+　GoogleDNSのDoHはRFC8484に従っていない独自プロトコルを使えるという事実があります。世界中のパブリックDNSを全て把握するのは困難ですが、Sophosの以下の記事を参考にWebフィルタのURLグループにパブリックDNSのドメインを登録し、拒否する設定を加えても良いでしょう。
+
+[DNS over HTTPS (DoH) for web security](https://community.sophos.com/kb/en-us/134644)
