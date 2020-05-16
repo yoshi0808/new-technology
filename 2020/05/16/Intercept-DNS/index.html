@@ -20,23 +20,29 @@
     var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","scheme":"Muse","version":"7.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Sophos Communityで情報を調べる             　XG Firewall Home EditionはSophosによるサポートがなく、ユーザコミュニティの相互サポートによって成り立っています。そもそもこんなに素晴らしいソフトウェアが無料なのですから、それだけでも感謝すべき事ではありますが。サポートサイトは英語が中心ですが、セキュリティに関するビジネ">
+  <meta name="description" content="この記事で実現する内容について　自分で設定したDNS（多くはプロバイダDNS）に反し、行儀の悪いクライアントや悪意のあるプログラムはそれに従わず、全く別のDNSを参照する可能性があります。XG Firewall V18の機能を活用してDNSの安全性を確保します。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="XG Firewall Sophos Communityについて">
-<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/03/26/SophosCommunity/index.html">
+<meta property="og:title" content="XG Firewall V18で正しいDNS利用を強制する">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/05/16/Intercept-DNS/index.html">
 <meta property="og:site_name" content="New technologies in our life">
-<meta property="og:description" content="Sophos Communityで情報を調べる             　XG Firewall Home EditionはSophosによるサポートがなく、ユーザコミュニティの相互サポートによって成り立っています。そもそもこんなに素晴らしいソフトウェアが無料なのですから、それだけでも感謝すべき事ではありますが。サポートサイトは英語が中心ですが、セキュリティに関するビジネ">
+<meta property="og:description" content="この記事で実現する内容について　自分で設定したDNS（多くはプロバイダDNS）に反し、行儀の悪いクライアントや悪意のあるプログラムはそれに従わず、全く別のDNSを参照する可能性があります。XG Firewall V18の機能を活用してDNSの安全性を確保します。">
 <meta property="og:locale" content="ja_JP">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/26/SophosCommunity/community.png">
-<meta property="article:published_time" content="2020-03-26T09:27:32.000Z">
-<meta property="article:modified_time" content="2020-04-05T01:46:13.788Z">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/16/Intercept-DNS/mimetype.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/16/Intercept-DNS/mimetype2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/16/Intercept-DNS/policy.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/16/Intercept-DNS/service.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/16/Intercept-DNS/rule1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/16/Intercept-DNS/host.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/16/Intercept-DNS/rule2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/16/Intercept-DNS/rule3.png">
+<meta property="article:published_time" content="2020-05-16T02:39:23.000Z">
+<meta property="article:modified_time" content="2020-05-16T02:39:23.389Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
-<meta property="article:tag" content="DeepL">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2020/03/26/SophosCommunity/community.png">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2020/05/16/Intercept-DNS/mimetype.png">
 
-<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2020/03/26/SophosCommunity/">
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2020/05/16/Intercept-DNS/">
 
 
 <script id="page-configurations">
@@ -48,7 +54,7 @@
   };
 </script>
 
-  <title>XG Firewall Sophos Communityについて | New technologies in our life</title>
+  <title>XG Firewall V18で正しいDNS利用を強制する | New technologies in our life</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-159928165-1"></script>
     <script>
@@ -212,7 +218,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="ja">
-    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2020/03/26/SophosCommunity/">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2020/05/16/Intercept-DNS/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/new-technology/images/yoshi.png">
@@ -225,7 +231,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          XG Firewall Sophos Communityについて
+          XG Firewall V18で正しいDNS利用を強制する
         </h1>
 
         <div class="post-meta">
@@ -235,15 +241,8 @@
               </span>
               <span class="post-meta-item-text">投稿日</span>
 
-              <time title="作成日：2020-03-26 18:27:32" itemprop="dateCreated datePublished" datetime="2020-03-26T18:27:32+09:00">2020-03-26</time>
+              <time title="作成日：2020-05-16 11:39:23" itemprop="dateCreated datePublished" datetime="2020-05-16T11:39:23+09:00">2020-05-16</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">編集日</span>
-                <time title="修正日：2020-04-05 10:46:13" itemprop="dateModified" datetime="2020-04-05T10:46:13+09:00">2020-04-05</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -265,25 +264,96 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <div class="note primary no-icon">
-            <h2 id="Sophos-Communityで情報を調べる"><a href="#Sophos-Communityで情報を調べる" class="headerlink" title="Sophos Communityで情報を調べる"></a>Sophos Communityで情報を調べる</h2>
+        <div class="note success">
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　自分で設定したDNS（多くはプロバイダDNS）に反し、行儀の悪いクライアントや悪意のあるプログラムはそれに従わず、全く別のDNSを参照する可能性があります。XG Firewall V18の機能を活用してDNSの安全性を確保します。</p>
           </div>
 
-<p>　XG Firewall Home EditionはSophosによるサポートがなく、ユーザコミュニティの相互サポートによって成り立っています。そもそもこんなに素晴らしいソフトウェアが無料なのですから、それだけでも感謝すべき事ではありますが。サポートサイトは英語が中心ですが、セキュリティに関するビジネスをしている方とかも積極的に参加しているようで、勉強になります。</p>
-<blockquote>
-<p><a href="https://community.sophos.com/" target="_blank" rel="noopener">Sophos Community（英語）</a></p>
-</blockquote>
 <a id="more"></a>
-<p>　さて、直接XGの話ではありませんが、ここ数日話題になっているドイツ製翻訳ソフトの<span class="label info">DeepL</span>が素晴らしいです。私はGoogle翻訳をずっと使っていましたが、こちらも使い勝手が良く便利です。<br>　Windows、macのアプリケーションとしてインストールする事が出来ます。利用は無償（高機能な有償のpro版もあります）で、例えばブラウザで翻訳箇所を選択しCtrl+c(macはcommand+c)を2回押下するとDeepLが起動し、英訳と日本語が併記されます。</p>
-<p>　DeepLのダウンロードは<a href="https://www.deepl.com/app" target="_blank" rel="noopener">こちら</a>です。</p>
-<p>　これまで私がブログで書いてきたｖ18のSSL/TLSインスペクションですが、いろいろ難しいところもあり、このブログで全てを説明するのは到底無理があります。Communityの素晴らしい知見を活用すべく、翻訳ソフトを利用して理解を深めていただければとおもいます。</p>
-<blockquote>
-<p><a href="https://community.sophos.com/products/xg-firewall/f/recommended-reads/118753/sophos-xg-firewall-v18-troubleshooting-problems-with-the-dpi-engine" target="_blank" rel="noopener">Sophos XG Firewall v18: DPI エンジンのトラブルシューティング</a></p>
-</blockquote>
-<p>　アプリでCtrl+cを2回押下して先頭部分の抜粋を抜粋します。</p>
-<img src="/new-technology/2020/03/26/SophosCommunity/community.png" class="" title="alt">
 
-<p>　ぜひ、翻訳ソフトのDeepLを活用しながら、XGやSSLインスペクションの理解を深めていただければとおもいます。</p>
+<div class="note primary no-icon">
+            <h2 id="DNSとプライバシー"><a href="#DNSとプライバシー" class="headerlink" title="DNSとプライバシー"></a>DNSとプライバシー</h2>
+          </div>
+
+<p>　Sophos CommunityでもDNSの扱いについてはいろいろ議論されていますが、ベストプラクティスとしては<a href="https://community.sophos.com/products/xg-firewall/f/network-and-routing/95100/dns-best-practices-for-xg" target="_blank" rel="noopener">DNS Best Practices for XG</a>の記事にあります。</p>
+<blockquote class="blockquote-center"><p>最良の防御策はXGをDNSサーバとして使用し、DNSリクエストのルーティングを設定すること。それ以外は何も行わないことです。udpポート53を開かないようにしてください。<br>The best protection is to use XG as dns server, configure dns request routing and nothing else. Avoid to open udp port 53.</p>
+</blockquote>
+
+<p>　この一言で既にDNSの使い方については答えが出てしまいましたが、記事が2017年とやや古い事もあり、V18の機能を生かしたDNSのベストプラクティスを書いてみます。</p>
+<p>　DNSとプライバシーは国によって扱いが変わるかも知れません。国が人々のネットのアクセス状況を把握している事が問題とされている場所では、パブリックDNSが好まれます。また海外ではプロバイダーがDNSを改ざんするといったニュースも見かけます。</p>
+<p>　日本国内においては、プロバイダのDNSの応答速度が遅い事から利用されるケースが増えてきているようです。</p>
+<p>　ブラウザのFireFoxでは、プライバシー保護を目的として、DNSについてHTTPSを利用したDNS over HTTPSに対応しています。この機能は日本ではデフォルトでオフになっていますが、HTTPSで暗号化されているため管理者側からは一般的なネットブラウジングと区別がつかず、トラフィックが見えづらくなります。</p>
+<p>　私個人としてはDNSを含めたプライバシーの情報を無闇に拡散させない事が重要と考えています。また、Communityで言及されている通り、防御のためにDNSのPortは空けない事が重要と考えます。</p>
+<p>　パブリックDNSの利用はユーザーそれぞれにとっては考え方は異なるかとおもいますので、これ以降は悪意をもったクライアントが本来のDNS設定を迂回する事の対策として読んでいただければとおもいます。</p>
+<div class="note primary no-icon">
+            <h2 id="XG-V18で指定DNSを強制する方法"><a href="#XG-V18で指定DNSを強制する方法" class="headerlink" title="XG V18で指定DNSを強制する方法"></a>XG V18で指定DNSを強制する方法</h2>
+          </div>
+
+<p>　ここではDNS情報はDHCPで配布されている前提とします。このブログでは、クライアントが参照するDNSは、全てXGのDNSを指定するように設定しています。</p>
+<p>　この前提で、これを回避しようとするクライアントに対して以下の対策を取ります。</p>
+<ol>
+<li>DNS over TLS(DoT)（Port853）は拒否</li>
+<li>DNS over HTTPS(DoH)は拒否</li>
+<li>Public DNSへのアクセス（Port53）は、強制的にXGのDNS経由で本来のDNSにアクセス</li>
+</ol>
+<p>　1および2ですが、アプリケーションは、DoTやDoHを止められると（一般的には）通常のDNS(Port53)にフォールバックします。そしてXGは強制的にDNSの向き先を変えますが、クライアントはパブリックDNSにアクセスしたと思い込んだまま、返されたIPに対しアクセスする事になります。</p>
+<p>　上記の詳細説明です。</p>
+<p>　1については単純にPort853を拒否する事で対応します。</p>
+<p>　2についてはRFC8484に基づき、MIMEヘッダーの<span class="label info">application/dns-message</span>を見つけて、その通信を拒否します。</p>
+<p>　3についてはXGのDNATの機能を使い、WANインターフェースに対するPort53の通信だった場合、宛先IPをXGのLANのIPアドレスに変換する事で対応します。</p>
+<div class="note primary no-icon">
+            <h2 id="DoHの拒否"><a href="#DoHの拒否" class="headerlink" title="DoHの拒否"></a>DoHの拒否</h2>
+          </div>
+
+
+<p>　DoHの定義についてサービスの登録を行います。</p>
+<p>　XGの左ペインメニュー<span class="label info">Web</span>の<span class="label info">ファイルタイプ</span>から<span class="label info">追加</span>ボタンをクリックします。<span class="label info">名前</span>は<span class="label info">DoH</span>、<span class="label info">テンプレート</span>を空白とし、<span class="label info">MIMEヘッダー</span>に<span class="label info">application/dns-message</span>と入力し、<span class="label info">保存</span>します。</p>
+<img src="/new-technology/2020/05/16/Intercept-DNS/mimetype.png" class="" title="alt">
+
+<p>　<span class="label info">Web</span>の<span class="label info">ユーザーアクティビティ</span>から追加ボタンをクリックし、先ほどDoHとして登録したカテゴリを加え、<span class="label info">DNS over HTTPS</span>と名前を付けて保存します。</p>
+<img src="/new-technology/2020/05/16/Intercept-DNS/mimetype2.png" class="" title="alt">
+
+<p>　続いて、具体的な拒否設定です。</p>
+<p>　<span class="label info">Web</span>の<span class="label info">ポリシー</span>からご自身がFirewallルールで利用しているポリシー（ここではHome Policyを使っていると仮定しています）に、上記で登録してきた<span class="label default">DNS over HTTPS</span>を<span class="label danger">拒否</span>する設定を加えます。</p>
+<img src="/new-technology/2020/05/16/Intercept-DNS/policy.png" class="" title="alt">
+
+<div class="note primary no-icon">
+            <h2 id="DoTの拒否"><a href="#DoTの拒否" class="headerlink" title="DoTの拒否"></a>DoTの拒否</h2>
+          </div>
+
+<p>　XGの左ペインメニュー<span class="label info">ホストとサービス</span>の<span class="label info">サービス</span>から、<span class="label info">追加</span>ボタンをクリックし、<span class="label info">送信元ポート</span>が1〜65535、<span class="label info">宛先ポート</span>853を指定し、<span class="label info">DoT</span>と名前を付け保存します。</p>
+<img src="/new-technology/2020/05/16/Intercept-DNS/service.png" class="" title="alt">
+
+<p>　XGの左ペインメニュー<span class="label info">ルールとポリシー</span>から新しいファイアウォールルールを追加し、以下のようにDoTを<span class="label danger">拒否</span>するルールを作成します。</p>
+<img src="/new-technology/2020/05/16/Intercept-DNS/rule1.png" class="" title="alt">
+
+
+<div class="note primary no-icon">
+            <h2 id="DNSに関するDNATの登録"><a href="#DNSに関するDNATの登録" class="headerlink" title="DNSに関するDNATの登録"></a>DNSに関するDNATの登録</h2>
+          </div>
+
+<p>　最初にDNATで必要なホストの定義を行います。LANで使っているネットワークアドレスの登録とXG自身のIPアドレスの登録が必要です。ネットワークアドレスについてIPv4は例えば、192.168.1.0/24、IPv6は例えばfd00:1234:5678:abcd::1などの登録を行います。XG自身のIPアドレスも登録が必要です。</p>
+<img src="/new-technology/2020/05/16/Intercept-DNS/host.png" class="" title="alt">
+
+<p>　XGの左ペインメニュー<span class="label info">ルールとポリシー</span>から、<span class="label info">NATルール</span>を選択、<span class="label info">NATルールの追加</span>ボタンをクリックします。DNATは本当に理解が難しいですが、以下の通り設定します。</p>
+<ol>
+<li><span class="label info">変換前の送信元</span>は、使っているネットワークのオブジェクトを登録します</li>
+<li><span class="label info">変換前のサービス</span>は、<span class="label info">DNS</span>を選択します</li>
+<li><span class="label info">返還後の宛先（DNAT）</span>は、XG自身のIPを指定します</li>
+<li><span class="label info">アウトバウンドインターフェース</span>には、WANである、<span class="label info">Port2</span>を選択します</li>
+<li>最後に追加ボタンをクリックして登録を完了します</li>
+</ol>
+<img src="/new-technology/2020/05/16/Intercept-DNS/rule2.png" class="" title="alt">
+
+<p>　上記はIPv4の例ですが、IPv6を利用されている方は、同様にIPv6のDNATも設定して下さい。</p>
+<p>　上記のDNATによる、DNSのインターセプトが有効になると、<span class="label info">ルールとポリシー</span>の<span class="label info">NATルール</span>画面で実際の変換された数が確認できるので、これで挙動確認を行ってください。</p>
+<img src="/new-technology/2020/05/16/Intercept-DNS/rule3.png" class="" title="alt">
+
+<p> プロバイダーのDNS速度が極端に遅い場合はこれらの設定がベストにはなりませんが、<span class="label info">プライバシーと安全を鑑みたV18ならではのDNSのベストプラクティス</span>になるとおもいます。</p>
+<div class="note primary no-icon">
+            <h2 id="その他DNSに関して補足すること"><a href="#その他DNSに関して補足すること" class="headerlink" title="その他DNSに関して補足すること"></a>その他DNSに関して補足すること</h2>
+          </div>
+
+<p>　GoogleDNSのDoHはRFC8484に従っていない独自プロトコルを使えるという事実があります。このため、GoogleDNSのIPアドレスを<span class="label info">ルールとポリシー</span>で、拒否する設定を加えても良いでしょう。</p>
 
     </div>
 
@@ -299,7 +369,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>記事へのリンク：</strong>
-    <a href="https://yoshi0808.github.io/new-technology/2020/03/26/SophosCommunity/" title="XG Firewall Sophos Communityについて">https://yoshi0808.github.io/new-technology/2020/03/26/SophosCommunity/</a>
+    <a href="https://yoshi0808.github.io/new-technology/2020/05/16/Intercept-DNS/" title="XG Firewall V18で正しいDNS利用を強制する">https://yoshi0808.github.io/new-technology/2020/05/16/Intercept-DNS/</a>
   </li>
   <li class="post-copyright-license">
     <strong>著作権表示： </strong>このブログ内のすべての記事は、特別な記載がない限り <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> の下のライセンスで保護されています。また、免責事項・プライバシーポリシーについては、メニューのディスクレーマーをご覧ください。
@@ -311,7 +381,6 @@
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/new-technology/tags/XG-Firewall/" rel="tag"># XG Firewall</a>
-              <a href="/new-technology/tags/DeepL/" rel="tag"># DeepL</a>
           </div>
 
         
@@ -320,13 +389,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/new-technology/2020/03/21/ssl-inspection2/" rel="prev" title="XG Firewall v18のSSLインスペクションの動作確認と調整">
-      <i class="fa fa-chevron-left"></i> XG Firewall v18のSSLインスペクションの動作確認と調整
+    <a href="/new-technology/2020/05/09/best-practice/" rel="prev" title="XG Firewall V18の設定におけるベストプラクティス">
+      <i class="fa fa-chevron-left"></i> XG Firewall V18の設定におけるベストプラクティス
     </a></div>
-      <div class="post-nav-item">
-    <a href="/new-technology/2020/03/28/vpn/" rel="next" title="XG Firewall VPNについて">
-      XG Firewall VPNについて <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -386,7 +452,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Sophos-Communityで情報を調べる"><span class="nav-number">1.</span> <span class="nav-text">Sophos Communityで情報を調べる</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#この記事で実現する内容について"><span class="nav-number">1.</span> <span class="nav-text">この記事で実現する内容について</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DNSとプライバシー"><span class="nav-number">2.</span> <span class="nav-text">DNSとプライバシー</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG-V18で指定DNSを強制する方法"><span class="nav-number">3.</span> <span class="nav-text">XG V18で指定DNSを強制する方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DoHの拒否"><span class="nav-number">4.</span> <span class="nav-text">DoHの拒否</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DoTの拒否"><span class="nav-number">5.</span> <span class="nav-text">DoTの拒否</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DNSに関するDNATの登録"><span class="nav-number">6.</span> <span class="nav-text">DNSに関するDNATの登録</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#その他DNSに関して補足すること"><span class="nav-number">7.</span> <span class="nav-text">その他DNSに関して補足すること</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
