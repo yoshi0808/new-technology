@@ -71,100 +71,71 @@
       </tags>
   </entry>
   <entry>
-    <title>XG Firewall V18で正しいDNS利用を強制する</title>
-    <url>/new-technology/2020/05/16/Intercept-DNS/</url>
+    <title>XG Firewall v18をESXi仮想マシン上にインストールする</title>
+    <url>/new-technology/2020/03/06/InstallXG2/</url>
     <content><![CDATA[<div class="note success">
-            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　自分で設定したDNS（多くはプロバイダDNS）に反し、行儀の悪いクライアントや悪意のあるプログラムはそれに従わず、全く別のDNSを参照する可能性があります。XG Firewall V18の機能を活用してDNSの安全性を確保します。</p>
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　ESXi（ｖ6.7）に環境構築済みの仮想マシンに対し、XG Firewall v18のインストールが行えるようになります。フラッシュメモリを用意し、物理マシンに直接インストールする場合も、手順はほとんど変わりません。</p>
           </div>
-
 <a id="more"></a>
 
 <div class="note primary no-icon">
-            <h2 id="DNSとプライバシー"><a href="#DNSとプライバシー" class="headerlink" title="DNSとプライバシー"></a>DNSとプライバシー</h2>
+            <h2 id="仮想マシンの電源をオンにする前に"><a href="#仮想マシンの電源をオンにする前に" class="headerlink" title="仮想マシンの電源をオンにする前に"></a>仮想マシンの電源をオンにする前に</h2>
           </div>
 
-<p>　Sophos CommunityでもDNSの扱いについてはいろいろ議論されていますが、ベストプラクティスとしては<a href="https://community.sophos.com/products/xg-firewall/f/network-and-routing/95100/dns-best-practices-for-xg" target="_blank" rel="noopener">DNS Best Practices for XG</a>の記事にあります。</p>
-<blockquote class="blockquote-center">
-            <i class="fa fa-quote-left"></i>
-            <p>最良の防御策はXGをDNSサーバとして使用し、DNSリクエストのルーティングを設定すること。それ以外は何も行わないことです。udpポート53を開かないようにしてください。<br>The best protection is to use XG as dns server, configure dns request routing and nothing else. Avoid to open udp port 53.</p>
-
-            <i class="fa fa-quote-right"></i>
-          </blockquote>
-
-<p>　この一言で既にDNSの使い方については答えが出てしまいましたが、記事が2017年とやや古い事もあり、V18の機能を生かしたDNSのベストプラクティスを書いてみます。</p>
-<p>　DNSとプライバシーは国によって扱いが変わるかも知れません。国が人々のネットのアクセス状況を把握している事が問題とされている場所では、パブリックDNSが好まれます。また海外ではプロバイダーがDNSを改ざんするといったニュースも見かけます。日本国内においては、プロバイダのDNSの応答速度が遅い事から利用されるケースが増えてきているようです。</p>
-<p>　ブラウザのFireFoxでは、プライバシー保護を目的として、DNSについてHTTPSを利用したDNS over HTTPSに対応しています。この機能は日本ではデフォルトでオフになっていますが、HTTPSで暗号化されているため管理者側からは一般的なネットブラウジングと区別がつかず、トラフィックが見えづらくなります。</p>
-<p>　私個人としてはDNSを含めたプライバシーの情報を無闇に拡散させない事が重要と考えています。また、Communityで言及されている通り、防御のためにDNSのPortは空けない事が重要と考えます。パブリックDNSの利用はユーザーそれぞれにとっては考え方は異なるかとおもいますので、これ以降は悪意をもったクライアントが本来のDNS設定を迂回する事の対策として読んでいただければとおもいます。</p>
+<p>　PCのブラウザで表示しているESXiの管理画面から、作成した仮想マシンの電源をオンにできます。これで設定されたISOファイルからブートさせる事になります。ESXiをセットアップした機器にモニタを接続する必要はありません。前回までの記事で、新たにクライアントが利用するネットワークアドレスを決めました。XGのデフォルトである172.16.16.0/24を使うか、自分が新たに決めたアドレス（ex. 192.168.1.0/24）になります。今回のケースでは、ホームゲートウェイとXGのWANとの間が、192.168.0.0/24のネットワーク、LAN側は192.168.1.0/24として説明を進めます。<br>　いよいよ、仮想マシンの電源をオンにしてセットアップを開始します。</p>
 <div class="note primary no-icon">
-            <h2 id="XG-V18で指定DNSを強制する方法"><a href="#XG-V18で指定DNSを強制する方法" class="headerlink" title="XG V18で指定DNSを強制する方法"></a>XG V18で指定DNSを強制する方法</h2>
+            <h2 id="仮想マシンの電源をオンにする"><a href="#仮想マシンの電源をオンにする" class="headerlink" title="仮想マシンの電源をオンにする"></a>仮想マシンの電源をオンにする</h2>
           </div>
 
-<p>　ここではDNS情報はDHCPで配布されている前提とします。このブログでは、クライアントが参照するDNSは、全てXGのDNSを指定するように設定しています。</p>
-<p>　この前提で、これを回避しようとするクライアントに対して以下の対策を取ります。</p>
-<ol>
-<li><p>DNS over TLS(DoT)は拒否<br>Port853の拒否</p>
-</li>
-<li><p>DNS over HTTPS(DoH)は拒否<br>RFC8484に基づき、MIMEヘッダーの<span class="label info">application/dns-message</span>を見つけて、その通信を拒否</p>
-</li>
-<li><p>Public DNSへのアクセス（Port53）は、強制的にXGのDNS経由で本来のDNSにアクセス<br>XGのDNATの機能を使い、WANインターフェースに対するPort53の通信だった場合、宛先IPをXGのLANのIPアドレスに変換</p>
-</li>
-</ol>
-<p>　1および2ですが、アプリケーションは、DoTやDoHを止められると（一般的には）通常のDNS(Port53)にフォールバックします。そしてXGは強制的にDNSの向き先を変えますが、クライアントはパブリックDNSにアクセスしたと思い込んだまま、返されたIPに対しアクセスする事になります。</p>
-<div class="note primary no-icon">
-            <h2 id="DoHの拒否"><a href="#DoHの拒否" class="headerlink" title="DoHの拒否"></a>DoHの拒否</h2>
+<p>　さて、ESXiの管理コンソールからXGの仮想マシンを選んでパワーオンをクリックします。</p>
+<p>Sophos FIRMWARE INSTALLERが起動します。<br>インストールを開始すると（仮想マシンに割り当てた）ディスクが全てフォーマットされ、ファームウェアがインストールされていきます。<br>press y to rebootでリブートします。<br>再起動後、さらにdefault conifgをインストールするとの表示がされ、やがてパスワード入力画面になります。最初のパスワードはadminです。まずライセンスを受け入れる画面となります。続いて、ネットワークの設定を変更します。</p>
+<img src="/new-technology/2020/03/06/InstallXG2/conf.png" class="" title="alt">
+
+<p>1.Network Configurationを選び、次の画面で、1.Interface Configurationを選びます。以下の表示がEnterを押下する毎に変わります。</p>
+<ul>
+<li>LAN側のIP割り振り状態（ここでは変更できません）。</li>
+<li>WAN側のIP割り振り状態（変更不可。ホームゲートウェイからのプライベートIPが割り当てられています）。</li>
+<li>Set IPv4 Address(y/n)と出るので、変更する場合は、y＋Enterします。</li>
+<li>IPv6は後で設定するので空Enterで構いません。</li>
+</ul>
+<p>この状態で一旦IPの設定を終えたら、クライアントPCのブラウザからXGに対して接続し、セットアップを続けていきます。ここではXGのIPアドレスを192.168.1.2にしたと仮定して進めます。</p>
+  <div class="note warning">
+            <p>WANのIPが割り振られていない場合は、後続のセットアップでライセンスの確認ができません。事後にもライセンス登録は可能ですが、初期のうちに課題を解決しておきましょう。</p>
           </div>
-
-
-<p>　DoHの定義についてサービスの登録を行います。</p>
-<p>　XGの左ペインメニュー<span class="label info">Web</span>の<span class="label info">ファイルタイプ</span>から<span class="label info">追加</span>ボタンをクリックします。<span class="label info">名前</span>は<span class="label info">DoH</span>、<span class="label info">テンプレート</span>を空白とし、<span class="label info">MIMEヘッダー</span>に<span class="label info">application/dns-message</span>と入力し、<span class="label info">保存</span>します。</p>
-<img src="/new-technology/2020/05/16/Intercept-DNS/mimetype.png" class="" title="alt">
-
-<p>　<span class="label info">Web</span>の<span class="label info">ユーザーアクティビティ</span>から追加ボタンをクリックし、先ほどDoHとして登録したカテゴリを加え、<span class="label info">DNS over HTTPS</span>と名前を付けて保存します。</p>
-<img src="/new-technology/2020/05/16/Intercept-DNS/mimetype2.png" class="" title="alt">
-
-<p>　続いて、具体的な拒否設定です。</p>
-<p>　<span class="label info">Web</span>の<span class="label info">ポリシー</span>からご自身がFirewallルールで利用しているポリシー（ここではHome Policyを使っていると仮定しています）に、上記で登録してきた<span class="label default">DNS over HTTPS</span>を<span class="label danger">拒否</span>する設定を加えます。</p>
-<img src="/new-technology/2020/05/16/Intercept-DNS/policy.png" class="" title="alt">
 
 <div class="note primary no-icon">
-            <h2 id="DoTの拒否"><a href="#DoTの拒否" class="headerlink" title="DoTの拒否"></a>DoTの拒否</h2>
+            <h2 id="XG-Firewallの初期設定を行う"><a href="#XG-Firewallの初期設定を行う" class="headerlink" title="XG Firewallの初期設定を行う"></a>XG Firewallの初期設定を行う</h2>
           </div>
 
-<p>　XGの左ペインメニュー<span class="label info">ホストとサービス</span>の<span class="label info">サービス</span>から、<span class="label info">追加</span>ボタンをクリックし、<span class="label info">送信元ポート</span>が1〜65535、<span class="label info">宛先ポート</span>853を指定し、<span class="label info">DoT</span>と名前を付け保存します。</p>
-<img src="/new-technology/2020/05/16/Intercept-DNS/service.png" class="" title="alt">
+<p>　ブラウザで、<a href="https://192.168.1.2:4444" target="_blank" rel="noopener">https://192.168.1.2:4444</a>を開き初期設定を行っていきます。自己証明書でもあり、ブラウザのワーニングが表示されますが、了解のうえ進んでください。</p>
+<img src="/new-technology/2020/03/06/InstallXG2/setup1.png" class="" title="alt">
 
-<p>　XGの左ペインメニュー<span class="label info">ルールとポリシー</span>から新しいファイアウォールルールを追加し、以下のようにDoTを<span class="label danger">拒否</span>するルールを作成します。</p>
-<img src="/new-technology/2020/05/16/Intercept-DNS/rule1.png" class="" title="alt">
+<p> ここでは、右上のプルダウンで日本語に変更しておくと良いでしょう。<br> 続いて、以下の項目を設定していきます。</p>
+<ul>
+<li>管理者パスワード</li>
+<li>タイムゾーン</li>
+<li>登録メールで届いたシリアル番号を入力します</li>
+</ul>
+<img src="/new-technology/2020/03/06/InstallXG2/setup2.png" class="" title="alt">
 
+<ul>
+<li>ゲートウェイとしてルーターモードを選択します</li>
+<li>LAN側に割り振るDHCPのIP範囲を設定します</li>
+</ul>
+<img src="/new-technology/2020/03/06/InstallXG2/setup3.png" class="" title="alt">
 
-<div class="note primary no-icon">
-            <h2 id="DNSに関するDNATの登録"><a href="#DNSに関するDNATの登録" class="headerlink" title="DNSに関するDNATの登録"></a>DNSに関するDNATの登録</h2>
-          </div>
+<ul>
+<li>ネットワークプロテクションはSandStormを除き選択します。仮に選択してもホームユースでは解除されます。</li>
+</ul>
+<img src="/new-technology/2020/03/06/InstallXG2/setup4.png" class="" title="alt">
 
-<p>　最初にDNATで必要なホストの定義を行います。LANで使っているネットワークアドレスの登録とXG自身のIPアドレスの登録が必要です。ネットワークアドレスについてIPv4は例えば、192.168.1.0/24、IPv6は例えばfd00:1234:5678:abcd::1などの登録を行います。XG自身のIPアドレスも登録が必要です。</p>
-<img src="/new-technology/2020/05/16/Intercept-DNS/host.png" class="" title="alt">
+<p>　続いての画面のメールセットアップですが、昨今、自宅からSMTPによるインターネットへのメール送信はSPAMの扱いと疑われ、OP25と称してブロックされているのが実態です。Gmailをお持ちであれば、Gmailをメールの送信者にしておくと比較的簡単に送信できます。メールの受信者は、色々なイベント通知が発生した時に確認するアドレスですので、携帯などのアドレスが候補に挙げられます。</p>
+<img src="/new-technology/2020/03/06/InstallXG2/setup5.png" class="" title="alt">
 
-<p>　XGの左ペインメニュー<span class="label info">ルールとポリシー</span>から、<span class="label info">NATルール</span>を選択、<span class="label info">NATルールの追加</span>ボタンをクリックします。DNATは本当に理解が難しいですが、以下の通り設定します。</p>
-<ol>
-<li><span class="label info">変換前の送信元</span>は、使っているネットワークのオブジェクトを登録します</li>
-<li><span class="label info">変換前のサービス</span>は、<span class="label info">DNS</span>を選択します</li>
-<li><span class="label info">返還後の宛先（DNAT）</span>は、XG自身のIPを指定します</li>
-<li><span class="label info">アウトバウンドインターフェース</span>には、WANである、<span class="label info">Port2</span>を選択します</li>
-<li>最後に追加ボタンをクリックして登録を完了します</li>
-</ol>
-<img src="/new-technology/2020/05/16/Intercept-DNS/rule2.png" class="" title="alt">
+<p> 　いよいよ、セットアップも最後の仕上げです。5分程度と言いつつ、もう少し掛かる場合がありますので、ブラウザのリロードをせずそのまま待ちます。その後管理画面のリロードが入りますが、XGの管理サイトは自己証明書のためにブラウザのワーニングが出た画面で止まっている場合があります。</p>
+<img src="/new-technology/2020/03/06/InstallXG2/setup6.png" class="" title="alt">
 
-<p>　上記はIPv4の例ですが、IPv6を利用されている方は、同様にIPv6のDNATも設定して下さい。</p>
-<p>　上記のDNATによる、DNSのインターセプトが有効になると、<span class="label info">ルールとポリシー</span>の<span class="label info">NATルール</span>画面で実際の変換された数が確認できるので、これで挙動確認を行ってください。</p>
-<img src="/new-technology/2020/05/16/Intercept-DNS/rule3.png" class="" title="alt">
-
-<p> プロバイダーのDNS速度が極端に遅い場合はこれらの設定がベストにはなりませんが、<span class="label info">プライバシーと安全を鑑みたV18ならではのDNSのベストプラクティス</span>になるとおもいます。</p>
-<div class="note primary no-icon">
-            <h2 id="その他DNSに関して補足すること"><a href="#その他DNSに関して補足すること" class="headerlink" title="その他DNSに関して補足すること"></a>その他DNSに関して補足すること</h2>
-          </div>
-
-<p>　GoogleDNSのDoHはRFC8484に従っていない独自プロトコルを使えるという事実があります。世界中のパブリックDNSを全て把握するのは困難ですが、Sophosの以下の記事を参考にWebフィルタのURLグループにパブリックDNSのドメインを登録し、拒否する設定を加えても良いでしょう。</p>
-<p><a href="https://community.sophos.com/kb/en-us/134644" target="_blank" rel="noopener">DNS over HTTPS (DoH) for web security</a></p>
+<p> 　さて、いよいよログイン画面です。固定IPにして設定してきたPCも、XGのDHCP機能によって、IPアドレスが割り当て可能となっています。PCの設定をDHCPにして確認して下さい。そして、インターネットにも接続出来ている事を確認して下さい。現段階では、基本はOutboundの通信は全て通す設定になっているので確認が出来たら、ホームゲートウェイに接続されている他の機器などをXGのLAN側に繋いで下さい。</p>
 ]]></content>
       <categories>
         <category>Security</category>
@@ -268,6 +239,109 @@
 <li>VPNの接続</li>
 </ul>
 <p>　これまでの設定では、VPNについて、事前共有鍵＋パスワード＋ワンタイムパスワードを設定してきました。この内容はもはや鉄壁といえる内容であり、通知は不要な気もします。このあたりは利便性と堅牢さとを鑑み、設定を調整いただければとおもいます。</p>
+]]></content>
+      <categories>
+        <category>Security</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>XG Firewall V18で正しいDNS利用を強制する</title>
+    <url>/new-technology/2020/05/16/Intercept-DNS/</url>
+    <content><![CDATA[<div class="note success">
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　自分で設定したDNS（多くはプロバイダDNS）に反し、行儀の悪いクライアントや悪意のあるプログラムはそれに従わず、全く別のDNSを参照する可能性があります。XG Firewall V18の機能を活用してDNSの安全性を確保します。</p>
+          </div>
+
+<a id="more"></a>
+
+<div class="note primary no-icon">
+            <h2 id="DNSとプライバシー"><a href="#DNSとプライバシー" class="headerlink" title="DNSとプライバシー"></a>DNSとプライバシー</h2>
+          </div>
+
+<p>　Sophos CommunityでもDNSの扱いについてはいろいろ議論されていますが、ベストプラクティスとしては<a href="https://community.sophos.com/products/xg-firewall/f/network-and-routing/95100/dns-best-practices-for-xg" target="_blank" rel="noopener">DNS Best Practices for XG</a>の記事にあります。</p>
+<blockquote class="blockquote-center">
+            <i class="fa fa-quote-left"></i>
+            <p>最良の防御策はXGをDNSサーバとして使用し、DNSリクエストのルーティングを設定すること。それ以外は何も行わないことです。udpポート53を開かないようにしてください。<br>The best protection is to use XG as dns server, configure dns request routing and nothing else. Avoid to open udp port 53.</p>
+
+            <i class="fa fa-quote-right"></i>
+          </blockquote>
+
+<p>　この一言で既にDNSの使い方については答えが出てしまいましたが、記事が2017年とやや古い事もあり、V18の機能を生かしたDNSのベストプラクティスを書いてみます。</p>
+<p>　DNSとプライバシーは国によって扱いが変わるかも知れません。国が人々のネットのアクセス状況を把握している事が問題とされている場所では、パブリックDNSが好まれます。また海外ではプロバイダーがDNSを改ざんするといったニュースも見かけます。日本国内においては、プロバイダのDNSの応答速度が遅い事から利用されるケースが増えてきているようです。</p>
+<p>　ブラウザのFireFoxでは、プライバシー保護を目的として、DNSについてHTTPSを利用したDNS over HTTPSに対応しています。この機能は日本ではデフォルトでオフになっていますが、HTTPSで暗号化されているため管理者側からは一般的なネットブラウジングと区別がつかず、トラフィックが見えづらくなります。</p>
+<p>　私個人としてはDNSを含めたプライバシーの情報を無闇に拡散させない事が重要と考えています。また、Communityで言及されている通り、防御のためにDNSのPortは空けない事が重要と考えます。パブリックDNSの利用はユーザーそれぞれにとっては考え方は異なるかとおもいますので、これ以降は悪意をもったクライアントが本来のDNS設定を迂回する事の対策として読んでいただければとおもいます。</p>
+<div class="note primary no-icon">
+            <h2 id="XG-V18で指定DNSを強制する方法"><a href="#XG-V18で指定DNSを強制する方法" class="headerlink" title="XG V18で指定DNSを強制する方法"></a>XG V18で指定DNSを強制する方法</h2>
+          </div>
+
+<p>　ここではDNS情報はDHCPで配布されている前提とします。このブログでは、クライアントが参照するDNSは、全てXGのDNSを指定するように設定しています。</p>
+<p>　この前提で、これを回避しようとするクライアントに対して以下の対策を取ります。</p>
+<ol>
+<li><p>DNS over TLS(DoT)は拒否<br>Port853の拒否</p>
+</li>
+<li><p>DNS over HTTPS(DoH)は拒否<br>RFC8484に基づき、MIMEヘッダーの<span class="label info">application/dns-message</span>を見つけて、その通信を拒否</p>
+</li>
+<li><p>Public DNSへのアクセス（Port53）は、強制的にXGのDNS経由で本来のDNSにアクセス<br>XGのDNATの機能を使い、WANインターフェースに対するPort53の通信だった場合、宛先IPをXGのLANのIPアドレスに変換</p>
+</li>
+</ol>
+<p>　1および2ですが、アプリケーションは、DoTやDoHを止められると（一般的には）通常のDNS(Port53)にフォールバックします。そしてXGは強制的にDNSの向き先を変えますが、クライアントはパブリックDNSにアクセスしたと思い込んだまま、返されたIPに対しアクセスする事になります。</p>
+<div class="note primary no-icon">
+            <h2 id="DoHの拒否"><a href="#DoHの拒否" class="headerlink" title="DoHの拒否"></a>DoHの拒否</h2>
+          </div>
+
+
+<p>　DoHの定義についてサービスの登録を行います。</p>
+<p>　XGの左ペインメニュー<span class="label info">Web</span>の<span class="label info">ファイルタイプ</span>から<span class="label info">追加</span>ボタンをクリックします。<span class="label info">名前</span>は<span class="label info">DoH</span>、<span class="label info">テンプレート</span>を空白とし、<span class="label info">MIMEヘッダー</span>に<span class="label info">application/dns-message</span>と入力し、<span class="label info">保存</span>します。</p>
+<img src="/new-technology/2020/05/16/Intercept-DNS/mimetype.png" class="" title="alt">
+
+<p>　<span class="label info">Web</span>の<span class="label info">ユーザーアクティビティ</span>から追加ボタンをクリックし、先ほどDoHとして登録したカテゴリを加え、<span class="label info">DNS over HTTPS</span>と名前を付けて保存します。</p>
+<img src="/new-technology/2020/05/16/Intercept-DNS/mimetype2.png" class="" title="alt">
+
+<p>　続いて、具体的な拒否設定です。</p>
+<p>　<span class="label info">Web</span>の<span class="label info">ポリシー</span>からご自身がFirewallルールで利用しているポリシー（ここではHome Policyを使っていると仮定しています）に、上記で登録してきた<span class="label default">DNS over HTTPS</span>を<span class="label danger">拒否</span>する設定を加えます。</p>
+<img src="/new-technology/2020/05/16/Intercept-DNS/policy.png" class="" title="alt">
+
+<div class="note primary no-icon">
+            <h2 id="DoTの拒否"><a href="#DoTの拒否" class="headerlink" title="DoTの拒否"></a>DoTの拒否</h2>
+          </div>
+
+<p>　XGの左ペインメニュー<span class="label info">ホストとサービス</span>の<span class="label info">サービス</span>から、<span class="label info">追加</span>ボタンをクリックし、<span class="label info">送信元ポート</span>が1〜65535、<span class="label info">宛先ポート</span>853を指定し、<span class="label info">DoT</span>と名前を付け保存します。</p>
+<img src="/new-technology/2020/05/16/Intercept-DNS/service.png" class="" title="alt">
+
+<p>　XGの左ペインメニュー<span class="label info">ルールとポリシー</span>から新しいファイアウォールルールを追加し、以下のようにDoTを<span class="label danger">拒否</span>するルールを作成します。</p>
+<img src="/new-technology/2020/05/16/Intercept-DNS/rule1.png" class="" title="alt">
+
+
+<div class="note primary no-icon">
+            <h2 id="DNSに関するDNATの登録"><a href="#DNSに関するDNATの登録" class="headerlink" title="DNSに関するDNATの登録"></a>DNSに関するDNATの登録</h2>
+          </div>
+
+<p>　最初にDNATで必要なホストの定義を行います。LANで使っているネットワークアドレスの登録とXG自身のIPアドレスの登録が必要です。ネットワークアドレスについてIPv4は例えば、192.168.1.0/24、IPv6は例えばfd00:1234:5678:abcd::1などの登録を行います。XG自身のIPアドレスも登録が必要です。</p>
+<img src="/new-technology/2020/05/16/Intercept-DNS/host.png" class="" title="alt">
+
+<p>　XGの左ペインメニュー<span class="label info">ルールとポリシー</span>から、<span class="label info">NATルール</span>を選択、<span class="label info">NATルールの追加</span>ボタンをクリックします。DNATは本当に理解が難しいですが、以下の通り設定します。</p>
+<ol>
+<li><span class="label info">変換前の送信元</span>は、使っているネットワークのオブジェクトを登録します</li>
+<li><span class="label info">変換前のサービス</span>は、<span class="label info">DNS</span>を選択します</li>
+<li><span class="label info">返還後の宛先（DNAT）</span>は、XG自身のIPを指定します</li>
+<li><span class="label info">アウトバウンドインターフェース</span>には、WANである、<span class="label info">Port2</span>を選択します</li>
+<li>最後に追加ボタンをクリックして登録を完了します</li>
+</ol>
+<img src="/new-technology/2020/05/16/Intercept-DNS/rule2.png" class="" title="alt">
+
+<p>　上記はIPv4の例ですが、IPv6を利用されている方は、同様にIPv6のDNATも設定して下さい。</p>
+<p>　上記のDNATによる、DNSのインターセプトが有効になると、<span class="label info">ルールとポリシー</span>の<span class="label info">NATルール</span>画面で実際の変換された数が確認できるので、これで挙動確認を行ってください。</p>
+<img src="/new-technology/2020/05/16/Intercept-DNS/rule3.png" class="" title="alt">
+
+<p> プロバイダーのDNS速度が極端に遅い場合はこれらの設定がベストにはなりませんが、<span class="label info">プライバシーと安全を鑑みたV18ならではのDNSのベストプラクティス</span>になるとおもいます。</p>
+<div class="note primary no-icon">
+            <h2 id="その他DNSに関して補足すること"><a href="#その他DNSに関して補足すること" class="headerlink" title="その他DNSに関して補足すること"></a>その他DNSに関して補足すること</h2>
+          </div>
+
+<p>　GoogleDNSのDoHはRFC8484に従っていない独自プロトコルを使えるという事実があります。世界中のパブリックDNSを全て把握するのは困難ですが、Sophosの以下の記事を参考にWebフィルタのURLグループにパブリックDNSのドメインを登録し、拒否する設定を加えても良いでしょう。</p>
+<p><a href="https://community.sophos.com/kb/en-us/134644" target="_blank" rel="noopener">DNS over HTTPS (DoH) for web security</a></p>
 ]]></content>
       <categories>
         <category>Security</category>
@@ -389,80 +463,6 @@
 <li><a href="/new-technology/2020/05/16/Intercept-DNS/" title="XG Firewall V18で正しいDNS利用を強制する">XG Firewall V18で正しいDNS利用を強制する</a>
 </li>
 </ul>
-]]></content>
-      <categories>
-        <category>Security</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>XG Firewall v18をESXi仮想マシン上にインストールする</title>
-    <url>/new-technology/2020/03/06/InstallXG2/</url>
-    <content><![CDATA[<div class="note success">
-            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　ESXi（ｖ6.7）に環境構築済みの仮想マシンに対し、XG Firewall v18のインストールが行えるようになります。フラッシュメモリを用意し、物理マシンに直接インストールする場合も、手順はほとんど変わりません。</p>
-          </div>
-<a id="more"></a>
-
-<div class="note primary no-icon">
-            <h2 id="仮想マシンの電源をオンにする前に"><a href="#仮想マシンの電源をオンにする前に" class="headerlink" title="仮想マシンの電源をオンにする前に"></a>仮想マシンの電源をオンにする前に</h2>
-          </div>
-
-<p>　PCのブラウザで表示しているESXiの管理画面から、作成した仮想マシンの電源をオンにできます。これで設定されたISOファイルからブートさせる事になります。ESXiをセットアップした機器にモニタを接続する必要はありません。前回までの記事で、新たにクライアントが利用するネットワークアドレスを決めました。XGのデフォルトである172.16.16.0/24を使うか、自分が新たに決めたアドレス（ex. 192.168.1.0/24）になります。今回のケースでは、ホームゲートウェイとXGのWANとの間が、192.168.0.0/24のネットワーク、LAN側は192.168.1.0/24として説明を進めます。<br>　いよいよ、仮想マシンの電源をオンにしてセットアップを開始します。</p>
-<div class="note primary no-icon">
-            <h2 id="仮想マシンの電源をオンにする"><a href="#仮想マシンの電源をオンにする" class="headerlink" title="仮想マシンの電源をオンにする"></a>仮想マシンの電源をオンにする</h2>
-          </div>
-
-<p>　さて、ESXiの管理コンソールからXGの仮想マシンを選んでパワーオンをクリックします。</p>
-<p>Sophos FIRMWARE INSTALLERが起動します。<br>インストールを開始すると（仮想マシンに割り当てた）ディスクが全てフォーマットされ、ファームウェアがインストールされていきます。<br>press y to rebootでリブートします。<br>再起動後、さらにdefault conifgをインストールするとの表示がされ、やがてパスワード入力画面になります。最初のパスワードはadminです。まずライセンスを受け入れる画面となります。続いて、ネットワークの設定を変更します。</p>
-<img src="/new-technology/2020/03/06/InstallXG2/conf.png" class="" title="alt">
-
-<p>1.Network Configurationを選び、次の画面で、1.Interface Configurationを選びます。以下の表示がEnterを押下する毎に変わります。</p>
-<ul>
-<li>LAN側のIP割り振り状態（ここでは変更できません）。</li>
-<li>WAN側のIP割り振り状態（変更不可。ホームゲートウェイからのプライベートIPが割り当てられています）。</li>
-<li>Set IPv4 Address(y/n)と出るので、変更する場合は、y＋Enterします。</li>
-<li>IPv6は後で設定するので空Enterで構いません。</li>
-</ul>
-<p>この状態で一旦IPの設定を終えたら、クライアントPCのブラウザからXGに対して接続し、セットアップを続けていきます。ここではXGのIPアドレスを192.168.1.2にしたと仮定して進めます。</p>
-  <div class="note warning">
-            <p>WANのIPが割り振られていない場合は、後続のセットアップでライセンスの確認ができません。事後にもライセンス登録は可能ですが、初期のうちに課題を解決しておきましょう。</p>
-          </div>
-
-<div class="note primary no-icon">
-            <h2 id="XG-Firewallの初期設定を行う"><a href="#XG-Firewallの初期設定を行う" class="headerlink" title="XG Firewallの初期設定を行う"></a>XG Firewallの初期設定を行う</h2>
-          </div>
-
-<p>　ブラウザで、<a href="https://192.168.1.2:4444" target="_blank" rel="noopener">https://192.168.1.2:4444</a>を開き初期設定を行っていきます。自己証明書でもあり、ブラウザのワーニングが表示されますが、了解のうえ進んでください。</p>
-<img src="/new-technology/2020/03/06/InstallXG2/setup1.png" class="" title="alt">
-
-<p> ここでは、右上のプルダウンで日本語に変更しておくと良いでしょう。<br> 続いて、以下の項目を設定していきます。</p>
-<ul>
-<li>管理者パスワード</li>
-<li>タイムゾーン</li>
-<li>登録メールで届いたシリアル番号を入力します</li>
-</ul>
-<img src="/new-technology/2020/03/06/InstallXG2/setup2.png" class="" title="alt">
-
-<ul>
-<li>ゲートウェイとしてルーターモードを選択します</li>
-<li>LAN側に割り振るDHCPのIP範囲を設定します</li>
-</ul>
-<img src="/new-technology/2020/03/06/InstallXG2/setup3.png" class="" title="alt">
-
-<ul>
-<li>ネットワークプロテクションはSandStormを除き選択します。仮に選択してもホームユースでは解除されます。</li>
-</ul>
-<img src="/new-technology/2020/03/06/InstallXG2/setup4.png" class="" title="alt">
-
-<p>　続いての画面のメールセットアップですが、昨今、自宅からSMTPによるインターネットへのメール送信はSPAMの扱いと疑われ、OP25と称してブロックされているのが実態です。Gmailをお持ちであれば、Gmailをメールの送信者にしておくと比較的簡単に送信できます。メールの受信者は、色々なイベント通知が発生した時に確認するアドレスですので、携帯などのアドレスが候補に挙げられます。</p>
-<img src="/new-technology/2020/03/06/InstallXG2/setup5.png" class="" title="alt">
-
-<p> 　いよいよ、セットアップも最後の仕上げです。5分程度と言いつつ、もう少し掛かる場合がありますので、ブラウザのリロードをせずそのまま待ちます。その後管理画面のリロードが入りますが、XGの管理サイトは自己証明書のためにブラウザのワーニングが出た画面で止まっている場合があります。</p>
-<img src="/new-technology/2020/03/06/InstallXG2/setup6.png" class="" title="alt">
-
-<p> 　さて、いよいよログイン画面です。固定IPにして設定してきたPCも、XGのDHCP機能によって、IPアドレスが割り当て可能となっています。PCの設定をDHCPにして確認して下さい。そして、インターネットにも接続出来ている事を確認して下さい。現段階では、基本はOutboundの通信は全て通す設定になっているので確認が出来たら、ホームゲートウェイに接続されている他の機器などをXGのLAN側に繋いで下さい。</p>
 ]]></content>
       <categories>
         <category>Security</category>
@@ -989,6 +989,92 @@
       </tags>
   </entry>
   <entry>
+    <title>VMware vSphere Hypervisor（ESXi）の設定</title>
+    <url>/new-technology/2020/03/01/esxi-conf/</url>
+    <content><![CDATA[<div class="note success">
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　Firewall v18をESXi（ｖ6.7）上で稼働させるために、ホームゲートウェイの後ろに、XGを挟み込んだネットワーク全体の考え方を学びます。また、ESXi上で2枚のnicを利用し仮想スイッチの設定を行い、2枚のnicを持った仮想マシンを作成する環境が構築できるようになります。</p>
+          </div>
+
+<a id="more"></a>
+
+<div class="note primary no-icon">
+            <h2 id="ネットワークの確認"><a href="#ネットワークの確認" class="headerlink" title="ネットワークの確認"></a>ネットワークの確認</h2>
+          </div>
+
+<ol>
+<li>ESXiのWeb管理画面にログイン後、左ペインの「ネットワーク」をクリック</li>
+<li>「物理NIC」のタブをクリック<br>　以下の画面のように、ESXiに認識されているNICの一覧がリストされます</li>
+</ol>
+<img src="/new-technology/2020/03/01/esxi-conf/conf_esxi.png" class="" title="alt">
+
+<p> 　1GbpsのNICであれば、ドライバーはne1000として認識されています。（環境にもより異なりますが）vmnic0、vmnic1という物理NICが2つ表示されている事を確認してください。</p>
+ <div class="note warning">
+            <p> 　物理NICが1つしかない場合は、XG Firewallのセットアップはできません。</p>
+          </div>
+
+<div class="note primary no-icon">
+            <h2 id="ESXiを利用したXG-Firewallの最終構成"><a href="#ESXiを利用したXG-Firewallの最終構成" class="headerlink" title="ESXiを利用したXG Firewallの最終構成"></a>ESXiを利用したXG Firewallの最終構成</h2>
+          </div>
+
+<p>　ESXiにおけるネットワークの構成は、物理NICと仮想スイッチとの関係を理解する事が必要です。以下の図のように、ESXiにおける物理NICはケーブルとして見立て、実際に仮想マシンが複数台存在する事を鑑み、ESXiの中にスイッチングハブが存在していると考えてください。</p>
+<img src="/new-technology/2020/03/01/esxi-conf/vswitch.png" class="" title="alt">
+
+ <div class="note info">
+            <p>便宜上、構成図にLinuxの仮想マシンを記載していますが、これまでのセットアップでは存在していません。</p>
+          </div>
+
+<div class="note primary no-icon">
+            <h2 id="現時点でのセットアップ状況の確認"><a href="#現時点でのセットアップ状況の確認" class="headerlink" title="現時点でのセットアップ状況の確認"></a>現時点でのセットアップ状況の確認</h2>
+          </div>
+
+<p>　ここまでのセットアップで、以下の構成になっています。</p>
+<ul>
+<li>物理NICであるvmnic0、vmnic1</li>
+<li>バーチャルスイッチのvSwitch0</li>
+<li>ネットワークポート（仮想IP）として、Lan側の管理用のManagement Networkおよびデフォルトで仮想マシンのために作成されているVM Network</li>
+</ul>
+<div class="note primary no-icon">
+            <h2 id="Wanのための仮想スイッチの作成"><a href="#Wanのための仮想スイッチの作成" class="headerlink" title="Wanのための仮想スイッチの作成"></a>Wanのための仮想スイッチの作成</h2>
+          </div>
+
+<img src="/new-technology/2020/03/01/esxi-conf/vswitch1.png" class="" title="alt">
+
+<p> 次に、XGのWan側インタフェースを担う仮想スイッチを追加し、LanとWanとのネットワークポートを追加する事になります（赤字の部分）。</p>
+<ol>
+<li>ESXiの管理画面の左ペイン、ネットワークをクリック、続いて仮想スイッチのタブをクリックします。</li>
+<li>標準仮想スイッチの追加をクリックします。</li>
+<li>Wan側の仮想スイッチを作成するため、ここでは、vSwitch1と命名します。MTUは1500のままで構いません。</li>
+</ol>
+<p>これで、以下の通り、仮想スイッチの作成は完了です。</p>
+<img src="/new-technology/2020/03/01/esxi-conf/vswitch2.png" class="" title="alt">
+
+<div class="note primary no-icon">
+            <h2 id="ネットワークポートの作成"><a href="#ネットワークポートの作成" class="headerlink" title="ネットワークポートの作成"></a>ネットワークポートの作成</h2>
+          </div>
+
+<ol>
+<li>vSwitch1をクリックし、物理NICのWan向けである、vmnic1と関連付けられている事を確認してください。</li>
+<li>XGのLanとWanのネットワークポートを作成します。左ペインのネットワークからポートグループのタブをクリックし、ポートグループの追加を選択します。</li>
+<li>新規ポートグループとして、LanはここではXG-Lanと命名し作成します。Lanなので、vSwitch0を関連づけます。</li>
+<li>続いてWanのために、XG-Wanと命名し、vSwitch1と関連づけます。</li>
+</ol>
+<p>　これらの設定が終わり、Lan側のネットワーク構成は以下の通りとなります。</p>
+<img src="/new-technology/2020/03/01/esxi-conf/vswitch3.png" class="" title="alt">
+
+<p>　また、Wan側のネットワーク構成は以下の通りです。</p>
+<img src="/new-technology/2020/03/01/esxi-conf/vswitch4.png" class="" title="alt">
+
+<p>　これで、ESXiのネットワーク設定は完了となります。<br>　面倒ですが、一旦またPCのネットワークを元に戻し、ホームゲートウェイに接続します。そしてXG Firewallのモジュールをダウンロードしてまいりましょう。</p>
+]]></content>
+      <categories>
+        <category>Software</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+        <tag>ESXi</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>VMware vSphere Hypervisor（ESXi）のインストール</title>
     <url>/new-technology/2020/02/29/esxi/</url>
     <content><![CDATA[<div class="note success">
@@ -1254,92 +1340,6 @@
       </categories>
       <tags>
         <tag>XG Firewall</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>VMware vSphere Hypervisor（ESXi）の設定</title>
-    <url>/new-technology/2020/03/01/esxi-conf/</url>
-    <content><![CDATA[<div class="note success">
-            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　Firewall v18をESXi（ｖ6.7）上で稼働させるために、ホームゲートウェイの後ろに、XGを挟み込んだネットワーク全体の考え方を学びます。また、ESXi上で2枚のnicを利用し仮想スイッチの設定を行い、2枚のnicを持った仮想マシンを作成する環境が構築できるようになります。</p>
-          </div>
-
-<a id="more"></a>
-
-<div class="note primary no-icon">
-            <h2 id="ネットワークの確認"><a href="#ネットワークの確認" class="headerlink" title="ネットワークの確認"></a>ネットワークの確認</h2>
-          </div>
-
-<ol>
-<li>ESXiのWeb管理画面にログイン後、左ペインの「ネットワーク」をクリック</li>
-<li>「物理NIC」のタブをクリック<br>　以下の画面のように、ESXiに認識されているNICの一覧がリストされます</li>
-</ol>
-<img src="/new-technology/2020/03/01/esxi-conf/conf_esxi.png" class="" title="alt">
-
-<p> 　1GbpsのNICであれば、ドライバーはne1000として認識されています。（環境にもより異なりますが）vmnic0、vmnic1という物理NICが2つ表示されている事を確認してください。</p>
- <div class="note warning">
-            <p> 　物理NICが1つしかない場合は、XG Firewallのセットアップはできません。</p>
-          </div>
-
-<div class="note primary no-icon">
-            <h2 id="ESXiを利用したXG-Firewallの最終構成"><a href="#ESXiを利用したXG-Firewallの最終構成" class="headerlink" title="ESXiを利用したXG Firewallの最終構成"></a>ESXiを利用したXG Firewallの最終構成</h2>
-          </div>
-
-<p>　ESXiにおけるネットワークの構成は、物理NICと仮想スイッチとの関係を理解する事が必要です。以下の図のように、ESXiにおける物理NICはケーブルとして見立て、実際に仮想マシンが複数台存在する事を鑑み、ESXiの中にスイッチングハブが存在していると考えてください。</p>
-<img src="/new-technology/2020/03/01/esxi-conf/vswitch.png" class="" title="alt">
-
- <div class="note info">
-            <p>便宜上、構成図にLinuxの仮想マシンを記載していますが、これまでのセットアップでは存在していません。</p>
-          </div>
-
-<div class="note primary no-icon">
-            <h2 id="現時点でのセットアップ状況の確認"><a href="#現時点でのセットアップ状況の確認" class="headerlink" title="現時点でのセットアップ状況の確認"></a>現時点でのセットアップ状況の確認</h2>
-          </div>
-
-<p>　ここまでのセットアップで、以下の構成になっています。</p>
-<ul>
-<li>物理NICであるvmnic0、vmnic1</li>
-<li>バーチャルスイッチのvSwitch0</li>
-<li>ネットワークポート（仮想IP）として、Lan側の管理用のManagement Networkおよびデフォルトで仮想マシンのために作成されているVM Network</li>
-</ul>
-<div class="note primary no-icon">
-            <h2 id="Wanのための仮想スイッチの作成"><a href="#Wanのための仮想スイッチの作成" class="headerlink" title="Wanのための仮想スイッチの作成"></a>Wanのための仮想スイッチの作成</h2>
-          </div>
-
-<img src="/new-technology/2020/03/01/esxi-conf/vswitch1.png" class="" title="alt">
-
-<p> 次に、XGのWan側インタフェースを担う仮想スイッチを追加し、LanとWanとのネットワークポートを追加する事になります（赤字の部分）。</p>
-<ol>
-<li>ESXiの管理画面の左ペイン、ネットワークをクリック、続いて仮想スイッチのタブをクリックします。</li>
-<li>標準仮想スイッチの追加をクリックします。</li>
-<li>Wan側の仮想スイッチを作成するため、ここでは、vSwitch1と命名します。MTUは1500のままで構いません。</li>
-</ol>
-<p>これで、以下の通り、仮想スイッチの作成は完了です。</p>
-<img src="/new-technology/2020/03/01/esxi-conf/vswitch2.png" class="" title="alt">
-
-<div class="note primary no-icon">
-            <h2 id="ネットワークポートの作成"><a href="#ネットワークポートの作成" class="headerlink" title="ネットワークポートの作成"></a>ネットワークポートの作成</h2>
-          </div>
-
-<ol>
-<li>vSwitch1をクリックし、物理NICのWan向けである、vmnic1と関連付けられている事を確認してください。</li>
-<li>XGのLanとWanのネットワークポートを作成します。左ペインのネットワークからポートグループのタブをクリックし、ポートグループの追加を選択します。</li>
-<li>新規ポートグループとして、LanはここではXG-Lanと命名し作成します。Lanなので、vSwitch0を関連づけます。</li>
-<li>続いてWanのために、XG-Wanと命名し、vSwitch1と関連づけます。</li>
-</ol>
-<p>　これらの設定が終わり、Lan側のネットワーク構成は以下の通りとなります。</p>
-<img src="/new-technology/2020/03/01/esxi-conf/vswitch3.png" class="" title="alt">
-
-<p>　また、Wan側のネットワーク構成は以下の通りです。</p>
-<img src="/new-technology/2020/03/01/esxi-conf/vswitch4.png" class="" title="alt">
-
-<p>　これで、ESXiのネットワーク設定は完了となります。<br>　面倒ですが、一旦またPCのネットワークを元に戻し、ホームゲートウェイに接続します。そしてXG Firewallのモジュールをダウンロードしてまいりましょう。</p>
-]]></content>
-      <categories>
-        <category>Software</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-        <tag>ESXi</tag>
       </tags>
   </entry>
   <entry>
@@ -2016,6 +2016,80 @@
       </tags>
   </entry>
   <entry>
+    <title>XG Firewall VPNにワンタイムパスワードを設定する</title>
+    <url>/new-technology/2020/03/28/vpnotp/</url>
+    <content><![CDATA[<div class="note success">
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>PC（Windows、macOS）からXG FirewallのVPNへ接続しているユーザーに、スマホを使ったワンタイムパスワードによる認証機能を追加し、セキュリティを高められるようになります。</p>
+          </div>
+<a id="more"></a>
+
+<div class="note primary no-icon">
+            <h2 id="XGが提供するVPNのワンタイムパスワードについて"><a href="#XGが提供するVPNのワンタイムパスワードについて" class="headerlink" title="XGが提供するVPNのワンタイムパスワードについて"></a>XGが提供するVPNのワンタイムパスワードについて</h2>
+          </div>
+
+<p>　XGのVPNにおいて、SSL-VPNとIPSecはワンタイムパスワードが設定できます。SSHのように、パスワードに加え、事前共有鍵を持つ事でずいぶんセキュリティは高まります。しかし、さらにワンタイムパスワードを加える事で、侵入者に突破される可能性はほぼ無いものと考えます。出先や多くの人がいる場所で端末に対し、IDとパスワードを入力するのも大きなリスクです。端末が指紋認証などで守られている前提で、XGのSophos ConnectはIDおよびパスワードを接続アプリケーションに保存しておけますので、ワンタイムパスワードのみでVPNに接続できます。</p>
+<div class="note primary no-icon">
+            <h2 id="ワンタイムパスワードのアプリケーションについて"><a href="#ワンタイムパスワードのアプリケーションについて" class="headerlink" title="ワンタイムパスワードのアプリケーションについて"></a>ワンタイムパスワードのアプリケーションについて</h2>
+          </div>
+
+<p>　ワンタイムパスワードについては、定番のGoogleのオーセンティケーターなど、ご存知の方も多いとおもいます。Googleのオーセンティケーターは何故かXGが表示するワンタイムパスワードのQRコードが読み込めません。Sophosからは、以下のスマホアプリが提供されています。</p>
+<blockquote>
+<p><a href="https://apps.apple.com/jp/app/sophos-intercept-x-for-mobile/id1086924662" target="_blank" rel="noopener">Sophos Intercept X for Mobile(iOS)</a><br><a href="https://play.google.com/store/apps/details?id=com.sophos.smsec" target="_blank" rel="noopener">Sophos Intercept X for Mobile(Android)</a></p>
+</blockquote>
+<p>　なお、私は複数の端末でワンタイムパスワードの同期ができる<a href="https://apps.apple.com/jp/app/authy/id494168017" target="_blank" rel="noopener">Authy</a>を利用しています。</p>
+<div class="note primary no-icon">
+            <h2 id="ワンタイムパスワードの基本設定"><a href="#ワンタイムパスワードの基本設定" class="headerlink" title="ワンタイムパスワードの基本設定"></a>ワンタイムパスワードの基本設定</h2>
+          </div>
+
+<p>　XGにおけるワンタイムパスワードの設定は、左ペインの<span class="label info">認証</span>から<span class="label info">ワンタイムパスワード</span>へと進んでください。ここで以下の通り、設定ボタンをクリックし、以下の項目の設定を行います。</p>
+<ul>
+<li><span class="label info">ワンタイムパスワード</span>のトグルをオンにします</li>
+<li><span class="label info">全ユーザーのOTP</span>のトグルはオフにします</li>
+<li><span class="label info">ユーザーのOTPトークンを自動生成</span>のトグルはオンにします</li>
+<li><span class="label info">以下のユーザーとグループにOTPが必要</span>のリストボックスからは、Open Groupを選択します</li>
+<li><span class="label info">以下について、OTPを有効化</span>は、<span class="label info">ユーザーポータル</span>、<span class="label info">IPSecリモートアクセス</span>にチェックします</li>
+<li>最後に適用ボタンをクリックします</li>
+</ul>
+<img src="/new-technology/2020/03/28/vpnotp/otp3.png" class="" title="alt">
+
+<div class="note primary no-icon">
+            <h2 id="ユーザーポータル画面でのワンタイムパスワードの自動生成"><a href="#ユーザーポータル画面でのワンタイムパスワードの自動生成" class="headerlink" title="ユーザーポータル画面でのワンタイムパスワードの自動生成"></a>ユーザーポータル画面でのワンタイムパスワードの自動生成</h2>
+          </div>
+
+<p>　続いて、ユーザーポータルという画面にログインします。これは管理者向けではなく、ユーザー向けに提供されているものです。XGの管理者メニューは、デフォルトでは、<code>https://XGのIPアドレス:4444/</code>になっていますが、<code>https://XGのIPアドレス/</code>に接続するとユーザーポータル画面が開きます。<br>　この画面では、VPN向けに作成したユーザーとパスワードでログインします。すると、次にワンタイムパスワードのトークンが自動生成され、QRコードが表示されます。</p>
+<img src="/new-technology/2020/03/28/vpnotp/otp1.png" class="" title="alt">
+
+<p>　ここで、必ずワンタイムパスワードのアプリでQRコードを読み込み、アプリにトークンを取り込んでください。完了後、XGのメニューで<span class="label info">ログインに進む</span>をクリックすると、再びログイン画面になります。ここではユーザーはそのまま入力、パスワードの部分は、パスワード＋ワンタイムパスワードの数字6桁を続けて入力します。ユーザーポータルにログインできれば、ワンタイムパスワードは正しくアプリに取り込まれています。</p>
+<p>　再び、XGの管理画面にadminでログインします。左ペインの<span class="label info">認証</span>から<span class="label info">ワンタイムパスワード</span>に進むと、<span class="label info">シークレット</span>が生成されている事がわかります。</p>
+<img src="/new-technology/2020/03/28/vpnotp/otp2.png" class="" title="alt">
+
+<p>　これで、IPsecVPNにはワンタイムパスワードが必須となりました。以前作成したSophosConnectクライアントの接続設定ファイルについて、再設定が必要になります。前回のVPNのセットアップを行ったところで、クライアントソフトウェアをダウンロードしました。</p>
+<blockquote>
+<p>（前回の記事）<a href="/new-technology/2020/03/28/vpn/" title="XG Firewall VPNについて">XG Firewall VPNについて</a></p>
+</blockquote>
+<div class="note primary no-icon">
+            <h2 id="scadminツールでワンタイムパスワード対応の設定ファイルを作成する"><a href="#scadminツールでワンタイムパスワード対応の設定ファイルを作成する" class="headerlink" title="scadminツールでワンタイムパスワード対応の設定ファイルを作成する"></a>scadminツールでワンタイムパスワード対応の設定ファイルを作成する</h2>
+          </div>
+
+<p>　今回はSophosConnectクライアントではなく、もう1つの設定ファイル作成ツールである、scadminツールをWindowsにインストールします。このアプリケーションはmacOS版がありませんので、Windowsで設定する事になります。出力された設定ファイルは、Windows、mac共に共通で利用出来ますので、それをSophosConnectクライアントに取り込みます。scadmin.msiをインストールし起動します。OPENボタンを押して、以前に生成された接続設定ファイル（拡張子tgb）ファイルを開きます。</p>
+<img src="/new-technology/2020/03/28/vpnotp/otp4.png" class="" title="alt">
+
+<p>　設定は<span class="label info">Allow Password Saving</span>と、<span class="label info">Prompt for 2FA</span>のトグルスイッチをOnにするのみです。そして、右下のSaveで保存してください。今回はファイルの拡張子は、scxとなっています。</p>
+<p>　最後に、Sophos Connect Clientより、再度作成した設定ファイル（scx）を読み込み完了です。IDとパスワードにワンタイムパスワードをセットし、接続できる事を確認して下さい。次回の接続からは、以下の画面のように、ワンタイムパスワードのみを入力し接続する事になります。</p>
+<img src="/new-technology/2020/03/28/vpnotp/otp5.png" class="" title="alt">
+
+<p>　これまでの設定でワンタイムパスワードによる堅牢な環境でLANの機器にアクセスしたり、安全なWebブラウジングができるようになりました。</p>
+]]></content>
+      <categories>
+        <category>Security</category>
+        <category>VPN</category>
+        <category>ワンタイムパスワード</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>XG FirewallのWebフィルターとアプリケーションフィルタについて</title>
     <url>/new-technology/2020/05/06/web-application-filter/</url>
     <content><![CDATA[<div class="note success">
@@ -2349,79 +2423,5 @@
 <p>　単純にインストールして「できました」ではなく、導入後のITの使い方こそが重要と考えています。最近は個人利用に限り利用無償のソフトウェアが増えてきました。また、商用利用であっても無償となるオープンソースソフトウェアの活用も見逃せません。これは大変ありがたい話で、座学ではなかなか理解が進まない固有技術であっても、こういった無料のプロダクトを通じて知見を高める事が可能となっています。</p>
 <p>　ここでは、エンタープライズやミッションクリティカルなITに関するテーマは扱いません。私自身実務でITに関わっていますが、実務とは少し距離を置いたところで、自己啓発と家庭向けのIT活用を考えたいと思っています。</p>
 ]]></content>
-  </entry>
-  <entry>
-    <title>XG Firewall VPNにワンタイムパスワードを設定する</title>
-    <url>/new-technology/2020/03/28/vpnotp/</url>
-    <content><![CDATA[<div class="note success">
-            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>PC（Windows、macOS）からXG FirewallのVPNへ接続しているユーザーに、スマホを使ったワンタイムパスワードによる認証機能を追加し、セキュリティを高められるようになります。</p>
-          </div>
-<a id="more"></a>
-
-<div class="note primary no-icon">
-            <h2 id="XGが提供するVPNのワンタイムパスワードについて"><a href="#XGが提供するVPNのワンタイムパスワードについて" class="headerlink" title="XGが提供するVPNのワンタイムパスワードについて"></a>XGが提供するVPNのワンタイムパスワードについて</h2>
-          </div>
-
-<p>　XGのVPNにおいて、SSL-VPNとIPSecはワンタイムパスワードが設定できます。SSHのように、パスワードに加え、事前共有鍵を持つ事でずいぶんセキュリティは高まります。しかし、さらにワンタイムパスワードを加える事で、侵入者に突破される可能性はほぼ無いものと考えます。出先や多くの人がいる場所で端末に対し、IDとパスワードを入力するのも大きなリスクです。端末が指紋認証などで守られている前提で、XGのSophos ConnectはIDおよびパスワードを接続アプリケーションに保存しておけますので、ワンタイムパスワードのみでVPNに接続できます。</p>
-<div class="note primary no-icon">
-            <h2 id="ワンタイムパスワードのアプリケーションについて"><a href="#ワンタイムパスワードのアプリケーションについて" class="headerlink" title="ワンタイムパスワードのアプリケーションについて"></a>ワンタイムパスワードのアプリケーションについて</h2>
-          </div>
-
-<p>　ワンタイムパスワードについては、定番のGoogleのオーセンティケーターなど、ご存知の方も多いとおもいます。Googleのオーセンティケーターは何故かXGが表示するワンタイムパスワードのQRコードが読み込めません。Sophosからは、以下のスマホアプリが提供されています。</p>
-<blockquote>
-<p><a href="https://apps.apple.com/jp/app/sophos-intercept-x-for-mobile/id1086924662" target="_blank" rel="noopener">Sophos Intercept X for Mobile(iOS)</a><br><a href="https://play.google.com/store/apps/details?id=com.sophos.smsec" target="_blank" rel="noopener">Sophos Intercept X for Mobile(Android)</a></p>
-</blockquote>
-<p>　なお、私は複数の端末でワンタイムパスワードの同期ができる<a href="https://apps.apple.com/jp/app/authy/id494168017" target="_blank" rel="noopener">Authy</a>を利用しています。</p>
-<div class="note primary no-icon">
-            <h2 id="ワンタイムパスワードの基本設定"><a href="#ワンタイムパスワードの基本設定" class="headerlink" title="ワンタイムパスワードの基本設定"></a>ワンタイムパスワードの基本設定</h2>
-          </div>
-
-<p>　XGにおけるワンタイムパスワードの設定は、左ペインの<span class="label info">認証</span>から<span class="label info">ワンタイムパスワード</span>へと進んでください。ここで以下の通り、設定ボタンをクリックし、以下の項目の設定を行います。</p>
-<ul>
-<li><span class="label info">ワンタイムパスワード</span>のトグルをオンにします</li>
-<li><span class="label info">全ユーザーのOTP</span>のトグルはオフにします</li>
-<li><span class="label info">ユーザーのOTPトークンを自動生成</span>のトグルはオンにします</li>
-<li><span class="label info">以下のユーザーとグループにOTPが必要</span>のリストボックスからは、Open Groupを選択します</li>
-<li><span class="label info">以下について、OTPを有効化</span>は、<span class="label info">ユーザーポータル</span>、<span class="label info">IPSecリモートアクセス</span>にチェックします</li>
-<li>最後に適用ボタンをクリックします</li>
-</ul>
-<img src="/new-technology/2020/03/28/vpnotp/otp3.png" class="" title="alt">
-
-<div class="note primary no-icon">
-            <h2 id="ユーザーポータル画面でのワンタイムパスワードの自動生成"><a href="#ユーザーポータル画面でのワンタイムパスワードの自動生成" class="headerlink" title="ユーザーポータル画面でのワンタイムパスワードの自動生成"></a>ユーザーポータル画面でのワンタイムパスワードの自動生成</h2>
-          </div>
-
-<p>　続いて、ユーザーポータルという画面にログインします。これは管理者向けではなく、ユーザー向けに提供されているものです。XGの管理者メニューは、デフォルトでは、<code>https://XGのIPアドレス:4444/</code>になっていますが、<code>https://XGのIPアドレス/</code>に接続するとユーザーポータル画面が開きます。<br>　この画面では、VPN向けに作成したユーザーとパスワードでログインします。すると、次にワンタイムパスワードのトークンが自動生成され、QRコードが表示されます。</p>
-<img src="/new-technology/2020/03/28/vpnotp/otp1.png" class="" title="alt">
-
-<p>　ここで、必ずワンタイムパスワードのアプリでQRコードを読み込み、アプリにトークンを取り込んでください。完了後、XGのメニューで<span class="label info">ログインに進む</span>をクリックすると、再びログイン画面になります。ここではユーザーはそのまま入力、パスワードの部分は、パスワード＋ワンタイムパスワードの数字6桁を続けて入力します。ユーザーポータルにログインできれば、ワンタイムパスワードは正しくアプリに取り込まれています。</p>
-<p>　再び、XGの管理画面にadminでログインします。左ペインの<span class="label info">認証</span>から<span class="label info">ワンタイムパスワード</span>に進むと、<span class="label info">シークレット</span>が生成されている事がわかります。</p>
-<img src="/new-technology/2020/03/28/vpnotp/otp2.png" class="" title="alt">
-
-<p>　これで、IPsecVPNにはワンタイムパスワードが必須となりました。以前作成したSophosConnectクライアントの接続設定ファイルについて、再設定が必要になります。前回のVPNのセットアップを行ったところで、クライアントソフトウェアをダウンロードしました。</p>
-<blockquote>
-<p>（前回の記事）<a href="/new-technology/2020/03/28/vpn/" title="XG Firewall VPNについて">XG Firewall VPNについて</a></p>
-</blockquote>
-<div class="note primary no-icon">
-            <h2 id="scadminツールでワンタイムパスワード対応の設定ファイルを作成する"><a href="#scadminツールでワンタイムパスワード対応の設定ファイルを作成する" class="headerlink" title="scadminツールでワンタイムパスワード対応の設定ファイルを作成する"></a>scadminツールでワンタイムパスワード対応の設定ファイルを作成する</h2>
-          </div>
-
-<p>　今回はSophosConnectクライアントではなく、もう1つの設定ファイル作成ツールである、scadminツールをWindowsにインストールします。このアプリケーションはmacOS版がありませんので、Windowsで設定する事になります。出力された設定ファイルは、Windows、mac共に共通で利用出来ますので、それをSophosConnectクライアントに取り込みます。scadmin.msiをインストールし起動します。OPENボタンを押して、以前に生成された接続設定ファイル（拡張子tgb）ファイルを開きます。</p>
-<img src="/new-technology/2020/03/28/vpnotp/otp4.png" class="" title="alt">
-
-<p>　設定は<span class="label info">Allow Password Saving</span>と、<span class="label info">Prompt for 2FA</span>のトグルスイッチをOnにするのみです。そして、右下のSaveで保存してください。今回はファイルの拡張子は、scxとなっています。</p>
-<p>　最後に、Sophos Connect Clientより、再度作成した設定ファイル（scx）を読み込み完了です。IDとパスワードにワンタイムパスワードをセットし、接続できる事を確認して下さい。次回の接続からは、以下の画面のように、ワンタイムパスワードのみを入力し接続する事になります。</p>
-<img src="/new-technology/2020/03/28/vpnotp/otp5.png" class="" title="alt">
-
-<p>　これまでの設定でワンタイムパスワードによる堅牢な環境でLANの機器にアクセスしたり、安全なWebブラウジングができるようになりました。</p>
-]]></content>
-      <categories>
-        <category>Security</category>
-        <category>VPN</category>
-        <category>ワンタイムパスワード</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-      </tags>
   </entry>
 </search>
