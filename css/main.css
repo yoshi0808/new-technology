@@ -182,7 +182,7 @@ body {
   background: var(--body-bg-color);
   color: var(--text-color);
   font-family: -apple-system, BlinkMacSystemFont, "YuGothic", "メイリオ", Meiryo, sans-serif;
-  font-size: 1.4;
+  font-size: 0.9em;
   line-height: 1.8;
 }
 @media (max-width: 991px) {
@@ -203,22 +203,22 @@ h6 {
   margin: 20px 0 15px;
 }
 h1 {
-  font-size: 1.5em;
+  font-size: 0.775em;
 }
 h2 {
-  font-size: 1.375em;
+  font-size: 0.65em;
 }
 h3 {
-  font-size: 1.25em;
+  font-size: 0.525em;
 }
 h4 {
-  font-size: 1.125em;
+  font-size: 0.4em;
 }
 h5 {
-  font-size: 1em;
+  font-size: 0.275em;
 }
 h6 {
-  font-size: 0.875em;
+  font-size: 0.15em;
 }
 p {
   margin: 0 0 20px 0;
@@ -1207,7 +1207,7 @@ pre code {
   border-bottom: none;
   color: var(--brand-color);
   display: inline-block;
-  line-height: 1.375em;
+  line-height: 0.9em;
   padding: 0 40px;
   position: relative;
 }
@@ -1216,7 +1216,7 @@ pre code {
 }
 .site-title {
   font-family: -apple-system, BlinkMacSystemFont, "YuGothic", "メイリオ", Meiryo, sans-serif;
-  font-size: 1.375em;
+  font-size: 0.9em;
   font-weight: normal;
   margin: 0;
 }
@@ -1471,7 +1471,7 @@ pre code {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #c74425;
+  background: #debb81;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
