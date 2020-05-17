@@ -382,6 +382,96 @@
       </tags>
   </entry>
   <entry>
+    <title>Sophos XG Firewallの導入</title>
+    <url>/new-technology/2020/02/23/XG-Firewall/</url>
+    <content><![CDATA[<div class="note primary no-icon">
+            <h2 id="導入の背景"><a href="#導入の背景" class="headerlink" title="導入の背景"></a>導入の背景</h2>
+          </div>
+<p>元々、家庭用の無線ルータだけではセキュリティが不足していると考えてる人は多いとおもいます。私の場合、個人で持っているファイル位であれば、盗られたところで大きな問題になるわけでなし、と大きく構えておりました。数年前よりランサムウェア等の脅威が出てきた事で、それなりの対策が必要と感じてきました。街のwifiからも自宅のリソースに安全に接続したり、家のサーバーを踏み台にしてネットに繋げたいという欲も出てきて、今度はVPNが欲しいなと思い始めました。</p>
+<a id="more"></a>
+<p>　そもそも、iCloudかOneDriveあたりに必要なファイルはどーんと置いておけばいいんですが、漏洩よりも万が一のロストが不安です。それなりの容量だと、クラウドのお金も掛かりますしね。<br>　オンプレの場合は盗難や火事というリスクもあり、人によって考え方は異なりますが、利便性と安全性のバランスを取る事を目指す事になるのでしょう。個人のセキュリティというものは、ビジネスにおけるリスクを極限まで抑制するという考えではなく、何かプラス α の安心感を求める程度という目線を目指す事になるのかとおもいます。Sophos社が提供する<a href="https://www.sophos.com/ja-jp/products/free-tools.aspx" target="_blank" rel="noopener">Sophos XG Firewall Home Edition</a>は、業務用ながらホームユーザーには無料という事もあって、最良のセキュリティ防御の手段と考えています。かれこれ1年半くらいでしょうか。ずっと使わせてもらってます。</p>
+<p>　ｖ18が発表されて、大幅に機能強化されたのは良かったのですが、残念ながら設定方法が難しくなってしまいました。こんなに高機能なものを無料で使わせて頂いてるのだから、何か貢献すべきと考え、設定内容等を公開していく事にしました。スキマ時間に書いているのでスピードが遅いのはどうかご容赦ください。</p>
+<img src="/new-technology/2020/02/23/XG-Firewall/xg.png" class="">
+
+<div class="note primary no-icon">
+            <h2 id="主な機能"><a href="#主な機能" class="headerlink" title="主な機能"></a>主な機能</h2>
+          </div>
+
+<ol>
+<li>Firewall機能（IPフィルター、Portフィルター）</li>
+<li>IPS/WAF(WAFは面倒です）</li>
+<li>DDoS対策機能（個人には不要とおもいます）</li>
+<li>国別フィルター（IPv4のみ）</li>
+<li>VPN（2要素認証対応）</li>
+<li>DNAT（Destination NAT※LANのサーバをネットに解放）</li>
+<li>DNS/DHCP(IPv4,IPv6)</li>
+</ol>
+<p>　細かな説明については、<a href="https://jscom.jp/wp-content/uploads/pamphlet_sophos_020pdf.pdf" target="_blank" rel="noopener">こちら</a>を見て下さい。</p>
+<div class="note primary no-icon">
+            <h2 id="XG-Firewall導入のメリット"><a href="#XG-Firewall導入のメリット" class="headerlink" title="XG Firewall導入のメリット"></a>XG Firewall導入のメリット</h2>
+          </div>
+
+<ol>
+<li>ドメイン単位にWebサイト毎のカテゴリがされているので、ギャンブルやゲーム、アダルトなどのカテゴリで禁止ルールを設定可能</li>
+<li>接続したくない国に対してアクセス制限ができる。Webブラウジングはもちろん、自宅にサーバーを建てた場合の接続元を日本からのみに絞る事も可能（IPv4のみ）</li>
+<li>IPS（Intrusion Prevention System）によるSSL通信の中身を検査できる</li>
+<li>ログ機能が充実している</li>
+<li>VPNにおいてパスワード＋ワンタイムパスワードによる認証が可能（Windows、Mac、iOS、Android）</li>
+<li>エラーをフックし、メールでの通知が行える</li>
+</ol>
+<div class="note primary no-icon">
+            <h2 id="XG-Firewall導入のデメリット"><a href="#XG-Firewall導入のデメリット" class="headerlink" title="XG Firewall導入のデメリット"></a>XG Firewall導入のデメリット</h2>
+          </div>
+
+<ol>
+<li>新しいPCが必要（もちろん新品である必要はありませんが）。2枚のネットワークインタフェースが必要</li>
+<li>ネットのパフォーマンスが犠牲になる。回線帯域よりもレイテンシ（遅延）が大きくなると想定される</li>
+<li>XG Firewallによる保護はエンドポイントの保護を完全に不要にするものではないため、従来通りウィルス対策ソフトはインストールが必要（と考えています）</li>
+</ol>
+<hr>
+<p>システム要件は以下の通りとなっています（XG Firewallの<a href="https://www.sophos.com/ja-jp/products/free-tools/sophos-xg-firewall-home-edition.aspx" target="_blank" rel="noopener">ダウンロードページ</a>より引用）。</p>
+<blockquote>
+<p>2つのネットワークインターフェースのあるIntel互換コンピュータ。(XG Firewall Home Editionをインストールすると、コンピュータにある既存のOSやファイルは上書きされます）<br>Home Editionは、4コア、および6GBのRAMまでの環境に対応しています。この条件を超えるコンピュータも使用可能ですが、XG Firewall Home Editionは、上限を超える容量を活用できません。</p>
+</blockquote>
+<p>　ホームユーザーには、技術面でかなりハードルは高いです。しかし、業務用ファイアウォールが家庭で使えるというのは非常に魅力です。興味のある方はお付き合い頂ければとおもいます。</p>
+<p>※XG Firewall v18の記事一覧</p>
+<ul>
+<li><a href="/new-technology/2020/02/25/provision/" title="PC（ハードウェア）の準備">PC（ハードウェア）の準備</a></li>
+<li><a href="/new-technology/2020/02/29/esxi/" title="VMware vSphere Hypervisor（ESXi）のインストール">VMware vSphere Hypervisor（ESXi）のインストール</a></li>
+<li><a href="/new-technology/2020/03/01/esxi-conf/" title="VMware vSphere Hypervisor（ESXi）の設定">VMware vSphere Hypervisor（ESXi）の設定</a></li>
+<li><a href="/new-technology/2020/03/06/InstallXG/" title="XG Firewall v18のインストール（事前準備）">XG Firewall v18のインストール（事前準備）</a></li>
+<li><a href="/new-technology/2020/03/06/InstallXG2/" title="XG Firewall v18をESXi仮想マシン上にインストールする">XG Firewall v18をESXi仮想マシン上にインストールする</a></li>
+<li><a href="/new-technology/2020/03/08/XG-MainPage/" title="XG Firewall v18のメイン画面と特徴について">XG Firewall v18のメイン画面と特徴について</a></li>
+<li><a href="/new-technology/2020/03/14/rule-policy1/" title="XG Firewall v18のルールとポリシーについて">XG Firewall v18のルールとポリシーについて</a></li>
+<li><a href="/new-technology/2020/03/14/rule-policy2/" title="XG Firewall v18のOutboundルールを新規作成する">XG Firewall v18のOutboundルールを新規作成する</a></li>
+<li><a href="/new-technology/2020/03/14/customize-policy/" title="XG Firewall v18のポリシーをカスタマイズする">XG Firewall v18のポリシーをカスタマイズする</a></li>
+<li><a href="/new-technology/2020/03/20/ssl-inspection/" title="XG Firewall v18のSSLインスペクションについて">XG Firewall v18のSSLインスペクションについて</a></li>
+<li><a href="/new-technology/2020/03/20/ssl-inspection1/" title="XG Firewall v18のSSLインスペクションの設定">XG Firewall v18のSSLインスペクションの設定</a></li>
+<li><a href="/new-technology/2020/03/21/ssl-inspection2/" title="XG Firewall v18のSSLインスペクションの動作確認と調整">XG Firewall v18のSSLインスペクションの動作確認と調整</a></li>
+<li><a href="/new-technology/2020/03/26/SophosCommunity/" title="XG Firewall Sophos Communityについて">XG Firewall Sophos Communityについて</a></li>
+<li><a href="/new-technology/2020/03/28/vpn/" title="XG Firewall VPNについて">XG Firewall VPNについて</a></li>
+<li><a href="/new-technology/2020/03/28/vpnotp/" title="XG Firewall VPNにワンタイムパスワードを設定する">XG Firewall VPNにワンタイムパスワードを設定する</a></li>
+<li><a href="/new-technology/2020/03/31/vpn-iphone/" title="XG Firewall VPNにスマホから接続する">XG Firewall VPNにスマホから接続する</a></li>
+<li><a href="/new-technology/2020/04/03/Notifications/" title="XG Firewallの通知設定を行う">XG Firewallの通知設定を行う</a></li>
+<li><a href="/new-technology/2020/04/11/dnat/" title="XG Firewall V18でLAN内のホストをインターネットに公開する">XG Firewall V18でLAN内のホストをインターネットに公開する</a></li>
+<li><a href="/new-technology/2020/04/18/ipv6/" title="IPv6のUnique Local Addressを生成する">IPv6のUnique Local Addressを生成する</a></li>
+<li><a href="/new-technology/2020/04/25/xg-ipv6-1/" title="XG FirewallでIPv6の設定を行う（前半）">XG FirewallでIPv6の設定を行う（前半）</a></li>
+<li><a href="/new-technology/2020/04/29/xg-ipv6-2/" title="XG FirewallでIPv6の設定を行う（後半）">XG FirewallでIPv6の設定を行う（後半）</a></li>
+<li><a href="/new-technology/2020/05/04/ips-policy/" title="XG FirewallでIPSのポリシーを確認する">XG FirewallでIPSのポリシーを確認する</a></li>
+<li><a href="/new-technology/2020/05/06/web-application-filter/" title="XG FirewallのWebフィルターとアプリケーションフィルタについて">XG FirewallのWebフィルターとアプリケーションフィルタについて</a></li>
+<li><a href="/new-technology/2020/05/09/best-practice/" title="XG Firewall V18の設定におけるベストプラクティス">XG Firewall V18の設定におけるベストプラクティス</a></li>
+<li><a href="/new-technology/2020/05/16/Intercept-DNS/" title="XG Firewall V18で正しいDNS利用を強制する">XG Firewall V18で正しいDNS利用を強制する</a>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Security</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>XG Firewall v18のメイン画面と特徴について</title>
     <url>/new-technology/2020/03/08/XG-MainPage/</url>
     <content><![CDATA[<div class="note success">
@@ -479,96 +569,6 @@
 <li>クライアントPC： CeleronG3900という3年前の一般的なクライアントに5GbpsのNIC(Aquantia AQtion 5G Network Adapter)を刺したもの</li>
 </ul>
 <p>　クライアント側のCPUで頭打ちになっており、XGは素晴らしい性能を持っています（もちろん業務向けとしては単一のセッションだけで評価は出来ませんが）。v17まではほぼProxyサーバとしての動作でしたが、v18はPort80および443に限らず、httpsの流れるデータをリアルタイムで精査しているようです。私は製品のベータ版である、アーリーアクセスプログラムに参加していましたが、テストの最終局面でスピードが劇的に改善した時は感動しました。ホームユーザーがこういった素晴らしい製品を使えるのは本当にありがたく感じます。</p>
-]]></content>
-      <categories>
-        <category>Security</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Sophos XG Firewallの導入</title>
-    <url>/new-technology/2020/02/23/XG-Firewall/</url>
-    <content><![CDATA[<div class="note primary no-icon">
-            <h2 id="導入の背景"><a href="#導入の背景" class="headerlink" title="導入の背景"></a>導入の背景</h2>
-          </div>
-<p>元々、家庭用の無線ルータだけではセキュリティが不足していると考えてる人は多いとおもいます。私の場合、個人で持っているファイル位であれば、盗られたところで大きな問題になるわけでなし、と大きく構えておりました。数年前よりランサムウェア等の脅威が出てきた事で、それなりの対策が必要と感じてきました。街のwifiからも自宅のリソースに安全に接続したり、家のサーバーを踏み台にしてネットに繋げたいという欲も出てきて、今度はVPNが欲しいなと思い始めました。</p>
-<a id="more"></a>
-<p>　そもそも、iCloudかOneDriveあたりに必要なファイルはどーんと置いておけばいいんですが、漏洩よりも万が一のロストが不安です。それなりの容量だと、クラウドのお金も掛かりますしね。<br>　オンプレの場合は盗難や火事というリスクもあり、人によって考え方は異なりますが、利便性と安全性のバランスを取る事を目指す事になるのでしょう。個人のセキュリティというものは、ビジネスにおけるリスクを極限まで抑制するという考えではなく、何かプラス α の安心感を求める程度という目線を目指す事になるのかとおもいます。Sophos社が提供する<a href="https://www.sophos.com/ja-jp/products/free-tools.aspx" target="_blank" rel="noopener">Sophos XG Firewall Home Edition</a>は、業務用ながらホームユーザーには無料という事もあって、最良のセキュリティ防御の手段と考えています。かれこれ1年半くらいでしょうか。ずっと使わせてもらってます。</p>
-<p>　ｖ18が発表されて、大幅に機能強化されたのは良かったのですが、残念ながら設定方法が難しくなってしまいました。こんなに高機能なものを無料で使わせて頂いてるのだから、何か貢献すべきと考え、設定内容等を公開していく事にしました。スキマ時間に書いているのでスピードが遅いのはどうかご容赦ください。</p>
-<img src="/new-technology/2020/02/23/XG-Firewall/xg.png" class="">
-
-<div class="note primary no-icon">
-            <h2 id="主な機能"><a href="#主な機能" class="headerlink" title="主な機能"></a>主な機能</h2>
-          </div>
-
-<ol>
-<li>Firewall機能（IPフィルター、Portフィルター）</li>
-<li>IPS/WAF(WAFは面倒です）</li>
-<li>DDoS対策機能（個人には不要とおもいます）</li>
-<li>国別フィルター（IPv4のみ）</li>
-<li>VPN（2要素認証対応）</li>
-<li>DNAT（Destination NAT※LANのサーバをネットに解放）</li>
-<li>DNS/DHCP(IPv4,IPv6)</li>
-</ol>
-<p>　細かな説明については、<a href="https://jscom.jp/wp-content/uploads/pamphlet_sophos_020pdf.pdf" target="_blank" rel="noopener">こちら</a>を見て下さい。</p>
-<div class="note primary no-icon">
-            <h2 id="XG-Firewall導入のメリット"><a href="#XG-Firewall導入のメリット" class="headerlink" title="XG Firewall導入のメリット"></a>XG Firewall導入のメリット</h2>
-          </div>
-
-<ol>
-<li>ドメイン単位にWebサイト毎のカテゴリがされているので、ギャンブルやゲーム、アダルトなどのカテゴリで禁止ルールを設定可能</li>
-<li>接続したくない国に対してアクセス制限ができる。Webブラウジングはもちろん、自宅にサーバーを建てた場合の接続元を日本からのみに絞る事も可能（IPv4のみ）</li>
-<li>IPS（Intrusion Prevention System）によるSSL通信の中身を検査できる</li>
-<li>ログ機能が充実している</li>
-<li>VPNにおいてパスワード＋ワンタイムパスワードによる認証が可能（Windows、Mac、iOS、Android）</li>
-<li>エラーをフックし、メールでの通知が行える</li>
-</ol>
-<div class="note primary no-icon">
-            <h2 id="XG-Firewall導入のデメリット"><a href="#XG-Firewall導入のデメリット" class="headerlink" title="XG Firewall導入のデメリット"></a>XG Firewall導入のデメリット</h2>
-          </div>
-
-<ol>
-<li>新しいPCが必要（もちろん新品である必要はありませんが）。2枚のネットワークインタフェースが必要</li>
-<li>ネットのパフォーマンスが犠牲になる。回線帯域よりもレイテンシ（遅延）が大きくなると想定される</li>
-<li>XG Firewallによる保護はエンドポイントの保護を完全に不要にするものではないため、従来通りウィルス対策ソフトはインストールが必要（と考えています）</li>
-</ol>
-<hr>
-<p>システム要件は以下の通りとなっています（XG Firewallの<a href="https://www.sophos.com/ja-jp/products/free-tools/sophos-xg-firewall-home-edition.aspx" target="_blank" rel="noopener">ダウンロードページ</a>より引用）。</p>
-<blockquote>
-<p>2つのネットワークインターフェースのあるIntel互換コンピュータ。(XG Firewall Home Editionをインストールすると、コンピュータにある既存のOSやファイルは上書きされます）<br>Home Editionは、4コア、および6GBのRAMまでの環境に対応しています。この条件を超えるコンピュータも使用可能ですが、XG Firewall Home Editionは、上限を超える容量を活用できません。</p>
-</blockquote>
-<p>　ホームユーザーには、技術面でかなりハードルは高いです。しかし、業務用ファイアウォールが家庭で使えるというのは非常に魅力です。興味のある方はお付き合い頂ければとおもいます。</p>
-<p>※XG Firewall v18の記事一覧</p>
-<ul>
-<li><a href="/new-technology/2020/02/25/provision/" title="PC（ハードウェア）の準備">PC（ハードウェア）の準備</a></li>
-<li><a href="/new-technology/2020/02/29/esxi/" title="VMware vSphere Hypervisor（ESXi）のインストール">VMware vSphere Hypervisor（ESXi）のインストール</a></li>
-<li><a href="/new-technology/2020/03/01/esxi-conf/" title="VMware vSphere Hypervisor（ESXi）の設定">VMware vSphere Hypervisor（ESXi）の設定</a></li>
-<li><a href="/new-technology/2020/03/06/InstallXG/" title="XG Firewall v18のインストール（事前準備）">XG Firewall v18のインストール（事前準備）</a></li>
-<li><a href="/new-technology/2020/03/06/InstallXG2/" title="XG Firewall v18をESXi仮想マシン上にインストールする">XG Firewall v18をESXi仮想マシン上にインストールする</a></li>
-<li><a href="/new-technology/2020/03/08/XG-MainPage/" title="XG Firewall v18のメイン画面と特徴について">XG Firewall v18のメイン画面と特徴について</a></li>
-<li><a href="/new-technology/2020/03/14/rule-policy1/" title="XG Firewall v18のルールとポリシーについて">XG Firewall v18のルールとポリシーについて</a></li>
-<li><a href="/new-technology/2020/03/14/rule-policy2/" title="XG Firewall v18のOutboundルールを新規作成する">XG Firewall v18のOutboundルールを新規作成する</a></li>
-<li><a href="/new-technology/2020/03/14/customize-policy/" title="XG Firewall v18のポリシーをカスタマイズする">XG Firewall v18のポリシーをカスタマイズする</a></li>
-<li><a href="/new-technology/2020/03/20/ssl-inspection/" title="XG Firewall v18のSSLインスペクションについて">XG Firewall v18のSSLインスペクションについて</a></li>
-<li><a href="/new-technology/2020/03/20/ssl-inspection1/" title="XG Firewall v18のSSLインスペクションの設定">XG Firewall v18のSSLインスペクションの設定</a></li>
-<li><a href="/new-technology/2020/03/21/ssl-inspection2/" title="XG Firewall v18のSSLインスペクションの動作確認と調整">XG Firewall v18のSSLインスペクションの動作確認と調整</a></li>
-<li><a href="/new-technology/2020/03/26/SophosCommunity/" title="XG Firewall Sophos Communityについて">XG Firewall Sophos Communityについて</a></li>
-<li><a href="/new-technology/2020/03/28/vpn/" title="XG Firewall VPNについて">XG Firewall VPNについて</a></li>
-<li><a href="/new-technology/2020/03/28/vpnotp/" title="XG Firewall VPNにワンタイムパスワードを設定する">XG Firewall VPNにワンタイムパスワードを設定する</a></li>
-<li><a href="/new-technology/2020/03/31/vpn-iphone/" title="XG Firewall VPNにスマホから接続する">XG Firewall VPNにスマホから接続する</a></li>
-<li><a href="/new-technology/2020/04/03/Notifications/" title="XG Firewallの通知設定を行う">XG Firewallの通知設定を行う</a></li>
-<li><a href="/new-technology/2020/04/11/dnat/" title="XG Firewall V18でLAN内のホストをインターネットに公開する">XG Firewall V18でLAN内のホストをインターネットに公開する</a></li>
-<li><a href="/new-technology/2020/04/18/ipv6/" title="IPv6のUnique Local Addressを生成する">IPv6のUnique Local Addressを生成する</a></li>
-<li><a href="/new-technology/2020/04/25/xg-ipv6-1/" title="XG FirewallでIPv6の設定を行う（前半）">XG FirewallでIPv6の設定を行う（前半）</a></li>
-<li><a href="/new-technology/2020/04/29/xg-ipv6-2/" title="XG FirewallでIPv6の設定を行う（後半）">XG FirewallでIPv6の設定を行う（後半）</a></li>
-<li><a href="/new-technology/2020/05/04/ips-policy/" title="XG FirewallでIPSのポリシーを確認する">XG FirewallでIPSのポリシーを確認する</a></li>
-<li><a href="/new-technology/2020/05/06/web-application-filter/" title="XG FirewallのWebフィルターとアプリケーションフィルタについて">XG FirewallのWebフィルターとアプリケーションフィルタについて</a></li>
-<li><a href="/new-technology/2020/05/09/best-practice/" title="XG Firewall V18の設定におけるベストプラクティス">XG Firewall V18の設定におけるベストプラクティス</a></li>
-<li><a href="/new-technology/2020/05/16/Intercept-DNS/" title="XG Firewall V18で正しいDNS利用を強制する">XG Firewall V18で正しいDNS利用を強制する</a>
-</li>
-</ul>
 ]]></content>
       <categories>
         <category>Security</category>
@@ -1492,6 +1492,50 @@
       </tags>
   </entry>
   <entry>
+    <title>XG Firewall v18のSSLインスペクションについて</title>
+    <url>/new-technology/2020/03/20/ssl-inspection/</url>
+    <content><![CDATA[<div class="note success">
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　XG Firewall v18で利用されているSSL/TLSインスペクションについて、PCやiPhone等（Windows/macOS/iOS）を防御する仕組み、および必要となる対応概要を学びます。</p>
+          </div>
+<a id="more"></a>
+
+<div class="note primary no-icon">
+            <h2 id="SSLインスペクションとは"><a href="#SSLインスペクションとは" class="headerlink" title="SSLインスペクションとは"></a>SSLインスペクションとは</h2>
+          </div>
+
+<p>　XGで設定の難易度が高くなるのはこの部分です。上記までの基本ルールとは別に、SSLを解読して検査する設定を行う事になります。今日でもSSLという呼び方は定着していますが、TLS（Transport Layer Security）とも呼ばれます。XGの最も素晴らしい機能の1つがSSLを解読する安全装置です。この安全装置の事を、「IPS」（Intrusion Prevension System）と呼びます。そして、その解読方法として「SSLインスペクション」という方式が採用されています。<br>　このSSLインスペクションについては、解りやすい文献がありますので紹介します。セキュリティベンダーの（株）ラック社から提供されているドキュメントです。</p>
+<blockquote>
+<p>出典：株式会社ラック<a href="https://www.lac.co.jp/library/pdf/ssl_guidebook.pdf" target="_blank" rel="noopener">【「常時SSL化」時代に向けたセキュリティ対策指南書】</a></p>
+</blockquote>
+<p>　特にP13に記載されているSSLインペクションゾーンの仕事をしてくれるのがXGの役割です。</p>
+<div class="note primary no-icon">
+            <h2 id="XG-Firewall-v18利用のメリット"><a href="#XG-Firewall-v18利用のメリット" class="headerlink" title="XG Firewall v18利用のメリット"></a>XG Firewall v18利用のメリット</h2>
+          </div>
+
+<p>　XGでは暗号化された通信を高速に解読し、ウィルスやマルウェアのダウンロードをPCやスマホが受信する前に防ぐ事が可能となります。v18では、全く新しい<span class="label info">XStreamアーキテクチャ</span>によって、この解読（SSLインスペクション）の速度が大幅に向上しました。</p>
+<div class="note primary no-icon">
+            <h2 id="SSLインスペクションの設定にあたって"><a href="#SSLインスペクションの設定にあたって" class="headerlink" title="SSLインスペクションの設定にあたって"></a>SSLインスペクションの設定にあたって</h2>
+          </div>
+<p>　まず、SSLインスペクションが行える前提として、XGのルート証明書をクライアントにインストールしなくてはなりません。それができないとhttpsのトラフィックを復号化出来ないためです。復号化については、以下の端末で検証をしています。</p>
+<ul>
+<li>Windows</li>
+<li>macOS</li>
+<li>iOS</li>
+</ul>
+<p>　なお、Linuxでも可能なようですが、私の方で検証は出来ていません。またAndroidには証明書はインストール出来ますが、Chrome以外のアプリで証明書を信頼する事が出来ず、実質SSLインスペクションは使えません。他の家電TVなども難しいと考えてください。httpsの復号化が出来ずともドメインやIP単位での制限は可能なので、家電のネット利用であっても、Firewallの利用価値は高いとおもいます。</p>
+<p>　SSLインスペクションを設定後、ブラウザのURLの鍵マークにカーソルを合わせるとそのサイトで利用している本来の認証局ではなく、以下のようにXGの認証局が有効となっている事が分かります。</p>
+<img src="/new-technology/2020/03/20/ssl-inspection/ssl-inspection.png" class="" title="alt">
+
+<p>　PCに、XGのルート証明書が登録されていない状態でSSLインスペクションを行うと、ブラウザは「信頼されないサイト」として警告を発します。XGが悪意を持って成りすましを行っている事ではない事を証明するために、PC等にルート証明書をインストールし信頼させる事により、安全な通信であるとブラウザが判断できるようになります。</p>
+]]></content>
+      <categories>
+        <category>Security</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>XG Firewall v18のOutboundルールを新規作成する</title>
     <url>/new-technology/2020/03/14/rule-policy2/</url>
     <content><![CDATA[<div class="note success">
@@ -1535,41 +1579,76 @@
       </tags>
   </entry>
   <entry>
-    <title>XG Firewall v18のSSLインスペクションについて</title>
-    <url>/new-technology/2020/03/20/ssl-inspection/</url>
+    <title>XG Firewall v18のSSLインスペクションの動作確認と調整</title>
+    <url>/new-technology/2020/03/21/ssl-inspection2/</url>
     <content><![CDATA[<div class="note success">
-            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　XG Firewall v18で利用されているSSL/TLSインスペクションについて、PCやiPhone等（Windows/macOS/iOS）を防御する仕組み、および必要となる対応概要を学びます。</p>
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>XG FirewallのSSL/TLSインスペクションを使う事によって、何らかの理由で接続出来なくなったサイトについて、ドメイン単位でSSLインスペクションの除外設定が行えるようになります。</p>
           </div>
 <a id="more"></a>
 
 <div class="note primary no-icon">
-            <h2 id="SSLインスペクションとは"><a href="#SSLインスペクションとは" class="headerlink" title="SSLインスペクションとは"></a>SSLインスペクションとは</h2>
+            <h2 id="SSL-TLSインスペクションの動作確認"><a href="#SSL-TLSインスペクションの動作確認" class="headerlink" title="SSL/TLSインスペクションの動作確認"></a>SSL/TLSインスペクションの動作確認</h2>
           </div>
 
-<p>　XGで設定の難易度が高くなるのはこの部分です。上記までの基本ルールとは別に、SSLを解読して検査する設定を行う事になります。今日でもSSLという呼び方は定着していますが、TLS（Transport Layer Security）とも呼ばれます。XGの最も素晴らしい機能の1つがSSLを解読する安全装置です。この安全装置の事を、「IPS」（Intrusion Prevension System）と呼びます。そして、その解読方法として「SSLインスペクション」という方式が採用されています。<br>　このSSLインスペクションについては、解りやすい文献がありますので紹介します。セキュリティベンダーの（株）ラック社から提供されているドキュメントです。</p>
-<blockquote>
-<p>出典：株式会社ラック<a href="https://www.lac.co.jp/library/pdf/ssl_guidebook.pdf" target="_blank" rel="noopener">【「常時SSL化」時代に向けたセキュリティ対策指南書】</a></p>
-</blockquote>
-<p>　特にP13に記載されているSSLインペクションゾーンの仕事をしてくれるのがXGの役割です。</p>
+<p>　さて、前回まで長かった設定も終わったのでIPS（Intrusion Prevension System）によるSSLインスペクションでの動作確認をしていきましょう。最初はテストマルウェアの検知についてです。有名どころでは、<a href="https://www.eicar.org/" target="_blank" rel="noopener">eicar</a>のテストマルウェアが挙げられます。早速、ダウンロードページにまいりましょう。</p>
+<!-- more -->
+<p>　<a href="https://2016.eicar.org/85-0-Download.html" target="_blank" rel="noopener">eicarのダウンロードページ</a>に行くと、「IMPORTANT NOTE」とhttp、httpsの以下それぞれの種類の合計8つのダウンロードリンクがあります。</p>
+<img src="/new-technology/2020/03/21/ssl-inspection2/eicar.png" class="" title="alt">
+
+<ol>
+<li>実行ファイル</li>
+<li>実行ファイルをtxtに拡張子を変えたもの</li>
+<li>zipに圧縮したもの</li>
+<li>zipの二重圧縮</li>
+</ol>
+<p>　実行ファイルについては、マルウェアを検知する前にXGのポリシーによっては、実行ファイルをダウンロード出来ないという表示になる可能性があります。その際はWebのポリシーで修正するか、ルールとポリシーを修正し実行ファイルを一時的に許可し、確認してみて下さい。</p>
+<p>　結論から言えば、XGはこの8つを全て検出し、ブラウザにはXGによるマルウェア検知のエラー画面が表示されます。PCに入っているウィルス対策ソフトが検知する以前にダウンロードは行わない挙動となります。また、XGの証明書を導入していない機器からのアクセスについてはhttpのものは検出できますが、httpsのダウンロードはマルウェアを検出できません。</p>
+<p>　IPSは速度と検出能力という相反する事を同時に成り立たせなくてはいけません。上記のようにマルウェアの検出は可能ですが、あくまで通信で怪しいものをカットする程度に考え、クライアントにはウィルス対策ソフトやマルウェア対策ソフトの導入をお勧めします。Sophosはホームユーザー向けに無償のウィルス対策ソフトを提供していますが、個人的には異なる会社のソフトを組み合わせて使う事をお勧めします。</p>
 <div class="note primary no-icon">
-            <h2 id="XG-Firewall-v18利用のメリット"><a href="#XG-Firewall-v18利用のメリット" class="headerlink" title="XG Firewall v18利用のメリット"></a>XG Firewall v18利用のメリット</h2>
+            <h2 id="SSL-TLSインスペクションの除外設定"><a href="#SSL-TLSインスペクションの除外設定" class="headerlink" title="SSL/TLSインスペクションの除外設定"></a>SSL/TLSインスペクションの除外設定</h2>
           </div>
 
-<p>　XGでは暗号化された通信を高速に解読し、ウィルスやマルウェアのダウンロードをPCやスマホが受信する前に防ぐ事が可能となります。v18では、全く新しい<span class="label info">XStreamアーキテクチャ</span>によって、この解読（SSLインスペクション）の速度が大幅に向上しました。</p>
-<div class="note primary no-icon">
-            <h2 id="SSLインスペクションの設定にあたって"><a href="#SSLインスペクションの設定にあたって" class="headerlink" title="SSLインスペクションの設定にあたって"></a>SSLインスペクションの設定にあたって</h2>
-          </div>
-<p>　まず、SSLインスペクションが行える前提として、XGのルート証明書をクライアントにインストールしなくてはなりません。それができないとhttpsのトラフィックを復号化出来ないためです。復号化については、以下の端末で検証をしています。</p>
-<ul>
-<li>Windows</li>
-<li>macOS</li>
-<li>iOS</li>
-</ul>
-<p>　なお、Linuxでも可能なようですが、私の方で検証は出来ていません。またAndroidには証明書はインストール出来ますが、Chrome以外のアプリで証明書を信頼する事が出来ず、実質SSLインスペクションは使えません。他の家電TVなども難しいと考えてください。httpsの復号化が出来ずともドメインやIP単位での制限は可能なので、家電のネット利用であっても、Firewallの利用価値は高いとおもいます。</p>
-<p>　SSLインスペクションを設定後、ブラウザのURLの鍵マークにカーソルを合わせるとそのサイトで利用している本来の認証局ではなく、以下のようにXGの認証局が有効となっている事が分かります。</p>
-<img src="/new-technology/2020/03/20/ssl-inspection/ssl-inspection.png" class="" title="alt">
+<p>　SSLインスペクションでは、本来正しいサイトにも関わらず、ポリシーが厳しすぎる事以外にもうまく接続できないという問題も発生します。</p>
+<ol>
+<li>TLSが正当ではないと判断される</li>
+<li>XGの署名がアプリケーションに認められない</li>
+</ol>
+<p>　上記1については、XGの画面右上にログビューアというものがあるのでビューアからSSL/TLSインスペクションを選択します。私の環境では、norton.comが該当しています。TLSでエラーログが出力されていて、当該ドメインが安全と判断をするなら、以下の例外処置が行えます。Web→URLグループの<span class="label info">Local TLS Exclusion List</span>にドメインを追加する事でSSLインスペクションが行われません。以下の通り、SSLインスペクションルール画面では、デフォルトの除外項目に<span class="label info">Local TLS Exclusion List</span>が含まれています。</p>
+<img src="/new-technology/2020/03/21/ssl-inspection2/inspection-rule.png" class="" title="alt">
+<img src="/new-technology/2020/03/21/ssl-inspection2/inspection-rule1.png" class="" title="alt">
 
-<p>　PCに、XGのルート証明書が登録されていない状態でSSLインスペクションを行うと、ブラウザは「信頼されないサイト」として警告を発します。XGが悪意を持って成りすましを行っている事ではない事を証明するために、PC等にルート証明書をインストールし信頼させる事により、安全な通信であるとブラウザが判断できるようになります。</p>
+<p>　もう1つは対応が少し難しいのですが、アプリケーション自体が、OSにインストールされた証明書などを認めていないケースです。こちらはアプリケーションの内部に証明書を保持しており、その証明書の正当性を確認しているケースです。以下の例ではpython関連のモジュールをアップグレードするケースで以下のエラーが発生します。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt;pip3 install --upgrade pip</span><br><span class="line"></span><br><span class="line">WARNING: Retrying (Retry(total=4, connect=None, <span class="built_in">read</span>=None, redirect=None, status=None))</span><br><span class="line">after connection broken by <span class="string">'SSLError(SSLCertVerificationError(1,  </span></span><br><span class="line"><span class="string">'</span>[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get <span class="built_in">local</span> issuer certificate (_ssl.c:1076)<span class="string">'))'</span>: /simple/pip/</span><br></pre></td></tr></table></figure>
+
+<p>　上記のように、この場合は当該ドメインのSSLインスペクションを外す事になりますが、どのドメインかが分からないという難しさがあります。この場合は色々調べなくてはなりません。あくまで一例ですが除外しておいた方が良いドメインを列挙してみます。</p>
+<table>
+<thead>
+<tr>
+<th>ドメイン</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>pypi.org, pythonhosted.org</td>
+<td>Python関連</td>
+</tr>
+<tr>
+<td>npmjs.org</td>
+<td>Node.js関連</td>
+</tr>
+<tr>
+<td>auone.jp, paypay.ne.jp, merpay.com</td>
+<td>〜pay関連</td>
+</tr>
+<tr>
+<td>norton.com</td>
+<td>Norton AntiVirus関連</td>
+</tr>
+<tr>
+<td>d.line-scdn.net</td>
+<td>LINE動画</td>
+</tr>
+</tbody></table>
 ]]></content>
       <categories>
         <category>Security</category>
@@ -1658,85 +1737,6 @@
 </li>
 </ol>
 <p>　これで一旦は証明書のインストールは完了です。この証明書のインストールがXG Firewallの設定で一番大切、かつ面倒なところになります。しかし、まだ微調整など必要なケースがあり設定は続きます。</p>
-]]></content>
-      <categories>
-        <category>Security</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>XG Firewall v18のSSLインスペクションの動作確認と調整</title>
-    <url>/new-technology/2020/03/21/ssl-inspection2/</url>
-    <content><![CDATA[<div class="note success">
-            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>XG FirewallのSSL/TLSインスペクションを使う事によって、何らかの理由で接続出来なくなったサイトについて、ドメイン単位でSSLインスペクションの除外設定が行えるようになります。</p>
-          </div>
-<a id="more"></a>
-
-<div class="note primary no-icon">
-            <h2 id="SSL-TLSインスペクションの動作確認"><a href="#SSL-TLSインスペクションの動作確認" class="headerlink" title="SSL/TLSインスペクションの動作確認"></a>SSL/TLSインスペクションの動作確認</h2>
-          </div>
-
-<p>　さて、前回まで長かった設定も終わったのでIPS（Intrusion Prevension System）によるSSLインスペクションでの動作確認をしていきましょう。最初はテストマルウェアの検知についてです。有名どころでは、<a href="https://www.eicar.org/" target="_blank" rel="noopener">eicar</a>のテストマルウェアが挙げられます。早速、ダウンロードページにまいりましょう。</p>
-<!-- more -->
-<p>　<a href="https://2016.eicar.org/85-0-Download.html" target="_blank" rel="noopener">eicarのダウンロードページ</a>に行くと、「IMPORTANT NOTE」とhttp、httpsの以下それぞれの種類の合計8つのダウンロードリンクがあります。</p>
-<img src="/new-technology/2020/03/21/ssl-inspection2/eicar.png" class="" title="alt">
-
-<ol>
-<li>実行ファイル</li>
-<li>実行ファイルをtxtに拡張子を変えたもの</li>
-<li>zipに圧縮したもの</li>
-<li>zipの二重圧縮</li>
-</ol>
-<p>　実行ファイルについては、マルウェアを検知する前にXGのポリシーによっては、実行ファイルをダウンロード出来ないという表示になる可能性があります。その際はWebのポリシーで修正するか、ルールとポリシーを修正し実行ファイルを一時的に許可し、確認してみて下さい。</p>
-<p>　結論から言えば、XGはこの8つを全て検出し、ブラウザにはXGによるマルウェア検知のエラー画面が表示されます。PCに入っているウィルス対策ソフトが検知する以前にダウンロードは行わない挙動となります。また、XGの証明書を導入していない機器からのアクセスについてはhttpのものは検出できますが、httpsのダウンロードはマルウェアを検出できません。</p>
-<p>　IPSは速度と検出能力という相反する事を同時に成り立たせなくてはいけません。上記のようにマルウェアの検出は可能ですが、あくまで通信で怪しいものをカットする程度に考え、クライアントにはウィルス対策ソフトやマルウェア対策ソフトの導入をお勧めします。Sophosはホームユーザー向けに無償のウィルス対策ソフトを提供していますが、個人的には異なる会社のソフトを組み合わせて使う事をお勧めします。</p>
-<div class="note primary no-icon">
-            <h2 id="SSL-TLSインスペクションの除外設定"><a href="#SSL-TLSインスペクションの除外設定" class="headerlink" title="SSL/TLSインスペクションの除外設定"></a>SSL/TLSインスペクションの除外設定</h2>
-          </div>
-
-<p>　SSLインスペクションでは、本来正しいサイトにも関わらず、ポリシーが厳しすぎる事以外にもうまく接続できないという問題も発生します。</p>
-<ol>
-<li>TLSが正当ではないと判断される</li>
-<li>XGの署名がアプリケーションに認められない</li>
-</ol>
-<p>　上記1については、XGの画面右上にログビューアというものがあるのでビューアからSSL/TLSインスペクションを選択します。私の環境では、norton.comが該当しています。TLSでエラーログが出力されていて、当該ドメインが安全と判断をするなら、以下の例外処置が行えます。Web→URLグループの<span class="label info">Local TLS Exclusion List</span>にドメインを追加する事でSSLインスペクションが行われません。以下の通り、SSLインスペクションルール画面では、デフォルトの除外項目に<span class="label info">Local TLS Exclusion List</span>が含まれています。</p>
-<img src="/new-technology/2020/03/21/ssl-inspection2/inspection-rule.png" class="" title="alt">
-<img src="/new-technology/2020/03/21/ssl-inspection2/inspection-rule1.png" class="" title="alt">
-
-<p>　もう1つは対応が少し難しいのですが、アプリケーション自体が、OSにインストールされた証明書などを認めていないケースです。こちらはアプリケーションの内部に証明書を保持しており、その証明書の正当性を確認しているケースです。以下の例ではpython関連のモジュールをアップグレードするケースで以下のエラーが発生します。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt;pip3 install --upgrade pip</span><br><span class="line"></span><br><span class="line">WARNING: Retrying (Retry(total=4, connect=None, <span class="built_in">read</span>=None, redirect=None, status=None))</span><br><span class="line">after connection broken by <span class="string">'SSLError(SSLCertVerificationError(1,  </span></span><br><span class="line"><span class="string">'</span>[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get <span class="built_in">local</span> issuer certificate (_ssl.c:1076)<span class="string">'))'</span>: /simple/pip/</span><br></pre></td></tr></table></figure>
-
-<p>　上記のように、この場合は当該ドメインのSSLインスペクションを外す事になりますが、どのドメインかが分からないという難しさがあります。この場合は色々調べなくてはなりません。あくまで一例ですが除外しておいた方が良いドメインを列挙してみます。</p>
-<table>
-<thead>
-<tr>
-<th>ドメイン</th>
-<th>内容</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>pypi.org, pythonhosted.org</td>
-<td>Python関連</td>
-</tr>
-<tr>
-<td>npmjs.org</td>
-<td>Node.js関連</td>
-</tr>
-<tr>
-<td>auone.jp, paypay.ne.jp, merpay.com</td>
-<td>〜pay関連</td>
-</tr>
-<tr>
-<td>norton.com</td>
-<td>Norton AntiVirus関連</td>
-</tr>
-<tr>
-<td>d.line-scdn.net</td>
-<td>LINE動画</td>
-</tr>
-</tbody></table>
 ]]></content>
       <categories>
         <category>Security</category>
@@ -2090,80 +2090,6 @@
       </tags>
   </entry>
   <entry>
-    <title>XG FirewallのWebフィルターとアプリケーションフィルタについて</title>
-    <url>/new-technology/2020/05/06/web-application-filter/</url>
-    <content><![CDATA[<div class="note success">
-            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　XG Firewallのレイヤ7ファイアウォールとしてのメインでもある、Webフィルター、アプリケーションフィルターについてそれぞれの違い、および活用方法について理解を深めます。</p>
-          </div>
-
-<a id="more"></a>
-
-<div class="note primary no-icon">
-            <h2 id="XGのWebフィルターについて"><a href="#XGのWebフィルターについて" class="headerlink" title="XGのWebフィルターについて"></a>XGのWebフィルターについて</h2>
-          </div>
-
-<p>　XGの左ペインメニューでは、<span class="label info">Web</span>、<span class="label info">アプリケーション</span>とそれぞれ分かれています。<span class="label info">Web</span>ではサイトのカテゴリが分かれていて、そのサイトのカテゴリによっては閲覧させないという使い方が一般的な使い方のように見えます。これらのポリシーは、<a href="https://community.sophos.com/kb/ja-jp/134155" target="_blank" rel="noopener">Sophosのサイト「Sophos XG Firewall: Web カテゴリ」</a>にも日本語の解説があります。サイトのカテゴリについては、ビジネス、ギャンブル、ゲーム、アダルト、ファイナンス等多岐に渡ります。ホームユーザーとしてはいわゆる怪しいサイトや過度な広告をフィルタする事が主目的になるかとおもいます。</p>
-<p>　上記サイトのポリシーを眺めていると疑問に感じるところがあります。「ActiveX」、「Applets」、「SpamURLs」です。サイトのポリシーで判断しているのかと思いきや、ActiveXやAppletは単純にサーバー名とも関係ありません。企業やサイトの目的ではなく、そこに配置したコンテンツの内容まで判断するように見えます。サイトのカテゴリに関係なく、そこにSpamがある場合は排除される事のようですから、そのあとのフォルダ構成を含めたURLまで対象としているように見えます。</p>
-<p>　上記サイトの<span class="label info">Sophos XG Firewall:Webカテゴリ</span>には記載がないものの、XGの左ペインメニューの<span class="label info">Web</span>の<span class="label info">ファイルタイプ</span>の内容には、ファイル拡張子、MIMEヘッダーの情報が並びます。そしてここにはZIPファイルなどの<span class="label info">Compressed Files</span>、Windowsの実行ファイルである<span class="label info">Executable File</span>などの項目が並んでいます。</p>
-<p>　ホームユーザーとしては、ZIPファイルやEXEファイルが使えないと不便なのでフィルタする事は考えにくいですが、何らかのMIMEタイプを拒否するポリシーを作成する場合は有効に機能しそうです。最終的には、Webフィルターは以下の種類の分類となります。</p>
-<ul>
-<li>Webカテゴリ</li>
-<li>URLグループ（自身で作成したURLの集まり）、280blockerなどのURLデータベースもこのグループ</li>
-<li>ファイルタイプ</li>
-<li>ダイナミックカテゴリ（ActiveX・Applets・Cookies・HTTP Upload</li>
-</ul>
-<p>　これらの事から、Webフィルターはカテゴリの分類という主目的はあるものの、ブラウザを対象としたフィルタの機能である事がわかります。</p>
-<div class="note primary no-icon">
-            <h2 id="SNIとWebフィルターについて"><a href="#SNIとWebフィルターについて" class="headerlink" title="SNIとWebフィルターについて"></a>SNIとWebフィルターについて</h2>
-          </div>
-
-<p>　SNIとは、Server Name Indicationの略です。SSL/TLS通信において、クライアントからサーバ証明書を要求する時に<span class="label info">暗号化せず</span>情報がサーバーに渡されます。XGはこのSNIを見てWebフィルターを行っていますので、SSLインスペクションが行えなくともURLでアクセス許可・不可の判断は可能になります。全てのWebサーバーがSNIに対応しているわけではありませんが、SSLインスペクションが行えないAndroid端末であってもある程度の許可・不可の制御は可能となります。しかし、以前の記事、<a href="/new-technology/2020/03/21/ssl-inspection2/" title="XG Firewall v18のSSLインスペクションの動作確認と調整">XG Firewall v18のSSLインスペクションの動作確認と調整</a> で記載した通り、ZIP化されたマルウェアは検知できないなどSSLインスペクションを使わないと完全ではありません。</p>
-<div class="note primary no-icon">
-            <h2 id="XGのアプリケーションフィルターについて"><a href="#XGのアプリケーションフィルターについて" class="headerlink" title="XGのアプリケーションフィルターについて"></a>XGのアプリケーションフィルターについて</h2>
-          </div>
-
-<p>　XGのアプリケーションフィルターは、XGの左ペインメニューの<span class="label info">アプリケーション</span>から確認できます。ブラウザーではないインターネットに接続するアプリケーションを対象にしています。ここの挙動の確認は非常に難しいものがあります。</p>
-<p>　例えば、MicrosoftのOneDriveを題材にテストしてみましょう。</p>
-<p>　OneDriveのURLは、現時点で、<span class="label info">https://onedrive.live.com/</span>です。Webフィルターで当該ドメインのフィルターを行うと、想定通りブラウザーからOneDriveにはアクセス出来ません。たまにはAndroid端末でやってみます。設定通り、Android版FireFoxからは接続出来ませんでしたので、その画面をキャプチャしています。</p>
-<img src="/new-technology/2020/05/06/web-application-filter/onedrive.png" class="" title="alt">
-
-<p>　次にキャプチャ画像を、<span class="label info">Android端末にインストールしてあるOneDriveアプリ経由で画像をコピーし</span>、このブログに掲載しています。最後に、<span class="label info">WindowsPCのエクスプローラーのOneDriveフォルダからこの画像は削除出来てしまいました</span>。</p>
-<p>　え？という話なんですが、OneDriveのアプリからはURL制限とは無関係にアクセス出来ています。</p>
-<p>　今度は別の検証のために、Webフィルターは削除、アプリケーションフィルターにOneDriveの項目があるので、そちらをフィルターしてみます。</p>
-<p>　XGの左ペインメニューの<span class="label info">アプリケーション</span>からファイアウォールルールで選択されているポリシーの先頭で<span class="label info">追加</span>ボタンをクリックし、<span class="label info">スマートフィルタ</span>に<span class="label info">onedrive</span>と入力し、Enterキーを押します。</p>
-<img src="/new-technology/2020/05/06/web-application-filter/appfilter2.png" class="" title="alt">
-
-<p>　そうすると、OneDriveのルールがいくつか表示されるため、<span class="label info">アクション</span>は、<span class="label info">拒否</span>を選択して最後に<span class="label info">保存</span>をクリックします（これは検証作業なのでこのブログをご覧の方が実施する作業ではありません）。</p>
-<p>　この作業の結果は以下の通りの挙動でした。</p>
-<ul>
-<li>ブラウザからOneDriveに接続出来ない</li>
-<li>WindowsからOneDriveのツール上（エクスプローラー上のファイル）ではファイルの追加、削除は行えない</li>
-<li>AndroidからOneDriveのファイル削除は可能だが、追加は行えない</li>
-</ul>
-<p>　これらの事から、アプリケーションフィルタは、アプリが利用しているAPIのURLやデータの中身を見て挙動の制限を行っている事がわかります。また、OneDriveはファイルのアップロード、ダウンロードと目的によって分かれていましたが、AppleのiCloudDriveに関してはアプリケーションフィルタは1種類だけです。このようにアプリケーションフィルターは、アプリの作り方に左右されるものとなります。そして、SSLインスペクションが行えないAndroidはファイル削除について制御出来ていません。</p>
-<p>　アプリケーションフィルターの中には、<span class="label info">EXE File Download</span>というフィルタも存在しますが、あくまで汎用的なものであって、全てのいかなるアプリケーションからのEXEファイルのダウンロードを禁止できるものではありません。</p>
-<p>　これらを理解できても、それを実践するのは難しいものです。ホームユーザーとしてリスクを抑制しつつ利便性を高めるには、どのようなフィルターを作っていくべきでしょうか。たくさん存在するアプリケーションを都度設定するのは管理も非常に大変で現実的ではありません。</p>
-<p>　Webのカテゴリについては、個人の考え方でいろいろなフィルタの組み合わせがあるでしょう。そちらについてはご自身のポリシーでカスタマイズいただければとおもいます。</p>
-<p>　但し攻撃から身を守るという課題については、ある程度のスタンダードはあるかとおもいますので、Sophos Communityなどの情報を頼りにホームユーザーのためのお勧め設定について次回に記載したいとおもいます。</p>
-]]></content>
-      <categories>
-        <category>Security</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>はじめに</title>
-    <url>/new-technology/2020/02/22/%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB/</url>
-    <content><![CDATA[<p>　少し高度なITをテーマに、ホームユーザーのIT導入を中心にポストしていきたいと考えてます。最近ではフルスタックエンジニアと呼ぶのでしょうか、これまでの自身の仕事はプログラミング・ネットワーク・サーバ構築・セキュリティと、広く浅くITに関わってきました。エンジニアとしての仕事からは最近かなり遠ざかってますが、自分なりに新しい技術の習得も兼ねて、ブログ形式で掲載できればとおもいます。</p>
-<a id="more"></a>
-
-<p>　単純にインストールして「できました」ではなく、導入後のITの使い方こそが重要と考えています。最近は個人利用に限り利用無償のソフトウェアが増えてきました。また、商用利用であっても無償となるオープンソースソフトウェアの活用も見逃せません。これは大変ありがたい話で、座学ではなかなか理解が進まない固有技術であっても、こういった無料のプロダクトを通じて知見を高める事が可能となっています。</p>
-<p>　ここでは、エンタープライズやミッションクリティカルなITに関するテーマは扱いません。私自身実務でITに関わっていますが、実務とは少し距離を置いたところで、自己啓発と家庭向けのIT活用を考えたいと思っています。</p>
-]]></content>
-  </entry>
-  <entry>
     <title>XG FirewallでIPv6の設定を行う（前半）</title>
     <url>/new-technology/2020/04/25/xg-ipv6-1/</url>
     <content><![CDATA[<div class="note success">
@@ -2238,6 +2164,80 @@
         <tag>XG Firewall</tag>
         <tag>IPv6</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>XG FirewallのWebフィルターとアプリケーションフィルタについて</title>
+    <url>/new-technology/2020/05/06/web-application-filter/</url>
+    <content><![CDATA[<div class="note success">
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　XG Firewallのレイヤ7ファイアウォールとしてのメインでもある、Webフィルター、アプリケーションフィルターについてそれぞれの違い、および活用方法について理解を深めます。</p>
+          </div>
+
+<a id="more"></a>
+
+<div class="note primary no-icon">
+            <h2 id="XGのWebフィルターについて"><a href="#XGのWebフィルターについて" class="headerlink" title="XGのWebフィルターについて"></a>XGのWebフィルターについて</h2>
+          </div>
+
+<p>　XGの左ペインメニューでは、<span class="label info">Web</span>、<span class="label info">アプリケーション</span>とそれぞれ分かれています。<span class="label info">Web</span>ではサイトのカテゴリが分かれていて、そのサイトのカテゴリによっては閲覧させないという使い方が一般的な使い方のように見えます。これらのポリシーは、<a href="https://community.sophos.com/kb/ja-jp/134155" target="_blank" rel="noopener">Sophosのサイト「Sophos XG Firewall: Web カテゴリ」</a>にも日本語の解説があります。サイトのカテゴリについては、ビジネス、ギャンブル、ゲーム、アダルト、ファイナンス等多岐に渡ります。ホームユーザーとしてはいわゆる怪しいサイトや過度な広告をフィルタする事が主目的になるかとおもいます。</p>
+<p>　上記サイトのポリシーを眺めていると疑問に感じるところがあります。「ActiveX」、「Applets」、「SpamURLs」です。サイトのポリシーで判断しているのかと思いきや、ActiveXやAppletは単純にサーバー名とも関係ありません。企業やサイトの目的ではなく、そこに配置したコンテンツの内容まで判断するように見えます。サイトのカテゴリに関係なく、そこにSpamがある場合は排除される事のようですから、そのあとのフォルダ構成を含めたURLまで対象としているように見えます。</p>
+<p>　上記サイトの<span class="label info">Sophos XG Firewall:Webカテゴリ</span>には記載がないものの、XGの左ペインメニューの<span class="label info">Web</span>の<span class="label info">ファイルタイプ</span>の内容には、ファイル拡張子、MIMEヘッダーの情報が並びます。そしてここにはZIPファイルなどの<span class="label info">Compressed Files</span>、Windowsの実行ファイルである<span class="label info">Executable File</span>などの項目が並んでいます。</p>
+<p>　ホームユーザーとしては、ZIPファイルやEXEファイルが使えないと不便なのでフィルタする事は考えにくいですが、何らかのMIMEタイプを拒否するポリシーを作成する場合は有効に機能しそうです。最終的には、Webフィルターは以下の種類の分類となります。</p>
+<ul>
+<li>Webカテゴリ</li>
+<li>URLグループ（自身で作成したURLの集まり）、280blockerなどのURLデータベースもこのグループ</li>
+<li>ファイルタイプ</li>
+<li>ダイナミックカテゴリ（ActiveX・Applets・Cookies・HTTP Upload</li>
+</ul>
+<p>　これらの事から、Webフィルターはカテゴリの分類という主目的はあるものの、ブラウザを対象としたフィルタの機能である事がわかります。</p>
+<div class="note primary no-icon">
+            <h2 id="SNIとWebフィルターについて"><a href="#SNIとWebフィルターについて" class="headerlink" title="SNIとWebフィルターについて"></a>SNIとWebフィルターについて</h2>
+          </div>
+
+<p>　SNIとは、Server Name Indicationの略です。SSL/TLS通信において、クライアントからサーバ証明書を要求する時に<span class="label info">暗号化せず</span>情報がサーバーに渡されます。XGはこのSNIを見てWebフィルターを行っていますので、SSLインスペクションが行えなくともURLでアクセス許可・不可の判断は可能になります。全てのWebサーバーがSNIに対応しているわけではありませんが、SSLインスペクションが行えないAndroid端末であってもある程度の許可・不可の制御は可能となります。しかし、以前の記事、<a href="/new-technology/2020/03/21/ssl-inspection2/" title="XG Firewall v18のSSLインスペクションの動作確認と調整">XG Firewall v18のSSLインスペクションの動作確認と調整</a> で記載した通り、ZIP化されたマルウェアは検知できないなどSSLインスペクションを使わないと完全ではありません。</p>
+<div class="note primary no-icon">
+            <h2 id="XGのアプリケーションフィルターについて"><a href="#XGのアプリケーションフィルターについて" class="headerlink" title="XGのアプリケーションフィルターについて"></a>XGのアプリケーションフィルターについて</h2>
+          </div>
+
+<p>　XGのアプリケーションフィルターは、XGの左ペインメニューの<span class="label info">アプリケーション</span>から確認できます。ブラウザーではないインターネットに接続するアプリケーションを対象にしています。ここの挙動の確認は非常に難しいものがあります。</p>
+<p>　例えば、MicrosoftのOneDriveを題材にテストしてみましょう。</p>
+<p>　OneDriveのURLは、現時点で、<span class="label info">https://onedrive.live.com/</span>です。Webフィルターで当該ドメインのフィルターを行うと、想定通りブラウザーからOneDriveにはアクセス出来ません。たまにはAndroid端末でやってみます。設定通り、Android版FireFoxからは接続出来ませんでしたので、その画面をキャプチャしています。</p>
+<img src="/new-technology/2020/05/06/web-application-filter/onedrive.png" class="" title="alt">
+
+<p>　次にキャプチャ画像を、<span class="label info">Android端末にインストールしてあるOneDriveアプリ経由で画像をコピーし</span>、このブログに掲載しています。最後に、<span class="label info">WindowsPCのエクスプローラーのOneDriveフォルダからこの画像は削除出来てしまいました</span>。</p>
+<p>　え？という話なんですが、OneDriveのアプリからはURL制限とは無関係にアクセス出来ています。</p>
+<p>　今度は別の検証のために、Webフィルターは削除、アプリケーションフィルターにOneDriveの項目があるので、そちらをフィルターしてみます。</p>
+<p>　XGの左ペインメニューの<span class="label info">アプリケーション</span>からファイアウォールルールで選択されているポリシーの先頭で<span class="label info">追加</span>ボタンをクリックし、<span class="label info">スマートフィルタ</span>に<span class="label info">onedrive</span>と入力し、Enterキーを押します。</p>
+<img src="/new-technology/2020/05/06/web-application-filter/appfilter2.png" class="" title="alt">
+
+<p>　そうすると、OneDriveのルールがいくつか表示されるため、<span class="label info">アクション</span>は、<span class="label info">拒否</span>を選択して最後に<span class="label info">保存</span>をクリックします（これは検証作業なのでこのブログをご覧の方が実施する作業ではありません）。</p>
+<p>　この作業の結果は以下の通りの挙動でした。</p>
+<ul>
+<li>ブラウザからOneDriveに接続出来ない</li>
+<li>WindowsからOneDriveのツール上（エクスプローラー上のファイル）ではファイルの追加、削除は行えない</li>
+<li>AndroidからOneDriveのファイル削除は可能だが、追加は行えない</li>
+</ul>
+<p>　これらの事から、アプリケーションフィルタは、アプリが利用しているAPIのURLやデータの中身を見て挙動の制限を行っている事がわかります。また、OneDriveはファイルのアップロード、ダウンロードと目的によって分かれていましたが、AppleのiCloudDriveに関してはアプリケーションフィルタは1種類だけです。このようにアプリケーションフィルターは、アプリの作り方に左右されるものとなります。そして、SSLインスペクションが行えないAndroidはファイル削除について制御出来ていません。</p>
+<p>　アプリケーションフィルターの中には、<span class="label info">EXE File Download</span>というフィルタも存在しますが、あくまで汎用的なものであって、全てのいかなるアプリケーションからのEXEファイルのダウンロードを禁止できるものではありません。</p>
+<p>　これらを理解できても、それを実践するのは難しいものです。ホームユーザーとしてリスクを抑制しつつ利便性を高めるには、どのようなフィルターを作っていくべきでしょうか。たくさん存在するアプリケーションを都度設定するのは管理も非常に大変で現実的ではありません。</p>
+<p>　Webのカテゴリについては、個人の考え方でいろいろなフィルタの組み合わせがあるでしょう。そちらについてはご自身のポリシーでカスタマイズいただければとおもいます。</p>
+<p>　但し攻撃から身を守るという課題については、ある程度のスタンダードはあるかとおもいますので、Sophos Communityなどの情報を頼りにホームユーザーのためのお勧め設定について次回に記載したいとおもいます。</p>
+]]></content>
+      <categories>
+        <category>Security</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>はじめに</title>
+    <url>/new-technology/2020/02/22/%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB/</url>
+    <content><![CDATA[<p>　少し高度なITをテーマに、ホームユーザーのIT導入を中心にポストしていきたいと考えてます。最近ではフルスタックエンジニアと呼ぶのでしょうか、これまでの自身の仕事はプログラミング・ネットワーク・サーバ構築・セキュリティと、広く浅くITに関わってきました。エンジニアとしての仕事からは最近かなり遠ざかってますが、自分なりに新しい技術の習得も兼ねて、ブログ形式で掲載できればとおもいます。</p>
+<a id="more"></a>
+
+<p>　単純にインストールして「できました」ではなく、導入後のITの使い方こそが重要と考えています。最近は個人利用に限り利用無償のソフトウェアが増えてきました。また、商用利用であっても無償となるオープンソースソフトウェアの活用も見逃せません。これは大変ありがたい話で、座学ではなかなか理解が進まない固有技術であっても、こういった無料のプロダクトを通じて知見を高める事が可能となっています。</p>
+<p>　ここでは、エンタープライズやミッションクリティカルなITに関するテーマは扱いません。私自身実務でITに関わっていますが、実務とは少し距離を置いたところで、自己啓発と家庭向けのIT活用を考えたいと思っています。</p>
+]]></content>
   </entry>
   <entry>
     <title>XG FirewallでIPv6の設定を行う（後半）</title>
