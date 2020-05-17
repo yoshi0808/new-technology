@@ -3,19 +3,19 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: New Technology Blog
-subtitle: 家庭向けITについて綴ってみる
+title: New technologies in our life
+subtitle: Device,Network,Code,etc... 
 description: IT 
 menu_title: 
 keywords:
-author: Yoshi0808
+author: 阿部　吉伸(Yoshinobu ABE)
 language: ja
 timezone: Asia/Tokyo
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://yoshi0808.github.io
-root: /
+url: https://yoshi0808.github.io/new-technology/
+root: /new-technology/
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 pretty_urls:
@@ -31,6 +31,7 @@ category_dir: categories
 code_dir: downloads/code
 i18n_dir: :lang
 skip_render:
+about_dir: about
 
 # Writing
 new_post_name: :title.md # File name of new posts
@@ -42,7 +43,7 @@ external_link:
   exclude: ''
 filename_case: 0
 render_drafts: false
-post_asset_folder: false
+post_asset_folder: true
 relative_link: false
 future: true
 highlight:
@@ -94,12 +95,20 @@ ignore:
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: clean-blog
+theme: next
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: https://github.com/yoshi0808/yoshi0808.github.io.git
-  branch: master
+  repo: https://github.com/yoshi0808/new-technology.git
+  branch: gh-pages
+
+feed:
+  type: atom
+  path: atom.xml
+  limit: 20
+
+sitemap:
+  path: sitemap.xml
 

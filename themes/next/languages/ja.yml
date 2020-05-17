@@ -1,4 +1,5 @@
 ---
+name: 日本語
 title:
   archive: アーカイブ
   category: カテゴリ
@@ -9,7 +10,7 @@ menu:
   archives: アーカイブ
   categories: カテゴリ
   tags: タグ
-  about: 著者
+  about: プロフィール
   disclaimer: ディスクレーマー
   search: 検索
   schedule: スケジュール
@@ -25,7 +26,6 @@ post:
   modified: 修正日
   edit: この記事を編集する
   in: カテゴリ
-  more: もっと見る
   read_more: 続きを読む
   untitled: 無題
   sticky: 固定
@@ -38,7 +38,6 @@ post:
     license_content: "このブログ内のすべての記事は、特別な記載がない限り %s の下のライセンスで保護されています。また、免責事項・プライバシーポリシーについては、メニューのディスクレーマーをご覧ください。"
 footer:
   powered: "Powered by %s"
-  theme: テーマ
   total_views: 閲覧合計数
   total_visitors: 合計閲覧者数
 counter:

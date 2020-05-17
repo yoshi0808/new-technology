@@ -1,5 +1,5 @@
 /**
- * group-pictures.js | https://theme-next.org/docs/tag-plugins/group-pictures
+ * group-pictures.js | https://theme-next.js.org/docs/tag-plugins/group-pictures
  */
 
 /* global hexo */
@@ -109,11 +109,9 @@ var templates = {
   },
 
   getHTML: function(rows) {
-    var rowHTML = rows.map(row => {
+    return rows.map(row => {
       return `<div class="group-picture-row">${this.getColumnHTML(row)}</div>`;
     }).join('');
-
-    return `<div class="group-picture-container">${rowHTML}</div>`;
   },
 
   getColumnHTML: function(pictures) {

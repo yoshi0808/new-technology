@@ -8,7 +8,7 @@
 // --------------------------------------------------
 $whitesmoke   = #f5f5f5;
 $gainsboro    = #eee;
-$gray-lighter = #ddd;
+$grey-lighter = #ddd;
 $grey-light   = #ccc;
 $grey         = #bbb;
 $grey-dark    = #999;
@@ -28,34 +28,37 @@ $orange       = #fc6423;
 // --------------------------------------------------
 // Global text color on <body>
 $text-color                   = $black-light;
-$text-color-dark              = #e1e1e1;
+$text-color-dark              = $grey-light;
 
 // Global link color.
 $link-color                   = $black-light;
-$link-color-dark              = #e1e1e1;
+$link-color-dark              = $grey-light;
 $link-hover-color             = $black-deep;
-$link-hover-color-dark        = white;
+$link-hover-color-dark        = $gainsboro;
 $link-decoration-color        = $grey-dark;
+
+$blockquote-color             = $grey-dim;
+$blockquote-color-dark        = $grey;
 
 // Global border color.
 $border-color                 = $grey-light;
 
 // Background color for <body>
 $body-bg-color                = white;
-$body-bg-color-dark           = #121212;
+$body-bg-color-dark           = #282828;
 $content-bg-color             = white;
-$content-bg-color-dark        = #1d1d1d;
+$content-bg-color-dark        = $black-dim;
 
 // Selection
 $selection-bg                 = $blue-deep;
-$selection-color              = white;
+$selection-color              = $gainsboro;
 
 // Dark mode color
 $card-bg-color                = $whitesmoke;
-$card-bg-color-dark           = #282828;
+$card-bg-color-dark           = $black-light;
 
 $menu-item-bg-color           = $whitesmoke;
-$menu-item-bg-color-dark      = $black-dim;
+$menu-item-bg-color-dark      = $black-light;
 
 // Typography
 // Font, line-height, and elements colors.
@@ -67,10 +70,10 @@ get_font_family(config) {
 
 // Font families.
 // $font-family-chinese      = "PingFang SC", "Microsoft YaHei";
+$font-family-chinese         = -apple-system,BlinkMacSystemFont,"游ゴシック","Yu Gothic",YuGothic,"ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic ProN","Noto Sans Japanese","Noto Sans CJK JP","メイリオ",Meiryo,sans-serif,"PingFang SC";
 
 // $font-family-base         = $font-family-chinese, sans-serif;
 // $font-family-base         = get_font_family('global'), $font-family-chinese, sans-serif if get_font_family('global');
-// $font-family-base         = Hiragino Sans, Helvetica, Lato, sans-serif if get_font_family('global');
 $font-family-base         = -apple-system,BlinkMacSystemFont,"游ゴシック","Yu Gothic",YuGothic,"ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic ProN","Noto Sans Japanese","Noto Sans CJK JP","メイリオ",Meiryo,sans-serif;
 
 $font-family-logo         = $font-family-base;
@@ -82,11 +85,8 @@ $font-family-headings     = get_font_family('headings'), $font-family-base if ge
 $font-family-posts        = $font-family-base;
 $font-family-posts        = get_font_family('posts'), $font-family-base if get_font_family('posts');
 
-// $font-family-monospace    = consolas, Menlo, monospace, $font-family-chinese;
-// $font-family-monospace    = get_font_family('codes'), consolas, Menlo, monospace, $font-family-chinese if get_font_family('codes');
-$font-family-monospace    = "Source Code Pro",consolas, Menlo, monospace;
-
-$font-family-icons        = 'FontAwesome';
+$font-family-monospace    = consolas, Menlo, monospace, $font-family-chinese;
+$font-family-monospace    = get_font_family('codes'), consolas, Menlo, monospace, $font-family-chinese if get_font_family('codes');
 
 
 // Font size
@@ -97,7 +97,7 @@ $font-size-small          = .875em;
 $font-size-medium         = 1em;
 $font-size-large          = 1.125em;
 $font-size-larger         = 1.25em;
-$font-size-largest        = 1.375em;
+$font-size-largest        = 1.5em;
 
 
 // Headings font size
@@ -122,9 +122,9 @@ $zindex-5       = 1500;
 
 // Table
 // --------------------------------------------------
-$table-border-color             = $gray-lighter;
+$table-border-color             = $grey-lighter;
 $table-font-size                = $font-size-small;
-$table-cell-border-bottom-color = $gray-lighter;
+$table-cell-border-bottom-color = $grey-lighter;
 $table-row-odd-bg-color         = #f9f9f9;
 $table-row-odd-bg-color-dark    = #282828;
 $table-row-hover-bg-color       = $whitesmoke;
@@ -134,19 +134,35 @@ $table-row-hover-bg-color-dark  = #363636;
 // Code & Code Blocks
 // --------------------------------------------------
 $code-font-family               = $font-family-monospace;
-$code-foreground                = $black-light;
 $code-background                = $gainsboro;
+$code-foreground                = $black-light;
+
+$highlight-background        = convert(hexo-config('highlight.light.background'));
+$highlight-foreground        = convert(hexo-config('highlight.light.foreground'));
+$highlight-gutter-background = mix($highlight-background, $highlight-foreground, 90%);
+$highlight-gutter-foreground = mix($highlight-background, $highlight-foreground, 10%);
+
+$highlight-background-dark        = convert(hexo-config('highlight.dark.background'));
+$highlight-foreground-dark        = convert(hexo-config('highlight.dark.foreground'));
+$highlight-gutter-background-dark = mix($highlight-background-dark, $highlight-foreground-dark, 90%);
+$highlight-gutter-foreground-dark = mix($highlight-background-dark, $highlight-foreground-dark, 10%);
 
 
 // Buttons
 // --------------------------------------------------
-$btn-default-radius             = 0;
-$btn-default-bg                 = $black-deep;
-$btn-default-color              = white;
-$btn-default-border-color       = $black-deep;
-$btn-default-hover-bg           = white;
-$btn-default-hover-color        = $black-deep;
-$btn-default-hover-border-color = $black-deep;
+$btn-default-radius                    = 0;
+$btn-default-bg                        = $black-deep;
+$btn-default-bg-dark                   = $black-deep;
+$btn-default-color                     = white;
+$btn-default-color-dark                = $text-color-dark;
+$btn-default-border-color              = $black-deep;
+$btn-default-border-color-dark         = $black-light;
+$btn-default-hover-bg                  = white;
+$btn-default-hover-bg-dark             = $grey-dim;
+$btn-default-hover-color               = $black-deep;
+$btn-default-hover-color-dark          = $text-color-dark;
+$btn-default-hover-border-color        = $black-deep;
+$btn-default-hover-border-color-dark   = $grey-dim;
 
 
 // Pagination
@@ -159,10 +175,10 @@ $pagination-link-border         = $gainsboro;
 
 $pagination-link-hover-bg       = transparent;
 $pagination-link-hover-color    = $link-color;
-$pagination-link-hover-border   = $black-deep;
+$pagination-link-hover-border   = var(--link-hover-color);
 
 $pagination-active-bg           = $grey-light;
-$pagination-active-color        = white;
+$pagination-active-color        = var(--content-bg-color);
 $pagination-active-border       = $grey-light;
 
 
@@ -174,7 +190,7 @@ $content-desktop-largest        = 900px;
 
 $content-desktop-padding        = 40px;
 $content-tablet-padding         = 10px;
-$content-mobile-padding         = 9px;
+$content-mobile-padding         = 8px;
 
 
 // Headband
@@ -192,10 +208,10 @@ $head-bg                        = transparent;
 $site-meta-text-align           = center;
 $brand-color                    = white;
 $brand-hover-color              = white;
-$brand-color-dark               = white;
-$brand-hover-color-dark         = white;
+$brand-color-dark               = $grey-lighter;
+$brand-hover-color-dark         = $grey-lighter;
 
-$font-size-title                = (hexo-config('font.enable') and hexo-config('font.title.size') is a 'unit') ? unit(hexo-config('font.title.size'), em) : $font-size-largest;
+$font-size-title                = (hexo-config('font.enable') and hexo-config('font.title.size') is a 'unit') ? unit(hexo-config('font.title.size'), em) : 1.375em;
 $font-size-subtitle             = $font-size-smaller;
 $subtitle-color                 = $grey-dark;
 $site-subtitle-color            = $grey-dark;
@@ -203,8 +219,16 @@ $site-subtitle-color            = $grey-dark;
 
 // Posts Collpase
 // --------------------------------------------------
-$posts-collapse-margin          = 55px;
-$posts-collapse-margin-mobile   = 20px;
+$posts-collapse-margin          = 35px;
+$posts-collapse-margin-mobile   = 0px;
+
+
+// Tag Cloud
+// --------------------------------------------------
+$tag-cloud-start      = #aaa;
+$tag-cloud-end        = #111;
+$tag-cloud-start-dark = #555;
+$tag-cloud-end-dark   = #eee;
 
 
 // Sidebar
@@ -213,7 +237,7 @@ $posts-collapse-margin-mobile   = 20px;
 
 $sidebar-padding                      = hexo-config('sidebar.padding') is a 'unit' ? unit(hexo-config('sidebar.padding'), px) : 18px;
 $sidebar-offset                       = hexo-config('sidebar.offset') is a 'unit' ? unit(hexo-config('sidebar.offset'), px) : 12px;
-$sidebar-nav-color                    = $black-light;
+$sidebar-nav-color                    = $grey-dim;
 $sidebar-nav-hover-color              = $whitesmoke;
 $sidebar-highlight                    = $blue-bright;
 
@@ -252,14 +276,6 @@ $b2t-bg-color                 = $black-deep;
 //  In Muse scheme, margin above and below the post separator
 $post-eof-margin-top          = 80px; //  or 160px for more white space;
 $post-eof-margin-bottom       = 60px; //  or 120px for less white space;
-
-
-// Iconography
-// Icons SVG Base64
-// --------------------------------------------------
-// blockquote-center icon
-$center-quote-left            = '../images/quote-l.svg';
-$center-quote-right           = '../images/quote-r.svg';
 
 
 // Note colors
