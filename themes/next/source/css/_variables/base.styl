@@ -70,11 +70,13 @@ get_font_family(config) {
 
 // Font families.
 // $font-family-chinese      = "PingFang SC", "Microsoft YaHei";
-$font-family-chinese         = -apple-system,BlinkMacSystemFont,"游ゴシック","Yu Gothic",YuGothic,"ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic ProN","Noto Sans Japanese","Noto Sans CJK JP","メイリオ",Meiryo,sans-serif,"PingFang SC";
+// $font-family-chinese         = -apple-system,BlinkMacSystemFont,"ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic ProN","メイリオ",Meiryo,"Noto Sans Japanese","Noto Sans CJK JP","游ゴシック","Yu Gothic",YuGothic,sans-serif,"PingFang SC";
+$font-family-chinese         = "Hiragino Sans W3","游ゴシック","Yu Gothic",YuGothic Medium,"メイリオ",Meiryo,"Noto Sans Japanese","Noto Sans CJK JP",sans-serif,"PingFang SC";
 
 // $font-family-base         = $font-family-chinese, sans-serif;
 // $font-family-base         = get_font_family('global'), $font-family-chinese, sans-serif if get_font_family('global');
-$font-family-base         = -apple-system,BlinkMacSystemFont,"游ゴシック","Yu Gothic",YuGothic,"ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic ProN","Noto Sans Japanese","Noto Sans CJK JP","メイリオ",Meiryo,sans-serif;
+// $font-family-base         = -apple-system,BlinkMacSystemFont,"ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic ProN","メイリオ",Meiryo,"Noto Sans Japanese","Noto Sans CJK JP","游ゴシック","Yu Gothic",YuGothic,,sans-serif;
+$font-family-base         = "Hiragino Sans W3","游ゴシック","Yu Gothic",YuGothic Medium,"メイリオ",Meiryo,"Noto Sans Japanese","Noto Sans CJK JP",sans-serif;
 
 $font-family-logo         = $font-family-base;
 $font-family-logo         = get_font_family('title'), $font-family-base if get_font_family('title');

@@ -6,7 +6,7 @@ comments: false
 
 {% note primary no-icon %}
 
-## 書いている人
+## 著者について
 
 {% endnote %}
 
