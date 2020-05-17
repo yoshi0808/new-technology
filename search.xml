@@ -71,109 +71,6 @@
       </tags>
   </entry>
   <entry>
-    <title>XG Firewall V18で正しいDNS利用を強制する</title>
-    <url>/new-technology/2020/05/16/Intercept-DNS/</url>
-    <content><![CDATA[<div class="note success">
-            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　自分で設定したDNS（多くはプロバイダDNS）に反し、行儀の悪いクライアントや悪意のあるプログラムはそれに従わず、全く別のDNSを参照する可能性があります。XG Firewall V18の機能を活用してDNSの安全性を確保します。</p>
-          </div>
-
-<a id="more"></a>
-
-<div class="note primary no-icon">
-            <h2 id="DNSとプライバシー"><a href="#DNSとプライバシー" class="headerlink" title="DNSとプライバシー"></a>DNSとプライバシー</h2>
-          </div>
-
-<p>　Sophos CommunityでもDNSの扱いについてはいろいろ議論されていますが、ベストプラクティスとしては<a href="https://community.sophos.com/products/xg-firewall/f/network-and-routing/95100/dns-best-practices-for-xg" target="_blank" rel="noopener">DNS Best Practices for XG</a>の記事にあります。</p>
-<blockquote class="blockquote-center">
-            <i class="fa fa-quote-left"></i>
-            <p>最良の防御策はXGをDNSサーバとして使用し、DNSリクエストのルーティングを設定すること。それ以外は何も行わないことです。udpポート53を開かないようにしてください。<br>The best protection is to use XG as dns server, configure dns request routing and nothing else. Avoid to open udp port 53.</p>
-
-            <i class="fa fa-quote-right"></i>
-          </blockquote>
-
-<p>　この一言で既にDNSの使い方については答えが出てしまいましたが、記事が2017年とやや古い事もあり、V18の機能を生かしたDNSのベストプラクティスを書いてみます。</p>
-<p>　DNSとプライバシーは国によって扱いが変わるかも知れません。国が人々のネットのアクセス状況を把握している事が問題とされている場所では、パブリックDNSが好まれます。また海外ではプロバイダーがDNSを改ざんするといったニュースも見かけます。日本国内においては、プロバイダのDNSの応答速度が遅い事から利用されるケースが増えてきているようです。</p>
-<p>　ブラウザのFireFoxでは、プライバシー保護を目的として、DNSについてHTTPSを利用したDNS over HTTPSに対応しています。この機能は日本ではデフォルトでオフになっていますが、HTTPSで暗号化されているため管理者側からは一般的なネットブラウジングと区別がつかず、トラフィックが見えづらくなります。</p>
-<p>　私個人としてはDNSを含めたプライバシーの情報を無闇に拡散させない事が重要と考えています。また、Communityで言及されている通り、防御のためにDNSのPortは空けない事が重要と考えます。パブリックDNSの利用はユーザーそれぞれにとっては考え方は異なるかとおもいますので、これ以降は悪意をもったクライアントが本来のDNS設定を迂回する事の対策として読んでいただければとおもいます。</p>
-<div class="note primary no-icon">
-            <h2 id="XG-V18で指定DNSを強制する方法"><a href="#XG-V18で指定DNSを強制する方法" class="headerlink" title="XG V18で指定DNSを強制する方法"></a>XG V18で指定DNSを強制する方法</h2>
-          </div>
-
-<p>　ここではDNS情報はDHCPで配布されている前提とします。このブログでは、クライアントが参照するDNSは、全てXGのDNSを指定するように設定しています。</p>
-<p>　この前提で、これを回避しようとするクライアントに対して以下の対策を取ります。</p>
-<ol>
-<li><p>DNS over TLS(DoT)は拒否<br>Port853の拒否</p>
-</li>
-<li><p>DNS over HTTPS(DoH)は拒否<br>RFC8484に基づき、MIMEヘッダーの<span class="label info">application/dns-message</span>を見つけて、その通信を拒否</p>
-</li>
-<li><p>Public DNSへのアクセス（Port53）は、強制的にXGのDNS経由で本来のDNSにアクセス<br>XGのDNATの機能を使い、WANインターフェースに対するPort53の通信だった場合、宛先IPをXGのLANのIPアドレスに変換</p>
-</li>
-</ol>
-<p>　1および2ですが、アプリケーションは、DoTやDoHを止められると（一般的には）通常のDNS(Port53)にフォールバックします。そしてXGは強制的にDNSの向き先を変えますが、クライアントはパブリックDNSにアクセスしたと思い込んだまま、返されたIPに対しアクセスする事になります。</p>
-<div class="note primary no-icon">
-            <h2 id="DoHの拒否"><a href="#DoHの拒否" class="headerlink" title="DoHの拒否"></a>DoHの拒否</h2>
-          </div>
-
-
-<p>　DoHの定義についてサービスの登録を行います。</p>
-<p>　XGの左ペインメニュー<span class="label info">Web</span>の<span class="label info">ファイルタイプ</span>から<span class="label info">追加</span>ボタンをクリックします。<span class="label info">名前</span>は<span class="label info">DoH</span>、<span class="label info">テンプレート</span>を空白とし、<span class="label info">MIMEヘッダー</span>に<span class="label info">application/dns-message</span>と入力し、<span class="label info">保存</span>します。</p>
-<img src="/new-technology/2020/05/16/Intercept-DNS/mimetype.png" class="" title="alt">
-
-<p>　<span class="label info">Web</span>の<span class="label info">ユーザーアクティビティ</span>から追加ボタンをクリックし、先ほどDoHとして登録したカテゴリを加え、<span class="label info">DNS over HTTPS</span>と名前を付けて保存します。</p>
-<img src="/new-technology/2020/05/16/Intercept-DNS/mimetype2.png" class="" title="alt">
-
-<p>　続いて、具体的な拒否設定です。</p>
-<p>　<span class="label info">Web</span>の<span class="label info">ポリシー</span>からご自身がFirewallルールで利用しているポリシー（ここではHome Policyを使っていると仮定しています）に、上記で登録してきた<span class="label default">DNS over HTTPS</span>を<span class="label danger">拒否</span>する設定を加えます。</p>
-<img src="/new-technology/2020/05/16/Intercept-DNS/policy.png" class="" title="alt">
-
-<div class="note primary no-icon">
-            <h2 id="DoTの拒否"><a href="#DoTの拒否" class="headerlink" title="DoTの拒否"></a>DoTの拒否</h2>
-          </div>
-
-<p>　XGの左ペインメニュー<span class="label info">ホストとサービス</span>の<span class="label info">サービス</span>から、<span class="label info">追加</span>ボタンをクリックし、<span class="label info">送信元ポート</span>が1〜65535、<span class="label info">宛先ポート</span>853を指定し、<span class="label info">DoT</span>と名前を付け保存します。</p>
-<img src="/new-technology/2020/05/16/Intercept-DNS/service.png" class="" title="alt">
-
-<p>　XGの左ペインメニュー<span class="label info">ルールとポリシー</span>から新しいファイアウォールルールを追加し、以下のようにDoTを<span class="label danger">拒否</span>するルールを作成します。</p>
-<img src="/new-technology/2020/05/16/Intercept-DNS/rule1.png" class="" title="alt">
-
-
-<div class="note primary no-icon">
-            <h2 id="DNSに関するDNATの登録"><a href="#DNSに関するDNATの登録" class="headerlink" title="DNSに関するDNATの登録"></a>DNSに関するDNATの登録</h2>
-          </div>
-
-<p>　最初にDNATで必要なホストの定義を行います。LANで使っているネットワークアドレスの登録とXG自身のIPアドレスの登録が必要です。ネットワークアドレスについてIPv4は例えば、192.168.1.0/24、IPv6は例えばfd00:1234:5678:abcd::1などの登録を行います。XG自身のIPアドレスも登録が必要です。</p>
-<img src="/new-technology/2020/05/16/Intercept-DNS/host.png" class="" title="alt">
-
-<p>　XGの左ペインメニュー<span class="label info">ルールとポリシー</span>から、<span class="label info">NATルール</span>を選択、<span class="label info">NATルールの追加</span>ボタンをクリックします。DNATは本当に理解が難しいですが、以下の通り設定します。</p>
-<ol>
-<li><span class="label info">変換前の送信元</span>は、使っているネットワークのオブジェクトを登録します</li>
-<li><span class="label info">変換前のサービス</span>は、<span class="label info">DNS</span>を選択します</li>
-<li><span class="label info">返還後の宛先（DNAT）</span>は、XG自身のIPを指定します</li>
-<li><span class="label info">アウトバウンドインターフェース</span>には、WANである、<span class="label info">Port2</span>を選択します</li>
-<li>最後に追加ボタンをクリックして登録を完了します</li>
-</ol>
-<img src="/new-technology/2020/05/16/Intercept-DNS/rule2.png" class="" title="alt">
-
-<p>　上記はIPv4の例ですが、IPv6を利用されている方は、同様にIPv6のDNATも設定して下さい。</p>
-<p>　上記のDNATによる、DNSのインターセプトが有効になると、<span class="label info">ルールとポリシー</span>の<span class="label info">NATルール</span>画面で実際の変換された数が確認できるので、これで挙動確認を行ってください。</p>
-<img src="/new-technology/2020/05/16/Intercept-DNS/rule3.png" class="" title="alt">
-
-<p> プロバイダーのDNS速度が極端に遅い場合はこれらの設定がベストにはなりませんが、<span class="label info">プライバシーと安全を鑑みたV18ならではのDNSのベストプラクティス</span>になるとおもいます。</p>
-<div class="note primary no-icon">
-            <h2 id="その他DNSに関して補足すること"><a href="#その他DNSに関して補足すること" class="headerlink" title="その他DNSに関して補足すること"></a>その他DNSに関して補足すること</h2>
-          </div>
-
-<p>　GoogleDNSのDoHはRFC8484に従っていない独自プロトコルを使えるという事実があります。世界中のパブリックDNSを全て把握するのは困難ですが、Sophosの以下の記事を参考にWebフィルタのURLグループにパブリックDNSのドメインを登録し、拒否する設定を加えても良いでしょう。</p>
-<p><a href="https://community.sophos.com/kb/en-us/134644" target="_blank" rel="noopener">DNS over HTTPS (DoH) for web security</a></p>
-]]></content>
-      <categories>
-        <category>Security</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>XG Firewall v18をESXi仮想マシン上にインストールする</title>
     <url>/new-technology/2020/03/06/InstallXG2/</url>
     <content><![CDATA[<div class="note success">
@@ -342,6 +239,109 @@
 <li>VPNの接続</li>
 </ul>
 <p>　これまでの設定では、VPNについて、事前共有鍵＋パスワード＋ワンタイムパスワードを設定してきました。この内容はもはや鉄壁といえる内容であり、通知は不要な気もします。このあたりは利便性と堅牢さとを鑑み、設定を調整いただければとおもいます。</p>
+]]></content>
+      <categories>
+        <category>Security</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>XG Firewall V18で正しいDNS利用を強制する</title>
+    <url>/new-technology/2020/05/16/Intercept-DNS/</url>
+    <content><![CDATA[<div class="note success">
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　自分で設定したDNS（多くはプロバイダDNS）に反し、行儀の悪いクライアントや悪意のあるプログラムはそれに従わず、全く別のDNSを参照する可能性があります。XG Firewall V18の機能を活用してDNSの安全性を確保します。</p>
+          </div>
+
+<a id="more"></a>
+
+<div class="note primary no-icon">
+            <h2 id="DNSとプライバシー"><a href="#DNSとプライバシー" class="headerlink" title="DNSとプライバシー"></a>DNSとプライバシー</h2>
+          </div>
+
+<p>　Sophos CommunityでもDNSの扱いについてはいろいろ議論されていますが、ベストプラクティスとしては<a href="https://community.sophos.com/products/xg-firewall/f/network-and-routing/95100/dns-best-practices-for-xg" target="_blank" rel="noopener">DNS Best Practices for XG</a>の記事にあります。</p>
+<blockquote class="blockquote-center">
+            <i class="fa fa-quote-left"></i>
+            <p>最良の防御策はXGをDNSサーバとして使用し、DNSリクエストのルーティングを設定すること。それ以外は何も行わないことです。udpポート53を開かないようにしてください。<br>The best protection is to use XG as dns server, configure dns request routing and nothing else. Avoid to open udp port 53.</p>
+
+            <i class="fa fa-quote-right"></i>
+          </blockquote>
+
+<p>　この一言で既にDNSの使い方については答えが出てしまいましたが、記事が2017年とやや古い事もあり、V18の機能を生かしたDNSのベストプラクティスを書いてみます。</p>
+<p>　DNSとプライバシーは国によって扱いが変わるかも知れません。国が人々のネットのアクセス状況を把握している事が問題とされている場所では、パブリックDNSが好まれます。また海外ではプロバイダーがDNSを改ざんするといったニュースも見かけます。日本国内においては、プロバイダのDNSの応答速度が遅い事から利用されるケースが増えてきているようです。</p>
+<p>　ブラウザのFireFoxでは、プライバシー保護を目的として、DNSについてHTTPSを利用したDNS over HTTPSに対応しています。この機能は日本ではデフォルトでオフになっていますが、HTTPSで暗号化されているため管理者側からは一般的なネットブラウジングと区別がつかず、トラフィックが見えづらくなります。</p>
+<p>　私個人としてはDNSを含めたプライバシーの情報を無闇に拡散させない事が重要と考えています。また、Communityで言及されている通り、防御のためにDNSのPortは空けない事が重要と考えます。パブリックDNSの利用はユーザーそれぞれにとっては考え方は異なるかとおもいますので、これ以降は悪意をもったクライアントが本来のDNS設定を迂回する事の対策として読んでいただければとおもいます。</p>
+<div class="note primary no-icon">
+            <h2 id="XG-V18で指定DNSを強制する方法"><a href="#XG-V18で指定DNSを強制する方法" class="headerlink" title="XG V18で指定DNSを強制する方法"></a>XG V18で指定DNSを強制する方法</h2>
+          </div>
+
+<p>　ここではDNS情報はDHCPで配布されている前提とします。このブログでは、クライアントが参照するDNSは、全てXGのDNSを指定するように設定しています。</p>
+<p>　この前提で、これを回避しようとするクライアントに対して以下の対策を取ります。</p>
+<ol>
+<li><p>DNS over TLS(DoT)は拒否<br>Port853の拒否</p>
+</li>
+<li><p>DNS over HTTPS(DoH)は拒否<br>RFC8484に基づき、MIMEヘッダーの<span class="label info">application/dns-message</span>を見つけて、その通信を拒否</p>
+</li>
+<li><p>Public DNSへのアクセス（Port53）は、強制的にXGのDNS経由で本来のDNSにアクセス<br>XGのDNATの機能を使い、WANインターフェースに対するPort53の通信だった場合、宛先IPをXGのLANのIPアドレスに変換</p>
+</li>
+</ol>
+<p>　1および2ですが、アプリケーションは、DoTやDoHを止められると（一般的には）通常のDNS(Port53)にフォールバックします。そしてXGは強制的にDNSの向き先を変えますが、クライアントはパブリックDNSにアクセスしたと思い込んだまま、返されたIPに対しアクセスする事になります。</p>
+<div class="note primary no-icon">
+            <h2 id="DoHの拒否"><a href="#DoHの拒否" class="headerlink" title="DoHの拒否"></a>DoHの拒否</h2>
+          </div>
+
+
+<p>　DoHの定義についてサービスの登録を行います。</p>
+<p>　XGの左ペインメニュー<span class="label info">Web</span>の<span class="label info">ファイルタイプ</span>から<span class="label info">追加</span>ボタンをクリックします。<span class="label info">名前</span>は<span class="label info">DoH</span>、<span class="label info">テンプレート</span>を空白とし、<span class="label info">MIMEヘッダー</span>に<span class="label info">application/dns-message</span>と入力し、<span class="label info">保存</span>します。</p>
+<img src="/new-technology/2020/05/16/Intercept-DNS/mimetype.png" class="" title="alt">
+
+<p>　<span class="label info">Web</span>の<span class="label info">ユーザーアクティビティ</span>から追加ボタンをクリックし、先ほどDoHとして登録したカテゴリを加え、<span class="label info">DNS over HTTPS</span>と名前を付けて保存します。</p>
+<img src="/new-technology/2020/05/16/Intercept-DNS/mimetype2.png" class="" title="alt">
+
+<p>　続いて、具体的な拒否設定です。</p>
+<p>　<span class="label info">Web</span>の<span class="label info">ポリシー</span>からご自身がFirewallルールで利用しているポリシー（ここではHome Policyを使っていると仮定しています）に、上記で登録してきた<span class="label default">DNS over HTTPS</span>を<span class="label danger">拒否</span>する設定を加えます。</p>
+<img src="/new-technology/2020/05/16/Intercept-DNS/policy.png" class="" title="alt">
+
+<div class="note primary no-icon">
+            <h2 id="DoTの拒否"><a href="#DoTの拒否" class="headerlink" title="DoTの拒否"></a>DoTの拒否</h2>
+          </div>
+
+<p>　XGの左ペインメニュー<span class="label info">ホストとサービス</span>の<span class="label info">サービス</span>から、<span class="label info">追加</span>ボタンをクリックし、<span class="label info">送信元ポート</span>が1〜65535、<span class="label info">宛先ポート</span>853を指定し、<span class="label info">DoT</span>と名前を付け保存します。</p>
+<img src="/new-technology/2020/05/16/Intercept-DNS/service.png" class="" title="alt">
+
+<p>　XGの左ペインメニュー<span class="label info">ルールとポリシー</span>から新しいファイアウォールルールを追加し、以下のようにDoTを<span class="label danger">拒否</span>するルールを作成します。</p>
+<img src="/new-technology/2020/05/16/Intercept-DNS/rule1.png" class="" title="alt">
+
+
+<div class="note primary no-icon">
+            <h2 id="DNSに関するDNATの登録"><a href="#DNSに関するDNATの登録" class="headerlink" title="DNSに関するDNATの登録"></a>DNSに関するDNATの登録</h2>
+          </div>
+
+<p>　最初にDNATで必要なホストの定義を行います。LANで使っているネットワークアドレスの登録とXG自身のIPアドレスの登録が必要です。ネットワークアドレスについてIPv4は例えば、192.168.1.0/24、IPv6は例えばfd00:1234:5678:abcd::1などの登録を行います。XG自身のIPアドレスも登録が必要です。</p>
+<img src="/new-technology/2020/05/16/Intercept-DNS/host.png" class="" title="alt">
+
+<p>　XGの左ペインメニュー<span class="label info">ルールとポリシー</span>から、<span class="label info">NATルール</span>を選択、<span class="label info">NATルールの追加</span>ボタンをクリックします。DNATは本当に理解が難しいですが、以下の通り設定します。</p>
+<ol>
+<li><span class="label info">変換前の送信元</span>は、使っているネットワークのオブジェクトを登録します</li>
+<li><span class="label info">変換前のサービス</span>は、<span class="label info">DNS</span>を選択します</li>
+<li><span class="label info">返還後の宛先（DNAT）</span>は、XG自身のIPを指定します</li>
+<li><span class="label info">アウトバウンドインターフェース</span>には、WANである、<span class="label info">Port2</span>を選択します</li>
+<li>最後に追加ボタンをクリックして登録を完了します</li>
+</ol>
+<img src="/new-technology/2020/05/16/Intercept-DNS/rule2.png" class="" title="alt">
+
+<p>　上記はIPv4の例ですが、IPv6を利用されている方は、同様にIPv6のDNATも設定して下さい。</p>
+<p>　上記のDNATによる、DNSのインターセプトが有効になると、<span class="label info">ルールとポリシー</span>の<span class="label info">NATルール</span>画面で実際の変換された数が確認できるので、これで挙動確認を行ってください。</p>
+<img src="/new-technology/2020/05/16/Intercept-DNS/rule3.png" class="" title="alt">
+
+<p> プロバイダーのDNS速度が極端に遅い場合はこれらの設定がベストにはなりませんが、<span class="label info">プライバシーと安全を鑑みたV18ならではのDNSのベストプラクティス</span>になるとおもいます。</p>
+<div class="note primary no-icon">
+            <h2 id="その他DNSに関して補足すること"><a href="#その他DNSに関して補足すること" class="headerlink" title="その他DNSに関して補足すること"></a>その他DNSに関して補足すること</h2>
+          </div>
+
+<p>　GoogleDNSのDoHはRFC8484に従っていない独自プロトコルを使えるという事実があります。世界中のパブリックDNSを全て把握するのは困難ですが、Sophosの以下の記事を参考にWebフィルタのURLグループにパブリックDNSのドメインを登録し、拒否する設定を加えても良いでしょう。</p>
+<p><a href="https://community.sophos.com/kb/en-us/134644" target="_blank" rel="noopener">DNS over HTTPS (DoH) for web security</a></p>
 ]]></content>
       <categories>
         <category>Security</category>
@@ -1075,6 +1075,61 @@
       </tags>
   </entry>
   <entry>
+    <title>VMware vSphere Hypervisor（ESXi）のインストール</title>
+    <url>/new-technology/2020/02/29/esxi/</url>
+    <content><![CDATA[<div class="note success">
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　XG Firewall v18をVMware ESXi上で稼働させるために、VMware Esxi6.7をインストール出来るようになります。</p>
+          </div>
+
+<a id="more"></a>
+
+<div class="note primary no-icon">
+            <h2 id="インストールの前に"><a href="#インストールの前に" class="headerlink" title="インストールの前に"></a>インストールの前に</h2>
+          </div>
+
+<p> 　XG Firewallの導入に必須というわけではないですが、バックアップや異なるバージョンの同居など色々便利なので、仮想環境（ESXi）を構築しその上にXGをインストールします。</p>
+<p>　このホームユーザー向け（無償版）ESXiのインストールに関するドキュメントは正直解りやすい場所に掲載されてないのですが、<a href="https://blogs.vmware.com/jp-cim/2014/05/vspherehypervisor.html" target="_blank" rel="noopener" title="vmware">VMWareのブログ</a>から辿ると良いです。</p>
+<!-- more -->
+
+<div class="note primary no-icon">
+            <h2 id="準備"><a href="#準備" class="headerlink" title="準備"></a>準備</h2>
+          </div>
+
+<ul>
+<li>ESXiをインストールする予定の2つのNICを持ったPC1台と、ISOファイルをインストールするためのUSBメディアを用意してください。</li>
+<li>VMwareのアカウント（無償）を作成してください。</li>
+<li>VMwareサイトにログイン後、製品（vSphere Hypervisor v6.7）のダウンロードをしたら、ISOファイルをRufusを使ってUSBメディアに書き出します。</li>
+</ul>
+<div class="video-container"><iframe src="https://www.youtube.com/embed/7gYnyIaQH9A" frameborder="0" loading="lazy" allowfullscreen></iframe></div>
+
+<div class="note primary no-icon">
+            <h2 id="ESXiのインストール"><a href="#ESXiのインストール" class="headerlink" title="ESXiのインストール"></a>ESXiのインストール</h2>
+          </div>
+
+<p>　以下のビデオを参考にしてください。</p>
+<iframe src='https://players.brightcove.net/1534342432001/Byh3doRJx_default/index.html?videoId=5738631329001' allowfullscreen frameborder=0></iframe>
+
+<p>　まず、注意点ですが、いつも使っているネットワークとは別のネットワークのIPアドレスを振ってセットアップします。いつもが192.168.0.0/24なら、今回は仮に192.168.1.0/24のネットワークに配置する予定としてESXiをセットアップする事にしましょう。これまでのネットワークにXG Firewallを挟み込む事になり、従来のネットワークはXGのWAN側とホームゲートウェイに利用され、XGのLAN側は新しいネットワークになるためです。新たにXGのLAN側と同じネットワークにESXiの管理ネットワークを構築する必要があります。なお、XGのLAN側のデフォルトIPアドレスは、172.16.16.16となっています。従って、XGのIPもセットアップ時に192.168.1.0/24のネットワークに変更する事とします。</p>
+<ul>
+<li>USBメディアをESXiをインストールするPCに挿し、USBからブートし、セットアップを開始してください。</li>
+<li>vCenterはホームユーザー向けには使いませんので無視してください。</li>
+<li>NICが2枚ある事を前提にすると、Esxiの管理画面はLAN側のNICを対象とするように設定してください。今の時点では、WANは使いません。新しく振ったIP（192.168.1.1/24）をESXiの管理用IPとして、セットアップします。</li>
+<li>上記のビデオ（2:40前後の説明）では「冗長化のために」と説明がありますが、今回は冗長化を使いません。通常LAN側のvmnic0を管理用のNICとしてセットアップしてください。また、VLANも使いません。</li>
+<li>ESXi6.7では、vSphere Clientは使いません。インストールしたESXiのLAN側のIPアドレスに対してブラウザで接続し、ESXiのWeb管理画面で設定を行います。</li>
+</ul>
+<img src="/new-technology/2020/02/29/esxi/setup_esxi.png" class="" title="alt">
+
+<p> 　セットアップ終了後は、上記のようなネットワーク構成となります。USBメディアを抜いて再起動後、ESXiの画面にIPアドレスが表示されます。ホームゲートウェイに繋っていたPCをネットワークから外し、ESXiのLAN側のNICと繋ぎます。PCのIPを変更（例えば、192.168.1.101/24）し、ESXiのIPアドレスにブラウザで接続してください。ログインは、ユーザー名がroot、パスワードはセットアップで指定したものになります。</p>
+]]></content>
+      <categories>
+        <category>Security</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+        <tag>ESXi</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>XG FirewallでIPSのポリシーを確認する</title>
     <url>/new-technology/2020/05/04/ips-policy/</url>
     <content><![CDATA[<div class="note success">
@@ -1342,61 +1397,6 @@
       <tags>
         <tag>XG Firewall</tag>
         <tag>IPv6</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>VMware vSphere Hypervisor（ESXi）のインストール</title>
-    <url>/new-technology/2020/02/29/esxi/</url>
-    <content><![CDATA[<div class="note success">
-            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　XG Firewall v18をVMware ESXi上で稼働させるために、VMware Esxi6.7をインストール出来るようになります。</p>
-          </div>
-
-<a id="more"></a>
-
-<div class="note primary no-icon">
-            <h2 id="インストールの前に"><a href="#インストールの前に" class="headerlink" title="インストールの前に"></a>インストールの前に</h2>
-          </div>
-
-<p> 　XG Firewallの導入に必須というわけではないですが、バックアップや異なるバージョンの同居など色々便利なので、仮想環境（ESXi）を構築しその上にXGをインストールします。</p>
-<p>　このホームユーザー向け（無償版）ESXiのインストールに関するドキュメントは正直解りやすい場所に掲載されてないのですが、<a href="https://blogs.vmware.com/jp-cim/2014/05/vspherehypervisor.html" target="_blank" rel="noopener" title="vmware">VMWareのブログ</a>から辿ると良いです。</p>
-<!-- more -->
-
-<div class="note primary no-icon">
-            <h2 id="準備"><a href="#準備" class="headerlink" title="準備"></a>準備</h2>
-          </div>
-
-<ul>
-<li>ESXiをインストールする予定の2つのNICを持ったPC1台と、ISOファイルをインストールするためのUSBメディアを用意してください。</li>
-<li>VMwareのアカウント（無償）を作成してください。</li>
-<li>VMwareサイトにログイン後、製品（vSphere Hypervisor v6.7）のダウンロードをしたら、ISOファイルをRufusを使ってUSBメディアに書き出します。</li>
-</ul>
-<div class="video-container"><iframe src="https://www.youtube.com/embed/7gYnyIaQH9A" frameborder="0" loading="lazy" allowfullscreen></iframe></div>
-
-<div class="note primary no-icon">
-            <h2 id="ESXiのインストール"><a href="#ESXiのインストール" class="headerlink" title="ESXiのインストール"></a>ESXiのインストール</h2>
-          </div>
-
-<p>　以下のビデオを参考にしてください。</p>
-<iframe src='https://players.brightcove.net/1534342432001/Byh3doRJx_default/index.html?videoId=5738631329001' allowfullscreen frameborder=0></iframe>
-
-<p>　まず、注意点ですが、いつも使っているネットワークとは別のネットワークのIPアドレスを振ってセットアップします。いつもが192.168.0.0/24なら、今回は仮に192.168.1.0/24のネットワークに配置する予定としてESXiをセットアップする事にしましょう。これまでのネットワークにXG Firewallを挟み込む事になり、従来のネットワークはXGのWAN側とホームゲートウェイに利用され、XGのLAN側は新しいネットワークになるためです。新たにXGのLAN側と同じネットワークにESXiの管理ネットワークを構築する必要があります。なお、XGのLAN側のデフォルトIPアドレスは、172.16.16.16となっています。従って、XGのIPもセットアップ時に192.168.1.0/24のネットワークに変更する事とします。</p>
-<ul>
-<li>USBメディアをESXiをインストールするPCに挿し、USBからブートし、セットアップを開始してください。</li>
-<li>vCenterはホームユーザー向けには使いませんので無視してください。</li>
-<li>NICが2枚ある事を前提にすると、Esxiの管理画面はLAN側のNICを対象とするように設定してください。今の時点では、WANは使いません。新しく振ったIP（192.168.1.1/24）をESXiの管理用IPとして、セットアップします。</li>
-<li>上記のビデオ（2:40前後の説明）では「冗長化のために」と説明がありますが、今回は冗長化を使いません。通常LAN側のvmnic0を管理用のNICとしてセットアップしてください。また、VLANも使いません。</li>
-<li>ESXi6.7では、vSphere Clientは使いません。インストールしたESXiのLAN側のIPアドレスに対してブラウザで接続し、ESXiのWeb管理画面で設定を行います。</li>
-</ul>
-<img src="/new-technology/2020/02/29/esxi/setup_esxi.png" class="" title="alt">
-
-<p> 　セットアップ終了後は、上記のようなネットワーク構成となります。USBメディアを抜いて再起動後、ESXiの画面にIPアドレスが表示されます。ホームゲートウェイに繋っていたPCをネットワークから外し、ESXiのLAN側のNICと繋ぎます。PCのIPを変更（例えば、192.168.1.101/24）し、ESXiのIPアドレスにブラウザで接続してください。ログインは、ユーザー名がroot、パスワードはセットアップで指定したものになります。</p>
-]]></content>
-      <categories>
-        <category>Security</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-        <tag>ESXi</tag>
       </tags>
   </entry>
   <entry>
@@ -2016,70 +2016,6 @@
       </tags>
   </entry>
   <entry>
-    <title>XG FirewallのWebフィルターとアプリケーションフィルタについて</title>
-    <url>/new-technology/2020/05/06/web-application-filter/</url>
-    <content><![CDATA[<div class="note success">
-            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　XG Firewallのレイヤ7ファイアウォールとしてのメインでもある、Webフィルター、アプリケーションフィルターについてそれぞれの違い、および活用方法について理解を深めます。</p>
-          </div>
-
-<a id="more"></a>
-
-<div class="note primary no-icon">
-            <h2 id="XGのWebフィルターについて"><a href="#XGのWebフィルターについて" class="headerlink" title="XGのWebフィルターについて"></a>XGのWebフィルターについて</h2>
-          </div>
-
-<p>　XGの左ペインメニューでは、<span class="label info">Web</span>、<span class="label info">アプリケーション</span>とそれぞれ分かれています。<span class="label info">Web</span>ではサイトのカテゴリが分かれていて、そのサイトのカテゴリによっては閲覧させないという使い方が一般的な使い方のように見えます。これらのポリシーは、<a href="https://community.sophos.com/kb/ja-jp/134155" target="_blank" rel="noopener">Sophosのサイト「Sophos XG Firewall: Web カテゴリ」</a>にも日本語の解説があります。サイトのカテゴリについては、ビジネス、ギャンブル、ゲーム、アダルト、ファイナンス等多岐に渡ります。ホームユーザーとしてはいわゆる怪しいサイトや過度な広告をフィルタする事が主目的になるかとおもいます。</p>
-<p>　上記サイトのポリシーを眺めていると疑問に感じるところがあります。「ActiveX」、「Applets」、「SpamURLs」です。サイトのポリシーで判断しているのかと思いきや、ActiveXやAppletは単純にサーバー名とも関係ありません。企業やサイトの目的ではなく、そこに配置したコンテンツの内容まで判断するように見えます。サイトのカテゴリに関係なく、そこにSpamがある場合は排除される事のようですから、そのあとのフォルダ構成を含めたURLまで対象としているように見えます。</p>
-<p>　上記サイトの<span class="label info">Sophos XG Firewall:Webカテゴリ</span>には記載がないものの、XGの左ペインメニューの<span class="label info">Web</span>の<span class="label info">ファイルタイプ</span>の内容には、ファイル拡張子、MIMEヘッダーの情報が並びます。そしてここにはZIPファイルなどの<span class="label info">Compressed Files</span>、Windowsの実行ファイルである<span class="label info">Executable File</span>などの項目が並んでいます。</p>
-<p>　ホームユーザーとしては、ZIPファイルやEXEファイルが使えないと不便なのでフィルタする事は考えにくいですが、何らかのMIMEタイプを拒否するポリシーを作成する場合は有効に機能しそうです。最終的には、Webフィルターは以下の種類の分類となります。</p>
-<ul>
-<li>Webカテゴリ</li>
-<li>URLグループ（自身で作成したURLの集まり）、280blockerなどのURLデータベースもこのグループ</li>
-<li>ファイルタイプ</li>
-<li>ダイナミックカテゴリ（ActiveX・Applets・Cookies・HTTP Upload</li>
-</ul>
-<p>　これらの事から、Webフィルターはカテゴリの分類という主目的はあるものの、ブラウザを対象としたフィルタの機能である事がわかります。</p>
-<div class="note primary no-icon">
-            <h2 id="SNIとWebフィルターについて"><a href="#SNIとWebフィルターについて" class="headerlink" title="SNIとWebフィルターについて"></a>SNIとWebフィルターについて</h2>
-          </div>
-
-<p>　SNIとは、Server Name Indicationの略です。SSL/TLS通信において、クライアントからサーバ証明書を要求する時に<span class="label info">暗号化せず</span>情報がサーバーに渡されます。XGはこのSNIを見てWebフィルターを行っていますので、SSLインスペクションが行えなくともURLでアクセス許可・不可の判断は可能になります。全てのWebサーバーがSNIに対応しているわけではありませんが、SSLインスペクションが行えないAndroid端末であってもある程度の許可・不可の制御は可能となります。しかし、以前の記事、<a href="/new-technology/2020/03/21/ssl-inspection2/" title="XG Firewall v18のSSLインスペクションの動作確認と調整">XG Firewall v18のSSLインスペクションの動作確認と調整</a> で記載した通り、ZIP化されたマルウェアは検知できないなどSSLインスペクションを使わないと完全ではありません。</p>
-<div class="note primary no-icon">
-            <h2 id="XGのアプリケーションフィルターについて"><a href="#XGのアプリケーションフィルターについて" class="headerlink" title="XGのアプリケーションフィルターについて"></a>XGのアプリケーションフィルターについて</h2>
-          </div>
-
-<p>　XGのアプリケーションフィルターは、XGの左ペインメニューの<span class="label info">アプリケーション</span>から確認できます。ブラウザーではないインターネットに接続するアプリケーションを対象にしています。ここの挙動の確認は非常に難しいものがあります。</p>
-<p>　例えば、MicrosoftのOneDriveを題材にテストしてみましょう。</p>
-<p>　OneDriveのURLは、現時点で、<span class="label info">https://onedrive.live.com/</span>です。Webフィルターで当該ドメインのフィルターを行うと、想定通りブラウザーからOneDriveにはアクセス出来ません。たまにはAndroid端末でやってみます。設定通り、Android版FireFoxからは接続出来ませんでしたので、その画面をキャプチャしています。</p>
-<img src="/new-technology/2020/05/06/web-application-filter/onedrive.png" class="" title="alt">
-
-<p>　次にキャプチャ画像を、<span class="label info">Android端末にインストールしてあるOneDriveアプリ経由で画像をコピーし</span>、このブログに掲載しています。最後に、<span class="label info">WindowsPCのエクスプローラーのOneDriveフォルダからこの画像は削除出来てしまいました</span>。</p>
-<p>　え？という話なんですが、OneDriveのアプリからはURL制限とは無関係にアクセス出来ています。</p>
-<p>　今度は別の検証のために、Webフィルターは削除、アプリケーションフィルターにOneDriveの項目があるので、そちらをフィルターしてみます。</p>
-<p>　XGの左ペインメニューの<span class="label info">アプリケーション</span>からファイアウォールルールで選択されているポリシーの先頭で<span class="label info">追加</span>ボタンをクリックし、<span class="label info">スマートフィルタ</span>に<span class="label info">onedrive</span>と入力し、Enterキーを押します。</p>
-<img src="/new-technology/2020/05/06/web-application-filter/appfilter2.png" class="" title="alt">
-
-<p>　そうすると、OneDriveのルールがいくつか表示されるため、<span class="label info">アクション</span>は、<span class="label info">拒否</span>を選択して最後に<span class="label info">保存</span>をクリックします（これは検証作業なのでこのブログをご覧の方が実施する作業ではありません）。</p>
-<p>　この作業の結果は以下の通りの挙動でした。</p>
-<ul>
-<li>ブラウザからOneDriveに接続出来ない</li>
-<li>WindowsからOneDriveのツール上（エクスプローラー上のファイル）ではファイルの追加、削除は行えない</li>
-<li>AndroidからOneDriveのファイル削除は可能だが、追加は行えない</li>
-</ul>
-<p>　これらの事から、アプリケーションフィルタは、アプリが利用しているAPIのURLやデータの中身を見て挙動の制限を行っている事がわかります。また、OneDriveはファイルのアップロード、ダウンロードと目的によって分かれていましたが、AppleのiCloudDriveに関してはアプリケーションフィルタは1種類だけです。このようにアプリケーションフィルターは、アプリの作り方に左右されるものとなります。そして、SSLインスペクションが行えないAndroidはファイル削除について制御出来ていません。</p>
-<p>　アプリケーションフィルターの中には、<span class="label info">EXE File Download</span>というフィルタも存在しますが、あくまで汎用的なものであって、全てのいかなるアプリケーションからのEXEファイルのダウンロードを禁止できるものではありません。</p>
-<p>　これらを理解できても、それを実践するのは難しいものです。ホームユーザーとしてリスクを抑制しつつ利便性を高めるには、どのようなフィルターを作っていくべきでしょうか。たくさん存在するアプリケーションを都度設定するのは管理も非常に大変で現実的ではありません。</p>
-<p>　Webのカテゴリについては、個人の考え方でいろいろなフィルタの組み合わせがあるでしょう。そちらについてはご自身のポリシーでカスタマイズいただければとおもいます。</p>
-<p>　但し攻撃から身を守るという課題については、ある程度のスタンダードはあるかとおもいますので、Sophos Communityなどの情報を頼りにホームユーザーのためのお勧め設定について次回に記載したいとおもいます。</p>
-]]></content>
-      <categories>
-        <category>Security</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>XG Firewall VPNにワンタイムパスワードを設定する</title>
     <url>/new-technology/2020/03/28/vpnotp/</url>
     <content><![CDATA[<div class="note success">
@@ -2148,6 +2084,70 @@
         <category>Security</category>
         <category>VPN</category>
         <category>ワンタイムパスワード</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>XG FirewallのWebフィルターとアプリケーションフィルタについて</title>
+    <url>/new-technology/2020/05/06/web-application-filter/</url>
+    <content><![CDATA[<div class="note success">
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　XG Firewallのレイヤ7ファイアウォールとしてのメインでもある、Webフィルター、アプリケーションフィルターについてそれぞれの違い、および活用方法について理解を深めます。</p>
+          </div>
+
+<a id="more"></a>
+
+<div class="note primary no-icon">
+            <h2 id="XGのWebフィルターについて"><a href="#XGのWebフィルターについて" class="headerlink" title="XGのWebフィルターについて"></a>XGのWebフィルターについて</h2>
+          </div>
+
+<p>　XGの左ペインメニューでは、<span class="label info">Web</span>、<span class="label info">アプリケーション</span>とそれぞれ分かれています。<span class="label info">Web</span>ではサイトのカテゴリが分かれていて、そのサイトのカテゴリによっては閲覧させないという使い方が一般的な使い方のように見えます。これらのポリシーは、<a href="https://community.sophos.com/kb/ja-jp/134155" target="_blank" rel="noopener">Sophosのサイト「Sophos XG Firewall: Web カテゴリ」</a>にも日本語の解説があります。サイトのカテゴリについては、ビジネス、ギャンブル、ゲーム、アダルト、ファイナンス等多岐に渡ります。ホームユーザーとしてはいわゆる怪しいサイトや過度な広告をフィルタする事が主目的になるかとおもいます。</p>
+<p>　上記サイトのポリシーを眺めていると疑問に感じるところがあります。「ActiveX」、「Applets」、「SpamURLs」です。サイトのポリシーで判断しているのかと思いきや、ActiveXやAppletは単純にサーバー名とも関係ありません。企業やサイトの目的ではなく、そこに配置したコンテンツの内容まで判断するように見えます。サイトのカテゴリに関係なく、そこにSpamがある場合は排除される事のようですから、そのあとのフォルダ構成を含めたURLまで対象としているように見えます。</p>
+<p>　上記サイトの<span class="label info">Sophos XG Firewall:Webカテゴリ</span>には記載がないものの、XGの左ペインメニューの<span class="label info">Web</span>の<span class="label info">ファイルタイプ</span>の内容には、ファイル拡張子、MIMEヘッダーの情報が並びます。そしてここにはZIPファイルなどの<span class="label info">Compressed Files</span>、Windowsの実行ファイルである<span class="label info">Executable File</span>などの項目が並んでいます。</p>
+<p>　ホームユーザーとしては、ZIPファイルやEXEファイルが使えないと不便なのでフィルタする事は考えにくいですが、何らかのMIMEタイプを拒否するポリシーを作成する場合は有効に機能しそうです。最終的には、Webフィルターは以下の種類の分類となります。</p>
+<ul>
+<li>Webカテゴリ</li>
+<li>URLグループ（自身で作成したURLの集まり）、280blockerなどのURLデータベースもこのグループ</li>
+<li>ファイルタイプ</li>
+<li>ダイナミックカテゴリ（ActiveX・Applets・Cookies・HTTP Upload</li>
+</ul>
+<p>　これらの事から、Webフィルターはカテゴリの分類という主目的はあるものの、ブラウザを対象としたフィルタの機能である事がわかります。</p>
+<div class="note primary no-icon">
+            <h2 id="SNIとWebフィルターについて"><a href="#SNIとWebフィルターについて" class="headerlink" title="SNIとWebフィルターについて"></a>SNIとWebフィルターについて</h2>
+          </div>
+
+<p>　SNIとは、Server Name Indicationの略です。SSL/TLS通信において、クライアントからサーバ証明書を要求する時に<span class="label info">暗号化せず</span>情報がサーバーに渡されます。XGはこのSNIを見てWebフィルターを行っていますので、SSLインスペクションが行えなくともURLでアクセス許可・不可の判断は可能になります。全てのWebサーバーがSNIに対応しているわけではありませんが、SSLインスペクションが行えないAndroid端末であってもある程度の許可・不可の制御は可能となります。しかし、以前の記事、<a href="/new-technology/2020/03/21/ssl-inspection2/" title="XG Firewall v18のSSLインスペクションの動作確認と調整">XG Firewall v18のSSLインスペクションの動作確認と調整</a> で記載した通り、ZIP化されたマルウェアは検知できないなどSSLインスペクションを使わないと完全ではありません。</p>
+<div class="note primary no-icon">
+            <h2 id="XGのアプリケーションフィルターについて"><a href="#XGのアプリケーションフィルターについて" class="headerlink" title="XGのアプリケーションフィルターについて"></a>XGのアプリケーションフィルターについて</h2>
+          </div>
+
+<p>　XGのアプリケーションフィルターは、XGの左ペインメニューの<span class="label info">アプリケーション</span>から確認できます。ブラウザーではないインターネットに接続するアプリケーションを対象にしています。ここの挙動の確認は非常に難しいものがあります。</p>
+<p>　例えば、MicrosoftのOneDriveを題材にテストしてみましょう。</p>
+<p>　OneDriveのURLは、現時点で、<span class="label info">https://onedrive.live.com/</span>です。Webフィルターで当該ドメインのフィルターを行うと、想定通りブラウザーからOneDriveにはアクセス出来ません。たまにはAndroid端末でやってみます。設定通り、Android版FireFoxからは接続出来ませんでしたので、その画面をキャプチャしています。</p>
+<img src="/new-technology/2020/05/06/web-application-filter/onedrive.png" class="" title="alt">
+
+<p>　次にキャプチャ画像を、<span class="label info">Android端末にインストールしてあるOneDriveアプリ経由で画像をコピーし</span>、このブログに掲載しています。最後に、<span class="label info">WindowsPCのエクスプローラーのOneDriveフォルダからこの画像は削除出来てしまいました</span>。</p>
+<p>　え？という話なんですが、OneDriveのアプリからはURL制限とは無関係にアクセス出来ています。</p>
+<p>　今度は別の検証のために、Webフィルターは削除、アプリケーションフィルターにOneDriveの項目があるので、そちらをフィルターしてみます。</p>
+<p>　XGの左ペインメニューの<span class="label info">アプリケーション</span>からファイアウォールルールで選択されているポリシーの先頭で<span class="label info">追加</span>ボタンをクリックし、<span class="label info">スマートフィルタ</span>に<span class="label info">onedrive</span>と入力し、Enterキーを押します。</p>
+<img src="/new-technology/2020/05/06/web-application-filter/appfilter2.png" class="" title="alt">
+
+<p>　そうすると、OneDriveのルールがいくつか表示されるため、<span class="label info">アクション</span>は、<span class="label info">拒否</span>を選択して最後に<span class="label info">保存</span>をクリックします（これは検証作業なのでこのブログをご覧の方が実施する作業ではありません）。</p>
+<p>　この作業の結果は以下の通りの挙動でした。</p>
+<ul>
+<li>ブラウザからOneDriveに接続出来ない</li>
+<li>WindowsからOneDriveのツール上（エクスプローラー上のファイル）ではファイルの追加、削除は行えない</li>
+<li>AndroidからOneDriveのファイル削除は可能だが、追加は行えない</li>
+</ul>
+<p>　これらの事から、アプリケーションフィルタは、アプリが利用しているAPIのURLやデータの中身を見て挙動の制限を行っている事がわかります。また、OneDriveはファイルのアップロード、ダウンロードと目的によって分かれていましたが、AppleのiCloudDriveに関してはアプリケーションフィルタは1種類だけです。このようにアプリケーションフィルターは、アプリの作り方に左右されるものとなります。そして、SSLインスペクションが行えないAndroidはファイル削除について制御出来ていません。</p>
+<p>　アプリケーションフィルターの中には、<span class="label info">EXE File Download</span>というフィルタも存在しますが、あくまで汎用的なものであって、全てのいかなるアプリケーションからのEXEファイルのダウンロードを禁止できるものではありません。</p>
+<p>　これらを理解できても、それを実践するのは難しいものです。ホームユーザーとしてリスクを抑制しつつ利便性を高めるには、どのようなフィルターを作っていくべきでしょうか。たくさん存在するアプリケーションを都度設定するのは管理も非常に大変で現実的ではありません。</p>
+<p>　Webのカテゴリについては、個人の考え方でいろいろなフィルタの組み合わせがあるでしょう。そちらについてはご自身のポリシーでカスタマイズいただければとおもいます。</p>
+<p>　但し攻撃から身を守るという課題については、ある程度のスタンダードはあるかとおもいますので、Sophos Communityなどの情報を頼りにホームユーザーのためのお勧め設定について次回に記載したいとおもいます。</p>
+]]></content>
+      <categories>
+        <category>Security</category>
       </categories>
       <tags>
         <tag>XG Firewall</tag>
@@ -2228,16 +2228,6 @@
         <tag>XG Firewall</tag>
         <tag>IPv6</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>はじめに</title>
-    <url>/new-technology/2020/02/22/%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB/</url>
-    <content><![CDATA[<p>　少し高度なITをテーマに、ホームユーザーのIT導入を中心にポストしていきたいと考えてます。最近ではフルスタックエンジニアと呼ぶのでしょうか、これまでの自身の仕事はプログラミング・ネットワーク・サーバ構築・セキュリティと、広く浅くITに関わってきました。エンジニアとしての仕事からは最近かなり遠ざかってますが、自分なりに新しい技術の習得も兼ねて、ブログ形式で掲載できればとおもいます。</p>
-<a id="more"></a>
-
-<p>　単純にインストールして「できました」ではなく、導入後のITの使い方こそが重要と考えています。最近は個人利用に限り利用無償のソフトウェアが増えてきました。また、商用利用であっても無償となるオープンソースソフトウェアの活用も見逃せません。これは大変ありがたい話で、座学ではなかなか理解が進まない固有技術であっても、こういった無料のプロダクトを通じて知見を高める事が可能となっています。</p>
-<p>　ここでは、エンタープライズやミッションクリティカルなITに関するテーマは扱いません。私自身実務でITに関わっていますが、実務とは少し距離を置いたところで、自己啓発と家庭向けのIT活用を考えたいと思っています。</p>
-]]></content>
   </entry>
   <entry>
     <title>XG FirewallでIPv6の設定を行う（後半）</title>
@@ -2423,5 +2413,15 @@
         <tag>XG Firewall</tag>
         <tag>IPv6</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>はじめに</title>
+    <url>/new-technology/2020/02/22/%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB/</url>
+    <content><![CDATA[<p>　少し高度なITをテーマに、ホームユーザーのIT導入を中心にポストしていきたいと考えてます。最近ではフルスタックエンジニアと呼ぶのでしょうか、これまでの自身の仕事はプログラミング・ネットワーク・サーバ構築・セキュリティと、広く浅くITに関わってきました。エンジニアとしての仕事からは最近かなり遠ざかってますが、自分なりに新しい技術の習得も兼ねて、ブログ形式で掲載できればとおもいます。</p>
+<a id="more"></a>
+
+<p>　単純にインストールして「できました」ではなく、導入後のITの使い方こそが重要と考えています。最近は個人利用に限り利用無償のソフトウェアが増えてきました。また、商用利用であっても無償となるオープンソースソフトウェアの活用も見逃せません。これは大変ありがたい話で、座学ではなかなか理解が進まない固有技術であっても、こういった無料のプロダクトを通じて知見を高める事が可能となっています。</p>
+<p>　ここでは、エンタープライズやミッションクリティカルなITに関するテーマは扱いません。私自身実務でITに関わっていますが、実務とは少し距離を置いたところで、自己啓発と家庭向けのIT活用を考えたいと思っています。</p>
+]]></content>
   </entry>
 </search>
