@@ -182,8 +182,8 @@ body {
   background: var(--body-bg-color);
   color: var(--text-color);
   font-family: -apple-system, BlinkMacSystemFont, "YuGothic", "メイリオ", Meiryo, sans-serif;
-  font-size: 0.9em;
-  line-height: 2;
+  font-size: 1.4;
+  line-height: 1.6;
 }
 @media (max-width: 991px) {
   body {
@@ -490,7 +490,7 @@ Original highlight.js style (c) Ivan Sagalaev <maniac@softwaremaniacs.org>
 pre {
   background: var(--highlight-background);
   color: var(--highlight-foreground);
-  line-height: 1.6;
+  line-height: 1.4;
   margin: 0 auto 20px;
 }
 pre,
@@ -1471,7 +1471,7 @@ pre code {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #b9ffd6;
+  background: #3779f0;
   border-radius: 50%;
   content: ' ';
   display: inline-block;

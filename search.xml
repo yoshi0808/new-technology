@@ -71,80 +71,6 @@
       </tags>
   </entry>
   <entry>
-    <title>XG Firewall v18をESXi仮想マシン上にインストールする</title>
-    <url>/new-technology/2020/03/06/InstallXG2/</url>
-    <content><![CDATA[<div class="note success">
-            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　ESXi（ｖ6.7）に環境構築済みの仮想マシンに対し、XG Firewall v18のインストールが行えるようになります。フラッシュメモリを用意し、物理マシンに直接インストールする場合も、手順はほとんど変わりません。</p>
-          </div>
-<a id="more"></a>
-
-<div class="note primary no-icon">
-            <h2 id="仮想マシンの電源をオンにする前に"><a href="#仮想マシンの電源をオンにする前に" class="headerlink" title="仮想マシンの電源をオンにする前に"></a>仮想マシンの電源をオンにする前に</h2>
-          </div>
-
-<p>　PCのブラウザで表示しているESXiの管理画面から、作成した仮想マシンの電源をオンにできます。これで設定されたISOファイルからブートさせる事になります。ESXiをセットアップした機器にモニタを接続する必要はありません。前回までの記事で、新たにクライアントが利用するネットワークアドレスを決めました。XGのデフォルトである172.16.16.0/24を使うか、自分が新たに決めたアドレス（ex. 192.168.1.0/24）になります。今回のケースでは、ホームゲートウェイとXGのWANとの間が、192.168.0.0/24のネットワーク、LAN側は192.168.1.0/24として説明を進めます。<br>　いよいよ、仮想マシンの電源をオンにしてセットアップを開始します。</p>
-<div class="note primary no-icon">
-            <h2 id="仮想マシンの電源をオンにする"><a href="#仮想マシンの電源をオンにする" class="headerlink" title="仮想マシンの電源をオンにする"></a>仮想マシンの電源をオンにする</h2>
-          </div>
-
-<p>　さて、ESXiの管理コンソールからXGの仮想マシンを選んでパワーオンをクリックします。</p>
-<p>Sophos FIRMWARE INSTALLERが起動します。<br>インストールを開始すると（仮想マシンに割り当てた）ディスクが全てフォーマットされ、ファームウェアがインストールされていきます。<br>press y to rebootでリブートします。<br>再起動後、さらにdefault conifgをインストールするとの表示がされ、やがてパスワード入力画面になります。最初のパスワードはadminです。まずライセンスを受け入れる画面となります。続いて、ネットワークの設定を変更します。</p>
-<img src="/new-technology/2020/03/06/InstallXG2/conf.png" class="" title="alt">
-
-<p>1.Network Configurationを選び、次の画面で、1.Interface Configurationを選びます。以下の表示がEnterを押下する毎に変わります。</p>
-<ul>
-<li>LAN側のIP割り振り状態（ここでは変更できません）。</li>
-<li>WAN側のIP割り振り状態（変更不可。ホームゲートウェイからのプライベートIPが割り当てられています）。</li>
-<li>Set IPv4 Address(y/n)と出るので、変更する場合は、y＋Enterします。</li>
-<li>IPv6は後で設定するので空Enterで構いません。</li>
-</ul>
-<p>この状態で一旦IPの設定を終えたら、クライアントPCのブラウザからXGに対して接続し、セットアップを続けていきます。ここではXGのIPアドレスを192.168.1.2にしたと仮定して進めます。</p>
-  <div class="note warning">
-            <p>WANのIPが割り振られていない場合は、後続のセットアップでライセンスの確認ができません。事後にもライセンス登録は可能ですが、初期のうちに課題を解決しておきましょう。</p>
-          </div>
-
-<div class="note primary no-icon">
-            <h2 id="XG-Firewallの初期設定を行う"><a href="#XG-Firewallの初期設定を行う" class="headerlink" title="XG Firewallの初期設定を行う"></a>XG Firewallの初期設定を行う</h2>
-          </div>
-
-<p>　ブラウザで、<a href="https://192.168.1.2:4444" target="_blank" rel="noopener">https://192.168.1.2:4444</a>を開き初期設定を行っていきます。自己証明書でもあり、ブラウザのワーニングが表示されますが、了解のうえ進んでください。</p>
-<img src="/new-technology/2020/03/06/InstallXG2/setup1.png" class="" title="alt">
-
-<p> ここでは、右上のプルダウンで日本語に変更しておくと良いでしょう。<br> 続いて、以下の項目を設定していきます。</p>
-<ul>
-<li>管理者パスワード</li>
-<li>タイムゾーン</li>
-<li>登録メールで届いたシリアル番号を入力します</li>
-</ul>
-<img src="/new-technology/2020/03/06/InstallXG2/setup2.png" class="" title="alt">
-
-<ul>
-<li>ゲートウェイとしてルーターモードを選択します</li>
-<li>LAN側に割り振るDHCPのIP範囲を設定します</li>
-</ul>
-<img src="/new-technology/2020/03/06/InstallXG2/setup3.png" class="" title="alt">
-
-<ul>
-<li>ネットワークプロテクションはSandStormを除き選択します。仮に選択してもホームユースでは解除されます。</li>
-</ul>
-<img src="/new-technology/2020/03/06/InstallXG2/setup4.png" class="" title="alt">
-
-<p>　続いての画面のメールセットアップですが、昨今、自宅からSMTPによるインターネットへのメール送信はSPAMの扱いと疑われ、OP25と称してブロックされているのが実態です。Gmailをお持ちであれば、Gmailをメールの送信者にしておくと比較的簡単に送信できます。メールの受信者は、色々なイベント通知が発生した時に確認するアドレスですので、携帯などのアドレスが候補に挙げられます。</p>
-<img src="/new-technology/2020/03/06/InstallXG2/setup5.png" class="" title="alt">
-
-<p> 　いよいよ、セットアップも最後の仕上げです。5分程度と言いつつ、もう少し掛かる場合がありますので、ブラウザのリロードをせずそのまま待ちます。その後管理画面のリロードが入りますが、XGの管理サイトは自己証明書のためにブラウザのワーニングが出た画面で止まっている場合があります。</p>
-<img src="/new-technology/2020/03/06/InstallXG2/setup6.png" class="" title="alt">
-
-<p> 　さて、いよいよログイン画面です。固定IPにして設定してきたPCも、XGのDHCP機能によって、IPアドレスが割り当て可能となっています。PCの設定をDHCPにして確認して下さい。そして、インターネットにも接続出来ている事を確認して下さい。現段階では、基本はOutboundの通信は全て通す設定になっているので確認が出来たら、ホームゲートウェイに接続されている他の機器などをXGのLAN側に繋いで下さい。</p>
-]]></content>
-      <categories>
-        <category>Security</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>XG Firewall V18で正しいDNS利用を強制する</title>
     <url>/new-technology/2020/05/16/Intercept-DNS/</url>
     <content><![CDATA[<div class="note success">
@@ -463,6 +389,80 @@
 <li><a href="/new-technology/2020/05/16/Intercept-DNS/" title="XG Firewall V18で正しいDNS利用を強制する">XG Firewall V18で正しいDNS利用を強制する</a>
 </li>
 </ul>
+]]></content>
+      <categories>
+        <category>Security</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>XG Firewall v18をESXi仮想マシン上にインストールする</title>
+    <url>/new-technology/2020/03/06/InstallXG2/</url>
+    <content><![CDATA[<div class="note success">
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　ESXi（ｖ6.7）に環境構築済みの仮想マシンに対し、XG Firewall v18のインストールが行えるようになります。フラッシュメモリを用意し、物理マシンに直接インストールする場合も、手順はほとんど変わりません。</p>
+          </div>
+<a id="more"></a>
+
+<div class="note primary no-icon">
+            <h2 id="仮想マシンの電源をオンにする前に"><a href="#仮想マシンの電源をオンにする前に" class="headerlink" title="仮想マシンの電源をオンにする前に"></a>仮想マシンの電源をオンにする前に</h2>
+          </div>
+
+<p>　PCのブラウザで表示しているESXiの管理画面から、作成した仮想マシンの電源をオンにできます。これで設定されたISOファイルからブートさせる事になります。ESXiをセットアップした機器にモニタを接続する必要はありません。前回までの記事で、新たにクライアントが利用するネットワークアドレスを決めました。XGのデフォルトである172.16.16.0/24を使うか、自分が新たに決めたアドレス（ex. 192.168.1.0/24）になります。今回のケースでは、ホームゲートウェイとXGのWANとの間が、192.168.0.0/24のネットワーク、LAN側は192.168.1.0/24として説明を進めます。<br>　いよいよ、仮想マシンの電源をオンにしてセットアップを開始します。</p>
+<div class="note primary no-icon">
+            <h2 id="仮想マシンの電源をオンにする"><a href="#仮想マシンの電源をオンにする" class="headerlink" title="仮想マシンの電源をオンにする"></a>仮想マシンの電源をオンにする</h2>
+          </div>
+
+<p>　さて、ESXiの管理コンソールからXGの仮想マシンを選んでパワーオンをクリックします。</p>
+<p>Sophos FIRMWARE INSTALLERが起動します。<br>インストールを開始すると（仮想マシンに割り当てた）ディスクが全てフォーマットされ、ファームウェアがインストールされていきます。<br>press y to rebootでリブートします。<br>再起動後、さらにdefault conifgをインストールするとの表示がされ、やがてパスワード入力画面になります。最初のパスワードはadminです。まずライセンスを受け入れる画面となります。続いて、ネットワークの設定を変更します。</p>
+<img src="/new-technology/2020/03/06/InstallXG2/conf.png" class="" title="alt">
+
+<p>1.Network Configurationを選び、次の画面で、1.Interface Configurationを選びます。以下の表示がEnterを押下する毎に変わります。</p>
+<ul>
+<li>LAN側のIP割り振り状態（ここでは変更できません）。</li>
+<li>WAN側のIP割り振り状態（変更不可。ホームゲートウェイからのプライベートIPが割り当てられています）。</li>
+<li>Set IPv4 Address(y/n)と出るので、変更する場合は、y＋Enterします。</li>
+<li>IPv6は後で設定するので空Enterで構いません。</li>
+</ul>
+<p>この状態で一旦IPの設定を終えたら、クライアントPCのブラウザからXGに対して接続し、セットアップを続けていきます。ここではXGのIPアドレスを192.168.1.2にしたと仮定して進めます。</p>
+  <div class="note warning">
+            <p>WANのIPが割り振られていない場合は、後続のセットアップでライセンスの確認ができません。事後にもライセンス登録は可能ですが、初期のうちに課題を解決しておきましょう。</p>
+          </div>
+
+<div class="note primary no-icon">
+            <h2 id="XG-Firewallの初期設定を行う"><a href="#XG-Firewallの初期設定を行う" class="headerlink" title="XG Firewallの初期設定を行う"></a>XG Firewallの初期設定を行う</h2>
+          </div>
+
+<p>　ブラウザで、<a href="https://192.168.1.2:4444" target="_blank" rel="noopener">https://192.168.1.2:4444</a>を開き初期設定を行っていきます。自己証明書でもあり、ブラウザのワーニングが表示されますが、了解のうえ進んでください。</p>
+<img src="/new-technology/2020/03/06/InstallXG2/setup1.png" class="" title="alt">
+
+<p> ここでは、右上のプルダウンで日本語に変更しておくと良いでしょう。<br> 続いて、以下の項目を設定していきます。</p>
+<ul>
+<li>管理者パスワード</li>
+<li>タイムゾーン</li>
+<li>登録メールで届いたシリアル番号を入力します</li>
+</ul>
+<img src="/new-technology/2020/03/06/InstallXG2/setup2.png" class="" title="alt">
+
+<ul>
+<li>ゲートウェイとしてルーターモードを選択します</li>
+<li>LAN側に割り振るDHCPのIP範囲を設定します</li>
+</ul>
+<img src="/new-technology/2020/03/06/InstallXG2/setup3.png" class="" title="alt">
+
+<ul>
+<li>ネットワークプロテクションはSandStormを除き選択します。仮に選択してもホームユースでは解除されます。</li>
+</ul>
+<img src="/new-technology/2020/03/06/InstallXG2/setup4.png" class="" title="alt">
+
+<p>　続いての画面のメールセットアップですが、昨今、自宅からSMTPによるインターネットへのメール送信はSPAMの扱いと疑われ、OP25と称してブロックされているのが実態です。Gmailをお持ちであれば、Gmailをメールの送信者にしておくと比較的簡単に送信できます。メールの受信者は、色々なイベント通知が発生した時に確認するアドレスですので、携帯などのアドレスが候補に挙げられます。</p>
+<img src="/new-technology/2020/03/06/InstallXG2/setup5.png" class="" title="alt">
+
+<p> 　いよいよ、セットアップも最後の仕上げです。5分程度と言いつつ、もう少し掛かる場合がありますので、ブラウザのリロードをせずそのまま待ちます。その後管理画面のリロードが入りますが、XGの管理サイトは自己証明書のためにブラウザのワーニングが出た画面で止まっている場合があります。</p>
+<img src="/new-technology/2020/03/06/InstallXG2/setup6.png" class="" title="alt">
+
+<p> 　さて、いよいよログイン画面です。固定IPにして設定してきたPCも、XGのDHCP機能によって、IPアドレスが割り当て可能となっています。PCの設定をDHCPにして確認して下さい。そして、インターネットにも接続出来ている事を確認して下さい。現段階では、基本はOutboundの通信は全て通す設定になっているので確認が出来たら、ホームゲートウェイに接続されている他の機器などをXGのLAN側に繋いで下さい。</p>
 ]]></content>
       <categories>
         <category>Security</category>
@@ -989,92 +989,6 @@
       </tags>
   </entry>
   <entry>
-    <title>VMware vSphere Hypervisor（ESXi）の設定</title>
-    <url>/new-technology/2020/03/01/esxi-conf/</url>
-    <content><![CDATA[<div class="note success">
-            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　Firewall v18をESXi（ｖ6.7）上で稼働させるために、ホームゲートウェイの後ろに、XGを挟み込んだネットワーク全体の考え方を学びます。また、ESXi上で2枚のnicを利用し仮想スイッチの設定を行い、2枚のnicを持った仮想マシンを作成する環境が構築できるようになります。</p>
-          </div>
-
-<a id="more"></a>
-
-<div class="note primary no-icon">
-            <h2 id="ネットワークの確認"><a href="#ネットワークの確認" class="headerlink" title="ネットワークの確認"></a>ネットワークの確認</h2>
-          </div>
-
-<ol>
-<li>ESXiのWeb管理画面にログイン後、左ペインの「ネットワーク」をクリック</li>
-<li>「物理NIC」のタブをクリック<br>　以下の画面のように、ESXiに認識されているNICの一覧がリストされます</li>
-</ol>
-<img src="/new-technology/2020/03/01/esxi-conf/conf_esxi.png" class="" title="alt">
-
-<p> 　1GbpsのNICであれば、ドライバーはne1000として認識されています。（環境にもより異なりますが）vmnic0、vmnic1という物理NICが2つ表示されている事を確認してください。</p>
- <div class="note warning">
-            <p> 　物理NICが1つしかない場合は、XG Firewallのセットアップはできません。</p>
-          </div>
-
-<div class="note primary no-icon">
-            <h2 id="ESXiを利用したXG-Firewallの最終構成"><a href="#ESXiを利用したXG-Firewallの最終構成" class="headerlink" title="ESXiを利用したXG Firewallの最終構成"></a>ESXiを利用したXG Firewallの最終構成</h2>
-          </div>
-
-<p>　ESXiにおけるネットワークの構成は、物理NICと仮想スイッチとの関係を理解する事が必要です。以下の図のように、ESXiにおける物理NICはケーブルとして見立て、実際に仮想マシンが複数台存在する事を鑑み、ESXiの中にスイッチングハブが存在していると考えてください。</p>
-<img src="/new-technology/2020/03/01/esxi-conf/vswitch.png" class="" title="alt">
-
- <div class="note info">
-            <p>便宜上、構成図にLinuxの仮想マシンを記載していますが、これまでのセットアップでは存在していません。</p>
-          </div>
-
-<div class="note primary no-icon">
-            <h2 id="現時点でのセットアップ状況の確認"><a href="#現時点でのセットアップ状況の確認" class="headerlink" title="現時点でのセットアップ状況の確認"></a>現時点でのセットアップ状況の確認</h2>
-          </div>
-
-<p>　ここまでのセットアップで、以下の構成になっています。</p>
-<ul>
-<li>物理NICであるvmnic0、vmnic1</li>
-<li>バーチャルスイッチのvSwitch0</li>
-<li>ネットワークポート（仮想IP）として、Lan側の管理用のManagement Networkおよびデフォルトで仮想マシンのために作成されているVM Network</li>
-</ul>
-<div class="note primary no-icon">
-            <h2 id="Wanのための仮想スイッチの作成"><a href="#Wanのための仮想スイッチの作成" class="headerlink" title="Wanのための仮想スイッチの作成"></a>Wanのための仮想スイッチの作成</h2>
-          </div>
-
-<img src="/new-technology/2020/03/01/esxi-conf/vswitch1.png" class="" title="alt">
-
-<p> 次に、XGのWan側インタフェースを担う仮想スイッチを追加し、LanとWanとのネットワークポートを追加する事になります（赤字の部分）。</p>
-<ol>
-<li>ESXiの管理画面の左ペイン、ネットワークをクリック、続いて仮想スイッチのタブをクリックします。</li>
-<li>標準仮想スイッチの追加をクリックします。</li>
-<li>Wan側の仮想スイッチを作成するため、ここでは、vSwitch1と命名します。MTUは1500のままで構いません。</li>
-</ol>
-<p>これで、以下の通り、仮想スイッチの作成は完了です。</p>
-<img src="/new-technology/2020/03/01/esxi-conf/vswitch2.png" class="" title="alt">
-
-<div class="note primary no-icon">
-            <h2 id="ネットワークポートの作成"><a href="#ネットワークポートの作成" class="headerlink" title="ネットワークポートの作成"></a>ネットワークポートの作成</h2>
-          </div>
-
-<ol>
-<li>vSwitch1をクリックし、物理NICのWan向けである、vmnic1と関連付けられている事を確認してください。</li>
-<li>XGのLanとWanのネットワークポートを作成します。左ペインのネットワークからポートグループのタブをクリックし、ポートグループの追加を選択します。</li>
-<li>新規ポートグループとして、LanはここではXG-Lanと命名し作成します。Lanなので、vSwitch0を関連づけます。</li>
-<li>続いてWanのために、XG-Wanと命名し、vSwitch1と関連づけます。</li>
-</ol>
-<p>　これらの設定が終わり、Lan側のネットワーク構成は以下の通りとなります。</p>
-<img src="/new-technology/2020/03/01/esxi-conf/vswitch3.png" class="" title="alt">
-
-<p>　また、Wan側のネットワーク構成は以下の通りです。</p>
-<img src="/new-technology/2020/03/01/esxi-conf/vswitch4.png" class="" title="alt">
-
-<p>　これで、ESXiのネットワーク設定は完了となります。<br>　面倒ですが、一旦またPCのネットワークを元に戻し、ホームゲートウェイに接続します。そしてXG Firewallのモジュールをダウンロードしてまいりましょう。</p>
-]]></content>
-      <categories>
-        <category>Software</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-        <tag>ESXi</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>VMware vSphere Hypervisor（ESXi）のインストール</title>
     <url>/new-technology/2020/02/29/esxi/</url>
     <content><![CDATA[<div class="note success">
@@ -1340,6 +1254,92 @@
       </categories>
       <tags>
         <tag>XG Firewall</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>VMware vSphere Hypervisor（ESXi）の設定</title>
+    <url>/new-technology/2020/03/01/esxi-conf/</url>
+    <content><![CDATA[<div class="note success">
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　Firewall v18をESXi（ｖ6.7）上で稼働させるために、ホームゲートウェイの後ろに、XGを挟み込んだネットワーク全体の考え方を学びます。また、ESXi上で2枚のnicを利用し仮想スイッチの設定を行い、2枚のnicを持った仮想マシンを作成する環境が構築できるようになります。</p>
+          </div>
+
+<a id="more"></a>
+
+<div class="note primary no-icon">
+            <h2 id="ネットワークの確認"><a href="#ネットワークの確認" class="headerlink" title="ネットワークの確認"></a>ネットワークの確認</h2>
+          </div>
+
+<ol>
+<li>ESXiのWeb管理画面にログイン後、左ペインの「ネットワーク」をクリック</li>
+<li>「物理NIC」のタブをクリック<br>　以下の画面のように、ESXiに認識されているNICの一覧がリストされます</li>
+</ol>
+<img src="/new-technology/2020/03/01/esxi-conf/conf_esxi.png" class="" title="alt">
+
+<p> 　1GbpsのNICであれば、ドライバーはne1000として認識されています。（環境にもより異なりますが）vmnic0、vmnic1という物理NICが2つ表示されている事を確認してください。</p>
+ <div class="note warning">
+            <p> 　物理NICが1つしかない場合は、XG Firewallのセットアップはできません。</p>
+          </div>
+
+<div class="note primary no-icon">
+            <h2 id="ESXiを利用したXG-Firewallの最終構成"><a href="#ESXiを利用したXG-Firewallの最終構成" class="headerlink" title="ESXiを利用したXG Firewallの最終構成"></a>ESXiを利用したXG Firewallの最終構成</h2>
+          </div>
+
+<p>　ESXiにおけるネットワークの構成は、物理NICと仮想スイッチとの関係を理解する事が必要です。以下の図のように、ESXiにおける物理NICはケーブルとして見立て、実際に仮想マシンが複数台存在する事を鑑み、ESXiの中にスイッチングハブが存在していると考えてください。</p>
+<img src="/new-technology/2020/03/01/esxi-conf/vswitch.png" class="" title="alt">
+
+ <div class="note info">
+            <p>便宜上、構成図にLinuxの仮想マシンを記載していますが、これまでのセットアップでは存在していません。</p>
+          </div>
+
+<div class="note primary no-icon">
+            <h2 id="現時点でのセットアップ状況の確認"><a href="#現時点でのセットアップ状況の確認" class="headerlink" title="現時点でのセットアップ状況の確認"></a>現時点でのセットアップ状況の確認</h2>
+          </div>
+
+<p>　ここまでのセットアップで、以下の構成になっています。</p>
+<ul>
+<li>物理NICであるvmnic0、vmnic1</li>
+<li>バーチャルスイッチのvSwitch0</li>
+<li>ネットワークポート（仮想IP）として、Lan側の管理用のManagement Networkおよびデフォルトで仮想マシンのために作成されているVM Network</li>
+</ul>
+<div class="note primary no-icon">
+            <h2 id="Wanのための仮想スイッチの作成"><a href="#Wanのための仮想スイッチの作成" class="headerlink" title="Wanのための仮想スイッチの作成"></a>Wanのための仮想スイッチの作成</h2>
+          </div>
+
+<img src="/new-technology/2020/03/01/esxi-conf/vswitch1.png" class="" title="alt">
+
+<p> 次に、XGのWan側インタフェースを担う仮想スイッチを追加し、LanとWanとのネットワークポートを追加する事になります（赤字の部分）。</p>
+<ol>
+<li>ESXiの管理画面の左ペイン、ネットワークをクリック、続いて仮想スイッチのタブをクリックします。</li>
+<li>標準仮想スイッチの追加をクリックします。</li>
+<li>Wan側の仮想スイッチを作成するため、ここでは、vSwitch1と命名します。MTUは1500のままで構いません。</li>
+</ol>
+<p>これで、以下の通り、仮想スイッチの作成は完了です。</p>
+<img src="/new-technology/2020/03/01/esxi-conf/vswitch2.png" class="" title="alt">
+
+<div class="note primary no-icon">
+            <h2 id="ネットワークポートの作成"><a href="#ネットワークポートの作成" class="headerlink" title="ネットワークポートの作成"></a>ネットワークポートの作成</h2>
+          </div>
+
+<ol>
+<li>vSwitch1をクリックし、物理NICのWan向けである、vmnic1と関連付けられている事を確認してください。</li>
+<li>XGのLanとWanのネットワークポートを作成します。左ペインのネットワークからポートグループのタブをクリックし、ポートグループの追加を選択します。</li>
+<li>新規ポートグループとして、LanはここではXG-Lanと命名し作成します。Lanなので、vSwitch0を関連づけます。</li>
+<li>続いてWanのために、XG-Wanと命名し、vSwitch1と関連づけます。</li>
+</ol>
+<p>　これらの設定が終わり、Lan側のネットワーク構成は以下の通りとなります。</p>
+<img src="/new-technology/2020/03/01/esxi-conf/vswitch3.png" class="" title="alt">
+
+<p>　また、Wan側のネットワーク構成は以下の通りです。</p>
+<img src="/new-technology/2020/03/01/esxi-conf/vswitch4.png" class="" title="alt">
+
+<p>　これで、ESXiのネットワーク設定は完了となります。<br>　面倒ですが、一旦またPCのネットワークを元に戻し、ホームゲートウェイに接続します。そしてXG Firewallのモジュールをダウンロードしてまいりましょう。</p>
+]]></content>
+      <categories>
+        <category>Software</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+        <tag>ESXi</tag>
       </tags>
   </entry>
   <entry>
@@ -1746,6 +1746,107 @@
       </tags>
   </entry>
   <entry>
+    <title>XG Firewall VPNにスマホから接続する</title>
+    <url>/new-technology/2020/03/31/vpn-iphone/</url>
+    <content><![CDATA[<div class="note success">
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>スマホ（iPhone、Android）からXG FirewallのVPNへ接続できるようになります。ワンタイムパスワードの設定も可能です。</p>
+          </div>
+<a id="more"></a>
+
+<div class="note primary no-icon">
+            <h2 id="スマホからXG-Firewall-VPNに接続する事前準備"><a href="#スマホからXG-Firewall-VPNに接続する事前準備" class="headerlink" title="スマホからXG Firewall VPNに接続する事前準備"></a>スマホからXG Firewall VPNに接続する事前準備</h2>
+          </div>
+
+<p>　前回の記事でPC（WindowsおよびmacOS）からXGの<span class="label info">VPN（Sophos Connect）</span>にワンタイムパスワードを使って安全に接続できるようになりました。ここでは、スマホからVPNへ接続できるように設定していきます。この記事では、XG側に一通りVPNの設定が終わっている事を前提としています。以下の記事も参考にしてください。</p>
+<p>　 <a href="/new-technology/2020/03/28/vpn/" title="XG Firewall VPNについて">XG Firewall VPNについて</a><br>　 <a href="/new-technology/2020/03/28/vpnotp/" title="XG Firewall VPNにワンタイムパスワードを設定する">XG Firewall VPNにワンタイムパスワードを設定する</a></p>
+<p>　前提条件は以下の通りです。なお、この記事では、ワンタイムパスワードを必ず必須とはしていません。PCとは異なり、移動しながら使うスマホは毎回ワンタイムパスワードを入力するのでは利便性に欠けます。ここは利便性とセキュリティの安全面を比較し判断という事になるかとおもいます。</p>
+<ul>
+<li>XGにVPN(Sophos Connect)の設定を終えている</li>
+<li>XGの外側（インターネット側）にホームゲートウェイがあり、ホームゲートウェイからXGに対し必要なVPNのパケットを転送出来ている</li>
+</ul>
+<div class="note primary no-icon">
+            <h2 id="iOS-iPhone-からVPN接続のための設定を行う"><a href="#iOS-iPhone-からVPN接続のための設定を行う" class="headerlink" title="iOS(iPhone)からVPN接続のための設定を行う"></a>iOS(iPhone)からVPN接続のための設定を行う</h2>
+          </div>
+
+<p>　まず、<span class="label info">PC</span>から<span class="label info">LAN</span>環境にて、XGのユーザーポータル<code>https://XGのIPアドレス/</code>に接続します。ユーザーポータルには、前回までに作成したVPNユーザーでログインします。ポータルのログイン後には、以下の画面のように、iPhone（iOS）のIPSec VPNに必要な設定ファイルをダウンロードできるようになっています。</p>
+<img src="/new-technology/2020/03/31/vpn-iphone/iphone.png" class="" title="alt">
+
+<div class="note warning">
+            <p>ダウンロードした設定ファイルは一部修正が必要ですので、PCからダウンロード・修正の後、iOSにインストールする事をお勧めします。</p>
+          </div>
+
+<p>　ファイルをダウンロードしたらメモ帳やテキストエディットなどで設定ファイルを開きます。以下はファイルの先頭からの抜粋ですが、11行目にXGのWAN側のIPアドレスが記載されている行があります。内容は以下の通りです。</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plist</span> <span class="attr">version</span>=<span class="string">"1.0"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">key</span>&gt;</span>PayloadContent<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">key</span>&gt;</span>IPSec<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">key</span>&gt;</span>AuthenticationMethod<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">string</span>&gt;</span>SharedSecret<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">key</span>&gt;</span>RemoteAddress<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">string</span>&gt;</span>192.168.x.x<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>　上記のIPアドレスをXGで設定してあるダイナミックDNSのホスト名に書き換えます（Sophos社が提供しているダイナミックDNSであれば、xxxx.myfirewall.coです）。その後、ファイルを保存し、iCloudまたはメールなどでiPhoneに転送し、iPhoneから設定ファイルをインストールします。macOSだとFinderからファイルを選んでAirDropでiPhoneに送信すると簡単ですね。iPhoneではプロファイルのインストール時には、最初にiPhoneのパスワードを求められますのでiPhoneのパスワードを入力します。<br>　次にXGの接続ユーザーのパスワードを求められますが、ここはワンタイムパスワードの有無で設定が異なります。前回の記事ではワンタイムパスワードが必要なユーザーを作成しましたが、ワンタイムパスワードが不要であれば、ワンタイムパスワードを使わないユーザーを改めて作成してください。</p>
+<ul>
+<li>以下の場合は、XGの接続ユーザーのパスワードを入力します<ul>
+<li>ワンタイムパスワードは利用しない</li>
+<li>iPhoneにパスワードを記憶させたい</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>以下の場合は、パスワードを入力せずプロファイルのインストールを完了させます<ul>
+<li>ワンタイムパスワードを利用する</li>
+<li>iPhoneにパスワードを記憶させたくない</li>
+</ul>
+</li>
+</ul>
+<p>　これでプロファイルのインストールは完了です。</p>
+<div class="note primary no-icon">
+            <h2 id="iOS-iPhone-からVPNに接続する"><a href="#iOS-iPhone-からVPNに接続する" class="headerlink" title="iOS(iPhone)からVPNに接続する"></a>iOS(iPhone)からVPNに接続する</h2>
+          </div>
+
+<p>　早速、iPhoneからVPNに接続します。設定アプリからVPNを選択、XGの接続先が選択されている状態で<span class="label info">状況</span>のトグルスイッチをオンにします。パスワードが設定済みの方は1秒も掛からず、すぐにXGへの接続が完了します。<br>　ワンタイムパスワードを設定している方、或いはパスワードを記憶させていない方は、パスワード入力のポップアップが表示されます。ワンタイムパスワードは、パスワードのあと続けてワンタイムパスワードの6つの数字を続けて入力します。一旦ポップアップが表示されると他のアプリに切り替えられないので一旦キャンセルします。ワンタイムパスワードアプリで6桁の数字を記憶するかコピーするなどし、最大30秒以内で設定アプリに再度切り替え、VPNのパスワードを完成させ接続する事になります。<br>　ちょっと最後が慌ただしいのですが、iPhoneからXGのVPNへ接続できるようになりました。</p>
+<div class="note primary no-icon">
+            <h2 id="AndroidからVPN接続のための設定を行う"><a href="#AndroidからVPN接続のための設定を行う" class="headerlink" title="AndroidからVPN接続のための設定を行う"></a>AndroidからVPN接続のための設定を行う</h2>
+          </div>
+
+<p>　AndroidからVPNに接続する場合は、以下の設定を行います。今回の実例はAndroidのバージョン9のタブレットで説明します。機種によって操作は異なるかとおもいますが、ご容赦ください。<br>　無線とネットワーク→VPN→<span class="label info">VPNネットワークの追加</span>をタップします。</p>
+<table>
+<thead>
+<tr>
+<th>説明</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>名前</td>
+<td>接続名を入力します</td>
+</tr>
+<tr>
+<td>タイプ</td>
+<td><span class="label info">IPSec Xauth PSK</span>を選択します</td>
+</tr>
+<tr>
+<td>サーバー</td>
+<td>xxx.myfirewall.coなどのダイナミックDNSのホスト名を入力します</td>
+</tr>
+<tr>
+<td>IPSec ID</td>
+<td>空白のままで構いません</td>
+</tr>
+<tr>
+<td>IPSec事前共有鍵</td>
+<td>XGで設定した共有鍵を入力します</td>
+</tr>
+</tbody></table>
+<img src="/new-technology/2020/03/31/vpn-iphone/android.png" class="" title="alt">
+<p>　この後、ユーザーIDとパスワードを入力し、接続します。iOSと同様に、ワンタイムパスワードを利用する場合は、パスワードの後ろにワンタイムパスワード（6桁の数字）を続けて入力します。こちらも接続は一瞬で完了します。</p>
+<p>　Androidに関しては1点、注意点があります。Androidは、SSLインスペクションについて、Chromeブラウザ以外のアプリからは使えない前提があります。そこで、Android専用のVPNユーザーを作成しSSLインスペクションの対象からAndroidユーザーを除外するなどの設定が必要となります。</p>
+<p>　これで、スマホからもXGのVPNに接続する事が出来ました。スマホからXG Firewallを活用した安全なネットアクセスや宅内に設置してあるサーバーの操作ができるのは大変魅力的だとおもいます。</p>
+]]></content>
+      <categories>
+        <category>Security</category>
+        <category>VPN</category>
+        <category>ワンタイムパスワード</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>XG Firewall VPNについて</title>
     <url>/new-technology/2020/03/28/vpn/</url>
     <content><![CDATA[<div class="note success">
@@ -1909,181 +2010,6 @@
       <categories>
         <category>Security</category>
         <category>VPN</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>XG Firewall VPNにスマホから接続する</title>
-    <url>/new-technology/2020/03/31/vpn-iphone/</url>
-    <content><![CDATA[<div class="note success">
-            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>スマホ（iPhone、Android）からXG FirewallのVPNへ接続できるようになります。ワンタイムパスワードの設定も可能です。</p>
-          </div>
-<a id="more"></a>
-
-<div class="note primary no-icon">
-            <h2 id="スマホからXG-Firewall-VPNに接続する事前準備"><a href="#スマホからXG-Firewall-VPNに接続する事前準備" class="headerlink" title="スマホからXG Firewall VPNに接続する事前準備"></a>スマホからXG Firewall VPNに接続する事前準備</h2>
-          </div>
-
-<p>　前回の記事でPC（WindowsおよびmacOS）からXGの<span class="label info">VPN（Sophos Connect）</span>にワンタイムパスワードを使って安全に接続できるようになりました。ここでは、スマホからVPNへ接続できるように設定していきます。この記事では、XG側に一通りVPNの設定が終わっている事を前提としています。以下の記事も参考にしてください。</p>
-<p>　 <a href="/new-technology/2020/03/28/vpn/" title="XG Firewall VPNについて">XG Firewall VPNについて</a><br>　 <a href="/new-technology/2020/03/28/vpnotp/" title="XG Firewall VPNにワンタイムパスワードを設定する">XG Firewall VPNにワンタイムパスワードを設定する</a></p>
-<p>　前提条件は以下の通りです。なお、この記事では、ワンタイムパスワードを必ず必須とはしていません。PCとは異なり、移動しながら使うスマホは毎回ワンタイムパスワードを入力するのでは利便性に欠けます。ここは利便性とセキュリティの安全面を比較し判断という事になるかとおもいます。</p>
-<ul>
-<li>XGにVPN(Sophos Connect)の設定を終えている</li>
-<li>XGの外側（インターネット側）にホームゲートウェイがあり、ホームゲートウェイからXGに対し必要なVPNのパケットを転送出来ている</li>
-</ul>
-<div class="note primary no-icon">
-            <h2 id="iOS-iPhone-からVPN接続のための設定を行う"><a href="#iOS-iPhone-からVPN接続のための設定を行う" class="headerlink" title="iOS(iPhone)からVPN接続のための設定を行う"></a>iOS(iPhone)からVPN接続のための設定を行う</h2>
-          </div>
-
-<p>　まず、<span class="label info">PC</span>から<span class="label info">LAN</span>環境にて、XGのユーザーポータル<code>https://XGのIPアドレス/</code>に接続します。ユーザーポータルには、前回までに作成したVPNユーザーでログインします。ポータルのログイン後には、以下の画面のように、iPhone（iOS）のIPSec VPNに必要な設定ファイルをダウンロードできるようになっています。</p>
-<img src="/new-technology/2020/03/31/vpn-iphone/iphone.png" class="" title="alt">
-
-<div class="note warning">
-            <p>ダウンロードした設定ファイルは一部修正が必要ですので、PCからダウンロード・修正の後、iOSにインストールする事をお勧めします。</p>
-          </div>
-
-<p>　ファイルをダウンロードしたらメモ帳やテキストエディットなどで設定ファイルを開きます。以下はファイルの先頭からの抜粋ですが、11行目にXGのWAN側のIPアドレスが記載されている行があります。内容は以下の通りです。</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plist</span> <span class="attr">version</span>=<span class="string">"1.0"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">key</span>&gt;</span>PayloadContent<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">key</span>&gt;</span>IPSec<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">key</span>&gt;</span>AuthenticationMethod<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">string</span>&gt;</span>SharedSecret<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">key</span>&gt;</span>RemoteAddress<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">string</span>&gt;</span>192.168.x.x<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>　上記のIPアドレスをXGで設定してあるダイナミックDNSのホスト名に書き換えます（Sophos社が提供しているダイナミックDNSであれば、xxxx.myfirewall.coです）。その後、ファイルを保存し、iCloudまたはメールなどでiPhoneに転送し、iPhoneから設定ファイルをインストールします。macOSだとFinderからファイルを選んでAirDropでiPhoneに送信すると簡単ですね。iPhoneではプロファイルのインストール時には、最初にiPhoneのパスワードを求められますのでiPhoneのパスワードを入力します。<br>　次にXGの接続ユーザーのパスワードを求められますが、ここはワンタイムパスワードの有無で設定が異なります。前回の記事ではワンタイムパスワードが必要なユーザーを作成しましたが、ワンタイムパスワードが不要であれば、ワンタイムパスワードを使わないユーザーを改めて作成してください。</p>
-<ul>
-<li>以下の場合は、XGの接続ユーザーのパスワードを入力します<ul>
-<li>ワンタイムパスワードは利用しない</li>
-<li>iPhoneにパスワードを記憶させたい</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li>以下の場合は、パスワードを入力せずプロファイルのインストールを完了させます<ul>
-<li>ワンタイムパスワードを利用する</li>
-<li>iPhoneにパスワードを記憶させたくない</li>
-</ul>
-</li>
-</ul>
-<p>　これでプロファイルのインストールは完了です。</p>
-<div class="note primary no-icon">
-            <h2 id="iOS-iPhone-からVPNに接続する"><a href="#iOS-iPhone-からVPNに接続する" class="headerlink" title="iOS(iPhone)からVPNに接続する"></a>iOS(iPhone)からVPNに接続する</h2>
-          </div>
-
-<p>　早速、iPhoneからVPNに接続します。設定アプリからVPNを選択、XGの接続先が選択されている状態で<span class="label info">状況</span>のトグルスイッチをオンにします。パスワードが設定済みの方は1秒も掛からず、すぐにXGへの接続が完了します。<br>　ワンタイムパスワードを設定している方、或いはパスワードを記憶させていない方は、パスワード入力のポップアップが表示されます。ワンタイムパスワードは、パスワードのあと続けてワンタイムパスワードの6つの数字を続けて入力します。一旦ポップアップが表示されると他のアプリに切り替えられないので一旦キャンセルします。ワンタイムパスワードアプリで6桁の数字を記憶するかコピーするなどし、最大30秒以内で設定アプリに再度切り替え、VPNのパスワードを完成させ接続する事になります。<br>　ちょっと最後が慌ただしいのですが、iPhoneからXGのVPNへ接続できるようになりました。</p>
-<div class="note primary no-icon">
-            <h2 id="AndroidからVPN接続のための設定を行う"><a href="#AndroidからVPN接続のための設定を行う" class="headerlink" title="AndroidからVPN接続のための設定を行う"></a>AndroidからVPN接続のための設定を行う</h2>
-          </div>
-
-<p>　AndroidからVPNに接続する場合は、以下の設定を行います。今回の実例はAndroidのバージョン9のタブレットで説明します。機種によって操作は異なるかとおもいますが、ご容赦ください。<br>　無線とネットワーク→VPN→<span class="label info">VPNネットワークの追加</span>をタップします。</p>
-<table>
-<thead>
-<tr>
-<th>説明</th>
-<th>内容</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>名前</td>
-<td>接続名を入力します</td>
-</tr>
-<tr>
-<td>タイプ</td>
-<td><span class="label info">IPSec Xauth PSK</span>を選択します</td>
-</tr>
-<tr>
-<td>サーバー</td>
-<td>xxx.myfirewall.coなどのダイナミックDNSのホスト名を入力します</td>
-</tr>
-<tr>
-<td>IPSec ID</td>
-<td>空白のままで構いません</td>
-</tr>
-<tr>
-<td>IPSec事前共有鍵</td>
-<td>XGで設定した共有鍵を入力します</td>
-</tr>
-</tbody></table>
-<img src="/new-technology/2020/03/31/vpn-iphone/android.png" class="" title="alt">
-<p>　この後、ユーザーIDとパスワードを入力し、接続します。iOSと同様に、ワンタイムパスワードを利用する場合は、パスワードの後ろにワンタイムパスワード（6桁の数字）を続けて入力します。こちらも接続は一瞬で完了します。</p>
-<p>　Androidに関しては1点、注意点があります。Androidは、SSLインスペクションについて、Chromeブラウザ以外のアプリからは使えない前提があります。そこで、Android専用のVPNユーザーを作成しSSLインスペクションの対象からAndroidユーザーを除外するなどの設定が必要となります。</p>
-<p>　これで、スマホからもXGのVPNに接続する事が出来ました。スマホからXG Firewallを活用した安全なネットアクセスや宅内に設置してあるサーバーの操作ができるのは大変魅力的だとおもいます。</p>
-]]></content>
-      <categories>
-        <category>Security</category>
-        <category>VPN</category>
-        <category>ワンタイムパスワード</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>XG Firewall VPNにワンタイムパスワードを設定する</title>
-    <url>/new-technology/2020/03/28/vpnotp/</url>
-    <content><![CDATA[<div class="note success">
-            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>PC（Windows、macOS）からXG FirewallのVPNへ接続しているユーザーに、スマホを使ったワンタイムパスワードによる認証機能を追加し、セキュリティを高められるようになります。</p>
-          </div>
-<a id="more"></a>
-
-<div class="note primary no-icon">
-            <h2 id="XGが提供するVPNのワンタイムパスワードについて"><a href="#XGが提供するVPNのワンタイムパスワードについて" class="headerlink" title="XGが提供するVPNのワンタイムパスワードについて"></a>XGが提供するVPNのワンタイムパスワードについて</h2>
-          </div>
-
-<p>　XGのVPNにおいて、SSL-VPNとIPSecはワンタイムパスワードが設定できます。SSHのように、パスワードに加え、事前共有鍵を持つ事でずいぶんセキュリティは高まります。しかし、さらにワンタイムパスワードを加える事で、侵入者に突破される可能性はほぼ無いものと考えます。出先や多くの人がいる場所で端末に対し、IDとパスワードを入力するのも大きなリスクです。端末が指紋認証などで守られている前提で、XGのSophos ConnectはIDおよびパスワードを接続アプリケーションに保存しておけますので、ワンタイムパスワードのみでVPNに接続できます。</p>
-<div class="note primary no-icon">
-            <h2 id="ワンタイムパスワードのアプリケーションについて"><a href="#ワンタイムパスワードのアプリケーションについて" class="headerlink" title="ワンタイムパスワードのアプリケーションについて"></a>ワンタイムパスワードのアプリケーションについて</h2>
-          </div>
-
-<p>　ワンタイムパスワードについては、定番のGoogleのオーセンティケーターなど、ご存知の方も多いとおもいます。Googleのオーセンティケーターは何故かXGが表示するワンタイムパスワードのQRコードが読み込めません。Sophosからは、以下のスマホアプリが提供されています。</p>
-<blockquote>
-<p><a href="https://apps.apple.com/jp/app/sophos-intercept-x-for-mobile/id1086924662" target="_blank" rel="noopener">Sophos Intercept X for Mobile(iOS)</a><br><a href="https://play.google.com/store/apps/details?id=com.sophos.smsec" target="_blank" rel="noopener">Sophos Intercept X for Mobile(Android)</a></p>
-</blockquote>
-<p>　なお、私は複数の端末でワンタイムパスワードの同期ができる<a href="https://apps.apple.com/jp/app/authy/id494168017" target="_blank" rel="noopener">Authy</a>を利用しています。</p>
-<div class="note primary no-icon">
-            <h2 id="ワンタイムパスワードの基本設定"><a href="#ワンタイムパスワードの基本設定" class="headerlink" title="ワンタイムパスワードの基本設定"></a>ワンタイムパスワードの基本設定</h2>
-          </div>
-
-<p>　XGにおけるワンタイムパスワードの設定は、左ペインの<span class="label info">認証</span>から<span class="label info">ワンタイムパスワード</span>へと進んでください。ここで以下の通り、設定ボタンをクリックし、以下の項目の設定を行います。</p>
-<ul>
-<li><span class="label info">ワンタイムパスワード</span>のトグルをオンにします</li>
-<li><span class="label info">全ユーザーのOTP</span>のトグルはオフにします</li>
-<li><span class="label info">ユーザーのOTPトークンを自動生成</span>のトグルはオンにします</li>
-<li><span class="label info">以下のユーザーとグループにOTPが必要</span>のリストボックスからは、Open Groupを選択します</li>
-<li><span class="label info">以下について、OTPを有効化</span>は、<span class="label info">ユーザーポータル</span>、<span class="label info">IPSecリモートアクセス</span>にチェックします</li>
-<li>最後に適用ボタンをクリックします</li>
-</ul>
-<img src="/new-technology/2020/03/28/vpnotp/otp3.png" class="" title="alt">
-
-<div class="note primary no-icon">
-            <h2 id="ユーザーポータル画面でのワンタイムパスワードの自動生成"><a href="#ユーザーポータル画面でのワンタイムパスワードの自動生成" class="headerlink" title="ユーザーポータル画面でのワンタイムパスワードの自動生成"></a>ユーザーポータル画面でのワンタイムパスワードの自動生成</h2>
-          </div>
-
-<p>　続いて、ユーザーポータルという画面にログインします。これは管理者向けではなく、ユーザー向けに提供されているものです。XGの管理者メニューは、デフォルトでは、<code>https://XGのIPアドレス:4444/</code>になっていますが、<code>https://XGのIPアドレス/</code>に接続するとユーザーポータル画面が開きます。<br>　この画面では、VPN向けに作成したユーザーとパスワードでログインします。すると、次にワンタイムパスワードのトークンが自動生成され、QRコードが表示されます。</p>
-<img src="/new-technology/2020/03/28/vpnotp/otp1.png" class="" title="alt">
-
-<p>　ここで、必ずワンタイムパスワードのアプリでQRコードを読み込み、アプリにトークンを取り込んでください。完了後、XGのメニューで<span class="label info">ログインに進む</span>をクリックすると、再びログイン画面になります。ここではユーザーはそのまま入力、パスワードの部分は、パスワード＋ワンタイムパスワードの数字6桁を続けて入力します。ユーザーポータルにログインできれば、ワンタイムパスワードは正しくアプリに取り込まれています。</p>
-<p>　再び、XGの管理画面にadminでログインします。左ペインの<span class="label info">認証</span>から<span class="label info">ワンタイムパスワード</span>に進むと、<span class="label info">シークレット</span>が生成されている事がわかります。</p>
-<img src="/new-technology/2020/03/28/vpnotp/otp2.png" class="" title="alt">
-
-<p>　これで、IPsecVPNにはワンタイムパスワードが必須となりました。以前作成したSophosConnectクライアントの接続設定ファイルについて、再設定が必要になります。前回のVPNのセットアップを行ったところで、クライアントソフトウェアをダウンロードしました。</p>
-<blockquote>
-<p>（前回の記事）<a href="/new-technology/2020/03/28/vpn/" title="XG Firewall VPNについて">XG Firewall VPNについて</a></p>
-</blockquote>
-<div class="note primary no-icon">
-            <h2 id="scadminツールでワンタイムパスワード対応の設定ファイルを作成する"><a href="#scadminツールでワンタイムパスワード対応の設定ファイルを作成する" class="headerlink" title="scadminツールでワンタイムパスワード対応の設定ファイルを作成する"></a>scadminツールでワンタイムパスワード対応の設定ファイルを作成する</h2>
-          </div>
-
-<p>　今回はSophosConnectクライアントではなく、もう1つの設定ファイル作成ツールである、scadminツールをWindowsにインストールします。このアプリケーションはmacOS版がありませんので、Windowsで設定する事になります。出力された設定ファイルは、Windows、mac共に共通で利用出来ますので、それをSophosConnectクライアントに取り込みます。scadmin.msiをインストールし起動します。OPENボタンを押して、以前に生成された接続設定ファイル（拡張子tgb）ファイルを開きます。</p>
-<img src="/new-technology/2020/03/28/vpnotp/otp4.png" class="" title="alt">
-
-<p>　設定は<span class="label info">Allow Password Saving</span>と、<span class="label info">Prompt for 2FA</span>のトグルスイッチをOnにするのみです。そして、右下のSaveで保存してください。今回はファイルの拡張子は、scxとなっています。</p>
-<p>　最後に、Sophos Connect Clientより、再度作成した設定ファイル（scx）を読み込み完了です。IDとパスワードにワンタイムパスワードをセットし、接続できる事を確認して下さい。次回の接続からは、以下の画面のように、ワンタイムパスワードのみを入力し接続する事になります。</p>
-<img src="/new-technology/2020/03/28/vpnotp/otp5.png" class="" title="alt">
-
-<p>　これまでの設定でワンタイムパスワードによる堅牢な環境でLANの機器にアクセスしたり、安全なWebブラウジングができるようになりました。</p>
-]]></content>
-      <categories>
-        <category>Security</category>
-        <category>VPN</category>
-        <category>ワンタイムパスワード</category>
       </categories>
       <tags>
         <tag>XG Firewall</tag>
@@ -2423,5 +2349,79 @@
 <p>　単純にインストールして「できました」ではなく、導入後のITの使い方こそが重要と考えています。最近は個人利用に限り利用無償のソフトウェアが増えてきました。また、商用利用であっても無償となるオープンソースソフトウェアの活用も見逃せません。これは大変ありがたい話で、座学ではなかなか理解が進まない固有技術であっても、こういった無料のプロダクトを通じて知見を高める事が可能となっています。</p>
 <p>　ここでは、エンタープライズやミッションクリティカルなITに関するテーマは扱いません。私自身実務でITに関わっていますが、実務とは少し距離を置いたところで、自己啓発と家庭向けのIT活用を考えたいと思っています。</p>
 ]]></content>
+  </entry>
+  <entry>
+    <title>XG Firewall VPNにワンタイムパスワードを設定する</title>
+    <url>/new-technology/2020/03/28/vpnotp/</url>
+    <content><![CDATA[<div class="note success">
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>PC（Windows、macOS）からXG FirewallのVPNへ接続しているユーザーに、スマホを使ったワンタイムパスワードによる認証機能を追加し、セキュリティを高められるようになります。</p>
+          </div>
+<a id="more"></a>
+
+<div class="note primary no-icon">
+            <h2 id="XGが提供するVPNのワンタイムパスワードについて"><a href="#XGが提供するVPNのワンタイムパスワードについて" class="headerlink" title="XGが提供するVPNのワンタイムパスワードについて"></a>XGが提供するVPNのワンタイムパスワードについて</h2>
+          </div>
+
+<p>　XGのVPNにおいて、SSL-VPNとIPSecはワンタイムパスワードが設定できます。SSHのように、パスワードに加え、事前共有鍵を持つ事でずいぶんセキュリティは高まります。しかし、さらにワンタイムパスワードを加える事で、侵入者に突破される可能性はほぼ無いものと考えます。出先や多くの人がいる場所で端末に対し、IDとパスワードを入力するのも大きなリスクです。端末が指紋認証などで守られている前提で、XGのSophos ConnectはIDおよびパスワードを接続アプリケーションに保存しておけますので、ワンタイムパスワードのみでVPNに接続できます。</p>
+<div class="note primary no-icon">
+            <h2 id="ワンタイムパスワードのアプリケーションについて"><a href="#ワンタイムパスワードのアプリケーションについて" class="headerlink" title="ワンタイムパスワードのアプリケーションについて"></a>ワンタイムパスワードのアプリケーションについて</h2>
+          </div>
+
+<p>　ワンタイムパスワードについては、定番のGoogleのオーセンティケーターなど、ご存知の方も多いとおもいます。Googleのオーセンティケーターは何故かXGが表示するワンタイムパスワードのQRコードが読み込めません。Sophosからは、以下のスマホアプリが提供されています。</p>
+<blockquote>
+<p><a href="https://apps.apple.com/jp/app/sophos-intercept-x-for-mobile/id1086924662" target="_blank" rel="noopener">Sophos Intercept X for Mobile(iOS)</a><br><a href="https://play.google.com/store/apps/details?id=com.sophos.smsec" target="_blank" rel="noopener">Sophos Intercept X for Mobile(Android)</a></p>
+</blockquote>
+<p>　なお、私は複数の端末でワンタイムパスワードの同期ができる<a href="https://apps.apple.com/jp/app/authy/id494168017" target="_blank" rel="noopener">Authy</a>を利用しています。</p>
+<div class="note primary no-icon">
+            <h2 id="ワンタイムパスワードの基本設定"><a href="#ワンタイムパスワードの基本設定" class="headerlink" title="ワンタイムパスワードの基本設定"></a>ワンタイムパスワードの基本設定</h2>
+          </div>
+
+<p>　XGにおけるワンタイムパスワードの設定は、左ペインの<span class="label info">認証</span>から<span class="label info">ワンタイムパスワード</span>へと進んでください。ここで以下の通り、設定ボタンをクリックし、以下の項目の設定を行います。</p>
+<ul>
+<li><span class="label info">ワンタイムパスワード</span>のトグルをオンにします</li>
+<li><span class="label info">全ユーザーのOTP</span>のトグルはオフにします</li>
+<li><span class="label info">ユーザーのOTPトークンを自動生成</span>のトグルはオンにします</li>
+<li><span class="label info">以下のユーザーとグループにOTPが必要</span>のリストボックスからは、Open Groupを選択します</li>
+<li><span class="label info">以下について、OTPを有効化</span>は、<span class="label info">ユーザーポータル</span>、<span class="label info">IPSecリモートアクセス</span>にチェックします</li>
+<li>最後に適用ボタンをクリックします</li>
+</ul>
+<img src="/new-technology/2020/03/28/vpnotp/otp3.png" class="" title="alt">
+
+<div class="note primary no-icon">
+            <h2 id="ユーザーポータル画面でのワンタイムパスワードの自動生成"><a href="#ユーザーポータル画面でのワンタイムパスワードの自動生成" class="headerlink" title="ユーザーポータル画面でのワンタイムパスワードの自動生成"></a>ユーザーポータル画面でのワンタイムパスワードの自動生成</h2>
+          </div>
+
+<p>　続いて、ユーザーポータルという画面にログインします。これは管理者向けではなく、ユーザー向けに提供されているものです。XGの管理者メニューは、デフォルトでは、<code>https://XGのIPアドレス:4444/</code>になっていますが、<code>https://XGのIPアドレス/</code>に接続するとユーザーポータル画面が開きます。<br>　この画面では、VPN向けに作成したユーザーとパスワードでログインします。すると、次にワンタイムパスワードのトークンが自動生成され、QRコードが表示されます。</p>
+<img src="/new-technology/2020/03/28/vpnotp/otp1.png" class="" title="alt">
+
+<p>　ここで、必ずワンタイムパスワードのアプリでQRコードを読み込み、アプリにトークンを取り込んでください。完了後、XGのメニューで<span class="label info">ログインに進む</span>をクリックすると、再びログイン画面になります。ここではユーザーはそのまま入力、パスワードの部分は、パスワード＋ワンタイムパスワードの数字6桁を続けて入力します。ユーザーポータルにログインできれば、ワンタイムパスワードは正しくアプリに取り込まれています。</p>
+<p>　再び、XGの管理画面にadminでログインします。左ペインの<span class="label info">認証</span>から<span class="label info">ワンタイムパスワード</span>に進むと、<span class="label info">シークレット</span>が生成されている事がわかります。</p>
+<img src="/new-technology/2020/03/28/vpnotp/otp2.png" class="" title="alt">
+
+<p>　これで、IPsecVPNにはワンタイムパスワードが必須となりました。以前作成したSophosConnectクライアントの接続設定ファイルについて、再設定が必要になります。前回のVPNのセットアップを行ったところで、クライアントソフトウェアをダウンロードしました。</p>
+<blockquote>
+<p>（前回の記事）<a href="/new-technology/2020/03/28/vpn/" title="XG Firewall VPNについて">XG Firewall VPNについて</a></p>
+</blockquote>
+<div class="note primary no-icon">
+            <h2 id="scadminツールでワンタイムパスワード対応の設定ファイルを作成する"><a href="#scadminツールでワンタイムパスワード対応の設定ファイルを作成する" class="headerlink" title="scadminツールでワンタイムパスワード対応の設定ファイルを作成する"></a>scadminツールでワンタイムパスワード対応の設定ファイルを作成する</h2>
+          </div>
+
+<p>　今回はSophosConnectクライアントではなく、もう1つの設定ファイル作成ツールである、scadminツールをWindowsにインストールします。このアプリケーションはmacOS版がありませんので、Windowsで設定する事になります。出力された設定ファイルは、Windows、mac共に共通で利用出来ますので、それをSophosConnectクライアントに取り込みます。scadmin.msiをインストールし起動します。OPENボタンを押して、以前に生成された接続設定ファイル（拡張子tgb）ファイルを開きます。</p>
+<img src="/new-technology/2020/03/28/vpnotp/otp4.png" class="" title="alt">
+
+<p>　設定は<span class="label info">Allow Password Saving</span>と、<span class="label info">Prompt for 2FA</span>のトグルスイッチをOnにするのみです。そして、右下のSaveで保存してください。今回はファイルの拡張子は、scxとなっています。</p>
+<p>　最後に、Sophos Connect Clientより、再度作成した設定ファイル（scx）を読み込み完了です。IDとパスワードにワンタイムパスワードをセットし、接続できる事を確認して下さい。次回の接続からは、以下の画面のように、ワンタイムパスワードのみを入力し接続する事になります。</p>
+<img src="/new-technology/2020/03/28/vpnotp/otp5.png" class="" title="alt">
+
+<p>　これまでの設定でワンタイムパスワードによる堅牢な環境でLANの機器にアクセスしたり、安全なWebブラウジングができるようになりました。</p>
+]]></content>
+      <categories>
+        <category>Security</category>
+        <category>VPN</category>
+        <category>ワンタイムパスワード</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+      </tags>
   </entry>
 </search>
