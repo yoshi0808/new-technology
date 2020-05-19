@@ -28,7 +28,7 @@
 <meta property="og:description" content="この記事で実現する内容についてホームユーザー向けのユニークなIPv6アドレスが必要となった場合、自分の持つ機器のMACアドレスを用いて、Unique Local Address（ULA）を生成します。プログラムの実行が必要なので、外部サイトのJDoodleサイト上でPython3のコードを実行してULAを求めます。">
 <meta property="og:locale" content="ja_JP">
 <meta property="article:published_time" content="2020-04-18T12:16:31.000Z">
-<meta property="article:modified_time" content="2020-05-04T04:25:57.129Z">
+<meta property="article:modified_time" content="2020-05-19T10:28:22.666Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta property="article:tag" content="IPv6">
@@ -242,7 +242,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">編集日</span>
-                <time title="修正日：2020-05-04 13:25:57" itemprop="dateModified" datetime="2020-05-04T13:25:57+09:00">2020-05-04</time>
+                <time title="修正日：2020-05-19 19:28:22" itemprop="dateModified" datetime="2020-05-19T19:28:22+09:00">2020-05-19</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -293,7 +293,7 @@
 </ol>
 <div data-pym-src="https://www.jdoodle.com/embed/v0/20tR?stdin=1&arg=0"></div>
 
-<p>　上記の<span class="label info">Stdin Inputs</span>に直接入力が可能です。MACアドレスを貼り付け、<span class="label info">▶︎Execute</span>ボタンをクリックしてください。<br>　<span class="label info">Result</span>に、以下の4つの項目が表示されます。MACアドレスが正しく入力されなかった場合は、Bad MAC Adderssと表示されます。</p>
+<p>　上記の<span class="label info">Stdin Inputs</span>に直接入力が可能です。MACアドレスを貼り付け、<span class="label info">▶︎Execute</span>ボタンをクリックしてください。もしお使いのブラウザでサードパーティのCookieを受け入れない設定を行っている方は、<span class="label warning">This website uses cookies to ensure you get the best experience on our website.</span>という表示が出ているとおもいます。この場合は、別ウィンドウで<a href="https://jdoodle.com/a/20tR" target="_blank" rel="noopener">こちらのJDoodleサイト</a>を開き、実行して下さい。<br>　<span class="label info">Result</span>に、以下の4つの項目が表示されます。MACアドレスが正しく入力されなかった場合は、Bad MAC Adderssと表示されます。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Input MAC address:</span><br><span class="line">ULA Prefix        -&gt; fd00:1234:5678::/48</span><br><span class="line">First Subnet      -&gt; fd00:1234:5678::/64</span><br><span class="line">Last Subnet       -&gt; fd00:1234:5678:ffff::/64</span><br><span class="line">First IPv6 Address-&gt; fd00:1234:5678::1/64</span><br></pre></td></tr></table></figure>
 
 <p>　これで他とのIPv6アドレスの重複が極めて少ないULAの生成ができました。</p>
