@@ -53,7 +53,7 @@ fdxx:xxxx:xxxx:ffff::/64
 
 <div data-pym-src="https://www.jdoodle.com/embed/v0/20tR?stdin=1&arg=0"></div>
 
-　上記の{% label info @Stdin Inputs %}に直接入力が可能です。MACアドレスを貼り付け、{% label info @▶︎Execute %}ボタンをクリックしてください。
+　上記の{% label info @Stdin Inputs %}に直接入力が可能です。MACアドレスを貼り付け、{% label info @▶︎Execute %}ボタンをクリックしてください。もしお使いのブラウザでサードパーティのCookieを受け入れない設定を行っている方は、{% label warning @This website uses cookies to ensure you get the best experience on our website. %}という表示が出ているとおもいます。この場合は、別ウィンドウで[こちらのJDoodleサイト](https://jdoodle.com/a/20tR)を開き、実行して下さい。
 　{% label info @Result %}に、以下の4つの項目が表示されます。MACアドレスが正しく入力されなかった場合は、Bad MAC Adderssと表示されます。
 
 ```bash
