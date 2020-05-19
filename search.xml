@@ -71,6 +71,111 @@
       </tags>
   </entry>
   <entry>
+    <title>XG Firewall v18をESXi仮想マシン上にインストールする</title>
+    <url>/new-technology/2020/03/06/InstallXG2/</url>
+    <content><![CDATA[<div class="note success">
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　ESXi（ｖ6.7）に環境構築済みの仮想マシンに対し、XG Firewall v18のインストールが行えるようになります。フラッシュメモリを用意し、物理マシンに直接インストールする場合も、手順はほとんど変わりません。</p>
+          </div>
+<a id="more"></a>
+
+<div class="note primary no-icon">
+            <h2 id="仮想マシンの電源をオンにする前に"><a href="#仮想マシンの電源をオンにする前に" class="headerlink" title="仮想マシンの電源をオンにする前に"></a>仮想マシンの電源をオンにする前に</h2>
+          </div>
+
+<p>　PCのブラウザで表示しているESXiの管理画面から、作成した仮想マシンの電源をオンにできます。これで設定されたISOファイルからブートさせる事になります。ESXiをセットアップした機器にモニタを接続する必要はありません。前回までの記事で、新たにクライアントが利用するネットワークアドレスを決めました。XGのデフォルトである172.16.16.0/24を使うか、自分が新たに決めたアドレス（ex. 192.168.1.0/24）になります。今回のケースでは、ホームゲートウェイとXGのWANとの間が、192.168.0.0/24のネットワーク、LAN側は192.168.1.0/24として説明を進めます。<br>　いよいよ、仮想マシンの電源をオンにしてセットアップを開始します。</p>
+<div class="note primary no-icon">
+            <h2 id="仮想マシンの電源をオンにする"><a href="#仮想マシンの電源をオンにする" class="headerlink" title="仮想マシンの電源をオンにする"></a>仮想マシンの電源をオンにする</h2>
+          </div>
+
+<p>　さて、ESXiの管理コンソールからXGの仮想マシンを選んでパワーオンをクリックします。</p>
+<p>Sophos FIRMWARE INSTALLERが起動します。<br>インストールを開始すると（仮想マシンに割り当てた）ディスクが全てフォーマットされ、ファームウェアがインストールされていきます。<br>press y to rebootでリブートします。<br>再起動後、さらにdefault conifgをインストールするとの表示がされ、やがてパスワード入力画面になります。最初のパスワードはadminです。まずライセンスを受け入れる画面となります。続いて、ネットワークの設定を変更します。</p>
+<img src="/new-technology/2020/03/06/InstallXG2/conf.png" class="" title="alt">
+
+<p>1.Network Configurationを選び、次の画面で、1.Interface Configurationを選びます。以下の表示がEnterを押下する毎に変わります。</p>
+<ul>
+<li>LAN側のIP割り振り状態（ここでは変更できません）。</li>
+<li>WAN側のIP割り振り状態（変更不可。ホームゲートウェイからのプライベートIPが割り当てられています）。</li>
+<li>Set IPv4 Address(y/n)と出るので、変更する場合は、y＋Enterします。</li>
+<li>IPv6は後で設定するので空Enterで構いません。</li>
+</ul>
+<p>この状態で一旦IPの設定を終えたら、クライアントPCのブラウザからXGに対して接続し、セットアップを続けていきます。ここではXGのIPアドレスを192.168.1.2にしたと仮定して進めます。</p>
+  <div class="note warning">
+            <p>WANのIPが割り振られていない場合は、後続のセットアップでライセンスの確認ができません。事後にもライセンス登録は可能ですが、初期のうちに課題を解決しておきましょう。</p>
+          </div>
+
+<div class="note primary no-icon">
+            <h2 id="XG-Firewallの初期設定を行う"><a href="#XG-Firewallの初期設定を行う" class="headerlink" title="XG Firewallの初期設定を行う"></a>XG Firewallの初期設定を行う</h2>
+          </div>
+
+<p>　ブラウザで、<a href="https://192.168.1.2:4444" target="_blank" rel="noopener">https://192.168.1.2:4444</a>を開き初期設定を行っていきます。自己証明書でもあり、ブラウザのワーニングが表示されますが、了解のうえ進んでください。</p>
+<img src="/new-technology/2020/03/06/InstallXG2/setup1.png" class="" title="alt">
+
+<p> ここでは、右上のプルダウンで日本語に変更しておくと良いでしょう。<br> 続いて、以下の項目を設定していきます。</p>
+<ul>
+<li>管理者パスワード</li>
+<li>タイムゾーン</li>
+<li>登録メールで届いたシリアル番号を入力します</li>
+</ul>
+<img src="/new-technology/2020/03/06/InstallXG2/setup2.png" class="" title="alt">
+
+<ul>
+<li>ゲートウェイとしてルーターモードを選択します</li>
+<li>LAN側に割り振るDHCPのIP範囲を設定します</li>
+</ul>
+<img src="/new-technology/2020/03/06/InstallXG2/setup3.png" class="" title="alt">
+
+<ul>
+<li>ネットワークプロテクションはSandStormを除き選択します。仮に選択してもホームユースでは解除されます。</li>
+</ul>
+<img src="/new-technology/2020/03/06/InstallXG2/setup4.png" class="" title="alt">
+
+<p>　続いての画面のメールセットアップですが、昨今、自宅からSMTPによるインターネットへのメール送信はSPAMの扱いと疑われ、OP25と称してブロックされているのが実態です。Gmailをお持ちであれば、Gmailをメールの送信者にしておくと比較的簡単に送信できます。メールの受信者は、色々なイベント通知が発生した時に確認するアドレスですので、携帯などのアドレスが候補に挙げられます。</p>
+<img src="/new-technology/2020/03/06/InstallXG2/setup5.png" class="" title="alt">
+
+<p> 　いよいよ、セットアップも最後の仕上げです。5分程度と言いつつ、もう少し掛かる場合がありますので、ブラウザのリロードをせずそのまま待ちます。その後管理画面のリロードが入りますが、XGの管理サイトは自己証明書のためにブラウザのワーニングが出た画面で止まっている場合があります。</p>
+<img src="/new-technology/2020/03/06/InstallXG2/setup6.png" class="" title="alt">
+
+<p> 　さて、いよいよログイン画面です。固定IPにして設定してきたPCも、XGのDHCP機能によって、IPアドレスが割り当て可能となっています。PCの設定をDHCPにして確認して下さい。そして、インターネットにも接続出来ている事を確認して下さい。現段階では、基本はOutboundの通信は全て通す設定になっているので確認が出来たら、ホームゲートウェイに接続されている他の機器などをXGのLAN側に繋いで下さい。</p>
+]]></content>
+      <categories>
+        <category>Security</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>XG Firewall Sophos Communityについて</title>
+    <url>/new-technology/2020/03/26/SophosCommunity/</url>
+    <content><![CDATA[<div class="note primary no-icon">
+            <h2 id="Sophos-Communityで情報を調べる"><a href="#Sophos-Communityで情報を調べる" class="headerlink" title="Sophos Communityで情報を調べる"></a>Sophos Communityで情報を調べる</h2>
+          </div>
+
+<p>　XG Firewall Home EditionはSophosによるサポートがなく、ユーザコミュニティの相互サポートによって成り立っています。そもそもこんなに素晴らしいソフトウェアが無料なのですから、それだけでも感謝すべき事ではありますが。サポートサイトは英語が中心ですが、セキュリティに関するビジネスをしている方とかも積極的に参加しているようで、勉強になります。</p>
+<blockquote>
+<p><a href="https://community.sophos.com/" target="_blank" rel="noopener">Sophos Community（英語）</a></p>
+</blockquote>
+<a id="more"></a>
+<p>　さて、直接XGの話ではありませんが、ここ数日話題になっているドイツ製翻訳ソフトの<span class="label info">DeepL</span>が素晴らしいです。私はGoogle翻訳をずっと使っていましたが、こちらも使い勝手が良く便利です。<br>　Windows、macのアプリケーションとしてインストールする事が出来ます。利用は無償（高機能な有償のpro版もあります）で、例えばブラウザで翻訳箇所を選択しCtrl+c(macはcommand+c)を2回押下するとDeepLが起動し、英訳と日本語が併記されます。</p>
+<p>　DeepLのダウンロードは<a href="https://www.deepl.com/app" target="_blank" rel="noopener">こちら</a>です。</p>
+<p>　これまで私がブログで書いてきたｖ18のSSL/TLSインスペクションですが、いろいろ難しいところもあり、このブログで全てを説明するのは到底無理があります。Communityの素晴らしい知見を活用すべく、翻訳ソフトを利用して理解を深めていただければとおもいます。</p>
+<blockquote>
+<p><a href="https://community.sophos.com/products/xg-firewall/f/recommended-reads/118753/sophos-xg-firewall-v18-troubleshooting-problems-with-the-dpi-engine" target="_blank" rel="noopener">Sophos XG Firewall v18: DPI エンジンのトラブルシューティング</a></p>
+</blockquote>
+<p>　アプリでCtrl+cを2回押下して先頭部分の抜粋を抜粋します。</p>
+<img src="/new-technology/2020/03/26/SophosCommunity/community.png" class="" title="alt">
+
+<p>　ぜひ、翻訳ソフトのDeepLを活用しながら、XGやSSLインスペクションの理解を深めていただければとおもいます。</p>
+]]></content>
+      <categories>
+        <category>Security</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+        <tag>DeepL</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>XG Firewallの通知設定を行う</title>
     <url>/new-technology/2020/04/03/Notifications/</url>
     <content><![CDATA[<div class="note success">
@@ -171,37 +276,6 @@
       </categories>
       <tags>
         <tag>XG Firewall</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>XG Firewall Sophos Communityについて</title>
-    <url>/new-technology/2020/03/26/SophosCommunity/</url>
-    <content><![CDATA[<div class="note primary no-icon">
-            <h2 id="Sophos-Communityで情報を調べる"><a href="#Sophos-Communityで情報を調べる" class="headerlink" title="Sophos Communityで情報を調べる"></a>Sophos Communityで情報を調べる</h2>
-          </div>
-
-<p>　XG Firewall Home EditionはSophosによるサポートがなく、ユーザコミュニティの相互サポートによって成り立っています。そもそもこんなに素晴らしいソフトウェアが無料なのですから、それだけでも感謝すべき事ではありますが。サポートサイトは英語が中心ですが、セキュリティに関するビジネスをしている方とかも積極的に参加しているようで、勉強になります。</p>
-<blockquote>
-<p><a href="https://community.sophos.com/" target="_blank" rel="noopener">Sophos Community（英語）</a></p>
-</blockquote>
-<a id="more"></a>
-<p>　さて、直接XGの話ではありませんが、ここ数日話題になっているドイツ製翻訳ソフトの<span class="label info">DeepL</span>が素晴らしいです。私はGoogle翻訳をずっと使っていましたが、こちらも使い勝手が良く便利です。<br>　Windows、macのアプリケーションとしてインストールする事が出来ます。利用は無償（高機能な有償のpro版もあります）で、例えばブラウザで翻訳箇所を選択しCtrl+c(macはcommand+c)を2回押下するとDeepLが起動し、英訳と日本語が併記されます。</p>
-<p>　DeepLのダウンロードは<a href="https://www.deepl.com/app" target="_blank" rel="noopener">こちら</a>です。</p>
-<p>　これまで私がブログで書いてきたｖ18のSSL/TLSインスペクションですが、いろいろ難しいところもあり、このブログで全てを説明するのは到底無理があります。Communityの素晴らしい知見を活用すべく、翻訳ソフトを利用して理解を深めていただければとおもいます。</p>
-<blockquote>
-<p><a href="https://community.sophos.com/products/xg-firewall/f/recommended-reads/118753/sophos-xg-firewall-v18-troubleshooting-problems-with-the-dpi-engine" target="_blank" rel="noopener">Sophos XG Firewall v18: DPI エンジンのトラブルシューティング</a></p>
-</blockquote>
-<p>　アプリでCtrl+cを2回押下して先頭部分の抜粋を抜粋します。</p>
-<img src="/new-technology/2020/03/26/SophosCommunity/community.png" class="" title="alt">
-
-<p>　ぜひ、翻訳ソフトのDeepLを活用しながら、XGやSSLインスペクションの理解を深めていただければとおもいます。</p>
-]]></content>
-      <categories>
-        <category>Security</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-        <tag>DeepL</tag>
       </tags>
   </entry>
   <entry>
@@ -812,61 +886,6 @@
       </tags>
   </entry>
   <entry>
-    <title>VMware vSphere Hypervisor（ESXi）のインストール</title>
-    <url>/new-technology/2020/02/29/esxi/</url>
-    <content><![CDATA[<div class="note success">
-            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　XG Firewall v18をVMware ESXi上で稼働させるために、VMware Esxi6.7をインストール出来るようになります。</p>
-          </div>
-
-<a id="more"></a>
-
-<div class="note primary no-icon">
-            <h2 id="インストールの前に"><a href="#インストールの前に" class="headerlink" title="インストールの前に"></a>インストールの前に</h2>
-          </div>
-
-<p> 　XG Firewallの導入に必須というわけではないですが、バックアップや異なるバージョンの同居など色々便利なので、仮想環境（ESXi）を構築しその上にXGをインストールします。</p>
-<p>　このホームユーザー向け（無償版）ESXiのインストールに関するドキュメントは正直解りやすい場所に掲載されてないのですが、<a href="https://blogs.vmware.com/jp-cim/2014/05/vspherehypervisor.html" target="_blank" rel="noopener" title="vmware">VMWareのブログ</a>から辿ると良いです。</p>
-<!-- more -->
-
-<div class="note primary no-icon">
-            <h2 id="準備"><a href="#準備" class="headerlink" title="準備"></a>準備</h2>
-          </div>
-
-<ul>
-<li>ESXiをインストールする予定の2つのNICを持ったPC1台と、ISOファイルをインストールするためのUSBメディアを用意してください。</li>
-<li>VMwareのアカウント（無償）を作成してください。</li>
-<li>VMwareサイトにログイン後、製品（vSphere Hypervisor v6.7）のダウンロードをしたら、ISOファイルをRufusを使ってUSBメディアに書き出します。</li>
-</ul>
-<div class="video-container"><iframe src="https://www.youtube.com/embed/7gYnyIaQH9A" frameborder="0" loading="lazy" allowfullscreen></iframe></div>
-
-<div class="note primary no-icon">
-            <h2 id="ESXiのインストール"><a href="#ESXiのインストール" class="headerlink" title="ESXiのインストール"></a>ESXiのインストール</h2>
-          </div>
-
-<p>　以下のビデオを参考にしてください。</p>
-<iframe src='https://players.brightcove.net/1534342432001/Byh3doRJx_default/index.html?videoId=5738631329001' allowfullscreen frameborder=0></iframe>
-
-<p>　まず、注意点ですが、いつも使っているネットワークとは別のネットワークのIPアドレスを振ってセットアップします。いつもが192.168.0.0/24なら、今回は仮に192.168.1.0/24のネットワークに配置する予定としてESXiをセットアップする事にしましょう。これまでのネットワークにXG Firewallを挟み込む事になり、従来のネットワークはXGのWAN側とホームゲートウェイに利用され、XGのLAN側は新しいネットワークになるためです。新たにXGのLAN側と同じネットワークにESXiの管理ネットワークを構築する必要があります。なお、XGのLAN側のデフォルトIPアドレスは、172.16.16.16となっています。従って、XGのIPもセットアップ時に192.168.1.0/24のネットワークに変更する事とします。</p>
-<ul>
-<li>USBメディアをESXiをインストールするPCに挿し、USBからブートし、セットアップを開始してください。</li>
-<li>vCenterはホームユーザー向けには使いませんので無視してください。</li>
-<li>NICが2枚ある事を前提にすると、Esxiの管理画面はLAN側のNICを対象とするように設定してください。今の時点では、WANは使いません。新しく振ったIP（192.168.1.1/24）をESXiの管理用IPとして、セットアップします。</li>
-<li>上記のビデオ（2:40前後の説明）では「冗長化のために」と説明がありますが、今回は冗長化を使いません。通常LAN側のvmnic0を管理用のNICとしてセットアップしてください。また、VLANも使いません。</li>
-<li>ESXi6.7では、vSphere Clientは使いません。インストールしたESXiのLAN側のIPアドレスに対してブラウザで接続し、ESXiのWeb管理画面で設定を行います。</li>
-</ul>
-<img src="/new-technology/2020/02/29/esxi/setup_esxi.png" class="" title="alt">
-
-<p> 　セットアップ終了後は、上記のようなネットワーク構成となります。USBメディアを抜いて再起動後、ESXiの画面にIPアドレスが表示されます。ホームゲートウェイに繋っていたPCをネットワークから外し、ESXiのLAN側のNICと繋ぎます。PCのIPを変更（例えば、192.168.1.101/24）し、ESXiのIPアドレスにブラウザで接続してください。ログインは、ユーザー名がroot、パスワードはセットアップで指定したものになります。</p>
-]]></content>
-      <categories>
-        <category>Security</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-        <tag>ESXi</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>VMware vSphere Hypervisor（ESXi）の設定</title>
     <url>/new-technology/2020/03/01/esxi-conf/</url>
     <content><![CDATA[<div class="note success">
@@ -946,6 +965,61 @@
 ]]></content>
       <categories>
         <category>Software</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+        <tag>ESXi</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>VMware vSphere Hypervisor（ESXi）のインストール</title>
+    <url>/new-technology/2020/02/29/esxi/</url>
+    <content><![CDATA[<div class="note success">
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　XG Firewall v18をVMware ESXi上で稼働させるために、VMware Esxi6.7をインストール出来るようになります。</p>
+          </div>
+
+<a id="more"></a>
+
+<div class="note primary no-icon">
+            <h2 id="インストールの前に"><a href="#インストールの前に" class="headerlink" title="インストールの前に"></a>インストールの前に</h2>
+          </div>
+
+<p> 　XG Firewallの導入に必須というわけではないですが、バックアップや異なるバージョンの同居など色々便利なので、仮想環境（ESXi）を構築しその上にXGをインストールします。</p>
+<p>　このホームユーザー向け（無償版）ESXiのインストールに関するドキュメントは正直解りやすい場所に掲載されてないのですが、<a href="https://blogs.vmware.com/jp-cim/2014/05/vspherehypervisor.html" target="_blank" rel="noopener" title="vmware">VMWareのブログ</a>から辿ると良いです。</p>
+<!-- more -->
+
+<div class="note primary no-icon">
+            <h2 id="準備"><a href="#準備" class="headerlink" title="準備"></a>準備</h2>
+          </div>
+
+<ul>
+<li>ESXiをインストールする予定の2つのNICを持ったPC1台と、ISOファイルをインストールするためのUSBメディアを用意してください。</li>
+<li>VMwareのアカウント（無償）を作成してください。</li>
+<li>VMwareサイトにログイン後、製品（vSphere Hypervisor v6.7）のダウンロードをしたら、ISOファイルをRufusを使ってUSBメディアに書き出します。</li>
+</ul>
+<div class="video-container"><iframe src="https://www.youtube.com/embed/7gYnyIaQH9A" frameborder="0" loading="lazy" allowfullscreen></iframe></div>
+
+<div class="note primary no-icon">
+            <h2 id="ESXiのインストール"><a href="#ESXiのインストール" class="headerlink" title="ESXiのインストール"></a>ESXiのインストール</h2>
+          </div>
+
+<p>　以下のビデオを参考にしてください。</p>
+<iframe src='https://players.brightcove.net/1534342432001/Byh3doRJx_default/index.html?videoId=5738631329001' allowfullscreen frameborder=0></iframe>
+
+<p>　まず、注意点ですが、いつも使っているネットワークとは別のネットワークのIPアドレスを振ってセットアップします。いつもが192.168.0.0/24なら、今回は仮に192.168.1.0/24のネットワークに配置する予定としてESXiをセットアップする事にしましょう。これまでのネットワークにXG Firewallを挟み込む事になり、従来のネットワークはXGのWAN側とホームゲートウェイに利用され、XGのLAN側は新しいネットワークになるためです。新たにXGのLAN側と同じネットワークにESXiの管理ネットワークを構築する必要があります。なお、XGのLAN側のデフォルトIPアドレスは、172.16.16.16となっています。従って、XGのIPもセットアップ時に192.168.1.0/24のネットワークに変更する事とします。</p>
+<ul>
+<li>USBメディアをESXiをインストールするPCに挿し、USBからブートし、セットアップを開始してください。</li>
+<li>vCenterはホームユーザー向けには使いませんので無視してください。</li>
+<li>NICが2枚ある事を前提にすると、Esxiの管理画面はLAN側のNICを対象とするように設定してください。今の時点では、WANは使いません。新しく振ったIP（192.168.1.1/24）をESXiの管理用IPとして、セットアップします。</li>
+<li>上記のビデオ（2:40前後の説明）では「冗長化のために」と説明がありますが、今回は冗長化を使いません。通常LAN側のvmnic0を管理用のNICとしてセットアップしてください。また、VLANも使いません。</li>
+<li>ESXi6.7では、vSphere Clientは使いません。インストールしたESXiのLAN側のIPアドレスに対してブラウザで接続し、ESXiのWeb管理画面で設定を行います。</li>
+</ul>
+<img src="/new-technology/2020/02/29/esxi/setup_esxi.png" class="" title="alt">
+
+<p> 　セットアップ終了後は、上記のようなネットワーク構成となります。USBメディアを抜いて再起動後、ESXiの画面にIPアドレスが表示されます。ホームゲートウェイに繋っていたPCをネットワークから外し、ESXiのLAN側のNICと繋ぎます。PCのIPを変更（例えば、192.168.1.101/24）し、ESXiのIPアドレスにブラウザで接続してください。ログインは、ユーザー名がroot、パスワードはセットアップで指定したものになります。</p>
+]]></content>
+      <categories>
+        <category>Security</category>
       </categories>
       <tags>
         <tag>XG Firewall</tag>
@@ -2342,80 +2416,6 @@
 
 <p>　GoogleDNSのDoHはRFC8484に従っていない独自プロトコルを使えるという事実があります。世界中のパブリックDNSを全て把握するのは困難ですが、Sophosの以下の記事を参考にWebフィルタのURLグループにパブリックDNSのドメインを登録し、拒否する設定を加えても良いでしょう。</p>
 <p><a href="https://community.sophos.com/kb/en-us/134644" target="_blank" rel="noopener">DNS over HTTPS (DoH) for web security</a></p>
-]]></content>
-      <categories>
-        <category>Security</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>XG Firewall v18をESXi仮想マシン上にインストールする</title>
-    <url>/new-technology/2020/03/06/InstallXG2/</url>
-    <content><![CDATA[<div class="note success">
-            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　ESXi（ｖ6.7）に環境構築済みの仮想マシンに対し、XG Firewall v18のインストールが行えるようになります。フラッシュメモリを用意し、物理マシンに直接インストールする場合も、手順はほとんど変わりません。</p>
-          </div>
-<a id="more"></a>
-
-<div class="note primary no-icon">
-            <h2 id="仮想マシンの電源をオンにする前に"><a href="#仮想マシンの電源をオンにする前に" class="headerlink" title="仮想マシンの電源をオンにする前に"></a>仮想マシンの電源をオンにする前に</h2>
-          </div>
-
-<p>　PCのブラウザで表示しているESXiの管理画面から、作成した仮想マシンの電源をオンにできます。これで設定されたISOファイルからブートさせる事になります。ESXiをセットアップした機器にモニタを接続する必要はありません。前回までの記事で、新たにクライアントが利用するネットワークアドレスを決めました。XGのデフォルトである172.16.16.0/24を使うか、自分が新たに決めたアドレス（ex. 192.168.1.0/24）になります。今回のケースでは、ホームゲートウェイとXGのWANとの間が、192.168.0.0/24のネットワーク、LAN側は192.168.1.0/24として説明を進めます。<br>　いよいよ、仮想マシンの電源をオンにしてセットアップを開始します。</p>
-<div class="note primary no-icon">
-            <h2 id="仮想マシンの電源をオンにする"><a href="#仮想マシンの電源をオンにする" class="headerlink" title="仮想マシンの電源をオンにする"></a>仮想マシンの電源をオンにする</h2>
-          </div>
-
-<p>　さて、ESXiの管理コンソールからXGの仮想マシンを選んでパワーオンをクリックします。</p>
-<p>Sophos FIRMWARE INSTALLERが起動します。<br>インストールを開始すると（仮想マシンに割り当てた）ディスクが全てフォーマットされ、ファームウェアがインストールされていきます。<br>press y to rebootでリブートします。<br>再起動後、さらにdefault conifgをインストールするとの表示がされ、やがてパスワード入力画面になります。最初のパスワードはadminです。まずライセンスを受け入れる画面となります。続いて、ネットワークの設定を変更します。</p>
-<img src="/new-technology/2020/03/06/InstallXG2/conf.png" class="" title="alt">
-
-<p>1.Network Configurationを選び、次の画面で、1.Interface Configurationを選びます。以下の表示がEnterを押下する毎に変わります。</p>
-<ul>
-<li>LAN側のIP割り振り状態（ここでは変更できません）。</li>
-<li>WAN側のIP割り振り状態（変更不可。ホームゲートウェイからのプライベートIPが割り当てられています）。</li>
-<li>Set IPv4 Address(y/n)と出るので、変更する場合は、y＋Enterします。</li>
-<li>IPv6は後で設定するので空Enterで構いません。</li>
-</ul>
-<p>この状態で一旦IPの設定を終えたら、クライアントPCのブラウザからXGに対して接続し、セットアップを続けていきます。ここではXGのIPアドレスを192.168.1.2にしたと仮定して進めます。</p>
-  <div class="note warning">
-            <p>WANのIPが割り振られていない場合は、後続のセットアップでライセンスの確認ができません。事後にもライセンス登録は可能ですが、初期のうちに課題を解決しておきましょう。</p>
-          </div>
-
-<div class="note primary no-icon">
-            <h2 id="XG-Firewallの初期設定を行う"><a href="#XG-Firewallの初期設定を行う" class="headerlink" title="XG Firewallの初期設定を行う"></a>XG Firewallの初期設定を行う</h2>
-          </div>
-
-<p>　ブラウザで、<a href="https://192.168.1.2:4444" target="_blank" rel="noopener">https://192.168.1.2:4444</a>を開き初期設定を行っていきます。自己証明書でもあり、ブラウザのワーニングが表示されますが、了解のうえ進んでください。</p>
-<img src="/new-technology/2020/03/06/InstallXG2/setup1.png" class="" title="alt">
-
-<p> ここでは、右上のプルダウンで日本語に変更しておくと良いでしょう。<br> 続いて、以下の項目を設定していきます。</p>
-<ul>
-<li>管理者パスワード</li>
-<li>タイムゾーン</li>
-<li>登録メールで届いたシリアル番号を入力します</li>
-</ul>
-<img src="/new-technology/2020/03/06/InstallXG2/setup2.png" class="" title="alt">
-
-<ul>
-<li>ゲートウェイとしてルーターモードを選択します</li>
-<li>LAN側に割り振るDHCPのIP範囲を設定します</li>
-</ul>
-<img src="/new-technology/2020/03/06/InstallXG2/setup3.png" class="" title="alt">
-
-<ul>
-<li>ネットワークプロテクションはSandStormを除き選択します。仮に選択してもホームユースでは解除されます。</li>
-</ul>
-<img src="/new-technology/2020/03/06/InstallXG2/setup4.png" class="" title="alt">
-
-<p>　続いての画面のメールセットアップですが、昨今、自宅からSMTPによるインターネットへのメール送信はSPAMの扱いと疑われ、OP25と称してブロックされているのが実態です。Gmailをお持ちであれば、Gmailをメールの送信者にしておくと比較的簡単に送信できます。メールの受信者は、色々なイベント通知が発生した時に確認するアドレスですので、携帯などのアドレスが候補に挙げられます。</p>
-<img src="/new-technology/2020/03/06/InstallXG2/setup5.png" class="" title="alt">
-
-<p> 　いよいよ、セットアップも最後の仕上げです。5分程度と言いつつ、もう少し掛かる場合がありますので、ブラウザのリロードをせずそのまま待ちます。その後管理画面のリロードが入りますが、XGの管理サイトは自己証明書のためにブラウザのワーニングが出た画面で止まっている場合があります。</p>
-<img src="/new-technology/2020/03/06/InstallXG2/setup6.png" class="" title="alt">
-
-<p> 　さて、いよいよログイン画面です。固定IPにして設定してきたPCも、XGのDHCP機能によって、IPアドレスが割り当て可能となっています。PCの設定をDHCPにして確認して下さい。そして、インターネットにも接続出来ている事を確認して下さい。現段階では、基本はOutboundの通信は全て通す設定になっているので確認が出来たら、ホームゲートウェイに接続されている他の機器などをXGのLAN側に繋いで下さい。</p>
 ]]></content>
       <categories>
         <category>Security</category>
