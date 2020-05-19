@@ -174,80 +174,6 @@
       </tags>
   </entry>
   <entry>
-    <title>XG Firewall v18をESXi仮想マシン上にインストールする</title>
-    <url>/new-technology/2020/03/06/InstallXG2/</url>
-    <content><![CDATA[<div class="note success">
-            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　ESXi（ｖ6.7）に環境構築済みの仮想マシンに対し、XG Firewall v18のインストールが行えるようになります。フラッシュメモリを用意し、物理マシンに直接インストールする場合も、手順はほとんど変わりません。</p>
-          </div>
-<a id="more"></a>
-
-<div class="note primary no-icon">
-            <h2 id="仮想マシンの電源をオンにする前に"><a href="#仮想マシンの電源をオンにする前に" class="headerlink" title="仮想マシンの電源をオンにする前に"></a>仮想マシンの電源をオンにする前に</h2>
-          </div>
-
-<p>　PCのブラウザで表示しているESXiの管理画面から、作成した仮想マシンの電源をオンにできます。これで設定されたISOファイルからブートさせる事になります。ESXiをセットアップした機器にモニタを接続する必要はありません。前回までの記事で、新たにクライアントが利用するネットワークアドレスを決めました。XGのデフォルトである172.16.16.0/24を使うか、自分が新たに決めたアドレス（ex. 192.168.1.0/24）になります。今回のケースでは、ホームゲートウェイとXGのWANとの間が、192.168.0.0/24のネットワーク、LAN側は192.168.1.0/24として説明を進めます。<br>　いよいよ、仮想マシンの電源をオンにしてセットアップを開始します。</p>
-<div class="note primary no-icon">
-            <h2 id="仮想マシンの電源をオンにする"><a href="#仮想マシンの電源をオンにする" class="headerlink" title="仮想マシンの電源をオンにする"></a>仮想マシンの電源をオンにする</h2>
-          </div>
-
-<p>　さて、ESXiの管理コンソールからXGの仮想マシンを選んでパワーオンをクリックします。</p>
-<p>Sophos FIRMWARE INSTALLERが起動します。<br>インストールを開始すると（仮想マシンに割り当てた）ディスクが全てフォーマットされ、ファームウェアがインストールされていきます。<br>press y to rebootでリブートします。<br>再起動後、さらにdefault conifgをインストールするとの表示がされ、やがてパスワード入力画面になります。最初のパスワードはadminです。まずライセンスを受け入れる画面となります。続いて、ネットワークの設定を変更します。</p>
-<img src="/new-technology/2020/03/06/InstallXG2/conf.png" class="" title="alt">
-
-<p>1.Network Configurationを選び、次の画面で、1.Interface Configurationを選びます。以下の表示がEnterを押下する毎に変わります。</p>
-<ul>
-<li>LAN側のIP割り振り状態（ここでは変更できません）。</li>
-<li>WAN側のIP割り振り状態（変更不可。ホームゲートウェイからのプライベートIPが割り当てられています）。</li>
-<li>Set IPv4 Address(y/n)と出るので、変更する場合は、y＋Enterします。</li>
-<li>IPv6は後で設定するので空Enterで構いません。</li>
-</ul>
-<p>この状態で一旦IPの設定を終えたら、クライアントPCのブラウザからXGに対して接続し、セットアップを続けていきます。ここではXGのIPアドレスを192.168.1.2にしたと仮定して進めます。</p>
-  <div class="note warning">
-            <p>WANのIPが割り振られていない場合は、後続のセットアップでライセンスの確認ができません。事後にもライセンス登録は可能ですが、初期のうちに課題を解決しておきましょう。</p>
-          </div>
-
-<div class="note primary no-icon">
-            <h2 id="XG-Firewallの初期設定を行う"><a href="#XG-Firewallの初期設定を行う" class="headerlink" title="XG Firewallの初期設定を行う"></a>XG Firewallの初期設定を行う</h2>
-          </div>
-
-<p>　ブラウザで、<a href="https://192.168.1.2:4444" target="_blank" rel="noopener">https://192.168.1.2:4444</a>を開き初期設定を行っていきます。自己証明書でもあり、ブラウザのワーニングが表示されますが、了解のうえ進んでください。</p>
-<img src="/new-technology/2020/03/06/InstallXG2/setup1.png" class="" title="alt">
-
-<p> ここでは、右上のプルダウンで日本語に変更しておくと良いでしょう。<br> 続いて、以下の項目を設定していきます。</p>
-<ul>
-<li>管理者パスワード</li>
-<li>タイムゾーン</li>
-<li>登録メールで届いたシリアル番号を入力します</li>
-</ul>
-<img src="/new-technology/2020/03/06/InstallXG2/setup2.png" class="" title="alt">
-
-<ul>
-<li>ゲートウェイとしてルーターモードを選択します</li>
-<li>LAN側に割り振るDHCPのIP範囲を設定します</li>
-</ul>
-<img src="/new-technology/2020/03/06/InstallXG2/setup3.png" class="" title="alt">
-
-<ul>
-<li>ネットワークプロテクションはSandStormを除き選択します。仮に選択してもホームユースでは解除されます。</li>
-</ul>
-<img src="/new-technology/2020/03/06/InstallXG2/setup4.png" class="" title="alt">
-
-<p>　続いての画面のメールセットアップですが、昨今、自宅からSMTPによるインターネットへのメール送信はSPAMの扱いと疑われ、OP25と称してブロックされているのが実態です。Gmailをお持ちであれば、Gmailをメールの送信者にしておくと比較的簡単に送信できます。メールの受信者は、色々なイベント通知が発生した時に確認するアドレスですので、携帯などのアドレスが候補に挙げられます。</p>
-<img src="/new-technology/2020/03/06/InstallXG2/setup5.png" class="" title="alt">
-
-<p> 　いよいよ、セットアップも最後の仕上げです。5分程度と言いつつ、もう少し掛かる場合がありますので、ブラウザのリロードをせずそのまま待ちます。その後管理画面のリロードが入りますが、XGの管理サイトは自己証明書のためにブラウザのワーニングが出た画面で止まっている場合があります。</p>
-<img src="/new-technology/2020/03/06/InstallXG2/setup6.png" class="" title="alt">
-
-<p> 　さて、いよいよログイン画面です。固定IPにして設定してきたPCも、XGのDHCP機能によって、IPアドレスが割り当て可能となっています。PCの設定をDHCPにして確認して下さい。そして、インターネットにも接続出来ている事を確認して下さい。現段階では、基本はOutboundの通信は全て通す設定になっているので確認が出来たら、ホームゲートウェイに接続されている他の機器などをXGのLAN側に繋いで下さい。</p>
-]]></content>
-      <categories>
-        <category>Security</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>XG Firewall Sophos Communityについて</title>
     <url>/new-technology/2020/03/26/SophosCommunity/</url>
     <content><![CDATA[<div class="note primary no-icon">
@@ -466,64 +392,6 @@
 <li>クライアントPC： CeleronG3900という3年前の一般的なクライアントに5GbpsのNIC(Aquantia AQtion 5G Network Adapter)を刺したもの</li>
 </ul>
 <p>　クライアント側のCPUで頭打ちになっており、XGは素晴らしい性能を持っています（もちろん業務向けとしては単一のセッションだけで評価は出来ませんが）。v17まではほぼProxyサーバとしての動作でしたが、v18はPort80および443に限らず、httpsの流れるデータをリアルタイムで精査しているようです。私は製品のベータ版である、アーリーアクセスプログラムに参加していましたが、テストの最終局面でスピードが劇的に改善した時は感動しました。ホームユーザーがこういった素晴らしい製品を使えるのは本当にありがたく感じます。</p>
-]]></content>
-      <categories>
-        <category>Security</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>XG Firewall v18のポリシーをカスタマイズする</title>
-    <url>/new-technology/2020/03/14/customize-policy/</url>
-    <content><![CDATA[<div class="note success">
-            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　XG FirewallのWebポリシーをカスタマイズし、コンテンツのカテゴリ（ギャンブル、アダルト、Webメール）毎にアクセスを許可するか否かを設定できるようになります。また閲覧を拒否するドメインをインターネット上にあるデータベース等から入手し、XGに取り込む事ができるようになります。</p>
-          </div>
-<a id="more"></a>
-
-<div class="note primary no-icon">
-            <h2 id="ポリシーのカスタマイズ"><a href="#ポリシーのカスタマイズ" class="headerlink" title="ポリシーのカスタマイズ"></a>ポリシーのカスタマイズ</h2>
-          </div>
-
-<p>　XGにおけるWebのポリシーというのはコンテンツのカテゴリを意味します。ギャンブル、アダルトからネットショッピングやチャットやWebメールまで多岐に渡ります。こちらは個人によって定義が異なるとおもいますので、実例を示しながら、ご自身の考えに基づいて設定を進めていく事になります。まずはそのカスタマイズを行っていきます。左ペインの「Web」をクリックします。</p>
-
-
-<p>　先ほど設定した「Default Policy」の内容がまず最初に表示されているとおもいます。初期値では、「Blocked URLs for Default Policy」と2番目の行に「Risky Downloads」および「Suspicious（※怪しいもの）」が選択されています。</p>
-<p>「Nudity and Adult content」の行のOn/OffのトグルをOnにします。そして右下の「変更を適用」をクリックするとポリシーの修正が有効になります。「Risky Downloads」および「Suspicious」が含まれていると、Google検索で「広告」という表示のあるページを正しく表示出来ない場合があります。今後説明するSSLインスペクションの対応が出来た際に改めて加える事とし、一旦「Risky Downloads」および「Suspicious」を外すなど好みで調整してみてください。Suspiciousに広告のWebサイトが含まれるためこのような挙動となります。</p>
-<div class="note primary no-icon">
-            <h2 id="外部データベース（ドメインリスト）を取り込む"><a href="#外部データベース（ドメインリスト）を取り込む" class="headerlink" title="外部データベース（ドメインリスト）を取り込む"></a>外部データベース（ドメインリスト）を取り込む</h2>
-          </div>
-<p>　XGのデータベースだけでも十分なのですが、外部のデータベース（ドメインのリスト形式）を取り込む事が可能です。ここではサンプル的に<a href="https://280blocker.net/" target="_blank" rel="noopener">280blocker | モバイル広告ブロッカー</a>のデータを取り込んでみます。利用については、<a href="https://280blocker.net/download/" target="_blank" rel="noopener">ダウンロードのページ</a>の注意事項の確認をいただき、ご自身で利用の判断をお願いします。今回はあくまでXGの機能の紹介という事で説明させていただきます。私自身このデータベースの精度などについての評価をしておりませんのでご承知おきください。</p>
-<ol>
-<li>ダウンロードするデータとして「広告ドメインリスト（リスト形式）」をダウンロードします</li>
-<li>XGの左ペインのWebを選択し、「カテゴリ」のタブをクリックします</li>
-<li>名前は「280blocker」とします</li>
-<li>分類は「Objectionable」とします</li>
-<li>設定のカテゴリはローカルのラジオボタンを選択します</li>
-<li>domainのインポートから、先ほどダウンロードしたファイルを選択し取り込みます</li>
-<li>「保存」ボタンをクリックします</li>
-</ol>
-<p>　次にWebのユーザーアクティビティの設定です。</p>
-
-
-<ol>
-<li>画面右上の「追加」ボタンをクリックします</li>
-<li>名前は「280blocker」とします</li>
-<li>先ほど「カテゴリ」で作成した280blockerを選択し適用します</li>
-<li>最後に保存ボタンを押します</li>
-</ol>
-<p>　さて、再びWebのポリシータブをクリックし、「Default Policy」の内容を表示します。ここで右側の編集（ペンのアイコン）を選択します。</p>
-
-
-<ol>
-<li>ルールの追加ボタンを押すと、先頭にルールが作成されます</li>
-<li>先頭ルールのアクティビティを選択し「すべてのトラフィック」を削除し、「280blocker」を追加します</li>
-<li>アクションは「HTTPをブロックする」というデフォルトのままです</li>
-<li>ステータスのトグルをOnにしてください</li>
-<li>最後に画面を下にスクロールし、保存ボタンをクリックします</li>
-</ol>
-<p>　こういったデータベースはさまざまな目的でホームユーザー向けにあれば良いのですが、なかなか入手が難しいところではあります。DNSにも危険IPや危険ドメインを排除する機能を持つPublicDNSもあります。但し、そういったDNSを利用する事でその個人が興味を持つドメインなどプライバシーが筒抜けになってしまいますので利用も難しいと考えています。</p>
 ]]></content>
       <categories>
         <category>Security</category>
@@ -777,6 +645,64 @@
       </tags>
   </entry>
   <entry>
+    <title>XG Firewall v18のポリシーをカスタマイズする</title>
+    <url>/new-technology/2020/03/14/customize-policy/</url>
+    <content><![CDATA[<div class="note success">
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　XG FirewallのWebポリシーをカスタマイズし、コンテンツのカテゴリ（ギャンブル、アダルト、Webメール）毎にアクセスを許可するか否かを設定できるようになります。また閲覧を拒否するドメインをインターネット上にあるデータベース等から入手し、XGに取り込む事ができるようになります。</p>
+          </div>
+<a id="more"></a>
+
+<div class="note primary no-icon">
+            <h2 id="ポリシーのカスタマイズ"><a href="#ポリシーのカスタマイズ" class="headerlink" title="ポリシーのカスタマイズ"></a>ポリシーのカスタマイズ</h2>
+          </div>
+
+<p>　XGにおけるWebのポリシーというのはコンテンツのカテゴリを意味します。ギャンブル、アダルトからネットショッピングやチャットやWebメールまで多岐に渡ります。こちらは個人によって定義が異なるとおもいますので、実例を示しながら、ご自身の考えに基づいて設定を進めていく事になります。まずはそのカスタマイズを行っていきます。左ペインの「Web」をクリックします。</p>
+
+
+<p>　先ほど設定した「Default Policy」の内容がまず最初に表示されているとおもいます。初期値では、「Blocked URLs for Default Policy」と2番目の行に「Risky Downloads」および「Suspicious（※怪しいもの）」が選択されています。</p>
+<p>「Nudity and Adult content」の行のOn/OffのトグルをOnにします。そして右下の「変更を適用」をクリックするとポリシーの修正が有効になります。「Risky Downloads」および「Suspicious」が含まれていると、Google検索で「広告」という表示のあるページを正しく表示出来ない場合があります。今後説明するSSLインスペクションの対応が出来た際に改めて加える事とし、一旦「Risky Downloads」および「Suspicious」を外すなど好みで調整してみてください。Suspiciousに広告のWebサイトが含まれるためこのような挙動となります。</p>
+<div class="note primary no-icon">
+            <h2 id="外部データベース（ドメインリスト）を取り込む"><a href="#外部データベース（ドメインリスト）を取り込む" class="headerlink" title="外部データベース（ドメインリスト）を取り込む"></a>外部データベース（ドメインリスト）を取り込む</h2>
+          </div>
+<p>　XGのデータベースだけでも十分なのですが、外部のデータベース（ドメインのリスト形式）を取り込む事が可能です。ここではサンプル的に<a href="https://280blocker.net/" target="_blank" rel="noopener">280blocker | モバイル広告ブロッカー</a>のデータを取り込んでみます。利用については、<a href="https://280blocker.net/download/" target="_blank" rel="noopener">ダウンロードのページ</a>の注意事項の確認をいただき、ご自身で利用の判断をお願いします。今回はあくまでXGの機能の紹介という事で説明させていただきます。私自身このデータベースの精度などについての評価をしておりませんのでご承知おきください。</p>
+<ol>
+<li>ダウンロードするデータとして「広告ドメインリスト（リスト形式）」をダウンロードします</li>
+<li>XGの左ペインのWebを選択し、「カテゴリ」のタブをクリックします</li>
+<li>名前は「280blocker」とします</li>
+<li>分類は「Objectionable」とします</li>
+<li>設定のカテゴリはローカルのラジオボタンを選択します</li>
+<li>domainのインポートから、先ほどダウンロードしたファイルを選択し取り込みます</li>
+<li>「保存」ボタンをクリックします</li>
+</ol>
+<p>　次にWebのユーザーアクティビティの設定です。</p>
+
+
+<ol>
+<li>画面右上の「追加」ボタンをクリックします</li>
+<li>名前は「280blocker」とします</li>
+<li>先ほど「カテゴリ」で作成した280blockerを選択し適用します</li>
+<li>最後に保存ボタンを押します</li>
+</ol>
+<p>　さて、再びWebのポリシータブをクリックし、「Default Policy」の内容を表示します。ここで右側の編集（ペンのアイコン）を選択します。</p>
+
+
+<ol>
+<li>ルールの追加ボタンを押すと、先頭にルールが作成されます</li>
+<li>先頭ルールのアクティビティを選択し「すべてのトラフィック」を削除し、「280blocker」を追加します</li>
+<li>アクションは「HTTPをブロックする」というデフォルトのままです</li>
+<li>ステータスのトグルをOnにしてください</li>
+<li>最後に画面を下にスクロールし、保存ボタンをクリックします</li>
+</ol>
+<p>　こういったデータベースはさまざまな目的でホームユーザー向けにあれば良いのですが、なかなか入手が難しいところではあります。DNSにも危険IPや危険ドメインを排除する機能を持つPublicDNSもあります。但し、そういったDNSを利用する事でその個人が興味を持つドメインなどプライバシーが筒抜けになってしまいますので利用も難しいと考えています。</p>
+]]></content>
+      <categories>
+        <category>Security</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>XG Firewall V18でLAN内のホストをインターネットに公開する</title>
     <url>/new-technology/2020/04/11/dnat/</url>
     <content><![CDATA[<div class="note success">
@@ -886,6 +812,61 @@
       </tags>
   </entry>
   <entry>
+    <title>VMware vSphere Hypervisor（ESXi）のインストール</title>
+    <url>/new-technology/2020/02/29/esxi/</url>
+    <content><![CDATA[<div class="note success">
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　XG Firewall v18をVMware ESXi上で稼働させるために、VMware Esxi6.7をインストール出来るようになります。</p>
+          </div>
+
+<a id="more"></a>
+
+<div class="note primary no-icon">
+            <h2 id="インストールの前に"><a href="#インストールの前に" class="headerlink" title="インストールの前に"></a>インストールの前に</h2>
+          </div>
+
+<p> 　XG Firewallの導入に必須というわけではないですが、バックアップや異なるバージョンの同居など色々便利なので、仮想環境（ESXi）を構築しその上にXGをインストールします。</p>
+<p>　このホームユーザー向け（無償版）ESXiのインストールに関するドキュメントは正直解りやすい場所に掲載されてないのですが、<a href="https://blogs.vmware.com/jp-cim/2014/05/vspherehypervisor.html" target="_blank" rel="noopener" title="vmware">VMWareのブログ</a>から辿ると良いです。</p>
+<!-- more -->
+
+<div class="note primary no-icon">
+            <h2 id="準備"><a href="#準備" class="headerlink" title="準備"></a>準備</h2>
+          </div>
+
+<ul>
+<li>ESXiをインストールする予定の2つのNICを持ったPC1台と、ISOファイルをインストールするためのUSBメディアを用意してください。</li>
+<li>VMwareのアカウント（無償）を作成してください。</li>
+<li>VMwareサイトにログイン後、製品（vSphere Hypervisor v6.7）のダウンロードをしたら、ISOファイルをRufusを使ってUSBメディアに書き出します。</li>
+</ul>
+<div class="video-container"><iframe src="https://www.youtube.com/embed/7gYnyIaQH9A" frameborder="0" loading="lazy" allowfullscreen></iframe></div>
+
+<div class="note primary no-icon">
+            <h2 id="ESXiのインストール"><a href="#ESXiのインストール" class="headerlink" title="ESXiのインストール"></a>ESXiのインストール</h2>
+          </div>
+
+<p>　以下のビデオを参考にしてください。</p>
+<iframe src='https://players.brightcove.net/1534342432001/Byh3doRJx_default/index.html?videoId=5738631329001' allowfullscreen frameborder=0></iframe>
+
+<p>　まず、注意点ですが、いつも使っているネットワークとは別のネットワークのIPアドレスを振ってセットアップします。いつもが192.168.0.0/24なら、今回は仮に192.168.1.0/24のネットワークに配置する予定としてESXiをセットアップする事にしましょう。これまでのネットワークにXG Firewallを挟み込む事になり、従来のネットワークはXGのWAN側とホームゲートウェイに利用され、XGのLAN側は新しいネットワークになるためです。新たにXGのLAN側と同じネットワークにESXiの管理ネットワークを構築する必要があります。なお、XGのLAN側のデフォルトIPアドレスは、172.16.16.16となっています。従って、XGのIPもセットアップ時に192.168.1.0/24のネットワークに変更する事とします。</p>
+<ul>
+<li>USBメディアをESXiをインストールするPCに挿し、USBからブートし、セットアップを開始してください。</li>
+<li>vCenterはホームユーザー向けには使いませんので無視してください。</li>
+<li>NICが2枚ある事を前提にすると、Esxiの管理画面はLAN側のNICを対象とするように設定してください。今の時点では、WANは使いません。新しく振ったIP（192.168.1.1/24）をESXiの管理用IPとして、セットアップします。</li>
+<li>上記のビデオ（2:40前後の説明）では「冗長化のために」と説明がありますが、今回は冗長化を使いません。通常LAN側のvmnic0を管理用のNICとしてセットアップしてください。また、VLANも使いません。</li>
+<li>ESXi6.7では、vSphere Clientは使いません。インストールしたESXiのLAN側のIPアドレスに対してブラウザで接続し、ESXiのWeb管理画面で設定を行います。</li>
+</ul>
+<img src="/new-technology/2020/02/29/esxi/setup_esxi.png" class="" title="alt">
+
+<p> 　セットアップ終了後は、上記のようなネットワーク構成となります。USBメディアを抜いて再起動後、ESXiの画面にIPアドレスが表示されます。ホームゲートウェイに繋っていたPCをネットワークから外し、ESXiのLAN側のNICと繋ぎます。PCのIPを変更（例えば、192.168.1.101/24）し、ESXiのIPアドレスにブラウザで接続してください。ログインは、ユーザー名がroot、パスワードはセットアップで指定したものになります。</p>
+]]></content>
+      <categories>
+        <category>Security</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+        <tag>ESXi</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>VMware vSphere Hypervisor（ESXi）の設定</title>
     <url>/new-technology/2020/03/01/esxi-conf/</url>
     <content><![CDATA[<div class="note success">
@@ -972,155 +953,210 @@
       </tags>
   </entry>
   <entry>
-    <title>VMware vSphere Hypervisor（ESXi）のインストール</title>
-    <url>/new-technology/2020/02/29/esxi/</url>
+    <title>XG FirewallでIPSのポリシーを確認する</title>
+    <url>/new-technology/2020/05/04/ips-policy/</url>
     <content><![CDATA[<div class="note success">
-            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　XG Firewall v18をVMware ESXi上で稼働させるために、VMware Esxi6.7をインストール出来るようになります。</p>
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　XG Firewallの複数あるIPS Policyについて中身の確認をし、防御対象について理解を深めます。</p>
           </div>
 
 <a id="more"></a>
 
 <div class="note primary no-icon">
-            <h2 id="インストールの前に"><a href="#インストールの前に" class="headerlink" title="インストールの前に"></a>インストールの前に</h2>
+            <h2 id="XGのIPSポリシーについて"><a href="#XGのIPSポリシーについて" class="headerlink" title="XGのIPSポリシーについて"></a>XGのIPSポリシーについて</h2>
           </div>
 
-<p> 　XG Firewallの導入に必須というわけではないですが、バックアップや異なるバージョンの同居など色々便利なので、仮想環境（ESXi）を構築しその上にXGをインストールします。</p>
-<p>　このホームユーザー向け（無償版）ESXiのインストールに関するドキュメントは正直解りやすい場所に掲載されてないのですが、<a href="https://blogs.vmware.com/jp-cim/2014/05/vspherehypervisor.html" target="_blank" rel="noopener" title="vmware">VMWareのブログ</a>から辿ると良いです。</p>
-<!-- more -->
-
-<div class="note primary no-icon">
-            <h2 id="準備"><a href="#準備" class="headerlink" title="準備"></a>準備</h2>
-          </div>
-
+<p>　このブログでのXGインストールの記事、<a href="/new-technology/2020/03/14/rule-policy2/" title="XG Firewall v18のOutboundルールを新規作成する">XG Firewall v18のOutboundルールを新規作成する</a> では、IPS Policyの選択として、<span class="label info">lantowan_general</span>を設定しました。前回はまずセットアップを完了させる事を目的に、あまり十分な説明をしていませんでしたので、改めて中身の確認をしていきます。</p>
+<p>　XGのIPSポリシーは、左ペインメニューの<span class="label info">侵入防御</span>の<span class="label info">IPSポリシー</span>から確認できます。デフォルトで登録されているものには、以下の内容があります。</p>
 <ul>
-<li>ESXiをインストールする予定の2つのNICを持ったPC1台と、ISOファイルをインストールするためのUSBメディアを用意してください。</li>
-<li>VMwareのアカウント（無償）を作成してください。</li>
-<li>VMwareサイトにログイン後、製品（vSphere Hypervisor v6.7）のダウンロードをしたら、ISOファイルをRufusを使ってUSBメディアに書き出します。</li>
+<li>DMZ TO LAN</li>
+<li>DMZ TO WAN</li>
+<li>LAN TO DMZ</li>
+<li>LAN TO WAN</li>
+<li>WAN TO DMZ</li>
+<li>WAN TO LAN</li>
+<li>dmzpolicy</li>
+<li>generalpolicy</li>
+<li>lantowan general</li>
+<li>lantowan strict</li>
 </ul>
-<div class="video-container"><iframe src="https://www.youtube.com/embed/7gYnyIaQH9A" frameborder="0" loading="lazy" allowfullscreen></iframe></div>
+<p>　前半の6つはそれぞれの接続形態に合わせたポリシーです。LAN TO WANでは、ブラウザやアプリからインターネットに接続する場合の攻撃を想定した防御ポリシーとなっています。XGの左ペインメニューの<span class="label info">侵入防御</span>から<span class="label info">IPSポリシー</span>を選択し、さらにLAN TO WANを選択すると、以下の画面が表示されます。</p>
+<img src="/new-technology/2020/05/04/ips-policy/lanwan.png" class="" title="alt">
 
-<div class="note primary no-icon">
-            <h2 id="ESXiのインストール"><a href="#ESXiのインストール" class="headerlink" title="ESXiのインストール"></a>ESXiのインストール</h2>
-          </div>
-
-<p>　以下のビデオを参考にしてください。</p>
-<iframe src='https://players.brightcove.net/1534342432001/Byh3doRJx_default/index.html?videoId=5738631329001' allowfullscreen frameborder=0></iframe>
-
-<p>　まず、注意点ですが、いつも使っているネットワークとは別のネットワークのIPアドレスを振ってセットアップします。いつもが192.168.0.0/24なら、今回は仮に192.168.1.0/24のネットワークに配置する予定としてESXiをセットアップする事にしましょう。これまでのネットワークにXG Firewallを挟み込む事になり、従来のネットワークはXGのWAN側とホームゲートウェイに利用され、XGのLAN側は新しいネットワークになるためです。新たにXGのLAN側と同じネットワークにESXiの管理ネットワークを構築する必要があります。なお、XGのLAN側のデフォルトIPアドレスは、172.16.16.16となっています。従って、XGのIPもセットアップ時に192.168.1.0/24のネットワークに変更する事とします。</p>
-<ul>
-<li>USBメディアをESXiをインストールするPCに挿し、USBからブートし、セットアップを開始してください。</li>
-<li>vCenterはホームユーザー向けには使いませんので無視してください。</li>
-<li>NICが2枚ある事を前提にすると、Esxiの管理画面はLAN側のNICを対象とするように設定してください。今の時点では、WANは使いません。新しく振ったIP（192.168.1.1/24）をESXiの管理用IPとして、セットアップします。</li>
-<li>上記のビデオ（2:40前後の説明）では「冗長化のために」と説明がありますが、今回は冗長化を使いません。通常LAN側のvmnic0を管理用のNICとしてセットアップしてください。また、VLANも使いません。</li>
-<li>ESXi6.7では、vSphere Clientは使いません。インストールしたESXiのLAN側のIPアドレスに対してブラウザで接続し、ESXiのWeb管理画面で設定を行います。</li>
-</ul>
-<img src="/new-technology/2020/02/29/esxi/setup_esxi.png" class="" title="alt">
-
-<p> 　セットアップ終了後は、上記のようなネットワーク構成となります。USBメディアを抜いて再起動後、ESXiの画面にIPアドレスが表示されます。ホームゲートウェイに繋っていたPCをネットワークから外し、ESXiのLAN側のNICと繋ぎます。PCのIPを変更（例えば、192.168.1.101/24）し、ESXiのIPアドレスにブラウザで接続してください。ログインは、ユーザー名がroot、パスワードはセットアップで指定したものになります。</p>
-]]></content>
-      <categories>
-        <category>Security</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-        <tag>ESXi</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>XG Firewall V18で正しいDNS利用を強制する</title>
-    <url>/new-technology/2020/05/16/Intercept-DNS/</url>
-    <content><![CDATA[<div class="note success">
-            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　自分で設定したDNS（多くはプロバイダDNS）に反し、行儀の悪いクライアントや悪意のあるプログラムはそれに従わず、全く別のDNSを参照する可能性があります。XG Firewall V18の機能を活用してDNSの安全性を確保します。</p>
-          </div>
-
-<a id="more"></a>
-
-<div class="note primary no-icon">
-            <h2 id="DNSとプライバシー"><a href="#DNSとプライバシー" class="headerlink" title="DNSとプライバシー"></a>DNSとプライバシー</h2>
-          </div>
-
-<p>　Sophos CommunityでもDNSの扱いについてはいろいろ議論されていますが、ベストプラクティスとしては<a href="https://community.sophos.com/products/xg-firewall/f/network-and-routing/95100/dns-best-practices-for-xg" target="_blank" rel="noopener">DNS Best Practices for XG</a>の記事にあります。</p>
+<p>　このポリシーは、<span class="label info">カテゴリ</span>、<span class="label info">重要度</span>、<span class="label info">プラットフォーム</span>、<span class="label info">対象</span>というそれぞれのメニューに分かれています。これはブラウザなどのクライアントを対象として、WindowsやLinuxのクライアントOSが確認できます。macOSはありませんが、実際にAll Clientとして組み込まれているようです。正直このポリシーはどのような意図で作成されたのかはちょっとわかりません。なぜWindowsとLinuxだけを切り出しているのでしょうか。さらに、前半6つのポリシーはカスタマイズ出来ません。</p>
+<p>　その下にあるdmzpolicy〜lantowan strictの4つのポリシーの中身はフィルタの種類の名前が異なっていますが、7126個あるXGのIPSポリシーが全て選択されており、4つのポリシーの中身は全く同じで何を選んでも変わりません。XGの昔からの伝統でそのようなカスタマイズ前提のポリシーになっています。</p>
+<p>　これらの事実からみて、明らかに不要なポリシーを外せばパフォーマンスアップが期待されます。ですが、XGではその部分はさすがに工夫されていて、ポリシーを絞ったとしても殆ど効果はありません。もちろん、Solarisを個人で導入する人は稀でしょうが、下手にカスタマイズするよりは原則あるポリシーをそのまま使っても全く変わりません。これらの議論は、以下のSophos Communityの記事が参考になります。</p>
+<blockquote>
+<p>　<a href="https://community.sophos.com/products/xg-firewall/f/intrusion-prevention/98717/please-clarify-ips-policies" target="_blank" rel="noopener">Please clarify IPS Policies?</a></p>
+</blockquote>
 <blockquote class="blockquote-center">
             <i class="fa fa-quote-left"></i>
-            <p>最良の防御策はXGをDNSサーバとして使用し、DNSリクエストのルーティングを設定すること。それ以外は何も行わないことです。udpポート53を開かないようにしてください。<br>The best protection is to use XG as dns server, configure dns request routing and nothing else. Avoid to open udp port 53.</p>
+            <p>IPSを使用した場合のスループットのボトルネックに関しては、XGはsnortを使用していますが、SGシリーズを含む通常のファイアウォールに加えていくつかの工夫をしています。</p>
 
             <i class="fa fa-quote-right"></i>
           </blockquote>
 
-<p>　この一言で既にDNSの使い方については答えが出てしまいましたが、記事が2017年とやや古い事もあり、V18の機能を生かしたDNSのベストプラクティスを書いてみます。</p>
-<p>　DNSとプライバシーは国によって扱いが変わるかも知れません。国が人々のネットのアクセス状況を把握している事が問題とされている場所では、パブリックDNSが好まれます。また海外ではプロバイダーがDNSを改ざんするといったニュースも見かけます。日本国内においては、プロバイダのDNSの応答速度が遅い事から利用されるケースが増えてきているようです。</p>
-<p>　ブラウザのFireFoxでは、プライバシー保護を目的として、DNSについてHTTPSを利用したDNS over HTTPSに対応しています。この機能は日本ではデフォルトでオフになっていますが、HTTPSで暗号化されているため管理者側からは一般的なネットブラウジングと区別がつかず、トラフィックが見えづらくなります。</p>
-<p>　私個人としてはDNSを含めたプライバシーの情報を無闇に拡散させない事が重要と考えています。また、Communityで言及されている通り、防御のためにDNSのPortは空けない事が重要と考えます。パブリックDNSの利用はユーザーそれぞれにとっては考え方は異なるかとおもいますので、これ以降は悪意をもったクライアントが本来のDNS設定を迂回する事の対策として読んでいただければとおもいます。</p>
-<div class="note primary no-icon">
-            <h2 id="XG-V18で指定DNSを強制する方法"><a href="#XG-V18で指定DNSを強制する方法" class="headerlink" title="XG V18で指定DNSを強制する方法"></a>XG V18で指定DNSを強制する方法</h2>
-          </div>
+<p>　XGのIPSはオープンソースのセキュリティソフトであるsnortを使っているようです。私の検証では、下手にポリシーを絞り込むとかえってパフォーマンスが出なくなるように見えます（何10回も繰り返し統計をとったわけではありません）。lantowan generalなどの全く絞り込まないポリシーで全く不都合がない事と、XGで新しく自動追加されたポリシーが既存のフィルタで無効とならないようにするため、このままフィルタせずに利用しています。</p>
+<p>　合計7126個のポリシーですが、これに過剰な期待は禁物です。話は変わりますが、Webサーバーのシェアは2017年に過半数を占めていたApacheは2020年4月には38.7％までシェアを落としています。代わりに高速性が売りのnginxが、足元32.1%までシェアを伸ばしています。</p>
+<blockquote class="blockquote-center">
+            <i class="fa fa-quote-left"></i>
+            <p><strong>Historical quarterly trends in the usage statistics of web servers</strong></p>
+<p>This report shows the historical trends in the usage of web servers since April 2017.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>2017 1 Apr</th>
+<th>2018 1 Apr</th>
+<th>2019 1 Apr</th>
+<th>2020 1 Apr</th>
+<th>2020 4 May</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Apache</strong></td>
+<td><strong>50.1%</strong></td>
+<td>46.9%</td>
+<td>43.8%</td>
+<td>39.5%</td>
+<td><strong>38.7%</strong></td>
+</tr>
+<tr>
+<td><strong>Nginx</strong></td>
+<td><strong>33.1%</strong></td>
+<td>37.7%</td>
+<td>41.6%</td>
+<td>31.7%</td>
+<td><strong>32.1%</strong></td>
+</tr>
+<tr>
+<td><strong>Cloudflare Server</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td>13.6%</td>
+<td>14.0%</td>
+</tr>
+<tr>
+<td><strong>Microsoft-IIS</strong></td>
+<td>11.4%</td>
+<td>10.0%</td>
+<td>8.7%</td>
+<td>8.3%</td>
+<td>8.1%</td>
+</tr>
+<tr>
+<td><strong>LiteSpeed</strong></td>
+<td>2.5%</td>
+<td>3.2%</td>
+<td>4.0%</td>
+<td>6.3%</td>
+<td>6.5%</td>
+</tr>
+<tr>
+<td><strong>Google Servers</strong></td>
+<td>1.3%</td>
+<td>1.0%</td>
+<td>0.9%</td>
+<td>1.1%</td>
+<td>1.1%</td>
+</tr>
+<tr>
+<td><strong>Node.js</strong></td>
+<td>0.3%</td>
+<td>0.4%</td>
+<td>0.7%</td>
+<td>0.8%</td>
+<td>0.8%</td>
+</tr>
+<tr>
+<td><strong>Tomcat</strong></td>
+<td>0.6%</td>
+<td>0.5%</td>
+<td>0.4%</td>
+<td>0.2%</td>
+<td>0.2%</td>
+</tr>
+<tr>
+<td><strong>Apache Traffic Server</strong></td>
+<td>0.3%</td>
+<td>0.3%</td>
+<td>0.5%</td>
+<td>0.1%</td>
+<td>0.1%</td>
+</tr>
+<tr>
+<td><strong>Cowboy</strong></td>
+<td>0.1%</td>
+<td>0.1%</td>
+<td>0.1%</td>
+<td>0.1%</td>
+<td>0.1%</td>
+</tr>
+<tr>
+<td><strong>Tengine</strong></td>
+<td>0.2%</td>
+<td>0.2%</td>
+<td>0.1%</td>
+<td>0.1%</td>
+<td>0.1%</td>
+</tr>
+<tr>
+<td><strong>IdeaWebServer</strong></td>
+<td>0.3%</td>
+<td>0.3%</td>
+<td>0.3%</td>
+<td>0.1%</td>
+<td>0.1%</td>
+</tr>
+<tr>
+<td><strong>Kestrel</strong></td>
+<td></td>
+<td>&lt;0.1%</td>
+<td>0.1%</td>
+<td>0.1%</td>
+<td>0.1%</td>
+</tr>
+<tr>
+<td><strong>ArvanNginx</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td>&lt;0.1%</td>
+<td>0.1%</td>
+</tr>
+<tr>
+<td><strong>Lighttpd</strong></td>
+<td>0.1%</td>
+<td>0.1%</td>
+<td>0.1%</td>
+<td>&lt;0.1%</td>
+<td>&lt;0.1%</td>
+</tr>
+<tr>
+<td><strong>Oracle Servers</strong></td>
+<td>0.1%</td>
+<td>&lt;0.1%</td>
+<td>&lt;0.1%</td>
+<td>&lt;0.1%</td>
+<td>&lt;0.1%</td>
+</tr>
+<tr>
+<td><strong>IBM Servers</strong></td>
+<td>0.1%</td>
+<td>&lt;0.1%</td>
+<td>&lt;0.1%</td>
+<td>&lt;0.1%</td>
+<td>&lt;0.1%</td>
+</tr>
+</tbody></table>
 
-<p>　ここではDNS情報はDHCPで配布されている前提とします。このブログでは、クライアントが参照するDNSは、全てXGのDNSを指定するように設定しています。</p>
-<p>　この前提で、これを回避しようとするクライアントに対して以下の対策を取ります。</p>
-<ol>
-<li><p>DNS over TLS(DoT)は拒否<br>Port853の拒否</p>
-</li>
-<li><p>DNS over HTTPS(DoH)は拒否<br>RFC8484に基づき、MIMEヘッダーの<span class="label info">application/dns-message</span>を見つけて、その通信を拒否</p>
-</li>
-<li><p>Public DNSへのアクセス（Port53）は、強制的にXGのDNS経由で本来のDNSにアクセス<br>XGのDNATの機能を使い、WANインターフェースに対するPort53の通信だった場合、宛先IPをXGのLANのIPアドレスに変換</p>
-</li>
-</ol>
-<p>　1および2ですが、アプリケーションは、DoTやDoHを止められると（一般的には）通常のDNS(Port53)にフォールバックします。そしてXGは強制的にDNSの向き先を変えますが、クライアントはパブリックDNSにアクセスしたと思い込んだまま、返されたIPに対しアクセスする事になります。</p>
-<div class="note primary no-icon">
-            <h2 id="DoHの拒否"><a href="#DoHの拒否" class="headerlink" title="DoHの拒否"></a>DoHの拒否</h2>
-          </div>
+            <i class="fa fa-quote-right"></i>
+          </blockquote> 
 
-
-<p>　DoHの定義についてサービスの登録を行います。</p>
-<p>　XGの左ペインメニュー<span class="label info">Web</span>の<span class="label info">ファイルタイプ</span>から<span class="label info">追加</span>ボタンをクリックします。<span class="label info">名前</span>は<span class="label info">DoH</span>、<span class="label info">テンプレート</span>を空白とし、<span class="label info">MIMEヘッダー</span>に<span class="label info">application/dns-message</span>と入力し、<span class="label info">保存</span>します。</p>
-<img src="/new-technology/2020/05/16/Intercept-DNS/mimetype.png" class="" title="alt">
-
-<p>　<span class="label info">Web</span>の<span class="label info">ユーザーアクティビティ</span>から追加ボタンをクリックし、先ほどDoHとして登録したカテゴリを加え、<span class="label info">DNS over HTTPS</span>と名前を付けて保存します。</p>
-<img src="/new-technology/2020/05/16/Intercept-DNS/mimetype2.png" class="" title="alt">
-
-<p>　続いて、具体的な拒否設定です。</p>
-<p>　<span class="label info">Web</span>の<span class="label info">ポリシー</span>からご自身がFirewallルールで利用しているポリシー（ここではHome Policyを使っていると仮定しています）に、上記で登録してきた<span class="label default">DNS over HTTPS</span>を<span class="label danger">拒否</span>する設定を加えます。</p>
-<img src="/new-technology/2020/05/16/Intercept-DNS/policy.png" class="" title="alt">
-
-<div class="note primary no-icon">
-            <h2 id="DoTの拒否"><a href="#DoTの拒否" class="headerlink" title="DoTの拒否"></a>DoTの拒否</h2>
-          </div>
-
-<p>　XGの左ペインメニュー<span class="label info">ホストとサービス</span>の<span class="label info">サービス</span>から、<span class="label info">追加</span>ボタンをクリックし、<span class="label info">送信元ポート</span>が1〜65535、<span class="label info">宛先ポート</span>853を指定し、<span class="label info">DoT</span>と名前を付け保存します。</p>
-<img src="/new-technology/2020/05/16/Intercept-DNS/service.png" class="" title="alt">
-
-<p>　XGの左ペインメニュー<span class="label info">ルールとポリシー</span>から新しいファイアウォールルールを追加し、以下のようにDoTを<span class="label danger">拒否</span>するルールを作成します。</p>
-<img src="/new-technology/2020/05/16/Intercept-DNS/rule1.png" class="" title="alt">
-
-
-<div class="note primary no-icon">
-            <h2 id="DNSに関するDNATの登録"><a href="#DNSに関するDNATの登録" class="headerlink" title="DNSに関するDNATの登録"></a>DNSに関するDNATの登録</h2>
-          </div>
-
-<p>　最初にDNATで必要なホストの定義を行います。LANで使っているネットワークアドレスの登録とXG自身のIPアドレスの登録が必要です。ネットワークアドレスについてIPv4は例えば、192.168.1.0/24、IPv6は例えばfd00:1234:5678:abcd::1などの登録を行います。XG自身のIPアドレスも登録が必要です。</p>
-<img src="/new-technology/2020/05/16/Intercept-DNS/host.png" class="" title="alt">
-
-<p>　XGの左ペインメニュー<span class="label info">ルールとポリシー</span>から、<span class="label info">NATルール</span>を選択、<span class="label info">NATルールの追加</span>ボタンをクリックします。DNATは本当に理解が難しいですが、以下の通り設定します。</p>
-<ol>
-<li><span class="label info">変換前の送信元</span>は、使っているネットワークのオブジェクトを登録します</li>
-<li><span class="label info">変換前のサービス</span>は、<span class="label info">DNS</span>を選択します</li>
-<li><span class="label info">返還後の宛先（DNAT）</span>は、XG自身のIPを指定します</li>
-<li><span class="label info">アウトバウンドインターフェース</span>には、WANである、<span class="label info">Port2</span>を選択します</li>
-<li>最後に追加ボタンをクリックして登録を完了します</li>
-</ol>
-<img src="/new-technology/2020/05/16/Intercept-DNS/rule2.png" class="" title="alt">
-
-<p>　上記はIPv4の例ですが、IPv6を利用されている方は、同様にIPv6のDNATも設定して下さい。</p>
-<p>　上記のDNATによる、DNSのインターセプトが有効になると、<span class="label info">ルールとポリシー</span>の<span class="label info">NATルール</span>画面で実際の変換された数が確認できるので、これで挙動確認を行ってください。</p>
-<img src="/new-technology/2020/05/16/Intercept-DNS/rule3.png" class="" title="alt">
-
-<p> プロバイダーのDNS速度が極端に遅い場合はこれらの設定がベストにはなりませんが、<span class="label info">プライバシーと安全を鑑みたV18ならではのDNSのベストプラクティス</span>になるとおもいます。</p>
-<div class="note primary no-icon">
-            <h2 id="その他DNSに関して補足すること"><a href="#その他DNSに関して補足すること" class="headerlink" title="その他DNSに関して補足すること"></a>その他DNSに関して補足すること</h2>
-          </div>
-
-<p>　GoogleDNSのDoHはRFC8484に従っていない独自プロトコルを使えるという事実があります。世界中のパブリックDNSを全て把握するのは困難ですが、Sophosの以下の記事を参考にWebフィルタのURLグループにパブリックDNSのドメインを登録し、拒否する設定を加えても良いでしょう。</p>
-<p><a href="https://community.sophos.com/kb/en-us/134644" target="_blank" rel="noopener">DNS over HTTPS (DoH) for web security</a></p>
+<p><a href="https://w3techs.com/technologies/history_overview/web_server/ms/q" target="_blank" rel="noopener">https://w3techs.com/technologies/history_overview/web_server/ms/q</a></p>
+<p>「パッチが多いのでアパッチ」と揶揄される事もありますが、XGのIPSにも178個のアパッチ用ポリシーがあります。一方、nginxは、まだ歴史が浅いという事もありますが、XGのポリシーを検索してみると4つしか見つかりません。全ての製品の脆弱性をXGがカバー出来るかといえば難しく、やはり利用しているプロダクトの製品パッチを適用するのが本筋です。</p>
+<p>　再びホームユーザーとしての話に戻しますと、原則、Windows10やmacOS、スマホは脆弱性に対するパッチとして自動更新の機能があるので、それを行うのが確実です。むしろ危ないのは自動更新にしていないOSであったり、IoT機器・無線ルーター・NAS・家電などです。昨今、数多くの脆弱性が発見され、パッチが出ている現況においては、IPSに全ての製品の脆弱性の保護を頼るのは厳しいと考えます。きちんとベンダーからの通知システムを活用し、適切なパッチを適用する事が何よりも重要です。私はIT機器やソフトウェアを導入する場合には、こういったパッチが迅速に提供されるもの、また自動更新や通知の仕組みがあるものを選定するようにしています。そういう意味では、家電などはOSやシステム等の情報も少ないのが実情です。XGのIPSはあくまで補助的に使い、日常ログの確認も併せて行いたいところです。</p>
+<p>　XGのIPSはこれだけにの機能に限らず、レイヤ7のファイアウォール機能として立派に役目を果たしてくれます。怪しいサイトに接続しない事は本人の心がけも重要ですが、XGである程度そういったサイトを遠ざける事も出来ます。2要素認証のように、面倒ではありますが複数の管理策を重ねる事と、日頃のログの確認や情報をウォッチする事が防御を高める事につながります。</p>
 ]]></content>
       <categories>
         <category>Security</category>
@@ -1533,6 +1569,107 @@
       </tags>
   </entry>
   <entry>
+    <title>XG Firewall VPNにスマホから接続する</title>
+    <url>/new-technology/2020/03/31/vpn-iphone/</url>
+    <content><![CDATA[<div class="note success">
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>スマホ（iPhone、Android）からXG FirewallのVPNへ接続できるようになります。ワンタイムパスワードの設定も可能です。</p>
+          </div>
+<a id="more"></a>
+
+<div class="note primary no-icon">
+            <h2 id="スマホからXG-Firewall-VPNに接続する事前準備"><a href="#スマホからXG-Firewall-VPNに接続する事前準備" class="headerlink" title="スマホからXG Firewall VPNに接続する事前準備"></a>スマホからXG Firewall VPNに接続する事前準備</h2>
+          </div>
+
+<p>　前回の記事でPC（WindowsおよびmacOS）からXGの<span class="label info">VPN（Sophos Connect）</span>にワンタイムパスワードを使って安全に接続できるようになりました。ここでは、スマホからVPNへ接続できるように設定していきます。この記事では、XG側に一通りVPNの設定が終わっている事を前提としています。以下の記事も参考にしてください。</p>
+<p>　 <a href="/new-technology/2020/03/28/vpn/" title="XG Firewall VPNについて">XG Firewall VPNについて</a><br>　 <a href="/new-technology/2020/03/28/vpnotp/" title="XG Firewall VPNにワンタイムパスワードを設定する">XG Firewall VPNにワンタイムパスワードを設定する</a></p>
+<p>　前提条件は以下の通りです。なお、この記事では、ワンタイムパスワードを必ず必須とはしていません。PCとは異なり、移動しながら使うスマホは毎回ワンタイムパスワードを入力するのでは利便性に欠けます。ここは利便性とセキュリティの安全面を比較し判断という事になるかとおもいます。</p>
+<ul>
+<li>XGにVPN(Sophos Connect)の設定を終えている</li>
+<li>XGの外側（インターネット側）にホームゲートウェイがあり、ホームゲートウェイからXGに対し必要なVPNのパケットを転送出来ている</li>
+</ul>
+<div class="note primary no-icon">
+            <h2 id="iOS-iPhone-からVPN接続のための設定を行う"><a href="#iOS-iPhone-からVPN接続のための設定を行う" class="headerlink" title="iOS(iPhone)からVPN接続のための設定を行う"></a>iOS(iPhone)からVPN接続のための設定を行う</h2>
+          </div>
+
+<p>　まず、<span class="label info">PC</span>から<span class="label info">LAN</span>環境にて、XGのユーザーポータル<code>https://XGのIPアドレス/</code>に接続します。ユーザーポータルには、前回までに作成したVPNユーザーでログインします。ポータルのログイン後には、以下の画面のように、iPhone（iOS）のIPSec VPNに必要な設定ファイルをダウンロードできるようになっています。</p>
+<img src="/new-technology/2020/03/31/vpn-iphone/iphone.png" class="" title="alt">
+
+<div class="note warning">
+            <p>ダウンロードした設定ファイルは一部修正が必要ですので、PCからダウンロード・修正の後、iOSにインストールする事をお勧めします。</p>
+          </div>
+
+<p>　ファイルをダウンロードしたらメモ帳やテキストエディットなどで設定ファイルを開きます。以下はファイルの先頭からの抜粋ですが、11行目にXGのWAN側のIPアドレスが記載されている行があります。内容は以下の通りです。</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plist</span> <span class="attr">version</span>=<span class="string">"1.0"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">key</span>&gt;</span>PayloadContent<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">key</span>&gt;</span>IPSec<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">key</span>&gt;</span>AuthenticationMethod<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">string</span>&gt;</span>SharedSecret<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">key</span>&gt;</span>RemoteAddress<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">string</span>&gt;</span>192.168.x.x<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>　上記のIPアドレスをXGで設定してあるダイナミックDNSのホスト名に書き換えます（Sophos社が提供しているダイナミックDNSであれば、xxxx.myfirewall.coです）。その後、ファイルを保存し、iCloudまたはメールなどでiPhoneに転送し、iPhoneから設定ファイルをインストールします。macOSだとFinderからファイルを選んでAirDropでiPhoneに送信すると簡単ですね。iPhoneではプロファイルのインストール時には、最初にiPhoneのパスワードを求められますのでiPhoneのパスワードを入力します。<br>　次にXGの接続ユーザーのパスワードを求められますが、ここはワンタイムパスワードの有無で設定が異なります。前回の記事ではワンタイムパスワードが必要なユーザーを作成しましたが、ワンタイムパスワードが不要であれば、ワンタイムパスワードを使わないユーザーを改めて作成してください。</p>
+<ul>
+<li>以下の場合は、XGの接続ユーザーのパスワードを入力します<ul>
+<li>ワンタイムパスワードは利用しない</li>
+<li>iPhoneにパスワードを記憶させたい</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>以下の場合は、パスワードを入力せずプロファイルのインストールを完了させます<ul>
+<li>ワンタイムパスワードを利用する</li>
+<li>iPhoneにパスワードを記憶させたくない</li>
+</ul>
+</li>
+</ul>
+<p>　これでプロファイルのインストールは完了です。</p>
+<div class="note primary no-icon">
+            <h2 id="iOS-iPhone-からVPNに接続する"><a href="#iOS-iPhone-からVPNに接続する" class="headerlink" title="iOS(iPhone)からVPNに接続する"></a>iOS(iPhone)からVPNに接続する</h2>
+          </div>
+
+<p>　早速、iPhoneからVPNに接続します。設定アプリからVPNを選択、XGの接続先が選択されている状態で<span class="label info">状況</span>のトグルスイッチをオンにします。パスワードが設定済みの方は1秒も掛からず、すぐにXGへの接続が完了します。<br>　ワンタイムパスワードを設定している方、或いはパスワードを記憶させていない方は、パスワード入力のポップアップが表示されます。ワンタイムパスワードは、パスワードのあと続けてワンタイムパスワードの6つの数字を続けて入力します。一旦ポップアップが表示されると他のアプリに切り替えられないので一旦キャンセルします。ワンタイムパスワードアプリで6桁の数字を記憶するかコピーするなどし、最大30秒以内で設定アプリに再度切り替え、VPNのパスワードを完成させ接続する事になります。<br>　ちょっと最後が慌ただしいのですが、iPhoneからXGのVPNへ接続できるようになりました。</p>
+<div class="note primary no-icon">
+            <h2 id="AndroidからVPN接続のための設定を行う"><a href="#AndroidからVPN接続のための設定を行う" class="headerlink" title="AndroidからVPN接続のための設定を行う"></a>AndroidからVPN接続のための設定を行う</h2>
+          </div>
+
+<p>　AndroidからVPNに接続する場合は、以下の設定を行います。今回の実例はAndroidのバージョン9のタブレットで説明します。機種によって操作は異なるかとおもいますが、ご容赦ください。<br>　無線とネットワーク→VPN→<span class="label info">VPNネットワークの追加</span>をタップします。</p>
+<table>
+<thead>
+<tr>
+<th>説明</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>名前</td>
+<td>接続名を入力します</td>
+</tr>
+<tr>
+<td>タイプ</td>
+<td><span class="label info">IPSec Xauth PSK</span>を選択します</td>
+</tr>
+<tr>
+<td>サーバー</td>
+<td>xxx.myfirewall.coなどのダイナミックDNSのホスト名を入力します</td>
+</tr>
+<tr>
+<td>IPSec ID</td>
+<td>空白のままで構いません</td>
+</tr>
+<tr>
+<td>IPSec事前共有鍵</td>
+<td>XGで設定した共有鍵を入力します</td>
+</tr>
+</tbody></table>
+<img src="/new-technology/2020/03/31/vpn-iphone/android.png" class="" title="alt">
+<p>　この後、ユーザーIDとパスワードを入力し、接続します。iOSと同様に、ワンタイムパスワードを利用する場合は、パスワードの後ろにワンタイムパスワード（6桁の数字）を続けて入力します。こちらも接続は一瞬で完了します。</p>
+<p>　Androidに関しては1点、注意点があります。Androidは、SSLインスペクションについて、Chromeブラウザ以外のアプリからは使えない前提があります。そこで、Android専用のVPNユーザーを作成しSSLインスペクションの対象からAndroidユーザーを除外するなどの設定が必要となります。</p>
+<p>　これで、スマホからもXGのVPNに接続する事が出来ました。スマホからXG Firewallを活用した安全なネットアクセスや宅内に設置してあるサーバーの操作ができるのは大変魅力的だとおもいます。</p>
+]]></content>
+      <categories>
+        <category>Security</category>
+        <category>VPN</category>
+        <category>ワンタイムパスワード</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>XG Firewall VPNについて</title>
     <url>/new-technology/2020/03/28/vpn/</url>
     <content><![CDATA[<div class="note success">
@@ -1696,107 +1833,6 @@
       <categories>
         <category>Security</category>
         <category>VPN</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>XG Firewall VPNにスマホから接続する</title>
-    <url>/new-technology/2020/03/31/vpn-iphone/</url>
-    <content><![CDATA[<div class="note success">
-            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>スマホ（iPhone、Android）からXG FirewallのVPNへ接続できるようになります。ワンタイムパスワードの設定も可能です。</p>
-          </div>
-<a id="more"></a>
-
-<div class="note primary no-icon">
-            <h2 id="スマホからXG-Firewall-VPNに接続する事前準備"><a href="#スマホからXG-Firewall-VPNに接続する事前準備" class="headerlink" title="スマホからXG Firewall VPNに接続する事前準備"></a>スマホからXG Firewall VPNに接続する事前準備</h2>
-          </div>
-
-<p>　前回の記事でPC（WindowsおよびmacOS）からXGの<span class="label info">VPN（Sophos Connect）</span>にワンタイムパスワードを使って安全に接続できるようになりました。ここでは、スマホからVPNへ接続できるように設定していきます。この記事では、XG側に一通りVPNの設定が終わっている事を前提としています。以下の記事も参考にしてください。</p>
-<p>　 <a href="/new-technology/2020/03/28/vpn/" title="XG Firewall VPNについて">XG Firewall VPNについて</a><br>　 <a href="/new-technology/2020/03/28/vpnotp/" title="XG Firewall VPNにワンタイムパスワードを設定する">XG Firewall VPNにワンタイムパスワードを設定する</a></p>
-<p>　前提条件は以下の通りです。なお、この記事では、ワンタイムパスワードを必ず必須とはしていません。PCとは異なり、移動しながら使うスマホは毎回ワンタイムパスワードを入力するのでは利便性に欠けます。ここは利便性とセキュリティの安全面を比較し判断という事になるかとおもいます。</p>
-<ul>
-<li>XGにVPN(Sophos Connect)の設定を終えている</li>
-<li>XGの外側（インターネット側）にホームゲートウェイがあり、ホームゲートウェイからXGに対し必要なVPNのパケットを転送出来ている</li>
-</ul>
-<div class="note primary no-icon">
-            <h2 id="iOS-iPhone-からVPN接続のための設定を行う"><a href="#iOS-iPhone-からVPN接続のための設定を行う" class="headerlink" title="iOS(iPhone)からVPN接続のための設定を行う"></a>iOS(iPhone)からVPN接続のための設定を行う</h2>
-          </div>
-
-<p>　まず、<span class="label info">PC</span>から<span class="label info">LAN</span>環境にて、XGのユーザーポータル<code>https://XGのIPアドレス/</code>に接続します。ユーザーポータルには、前回までに作成したVPNユーザーでログインします。ポータルのログイン後には、以下の画面のように、iPhone（iOS）のIPSec VPNに必要な設定ファイルをダウンロードできるようになっています。</p>
-<img src="/new-technology/2020/03/31/vpn-iphone/iphone.png" class="" title="alt">
-
-<div class="note warning">
-            <p>ダウンロードした設定ファイルは一部修正が必要ですので、PCからダウンロード・修正の後、iOSにインストールする事をお勧めします。</p>
-          </div>
-
-<p>　ファイルをダウンロードしたらメモ帳やテキストエディットなどで設定ファイルを開きます。以下はファイルの先頭からの抜粋ですが、11行目にXGのWAN側のIPアドレスが記載されている行があります。内容は以下の通りです。</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plist</span> <span class="attr">version</span>=<span class="string">"1.0"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">key</span>&gt;</span>PayloadContent<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">key</span>&gt;</span>IPSec<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">key</span>&gt;</span>AuthenticationMethod<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">string</span>&gt;</span>SharedSecret<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">key</span>&gt;</span>RemoteAddress<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">string</span>&gt;</span>192.168.x.x<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>　上記のIPアドレスをXGで設定してあるダイナミックDNSのホスト名に書き換えます（Sophos社が提供しているダイナミックDNSであれば、xxxx.myfirewall.coです）。その後、ファイルを保存し、iCloudまたはメールなどでiPhoneに転送し、iPhoneから設定ファイルをインストールします。macOSだとFinderからファイルを選んでAirDropでiPhoneに送信すると簡単ですね。iPhoneではプロファイルのインストール時には、最初にiPhoneのパスワードを求められますのでiPhoneのパスワードを入力します。<br>　次にXGの接続ユーザーのパスワードを求められますが、ここはワンタイムパスワードの有無で設定が異なります。前回の記事ではワンタイムパスワードが必要なユーザーを作成しましたが、ワンタイムパスワードが不要であれば、ワンタイムパスワードを使わないユーザーを改めて作成してください。</p>
-<ul>
-<li>以下の場合は、XGの接続ユーザーのパスワードを入力します<ul>
-<li>ワンタイムパスワードは利用しない</li>
-<li>iPhoneにパスワードを記憶させたい</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li>以下の場合は、パスワードを入力せずプロファイルのインストールを完了させます<ul>
-<li>ワンタイムパスワードを利用する</li>
-<li>iPhoneにパスワードを記憶させたくない</li>
-</ul>
-</li>
-</ul>
-<p>　これでプロファイルのインストールは完了です。</p>
-<div class="note primary no-icon">
-            <h2 id="iOS-iPhone-からVPNに接続する"><a href="#iOS-iPhone-からVPNに接続する" class="headerlink" title="iOS(iPhone)からVPNに接続する"></a>iOS(iPhone)からVPNに接続する</h2>
-          </div>
-
-<p>　早速、iPhoneからVPNに接続します。設定アプリからVPNを選択、XGの接続先が選択されている状態で<span class="label info">状況</span>のトグルスイッチをオンにします。パスワードが設定済みの方は1秒も掛からず、すぐにXGへの接続が完了します。<br>　ワンタイムパスワードを設定している方、或いはパスワードを記憶させていない方は、パスワード入力のポップアップが表示されます。ワンタイムパスワードは、パスワードのあと続けてワンタイムパスワードの6つの数字を続けて入力します。一旦ポップアップが表示されると他のアプリに切り替えられないので一旦キャンセルします。ワンタイムパスワードアプリで6桁の数字を記憶するかコピーするなどし、最大30秒以内で設定アプリに再度切り替え、VPNのパスワードを完成させ接続する事になります。<br>　ちょっと最後が慌ただしいのですが、iPhoneからXGのVPNへ接続できるようになりました。</p>
-<div class="note primary no-icon">
-            <h2 id="AndroidからVPN接続のための設定を行う"><a href="#AndroidからVPN接続のための設定を行う" class="headerlink" title="AndroidからVPN接続のための設定を行う"></a>AndroidからVPN接続のための設定を行う</h2>
-          </div>
-
-<p>　AndroidからVPNに接続する場合は、以下の設定を行います。今回の実例はAndroidのバージョン9のタブレットで説明します。機種によって操作は異なるかとおもいますが、ご容赦ください。<br>　無線とネットワーク→VPN→<span class="label info">VPNネットワークの追加</span>をタップします。</p>
-<table>
-<thead>
-<tr>
-<th>説明</th>
-<th>内容</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>名前</td>
-<td>接続名を入力します</td>
-</tr>
-<tr>
-<td>タイプ</td>
-<td><span class="label info">IPSec Xauth PSK</span>を選択します</td>
-</tr>
-<tr>
-<td>サーバー</td>
-<td>xxx.myfirewall.coなどのダイナミックDNSのホスト名を入力します</td>
-</tr>
-<tr>
-<td>IPSec ID</td>
-<td>空白のままで構いません</td>
-</tr>
-<tr>
-<td>IPSec事前共有鍵</td>
-<td>XGで設定した共有鍵を入力します</td>
-</tr>
-</tbody></table>
-<img src="/new-technology/2020/03/31/vpn-iphone/android.png" class="" title="alt">
-<p>　この後、ユーザーIDとパスワードを入力し、接続します。iOSと同様に、ワンタイムパスワードを利用する場合は、パスワードの後ろにワンタイムパスワード（6桁の数字）を続けて入力します。こちらも接続は一瞬で完了します。</p>
-<p>　Androidに関しては1点、注意点があります。Androidは、SSLインスペクションについて、Chromeブラウザ以外のアプリからは使えない前提があります。そこで、Android専用のVPNユーザーを作成しSSLインスペクションの対象からAndroidユーザーを除外するなどの設定が必要となります。</p>
-<p>　これで、スマホからもXGのVPNに接続する事が出来ました。スマホからXG Firewallを活用した安全なネットアクセスや宅内に設置してあるサーバーの操作ができるのは大変魅力的だとおもいます。</p>
-]]></content>
-      <categories>
-        <category>Security</category>
-        <category>VPN</category>
-        <category>ワンタイムパスワード</category>
       </categories>
       <tags>
         <tag>XG Firewall</tag>
@@ -2212,210 +2248,174 @@
 ]]></content>
   </entry>
   <entry>
-    <title>XG FirewallでIPSのポリシーを確認する</title>
-    <url>/new-technology/2020/05/04/ips-policy/</url>
+    <title>XG Firewall V18で正しいDNS利用を強制する</title>
+    <url>/new-technology/2020/05/16/Intercept-DNS/</url>
     <content><![CDATA[<div class="note success">
-            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　XG Firewallの複数あるIPS Policyについて中身の確認をし、防御対象について理解を深めます。</p>
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　自分で設定したDNS（多くはプロバイダDNS）に反し、行儀の悪いクライアントや悪意のあるプログラムはそれに従わず、全く別のDNSを参照する可能性があります。XG Firewall V18の機能を活用してDNSの安全性を確保します。</p>
           </div>
 
 <a id="more"></a>
 
 <div class="note primary no-icon">
-            <h2 id="XGのIPSポリシーについて"><a href="#XGのIPSポリシーについて" class="headerlink" title="XGのIPSポリシーについて"></a>XGのIPSポリシーについて</h2>
+            <h2 id="DNSとプライバシー"><a href="#DNSとプライバシー" class="headerlink" title="DNSとプライバシー"></a>DNSとプライバシー</h2>
           </div>
 
-<p>　このブログでのXGインストールの記事、<a href="/new-technology/2020/03/14/rule-policy2/" title="XG Firewall v18のOutboundルールを新規作成する">XG Firewall v18のOutboundルールを新規作成する</a> では、IPS Policyの選択として、<span class="label info">lantowan_general</span>を設定しました。前回はまずセットアップを完了させる事を目的に、あまり十分な説明をしていませんでしたので、改めて中身の確認をしていきます。</p>
-<p>　XGのIPSポリシーは、左ペインメニューの<span class="label info">侵入防御</span>の<span class="label info">IPSポリシー</span>から確認できます。デフォルトで登録されているものには、以下の内容があります。</p>
-<ul>
-<li>DMZ TO LAN</li>
-<li>DMZ TO WAN</li>
-<li>LAN TO DMZ</li>
-<li>LAN TO WAN</li>
-<li>WAN TO DMZ</li>
-<li>WAN TO LAN</li>
-<li>dmzpolicy</li>
-<li>generalpolicy</li>
-<li>lantowan general</li>
-<li>lantowan strict</li>
-</ul>
-<p>　前半の6つはそれぞれの接続形態に合わせたポリシーです。LAN TO WANでは、ブラウザやアプリからインターネットに接続する場合の攻撃を想定した防御ポリシーとなっています。XGの左ペインメニューの<span class="label info">侵入防御</span>から<span class="label info">IPSポリシー</span>を選択し、さらにLAN TO WANを選択すると、以下の画面が表示されます。</p>
-<img src="/new-technology/2020/05/04/ips-policy/lanwan.png" class="" title="alt">
-
-<p>　このポリシーは、<span class="label info">カテゴリ</span>、<span class="label info">重要度</span>、<span class="label info">プラットフォーム</span>、<span class="label info">対象</span>というそれぞれのメニューに分かれています。これはブラウザなどのクライアントを対象として、WindowsやLinuxのクライアントOSが確認できます。macOSはありませんが、実際にAll Clientとして組み込まれているようです。正直このポリシーはどのような意図で作成されたのかはちょっとわかりません。なぜWindowsとLinuxだけを切り出しているのでしょうか。さらに、前半6つのポリシーはカスタマイズ出来ません。</p>
-<p>　その下にあるdmzpolicy〜lantowan strictの4つのポリシーの中身はフィルタの種類の名前が異なっていますが、7126個あるXGのIPSポリシーが全て選択されており、4つのポリシーの中身は全く同じで何を選んでも変わりません。XGの昔からの伝統でそのようなカスタマイズ前提のポリシーになっています。</p>
-<p>　これらの事実からみて、明らかに不要なポリシーを外せばパフォーマンスアップが期待されます。ですが、XGではその部分はさすがに工夫されていて、ポリシーを絞ったとしても殆ど効果はありません。もちろん、Solarisを個人で導入する人は稀でしょうが、下手にカスタマイズするよりは原則あるポリシーをそのまま使っても全く変わりません。これらの議論は、以下のSophos Communityの記事が参考になります。</p>
-<blockquote>
-<p>　<a href="https://community.sophos.com/products/xg-firewall/f/intrusion-prevention/98717/please-clarify-ips-policies" target="_blank" rel="noopener">Please clarify IPS Policies?</a></p>
-</blockquote>
+<p>　Sophos CommunityでもDNSの扱いについてはいろいろ議論されていますが、ベストプラクティスとしては<a href="https://community.sophos.com/products/xg-firewall/f/network-and-routing/95100/dns-best-practices-for-xg" target="_blank" rel="noopener">DNS Best Practices for XG</a>の記事にあります。</p>
 <blockquote class="blockquote-center">
             <i class="fa fa-quote-left"></i>
-            <p>IPSを使用した場合のスループットのボトルネックに関しては、XGはsnortを使用していますが、SGシリーズを含む通常のファイアウォールに加えていくつかの工夫をしています。</p>
+            <p>最良の防御策はXGをDNSサーバとして使用し、DNSリクエストのルーティングを設定すること。それ以外は何も行わないことです。udpポート53を開かないようにしてください。<br>The best protection is to use XG as dns server, configure dns request routing and nothing else. Avoid to open udp port 53.</p>
 
             <i class="fa fa-quote-right"></i>
           </blockquote>
 
-<p>　XGのIPSはオープンソースのセキュリティソフトであるsnortを使っているようです。私の検証では、下手にポリシーを絞り込むとかえってパフォーマンスが出なくなるように見えます（何10回も繰り返し統計をとったわけではありません）。lantowan generalなどの全く絞り込まないポリシーで全く不都合がない事と、XGで新しく自動追加されたポリシーが既存のフィルタで無効とならないようにするため、このままフィルタせずに利用しています。</p>
-<p>　合計7126個のポリシーですが、これに過剰な期待は禁物です。話は変わりますが、Webサーバーのシェアは2017年に過半数を占めていたApacheは2020年4月には38.7％までシェアを落としています。代わりに高速性が売りのnginxが、足元32.1%までシェアを伸ばしています。</p>
-<blockquote class="blockquote-center">
-            <i class="fa fa-quote-left"></i>
-            <p><strong>Historical quarterly trends in the usage statistics of web servers</strong></p>
-<p>This report shows the historical trends in the usage of web servers since April 2017.</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>2017 1 Apr</th>
-<th>2018 1 Apr</th>
-<th>2019 1 Apr</th>
-<th>2020 1 Apr</th>
-<th>2020 4 May</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>Apache</strong></td>
-<td><strong>50.1%</strong></td>
-<td>46.9%</td>
-<td>43.8%</td>
-<td>39.5%</td>
-<td><strong>38.7%</strong></td>
-</tr>
-<tr>
-<td><strong>Nginx</strong></td>
-<td><strong>33.1%</strong></td>
-<td>37.7%</td>
-<td>41.6%</td>
-<td>31.7%</td>
-<td><strong>32.1%</strong></td>
-</tr>
-<tr>
-<td><strong>Cloudflare Server</strong></td>
-<td></td>
-<td></td>
-<td></td>
-<td>13.6%</td>
-<td>14.0%</td>
-</tr>
-<tr>
-<td><strong>Microsoft-IIS</strong></td>
-<td>11.4%</td>
-<td>10.0%</td>
-<td>8.7%</td>
-<td>8.3%</td>
-<td>8.1%</td>
-</tr>
-<tr>
-<td><strong>LiteSpeed</strong></td>
-<td>2.5%</td>
-<td>3.2%</td>
-<td>4.0%</td>
-<td>6.3%</td>
-<td>6.5%</td>
-</tr>
-<tr>
-<td><strong>Google Servers</strong></td>
-<td>1.3%</td>
-<td>1.0%</td>
-<td>0.9%</td>
-<td>1.1%</td>
-<td>1.1%</td>
-</tr>
-<tr>
-<td><strong>Node.js</strong></td>
-<td>0.3%</td>
-<td>0.4%</td>
-<td>0.7%</td>
-<td>0.8%</td>
-<td>0.8%</td>
-</tr>
-<tr>
-<td><strong>Tomcat</strong></td>
-<td>0.6%</td>
-<td>0.5%</td>
-<td>0.4%</td>
-<td>0.2%</td>
-<td>0.2%</td>
-</tr>
-<tr>
-<td><strong>Apache Traffic Server</strong></td>
-<td>0.3%</td>
-<td>0.3%</td>
-<td>0.5%</td>
-<td>0.1%</td>
-<td>0.1%</td>
-</tr>
-<tr>
-<td><strong>Cowboy</strong></td>
-<td>0.1%</td>
-<td>0.1%</td>
-<td>0.1%</td>
-<td>0.1%</td>
-<td>0.1%</td>
-</tr>
-<tr>
-<td><strong>Tengine</strong></td>
-<td>0.2%</td>
-<td>0.2%</td>
-<td>0.1%</td>
-<td>0.1%</td>
-<td>0.1%</td>
-</tr>
-<tr>
-<td><strong>IdeaWebServer</strong></td>
-<td>0.3%</td>
-<td>0.3%</td>
-<td>0.3%</td>
-<td>0.1%</td>
-<td>0.1%</td>
-</tr>
-<tr>
-<td><strong>Kestrel</strong></td>
-<td></td>
-<td>&lt;0.1%</td>
-<td>0.1%</td>
-<td>0.1%</td>
-<td>0.1%</td>
-</tr>
-<tr>
-<td><strong>ArvanNginx</strong></td>
-<td></td>
-<td></td>
-<td></td>
-<td>&lt;0.1%</td>
-<td>0.1%</td>
-</tr>
-<tr>
-<td><strong>Lighttpd</strong></td>
-<td>0.1%</td>
-<td>0.1%</td>
-<td>0.1%</td>
-<td>&lt;0.1%</td>
-<td>&lt;0.1%</td>
-</tr>
-<tr>
-<td><strong>Oracle Servers</strong></td>
-<td>0.1%</td>
-<td>&lt;0.1%</td>
-<td>&lt;0.1%</td>
-<td>&lt;0.1%</td>
-<td>&lt;0.1%</td>
-</tr>
-<tr>
-<td><strong>IBM Servers</strong></td>
-<td>0.1%</td>
-<td>&lt;0.1%</td>
-<td>&lt;0.1%</td>
-<td>&lt;0.1%</td>
-<td>&lt;0.1%</td>
-</tr>
-</tbody></table>
+<p>　この一言で既にDNSの使い方については答えが出てしまいましたが、記事が2017年とやや古い事もあり、V18の機能を生かしたDNSのベストプラクティスを書いてみます。</p>
+<p>　DNSとプライバシーは国によって扱いが変わるかも知れません。国が人々のネットのアクセス状況を把握している事が問題とされている場所では、パブリックDNSが好まれます。また海外ではプロバイダーがDNSを改ざんするといったニュースも見かけます。日本国内においては、プロバイダのDNSの応答速度が遅い事から利用されるケースが増えてきているようです。</p>
+<p>　ブラウザのFireFoxでは、プライバシー保護を目的として、DNSについてHTTPSを利用したDNS over HTTPSに対応しています。この機能は日本ではデフォルトでオフになっていますが、HTTPSで暗号化されているため管理者側からは一般的なネットブラウジングと区別がつかず、トラフィックが見えづらくなります。</p>
+<p>　私個人としてはDNSを含めたプライバシーの情報を無闇に拡散させない事が重要と考えています。また、Communityで言及されている通り、防御のためにDNSのPortは空けない事が重要と考えます。パブリックDNSの利用はユーザーそれぞれにとっては考え方は異なるかとおもいますので、これ以降は悪意をもったクライアントが本来のDNS設定を迂回する事の対策として読んでいただければとおもいます。</p>
+<div class="note primary no-icon">
+            <h2 id="XG-V18で指定DNSを強制する方法"><a href="#XG-V18で指定DNSを強制する方法" class="headerlink" title="XG V18で指定DNSを強制する方法"></a>XG V18で指定DNSを強制する方法</h2>
+          </div>
 
-            <i class="fa fa-quote-right"></i>
-          </blockquote> 
+<p>　ここではDNS情報はDHCPで配布されている前提とします。このブログでは、クライアントが参照するDNSは、全てXGのDNSを指定するように設定しています。</p>
+<p>　この前提で、これを回避しようとするクライアントに対して以下の対策を取ります。</p>
+<ol>
+<li><p>DNS over TLS(DoT)は拒否<br>Port853の拒否</p>
+</li>
+<li><p>DNS over HTTPS(DoH)は拒否<br>RFC8484に基づき、MIMEヘッダーの<span class="label info">application/dns-message</span>を見つけて、その通信を拒否</p>
+</li>
+<li><p>Public DNSへのアクセス（Port53）は、強制的にXGのDNS経由で本来のDNSにアクセス<br>XGのDNATの機能を使い、WANインターフェースに対するPort53の通信だった場合、宛先IPをXGのLANのIPアドレスに変換</p>
+</li>
+</ol>
+<p>　1および2ですが、アプリケーションは、DoTやDoHを止められると（一般的には）通常のDNS(Port53)にフォールバックします。そしてXGは強制的にDNSの向き先を変えますが、クライアントはパブリックDNSにアクセスしたと思い込んだまま、返されたIPに対しアクセスする事になります。</p>
+<div class="note primary no-icon">
+            <h2 id="DoHの拒否"><a href="#DoHの拒否" class="headerlink" title="DoHの拒否"></a>DoHの拒否</h2>
+          </div>
 
-<p><a href="https://w3techs.com/technologies/history_overview/web_server/ms/q" target="_blank" rel="noopener">https://w3techs.com/technologies/history_overview/web_server/ms/q</a></p>
-<p>「パッチが多いのでアパッチ」と揶揄される事もありますが、XGのIPSにも178個のアパッチ用ポリシーがあります。一方、nginxは、まだ歴史が浅いという事もありますが、XGのポリシーを検索してみると4つしか見つかりません。全ての製品の脆弱性をXGがカバー出来るかといえば難しく、やはり利用しているプロダクトの製品パッチを適用するのが本筋です。</p>
-<p>　再びホームユーザーとしての話に戻しますと、原則、Windows10やmacOS、スマホは脆弱性に対するパッチとして自動更新の機能があるので、それを行うのが確実です。むしろ危ないのは自動更新にしていないOSであったり、IoT機器・無線ルーター・NAS・家電などです。昨今、数多くの脆弱性が発見され、パッチが出ている現況においては、IPSに全ての製品の脆弱性の保護を頼るのは厳しいと考えます。きちんとベンダーからの通知システムを活用し、適切なパッチを適用する事が何よりも重要です。私はIT機器やソフトウェアを導入する場合には、こういったパッチが迅速に提供されるもの、また自動更新や通知の仕組みがあるものを選定するようにしています。そういう意味では、家電などはOSやシステム等の情報も少ないのが実情です。XGのIPSはあくまで補助的に使い、日常ログの確認も併せて行いたいところです。</p>
-<p>　XGのIPSはこれだけにの機能に限らず、レイヤ7のファイアウォール機能として立派に役目を果たしてくれます。怪しいサイトに接続しない事は本人の心がけも重要ですが、XGである程度そういったサイトを遠ざける事も出来ます。2要素認証のように、面倒ではありますが複数の管理策を重ねる事と、日頃のログの確認や情報をウォッチする事が防御を高める事につながります。</p>
+
+<p>　DoHの定義についてサービスの登録を行います。</p>
+<p>　XGの左ペインメニュー<span class="label info">Web</span>の<span class="label info">ファイルタイプ</span>から<span class="label info">追加</span>ボタンをクリックします。<span class="label info">名前</span>は<span class="label info">DoH</span>、<span class="label info">テンプレート</span>を空白とし、<span class="label info">MIMEヘッダー</span>に<span class="label info">application/dns-message</span>と入力し、<span class="label info">保存</span>します。</p>
+<img src="/new-technology/2020/05/16/Intercept-DNS/mimetype.png" class="" title="alt">
+
+<p>　<span class="label info">Web</span>の<span class="label info">ユーザーアクティビティ</span>から追加ボタンをクリックし、先ほどDoHとして登録したカテゴリを加え、<span class="label info">DNS over HTTPS</span>と名前を付けて保存します。</p>
+<img src="/new-technology/2020/05/16/Intercept-DNS/mimetype2.png" class="" title="alt">
+
+<p>　続いて、具体的な拒否設定です。</p>
+<p>　<span class="label info">Web</span>の<span class="label info">ポリシー</span>からご自身がFirewallルールで利用しているポリシー（ここではHome Policyを使っていると仮定しています）に、上記で登録してきた<span class="label default">DNS over HTTPS</span>を<span class="label danger">拒否</span>する設定を加えます。</p>
+<img src="/new-technology/2020/05/16/Intercept-DNS/policy.png" class="" title="alt">
+
+<div class="note primary no-icon">
+            <h2 id="DoTの拒否"><a href="#DoTの拒否" class="headerlink" title="DoTの拒否"></a>DoTの拒否</h2>
+          </div>
+
+<p>　XGの左ペインメニュー<span class="label info">ホストとサービス</span>の<span class="label info">サービス</span>から、<span class="label info">追加</span>ボタンをクリックし、<span class="label info">送信元ポート</span>が1〜65535、<span class="label info">宛先ポート</span>853を指定し、<span class="label info">DoT</span>と名前を付け保存します。</p>
+<img src="/new-technology/2020/05/16/Intercept-DNS/service.png" class="" title="alt">
+
+<p>　XGの左ペインメニュー<span class="label info">ルールとポリシー</span>から新しいファイアウォールルールを追加し、以下のようにDoTを<span class="label danger">拒否</span>するルールを作成します。</p>
+<img src="/new-technology/2020/05/16/Intercept-DNS/rule1.png" class="" title="alt">
+
+
+<div class="note primary no-icon">
+            <h2 id="DNSに関するDNATの登録"><a href="#DNSに関するDNATの登録" class="headerlink" title="DNSに関するDNATの登録"></a>DNSに関するDNATの登録</h2>
+          </div>
+
+<p>　最初にDNATで必要なホストの定義を行います。LANで使っているネットワークアドレスの登録とXG自身のIPアドレスの登録が必要です。ネットワークアドレスについてIPv4は例えば、192.168.1.0/24、IPv6は例えばfd00:1234:5678:abcd::1などの登録を行います。XG自身のIPアドレスも登録が必要です。</p>
+<img src="/new-technology/2020/05/16/Intercept-DNS/host.png" class="" title="alt">
+
+<p>　XGの左ペインメニュー<span class="label info">ルールとポリシー</span>から、<span class="label info">NATルール</span>を選択、<span class="label info">NATルールの追加</span>ボタンをクリックします。DNATは本当に理解が難しいですが、以下の通り設定します。</p>
+<ol>
+<li><span class="label info">変換前の送信元</span>は、使っているネットワークのオブジェクトを登録します</li>
+<li><span class="label info">変換前のサービス</span>は、<span class="label info">DNS</span>を選択します</li>
+<li><span class="label info">返還後の宛先（DNAT）</span>は、XG自身のIPを指定します</li>
+<li><span class="label info">アウトバウンドインターフェース</span>には、WANである、<span class="label info">Port2</span>を選択します</li>
+<li>最後に追加ボタンをクリックして登録を完了します</li>
+</ol>
+<img src="/new-technology/2020/05/16/Intercept-DNS/rule2.png" class="" title="alt">
+
+<p>　上記はIPv4の例ですが、IPv6を利用されている方は、同様にIPv6のDNATも設定して下さい。</p>
+<p>　上記のDNATによる、DNSのインターセプトが有効になると、<span class="label info">ルールとポリシー</span>の<span class="label info">NATルール</span>画面で実際の変換された数が確認できるので、これで挙動確認を行ってください。</p>
+<img src="/new-technology/2020/05/16/Intercept-DNS/rule3.png" class="" title="alt">
+
+<p> プロバイダーのDNS速度が極端に遅い場合はこれらの設定がベストにはなりませんが、<span class="label info">プライバシーと安全を鑑みたV18ならではのDNSのベストプラクティス</span>になるとおもいます。</p>
+<div class="note primary no-icon">
+            <h2 id="その他DNSに関して補足すること"><a href="#その他DNSに関して補足すること" class="headerlink" title="その他DNSに関して補足すること"></a>その他DNSに関して補足すること</h2>
+          </div>
+
+<p>　GoogleDNSのDoHはRFC8484に従っていない独自プロトコルを使えるという事実があります。世界中のパブリックDNSを全て把握するのは困難ですが、Sophosの以下の記事を参考にWebフィルタのURLグループにパブリックDNSのドメインを登録し、拒否する設定を加えても良いでしょう。</p>
+<p><a href="https://community.sophos.com/kb/en-us/134644" target="_blank" rel="noopener">DNS over HTTPS (DoH) for web security</a></p>
+]]></content>
+      <categories>
+        <category>Security</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>XG Firewall v18をESXi仮想マシン上にインストールする</title>
+    <url>/new-technology/2020/03/06/InstallXG2/</url>
+    <content><![CDATA[<div class="note success">
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　ESXi（ｖ6.7）に環境構築済みの仮想マシンに対し、XG Firewall v18のインストールが行えるようになります。フラッシュメモリを用意し、物理マシンに直接インストールする場合も、手順はほとんど変わりません。</p>
+          </div>
+<a id="more"></a>
+
+<div class="note primary no-icon">
+            <h2 id="仮想マシンの電源をオンにする前に"><a href="#仮想マシンの電源をオンにする前に" class="headerlink" title="仮想マシンの電源をオンにする前に"></a>仮想マシンの電源をオンにする前に</h2>
+          </div>
+
+<p>　PCのブラウザで表示しているESXiの管理画面から、作成した仮想マシンの電源をオンにできます。これで設定されたISOファイルからブートさせる事になります。ESXiをセットアップした機器にモニタを接続する必要はありません。前回までの記事で、新たにクライアントが利用するネットワークアドレスを決めました。XGのデフォルトである172.16.16.0/24を使うか、自分が新たに決めたアドレス（ex. 192.168.1.0/24）になります。今回のケースでは、ホームゲートウェイとXGのWANとの間が、192.168.0.0/24のネットワーク、LAN側は192.168.1.0/24として説明を進めます。<br>　いよいよ、仮想マシンの電源をオンにしてセットアップを開始します。</p>
+<div class="note primary no-icon">
+            <h2 id="仮想マシンの電源をオンにする"><a href="#仮想マシンの電源をオンにする" class="headerlink" title="仮想マシンの電源をオンにする"></a>仮想マシンの電源をオンにする</h2>
+          </div>
+
+<p>　さて、ESXiの管理コンソールからXGの仮想マシンを選んでパワーオンをクリックします。</p>
+<p>Sophos FIRMWARE INSTALLERが起動します。<br>インストールを開始すると（仮想マシンに割り当てた）ディスクが全てフォーマットされ、ファームウェアがインストールされていきます。<br>press y to rebootでリブートします。<br>再起動後、さらにdefault conifgをインストールするとの表示がされ、やがてパスワード入力画面になります。最初のパスワードはadminです。まずライセンスを受け入れる画面となります。続いて、ネットワークの設定を変更します。</p>
+<img src="/new-technology/2020/03/06/InstallXG2/conf.png" class="" title="alt">
+
+<p>1.Network Configurationを選び、次の画面で、1.Interface Configurationを選びます。以下の表示がEnterを押下する毎に変わります。</p>
+<ul>
+<li>LAN側のIP割り振り状態（ここでは変更できません）。</li>
+<li>WAN側のIP割り振り状態（変更不可。ホームゲートウェイからのプライベートIPが割り当てられています）。</li>
+<li>Set IPv4 Address(y/n)と出るので、変更する場合は、y＋Enterします。</li>
+<li>IPv6は後で設定するので空Enterで構いません。</li>
+</ul>
+<p>この状態で一旦IPの設定を終えたら、クライアントPCのブラウザからXGに対して接続し、セットアップを続けていきます。ここではXGのIPアドレスを192.168.1.2にしたと仮定して進めます。</p>
+  <div class="note warning">
+            <p>WANのIPが割り振られていない場合は、後続のセットアップでライセンスの確認ができません。事後にもライセンス登録は可能ですが、初期のうちに課題を解決しておきましょう。</p>
+          </div>
+
+<div class="note primary no-icon">
+            <h2 id="XG-Firewallの初期設定を行う"><a href="#XG-Firewallの初期設定を行う" class="headerlink" title="XG Firewallの初期設定を行う"></a>XG Firewallの初期設定を行う</h2>
+          </div>
+
+<p>　ブラウザで、<a href="https://192.168.1.2:4444" target="_blank" rel="noopener">https://192.168.1.2:4444</a>を開き初期設定を行っていきます。自己証明書でもあり、ブラウザのワーニングが表示されますが、了解のうえ進んでください。</p>
+<img src="/new-technology/2020/03/06/InstallXG2/setup1.png" class="" title="alt">
+
+<p> ここでは、右上のプルダウンで日本語に変更しておくと良いでしょう。<br> 続いて、以下の項目を設定していきます。</p>
+<ul>
+<li>管理者パスワード</li>
+<li>タイムゾーン</li>
+<li>登録メールで届いたシリアル番号を入力します</li>
+</ul>
+<img src="/new-technology/2020/03/06/InstallXG2/setup2.png" class="" title="alt">
+
+<ul>
+<li>ゲートウェイとしてルーターモードを選択します</li>
+<li>LAN側に割り振るDHCPのIP範囲を設定します</li>
+</ul>
+<img src="/new-technology/2020/03/06/InstallXG2/setup3.png" class="" title="alt">
+
+<ul>
+<li>ネットワークプロテクションはSandStormを除き選択します。仮に選択してもホームユースでは解除されます。</li>
+</ul>
+<img src="/new-technology/2020/03/06/InstallXG2/setup4.png" class="" title="alt">
+
+<p>　続いての画面のメールセットアップですが、昨今、自宅からSMTPによるインターネットへのメール送信はSPAMの扱いと疑われ、OP25と称してブロックされているのが実態です。Gmailをお持ちであれば、Gmailをメールの送信者にしておくと比較的簡単に送信できます。メールの受信者は、色々なイベント通知が発生した時に確認するアドレスですので、携帯などのアドレスが候補に挙げられます。</p>
+<img src="/new-technology/2020/03/06/InstallXG2/setup5.png" class="" title="alt">
+
+<p> 　いよいよ、セットアップも最後の仕上げです。5分程度と言いつつ、もう少し掛かる場合がありますので、ブラウザのリロードをせずそのまま待ちます。その後管理画面のリロードが入りますが、XGの管理サイトは自己証明書のためにブラウザのワーニングが出た画面で止まっている場合があります。</p>
+<img src="/new-technology/2020/03/06/InstallXG2/setup6.png" class="" title="alt">
+
+<p> 　さて、いよいよログイン画面です。固定IPにして設定してきたPCも、XGのDHCP機能によって、IPアドレスが割り当て可能となっています。PCの設定をDHCPにして確認して下さい。そして、インターネットにも接続出来ている事を確認して下さい。現段階では、基本はOutboundの通信は全て通す設定になっているので確認が出来たら、ホームゲートウェイに接続されている他の機器などをXGのLAN側に繋いで下さい。</p>
 ]]></content>
       <categories>
         <category>Security</category>
