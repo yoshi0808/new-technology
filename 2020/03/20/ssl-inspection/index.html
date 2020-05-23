@@ -29,7 +29,7 @@
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection/ssl-inspection.png">
 <meta property="article:published_time" content="2020-03-20T05:23:53.000Z">
-<meta property="article:modified_time" content="2020-05-23T03:42:45.478Z">
+<meta property="article:modified_time" content="2020-05-23T09:49:45.041Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -243,7 +243,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">編集日</span>
-                <time title="修正日：2020-05-23 12:42:45" itemprop="dateModified" datetime="2020-05-23T12:42:45+09:00">2020-05-23</time>
+                <time title="修正日：2020-05-23 18:49:45" itemprop="dateModified" datetime="2020-05-23T18:49:45+09:00">2020-05-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -275,7 +275,7 @@
             <h2 id="SSLインスペクションとは"><a href="#SSLインスペクションとは" class="headerlink" title="SSLインスペクションとは"></a>SSLインスペクションとは</h2>
           </div>
 
-<p>　XGで設定の難易度が高くなるのはこの部分です。上記までの基本ルールとは別に、SSLを解読して検査する設定を行う事になります。今日でもSSLという呼び方は定着していますが、TLS（Transport Layer Security）とも呼ばれます。XGの最も素晴らしい機能の1つがSSLを解読する安全装置です。この安全装置の事を、「IPS」（Intrusion Prevension System）と呼びます。そして、その解読方法として「SSLインスペクション」という方式が採用されています。<br>　このSSLインスペクションについては、解りやすい文献がありますので紹介します。セキュリティベンダーの（株）ラック社から提供されているドキュメントです。</p>
+<p>　XGで設定の難易度が高くなるのはこの部分です。上記までの基本ルールとは別に、SSLを解読して検査する設定を行う事になります。今日でもSSLという呼び方は定着していますが、TLS（Transport Layer Security）とも呼ばれます。XGの最も素晴らしい機能の1つがSSLを解読しながらコンテンツの中身の検証を行う不正侵入防止システムです。このシステムの事を、<span class="label info">IPS</span>（Intrusion Prevension System）と呼びます。そして、その検証方法として<span class="label info">SSLインスペクション</span>という方式が採用されています。<br>　このSSLインスペクションについては、解りやすい文献がありますので紹介します。セキュリティベンダーの（株）ラック社から提供されているドキュメントです。</p>
 <blockquote>
 <p>出典：株式会社ラック<a href="https://www.lac.co.jp/library/pdf/ssl_guidebook.pdf" target="_blank" rel="noopener">【「常時SSL化」時代に向けたセキュリティ対策指南書】</a></p>
 </blockquote>
