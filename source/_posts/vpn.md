@@ -192,4 +192,8 @@ date: 2020-03-28 11:41:42
 
 5. 上記の図では{% label info @送信元ネットワークとデバイス %}に、CAがインストールされているPCおよびiPhoneを対象とするIPグループを{% label info @CA_Clinet_IPv4 %}として登録していました。これに今回はVPNのネットワーク{% label info @VPN_Network_IPv4 %}を追加登録します。
 
-　ここまでの設定でIPSec-VPNの設定は一段落です。Sophos ConnectクライアントでユーザーIDとパスワードを入力し、{% label info @Connect %}ボタンをクリックして接続します。非常に短い時間で接続が完了します。VPN経由でWAN側（インターネット）にアクセスした際には、自身のIPアドレスがXGのグローバルIPアドレスになっているか確認してください。
+　ここまでの設定でIPSec-VPNの設定は一段落です。SSLインスペクションの設定および動作確認については、過去の記事を参照して下さい。
+
+- {% post_link ssl-inspection %}
+- {% post_link ssl-inspection1 %}
+- {% post_link ssl-inspection2 %}
