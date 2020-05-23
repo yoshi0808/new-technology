@@ -1574,11 +1574,11 @@ cl ->>+ xg : 8.暗号化された共通鍵を送信
 Note right of xg: 9.XGの秘密鍵で複合化、共通鍵を取得
 Note right of xg : 10.共通鍵をWebサーバーの公開鍵で暗号化
 xg ->>+ sv : 11.暗号化された共通鍵を送信
-sv -->>- xg : 12.WebサーバーとXGとの共通鍵で暗号化し<br>暗号化データの交換
-Note right of xg: 13.WebサーバーとXGとの共通鍵で複合
+sv -->>- xg : 12.共通鍵で暗号化された暗号化データの送信
+Note right of xg: 13.共通鍵で複合
 Note right of xg: 14.コンテンツの中身の検証
-xg -->>- cl : 15.XGとクライアントとの共通鍵で暗号化
-Note right of cl: 16.XGとクライアントとの共通鍵で複合
+xg -->>- cl : 15.共通鍵で暗号化された暗号化データの送信
+Note right of cl: 16.共通鍵で複合
 
           </pre>
 
