@@ -1,5 +1,5 @@
 ---
-title: XG Firewall VPNにワンタイムパスワードを設定する
+title: XG Firewall VPNに2要素認証を設定する
 tags:
   - XG Firewall
 categories:
