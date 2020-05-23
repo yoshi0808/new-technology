@@ -46,7 +46,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/28/vpn/vpn3.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/28/vpn/vpn4.png">
 <meta property="article:published_time" content="2020-03-28T02:41:42.000Z">
-<meta property="article:modified_time" content="2020-05-23T09:21:13.243Z">
+<meta property="article:modified_time" content="2020-05-23T09:31:49.888Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -260,7 +260,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">編集日</span>
-                <time title="修正日：2020-05-23 18:21:13" itemprop="dateModified" datetime="2020-05-23T18:21:13+09:00">2020-05-23</time>
+                <time title="修正日：2020-05-23 18:31:49" itemprop="dateModified" datetime="2020-05-23T18:31:49+09:00">2020-05-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -439,7 +439,13 @@
 <ol start="5">
 <li>上記の図では<span class="label info">送信元ネットワークとデバイス</span>に、CAがインストールされているPCおよびiPhoneを対象とするIPグループを<span class="label info">CA_Clinet_IPv4</span>として登録していました。これに今回はVPNのネットワーク<span class="label info">VPN_Network_IPv4</span>を追加登録します。</li>
 </ol>
-<p>　ここまでの設定でIPSec-VPNの設定は一段落です。Sophos ConnectクライアントでユーザーIDとパスワードを入力し、<span class="label info">Connect</span>ボタンをクリックして接続します。非常に短い時間で接続が完了します。VPN経由でWAN側（インターネット）にアクセスした際には、自身のIPアドレスがXGのグローバルIPアドレスになっているか確認してください。</p>
+<p>　ここまでの設定でIPSec-VPNの設定は一段落です。SSLインスペクションの設定および動作確認については、過去の記事を参照して下さい。</p>
+<ul>
+<li><a href="/new-technology/2020/03/20/ssl-inspection/" title="XG Firewall v18のSSLインスペクションについて">XG Firewall v18のSSLインスペクションについて</a></li>
+<li><a href="/new-technology/2020/03/20/ssl-inspection1/" title="XG Firewall v18のSSLインスペクションの設定">XG Firewall v18のSSLインスペクションの設定</a></li>
+<li><a href="/new-technology/2020/03/21/ssl-inspection2/" title="XG Firewall v18のSSLインスペクションの動作確認と調整">XG Firewall v18のSSLインスペクションの動作確認と調整</a>
+</li>
+</ul>
 
     </div>
 
