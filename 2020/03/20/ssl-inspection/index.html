@@ -29,7 +29,7 @@
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection/ssl-inspection.png">
 <meta property="article:published_time" content="2020-03-20T05:23:53.000Z">
-<meta property="article:modified_time" content="2020-05-23T03:40:35.989Z">
+<meta property="article:modified_time" content="2020-05-23T03:42:45.478Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -243,7 +243,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">編集日</span>
-                <time title="修正日：2020-05-23 12:40:35" itemprop="dateModified" datetime="2020-05-23T12:40:35+09:00">2020-05-23</time>
+                <time title="修正日：2020-05-23 12:42:45" itemprop="dateModified" datetime="2020-05-23T12:42:45+09:00">2020-05-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -303,10 +303,10 @@ cl ->>+ xg : 8.暗号化された共通鍵を送信
 Note right of xg: 9.XGの秘密鍵で複合化、共通鍵を取得
 Note right of xg : 10.共通鍵をWebサーバーの公開鍵で暗号化
 xg ->>+ sv : 11.暗号化された共通鍵を送信
-sv -->>- xg : 12.共通鍵で暗号化された暗号化データの送信
+sv -->>- xg : 12.共通鍵で暗号化されたデータの送信
 Note right of xg: 13.共通鍵で複合
 Note right of xg: 14.コンテンツの中身の検証
-xg -->>- cl : 15.共通鍵で暗号化された暗号化データの送信
+xg -->>- cl : 15.共通鍵で暗号化されたデータの送信
 Note right of cl: 16.共通鍵で複合
 
           </pre>
