@@ -46,7 +46,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/28/vpn/vpn3.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/28/vpn/vpn4.png">
 <meta property="article:published_time" content="2020-03-28T02:41:42.000Z">
-<meta property="article:modified_time" content="2020-04-11T01:38:26.472Z">
+<meta property="article:modified_time" content="2020-05-23T09:21:13.243Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -260,7 +260,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">編集日</span>
-                <time title="修正日：2020-04-11 10:38:26" itemprop="dateModified" datetime="2020-04-11T10:38:26+09:00">2020-04-11</time>
+                <time title="修正日：2020-05-23 18:21:13" itemprop="dateModified" datetime="2020-05-23T18:21:13+09:00">2020-05-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -416,10 +416,6 @@
 <img src="/new-technology/2020/03/28/vpn/connected1.png" class="" title="alt">
 <img src="/new-technology/2020/03/28/vpn/connected2.png" class="" title="alt">
 
-<p>　Sophosのサイトにある手順についても参考にしてみてください。</p>
-<blockquote>
-<p><a href="https://community.sophos.com/kb/ja-jp/133109" target="_blank" rel="noopener">Sophos XG Firewall: Sophos Connect クライアント</a><br>　このサイトの説明は業務向けの設定です。</p>
-</blockquote>
 <div class="note primary no-icon">
             <h2 id="VPNからWANに対するSSLインスペクションの設定"><a href="#VPNからWANに対するSSLインスペクションの設定" class="headerlink" title="VPNからWANに対するSSLインスペクションの設定"></a>VPNからWANに対するSSLインスペクションの設定</h2>
           </div>
@@ -431,7 +427,7 @@
 <img src="/new-technology/2020/03/28/vpn/vpn3.png" class="" title="alt">
 
 <ol start="2">
-<li><p>上記のようにネットワークにIPアドレス（この記事では192.168.20.0/24としています）を登録します。</p>
+<li><p>上記のようにネットワークにIPアドレス（この記事では192.168.20.0/24としています）を登録します。VPNのネットワークは、LANのネットワークとは別のネットワークアドレスとする必要があります。</p>
 </li>
 <li><p>次に、左ペインの<span class="label info">ルールとポリシー</span>から、<span class="label info">SSL/TLSインスペクション</span>を選択します。</p>
 </li>
@@ -443,7 +439,7 @@
 <ol start="5">
 <li>上記の図では<span class="label info">送信元ネットワークとデバイス</span>に、CAがインストールされているPCおよびiPhoneを対象とするIPグループを<span class="label info">CA_Clinet_IPv4</span>として登録していました。これに今回はVPNのネットワーク<span class="label info">VPN_Network_IPv4</span>を追加登録します。</li>
 </ol>
-<p>　さて、ここまでの設定で、IPSec-VPNの設定は一段落です。ただし、まだワンタイムパスワードは設定していません。まずはこの段階でVPN接続が正常に行われ、VPN経由でWAN側（インターネット）にアクセスした際には、自身のIPアドレスがXGのグローバルIPアドレスになっているか確認してください。</p>
+<p>　ここまでの設定でIPSec-VPNの設定は一段落です。Sophos ConnectクライアントでユーザーIDとパスワードを入力し、<span class="label info">Connect</span>ボタンをクリックして接続します。非常に短い時間で接続が完了します。VPN経由でWAN側（インターネット）にアクセスした際には、自身のIPアドレスがXGのグローバルIPアドレスになっているか確認してください。</p>
 
     </div>
 
