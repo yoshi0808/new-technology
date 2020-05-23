@@ -27,15 +27,21 @@
 <meta property="og:site_name" content="New technologies in our life">
 <meta property="og:description" content="この記事で実現する内容についてXG Firewall v18のSSL&#x2F;TLSインスペクションを使い、暗号化されたSSL通信を解読します。これにより、ウィルスやマルウェアなどの脅威を通信中に検出し、PCやiPhone等（Windows、macOS、iOS）が攻撃を受ける前に防御する事が出来るようになります。">
 <meta property="og:locale" content="ja_JP">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/host.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/certificate.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/installed_cert.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/host1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/certificate1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/win1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/win2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/win3.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/win4.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/mac_ca2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/mac_ca3.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/installed_cert1.png">
 <meta property="article:published_time" content="2020-03-20T12:32:29.000Z">
-<meta property="article:modified_time" content="2020-05-23T07:53:22.180Z">
+<meta property="article:modified_time" content="2020-05-23T08:28:19.816Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/host.png">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/host1.png">
 
 <link rel="canonical" href="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/">
 
@@ -245,7 +251,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">編集日</span>
-                <time title="修正日：2020-05-23 16:53:22" itemprop="dateModified" datetime="2020-05-23T16:53:22+09:00">2020-05-23</time>
+                <time title="修正日：2020-05-23 17:28:19" itemprop="dateModified" datetime="2020-05-23T17:28:19+09:00">2020-05-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -289,7 +295,7 @@
 <li>証明書が登録可能なIPをstaticで192.168.2.129〜192.168.2.192</li>
 </ul>
 <p>　ここは完全に個人の「決め」ですが、上記で証明書がインストール出来るグループを「IPホスト」としてXGに登録しましょう。左ペインの「ホストとサービス」から、IPホストのタブをクリックし追加ボタンをクリックします。以下の通り、ホストのIPの範囲を示す名前を入力し、IPの範囲を入力して保存ボタンをクリックします。ここでは、<span class="label info">CA_Client_IPv4</span>として登録する事にします。</p>
-<img src="/new-technology/2020/03/20/ssl-inspection1/host.png" class="" title="alt">
+<img src="/new-technology/2020/03/20/ssl-inspection1/host1.png" class="" title="alt">
 
 <div class="note primary no-icon">
             <h2 id="ファイアウォールルールの設定（確認）"><a href="#ファイアウォールルールの設定（確認）" class="headerlink" title="ファイアウォールルールの設定（確認）"></a>ファイアウォールルールの設定（確認）</h2>
@@ -318,17 +324,63 @@
           </div>
 
 <p>　左ペインの一番下の証明書から、認証局（CA）をクリックします。この中に<span class="label info">Security Appliance_SSL_CA</span>という名前の証明書があります。今回これをクライアントに配布していく事になります。右の下向きの矢印があるダウンロードを選択してクライアントにルート証明書をダウンロードします。<span class="label info">Security Appliance_SSL_CA.pem</span>という名前になります。</p>
-<img src="/new-technology/2020/03/20/ssl-inspection1/certificate.png" class="" title="alt">
+<img src="/new-technology/2020/03/20/ssl-inspection1/certificate1.png" class="" title="alt">
 
-<p>　ルート証明書をダウンロードした後、クライアントへのインストールについては、OS毎に以下の通り設定します。</p>
-<div class="tabs" id="fourth-unique-name"><ul class="nav-tabs"></ul><div class="tab-content"></div></div>
+<p>　ルート証明書をダウンロードした後、クライアントへのインストールについては、OS毎に以下の3種類の手順をそれぞれ確認し設定します。</p>
+<div class="tabs" id="fourth-unique-name"><ul class="nav-tabs"><li class="tab active"><a href="#fourth-unique-name-1">Windows</a></li><li class="tab"><a href="#fourth-unique-name-2">macOS</a></li><li class="tab"><a href="#fourth-unique-name-3">iOS</a></li></ul><div class="tab-content"><div class="tab-pane active" id="fourth-unique-name-1"><p><strong>Windowsにルート証明書をインストールする方法</strong></p>
+<ol>
+<li><span class="label info">プログラムとファイル名の検索</span>のボックスに<span class="label info">MMC</span>と入力して<span class="label info">Microsoft Management Console</span>を開きます。</li>
+<li><span class="label info">ファイル</span>-<span class="label info">スナップインの追加と削除</span>を選択してスナップインの追加と削除を開きます。</li>
+</ol>
+<img src="/new-technology/2020/03/20/ssl-inspection1/win1.png" class="" title="alt">
+
+<ol start="3">
+<li>一覧から<span class="label info">証明書</span> を選択して、<span class="label info">追加</span>をクリックすると「スナップインの追加と削除」のウィンドウが開かれます。</li>
+<li><span class="label info">コンピュータアカウント</span>を選択して、<span class="label info">次へ</span>をクリックします。</li>
+<li>ローカルコンピューターがラジオボタンで選択されている事を確認し<span class="label info">完了</span>をクリックします。</li>
+<li>「OK」をクリックして証明書をスナップインに追加すると「スナップインの追加と削除」のウィンドウに<span class="label info">証明書（ローカルコンピューター）</span>が表示されます。</li>
+</ol>
+<img src="/new-technology/2020/03/20/ssl-inspection1/win2.png" class="" title="alt">
+
+<ol start="7">
+<li>証明書（ローカルコンピューター）のコンテナを展開して、<span class="label info">信頼されたルート証明機関</span>を右クリックして、「すべてのタスク &gt; インポート」を選択して証明書インポートのウィザードを開始します。</li>
+<li>証明書インポートのウィザードでは、<span class="label info">参照</span>ボタンをクリックして、拡張子pemを読み込むため<span class="label info">すべてのファイル(<em>.</em>)</span>を選び、XGからダウンロードした、<span class="label info">Security Appliance_SSL_CA.pem</span>を選択します。</li>
+</ol>
+<img src="/new-technology/2020/03/20/ssl-inspection1/win3.png" class="" title="alt">
+
+<img src="/new-technology/2020/03/20/ssl-inspection1/win4.png" class="" title="alt">
+
+<p>9.<span class="label info">信頼されたルート証明機関</span>としてXGの証明書を登録し完了です。</p></div><div class="tab-pane" id="fourth-unique-name-2"><p><strong>macOSにルート証明書をインストールする方法</strong></p>
+<ol>
+<li>iCloud Driveに証明書を配置します</li>
+<li>ローカルドライブに証明書をコピーします</li>
+<li>証明書を開きます。キーチェーンアクセスが起動するので、以下のようにキーチェーンアクセスから証明書を「常に信頼する」設定を加えます</li>
+</ol>
+<img src="/new-technology/2020/03/20/ssl-inspection1/mac_ca2.png" class="" title="alt">
+
+<img src="/new-technology/2020/03/20/ssl-inspection1/mac_ca3.png" class="" title="alt"></div><div class="tab-pane" id="fourth-unique-name-3"><p><strong>iOSにルート証明書をインストールする方法</strong></p>
+<p>iOSで「ファイル」アプリを使います。</p>
+<ol>
+<li>iCloud Driveに証明書を配置します</li>
+<li>「ファイル」アプリを起動します。iCloud Driveから証明書ファイルをタップしダウンロードします</li>
+<li>「プロファイルがダウンロードされました」と表示されます</li>
+<li>設定アプリを起動します</li>
+<li>「設定」→「一般」→「プロファイル」と進みます</li>
+<li>ダウンロード済プロファイルに、<span class="label info">Sophos SSL CA_xxxx</span>が表示されているので、タップします</li>
+<li>画面右上の「インストール」をタップします</li>
+<li>iOSのパスコードを入力します</li>
+<li>右上のインストールを再度タップし、インストールを完了します</li>
+<li>「設定」→「一般」→「情報」と進みます</li>
+<li>画面の一番下の「証明書信頼設定」をタップします</li>
+<li><span class="label info">Sophos SSL CA_xxxx</span>が表示されているので、スイッチを右側に移動させオン（緑色点灯）します</li>
+</ol></div></div></div>
 
 <div class="note primary no-icon">
             <h2 id="ルート証明書が正しくクライアントに取り込まれた事を確認する"><a href="#ルート証明書が正しくクライアントに取り込まれた事を確認する" class="headerlink" title="ルート証明書が正しくクライアントに取り込まれた事を確認する"></a>ルート証明書が正しくクライアントに取り込まれた事を確認する</h2>
           </div>
 
 <p>　ブラウザの鍵マークをクリックする事でXGの証明書によって再署名されている事が確認出来ます。XGのログイン後のコントロールセンターの左上にライセンスナンバーが記載されていますが、実際の証明書でもそのナンバーが確認出来ます。</p>
-<img src="/new-technology/2020/03/20/ssl-inspection1/installed_cert.png" class="" title="alt">
+<img src="/new-technology/2020/03/20/ssl-inspection1/installed_cert1.png" class="" title="alt">
 
 <p>　これで一旦は証明書のインストールは完了です。この証明書のインストールがXG Firewallの設定で一番大切、かつ面倒なところになります。</p>
 
