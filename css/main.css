@@ -182,7 +182,7 @@ body {
   background: var(--body-bg-color);
   color: var(--text-color);
   font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "BIZ UDPGothic", Meiryo, sans-serif;
-  font-size: 0.95em;
+  font-size: 0.93em;
   line-height: 1.75;
 }
 @media (max-width: 991px) {
@@ -1474,7 +1474,7 @@ pre code {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #6640ff;
+  background: #f7ffb0;
   border-radius: 50%;
   content: ' ';
   display: inline-block;

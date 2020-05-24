@@ -1,76 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>XG Firewall v18のインストール（事前準備）</title>
-    <url>/new-technology/2020/03/06/InstallXG/</url>
-    <content><![CDATA[<div class="note success">
-            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　Firewall v18をESXi（ｖ6.7）で稼働させるためのインストールイメージ（isoファイル）をダウンロードし、ESXi上で、XGのための仮想マシンを構築できるようになります。</p>
-          </div>
-
-<a id="more"></a>
-<div class="note primary no-icon">
-            <h2 id="XG-Firewallのダウンロード"><a href="#XG-Firewallのダウンロード" class="headerlink" title="XG Firewallのダウンロード"></a>XG Firewallのダウンロード</h2>
-          </div>
-<p>　Sophosのサイトの<a href="https://www.sophos.com/ja-jp/products/free-tools.aspx" target="_blank" rel="noopener">（無償ツール）</a>より、「Sophos XG Firewall Home Edition」モジュールのダウンロードを行います。氏名、勤務先メールアドレスとありますが、ホームユースなので、遠慮なくGmailなどのアドレスを登録します。あっさりとISOファイルのダウンロードボタンが表示されると共に、メール宛にライセンス番号が送られてきます。<br>　送られてきたメールの本文には、「利用条件としては、あくまで家庭での個人的な使用に限って無料です」と丁寧な日本語で記載されています。</p>
-<!-- more -->
-<p> 　ダウンロードはISOイメージです。2020年3月6日時点では、最新のバージョンはv17.5のようです。ただし、Sophosからのお知らせに<a href="https://community.sophos.com/products/xg-firewall/b/blog/posts/sophos-xg-firewall-v18-is-now-available" target="_blank" rel="noopener">v18がリリースされたとの記載</a>があるため、こちらのISOファイルからインストールします。As usual, this firmware update is no charge for all licensed XG Firewall customers. とありますし問題なさそうです。VMware向けのテンプレートもダウンロード出来るようですが、仮想環境ではなくいきなり物理PCにインストールする方のために、ISOファイルからのセットアップ手順であった方が良いですね。上記のリンクから、SW-18.0.0_GA-Build321-321.isoをダウンロードして下さい。</p>
-<p>（4月4日追記）<br>　Sophosのサイトを確認したところ、現時点でもデフォルトのダウンロードはv17.5.10_MR10となっています。v18については、新しいファームウェアが出ており、<a href="https://community.sophos.com/products/xg-firewall/b/blog/posts/xg-firewall-v18-ga_2d00_build354-is-now-available" target="_blank" rel="noopener">GA-build354のリリース</a>が出ています。<span class="label info">SW-18.0.0_GA-Build354-354.iso</span>をダウンロードしてください。</p>
-<p> 　いつも使っているPC（Windowsなど）から、ESXi管理画面にログインします。ESXiの管理画面の左ペインのストレージからデフォルトのストレージである、datastore1を選択し、データストアブラウザをクリックして下さい。次にアップロードボタンをクリックし、ダウンロードされたSW-18.0.0_GA-Build321-321.isoファイルをアップロードして下さい。</p>
- <img src="/new-technology/2020/03/06/InstallXG/datastore.png" class="" title="alt">
-<p> 　</p>
-<div class="note primary no-icon">
-            <h2 id="XG-Firewall仮想マシンの作成"><a href="#XG-Firewall仮想マシンの作成" class="headerlink" title="XG Firewall仮想マシンの作成"></a>XG Firewall仮想マシンの作成</h2>
-          </div>
-<p> 　<br> 　さて、ここから仮想マシンの初期設定です。</p>
-<ol>
-<li>ESXiの管理画面の仮想マシンから新規仮想マシンを選択します。</li>
-<li>仮想マシンの作成を選択し、次へのボタンを押します。</li>
-<li>仮想マシンの名前を決め、ゲストOSを選択します。OSファミリはLinuxで、OSバージョンはその他のLinux4.x（64ビット）を選択します。※XG Firewall v17では、その他のLinux3.x（64ビット）を選択する必要がありました。</li>
-</ol>
-<img src="/new-technology/2020/03/06/InstallXG/vm2.png" class="" title="alt">
-
-<ol>
-<li>ストレージを確認し、次へのボタンを押します。</li>
-</ol>
-<img src="/new-technology/2020/03/06/InstallXG/vm3.png" class="" title="alt">
-
-<ol>
-<li>ここでは、ネットワークカードの追加をし、WAN側のNICを追加します。ネットワークアダプタの詳細（▶︎マークをクリック）でドライバがE1000など選択されている事を確認して下さい。</li>
-</ol>
-<img src="/new-technology/2020/03/06/InstallXG/vm4.png" class="" title="alt">
-
-<ol>
-<li>また、仮想CD-ROMにXG Firewallのインストールイメージ（isoファイル）をマウントします。</li>
-</ol>
-<img src="/new-technology/2020/03/06/InstallXG/vm4-1.png" class="" title="alt">
-
-<ol start="7">
-<li>起動オプションのファームウェアはEFIからBIOSに変更して下さい。</li>
-</ol>
-<img src="/new-technology/2020/03/06/InstallXG/vm5.png" class="" title="alt">
-
-<ol start="8">
-<li>さて、最終確認です。今回のプロビジョニングはシック（Lazy Zeroed）となっています。</li>
-</ol>
-<img src="/new-technology/2020/03/06/InstallXG/vm6.png" class="" title="alt">
-
-<ol start="9">
-<li>最後に完了ボタンを押します。これで仮想マシンが作成されます。</li>
-</ol>
-<img src="/new-technology/2020/03/06/InstallXG/vm7.png" class="" title="alt">
-
-<p>　いったんここまでで仮想マシンの作成は終了となります。なお、仮想マシンを選択した状態で「アクション」という歯車マークがあります。これをクリックして、コンソール→VMRCのダウンロードを選択し、VMware Remote Consoleをインストールして下さい。これがあるとブラウザから仮想マシンの画面がポップアップし、仮想マシンを操作出来るようになります。</p>
-<p>　余談ですが、もし物理マシンに直接USBメモリ等でXGをインストールする場合は、対象マシンのBIOS設定でUEFIのチェックを外して下さい。</p>
-<p>※補足<br>　Intelの10GbpsのNICをお使いの方は、速度の面で有利なVMXNET3ドライバを選択可能です。</p>
-]]></content>
-      <categories>
-        <category>Security</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>XG Firewall v18をESXi仮想マシン上にインストールする</title>
     <url>/new-technology/2020/03/06/InstallXG2/</url>
     <content><![CDATA[<div class="note success">
@@ -136,6 +66,76 @@
 <img src="/new-technology/2020/03/06/InstallXG2/setup6.png" class="" title="alt">
 
 <p> 　さて、いよいよログイン画面です。固定IPにして設定してきたPCも、XGのDHCP機能によって、IPアドレスが割り当て可能となっています。PCの設定をDHCPにして確認して下さい。そして、インターネットにも接続出来ている事を確認して下さい。現段階では、基本はOutboundの通信は全て通す設定になっているので確認が出来たら、ホームゲートウェイに接続されている他の機器などをXGのLAN側に繋いで下さい。</p>
+]]></content>
+      <categories>
+        <category>Security</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>XG Firewall v18のインストール（事前準備）</title>
+    <url>/new-technology/2020/03/06/InstallXG/</url>
+    <content><![CDATA[<div class="note success">
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　Firewall v18をESXi（ｖ6.7）で稼働させるためのインストールイメージ（isoファイル）をダウンロードし、ESXi上で、XGのための仮想マシンを構築できるようになります。</p>
+          </div>
+
+<a id="more"></a>
+<div class="note primary no-icon">
+            <h2 id="XG-Firewallのダウンロード"><a href="#XG-Firewallのダウンロード" class="headerlink" title="XG Firewallのダウンロード"></a>XG Firewallのダウンロード</h2>
+          </div>
+<p>　Sophosのサイトの<a href="https://www.sophos.com/ja-jp/products/free-tools.aspx" target="_blank" rel="noopener">（無償ツール）</a>より、「Sophos XG Firewall Home Edition」モジュールのダウンロードを行います。氏名、勤務先メールアドレスとありますが、ホームユースなので、遠慮なくGmailなどのアドレスを登録します。あっさりとISOファイルのダウンロードボタンが表示されると共に、メール宛にライセンス番号が送られてきます。<br>　送られてきたメールの本文には、「利用条件としては、あくまで家庭での個人的な使用に限って無料です」と丁寧な日本語で記載されています。</p>
+<!-- more -->
+<p> 　ダウンロードはISOイメージです。2020年3月6日時点では、最新のバージョンはv17.5のようです。ただし、Sophosからのお知らせに<a href="https://community.sophos.com/products/xg-firewall/b/blog/posts/sophos-xg-firewall-v18-is-now-available" target="_blank" rel="noopener">v18がリリースされたとの記載</a>があるため、こちらのISOファイルからインストールします。As usual, this firmware update is no charge for all licensed XG Firewall customers. とありますし問題なさそうです。VMware向けのテンプレートもダウンロード出来るようですが、仮想環境ではなくいきなり物理PCにインストールする方のために、ISOファイルからのセットアップ手順であった方が良いですね。上記のリンクから、SW-18.0.0_GA-Build321-321.isoをダウンロードして下さい。</p>
+<p>（4月4日追記）<br>　Sophosのサイトを確認したところ、現時点でもデフォルトのダウンロードはv17.5.10_MR10となっています。v18については、新しいファームウェアが出ており、<a href="https://community.sophos.com/products/xg-firewall/b/blog/posts/xg-firewall-v18-ga_2d00_build354-is-now-available" target="_blank" rel="noopener">GA-build354のリリース</a>が出ています。<span class="label info">SW-18.0.0_GA-Build354-354.iso</span>をダウンロードしてください。</p>
+<p> 　いつも使っているPC（Windowsなど）から、ESXi管理画面にログインします。ESXiの管理画面の左ペインのストレージからデフォルトのストレージである、datastore1を選択し、データストアブラウザをクリックして下さい。次にアップロードボタンをクリックし、ダウンロードされたSW-18.0.0_GA-Build321-321.isoファイルをアップロードして下さい。</p>
+ <img src="/new-technology/2020/03/06/InstallXG/datastore.png" class="" title="alt">
+<p> 　</p>
+<div class="note primary no-icon">
+            <h2 id="XG-Firewall仮想マシンの作成"><a href="#XG-Firewall仮想マシンの作成" class="headerlink" title="XG Firewall仮想マシンの作成"></a>XG Firewall仮想マシンの作成</h2>
+          </div>
+<p> 　<br> 　さて、ここから仮想マシンの初期設定です。</p>
+<ol>
+<li>ESXiの管理画面の仮想マシンから新規仮想マシンを選択します。</li>
+<li>仮想マシンの作成を選択し、次へのボタンを押します。</li>
+<li>仮想マシンの名前を決め、ゲストOSを選択します。OSファミリはLinuxで、OSバージョンはその他のLinux4.x（64ビット）を選択します。※XG Firewall v17では、その他のLinux3.x（64ビット）を選択する必要がありました。</li>
+</ol>
+<img src="/new-technology/2020/03/06/InstallXG/vm2.png" class="" title="alt">
+
+<ol>
+<li>ストレージを確認し、次へのボタンを押します。</li>
+</ol>
+<img src="/new-technology/2020/03/06/InstallXG/vm3.png" class="" title="alt">
+
+<ol>
+<li>ここでは、ネットワークカードの追加をし、WAN側のNICを追加します。ネットワークアダプタの詳細（▶︎マークをクリック）でドライバがE1000など選択されている事を確認して下さい。</li>
+</ol>
+<img src="/new-technology/2020/03/06/InstallXG/vm4.png" class="" title="alt">
+
+<ol>
+<li>また、仮想CD-ROMにXG Firewallのインストールイメージ（isoファイル）をマウントします。</li>
+</ol>
+<img src="/new-technology/2020/03/06/InstallXG/vm4-1.png" class="" title="alt">
+
+<ol start="7">
+<li>起動オプションのファームウェアはEFIからBIOSに変更して下さい。</li>
+</ol>
+<img src="/new-technology/2020/03/06/InstallXG/vm5.png" class="" title="alt">
+
+<ol start="8">
+<li>さて、最終確認です。今回のプロビジョニングはシック（Lazy Zeroed）となっています。</li>
+</ol>
+<img src="/new-technology/2020/03/06/InstallXG/vm6.png" class="" title="alt">
+
+<ol start="9">
+<li>最後に完了ボタンを押します。これで仮想マシンが作成されます。</li>
+</ol>
+<img src="/new-technology/2020/03/06/InstallXG/vm7.png" class="" title="alt">
+
+<p>　いったんここまでで仮想マシンの作成は終了となります。なお、仮想マシンを選択した状態で「アクション」という歯車マークがあります。これをクリックして、コンソール→VMRCのダウンロードを選択し、VMware Remote Consoleをインストールして下さい。これがあるとブラウザから仮想マシンの画面がポップアップし、仮想マシンを操作出来るようになります。</p>
+<p>　余談ですが、もし物理マシンに直接USBメモリ等でXGをインストールする場合は、対象マシンのBIOS設定でUEFIのチェックを外して下さい。</p>
+<p>※補足<br>　Intelの10GbpsのNICをお使いの方は、速度の面で有利なVMXNET3ドライバを選択可能です。</p>
 ]]></content>
       <categories>
         <category>Security</category>
@@ -351,6 +351,37 @@
       </tags>
   </entry>
   <entry>
+    <title>XG Firewall Sophos Communityについて</title>
+    <url>/new-technology/2020/03/26/SophosCommunity/</url>
+    <content><![CDATA[<div class="note primary no-icon">
+            <h2 id="Sophos-Communityで情報を調べる"><a href="#Sophos-Communityで情報を調べる" class="headerlink" title="Sophos Communityで情報を調べる"></a>Sophos Communityで情報を調べる</h2>
+          </div>
+
+<p>　XG Firewall Home EditionはSophosによるサポートがなく、ユーザコミュニティの相互サポートによって成り立っています。そもそもこんなに素晴らしいソフトウェアが無料なのですから、それだけでも感謝すべき事ではありますが。サポートサイトは英語が中心ですが、セキュリティに関するビジネスをしている方とかも積極的に参加しているようで、勉強になります。</p>
+<blockquote>
+<p><a href="https://community.sophos.com/" target="_blank" rel="noopener">Sophos Community（英語）</a></p>
+</blockquote>
+<a id="more"></a>
+<p>　さて、直接XGの話ではありませんが、ここ数日話題になっているドイツ製翻訳ソフトの<span class="label info">DeepL</span>が素晴らしいです。私はGoogle翻訳をずっと使っていましたが、こちらも使い勝手が良く便利です。<br>　Windows、macのアプリケーションとしてインストールする事が出来ます。利用は無償（高機能な有償のpro版もあります）で、例えばブラウザで翻訳箇所を選択しCtrl+c(macはcommand+c)を2回押下するとDeepLが起動し、英訳と日本語が併記されます。</p>
+<p>　DeepLのダウンロードは<a href="https://www.deepl.com/app" target="_blank" rel="noopener">こちら</a>です。</p>
+<p>　これまで私がブログで書いてきたｖ18のSSL/TLSインスペクションですが、いろいろ難しいところもあり、このブログで全てを説明するのは到底無理があります。Communityの素晴らしい知見を活用すべく、翻訳ソフトを利用して理解を深めていただければとおもいます。</p>
+<blockquote>
+<p><a href="https://community.sophos.com/products/xg-firewall/f/recommended-reads/118753/sophos-xg-firewall-v18-troubleshooting-problems-with-the-dpi-engine" target="_blank" rel="noopener">Sophos XG Firewall v18: DPI エンジンのトラブルシューティング</a></p>
+</blockquote>
+<p>　アプリでCtrl+cを2回押下して先頭部分の抜粋を抜粋します。</p>
+<img src="/new-technology/2020/03/26/SophosCommunity/community.png" class="" title="alt">
+
+<p>　ぜひ、翻訳ソフトのDeepLを活用しながら、XGやSSLインスペクションの理解を深めていただければとおもいます。</p>
+]]></content>
+      <categories>
+        <category>Security</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+        <tag>DeepL</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Sophos XG Firewallの導入</title>
     <url>/new-technology/2020/02/23/XG-Firewall/</url>
     <content><![CDATA[<div class="note primary no-icon">
@@ -438,37 +469,6 @@
       </categories>
       <tags>
         <tag>XG Firewall</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>XG Firewall Sophos Communityについて</title>
-    <url>/new-technology/2020/03/26/SophosCommunity/</url>
-    <content><![CDATA[<div class="note primary no-icon">
-            <h2 id="Sophos-Communityで情報を調べる"><a href="#Sophos-Communityで情報を調べる" class="headerlink" title="Sophos Communityで情報を調べる"></a>Sophos Communityで情報を調べる</h2>
-          </div>
-
-<p>　XG Firewall Home EditionはSophosによるサポートがなく、ユーザコミュニティの相互サポートによって成り立っています。そもそもこんなに素晴らしいソフトウェアが無料なのですから、それだけでも感謝すべき事ではありますが。サポートサイトは英語が中心ですが、セキュリティに関するビジネスをしている方とかも積極的に参加しているようで、勉強になります。</p>
-<blockquote>
-<p><a href="https://community.sophos.com/" target="_blank" rel="noopener">Sophos Community（英語）</a></p>
-</blockquote>
-<a id="more"></a>
-<p>　さて、直接XGの話ではありませんが、ここ数日話題になっているドイツ製翻訳ソフトの<span class="label info">DeepL</span>が素晴らしいです。私はGoogle翻訳をずっと使っていましたが、こちらも使い勝手が良く便利です。<br>　Windows、macのアプリケーションとしてインストールする事が出来ます。利用は無償（高機能な有償のpro版もあります）で、例えばブラウザで翻訳箇所を選択しCtrl+c(macはcommand+c)を2回押下するとDeepLが起動し、英訳と日本語が併記されます。</p>
-<p>　DeepLのダウンロードは<a href="https://www.deepl.com/app" target="_blank" rel="noopener">こちら</a>です。</p>
-<p>　これまで私がブログで書いてきたｖ18のSSL/TLSインスペクションですが、いろいろ難しいところもあり、このブログで全てを説明するのは到底無理があります。Communityの素晴らしい知見を活用すべく、翻訳ソフトを利用して理解を深めていただければとおもいます。</p>
-<blockquote>
-<p><a href="https://community.sophos.com/products/xg-firewall/f/recommended-reads/118753/sophos-xg-firewall-v18-troubleshooting-problems-with-the-dpi-engine" target="_blank" rel="noopener">Sophos XG Firewall v18: DPI エンジンのトラブルシューティング</a></p>
-</blockquote>
-<p>　アプリでCtrl+cを2回押下して先頭部分の抜粋を抜粋します。</p>
-<img src="/new-technology/2020/03/26/SophosCommunity/community.png" class="" title="alt">
-
-<p>　ぜひ、翻訳ソフトのDeepLを活用しながら、XGやSSLインスペクションの理解を深めていただければとおもいます。</p>
-]]></content>
-      <categories>
-        <category>Security</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-        <tag>DeepL</tag>
       </tags>
   </entry>
   <entry>
