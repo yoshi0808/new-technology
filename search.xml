@@ -351,37 +351,6 @@
       </tags>
   </entry>
   <entry>
-    <title>XG Firewall Sophos Communityについて</title>
-    <url>/new-technology/2020/03/26/SophosCommunity/</url>
-    <content><![CDATA[<div class="note primary no-icon">
-            <h2 id="Sophos-Communityで情報を調べる"><a href="#Sophos-Communityで情報を調べる" class="headerlink" title="Sophos Communityで情報を調べる"></a>Sophos Communityで情報を調べる</h2>
-          </div>
-
-<p>　XG Firewall Home EditionはSophosによるサポートがなく、ユーザコミュニティの相互サポートによって成り立っています。そもそもこんなに素晴らしいソフトウェアが無料なのですから、それだけでも感謝すべき事ではありますが。サポートサイトは英語が中心ですが、セキュリティに関するビジネスをしている方とかも積極的に参加しているようで、勉強になります。</p>
-<blockquote>
-<p><a href="https://community.sophos.com/" target="_blank" rel="noopener">Sophos Community（英語）</a></p>
-</blockquote>
-<a id="more"></a>
-<p>　さて、直接XGの話ではありませんが、ここ数日話題になっているドイツ製翻訳ソフトの<span class="label info">DeepL</span>が素晴らしいです。私はGoogle翻訳をずっと使っていましたが、こちらも使い勝手が良く便利です。<br>　Windows、macのアプリケーションとしてインストールする事が出来ます。利用は無償（高機能な有償のpro版もあります）で、例えばブラウザで翻訳箇所を選択しCtrl+c(macはcommand+c)を2回押下するとDeepLが起動し、英訳と日本語が併記されます。</p>
-<p>　DeepLのダウンロードは<a href="https://www.deepl.com/app" target="_blank" rel="noopener">こちら</a>です。</p>
-<p>　これまで私がブログで書いてきたｖ18のSSL/TLSインスペクションですが、いろいろ難しいところもあり、このブログで全てを説明するのは到底無理があります。Communityの素晴らしい知見を活用すべく、翻訳ソフトを利用して理解を深めていただければとおもいます。</p>
-<blockquote>
-<p><a href="https://community.sophos.com/products/xg-firewall/f/recommended-reads/118753/sophos-xg-firewall-v18-troubleshooting-problems-with-the-dpi-engine" target="_blank" rel="noopener">Sophos XG Firewall v18: DPI エンジンのトラブルシューティング</a></p>
-</blockquote>
-<p>　アプリでCtrl+cを2回押下して先頭部分の抜粋を抜粋します。</p>
-<img src="/new-technology/2020/03/26/SophosCommunity/community.png" class="" title="alt">
-
-<p>　ぜひ、翻訳ソフトのDeepLを活用しながら、XGやSSLインスペクションの理解を深めていただければとおもいます。</p>
-]]></content>
-      <categories>
-        <category>Security</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-        <tag>DeepL</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Sophos XG Firewallの導入</title>
     <url>/new-technology/2020/02/23/XG-Firewall/</url>
     <content><![CDATA[<div class="note primary no-icon">
@@ -469,6 +438,37 @@
       </categories>
       <tags>
         <tag>XG Firewall</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>XG Firewall Sophos Communityについて</title>
+    <url>/new-technology/2020/03/26/SophosCommunity/</url>
+    <content><![CDATA[<div class="note primary no-icon">
+            <h2 id="Sophos-Communityで情報を調べる"><a href="#Sophos-Communityで情報を調べる" class="headerlink" title="Sophos Communityで情報を調べる"></a>Sophos Communityで情報を調べる</h2>
+          </div>
+
+<p>　XG Firewall Home EditionはSophosによるサポートがなく、ユーザコミュニティの相互サポートによって成り立っています。そもそもこんなに素晴らしいソフトウェアが無料なのですから、それだけでも感謝すべき事ではありますが。サポートサイトは英語が中心ですが、セキュリティに関するビジネスをしている方とかも積極的に参加しているようで、勉強になります。</p>
+<blockquote>
+<p><a href="https://community.sophos.com/" target="_blank" rel="noopener">Sophos Community（英語）</a></p>
+</blockquote>
+<a id="more"></a>
+<p>　さて、直接XGの話ではありませんが、ここ数日話題になっているドイツ製翻訳ソフトの<span class="label info">DeepL</span>が素晴らしいです。私はGoogle翻訳をずっと使っていましたが、こちらも使い勝手が良く便利です。<br>　Windows、macのアプリケーションとしてインストールする事が出来ます。利用は無償（高機能な有償のpro版もあります）で、例えばブラウザで翻訳箇所を選択しCtrl+c(macはcommand+c)を2回押下するとDeepLが起動し、英訳と日本語が併記されます。</p>
+<p>　DeepLのダウンロードは<a href="https://www.deepl.com/app" target="_blank" rel="noopener">こちら</a>です。</p>
+<p>　これまで私がブログで書いてきたｖ18のSSL/TLSインスペクションですが、いろいろ難しいところもあり、このブログで全てを説明するのは到底無理があります。Communityの素晴らしい知見を活用すべく、翻訳ソフトを利用して理解を深めていただければとおもいます。</p>
+<blockquote>
+<p><a href="https://community.sophos.com/products/xg-firewall/f/recommended-reads/118753/sophos-xg-firewall-v18-troubleshooting-problems-with-the-dpi-engine" target="_blank" rel="noopener">Sophos XG Firewall v18: DPI エンジンのトラブルシューティング</a></p>
+</blockquote>
+<p>　アプリでCtrl+cを2回押下して先頭部分の抜粋を抜粋します。</p>
+<img src="/new-technology/2020/03/26/SophosCommunity/community.png" class="" title="alt">
+
+<p>　ぜひ、翻訳ソフトのDeepLを活用しながら、XGやSSLインスペクションの理解を深めていただければとおもいます。</p>
+]]></content>
+      <categories>
+        <category>Security</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+        <tag>DeepL</tag>
       </tags>
   </entry>
   <entry>
@@ -2169,6 +2169,70 @@ Note right of cl: 16.共通鍵で複合
       </tags>
   </entry>
   <entry>
+    <title>XG FirewallのWebフィルターとアプリケーションフィルタについて</title>
+    <url>/new-technology/2020/05/06/web-application-filter/</url>
+    <content><![CDATA[<div class="note success">
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　XG Firewallのレイヤ7ファイアウォールとしてのメインでもある、Webフィルター、アプリケーションフィルターについてそれぞれの違い、および活用方法について理解を深めます。</p>
+          </div>
+
+<a id="more"></a>
+
+<div class="note primary no-icon">
+            <h2 id="XGのWebフィルターについて"><a href="#XGのWebフィルターについて" class="headerlink" title="XGのWebフィルターについて"></a>XGのWebフィルターについて</h2>
+          </div>
+
+<p>　XGの左ペインメニューでは、<span class="label info">Web</span>、<span class="label info">アプリケーション</span>とそれぞれ分かれています。<span class="label info">Web</span>ではサイトのカテゴリが分かれていて、そのサイトのカテゴリによっては閲覧させないという使い方が一般的な使い方のように見えます。これらのポリシーは、<a href="https://community.sophos.com/kb/ja-jp/134155" target="_blank" rel="noopener">Sophosのサイト「Sophos XG Firewall: Web カテゴリ」</a>にも日本語の解説があります。サイトのカテゴリについては、ビジネス、ギャンブル、ゲーム、アダルト、ファイナンス等多岐に渡ります。ホームユーザーとしてはいわゆる怪しいサイトや過度な広告をフィルタする事が主目的になるかとおもいます。</p>
+<p>　上記サイトのポリシーを眺めていると疑問に感じるところがあります。「ActiveX」、「Applets」、「SpamURLs」です。サイトのポリシーで判断しているのかと思いきや、ActiveXやAppletは単純にサーバー名とも関係ありません。企業やサイトの目的ではなく、そこに配置したコンテンツの内容まで判断するように見えます。サイトのカテゴリに関係なく、そこにSpamがある場合は排除される事のようですから、そのあとのフォルダ構成を含めたURLまで対象としているように見えます。</p>
+<p>　上記サイトの<span class="label info">Sophos XG Firewall:Webカテゴリ</span>には記載がないものの、XGの左ペインメニューの<span class="label info">Web</span>の<span class="label info">ファイルタイプ</span>の内容には、ファイル拡張子、MIMEヘッダーの情報が並びます。そしてここにはZIPファイルなどの<span class="label info">Compressed Files</span>、Windowsの実行ファイルである<span class="label info">Executable File</span>などの項目が並んでいます。</p>
+<p>　ホームユーザーとしては、ZIPファイルやEXEファイルが使えないと不便なのでフィルタする事は考えにくいですが、何らかのMIMEタイプを拒否するポリシーを作成する場合は有効に機能しそうです。最終的には、Webフィルターは以下の種類の分類となります。</p>
+<ul>
+<li>Webカテゴリ</li>
+<li>URLグループ（自身で作成したURLの集まり）、280blockerなどのURLデータベースもこのグループ</li>
+<li>ファイルタイプ</li>
+<li>ダイナミックカテゴリ（ActiveX・Applets・Cookies・HTTP Upload</li>
+</ul>
+<p>　これらの事から、Webフィルターはカテゴリの分類という主目的はあるものの、ブラウザを対象としたフィルタの機能である事がわかります。</p>
+<div class="note primary no-icon">
+            <h2 id="SNIとWebフィルターについて"><a href="#SNIとWebフィルターについて" class="headerlink" title="SNIとWebフィルターについて"></a>SNIとWebフィルターについて</h2>
+          </div>
+
+<p>　SNIとは、Server Name Indicationの略です。SSL/TLS通信において、クライアントからサーバ証明書を要求する時に<span class="label info">暗号化せず</span>情報がサーバーに渡されます。XGはこのSNIを見てWebフィルターを行っていますので、SSLインスペクションが行えなくともURLでアクセス許可・不可の判断は可能になります。全てのWebサーバーがSNIに対応しているわけではありませんが、SSLインスペクションが行えないAndroid端末であってもある程度の許可・不可の制御は可能となります。しかし、以前の記事、<a href="/new-technology/2020/03/21/ssl-inspection2/" title="XG Firewall v18のSSLインスペクションの動作確認と調整">XG Firewall v18のSSLインスペクションの動作確認と調整</a> で記載した通り、ZIP化されたマルウェアは検知できないなどSSLインスペクションを使わないと完全ではありません。</p>
+<div class="note primary no-icon">
+            <h2 id="XGのアプリケーションフィルターについて"><a href="#XGのアプリケーションフィルターについて" class="headerlink" title="XGのアプリケーションフィルターについて"></a>XGのアプリケーションフィルターについて</h2>
+          </div>
+
+<p>　XGのアプリケーションフィルターは、XGの左ペインメニューの<span class="label info">アプリケーション</span>から確認できます。ブラウザーではないインターネットに接続するアプリケーションを対象にしています。ここの挙動の確認は非常に難しいものがあります。</p>
+<p>　例えば、MicrosoftのOneDriveを題材にテストしてみましょう。</p>
+<p>　OneDriveのURLは、現時点で、<span class="label info">https://onedrive.live.com/</span>です。Webフィルターで当該ドメインのフィルターを行うと、想定通りブラウザーからOneDriveにはアクセス出来ません。たまにはAndroid端末でやってみます。設定通り、Android版FireFoxからは接続出来ませんでしたので、その画面をキャプチャしています。</p>
+<img src="/new-technology/2020/05/06/web-application-filter/onedrive.png" class="" title="alt">
+
+<p>　次にキャプチャ画像を、<span class="label info">Android端末にインストールしてあるOneDriveアプリ経由で画像をコピーし</span>、このブログに掲載しています。最後に、<span class="label info">WindowsPCのエクスプローラーのOneDriveフォルダからこの画像は削除出来てしまいました</span>。</p>
+<p>　え？という話なんですが、OneDriveのアプリからはURL制限とは無関係にアクセス出来ています。</p>
+<p>　今度は別の検証のために、Webフィルターは削除、アプリケーションフィルターにOneDriveの項目があるので、そちらをフィルターしてみます。</p>
+<p>　XGの左ペインメニューの<span class="label info">アプリケーション</span>からファイアウォールルールで選択されているポリシーの先頭で<span class="label info">追加</span>ボタンをクリックし、<span class="label info">スマートフィルタ</span>に<span class="label info">onedrive</span>と入力し、Enterキーを押します。</p>
+<img src="/new-technology/2020/05/06/web-application-filter/appfilter2.png" class="" title="alt">
+
+<p>　そうすると、OneDriveのルールがいくつか表示されるため、<span class="label info">アクション</span>は、<span class="label info">拒否</span>を選択して最後に<span class="label info">保存</span>をクリックします（これは検証作業なのでこのブログをご覧の方が実施する作業ではありません）。</p>
+<p>　この作業の結果は以下の通りの挙動でした。</p>
+<ul>
+<li>ブラウザからOneDriveに接続出来ない</li>
+<li>WindowsからOneDriveのツール上（エクスプローラー上のファイル）ではファイルの追加、削除は行えない</li>
+<li>AndroidからOneDriveのファイル削除は可能だが、追加は行えない</li>
+</ul>
+<p>　これらの事から、アプリケーションフィルタは、アプリが利用しているAPIのURLやデータの中身を見て挙動の制限を行っている事がわかります。また、OneDriveはファイルのアップロード、ダウンロードと目的によって分かれていましたが、AppleのiCloudDriveに関してはアプリケーションフィルタは1種類だけです。このようにアプリケーションフィルターは、アプリの作り方に左右されるものとなります。そして、SSLインスペクションが行えないAndroidはファイル削除について制御出来ていません。</p>
+<p>　アプリケーションフィルターの中には、<span class="label info">EXE File Download</span>というフィルタも存在しますが、あくまで汎用的なものであって、全てのいかなるアプリケーションからのEXEファイルのダウンロードを禁止できるものではありません。</p>
+<p>　これらを理解できても、それを実践するのは難しいものです。ホームユーザーとしてリスクを抑制しつつ利便性を高めるには、どのようなフィルターを作っていくべきでしょうか。たくさん存在するアプリケーションを都度設定するのは管理も非常に大変で現実的ではありません。</p>
+<p>　Webのカテゴリについては、個人の考え方でいろいろなフィルタの組み合わせがあるでしょう。そちらについてはご自身のポリシーでカスタマイズいただければとおもいます。</p>
+<p>　但し攻撃から身を守るという課題については、ある程度のスタンダードはあるかとおもいますので、Sophos Communityなどの情報を頼りにホームユーザーのためのお勧め設定について次回に記載したいとおもいます。</p>
+]]></content>
+      <categories>
+        <category>Security</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>XG FirewallでIPv6の設定を行う（前半）</title>
     <url>/new-technology/2020/04/25/xg-ipv6-1/</url>
     <content><![CDATA[<div class="note success">
@@ -2242,70 +2306,6 @@ Note right of cl: 16.共通鍵で複合
       <tags>
         <tag>XG Firewall</tag>
         <tag>IPv6</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>XG FirewallのWebフィルターとアプリケーションフィルタについて</title>
-    <url>/new-technology/2020/05/06/web-application-filter/</url>
-    <content><![CDATA[<div class="note success">
-            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　XG Firewallのレイヤ7ファイアウォールとしてのメインでもある、Webフィルター、アプリケーションフィルターについてそれぞれの違い、および活用方法について理解を深めます。</p>
-          </div>
-
-<a id="more"></a>
-
-<div class="note primary no-icon">
-            <h2 id="XGのWebフィルターについて"><a href="#XGのWebフィルターについて" class="headerlink" title="XGのWebフィルターについて"></a>XGのWebフィルターについて</h2>
-          </div>
-
-<p>　XGの左ペインメニューでは、<span class="label info">Web</span>、<span class="label info">アプリケーション</span>とそれぞれ分かれています。<span class="label info">Web</span>ではサイトのカテゴリが分かれていて、そのサイトのカテゴリによっては閲覧させないという使い方が一般的な使い方のように見えます。これらのポリシーは、<a href="https://community.sophos.com/kb/ja-jp/134155" target="_blank" rel="noopener">Sophosのサイト「Sophos XG Firewall: Web カテゴリ」</a>にも日本語の解説があります。サイトのカテゴリについては、ビジネス、ギャンブル、ゲーム、アダルト、ファイナンス等多岐に渡ります。ホームユーザーとしてはいわゆる怪しいサイトや過度な広告をフィルタする事が主目的になるかとおもいます。</p>
-<p>　上記サイトのポリシーを眺めていると疑問に感じるところがあります。「ActiveX」、「Applets」、「SpamURLs」です。サイトのポリシーで判断しているのかと思いきや、ActiveXやAppletは単純にサーバー名とも関係ありません。企業やサイトの目的ではなく、そこに配置したコンテンツの内容まで判断するように見えます。サイトのカテゴリに関係なく、そこにSpamがある場合は排除される事のようですから、そのあとのフォルダ構成を含めたURLまで対象としているように見えます。</p>
-<p>　上記サイトの<span class="label info">Sophos XG Firewall:Webカテゴリ</span>には記載がないものの、XGの左ペインメニューの<span class="label info">Web</span>の<span class="label info">ファイルタイプ</span>の内容には、ファイル拡張子、MIMEヘッダーの情報が並びます。そしてここにはZIPファイルなどの<span class="label info">Compressed Files</span>、Windowsの実行ファイルである<span class="label info">Executable File</span>などの項目が並んでいます。</p>
-<p>　ホームユーザーとしては、ZIPファイルやEXEファイルが使えないと不便なのでフィルタする事は考えにくいですが、何らかのMIMEタイプを拒否するポリシーを作成する場合は有効に機能しそうです。最終的には、Webフィルターは以下の種類の分類となります。</p>
-<ul>
-<li>Webカテゴリ</li>
-<li>URLグループ（自身で作成したURLの集まり）、280blockerなどのURLデータベースもこのグループ</li>
-<li>ファイルタイプ</li>
-<li>ダイナミックカテゴリ（ActiveX・Applets・Cookies・HTTP Upload</li>
-</ul>
-<p>　これらの事から、Webフィルターはカテゴリの分類という主目的はあるものの、ブラウザを対象としたフィルタの機能である事がわかります。</p>
-<div class="note primary no-icon">
-            <h2 id="SNIとWebフィルターについて"><a href="#SNIとWebフィルターについて" class="headerlink" title="SNIとWebフィルターについて"></a>SNIとWebフィルターについて</h2>
-          </div>
-
-<p>　SNIとは、Server Name Indicationの略です。SSL/TLS通信において、クライアントからサーバ証明書を要求する時に<span class="label info">暗号化せず</span>情報がサーバーに渡されます。XGはこのSNIを見てWebフィルターを行っていますので、SSLインスペクションが行えなくともURLでアクセス許可・不可の判断は可能になります。全てのWebサーバーがSNIに対応しているわけではありませんが、SSLインスペクションが行えないAndroid端末であってもある程度の許可・不可の制御は可能となります。しかし、以前の記事、<a href="/new-technology/2020/03/21/ssl-inspection2/" title="XG Firewall v18のSSLインスペクションの動作確認と調整">XG Firewall v18のSSLインスペクションの動作確認と調整</a> で記載した通り、ZIP化されたマルウェアは検知できないなどSSLインスペクションを使わないと完全ではありません。</p>
-<div class="note primary no-icon">
-            <h2 id="XGのアプリケーションフィルターについて"><a href="#XGのアプリケーションフィルターについて" class="headerlink" title="XGのアプリケーションフィルターについて"></a>XGのアプリケーションフィルターについて</h2>
-          </div>
-
-<p>　XGのアプリケーションフィルターは、XGの左ペインメニューの<span class="label info">アプリケーション</span>から確認できます。ブラウザーではないインターネットに接続するアプリケーションを対象にしています。ここの挙動の確認は非常に難しいものがあります。</p>
-<p>　例えば、MicrosoftのOneDriveを題材にテストしてみましょう。</p>
-<p>　OneDriveのURLは、現時点で、<span class="label info">https://onedrive.live.com/</span>です。Webフィルターで当該ドメインのフィルターを行うと、想定通りブラウザーからOneDriveにはアクセス出来ません。たまにはAndroid端末でやってみます。設定通り、Android版FireFoxからは接続出来ませんでしたので、その画面をキャプチャしています。</p>
-<img src="/new-technology/2020/05/06/web-application-filter/onedrive.png" class="" title="alt">
-
-<p>　次にキャプチャ画像を、<span class="label info">Android端末にインストールしてあるOneDriveアプリ経由で画像をコピーし</span>、このブログに掲載しています。最後に、<span class="label info">WindowsPCのエクスプローラーのOneDriveフォルダからこの画像は削除出来てしまいました</span>。</p>
-<p>　え？という話なんですが、OneDriveのアプリからはURL制限とは無関係にアクセス出来ています。</p>
-<p>　今度は別の検証のために、Webフィルターは削除、アプリケーションフィルターにOneDriveの項目があるので、そちらをフィルターしてみます。</p>
-<p>　XGの左ペインメニューの<span class="label info">アプリケーション</span>からファイアウォールルールで選択されているポリシーの先頭で<span class="label info">追加</span>ボタンをクリックし、<span class="label info">スマートフィルタ</span>に<span class="label info">onedrive</span>と入力し、Enterキーを押します。</p>
-<img src="/new-technology/2020/05/06/web-application-filter/appfilter2.png" class="" title="alt">
-
-<p>　そうすると、OneDriveのルールがいくつか表示されるため、<span class="label info">アクション</span>は、<span class="label info">拒否</span>を選択して最後に<span class="label info">保存</span>をクリックします（これは検証作業なのでこのブログをご覧の方が実施する作業ではありません）。</p>
-<p>　この作業の結果は以下の通りの挙動でした。</p>
-<ul>
-<li>ブラウザからOneDriveに接続出来ない</li>
-<li>WindowsからOneDriveのツール上（エクスプローラー上のファイル）ではファイルの追加、削除は行えない</li>
-<li>AndroidからOneDriveのファイル削除は可能だが、追加は行えない</li>
-</ul>
-<p>　これらの事から、アプリケーションフィルタは、アプリが利用しているAPIのURLやデータの中身を見て挙動の制限を行っている事がわかります。また、OneDriveはファイルのアップロード、ダウンロードと目的によって分かれていましたが、AppleのiCloudDriveに関してはアプリケーションフィルタは1種類だけです。このようにアプリケーションフィルターは、アプリの作り方に左右されるものとなります。そして、SSLインスペクションが行えないAndroidはファイル削除について制御出来ていません。</p>
-<p>　アプリケーションフィルターの中には、<span class="label info">EXE File Download</span>というフィルタも存在しますが、あくまで汎用的なものであって、全てのいかなるアプリケーションからのEXEファイルのダウンロードを禁止できるものではありません。</p>
-<p>　これらを理解できても、それを実践するのは難しいものです。ホームユーザーとしてリスクを抑制しつつ利便性を高めるには、どのようなフィルターを作っていくべきでしょうか。たくさん存在するアプリケーションを都度設定するのは管理も非常に大変で現実的ではありません。</p>
-<p>　Webのカテゴリについては、個人の考え方でいろいろなフィルタの組み合わせがあるでしょう。そちらについてはご自身のポリシーでカスタマイズいただければとおもいます。</p>
-<p>　但し攻撃から身を守るという課題については、ある程度のスタンダードはあるかとおもいますので、Sophos Communityなどの情報を頼りにホームユーザーのためのお勧め設定について次回に記載したいとおもいます。</p>
-]]></content>
-      <categories>
-        <category>Security</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
       </tags>
   </entry>
   <entry>
