@@ -1,71 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>XG Firewall v18をESXi仮想マシン上にインストールする</title>
-    <url>/new-technology/2020/03/06/InstallXG2/</url>
+    <title>XG Firewall v18のインストール（事前準備）</title>
+    <url>/new-technology/2020/03/06/InstallXG/</url>
     <content><![CDATA[<div class="note success">
-            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　ESXi（ｖ6.7）に環境構築済みの仮想マシンに対し、XG Firewall v18のインストールが行えるようになります。フラッシュメモリを用意し、物理マシンに直接インストールする場合も、手順はほとんど変わりません。</p>
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　Firewall v18をESXi（ｖ6.7）で稼働させるためのインストールイメージ（isoファイル）をダウンロードし、ESXi上で、XGのための仮想マシンを構築できるようになります。</p>
           </div>
+
 <a id="more"></a>
-
 <div class="note primary no-icon">
-            <h2 id="仮想マシンの電源をオンにする前に"><a href="#仮想マシンの電源をオンにする前に" class="headerlink" title="仮想マシンの電源をオンにする前に"></a>仮想マシンの電源をオンにする前に</h2>
+            <h2 id="XG-Firewallのダウンロード"><a href="#XG-Firewallのダウンロード" class="headerlink" title="XG Firewallのダウンロード"></a>XG Firewallのダウンロード</h2>
           </div>
-
-<p>　PCのブラウザで表示しているESXiの管理画面から、作成した仮想マシンの電源をオンにできます。これで設定されたISOファイルからブートさせる事になります。ESXiをセットアップした機器にモニタを接続する必要はありません。前回までの記事で、新たにクライアントが利用するネットワークアドレスを決めました。XGのデフォルトである172.16.16.0/24を使うか、自分が新たに決めたアドレス（ex. 192.168.1.0/24）になります。今回のケースでは、ホームゲートウェイとXGのWANとの間が、192.168.0.0/24のネットワーク、LAN側は192.168.1.0/24として説明を進めます。<br>　いよいよ、仮想マシンの電源をオンにしてセットアップを開始します。</p>
+<p>　Sophosのサイトの<a href="https://www.sophos.com/ja-jp/products/free-tools.aspx" target="_blank" rel="noopener">（無償ツール）</a>より、「Sophos XG Firewall Home Edition」モジュールのダウンロードを行います。氏名、勤務先メールアドレスとありますが、ホームユースなので、遠慮なくGmailなどのアドレスを登録します。あっさりとISOファイルのダウンロードボタンが表示されると共に、メール宛にライセンス番号が送られてきます。<br>　送られてきたメールの本文には、「利用条件としては、あくまで家庭での個人的な使用に限って無料です」と丁寧な日本語で記載されています。</p>
+<!-- more -->
+<p> 　ダウンロードはISOイメージです。2020年3月6日時点では、最新のバージョンはv17.5のようです。ただし、Sophosからのお知らせに<a href="https://community.sophos.com/products/xg-firewall/b/blog/posts/sophos-xg-firewall-v18-is-now-available" target="_blank" rel="noopener">v18がリリースされたとの記載</a>があるため、こちらのISOファイルからインストールします。As usual, this firmware update is no charge for all licensed XG Firewall customers. とありますし問題なさそうです。VMware向けのテンプレートもダウンロード出来るようですが、仮想環境ではなくいきなり物理PCにインストールする方のために、ISOファイルからのセットアップ手順であった方が良いですね。上記のリンクから、SW-18.0.0_GA-Build321-321.isoをダウンロードして下さい。</p>
+<p>（4月4日追記）<br>　Sophosのサイトを確認したところ、現時点でもデフォルトのダウンロードはv17.5.10_MR10となっています。v18については、新しいファームウェアが出ており、<a href="https://community.sophos.com/products/xg-firewall/b/blog/posts/xg-firewall-v18-ga_2d00_build354-is-now-available" target="_blank" rel="noopener">GA-build354のリリース</a>が出ています。<span class="label info">SW-18.0.0_GA-Build354-354.iso</span>をダウンロードしてください。</p>
+<p> 　いつも使っているPC（Windowsなど）から、ESXi管理画面にログインします。ESXiの管理画面の左ペインのストレージからデフォルトのストレージである、datastore1を選択し、データストアブラウザをクリックして下さい。次にアップロードボタンをクリックし、ダウンロードされたSW-18.0.0_GA-Build321-321.isoファイルをアップロードして下さい。</p>
+ <img src="/new-technology/2020/03/06/InstallXG/datastore.png" class="" title="alt">
+<p> 　</p>
 <div class="note primary no-icon">
-            <h2 id="仮想マシンの電源をオンにする"><a href="#仮想マシンの電源をオンにする" class="headerlink" title="仮想マシンの電源をオンにする"></a>仮想マシンの電源をオンにする</h2>
+            <h2 id="XG-Firewall仮想マシンの作成"><a href="#XG-Firewall仮想マシンの作成" class="headerlink" title="XG Firewall仮想マシンの作成"></a>XG Firewall仮想マシンの作成</h2>
           </div>
+<p> 　<br> 　さて、ここから仮想マシンの初期設定です。</p>
+<ol>
+<li>ESXiの管理画面の仮想マシンから新規仮想マシンを選択します。</li>
+<li>仮想マシンの作成を選択し、次へのボタンを押します。</li>
+<li>仮想マシンの名前を決め、ゲストOSを選択します。OSファミリはLinuxで、OSバージョンはその他のLinux4.x（64ビット）を選択します。※XG Firewall v17では、その他のLinux3.x（64ビット）を選択する必要がありました。</li>
+</ol>
+<img src="/new-technology/2020/03/06/InstallXG/vm2.png" class="" title="alt">
 
-<p>　さて、ESXiの管理コンソールからXGの仮想マシンを選んでパワーオンをクリックします。</p>
-<p>Sophos FIRMWARE INSTALLERが起動します。<br>インストールを開始すると（仮想マシンに割り当てた）ディスクが全てフォーマットされ、ファームウェアがインストールされていきます。<br>press y to rebootでリブートします。<br>再起動後、さらにdefault conifgをインストールするとの表示がされ、やがてパスワード入力画面になります。最初のパスワードはadminです。まずライセンスを受け入れる画面となります。続いて、ネットワークの設定を変更します。</p>
-<img src="/new-technology/2020/03/06/InstallXG2/conf.png" class="" title="alt">
+<ol>
+<li>ストレージを確認し、次へのボタンを押します。</li>
+</ol>
+<img src="/new-technology/2020/03/06/InstallXG/vm3.png" class="" title="alt">
 
-<p>1.Network Configurationを選び、次の画面で、1.Interface Configurationを選びます。以下の表示がEnterを押下する毎に変わります。</p>
-<ul>
-<li>LAN側のIP割り振り状態（ここでは変更できません）。</li>
-<li>WAN側のIP割り振り状態（変更不可。ホームゲートウェイからのプライベートIPが割り当てられています）。</li>
-<li>Set IPv4 Address(y/n)と出るので、変更する場合は、y＋Enterします。</li>
-<li>IPv6は後で設定するので空Enterで構いません。</li>
-</ul>
-<p>この状態で一旦IPの設定を終えたら、クライアントPCのブラウザからXGに対して接続し、セットアップを続けていきます。ここではXGのIPアドレスを192.168.1.2にしたと仮定して進めます。</p>
-  <div class="note warning">
-            <p>WANのIPが割り振られていない場合は、後続のセットアップでライセンスの確認ができません。事後にもライセンス登録は可能ですが、初期のうちに課題を解決しておきましょう。</p>
-          </div>
+<ol>
+<li>ここでは、ネットワークカードの追加をし、WAN側のNICを追加します。ネットワークアダプタの詳細（▶︎マークをクリック）でドライバがE1000など選択されている事を確認して下さい。</li>
+</ol>
+<img src="/new-technology/2020/03/06/InstallXG/vm4.png" class="" title="alt">
 
-<div class="note primary no-icon">
-            <h2 id="XG-Firewallの初期設定を行う"><a href="#XG-Firewallの初期設定を行う" class="headerlink" title="XG Firewallの初期設定を行う"></a>XG Firewallの初期設定を行う</h2>
-          </div>
+<ol>
+<li>また、仮想CD-ROMにXG Firewallのインストールイメージ（isoファイル）をマウントします。</li>
+</ol>
+<img src="/new-technology/2020/03/06/InstallXG/vm4-1.png" class="" title="alt">
 
-<p>　ブラウザで、<a href="https://192.168.1.2:4444" target="_blank" rel="noopener">https://192.168.1.2:4444</a>を開き初期設定を行っていきます。自己証明書でもあり、ブラウザのワーニングが表示されますが、了解のうえ進んでください。</p>
-<img src="/new-technology/2020/03/06/InstallXG2/setup1.png" class="" title="alt">
+<ol start="7">
+<li>起動オプションのファームウェアはEFIからBIOSに変更して下さい。</li>
+</ol>
+<img src="/new-technology/2020/03/06/InstallXG/vm5.png" class="" title="alt">
 
-<p> ここでは、右上のプルダウンで日本語に変更しておくと良いでしょう。<br> 続いて、以下の項目を設定していきます。</p>
-<ul>
-<li>管理者パスワード</li>
-<li>タイムゾーン</li>
-<li>登録メールで届いたシリアル番号を入力します</li>
-</ul>
-<img src="/new-technology/2020/03/06/InstallXG2/setup2.png" class="" title="alt">
+<ol start="8">
+<li>さて、最終確認です。今回のプロビジョニングはシック（Lazy Zeroed）となっています。</li>
+</ol>
+<img src="/new-technology/2020/03/06/InstallXG/vm6.png" class="" title="alt">
 
-<ul>
-<li>ゲートウェイとしてルーターモードを選択します</li>
-<li>LAN側に割り振るDHCPのIP範囲を設定します</li>
-</ul>
-<img src="/new-technology/2020/03/06/InstallXG2/setup3.png" class="" title="alt">
+<ol start="9">
+<li>最後に完了ボタンを押します。これで仮想マシンが作成されます。</li>
+</ol>
+<img src="/new-technology/2020/03/06/InstallXG/vm7.png" class="" title="alt">
 
-<ul>
-<li>ネットワークプロテクションはSandStormを除き選択します。仮に選択してもホームユースでは解除されます。</li>
-</ul>
-<img src="/new-technology/2020/03/06/InstallXG2/setup4.png" class="" title="alt">
-
-<p>　続いての画面のメールセットアップですが、昨今、自宅からSMTPによるインターネットへのメール送信はSPAMの扱いと疑われ、OP25と称してブロックされているのが実態です。Gmailをお持ちであれば、Gmailをメールの送信者にしておくと比較的簡単に送信できます。メールの受信者は、色々なイベント通知が発生した時に確認するアドレスですので、携帯などのアドレスが候補に挙げられます。</p>
-<img src="/new-technology/2020/03/06/InstallXG2/setup5.png" class="" title="alt">
-
-<p> 　いよいよ、セットアップも最後の仕上げです。5分程度と言いつつ、もう少し掛かる場合がありますので、ブラウザのリロードをせずそのまま待ちます。その後管理画面のリロードが入りますが、XGの管理サイトは自己証明書のためにブラウザのワーニングが出た画面で止まっている場合があります。</p>
-<img src="/new-technology/2020/03/06/InstallXG2/setup6.png" class="" title="alt">
-
-<p> 　さて、いよいよログイン画面です。固定IPにして設定してきたPCも、XGのDHCP機能によって、IPアドレスが割り当て可能となっています。PCの設定をDHCPにして確認して下さい。そして、インターネットにも接続出来ている事を確認して下さい。現段階では、基本はOutboundの通信は全て通す設定になっているので確認が出来たら、ホームゲートウェイに接続されている他の機器などをXGのLAN側に繋いで下さい。</p>
+<p>　いったんここまでで仮想マシンの作成は終了となります。なお、仮想マシンを選択した状態で「アクション」という歯車マークがあります。これをクリックして、コンソール→VMRCのダウンロードを選択し、VMware Remote Consoleをインストールして下さい。これがあるとブラウザから仮想マシンの画面がポップアップし、仮想マシンを操作出来るようになります。</p>
+<p>　余談ですが、もし物理マシンに直接USBメモリ等でXGをインストールする場合は、対象マシンのBIOS設定でUEFIのチェックを外して下さい。</p>
+<p>※補足<br>　Intelの10GbpsのNICをお使いの方は、速度の面で有利なVMXNET3ドライバを選択可能です。</p>
 ]]></content>
       <categories>
         <category>Security</category>
@@ -178,6 +174,80 @@
       </tags>
   </entry>
   <entry>
+    <title>XG Firewall v18をESXi仮想マシン上にインストールする</title>
+    <url>/new-technology/2020/03/06/InstallXG2/</url>
+    <content><![CDATA[<div class="note success">
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　ESXi（ｖ6.7）に環境構築済みの仮想マシンに対し、XG Firewall v18のインストールが行えるようになります。フラッシュメモリを用意し、物理マシンに直接インストールする場合も、手順はほとんど変わりません。</p>
+          </div>
+<a id="more"></a>
+
+<div class="note primary no-icon">
+            <h2 id="仮想マシンの電源をオンにする前に"><a href="#仮想マシンの電源をオンにする前に" class="headerlink" title="仮想マシンの電源をオンにする前に"></a>仮想マシンの電源をオンにする前に</h2>
+          </div>
+
+<p>　PCのブラウザで表示しているESXiの管理画面から、作成した仮想マシンの電源をオンにできます。これで設定されたISOファイルからブートさせる事になります。ESXiをセットアップした機器にモニタを接続する必要はありません。前回までの記事で、新たにクライアントが利用するネットワークアドレスを決めました。XGのデフォルトである172.16.16.0/24を使うか、自分が新たに決めたアドレス（ex. 192.168.1.0/24）になります。今回のケースでは、ホームゲートウェイとXGのWANとの間が、192.168.0.0/24のネットワーク、LAN側は192.168.1.0/24として説明を進めます。<br>　いよいよ、仮想マシンの電源をオンにしてセットアップを開始します。</p>
+<div class="note primary no-icon">
+            <h2 id="仮想マシンの電源をオンにする"><a href="#仮想マシンの電源をオンにする" class="headerlink" title="仮想マシンの電源をオンにする"></a>仮想マシンの電源をオンにする</h2>
+          </div>
+
+<p>　さて、ESXiの管理コンソールからXGの仮想マシンを選んでパワーオンをクリックします。</p>
+<p>Sophos FIRMWARE INSTALLERが起動します。<br>インストールを開始すると（仮想マシンに割り当てた）ディスクが全てフォーマットされ、ファームウェアがインストールされていきます。<br>press y to rebootでリブートします。<br>再起動後、さらにdefault conifgをインストールするとの表示がされ、やがてパスワード入力画面になります。最初のパスワードはadminです。まずライセンスを受け入れる画面となります。続いて、ネットワークの設定を変更します。</p>
+<img src="/new-technology/2020/03/06/InstallXG2/conf.png" class="" title="alt">
+
+<p>1.Network Configurationを選び、次の画面で、1.Interface Configurationを選びます。以下の表示がEnterを押下する毎に変わります。</p>
+<ul>
+<li>LAN側のIP割り振り状態（ここでは変更できません）。</li>
+<li>WAN側のIP割り振り状態（変更不可。ホームゲートウェイからのプライベートIPが割り当てられています）。</li>
+<li>Set IPv4 Address(y/n)と出るので、変更する場合は、y＋Enterします。</li>
+<li>IPv6は後で設定するので空Enterで構いません。</li>
+</ul>
+<p>この状態で一旦IPの設定を終えたら、クライアントPCのブラウザからXGに対して接続し、セットアップを続けていきます。ここではXGのIPアドレスを192.168.1.2にしたと仮定して進めます。</p>
+  <div class="note warning">
+            <p>WANのIPが割り振られていない場合は、後続のセットアップでライセンスの確認ができません。事後にもライセンス登録は可能ですが、初期のうちに課題を解決しておきましょう。</p>
+          </div>
+
+<div class="note primary no-icon">
+            <h2 id="XG-Firewallの初期設定を行う"><a href="#XG-Firewallの初期設定を行う" class="headerlink" title="XG Firewallの初期設定を行う"></a>XG Firewallの初期設定を行う</h2>
+          </div>
+
+<p>　ブラウザで、<a href="https://192.168.1.2:4444" target="_blank" rel="noopener">https://192.168.1.2:4444</a>を開き初期設定を行っていきます。自己証明書でもあり、ブラウザのワーニングが表示されますが、了解のうえ進んでください。</p>
+<img src="/new-technology/2020/03/06/InstallXG2/setup1.png" class="" title="alt">
+
+<p> ここでは、右上のプルダウンで日本語に変更しておくと良いでしょう。<br> 続いて、以下の項目を設定していきます。</p>
+<ul>
+<li>管理者パスワード</li>
+<li>タイムゾーン</li>
+<li>登録メールで届いたシリアル番号を入力します</li>
+</ul>
+<img src="/new-technology/2020/03/06/InstallXG2/setup2.png" class="" title="alt">
+
+<ul>
+<li>ゲートウェイとしてルーターモードを選択します</li>
+<li>LAN側に割り振るDHCPのIP範囲を設定します</li>
+</ul>
+<img src="/new-technology/2020/03/06/InstallXG2/setup3.png" class="" title="alt">
+
+<ul>
+<li>ネットワークプロテクションはSandStormを除き選択します。仮に選択してもホームユースでは解除されます。</li>
+</ul>
+<img src="/new-technology/2020/03/06/InstallXG2/setup4.png" class="" title="alt">
+
+<p>　続いての画面のメールセットアップですが、昨今、自宅からSMTPによるインターネットへのメール送信はSPAMの扱いと疑われ、OP25と称してブロックされているのが実態です。Gmailをお持ちであれば、Gmailをメールの送信者にしておくと比較的簡単に送信できます。メールの受信者は、色々なイベント通知が発生した時に確認するアドレスですので、携帯などのアドレスが候補に挙げられます。</p>
+<img src="/new-technology/2020/03/06/InstallXG2/setup5.png" class="" title="alt">
+
+<p> 　いよいよ、セットアップも最後の仕上げです。5分程度と言いつつ、もう少し掛かる場合がありますので、ブラウザのリロードをせずそのまま待ちます。その後管理画面のリロードが入りますが、XGの管理サイトは自己証明書のためにブラウザのワーニングが出た画面で止まっている場合があります。</p>
+<img src="/new-technology/2020/03/06/InstallXG2/setup6.png" class="" title="alt">
+
+<p> 　さて、いよいよログイン画面です。固定IPにして設定してきたPCも、XGのDHCP機能によって、IPアドレスが割り当て可能となっています。PCの設定をDHCPにして確認して下さい。そして、インターネットにも接続出来ている事を確認して下さい。現段階では、基本はOutboundの通信は全て通す設定になっているので確認が出来たら、ホームゲートウェイに接続されている他の機器などをXGのLAN側に繋いで下さい。</p>
+]]></content>
+      <categories>
+        <category>Security</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>XG Firewallの通知設定を行う</title>
     <url>/new-technology/2020/04/03/Notifications/</url>
     <content><![CDATA[<div class="note success">
@@ -281,37 +351,6 @@
       </tags>
   </entry>
   <entry>
-    <title>XG Firewall Sophos Communityについて</title>
-    <url>/new-technology/2020/03/26/SophosCommunity/</url>
-    <content><![CDATA[<div class="note primary no-icon">
-            <h2 id="Sophos-Communityで情報を調べる"><a href="#Sophos-Communityで情報を調べる" class="headerlink" title="Sophos Communityで情報を調べる"></a>Sophos Communityで情報を調べる</h2>
-          </div>
-
-<p>　XG Firewall Home EditionはSophosによるサポートがなく、ユーザコミュニティの相互サポートによって成り立っています。そもそもこんなに素晴らしいソフトウェアが無料なのですから、それだけでも感謝すべき事ではありますが。サポートサイトは英語が中心ですが、セキュリティに関するビジネスをしている方とかも積極的に参加しているようで、勉強になります。</p>
-<blockquote>
-<p><a href="https://community.sophos.com/" target="_blank" rel="noopener">Sophos Community（英語）</a></p>
-</blockquote>
-<a id="more"></a>
-<p>　さて、直接XGの話ではありませんが、ここ数日話題になっているドイツ製翻訳ソフトの<span class="label info">DeepL</span>が素晴らしいです。私はGoogle翻訳をずっと使っていましたが、こちらも使い勝手が良く便利です。<br>　Windows、macのアプリケーションとしてインストールする事が出来ます。利用は無償（高機能な有償のpro版もあります）で、例えばブラウザで翻訳箇所を選択しCtrl+c(macはcommand+c)を2回押下するとDeepLが起動し、英訳と日本語が併記されます。</p>
-<p>　DeepLのダウンロードは<a href="https://www.deepl.com/app" target="_blank" rel="noopener">こちら</a>です。</p>
-<p>　これまで私がブログで書いてきたｖ18のSSL/TLSインスペクションですが、いろいろ難しいところもあり、このブログで全てを説明するのは到底無理があります。Communityの素晴らしい知見を活用すべく、翻訳ソフトを利用して理解を深めていただければとおもいます。</p>
-<blockquote>
-<p><a href="https://community.sophos.com/products/xg-firewall/f/recommended-reads/118753/sophos-xg-firewall-v18-troubleshooting-problems-with-the-dpi-engine" target="_blank" rel="noopener">Sophos XG Firewall v18: DPI エンジンのトラブルシューティング</a></p>
-</blockquote>
-<p>　アプリでCtrl+cを2回押下して先頭部分の抜粋を抜粋します。</p>
-<img src="/new-technology/2020/03/26/SophosCommunity/community.png" class="" title="alt">
-
-<p>　ぜひ、翻訳ソフトのDeepLを活用しながら、XGやSSLインスペクションの理解を深めていただければとおもいます。</p>
-]]></content>
-      <categories>
-        <category>Security</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-        <tag>DeepL</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Sophos XG Firewallの導入</title>
     <url>/new-technology/2020/02/23/XG-Firewall/</url>
     <content><![CDATA[<div class="note primary no-icon">
@@ -399,6 +438,37 @@
       </categories>
       <tags>
         <tag>XG Firewall</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>XG Firewall Sophos Communityについて</title>
+    <url>/new-technology/2020/03/26/SophosCommunity/</url>
+    <content><![CDATA[<div class="note primary no-icon">
+            <h2 id="Sophos-Communityで情報を調べる"><a href="#Sophos-Communityで情報を調べる" class="headerlink" title="Sophos Communityで情報を調べる"></a>Sophos Communityで情報を調べる</h2>
+          </div>
+
+<p>　XG Firewall Home EditionはSophosによるサポートがなく、ユーザコミュニティの相互サポートによって成り立っています。そもそもこんなに素晴らしいソフトウェアが無料なのですから、それだけでも感謝すべき事ではありますが。サポートサイトは英語が中心ですが、セキュリティに関するビジネスをしている方とかも積極的に参加しているようで、勉強になります。</p>
+<blockquote>
+<p><a href="https://community.sophos.com/" target="_blank" rel="noopener">Sophos Community（英語）</a></p>
+</blockquote>
+<a id="more"></a>
+<p>　さて、直接XGの話ではありませんが、ここ数日話題になっているドイツ製翻訳ソフトの<span class="label info">DeepL</span>が素晴らしいです。私はGoogle翻訳をずっと使っていましたが、こちらも使い勝手が良く便利です。<br>　Windows、macのアプリケーションとしてインストールする事が出来ます。利用は無償（高機能な有償のpro版もあります）で、例えばブラウザで翻訳箇所を選択しCtrl+c(macはcommand+c)を2回押下するとDeepLが起動し、英訳と日本語が併記されます。</p>
+<p>　DeepLのダウンロードは<a href="https://www.deepl.com/app" target="_blank" rel="noopener">こちら</a>です。</p>
+<p>　これまで私がブログで書いてきたｖ18のSSL/TLSインスペクションですが、いろいろ難しいところもあり、このブログで全てを説明するのは到底無理があります。Communityの素晴らしい知見を活用すべく、翻訳ソフトを利用して理解を深めていただければとおもいます。</p>
+<blockquote>
+<p><a href="https://community.sophos.com/products/xg-firewall/f/recommended-reads/118753/sophos-xg-firewall-v18-troubleshooting-problems-with-the-dpi-engine" target="_blank" rel="noopener">Sophos XG Firewall v18: DPI エンジンのトラブルシューティング</a></p>
+</blockquote>
+<p>　アプリでCtrl+cを2回押下して先頭部分の抜粋を抜粋します。</p>
+<img src="/new-technology/2020/03/26/SophosCommunity/community.png" class="" title="alt">
+
+<p>　ぜひ、翻訳ソフトのDeepLを活用しながら、XGやSSLインスペクションの理解を深めていただければとおもいます。</p>
+]]></content>
+      <categories>
+        <category>Security</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+        <tag>DeepL</tag>
       </tags>
   </entry>
   <entry>
@@ -502,6 +572,173 @@
 ]]></content>
       <categories>
         <category>Security</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>XG Firewall v18のポリシーをカスタマイズする</title>
+    <url>/new-technology/2020/03/14/customize-policy/</url>
+    <content><![CDATA[<div class="note success">
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　XG FirewallのWebポリシーをカスタマイズし、コンテンツのカテゴリ（ギャンブル、アダルト、Webメール）毎にアクセスを許可するか否かを設定できるようになります。また閲覧を拒否するドメインをインターネット上にあるデータベース等から入手し、XGに取り込む事ができるようになります。</p>
+          </div>
+<a id="more"></a>
+
+<div class="note primary no-icon">
+            <h2 id="ポリシーのカスタマイズ"><a href="#ポリシーのカスタマイズ" class="headerlink" title="ポリシーのカスタマイズ"></a>ポリシーのカスタマイズ</h2>
+          </div>
+
+<p>　XGにおけるWebのポリシーというのはコンテンツのカテゴリを意味します。ギャンブル、アダルトからネットショッピングやチャットやWebメールまで多岐に渡ります。こちらは個人によって定義が異なるとおもいますので、実例を示しながら、ご自身の考えに基づいて設定を進めていく事になります。まずはそのカスタマイズを行っていきます。左ペインの「Web」をクリックします。</p>
+
+
+<p>　先ほど設定した「Default Policy」の内容がまず最初に表示されているとおもいます。初期値では、「Blocked URLs for Default Policy」と2番目の行に「Risky Downloads」および「Suspicious（※怪しいもの）」が選択されています。</p>
+<p>「Nudity and Adult content」の行のOn/OffのトグルをOnにします。そして右下の「変更を適用」をクリックするとポリシーの修正が有効になります。「Risky Downloads」および「Suspicious」が含まれていると、Google検索で「広告」という表示のあるページを正しく表示出来ない場合があります。今後説明するSSLインスペクションの対応が出来た際に改めて加える事とし、一旦「Risky Downloads」および「Suspicious」を外すなど好みで調整してみてください。Suspiciousに広告のWebサイトが含まれるためこのような挙動となります。</p>
+<div class="note primary no-icon">
+            <h2 id="外部データベース（ドメインリスト）を取り込む"><a href="#外部データベース（ドメインリスト）を取り込む" class="headerlink" title="外部データベース（ドメインリスト）を取り込む"></a>外部データベース（ドメインリスト）を取り込む</h2>
+          </div>
+<p>　XGのデータベースだけでも十分なのですが、外部のデータベース（ドメインのリスト形式）を取り込む事が可能です。ここではサンプル的に<a href="https://280blocker.net/" target="_blank" rel="noopener">280blocker | モバイル広告ブロッカー</a>のデータを取り込んでみます。利用については、<a href="https://280blocker.net/download/" target="_blank" rel="noopener">ダウンロードのページ</a>の注意事項の確認をいただき、ご自身で利用の判断をお願いします。今回はあくまでXGの機能の紹介という事で説明させていただきます。私自身このデータベースの精度などについての評価をしておりませんのでご承知おきください。</p>
+<ol>
+<li>ダウンロードするデータとして「広告ドメインリスト（リスト形式）」をダウンロードします</li>
+<li>XGの左ペインのWebを選択し、「カテゴリ」のタブをクリックします</li>
+<li>名前は「280blocker」とします</li>
+<li>分類は「Objectionable」とします</li>
+<li>設定のカテゴリはローカルのラジオボタンを選択します</li>
+<li>domainのインポートから、先ほどダウンロードしたファイルを選択し取り込みます</li>
+<li>「保存」ボタンをクリックします</li>
+</ol>
+<p>　次にWebのユーザーアクティビティの設定です。</p>
+
+
+<ol>
+<li>画面右上の「追加」ボタンをクリックします</li>
+<li>名前は「280blocker」とします</li>
+<li>先ほど「カテゴリ」で作成した280blockerを選択し適用します</li>
+<li>最後に保存ボタンを押します</li>
+</ol>
+<p>　さて、再びWebのポリシータブをクリックし、「Default Policy」の内容を表示します。ここで右側の編集（ペンのアイコン）を選択します。</p>
+
+
+<ol>
+<li>ルールの追加ボタンを押すと、先頭にルールが作成されます</li>
+<li>先頭ルールのアクティビティを選択し「すべてのトラフィック」を削除し、「280blocker」を追加します</li>
+<li>アクションは「HTTPをブロックする」というデフォルトのままです</li>
+<li>ステータスのトグルをOnにしてください</li>
+<li>最後に画面を下にスクロールし、保存ボタンをクリックします</li>
+</ol>
+<p>　こういったデータベースはさまざまな目的でホームユーザー向けにあれば良いのですが、なかなか入手が難しいところではあります。DNSにも危険IPや危険ドメインを排除する機能を持つPublicDNSもあります。但し、そういったDNSを利用する事でその個人が興味を持つドメインなどプライバシーが筒抜けになってしまいますので利用も難しいと考えています。</p>
+]]></content>
+      <categories>
+        <category>Security</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>XG Firewall V18でLAN内のホストをインターネットに公開する</title>
+    <url>/new-technology/2020/04/11/dnat/</url>
+    <content><![CDATA[<div class="note success">
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>XG Firewall V18で新しくなったDNATの設定を行い、LAN内のホストをインターネットへ公開できるようになります。また日本国内からのアクセスに限るなど、Webサイトへの攻撃のリスクを低減します。</p>
+          </div>
+<a id="more"></a>
+
+<div class="note primary no-icon">
+            <h2 id="ホスト公開の前提となる構成について"><a href="#ホスト公開の前提となる構成について" class="headerlink" title="ホスト公開の前提となる構成について"></a>ホスト公開の前提となる構成について</h2>
+          </div>
+
+<p>　インターネットから宅内の環境に対し、VPNを使わず直接アクセスするケースを説明します。最も一般的なのはネットワークストレージ（NAS）へのアクセスやWebサーバーのコンテンツ公開であろうかとおもいます。このブログではインターネット側にホームゲートウェイ、その内側にXG Firewallがあり、さらに内側にLANがある事を前提に説明しています。XG Firewallでは、一般的なルーターと同じように内部のホストをインターネットに公開するためには設定が必要となります。一般的な用語でもありますが、Sophosでは、このような外から内へのパブリックIPとプライベートIPとの変換を伴う接続形態をDNAT（Destination NAT）と呼んでいます。</p>
+<img src="/new-technology/2020/04/11/dnat/network.png" class="" title="alt">
+
+<p>　設定においては、上記の2つのサブネット（XGのWAN側、LAN側）を意識する事になります。</p>
+<div class="note primary no-icon">
+            <h2 id="V18より導入されたサーバーアクセスアシスタントについて"><a href="#V18より導入されたサーバーアクセスアシスタントについて" class="headerlink" title="V18より導入されたサーバーアクセスアシスタントについて"></a>V18より導入されたサーバーアクセスアシスタントについて</h2>
+          </div>
+
+<p> V18では、V17と比較し設定がやや複雑になりました。その対策として、<span class="label info">サーバーアクセスアシスタント</span>というウィザード形式で設定できる仕組みが導入されています。もちろん、このウィザードを使わなくてもDNATの設定は可能です。しかし、新しい機能でもあるので、それを使いながら設定方法について書いてみたいとおもいます。</p>
+<div class="note primary no-icon">
+            <h2 id="この記事における設定例について"><a href="#この記事における設定例について" class="headerlink" title="この記事における設定例について"></a>この記事における設定例について</h2>
+          </div>
+
+<p>　一般的な設定例として、内部にあるWebサーバーのhttpsアクセス（Port443）をインターネットから接続するケースで説明します。自分の環境ですと、ちょうどQNAPのNASをPort443で稼働させているのでこれを例に説明します。<span class="label info">パブリックIPのPort443</span>→<span class="label info">プライベートIPのPort443</span>に着信させる実例です。</p>
+<div class="note primary no-icon">
+            <h2 id="ホームゲートウェイでの事前設定"><a href="#ホームゲートウェイでの事前設定" class="headerlink" title="ホームゲートウェイでの事前設定"></a>ホームゲートウェイでの事前設定</h2>
+          </div>
+
+<p>　VPNの導入の記事でも書きましたが、まずはインターネットから内部のホストにデータを届けるためには、ホームゲートウェイとXGそれぞれに設定を行う必要があります。</p>
+<p>　以下のように、ホームゲートウェイでPort443のトラフィックをXGのWAN側IPアドレスに転送する設定を行います。</p>
+<img src="/new-technology/2020/04/11/dnat/rule6.png" class="" title="alt">
+<p>　この画面はホームゲートウェイの画面であり、契約しているインターネット回線業者により、提供される機器は異なりますのであくまで設定例という事で参考までに掲載しています。</p>
+<div class="note primary no-icon">
+            <h2 id="XGのDNAT設定"><a href="#XGのDNAT設定" class="headerlink" title="XGのDNAT設定"></a>XGのDNAT設定</h2>
+          </div>
+
+<p>　早速、サーバーアクセスアシスタントを使ったDNATの設定を行います。まずXGの左ペインメニューから、ルールとポリシーを選択します。ルールの上にある<span class="label info">ファイアウォールルールの追加</span>をクリックし、<span class="label info">サーバーアクセスアシスタントDNAT</span>をクリックします。そうすると以下のウィザード画面が表示されます。</p>
+<img src="/new-technology/2020/04/11/dnat/rule1.png" class="" title="alt">
+
+<p>　ここでは、LANに設置してある、公開したいサーバーのIPとそのホストの名前を入力します。ここで入力したホストの名前とIPアドレスの組みは自動的にXGのIPホストとして登録されます。今回のケースではQNAPとそのIPアドレスを入力しています。入力後、<span class="label info">次へ</span>をクリックします。</p>
+<p>　2画面目では、以下のように公開したいパブリックIPアドレスを入力する画面となります。</p>
+<img src="/new-technology/2020/04/11/dnat/rule2.png" class="" title="alt">
+<p>　これはパブリックIPアドレスからプライベートIPへ変換するためのマッピング情報の元となるものです。但し、注意点として、ここでの構成はあくまでホームゲートウェイによってプライベートIPに変換された後のXGのWAN側IPアドレス（つまりプライベートIPアドレス）を入力する事になります。XGのWAN側インターフェースのIPアドレスである、<span class="label info">#Port2</span>を選択し、<span class="label info">次へ</span>をクリックします。</p>
+<p>　3画面目では、内部に転送するサービスを選択します。Port443のHTTPSを選択しています。</p>
+<img src="/new-technology/2020/04/11/dnat/rule3.png" class="" title="alt">
+
+<p>　選択後、<span class="label info">次へ</span>をクリックします。</p>
+<p>　4画面目では、<span class="label info">外部の送信元ネットワークとデバイス</span>を選択します。</p>
+<img src="/new-technology/2020/04/11/dnat/rule4.png" class="" title="alt">
+
+<p>　表現が難しいのですが、WAN側のネットワークに制約を加える場合はここにネットワークの追加を行い、<span class="label info">任意</span>の設定を外す事になります。今回は、一旦はこのまま<span class="label info">次へ</span>をクリックします。</p>
+<p>　最後の5画面目では、これまで設定してきた内容の確認画面となります。画面の後半に<span class="label info">NATルールを3つ作成します</span>という記述があります。DNAT以外の2つは不要なので後から削除する事になりますが、これは後ほど説明します。</p>
+<img src="/new-technology/2020/04/11/dnat/rule5.png" class="" title="alt">
+
+<p>　<span class="label info">保存して完了する</span>をクリックしてください。</p>
+<p>　これで、DNATの設定が完了しました。<span class="label info">ルールとポリシー</span>では、作成されたルールは以下のようになっています。</p>
+<img src="/new-technology/2020/04/11/dnat/rule7.png" class="" title="alt">
+
+<p>　<span class="label info">ファイアウォールルール</span>の一番上に新しいルール<span class="label info">DNAT to QNAPxxxx</span>が追加されています。</p>
+<p>　引き続き、<span class="label info">NATルール</span>を見てみます。以下のように3つのルールが作成され、1番上にDNATルールが表示されています。</p>
+<img src="/new-technology/2020/04/11/dnat/rule8.png" class="" title="alt">
+
+<p>　これでひとまず設定は完了しています。これでインターネットから内部ホストへアクセス出来るようになりました。</p>
+<div class="note primary no-icon">
+            <h2 id="LAN環境からアクセスするため、DNSにプライベートIPを登録する"><a href="#LAN環境からアクセスするため、DNSにプライベートIPを登録する" class="headerlink" title="LAN環境からアクセスするため、DNSにプライベートIPを登録する"></a>LAN環境からアクセスするため、DNSにプライベートIPを登録する</h2>
+          </div>
+
+<p>　さて、インターネットからパブリックIPを使って内部ホストへアクセス出来るようになりました。一般的にはダイナミックDNSなどを用いてURLでアクセスする事になります。しかし宅内のLAN環境に入り当該サーバーへ同じURLを使って接続する場合は、わざわざパブリックIPにする事はなく、直接LANのプライベートIPに対してアクセスする事になります。<br>　この場合は、XGのDNSでスタティックとしてプライベートIPを登録します。左ペインの<span class="label info">ネットワーク</span>から<span class="label info">DNS</span>を選び、<span class="label info">DNSホストエントリ</span>で、サーバーのURLとプライベートIPの組み合わせを登録してください。クライアントはXGのDHCPによってDNSがXG自身である事を指定されているため、当該ホストについてはプライベートIPでアクセス可能となります。</p>
+<div class="note primary no-icon">
+            <h2 id="DNATのウィザードで作成されるルールの詳細について"><a href="#DNATのウィザードで作成されるルールの詳細について" class="headerlink" title="DNATのウィザードで作成されるルールの詳細について"></a>DNATのウィザードで作成されるルールの詳細について</h2>
+          </div>
+
+<p>　ウィザードでは、シンプルにまずは繋がる事を優先に最低限度の設定を行いました。まずDNATの理解を深めるために、ウィザードで作成されたファイアウォールルールのDNATについて見てみましょう。</p>
+<img src="/new-technology/2020/04/11/dnat/rule9.png" class="" title="alt">
+
+<ul>
+<li><span class="label info">送信元とゾーン</span>は、WAN</li>
+<li><span class="label info">宛先ゾーン</span>は、LAN</li>
+<li><span class="label info">サービス</span>は、HTTPS
+
+</li>
+</ul>
+<p>　以上のように、それなりに理解出来るものが記載されています。しかし理解が進まないのは、<span class="label info">宛先ネットワーク</span>の<span class="label info">#Port2</span>、つまりXGのWAN側IPアドレスが記述されている点です。宛先として直感ではLAN側のインタフェースである、<span class="label info">#Port1</span>のように感じます。まして、転送したいサーバーであるQNAPが記載されている項目はここにはありません。実際のHTTPSのアクセスである、QNAPに転送するという項目は<span class="label info">NATルール</span>で記載されています。</p>
+<p>　一旦、XG Firewll V18におけるDNATはこういう仕様なんだと理解してください。不要となり削除する2つのルールを簡単に説明します。</p>
+<ul>
+<li>Loopback NAT<br>これはヘアピンNATとも呼ばれますが、内部ネットワークからパブリックIPアドレスを用いて再び内部ネットワークにある公開サーバーへアクセスしたい場合に使います。XGがWANの外に出ていこうとするトラフィックを無理やり内部の公開サーバーに振り向ける動作です。前述したとおり内部のホストには、DNSに登録したプライベートIPでアクセスするので不要です。</li>
+<li>Reflexiv NAT<br>これは普通に内部ホストからWAN向けのNATを伴う変換ルールです。インストール直後のSNAT（ソースNAT　※送信元アドレスを書き換える一般的なNAT）のルールが最初から存在している事、このブログでは過去の記事（<a href="/new-technology/2020/03/14/rule-policy2/" title="XG Firewall v18のOutboundルールを新規作成する">XG Firewall v18のOutboundルールを新規作成する</a>）で<span class="label info">To Internet</span>というSNATのルールを作成しているので改めての作成は不要です。</li>
+</ul>
+<div class="note primary no-icon">
+            <h2 id="インターネットの接続可能な範囲を絞る"><a href="#インターネットの接続可能な範囲を絞る" class="headerlink" title="インターネットの接続可能な範囲を絞る"></a>インターネットの接続可能な範囲を絞る</h2>
+          </div>
+
+<p>　公開するホストが国内からのアクセス用途に限定できるならば、少しFirewallらしい設定を加えてみましょう。ウィザードの4画面目で、任意とした外部の送信元ネットワークを活用します。もし、このWebサーバに対して日本国内からのアクセスに限れば、海外からの攻撃を防ぐ事ができます。この場合は、作成済みのDNATルールの<span class="label info">送信元ネットワークとデバイス</span>の<span class="label info">任意</span>を外し、<span class="label info">Japan</span>を加えてください。</p>
+<div class="note primary no-icon">
+            <h2 id="DNATに関するSophosCommunityでの投稿"><a href="#DNATに関するSophosCommunityでの投稿" class="headerlink" title="DNATに関するSophosCommunityでの投稿"></a>DNATに関するSophosCommunityでの投稿</h2>
+          </div>
+
+<p>参考までに<a href="https://community.sophos.com/products/xg-firewall/sfos-eap/sfos-v18-early-access-program/f/feedback-and-issues/118045/server-access-assistant-dnat-request" target="_blank" rel="noopener">Server Access Assistant (DNAT) Request</a>のスレッドを参照してください。DNATの設定方法について、色々な議論がなされています。</p>
+]]></content>
+      <categories>
+        <category>Security</category>
+        <category>ホスト公開</category>
       </categories>
       <tags>
         <tag>XG Firewall</tag>
@@ -746,173 +983,6 @@
 ]]></content>
       <categories>
         <category>Security</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>XG Firewall v18のポリシーをカスタマイズする</title>
-    <url>/new-technology/2020/03/14/customize-policy/</url>
-    <content><![CDATA[<div class="note success">
-            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　XG FirewallのWebポリシーをカスタマイズし、コンテンツのカテゴリ（ギャンブル、アダルト、Webメール）毎にアクセスを許可するか否かを設定できるようになります。また閲覧を拒否するドメインをインターネット上にあるデータベース等から入手し、XGに取り込む事ができるようになります。</p>
-          </div>
-<a id="more"></a>
-
-<div class="note primary no-icon">
-            <h2 id="ポリシーのカスタマイズ"><a href="#ポリシーのカスタマイズ" class="headerlink" title="ポリシーのカスタマイズ"></a>ポリシーのカスタマイズ</h2>
-          </div>
-
-<p>　XGにおけるWebのポリシーというのはコンテンツのカテゴリを意味します。ギャンブル、アダルトからネットショッピングやチャットやWebメールまで多岐に渡ります。こちらは個人によって定義が異なるとおもいますので、実例を示しながら、ご自身の考えに基づいて設定を進めていく事になります。まずはそのカスタマイズを行っていきます。左ペインの「Web」をクリックします。</p>
-
-
-<p>　先ほど設定した「Default Policy」の内容がまず最初に表示されているとおもいます。初期値では、「Blocked URLs for Default Policy」と2番目の行に「Risky Downloads」および「Suspicious（※怪しいもの）」が選択されています。</p>
-<p>「Nudity and Adult content」の行のOn/OffのトグルをOnにします。そして右下の「変更を適用」をクリックするとポリシーの修正が有効になります。「Risky Downloads」および「Suspicious」が含まれていると、Google検索で「広告」という表示のあるページを正しく表示出来ない場合があります。今後説明するSSLインスペクションの対応が出来た際に改めて加える事とし、一旦「Risky Downloads」および「Suspicious」を外すなど好みで調整してみてください。Suspiciousに広告のWebサイトが含まれるためこのような挙動となります。</p>
-<div class="note primary no-icon">
-            <h2 id="外部データベース（ドメインリスト）を取り込む"><a href="#外部データベース（ドメインリスト）を取り込む" class="headerlink" title="外部データベース（ドメインリスト）を取り込む"></a>外部データベース（ドメインリスト）を取り込む</h2>
-          </div>
-<p>　XGのデータベースだけでも十分なのですが、外部のデータベース（ドメインのリスト形式）を取り込む事が可能です。ここではサンプル的に<a href="https://280blocker.net/" target="_blank" rel="noopener">280blocker | モバイル広告ブロッカー</a>のデータを取り込んでみます。利用については、<a href="https://280blocker.net/download/" target="_blank" rel="noopener">ダウンロードのページ</a>の注意事項の確認をいただき、ご自身で利用の判断をお願いします。今回はあくまでXGの機能の紹介という事で説明させていただきます。私自身このデータベースの精度などについての評価をしておりませんのでご承知おきください。</p>
-<ol>
-<li>ダウンロードするデータとして「広告ドメインリスト（リスト形式）」をダウンロードします</li>
-<li>XGの左ペインのWebを選択し、「カテゴリ」のタブをクリックします</li>
-<li>名前は「280blocker」とします</li>
-<li>分類は「Objectionable」とします</li>
-<li>設定のカテゴリはローカルのラジオボタンを選択します</li>
-<li>domainのインポートから、先ほどダウンロードしたファイルを選択し取り込みます</li>
-<li>「保存」ボタンをクリックします</li>
-</ol>
-<p>　次にWebのユーザーアクティビティの設定です。</p>
-
-
-<ol>
-<li>画面右上の「追加」ボタンをクリックします</li>
-<li>名前は「280blocker」とします</li>
-<li>先ほど「カテゴリ」で作成した280blockerを選択し適用します</li>
-<li>最後に保存ボタンを押します</li>
-</ol>
-<p>　さて、再びWebのポリシータブをクリックし、「Default Policy」の内容を表示します。ここで右側の編集（ペンのアイコン）を選択します。</p>
-
-
-<ol>
-<li>ルールの追加ボタンを押すと、先頭にルールが作成されます</li>
-<li>先頭ルールのアクティビティを選択し「すべてのトラフィック」を削除し、「280blocker」を追加します</li>
-<li>アクションは「HTTPをブロックする」というデフォルトのままです</li>
-<li>ステータスのトグルをOnにしてください</li>
-<li>最後に画面を下にスクロールし、保存ボタンをクリックします</li>
-</ol>
-<p>　こういったデータベースはさまざまな目的でホームユーザー向けにあれば良いのですが、なかなか入手が難しいところではあります。DNSにも危険IPや危険ドメインを排除する機能を持つPublicDNSもあります。但し、そういったDNSを利用する事でその個人が興味を持つドメインなどプライバシーが筒抜けになってしまいますので利用も難しいと考えています。</p>
-]]></content>
-      <categories>
-        <category>Security</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>XG Firewall V18でLAN内のホストをインターネットに公開する</title>
-    <url>/new-technology/2020/04/11/dnat/</url>
-    <content><![CDATA[<div class="note success">
-            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>XG Firewall V18で新しくなったDNATの設定を行い、LAN内のホストをインターネットへ公開できるようになります。また日本国内からのアクセスに限るなど、Webサイトへの攻撃のリスクを低減します。</p>
-          </div>
-<a id="more"></a>
-
-<div class="note primary no-icon">
-            <h2 id="ホスト公開の前提となる構成について"><a href="#ホスト公開の前提となる構成について" class="headerlink" title="ホスト公開の前提となる構成について"></a>ホスト公開の前提となる構成について</h2>
-          </div>
-
-<p>　インターネットから宅内の環境に対し、VPNを使わず直接アクセスするケースを説明します。最も一般的なのはネットワークストレージ（NAS）へのアクセスやWebサーバーのコンテンツ公開であろうかとおもいます。このブログではインターネット側にホームゲートウェイ、その内側にXG Firewallがあり、さらに内側にLANがある事を前提に説明しています。XG Firewallでは、一般的なルーターと同じように内部のホストをインターネットに公開するためには設定が必要となります。一般的な用語でもありますが、Sophosでは、このような外から内へのパブリックIPとプライベートIPとの変換を伴う接続形態をDNAT（Destination NAT）と呼んでいます。</p>
-<img src="/new-technology/2020/04/11/dnat/network.png" class="" title="alt">
-
-<p>　設定においては、上記の2つのサブネット（XGのWAN側、LAN側）を意識する事になります。</p>
-<div class="note primary no-icon">
-            <h2 id="V18より導入されたサーバーアクセスアシスタントについて"><a href="#V18より導入されたサーバーアクセスアシスタントについて" class="headerlink" title="V18より導入されたサーバーアクセスアシスタントについて"></a>V18より導入されたサーバーアクセスアシスタントについて</h2>
-          </div>
-
-<p> V18では、V17と比較し設定がやや複雑になりました。その対策として、<span class="label info">サーバーアクセスアシスタント</span>というウィザード形式で設定できる仕組みが導入されています。もちろん、このウィザードを使わなくてもDNATの設定は可能です。しかし、新しい機能でもあるので、それを使いながら設定方法について書いてみたいとおもいます。</p>
-<div class="note primary no-icon">
-            <h2 id="この記事における設定例について"><a href="#この記事における設定例について" class="headerlink" title="この記事における設定例について"></a>この記事における設定例について</h2>
-          </div>
-
-<p>　一般的な設定例として、内部にあるWebサーバーのhttpsアクセス（Port443）をインターネットから接続するケースで説明します。自分の環境ですと、ちょうどQNAPのNASをPort443で稼働させているのでこれを例に説明します。<span class="label info">パブリックIPのPort443</span>→<span class="label info">プライベートIPのPort443</span>に着信させる実例です。</p>
-<div class="note primary no-icon">
-            <h2 id="ホームゲートウェイでの事前設定"><a href="#ホームゲートウェイでの事前設定" class="headerlink" title="ホームゲートウェイでの事前設定"></a>ホームゲートウェイでの事前設定</h2>
-          </div>
-
-<p>　VPNの導入の記事でも書きましたが、まずはインターネットから内部のホストにデータを届けるためには、ホームゲートウェイとXGそれぞれに設定を行う必要があります。</p>
-<p>　以下のように、ホームゲートウェイでPort443のトラフィックをXGのWAN側IPアドレスに転送する設定を行います。</p>
-<img src="/new-technology/2020/04/11/dnat/rule6.png" class="" title="alt">
-<p>　この画面はホームゲートウェイの画面であり、契約しているインターネット回線業者により、提供される機器は異なりますのであくまで設定例という事で参考までに掲載しています。</p>
-<div class="note primary no-icon">
-            <h2 id="XGのDNAT設定"><a href="#XGのDNAT設定" class="headerlink" title="XGのDNAT設定"></a>XGのDNAT設定</h2>
-          </div>
-
-<p>　早速、サーバーアクセスアシスタントを使ったDNATの設定を行います。まずXGの左ペインメニューから、ルールとポリシーを選択します。ルールの上にある<span class="label info">ファイアウォールルールの追加</span>をクリックし、<span class="label info">サーバーアクセスアシスタントDNAT</span>をクリックします。そうすると以下のウィザード画面が表示されます。</p>
-<img src="/new-technology/2020/04/11/dnat/rule1.png" class="" title="alt">
-
-<p>　ここでは、LANに設置してある、公開したいサーバーのIPとそのホストの名前を入力します。ここで入力したホストの名前とIPアドレスの組みは自動的にXGのIPホストとして登録されます。今回のケースではQNAPとそのIPアドレスを入力しています。入力後、<span class="label info">次へ</span>をクリックします。</p>
-<p>　2画面目では、以下のように公開したいパブリックIPアドレスを入力する画面となります。</p>
-<img src="/new-technology/2020/04/11/dnat/rule2.png" class="" title="alt">
-<p>　これはパブリックIPアドレスからプライベートIPへ変換するためのマッピング情報の元となるものです。但し、注意点として、ここでの構成はあくまでホームゲートウェイによってプライベートIPに変換された後のXGのWAN側IPアドレス（つまりプライベートIPアドレス）を入力する事になります。XGのWAN側インターフェースのIPアドレスである、<span class="label info">#Port2</span>を選択し、<span class="label info">次へ</span>をクリックします。</p>
-<p>　3画面目では、内部に転送するサービスを選択します。Port443のHTTPSを選択しています。</p>
-<img src="/new-technology/2020/04/11/dnat/rule3.png" class="" title="alt">
-
-<p>　選択後、<span class="label info">次へ</span>をクリックします。</p>
-<p>　4画面目では、<span class="label info">外部の送信元ネットワークとデバイス</span>を選択します。</p>
-<img src="/new-technology/2020/04/11/dnat/rule4.png" class="" title="alt">
-
-<p>　表現が難しいのですが、WAN側のネットワークに制約を加える場合はここにネットワークの追加を行い、<span class="label info">任意</span>の設定を外す事になります。今回は、一旦はこのまま<span class="label info">次へ</span>をクリックします。</p>
-<p>　最後の5画面目では、これまで設定してきた内容の確認画面となります。画面の後半に<span class="label info">NATルールを3つ作成します</span>という記述があります。DNAT以外の2つは不要なので後から削除する事になりますが、これは後ほど説明します。</p>
-<img src="/new-technology/2020/04/11/dnat/rule5.png" class="" title="alt">
-
-<p>　<span class="label info">保存して完了する</span>をクリックしてください。</p>
-<p>　これで、DNATの設定が完了しました。<span class="label info">ルールとポリシー</span>では、作成されたルールは以下のようになっています。</p>
-<img src="/new-technology/2020/04/11/dnat/rule7.png" class="" title="alt">
-
-<p>　<span class="label info">ファイアウォールルール</span>の一番上に新しいルール<span class="label info">DNAT to QNAPxxxx</span>が追加されています。</p>
-<p>　引き続き、<span class="label info">NATルール</span>を見てみます。以下のように3つのルールが作成され、1番上にDNATルールが表示されています。</p>
-<img src="/new-technology/2020/04/11/dnat/rule8.png" class="" title="alt">
-
-<p>　これでひとまず設定は完了しています。これでインターネットから内部ホストへアクセス出来るようになりました。</p>
-<div class="note primary no-icon">
-            <h2 id="LAN環境からアクセスするため、DNSにプライベートIPを登録する"><a href="#LAN環境からアクセスするため、DNSにプライベートIPを登録する" class="headerlink" title="LAN環境からアクセスするため、DNSにプライベートIPを登録する"></a>LAN環境からアクセスするため、DNSにプライベートIPを登録する</h2>
-          </div>
-
-<p>　さて、インターネットからパブリックIPを使って内部ホストへアクセス出来るようになりました。一般的にはダイナミックDNSなどを用いてURLでアクセスする事になります。しかし宅内のLAN環境に入り当該サーバーへ同じURLを使って接続する場合は、わざわざパブリックIPにする事はなく、直接LANのプライベートIPに対してアクセスする事になります。<br>　この場合は、XGのDNSでスタティックとしてプライベートIPを登録します。左ペインの<span class="label info">ネットワーク</span>から<span class="label info">DNS</span>を選び、<span class="label info">DNSホストエントリ</span>で、サーバーのURLとプライベートIPの組み合わせを登録してください。クライアントはXGのDHCPによってDNSがXG自身である事を指定されているため、当該ホストについてはプライベートIPでアクセス可能となります。</p>
-<div class="note primary no-icon">
-            <h2 id="DNATのウィザードで作成されるルールの詳細について"><a href="#DNATのウィザードで作成されるルールの詳細について" class="headerlink" title="DNATのウィザードで作成されるルールの詳細について"></a>DNATのウィザードで作成されるルールの詳細について</h2>
-          </div>
-
-<p>　ウィザードでは、シンプルにまずは繋がる事を優先に最低限度の設定を行いました。まずDNATの理解を深めるために、ウィザードで作成されたファイアウォールルールのDNATについて見てみましょう。</p>
-<img src="/new-technology/2020/04/11/dnat/rule9.png" class="" title="alt">
-
-<ul>
-<li><span class="label info">送信元とゾーン</span>は、WAN</li>
-<li><span class="label info">宛先ゾーン</span>は、LAN</li>
-<li><span class="label info">サービス</span>は、HTTPS
-
-</li>
-</ul>
-<p>　以上のように、それなりに理解出来るものが記載されています。しかし理解が進まないのは、<span class="label info">宛先ネットワーク</span>の<span class="label info">#Port2</span>、つまりXGのWAN側IPアドレスが記述されている点です。宛先として直感ではLAN側のインタフェースである、<span class="label info">#Port1</span>のように感じます。まして、転送したいサーバーであるQNAPが記載されている項目はここにはありません。実際のHTTPSのアクセスである、QNAPに転送するという項目は<span class="label info">NATルール</span>で記載されています。</p>
-<p>　一旦、XG Firewll V18におけるDNATはこういう仕様なんだと理解してください。不要となり削除する2つのルールを簡単に説明します。</p>
-<ul>
-<li>Loopback NAT<br>これはヘアピンNATとも呼ばれますが、内部ネットワークからパブリックIPアドレスを用いて再び内部ネットワークにある公開サーバーへアクセスしたい場合に使います。XGがWANの外に出ていこうとするトラフィックを無理やり内部の公開サーバーに振り向ける動作です。前述したとおり内部のホストには、DNSに登録したプライベートIPでアクセスするので不要です。</li>
-<li>Reflexiv NAT<br>これは普通に内部ホストからWAN向けのNATを伴う変換ルールです。インストール直後のSNAT（ソースNAT　※送信元アドレスを書き換える一般的なNAT）のルールが最初から存在している事、このブログでは過去の記事（<a href="/new-technology/2020/03/14/rule-policy2/" title="XG Firewall v18のOutboundルールを新規作成する">XG Firewall v18のOutboundルールを新規作成する</a>）で<span class="label info">To Internet</span>というSNATのルールを作成しているので改めての作成は不要です。</li>
-</ul>
-<div class="note primary no-icon">
-            <h2 id="インターネットの接続可能な範囲を絞る"><a href="#インターネットの接続可能な範囲を絞る" class="headerlink" title="インターネットの接続可能な範囲を絞る"></a>インターネットの接続可能な範囲を絞る</h2>
-          </div>
-
-<p>　公開するホストが国内からのアクセス用途に限定できるならば、少しFirewallらしい設定を加えてみましょう。ウィザードの4画面目で、任意とした外部の送信元ネットワークを活用します。もし、このWebサーバに対して日本国内からのアクセスに限れば、海外からの攻撃を防ぐ事ができます。この場合は、作成済みのDNATルールの<span class="label info">送信元ネットワークとデバイス</span>の<span class="label info">任意</span>を外し、<span class="label info">Japan</span>を加えてください。</p>
-<div class="note primary no-icon">
-            <h2 id="DNATに関するSophosCommunityでの投稿"><a href="#DNATに関するSophosCommunityでの投稿" class="headerlink" title="DNATに関するSophosCommunityでの投稿"></a>DNATに関するSophosCommunityでの投稿</h2>
-          </div>
-
-<p>参考までに<a href="https://community.sophos.com/products/xg-firewall/sfos-eap/sfos-v18-early-access-program/f/feedback-and-issues/118045/server-access-assistant-dnat-request" target="_blank" rel="noopener">Server Access Assistant (DNAT) Request</a>のスレッドを参照してください。DNATの設定方法について、色々な議論がなされています。</p>
-]]></content>
-      <categories>
-        <category>Security</category>
-        <category>ホスト公開</category>
       </categories>
       <tags>
         <tag>XG Firewall</tag>
@@ -2243,6 +2313,16 @@ Note right of cl: 16.共通鍵で複合
       </tags>
   </entry>
   <entry>
+    <title>はじめに</title>
+    <url>/new-technology/2020/02/22/%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB/</url>
+    <content><![CDATA[<p>　少し高度なITをテーマに、ホームユーザーのIT導入を中心にポストしていきたいと考えてます。最近ではフルスタックエンジニアと呼ぶのでしょうか、これまでの自身の仕事はプログラミング・ネットワーク・サーバ構築・セキュリティと、広く浅くITに関わってきました。エンジニアとしての仕事からは最近かなり遠ざかってますが、自分なりに新しい技術の習得も兼ねて、ブログ形式で掲載できればとおもいます。</p>
+<a id="more"></a>
+
+<p>　単純にインストールして「できました」ではなく、導入後のITの使い方こそが重要と考えています。最近は個人利用に限り利用無償のソフトウェアが増えてきました。また、商用利用であっても無償となるオープンソースソフトウェアの活用も見逃せません。これは大変ありがたい話で、座学ではなかなか理解が進まない固有技術であっても、こういった無料のプロダクトを通じて知見を高める事が可能となっています。</p>
+<p>　ここでは、エンタープライズやミッションクリティカルなITに関するテーマは扱いません。私自身実務でITに関わっていますが、実務とは少し距離を置いたところで、自己啓発と家庭向けのIT活用を考えたいと思っています。</p>
+]]></content>
+  </entry>
+  <entry>
     <title>XG FirewallでIPv6の設定を行う（後半）</title>
     <url>/new-technology/2020/04/29/xg-ipv6-2/</url>
     <content><![CDATA[<div class="note success">
@@ -2425,86 +2505,6 @@ Note right of cl: 16.共通鍵で複合
       <tags>
         <tag>XG Firewall</tag>
         <tag>IPv6</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>はじめに</title>
-    <url>/new-technology/2020/02/22/%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB/</url>
-    <content><![CDATA[<p>　少し高度なITをテーマに、ホームユーザーのIT導入を中心にポストしていきたいと考えてます。最近ではフルスタックエンジニアと呼ぶのでしょうか、これまでの自身の仕事はプログラミング・ネットワーク・サーバ構築・セキュリティと、広く浅くITに関わってきました。エンジニアとしての仕事からは最近かなり遠ざかってますが、自分なりに新しい技術の習得も兼ねて、ブログ形式で掲載できればとおもいます。</p>
-<a id="more"></a>
-
-<p>　単純にインストールして「できました」ではなく、導入後のITの使い方こそが重要と考えています。最近は個人利用に限り利用無償のソフトウェアが増えてきました。また、商用利用であっても無償となるオープンソースソフトウェアの活用も見逃せません。これは大変ありがたい話で、座学ではなかなか理解が進まない固有技術であっても、こういった無料のプロダクトを通じて知見を高める事が可能となっています。</p>
-<p>　ここでは、エンタープライズやミッションクリティカルなITに関するテーマは扱いません。私自身実務でITに関わっていますが、実務とは少し距離を置いたところで、自己啓発と家庭向けのIT活用を考えたいと思っています。</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>XG Firewall v18のインストール（事前準備）</title>
-    <url>/new-technology/2020/03/06/InstallXG/</url>
-    <content><![CDATA[<div class="note success">
-            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　Firewall v18をESXi（ｖ6.7）で稼働させるためのインストールイメージ（isoファイル）をダウンロードし、ESXi上で、XGのための仮想マシンを構築できるようになります。</p>
-          </div>
-
-<a id="more"></a>
-<div class="note primary no-icon">
-            <h2 id="XG-Firewallのダウンロード"><a href="#XG-Firewallのダウンロード" class="headerlink" title="XG Firewallのダウンロード"></a>XG Firewallのダウンロード</h2>
-          </div>
-<p>　Sophosのサイトの<a href="https://www.sophos.com/ja-jp/products/free-tools.aspx" target="_blank" rel="noopener">（無償ツール）</a>より、「Sophos XG Firewall Home Edition」モジュールのダウンロードを行います。氏名、勤務先メールアドレスとありますが、ホームユースなので、遠慮なくGmailなどのアドレスを登録します。あっさりとISOファイルのダウンロードボタンが表示されると共に、メール宛にライセンス番号が送られてきます。<br>　送られてきたメールの本文には、「利用条件としては、あくまで家庭での個人的な使用に限って無料です」と丁寧な日本語で記載されています。</p>
-<!-- more -->
-<p> 　ダウンロードはISOイメージです。2020年3月6日時点では、最新のバージョンはv17.5のようです。ただし、Sophosからのお知らせに<a href="https://community.sophos.com/products/xg-firewall/b/blog/posts/sophos-xg-firewall-v18-is-now-available" target="_blank" rel="noopener">v18がリリースされたとの記載</a>があるため、こちらのISOファイルからインストールします。As usual, this firmware update is no charge for all licensed XG Firewall customers. とありますし問題なさそうです。VMware向けのテンプレートもダウンロード出来るようですが、仮想環境ではなくいきなり物理PCにインストールする方のために、ISOファイルからのセットアップ手順であった方が良いですね。上記のリンクから、SW-18.0.0_GA-Build321-321.isoをダウンロードして下さい。</p>
-<p>（4月4日追記）<br>　Sophosのサイトを確認したところ、現時点でもデフォルトのダウンロードはv17.5.10_MR10となっています。v18については、新しいファームウェアが出ており、<a href="https://community.sophos.com/products/xg-firewall/b/blog/posts/xg-firewall-v18-ga_2d00_build354-is-now-available" target="_blank" rel="noopener">GA-build354のリリース</a>が出ています。<span class="label info">SW-18.0.0_GA-Build354-354.iso</span>をダウンロードしてください。</p>
-<p> 　いつも使っているPC（Windowsなど）から、ESXi管理画面にログインします。ESXiの管理画面の左ペインのストレージからデフォルトのストレージである、datastore1を選択し、データストアブラウザをクリックして下さい。次にアップロードボタンをクリックし、ダウンロードされたSW-18.0.0_GA-Build321-321.isoファイルをアップロードして下さい。</p>
- <img src="/new-technology/2020/03/06/InstallXG/datastore.png" class="" title="alt">
-<p> 　</p>
-<div class="note primary no-icon">
-            <h2 id="XG-Firewall仮想マシンの作成"><a href="#XG-Firewall仮想マシンの作成" class="headerlink" title="XG Firewall仮想マシンの作成"></a>XG Firewall仮想マシンの作成</h2>
-          </div>
-<p> 　<br> 　さて、ここから仮想マシンの初期設定です。</p>
-<ol>
-<li>ESXiの管理画面の仮想マシンから新規仮想マシンを選択します。</li>
-<li>仮想マシンの作成を選択し、次へのボタンを押します。</li>
-<li>仮想マシンの名前を決め、ゲストOSを選択します。OSファミリはLinuxで、OSバージョンはその他のLinux4.x（64ビット）を選択します。※XG Firewall v17では、その他のLinux3.x（64ビット）を選択する必要がありました。</li>
-</ol>
-<img src="/new-technology/2020/03/06/InstallXG/vm2.png" class="" title="alt">
-
-<ol>
-<li>ストレージを確認し、次へのボタンを押します。</li>
-</ol>
-<img src="/new-technology/2020/03/06/InstallXG/vm3.png" class="" title="alt">
-
-<ol>
-<li>ここでは、ネットワークカードの追加をし、WAN側のNICを追加します。ネットワークアダプタの詳細（▶︎マークをクリック）でドライバがE1000など選択されている事を確認して下さい。</li>
-</ol>
-<img src="/new-technology/2020/03/06/InstallXG/vm4.png" class="" title="alt">
-
-<ol>
-<li>また、仮想CD-ROMにXG Firewallのインストールイメージ（isoファイル）をマウントします。</li>
-</ol>
-<img src="/new-technology/2020/03/06/InstallXG/vm4-1.png" class="" title="alt">
-
-<ol start="7">
-<li>起動オプションのファームウェアはEFIからBIOSに変更して下さい。</li>
-</ol>
-<img src="/new-technology/2020/03/06/InstallXG/vm5.png" class="" title="alt">
-
-<ol start="8">
-<li>さて、最終確認です。今回のプロビジョニングはシック（Lazy Zeroed）となっています。</li>
-</ol>
-<img src="/new-technology/2020/03/06/InstallXG/vm6.png" class="" title="alt">
-
-<ol start="9">
-<li>最後に完了ボタンを押します。これで仮想マシンが作成されます。</li>
-</ol>
-<img src="/new-technology/2020/03/06/InstallXG/vm7.png" class="" title="alt">
-
-<p>　いったんここまでで仮想マシンの作成は終了となります。なお、仮想マシンを選択した状態で「アクション」という歯車マークがあります。これをクリックして、コンソール→VMRCのダウンロードを選択し、VMware Remote Consoleをインストールして下さい。これがあるとブラウザから仮想マシンの画面がポップアップし、仮想マシンを操作出来るようになります。</p>
-<p>　余談ですが、もし物理マシンに直接USBメモリ等でXGをインストールする場合は、対象マシンのBIOS設定でUEFIのチェックを外して下さい。</p>
-<p>※補足<br>　Intelの10GbpsのNICをお使いの方は、速度の面で有利なVMXNET3ドライバを選択可能です。</p>
-]]></content>
-      <categories>
-        <category>Security</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
       </tags>
   </entry>
 </search>
