@@ -1,76 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>XG Firewall v18のインストール（事前準備）</title>
-    <url>/new-technology/2020/03/06/InstallXG/</url>
-    <content><![CDATA[<div class="note success">
-            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　Firewall v18をESXi（ｖ6.7）で稼働させるためのインストールイメージ（isoファイル）をダウンロードし、ESXi上で、XGのための仮想マシンを構築できるようになります。</p>
-          </div>
-
-<a id="more"></a>
-<div class="note primary no-icon">
-            <h2 id="XG-Firewallのダウンロード"><a href="#XG-Firewallのダウンロード" class="headerlink" title="XG Firewallのダウンロード"></a>XG Firewallのダウンロード</h2>
-          </div>
-<p>　Sophosのサイトの<a href="https://www.sophos.com/ja-jp/products/free-tools.aspx" target="_blank" rel="noopener">（無償ツール）</a>より、「Sophos XG Firewall Home Edition」モジュールのダウンロードを行います。氏名、勤務先メールアドレスとありますが、ホームユースなので、遠慮なくGmailなどのアドレスを登録します。あっさりとISOファイルのダウンロードボタンが表示されると共に、メール宛にライセンス番号が送られてきます。<br>　送られてきたメールの本文には、「利用条件としては、あくまで家庭での個人的な使用に限って無料です」と丁寧な日本語で記載されています。</p>
-<!-- more -->
-<p> 　ダウンロードはISOイメージです。2020年3月6日時点では、最新のバージョンはv17.5のようです。ただし、Sophosからのお知らせに<a href="https://community.sophos.com/products/xg-firewall/b/blog/posts/sophos-xg-firewall-v18-is-now-available" target="_blank" rel="noopener">v18がリリースされたとの記載</a>があるため、こちらのISOファイルからインストールします。As usual, this firmware update is no charge for all licensed XG Firewall customers. とありますし問題なさそうです。VMware向けのテンプレートもダウンロード出来るようですが、仮想環境ではなくいきなり物理PCにインストールする方のために、ISOファイルからのセットアップ手順であった方が良いですね。上記のリンクから、SW-18.0.0_GA-Build321-321.isoをダウンロードして下さい。</p>
-<p>（4月4日追記）<br>　Sophosのサイトを確認したところ、現時点でもデフォルトのダウンロードはv17.5.10_MR10となっています。v18については、新しいファームウェアが出ており、<a href="https://community.sophos.com/products/xg-firewall/b/blog/posts/xg-firewall-v18-ga_2d00_build354-is-now-available" target="_blank" rel="noopener">GA-build354のリリース</a>が出ています。<span class="label info">SW-18.0.0_GA-Build354-354.iso</span>をダウンロードしてください。</p>
-<p> 　いつも使っているPC（Windowsなど）から、ESXi管理画面にログインします。ESXiの管理画面の左ペインのストレージからデフォルトのストレージである、datastore1を選択し、データストアブラウザをクリックして下さい。次にアップロードボタンをクリックし、ダウンロードされたSW-18.0.0_GA-Build321-321.isoファイルをアップロードして下さい。</p>
- <img src="/new-technology/2020/03/06/InstallXG/datastore.png" class="" title="alt">
-<p> 　</p>
-<div class="note primary no-icon">
-            <h2 id="XG-Firewall仮想マシンの作成"><a href="#XG-Firewall仮想マシンの作成" class="headerlink" title="XG Firewall仮想マシンの作成"></a>XG Firewall仮想マシンの作成</h2>
-          </div>
-<p> 　<br> 　さて、ここから仮想マシンの初期設定です。</p>
-<ol>
-<li>ESXiの管理画面の仮想マシンから新規仮想マシンを選択します。</li>
-<li>仮想マシンの作成を選択し、次へのボタンを押します。</li>
-<li>仮想マシンの名前を決め、ゲストOSを選択します。OSファミリはLinuxで、OSバージョンはその他のLinux4.x（64ビット）を選択します。※XG Firewall v17では、その他のLinux3.x（64ビット）を選択する必要がありました。</li>
-</ol>
-<img src="/new-technology/2020/03/06/InstallXG/vm2.png" class="" title="alt">
-
-<ol>
-<li>ストレージを確認し、次へのボタンを押します。</li>
-</ol>
-<img src="/new-technology/2020/03/06/InstallXG/vm3.png" class="" title="alt">
-
-<ol>
-<li>ここでは、ネットワークカードの追加をし、WAN側のNICを追加します。ネットワークアダプタの詳細（▶︎マークをクリック）でドライバがE1000など選択されている事を確認して下さい。</li>
-</ol>
-<img src="/new-technology/2020/03/06/InstallXG/vm4.png" class="" title="alt">
-
-<ol>
-<li>また、仮想CD-ROMにXG Firewallのインストールイメージ（isoファイル）をマウントします。</li>
-</ol>
-<img src="/new-technology/2020/03/06/InstallXG/vm4-1.png" class="" title="alt">
-
-<ol start="7">
-<li>起動オプションのファームウェアはEFIからBIOSに変更して下さい。</li>
-</ol>
-<img src="/new-technology/2020/03/06/InstallXG/vm5.png" class="" title="alt">
-
-<ol start="8">
-<li>さて、最終確認です。今回のプロビジョニングはシック（Lazy Zeroed）となっています。</li>
-</ol>
-<img src="/new-technology/2020/03/06/InstallXG/vm6.png" class="" title="alt">
-
-<ol start="9">
-<li>最後に完了ボタンを押します。これで仮想マシンが作成されます。</li>
-</ol>
-<img src="/new-technology/2020/03/06/InstallXG/vm7.png" class="" title="alt">
-
-<p>　いったんここまでで仮想マシンの作成は終了となります。なお、仮想マシンを選択した状態で「アクション」という歯車マークがあります。これをクリックして、コンソール→VMRCのダウンロードを選択し、VMware Remote Consoleをインストールして下さい。これがあるとブラウザから仮想マシンの画面がポップアップし、仮想マシンを操作出来るようになります。</p>
-<p>　余談ですが、もし物理マシンに直接USBメモリ等でXGをインストールする場合は、対象マシンのBIOS設定でUEFIのチェックを外して下さい。</p>
-<p>※補足<br>　Intelの10GbpsのNICをお使いの方は、速度の面で有利なVMXNET3ドライバを選択可能です。</p>
-]]></content>
-      <categories>
-        <category>Security</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>XG Firewall v18をESXi仮想マシン上にインストールする</title>
     <url>/new-technology/2020/03/06/InstallXG2/</url>
     <content><![CDATA[<div class="note success">
@@ -2506,5 +2436,75 @@ Note right of cl: 16.共通鍵で複合
 <p>　単純にインストールして「できました」ではなく、導入後のITの使い方こそが重要と考えています。最近は個人利用に限り利用無償のソフトウェアが増えてきました。また、商用利用であっても無償となるオープンソースソフトウェアの活用も見逃せません。これは大変ありがたい話で、座学ではなかなか理解が進まない固有技術であっても、こういった無料のプロダクトを通じて知見を高める事が可能となっています。</p>
 <p>　ここでは、エンタープライズやミッションクリティカルなITに関するテーマは扱いません。私自身実務でITに関わっていますが、実務とは少し距離を置いたところで、自己啓発と家庭向けのIT活用を考えたいと思っています。</p>
 ]]></content>
+  </entry>
+  <entry>
+    <title>XG Firewall v18のインストール（事前準備）</title>
+    <url>/new-technology/2020/03/06/InstallXG/</url>
+    <content><![CDATA[<div class="note success">
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　Firewall v18をESXi（ｖ6.7）で稼働させるためのインストールイメージ（isoファイル）をダウンロードし、ESXi上で、XGのための仮想マシンを構築できるようになります。</p>
+          </div>
+
+<a id="more"></a>
+<div class="note primary no-icon">
+            <h2 id="XG-Firewallのダウンロード"><a href="#XG-Firewallのダウンロード" class="headerlink" title="XG Firewallのダウンロード"></a>XG Firewallのダウンロード</h2>
+          </div>
+<p>　Sophosのサイトの<a href="https://www.sophos.com/ja-jp/products/free-tools.aspx" target="_blank" rel="noopener">（無償ツール）</a>より、「Sophos XG Firewall Home Edition」モジュールのダウンロードを行います。氏名、勤務先メールアドレスとありますが、ホームユースなので、遠慮なくGmailなどのアドレスを登録します。あっさりとISOファイルのダウンロードボタンが表示されると共に、メール宛にライセンス番号が送られてきます。<br>　送られてきたメールの本文には、「利用条件としては、あくまで家庭での個人的な使用に限って無料です」と丁寧な日本語で記載されています。</p>
+<!-- more -->
+<p> 　ダウンロードはISOイメージです。2020年3月6日時点では、最新のバージョンはv17.5のようです。ただし、Sophosからのお知らせに<a href="https://community.sophos.com/products/xg-firewall/b/blog/posts/sophos-xg-firewall-v18-is-now-available" target="_blank" rel="noopener">v18がリリースされたとの記載</a>があるため、こちらのISOファイルからインストールします。As usual, this firmware update is no charge for all licensed XG Firewall customers. とありますし問題なさそうです。VMware向けのテンプレートもダウンロード出来るようですが、仮想環境ではなくいきなり物理PCにインストールする方のために、ISOファイルからのセットアップ手順であった方が良いですね。上記のリンクから、SW-18.0.0_GA-Build321-321.isoをダウンロードして下さい。</p>
+<p>（4月4日追記）<br>　Sophosのサイトを確認したところ、現時点でもデフォルトのダウンロードはv17.5.10_MR10となっています。v18については、新しいファームウェアが出ており、<a href="https://community.sophos.com/products/xg-firewall/b/blog/posts/xg-firewall-v18-ga_2d00_build354-is-now-available" target="_blank" rel="noopener">GA-build354のリリース</a>が出ています。<span class="label info">SW-18.0.0_GA-Build354-354.iso</span>をダウンロードしてください。</p>
+<p> 　いつも使っているPC（Windowsなど）から、ESXi管理画面にログインします。ESXiの管理画面の左ペインのストレージからデフォルトのストレージである、datastore1を選択し、データストアブラウザをクリックして下さい。次にアップロードボタンをクリックし、ダウンロードされたSW-18.0.0_GA-Build321-321.isoファイルをアップロードして下さい。</p>
+ <img src="/new-technology/2020/03/06/InstallXG/datastore.png" class="" title="alt">
+<p> 　</p>
+<div class="note primary no-icon">
+            <h2 id="XG-Firewall仮想マシンの作成"><a href="#XG-Firewall仮想マシンの作成" class="headerlink" title="XG Firewall仮想マシンの作成"></a>XG Firewall仮想マシンの作成</h2>
+          </div>
+<p> 　<br> 　さて、ここから仮想マシンの初期設定です。</p>
+<ol>
+<li>ESXiの管理画面の仮想マシンから新規仮想マシンを選択します。</li>
+<li>仮想マシンの作成を選択し、次へのボタンを押します。</li>
+<li>仮想マシンの名前を決め、ゲストOSを選択します。OSファミリはLinuxで、OSバージョンはその他のLinux4.x（64ビット）を選択します。※XG Firewall v17では、その他のLinux3.x（64ビット）を選択する必要がありました。</li>
+</ol>
+<img src="/new-technology/2020/03/06/InstallXG/vm2.png" class="" title="alt">
+
+<ol>
+<li>ストレージを確認し、次へのボタンを押します。</li>
+</ol>
+<img src="/new-technology/2020/03/06/InstallXG/vm3.png" class="" title="alt">
+
+<ol>
+<li>ここでは、ネットワークカードの追加をし、WAN側のNICを追加します。ネットワークアダプタの詳細（▶︎マークをクリック）でドライバがE1000など選択されている事を確認して下さい。</li>
+</ol>
+<img src="/new-technology/2020/03/06/InstallXG/vm4.png" class="" title="alt">
+
+<ol>
+<li>また、仮想CD-ROMにXG Firewallのインストールイメージ（isoファイル）をマウントします。</li>
+</ol>
+<img src="/new-technology/2020/03/06/InstallXG/vm4-1.png" class="" title="alt">
+
+<ol start="7">
+<li>起動オプションのファームウェアはEFIからBIOSに変更して下さい。</li>
+</ol>
+<img src="/new-technology/2020/03/06/InstallXG/vm5.png" class="" title="alt">
+
+<ol start="8">
+<li>さて、最終確認です。今回のプロビジョニングはシック（Lazy Zeroed）となっています。</li>
+</ol>
+<img src="/new-technology/2020/03/06/InstallXG/vm6.png" class="" title="alt">
+
+<ol start="9">
+<li>最後に完了ボタンを押します。これで仮想マシンが作成されます。</li>
+</ol>
+<img src="/new-technology/2020/03/06/InstallXG/vm7.png" class="" title="alt">
+
+<p>　いったんここまでで仮想マシンの作成は終了となります。なお、仮想マシンを選択した状態で「アクション」という歯車マークがあります。これをクリックして、コンソール→VMRCのダウンロードを選択し、VMware Remote Consoleをインストールして下さい。これがあるとブラウザから仮想マシンの画面がポップアップし、仮想マシンを操作出来るようになります。</p>
+<p>　余談ですが、もし物理マシンに直接USBメモリ等でXGをインストールする場合は、対象マシンのBIOS設定でUEFIのチェックを外して下さい。</p>
+<p>※補足<br>　Intelの10GbpsのNICをお使いの方は、速度の面で有利なVMXNET3ドライバを選択可能です。</p>
+]]></content>
+      <categories>
+        <category>Security</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+      </tags>
   </entry>
 </search>
