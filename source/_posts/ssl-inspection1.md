@@ -83,9 +83,8 @@ Traffic to WANのグループ配下に{% label info @To_Internet %}ルールが�
 
 　ルート証明書をダウンロードした後、クライアントへのインストールについては、OS毎に以下の3種類の手順をそれぞれ確認し設定します。
 
-{% tabs Fourth unique name %}
-
-<!-- tab Windows -->
+{% tabs One unique name %}
+<!-- tab Windows@th-large -->
 **Windowsにルート証明書をインストールする方法**
 
 1. {% label info @プログラムとファイル名の検索 %}のボックスに{% label info @MMC %}と入力して{% label info @Microsoft Management Console %}を開きます。
@@ -110,7 +109,7 @@ Traffic to WANのグループ配下に{% label info @To_Internet %}ルールが�
 9.{% label info @信頼されたルート証明機関 %}としてXGの証明書を登録し完了です。
 <!-- endtab -->
 
-<!-- tab macOS -->
+<!-- tab macOS@apple-alt -->
 **macOSにルート証明書をインストールする方法**
 
 1. iCloud Driveに証明書を配置します
@@ -123,7 +122,7 @@ Traffic to WANのグループ配下に{% label info @To_Internet %}ルールが�
 
 <!-- endtab -->
 
-<!-- tab iOS -->
+<!-- tab iOS @mobile -->
 **iOSにルート証明書をインストールする方法**
 
 iOSで「ファイル」アプリを使います。
@@ -141,7 +140,6 @@ iOSで「ファイル」アプリを使います。
  11. 画面の一番下の「証明書信頼設定」をタップします
  12. {% label info@Sophos SSL CA_xxxx %}が表示されているので、スイッチを右側に移動させオン（緑色点灯）します
 <!-- endtab -->
-
 {% endtabs %}
 
 {% note primary no-icon %}

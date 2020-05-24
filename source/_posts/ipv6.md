@@ -72,7 +72,7 @@ First IPv6 Address-> fd00:1234:5678::1/64
 
 {% endnote %}
 
-　ソースコードは[Github](https://github.com/yoshi0808/ula-generator)にあります。
+　ソースコードはこちら→　{% btn https://github.com/yoshi0808/ula-generator, ula-generator, fab fa-github fa-fw fa-lg, ula-generator source code %}
 
 - RFC4193に基づき生成しています
 - MACアドレスから{% label info @Modified EUI-64 %}を生成するにあたり、RFC4291に基づき生成しています
