@@ -9,7 +9,7 @@ date: 2020-04-26 13:23:30
 
 {% endnote %}
 
-　このブログで掲載している画像の著作権は各権利所有者に帰属します。記事の内容や掲載画像に問題がありましたら、ご連絡ください。
+　このブログで掲載している画像の著作権は各権利所有者に帰属します。また文章中で各社の著作物に言及する場合があります。記事の内容や掲載画像に問題がありましたら、ご連絡ください。
 
 {% note primary no-icon %}
 
@@ -57,7 +57,20 @@ date: 2020-04-26 13:23:30
 
 ---
 
+{% note primary no-icon %}
+
+## 各社商標について
+
+{% endnote %}
+
+- 「Amazon」、「Amazon.co.jp」および「Amazon.co.jp」ロゴは、Amazon.com, Inc. またはその関連会社の商標または登録商標です
+- Android、Android ロゴ、Chromecast、Gmail、Google、Google ロゴ、Google アシスタント、Google Chrome、Google Cloud Platform (GCP) 、Google Home、Google Home ロゴ、Google Home Mini、Google Home Mini ロゴ、Google マップ、Google Nest Mini、Google Nest Mini ロゴ、Google Play、Google Play ロゴ、Google Play Music、Google Play Music ロゴ、YouTube、YouTube ロゴは、Google LLC の商標です。Android ロボットは、Google が作成および提供している作品から複製または変更したものであり、クリエイティブ・コモンズ表示 3.0 ライセンスに記載された条件に従って使用しています
+- Apple、Appleロゴ、AirDrop、AirPlay、AirPods、AirMac、AirMac Time Capsule、AirPrint、Apple Music、Apple Pay、Apple TV、Apple Watch、Face ID、FaceTime、Finder、FireWire、Flyover、GarageBand、Handoff、iMovie、iPad、iPod、iPod touch、iTunes、iTunes U、Keynote、Launchpad、Lightning、Mac、Mac Pro、macOS、Magic Mouse、Magic Trackpad、Mission Control、Numbers、Pages、Retina、Safari、Siri、Spaces、Spotlight、Time Machine、Touch ID、およびwatchOSは、米国その他の国で登録されたApple Inc.の商標です。IOSは米国その他の国におけるCiscoの商標または登録商標であり、Apple Inc.がライセンス許諾を受けて使用されています。
+- Microsoft、MS、Windows、Windows10、OneDriveおよびExcelは、米国Microsoft Corporationの米国およびその他の国における登録商標です。Windowsの正式名称は、Microsoft Windows Operating Systemです
+
+---
+
 #### 変更履歴
 
 - 2020年4月26日　新規作成
-- 2020年5月20日　免責事項にコンテンツに関する事項、コンテンツやアドレスの予告なき変更の項目を追加
+- 2020年5月24日　免責事項にコンテンツに関する事項、コンテンツやアドレスの予告なき変更の項目を追加、各社商標についての記載を追加

@@ -417,7 +417,7 @@ font:
   global:
     external: true
     family:
-    size: 0.9
+    size:
 
   # Font settings for site title (.site-title).
   title:

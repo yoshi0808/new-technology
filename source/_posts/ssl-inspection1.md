@@ -84,7 +84,7 @@ Traffic to WANのグループ配下に{% label info @To_Internet %}ルールが�
 　ルート証明書をダウンロードした後、クライアントへのインストールについては、OS毎に以下の3種類の手順をそれぞれ確認し設定します。
 
 {% tabs One unique name %}
-<!-- tab Windows@th-large -->
+<!-- tab Windows -->
 **Windowsにルート証明書をインストールする方法**
 
 1. {% label info @プログラムとファイル名の検索 %}のボックスに{% label info @MMC %}と入力して{% label info @Microsoft Management Console %}を開きます。
@@ -109,7 +109,7 @@ Traffic to WANのグループ配下に{% label info @To_Internet %}ルールが�
 9.{% label info @信頼されたルート証明機関 %}としてXGの証明書を登録し完了です。
 <!-- endtab -->
 
-<!-- tab macOS@apple-alt -->
+<!-- tab <i class="fab fa-apple"></i>macOS -->
 **macOSにルート証明書をインストールする方法**
 
 1. iCloud Driveに証明書を配置します
@@ -122,7 +122,7 @@ Traffic to WANのグループ配下に{% label info @To_Internet %}ルールが�
 
 <!-- endtab -->
 
-<!-- tab iOS @mobile -->
+<!-- tab iOS@mobile-alt -->
 **iOSにルート証明書をインストールする方法**
 
 iOSで「ファイル」アプリを使います。
