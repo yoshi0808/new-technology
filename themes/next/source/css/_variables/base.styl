@@ -27,7 +27,8 @@ $orange       = #fc6423;
 // Settings for some of the most global styles.
 // --------------------------------------------------
 // Global text color on <body>
-$text-color                   = $black-light;
+//$text-color                   = $black-light;
+$text-color                   = $black-dim;
 $text-color-dark              = $grey-light;
 
 // Global link color.
@@ -76,35 +77,47 @@ $font-family-chinese         = -apple-system,BlinkMacSystemFont,Robot,"Helvetica
 // $font-family-base         = $font-family-chinese, sans-serif;
 // $font-family-base         = get_font_family('global'), $font-family-chinese, sans-serif if get_font_family('global');
 // $font-family-base         = -apple-system,BlinkMacSystemFont,"ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic ProN","メイリオ",Meiryo,"Noto Sans Japanese","Noto Sans CJK JP","游ゴシック","Yu Gothic",YuGothic,,sans-serif;
-$font-family-base         = -apple-system, BlinkMacSystemFont,"Hiragino Kaku Gothic ProN",Meiryo,sans-serif;
+$font-family-base         = "Helvetica Neue", Arial,"Hiragino Kaku Gothic ProN", "Hiragino Sans", "BIZ UDPGothic", Meiryo, sans-serif;
 
 $font-family-logo         = $font-family-base;
 $font-family-logo         = get_font_family('title'), $font-family-base if get_font_family('title');
 
-$font-family-headings     = $font-family-base;
-$font-family-headings     = get_font_family('headings'), $font-family-base if get_font_family('headings');
+// $font-family-headings     = $font-family-base;
+// $font-family-headings     = get_font_family('headings'), $font-family-base if get_font_family('headings');
+$font-family-headings     = "ヒラギノ明朝 ProN W3", "Hiragino Mincho ProN", "游明朝", YuMincho, serif;
 
 $font-family-posts        = $font-family-base;
 $font-family-posts        = get_font_family('posts'), $font-family-base if get_font_family('posts');
 
-$font-family-monospace    = consolas, Menlo, monospace, $font-family-chinese;
-$font-family-monospace    = get_font_family('codes'), consolas, Menlo, monospace, $font-family-chinese if get_font_family('codes');
+// $font-family-monospace    = consolas, Menlo, monospace, $font-family-chinese;
+// $font-family-monospace    = get_font_family('codes'), consolas, Menlo, monospace, $font-family-chinese if get_font_family('codes');
+$font-family-monospace    = get_font_family('codes'), consolas, Menlo, monospace, $font-family-base if get_font_family('codes');
 
 
 // Font size
-$font-size-base           = (hexo-config('font.enable') and hexo-config('font.global.size') is a 'unit') ? unit(hexo-config('font.global.size'), em) : 1em;
+// $font-size-base           = (hexo-config('font.enable') and hexo-config('font.global.size') is a 'unit') ? unit(hexo-config('font.global.size'), em) : 1em;
+// $font-size-smallest       = .75em;
+// $font-size-smaller        = .8125em;
+// $font-size-small          = .875em;
+// $font-size-medium         = 1em;
+// $font-size-large          = 1.125em;
+// $font-size-larger         = 1.25em;
+// $font-size-largest        = 1.5em;
+$font-size-base           = (hexo-config('font.enable') and hexo-config('font.global.size') is a 'unit') ? unit(hexo-config('font.global.size'), em) : 0.95em;
 $font-size-smallest       = .75em;
 $font-size-smaller        = .8125em;
 $font-size-small          = .875em;
-$font-size-medium         = 1em;
-$font-size-large          = 1.125em;
-$font-size-larger         = 1.25em;
-$font-size-largest        = 1.5em;
+$font-size-medium         = 0.95em;
+$font-size-large          = 1.068em;
+$font-size-larger         = 1.19em;
+$font-size-largest        = 1.43em;
 
 
 // Headings font size
+// $font-size-headings-step  = .125em;
+// $font-size-headings-base  = (hexo-config('font.enable') and hexo-config('font.headings.size') is a 'unit') ? unit(hexo-config('font.headings.size'), em) : 1.625em;
 $font-size-headings-step  = .125em;
-$font-size-headings-base  = (hexo-config('font.enable') and hexo-config('font.headings.size') is a 'unit') ? unit(hexo-config('font.headings.size'), em) : 1.625em;
+$font-size-headings-base  = (hexo-config('font.enable') and hexo-config('font.headings.size') is a 'unit') ? unit(hexo-config('font.headings.size'), em) : 1.543em;
 
 
 // Global line height
