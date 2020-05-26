@@ -182,7 +182,7 @@ body {
   background: var(--body-bg-color);
   color: var(--text-color);
   font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "BIZ UDPGothic", Meiryo, sans-serif;
-  font-size: 0.93em;
+  font-size: 0.95em;
   line-height: 1.75;
 }
 @media (max-width: 991px) {
@@ -197,28 +197,28 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "BIZ UDPGothic", Meiryo, sans-serif;
+  font-family: "ヒラギノ明朝 ProN W3", "Hiragino Mincho ProN", "游明朝", YuMincho, serif;
   font-weight: bold;
   line-height: 1.5;
   margin: 20px 0 15px;
 }
 h1 {
-  font-size: 1.5em;
+  font-size: 1.418em;
 }
 h2 {
-  font-size: 1.375em;
+  font-size: 1.293em;
 }
 h3 {
-  font-size: 1.25em;
+  font-size: 1.168em;
 }
 h4 {
-  font-size: 1.125em;
+  font-size: 1.043em;
 }
 h5 {
-  font-size: 1em;
+  font-size: 0.918em;
 }
 h6 {
-  font-size: 0.875em;
+  font-size: 0.793em;
 }
 p {
   margin: 0 0 20px 0;
@@ -486,6 +486,26 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
   font-weight: bold;
 }
 
+.highlight:hover .copy-btn,
+.highlight .copy-btn:focus {
+  opacity: 1;
+}
+.copy-btn {
+  color: #333;
+  cursor: pointer;
+  line-height: 1.6;
+  opacity: 0;
+  padding: 2px 6px;
+  position: absolute;
+  transition-delay: 0s;
+  transition-duration: 0.2s;
+  transition-timing-function: ease-in-out;
+  background: #fff;
+  border: 0;
+  font-size: 0.8125em;
+  right: 0;
+  top: 0;
+}
 .highlight,
 pre {
   background: var(--highlight-background);
@@ -495,7 +515,7 @@ pre {
 }
 pre,
 code {
-  font-family: consolas, Menlo, monospace, -apple-system, BlinkMacSystemFont, Robot, "Helvetica Neue", YuGothic, "メイリオ", Meiryo, "PingFang SC";
+  font-family: $font-family-monospace;
 }
 code {
   background: #eee;
@@ -1456,7 +1476,7 @@ pre code {
 }
 .site-description {
   color: #999;
-  font-size: 1em;
+  font-size: 0.95em;
   margin-top: 5px;
   text-align: center;
 }
@@ -1474,7 +1494,7 @@ pre code {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #f7ffb0;
+  background: #da3df4;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -1665,7 +1685,7 @@ pre code {
 }
 .site-state-item-count {
   display: block;
-  font-size: 1.25em;
+  font-size: 1.19em;
   font-weight: 600;
   text-align: center;
 }
@@ -1702,7 +1722,7 @@ pre code {
 }
 .languages {
   display: inline-block;
-  font-size: 1.125em;
+  font-size: 1.068em;
   position: relative;
 }
 .languages .lang-select-label span {
@@ -1824,7 +1844,7 @@ pre code {
 }
 @media (min-width: 1200px) {
   .post-body {
-    font-size: 1.125em;
+    font-size: 1.068em;
   }
 }
 .post-body .exturl .fa {
@@ -1873,7 +1893,7 @@ pre code {
   }
 }
 .posts-collapse .collection-title {
-  font-size: 1.125em;
+  font-size: 1.068em;
   position: relative;
 }
 .posts-collapse .collection-title::before {
@@ -1890,7 +1910,7 @@ pre code {
   width: 10px;
 }
 .posts-collapse .collection-year {
-  font-size: 1.5em;
+  font-size: 1.43em;
   font-weight: bold;
   margin: 60px 0;
   position: relative;
@@ -2075,10 +2095,10 @@ pre code {
   margin: 0;
 }
 .posts-expand .post-header {
-  font-size: 1.125em;
+  font-size: 1.068em;
 }
 .posts-expand .post-title {
-  font-size: 1.5em;
+  font-size: 1.43em;
   font-weight: normal;
   margin: initial;
   text-align: center;

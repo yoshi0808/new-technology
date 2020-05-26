@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","scheme":"Mist","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","scheme":"Mist","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="この記事で実現する内容についてスマホ（iPhone、Android）からXG FirewallのVPNへ接続できるようになります。ワンタイムパスワードの設定も可能です。">
@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/31/vpn-iphone/iphone.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/31/vpn-iphone/android.png">
 <meta property="article:published_time" content="2020-03-31T10:44:58.000Z">
-<meta property="article:modified_time" content="2020-05-24T04:42:11.321Z">
+<meta property="article:modified_time" content="2020-05-25T12:17:10.181Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -244,7 +244,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">編集日</span>
-                <time title="修正日：2020-05-24 13:42:11" itemprop="dateModified" datetime="2020-05-24T13:42:11+09:00">2020-05-24</time>
+                <time title="修正日：2020-05-25 21:17:10" itemprop="dateModified" datetime="2020-05-25T21:17:10+09:00">2020-05-25</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -296,11 +296,11 @@
           </div>
 
 <div class="tabs" id="one-unique-name"><ul class="nav-tabs"><li class="tab active"><a href="#one-unique-name-1"><i class="fab fa-apple"></i>iOS</a></li><li class="tab"><a href="#one-unique-name-2"><i class="fab fa-android"></i>Android</a></li></ul><div class="tab-content"><div class="tab-pane active" id="one-unique-name-1"><p><strong>iOSにおけるVPN接続の設定方法</strong></p>
-<p>　まず、<span class="label info">PC</span>から<span class="label info">LAN</span>環境にて、XGのユーザーポータル<code>https://XGのIPアドレス/</code>に接続します。ユーザーポータルには、前回までに作成したVPNユーザーでログインします。ポータルのログイン後には、以下の画面のように、iPhone（iOS）のIPSec VPNに必要な設定ファイルをダウンロードできるようになっています。</p>
+<p>　LAN環境にて、XGのユーザーポータル<code>https://XGのIPアドレス/</code>に接続します。ユーザーポータルには、前回までに作成したVPNユーザーでログインします。ポータルのログイン後には、以下の画面のように、iPhone（iOS）のIPSec VPNに必要な設定ファイルをダウンロードできるようになっています。</p>
 <img src="/new-technology/2020/03/31/vpn-iphone/iphone.png" class="" title="alt">
 
 <div class="note warning">
-            <p>ダウンロードした設定ファイルは一部修正が必要ですので、PCからダウンロード・修正の後、iOSにインストールする事をお勧めします。</p>
+            <p>ダウンロードした設定ファイルは一部修正が必要ですので、PCでダウンロードしファイルを修正の後、iOSにインストールする事をお勧めします。</p>
           </div>
 
 <p>　ファイルをダウンロードしたらメモ帳やテキストエディットなどで設定ファイルを開きます。以下はファイルの先頭からの抜粋ですが、11行目にXGのWAN側のIPアドレスが記載されている行があります。内容は以下の通りです。</p>
