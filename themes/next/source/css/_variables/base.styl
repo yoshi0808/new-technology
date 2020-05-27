@@ -29,7 +29,6 @@ $orange       = #fc6423;
 // --------------------------------------------------
 // Global text color on <body>
 $text-color                   = $black-light;
-// $text-color                   = $black-dim;
 $text-color-dark              = $grey-light;
 
 // Global link color.
@@ -38,9 +37,11 @@ $link-color                   = $blue;
 // $link-color-dark              = $grey-light;
 $link-color-dark              = $blue;
 // $link-hover-color             = $black-deep;
+// $link-hover-color-dark        = $gainsboro;
+// $link-decoration-color        = $grey-dark;
 $link-hover-color             = $blue;
-$link-hover-color-dark        = $gainsboro;
-$link-decoration-color        = $grey-dark;
+$link-hover-color-dark        = $blue;
+$link-decoration-color        = $blue;
 
 $blockquote-color             = $grey-dim;
 $blockquote-color-dark        = $grey;
@@ -95,7 +96,8 @@ $font-family-posts        = get_font_family('posts'), $font-family-base if get_f
 
 // $font-family-monospace    = consolas, Menlo, monospace, $font-family-chinese;
 // $font-family-monospace    = get_font_family('codes'), consolas, Menlo, monospace, $font-family-chinese if get_font_family('codes');
-$font-family-monospace    = get_font_family('codes'), consolas, Menlo, monospace, $font-family-base if get_font_family('codes');
+// $font-family-monospace    = get_font_family('codes'), consolas, Menlo, monospace, $font-family-base if get_font_family('codes');
+$font-family-monospace    = Menlo, monospace, $font-family-base if get_font_family('codes');
 
 
 // Font size
@@ -113,15 +115,17 @@ $font-size-smaller        = .8125em;
 $font-size-small          = .875em;
 $font-size-medium         = 0.95em;
 $font-size-large          = 1.068em;
-$font-size-larger         = 1.19em;
-$font-size-largest        = 1.43em;
+// $font-size-larger         = 1.19em;
+// $font-size-largest        = 1.43em;
+// $font-size-large          = 1.125em;
+$font-size-larger         = 1.25em;
+$font-size-largest        = 1.65em;
 
 
 // Headings font size
-// $font-size-headings-step  = .125em;
-// $font-size-headings-base  = (hexo-config('font.enable') and hexo-config('font.headings.size') is a 'unit') ? unit(hexo-config('font.headings.size'), em) : 1.625em;
 $font-size-headings-step  = .125em;
-$font-size-headings-base  = (hexo-config('font.enable') and hexo-config('font.headings.size') is a 'unit') ? unit(hexo-config('font.headings.size'), em) : 1.543em;
+// $font-size-headings-base  = (hexo-config('font.enable') and hexo-config('font.headings.size') is a 'unit') ? unit(hexo-config('font.headings.size'), em) : 1.625em;
+$font-size-headings-base  = (hexo-config('font.enable') and hexo-config('font.headings.size') is a 'unit') ? unit(hexo-config('font.headings.size'), em) : 1.8em;
 
 
 // Global line height
@@ -191,11 +195,11 @@ $btn-default-hover-border-color-dark   = $grey-dim;
 $pagination-border              = $gainsboro;
 
 $pagination-link-bg             = transparent;
-$pagination-link-color          = $link-color;
+$pagination-link-color          = $text-color-dark
 $pagination-link-border         = $gainsboro;
 
 $pagination-link-hover-bg       = transparent;
-$pagination-link-hover-color    = $link-color;
+$pagination-link-hover-color    = $text-color-dark
 $pagination-link-hover-border   = var(--link-hover-color);
 
 $pagination-active-bg           = $grey-light;
