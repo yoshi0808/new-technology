@@ -30,7 +30,7 @@ ULAは、MACアドレスと時刻からおおよそ一意となるIPv6アドレ�
 
 [JDoodle(www.jdoodle.com)](https://www.jdoodle.com/)サイトに配置したULAを算出するPythonプログラムを実行します。JDoodleは、教育用としてプログラムソースコードを登録すると、プログラムが実行できる機能を提供しています。このページでは、JDoodleサイトを埋め込んで表示しております。ここで入力されたデータはJDoodleに渡され、実行される事をご承知おきください。<sup>**[[1]](#note1)**</sup>
 
-最初にIPv6を割り振りたいホストのMACアドレスを調べておいて下さい。算出時にMACアドレスを入力するので、`XX:XX:XX:XX:XX:XX`または`XX-XX-XX-XX-XX-XX`と表示されているMACアドレスを予めコピーしてください。大文字小文字はどちらでも構いません。また、仮想環境でサーバーなどを構築されている場合は仮想MACアドレスではなく、物理MACアドレスを採用される事をお勧めします。
+最初にIPv6を割り振りたいホストのMACアドレスを調べておいてください。算出時にMACアドレスを入力するので、`XX:XX:XX:XX:XX:XX`または`XX-XX-XX-XX-XX-XX`と表示されているMACアドレスを予めコピーしてください。大文字小文字はどちらでも構いません。また、仮想環境でサーバーなどを構築されている場合は仮想MACアドレスではなく、物理MACアドレスを採用される事をお勧めします。
 
 以下にPython3のソースコードとその下に3つの項目があります。
 
@@ -40,7 +40,7 @@ ULAは、MACアドレスと時刻からおおよそ一意となるIPv6アドレ�
 
 <div data-pym-src="https://www.jdoodle.com/embed/v0/20tR?stdin=1&arg=0"></div>
 
-上記の{% label @Stdin Inputs %}に直接入力が可能です。MACアドレスを貼り付け、{% label @▶︎Execute %}ボタンをクリックしてください。もしお使いのブラウザでサードパーティのCookieを受け入れない設定を行っている方は、"This website uses cookies to ensure you get the best experience on our website."という表示が出ているとおもいます。この場合は、別ウィンドウで[こちらのJDoodleサイト](https://jdoodle.com/a/20tR)を開き、実行して下さい。{% label @Result %}に、以下の4つの項目が表示されます。MACアドレスが正しく入力されなかった場合は、"Bad MAC Adderss"と表示されます。
+上記の{% label @Stdin Inputs %}に直接入力が可能です。MACアドレスを貼り付け、{% label @▶︎Execute %}ボタンをクリックしてください。もしお使いのブラウザでサードパーティのCookieを受け入れない設定を行っている方は、"This website uses cookies to ensure you get the best experience on our website."という表示が出ているとおもいます。この場合は、別ウィンドウで[こちらのJDoodleサイト](https://jdoodle.com/a/20tR)を開き、実行してください。{% label @Result %}に、以下の4つの項目が表示されます。MACアドレスが正しく入力されなかった場合は、"Bad MAC Adderss"と表示されます。
 
 ```bash
 Input MAC address:
