@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","scheme":"Mist","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="この記事で実現する内容について　XG Firewall配下のクライアントにIPv6アドレスを割り当て、IPv6でインターネット接続を可能とし、かつSSLインスペクションも有効にします。">
+  <meta name="description" content="この記事で実現する内容についてXG Firewall配下のクライアントにIPv6アドレスを割り当て、IPv6でインターネット接続を可能とし、かつSSLインスペクションも有効にします。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="XG FirewallでIPv6の設定を行う（後半）">
 <meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/04/29/xg-ipv6-2/index.html">
 <meta property="og:site_name" content="New technologies in our life">
-<meta property="og:description" content="この記事で実現する内容について　XG Firewall配下のクライアントにIPv6アドレスを割り当て、IPv6でインターネット接続を可能とし、かつSSLインスペクションも有効にします。">
+<meta property="og:description" content="この記事で実現する内容についてXG Firewall配下のクライアントにIPv6アドレスを割り当て、IPv6でインターネット接続を可能とし、かつSSLインスペクションも有効にします。">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/04/29/xg-ipv6-2/mac1.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/04/29/xg-ipv6-2/mac2.png">
@@ -39,7 +39,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/04/29/xg-ipv6-2/rule2.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/04/29/xg-ipv6-2/rule3.png">
 <meta property="article:published_time" content="2020-04-29T11:13:18.000Z">
-<meta property="article:modified_time" content="2020-05-04T04:29:43.799Z">
+<meta property="article:modified_time" content="2020-05-27T09:09:24.676Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta property="article:tag" content="IPv6">
@@ -254,7 +254,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">編集日</span>
-                <time title="修正日：2020-05-04 13:29:43" itemprop="dateModified" datetime="2020-05-04T13:29:43+09:00">2020-05-04</time>
+                <time title="修正日：2020-05-27 18:09:24" itemprop="dateModified" datetime="2020-05-27T18:09:24+09:00">2020-05-27</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -278,86 +278,60 @@
 
       
         <div class="note success">
-            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　XG Firewall配下のクライアントにIPv6アドレスを割り当て、IPv6でインターネット接続を可能とし、かつSSLインスペクションも有効にします。</p>
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>XG Firewall配下のクライアントにIPv6アドレスを割り当て、IPv6でインターネット接続を可能とし、かつSSLインスペクションも有効にします。</p>
           </div>
 
 <a id="more"></a>
 
-<div class="note primary no-icon">
-            <h2 id="XGにおけるIPv6の考え方"><a href="#XGにおけるIPv6の考え方" class="headerlink" title="XGにおけるIPv6の考え方"></a>XGにおけるIPv6の考え方</h2>
-          </div>
-
-<p>　IPv6はその広大なアドレス空間によって、一般的にはNATを必要としていません。従い内部のホストに対してもパブリックIPアドレスを割り当て、IPv6独自の工夫として、端末を特定されないために一時アドレスを割り当てます。一時アドレスは端末再起動時に変更され、外部からホストの特定を防ぐ目的があります。IPv4の枯渇が課題だったがために、到達性と安全面を考慮した設計と推察されます。</p>
-<p>　XGのIPv6の考え方としてはNATを前提にします。内部ホストから外部に出ていくものはSNAT（Source NAT）、公開するホストはDNAT（Destination NAT）で外部から内部ホストに転送するという原則があります。LAN側のIPv6にはプライベートIPの考え方に近い、ユニークローカルアドレス（ULA）を用います。</p>
-<p>　ULAは、プライベート環境で自由に割り当てして良いというわけではなく、なるべく世界の中で一意にすべきという考え方です。企業向けとしては合併などがあった場合に重複しない事を前提としています。個人環境で絶対にインターネット側へ出ていかないのであれば、IPは何を割り振っても良いわけですが、誰かが使っている可能性のあるIPアドレス群を使うのはちょっと気持ちが悪いものです。192.168.1.0/24のように、誰でも使って良いアドレスとは異なるのがIPv6のULAです。このULAは一定のルールに従い、生成する必要があります。</p>
-<div class="note primary no-icon">
-            <h2 id="XGのIPv6を構成するまでの流れ"><a href="#XGのIPv6を構成するまでの流れ" class="headerlink" title="XGのIPv6を構成するまでの流れ"></a>XGのIPv6を構成するまでの流れ</h2>
-          </div>
-
-<p>　以下の流れでXGのIPv6をセットアップしていきます。</p>
+<h2 id="XGにおけるIPv6の考え方"><a href="#XGにおけるIPv6の考え方" class="headerlink" title="XGにおけるIPv6の考え方"></a>XGにおけるIPv6の考え方</h2><p>IPv6はその広大なアドレス空間によって、一般的にはNATを必要としていません。従い内部のホストに対してもパブリックIPアドレスを割り当て、IPv6独自の工夫として、端末を特定されないために一時アドレスを割り当てます。一時アドレスは端末再起動時に変更され、外部からホストの特定を防ぐ目的があります。IPv4の枯渇が課題だったがために、到達性と安全面を考慮した設計と推察されます。</p>
+<p>XGのIPv6の考え方としてはNATを前提にします。内部ホストから外部に出ていくものはSNAT（Source NAT）、公開するホストはDNAT（Destination NAT）で外部から内部ホストに転送するという原則があります。LAN側のIPv6にはプライベートIPの考え方に近い、ユニークローカルアドレス（ULA）を用います。</p>
+<p>ULAは、プライベート環境で自由に割り当てして良いというわけではなく、なるべく世界の中で一意にすべきという考え方です。企業向けとしては合併などがあった場合に重複しない事を前提としています。個人環境で絶対にインターネット側へ出ていかないのであれば、IPは何を割り振っても良いわけですが、誰かが使っている可能性のあるIPアドレス群を使うのはちょっと気持ちが悪いものです。192.168.1.0/24のように、誰でも使って良いアドレスとは異なるのがIPv6のULAです。このULAは一定のルールに従い、生成する必要があります。</p>
+<h2 id="XGのIPv6を構成するまでの流れ"><a href="#XGのIPv6を構成するまでの流れ" class="headerlink" title="XGのIPv6を構成するまでの流れ"></a>XGのIPv6を構成するまでの流れ</h2><p>以下の流れでXGのIPv6をセットアップしていきます。</p>
 <ol>
 <li>ULAを生成</li>
 <li>XGのLAN側のIPアドレスにULAを設定</li>
-<li>LAN側ホストにIPv6を割り当てるためのDHCPv6及び、ルーターアドバタイズメント（RA）の設定</li>
+<li>LAN側ホストにIPv6を割り当てるためのDHCPv6、ルーターアドバタイズメント（RA）の設定</li>
 <li>Firewallルールの設定</li>
 <li>固定IPv6アドレスの登録</li>
 <li>SSLインスペクションの設定</li>
 </ol>
-<div class="note primary no-icon">
-            <h2 id="ULAを生成する"><a href="#ULAを生成する" class="headerlink" title="ULAを生成する"></a>ULAを生成する</h2>
-          </div>
-
-<p>　ULAの生成にはネットワークカードのMACアドレスが必要です。仮想環境で構築している方は仮想MACアドレスではなく、可能な限り衝突を避けるべく、物理マシンのMACアドレスを使ってください。</p>
-<p>　物理マシンに直接XGをインストールしている方は、XGの左ペインメニューの<span class="label info">ネットワーク</span>から<span class="label info">インターフェース</span>の<span class="label info">Port1(LAN)</span>を選択し、<span class="label info">詳細設定</span>をクリックするとMACアドレスが確認出来ます。</p>
+<h2 id="ULAを生成する"><a href="#ULAを生成する" class="headerlink" title="ULAを生成する"></a>ULAを生成する</h2><p>ULAの生成にはネットワークカードのMACアドレスが必要です。仮想環境で構築している方は仮想MACアドレスではなく、可能な限り衝突を避けるべく、物理マシンのMACアドレスを使ってください。</p>
+<p>物理マシンに直接XGをインストールしている方は、XGの左ペインメニューの<span class="label default">ネットワーク</span>から<span class="label default">インターフェース</span>の<span class="label default">Port1(LAN)</span>を選択し、<span class="label default">詳細設定</span>をクリックするとMACアドレスが確認出来ます。</p>
 <img src="/new-technology/2020/04/29/xg-ipv6-2/mac1.png" class="" title="alt">
 
-<p>　仮想環境の場合、ESXiを例に挙げると、以下のようにLAN側物理MACアドレス（当方の環境では、vmnic1）にMACアドレスがあります。</p>
+<p>仮想環境の場合、ESXiを例に挙げると、以下のようにLAN側物理MACアドレス（当方の環境では、vmnic1）にMACアドレスがあります。</p>
 <img src="/new-technology/2020/04/29/xg-ipv6-2/mac2.png" class="" title="alt">
 
-<p>　ULAの生成は以下の通り過去記事でツールを置いてありますので、上記MACアドレスをコピーし、過去記事のULA生成ツールにMACアドレスを貼り付け、ULAを求めて下さい。</p>
+<p>ULAの生成は以下の通り過去記事でツールを置いてありますので、上記MACアドレスをコピーし、過去記事のULA生成ツールにMACアドレスを貼り付け、ULAを求めて下さい。</p>
 <a href="/new-technology/2020/04/18/ipv6/" title="IPv6のUnique Local Addressを生成する">IPv6のUnique Local Addressを生成する</a>  
 
-<p>　結果として、以下のような情報が得られるので、First IPv6 Addressの<span class="label info">fd</span>から始まるULAをCopyして下さい。</p>
+<p>結果として、以下のような情報が得られるので、First IPv6 Addressの<span class="label default">fd</span>から始まるULAをCopyして下さい。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">First IPv6 Address-&gt; fdxx:xxxx:xxxx::1/64</span><br></pre></td></tr></table></figure>
 
-<div class="note primary no-icon">
-            <h2 id="XGのLAN側IPv6アドレスとしてULAを設定する"><a href="#XGのLAN側IPv6アドレスとしてULAを設定する" class="headerlink" title="XGのLAN側IPv6アドレスとしてULAを設定する"></a>XGのLAN側IPv6アドレスとしてULAを設定する</h2>
-          </div>
-
-<p>　XGの左ペインメニューの<span class="label info">ネットワーク</span>の<span class="label info">インターフェース</span>にある、<span class="label info">IPv6設定</span>のチェックボックスをチェックします。</p>
-<p>　次に、<span class="label info">IPv6　プレフィックス</span>の項目に生成したULAを貼り付け、<span class="label info">/64</span>の部分を削除してください。画面を見てもらえると解りますが、IPv6のサブネット<span class="label info">/64</span>は最初からXGの画面でデフォルト入力されています。</p>
+<h2 id="XGのLAN側IPv6アドレスとしてULAを設定する"><a href="#XGのLAN側IPv6アドレスとしてULAを設定する" class="headerlink" title="XGのLAN側IPv6アドレスとしてULAを設定する"></a>XGのLAN側IPv6アドレスとしてULAを設定する</h2><p>XGの左ペインメニューの<span class="label default">ネットワーク</span>の<span class="label default">インターフェース</span>にある、<span class="label default">IPv6設定</span>のチェックボックスをチェックします。次に、<span class="label default">IPv6　プレフィックス</span>の項目に生成したULAを貼り付け、<span class="label default">/64</span>の部分を削除してください。画面を見てもらえると解りますが、IPv6のサブネット<span class="label default">/64</span>は最初からXGの画面でデフォルト入力されています。</p>
 <img src="/new-technology/2020/04/29/xg-ipv6-2/ula1.png" class="" title="alt">
 
-<p>　このアドレス体系を簡単に説明します。</p>
+<p>このアドレス体系は以下の通りです。</p>
 <ol>
-<li>IPv6の体系は128ビットで、ユニキャストアドレスは1つのセグメントが64ビットとなります。XGでも原則64ビットのまま扱います。</li>
-<li>48ビットのULAに16ビットの内部のサブネットを0000として今回のULAのサブネットPrefixを完成させています。別のネットワークを作成するのであれば、ここを0001などとしていきます<sup><a href="#note1">1</a></sup>。</li>
-<li>IPv6における、デフォルトルーターは、リンクローカルアドレスの1とするのが一般的です（fe00::1）。これに倣い、XG自身のIPv6アドレスの後半64ビットのインターフェース識別子は1としています。</li>
-<li><span class="label info">::</span>は、IPv6アドレスの0000が続く部分を省略できるものです。fdxx:xxxx:xxxx:0000:0000:0000:0000:0001/64の0部分を省略し、fdxx:xxxx:xxxx::1/64としています。
-
-</li>
+<li>IPv6の体系は128ビットで、ユニキャストアドレスは1つのセグメントが64ビットとなります。XGでも64ビットで扱います。</li>
+<li>48ビットのULAに16ビットの内部のサブネットを<code>0000</code>として今回のULAのサブネットPrefixを完成させています。別のサブネットを作成するのであれば、ここを<code>0001</code>などとしていきます<sup><strong><a href="#note1">[1]</a></strong></sup>。</li>
+<li>IPv6における、デフォルトルーターは、リンクローカルアドレスの1とするのが一般的です（<code>fe00::1</code>）。これに倣い、XG自身のIPv6アドレスの後半64ビットのインターフェース識別子は1としています。</li>
+<li><code>::</code>は、IPv6アドレスの<code>0000</code>が続く部分を省略できるものです。<code>fdxx:xxxx:xxxx:0000:0000:0000:0000:0001/64</code>の連続する<code>0</code>部分を省略し、<code>fdxx:xxxx:xxxx::1/64</code>としています。</li>
 </ol>
-<p>　保存ボタンをクリックし、LAN側のインタフェースにIPv6を割り当てます。</p>
-<div class="note primary no-icon">
-            <h2 id="RAおよびDHCPv6の設定"><a href="#RAおよびDHCPv6の設定" class="headerlink" title="RAおよびDHCPv6の設定"></a>RAおよびDHCPv6の設定</h2>
-          </div>
-
-<h3 id="DHCPv6の設定"><a href="#DHCPv6の設定" class="headerlink" title="DHCPv6の設定"></a>DHCPv6の設定</h3><p>　クライアントにIPv6のアドレスを配布します。SSLインスペクションが行えるクライアントは固定IP範囲を明示的に割り当てます。</p>
-<p>　XGの左ペインメニューから<span class="label info">ネットワーク</span>、<span class="label info">DHCP</span>と進み、<span class="label info">サーバー</span>の<span class="label info">追加</span>ボタンをクリックします。</p>
-<p>　次にIPv6のタブをクリックし、以下の画面の通り入力していきます。</p>
+<p>保存ボタンをクリックし、LAN側のインタフェースにIPv6を割り当てます。</p>
+<h2 id="RAおよびDHCPv6の設定"><a href="#RAおよびDHCPv6の設定" class="headerlink" title="RAおよびDHCPv6の設定"></a>RAおよびDHCPv6の設定</h2><h3 id="DHCPv6の設定"><a href="#DHCPv6の設定" class="headerlink" title="DHCPv6の設定"></a>DHCPv6の設定</h3><p>クライアントにIPv6のアドレスを配布します。SSLインスペクションが行えるクライアントは固定IP範囲を明示的に割り当てます。XGの左ペインメニューから<span class="label default">ネットワーク</span>、<span class="label default">DHCP</span>と進み、<span class="label default">サーバー</span>の<span class="label default">追加</span>ボタンをクリックします。次にIPv6のタブをクリックし、以下の画面の通り入力していきます。</p>
 <img src="/new-technology/2020/04/29/xg-ipv6-2/dhcp.png" class="" title="alt">
 
 <ol>
-<li><span class="label info">名前</span>は、IPv6のDHCPと分かるよう命名してください。</li>
-<li><span class="label info">インターフェース</span>はPort1を選択してください。すでに割り当てられているXGのIPv6アドレスが表示されます。</li>
-<li><span class="label info">ダイナミックIPリース</span>は、自動割り当てするIPv6アドレスの範囲を入力します。IPv4は10進数で表示する事が多いですが、IPv6は16進で表示する事になるので、ログを見た時に解りやすいIPアドレス体系となるような構成にされる事をお勧めします。</li>
-<li><span class="label info">スタティックIPのDUIDマッピング</span>は後ほど入力します。一旦は空のままにしておいてください。</li>
-<li><span class="label info">DNSサーバー</span>は、XGのIPv6アドレスを指定して下さい。プライベートのホスト名の名前解決のために、この設定が便利です。
+<li><span class="label default">名前</span>は、IPv6のDHCPと分かるよう命名してください。</li>
+<li><span class="label default">インターフェース</span>はPort1を選択してください。すでに割り当てられているXGのIPv6アドレスが表示されます。</li>
+<li><span class="label default">ダイナミックIPリース</span>は、自動割り当てするIPv6アドレスの範囲を入力します。IPv4は10進数で表示する事が多いですが、IPv6は16進で表示する事になるので、ログを見た時に解りやすいIPアドレス体系となるような構成にされる事をお勧めします。</li>
+<li><span class="label default">スタティックIPのDUIDマッピング</span>は後ほど入力します。一旦は空のままにしておいてください。</li>
+<li><span class="label default">DNSサーバー</span>は、XGのIPv6アドレスを指定して下さい。プライベートのホスト名の名前解決のために、この設定が便利です。
 
 </li>
 </ol>
-<h3 id="RAの設定"><a href="#RAの設定" class="headerlink" title="RAの設定"></a>RAの設定</h3><p>　クライアントにDNSの通知を行うため、RAの設定を行います。DHCPで明示的にIPv6アドレスを指定しないクライアントはRAにより自身のIPv6アドレスを自動生成しつつ、ゲートウェイ、DNSの情報を受け取ります。</p>
-<p>　RAでは、マネージドフラグ（Mフラグ）、アザーフラグ（Oフラグ）という言葉が登場します。</p>
+<h3 id="RAの設定"><a href="#RAの設定" class="headerlink" title="RAの設定"></a>RAの設定</h3><p>クライアントにDNSの通知を行うため、RAの設定を行います。DHCPで明示的にIPv6アドレスを指定しないクライアントはRAにより自身のIPv6アドレスを自動生成しつつ、ゲートウェイ、DNSの情報を受け取ります。RAでは、マネージドフラグ（Mフラグ）、アザーフラグ（Oフラグ）という言葉が登場します。</p>
 <table>
 <thead>
 <tr>
@@ -374,29 +348,23 @@
 <td>IPアドレス以外の情報をDHCPv6サーバから取得する（ON）、取得せず手動設定（OFF）</td>
 </tr>
 </tbody></table>
-<p>　比較的時間の流れがゆっくりなIPv6において、最近のトレンドとしては、DHCPv6を使わずRAのみとする（Mフラグ＝OFF、Oフラグ＝ON）が定番です。長いIPv6アドレスの管理は大変なので、この設定が一番楽な管理方法です。しかし、私のXGに関する記事ではSSLインスペクションを最も重要視しています。MACアドレスをベースにIPv6が生成されてしまうと、証明書が登録されている端末かどうかの判断が行えなくなるので、これだと困るのです。それで非常に面倒なのですが、Mフラグ＝ONでステートフルなIPv6アドレスとする必要があります。OフラグがOFFの場合はDNSの情報は手動設定となっていますが、古い端末でない限りはDNSの情報は取得できます。</p>
-<p>　OフラグがOFFの場合はステートフルなプロトコルを受け付け出来ないという解釈です。ここでは、ステートフルなDHCPv6で全てを管理するという事で、Mフラグ＝ON、Oフラグ＝ONという結論となります。やや管理者寄りの理論ですね<sup><a href="#note2">2</a></sup>。</p>
-<p> また、IPv6では上述した通り、一時アドレスというものが出てきます（XG上では匿名）。これを認めると管理下にないIPv6アドレスで通信が行われ、SSLインスペクションを迂回されてしまいますからこの一時アドレスの設定もOFFにします。</p>
-<p>　XGの左ペインメニューの<span class="label info">ネットワーク</span>から、<span class="label info">IPv6ルーターアドバタイズ</span>を選択し、追加ボタンをクリックし、以下の図のように登録していきます。</p>
+<p>比較的時間の流れがゆっくりなIPv6において、最近のトレンドとしては、DHCPv6を使わずRAのみとする（Mフラグ＝OFF、Oフラグ＝ON）が定番です。長いIPv6アドレスの管理は大変なので、この設定が一番楽な管理方法です。しかし、私のXGに関する記事ではSSLインスペクションを最も重要視しています。MACアドレスをベースにクライアントがIPv6アドレスを生成すると、証明書が登録されている端末かどうかの判断が行えなくなります。よって、Mフラグ＝ONでステートフルなIPv6アドレスとする必要があります。OフラグがOFFの場合はDNSの情報は手動設定であり、ステートフルなプロトコルを受け付け出来ないという解釈です。</p>
+<p>結論としては、ステートフルなDHCPv6で全てを管理するという事で、<strong>Mフラグ＝ON</strong>、<strong>Oフラグ＝ON</strong>となります。やや管理者寄りの理論です<sup><strong><a href="#note2">[2]</a></strong></sup>。また、IPv6では上述した通り、一時アドレスというものが出てきます（XG上では匿名）。これを認めると管理下にないIPv6アドレスで通信が行われ、SSLインスペクションを迂回されてしまいますからこの一時アドレスの設定もOFFにします。XGの左ペインメニューの<span class="label default">ネットワーク</span>から、<span class="label default">IPv6ルーターアドバタイズ</span>を選択し、追加ボタンをクリックし、以下の図のように登録していきます。</p>
 <img src="/new-technology/2020/04/29/xg-ipv6-2/ra.png" class="" title="alt">
 
 <ol>
-<li><span class="label info">インターフェース</span>は、Port1を選択します</li>
-<li><span class="label info">マネージドフラグ</span>にチェックします</li>
-<li><span class="label info">アザーフラグ</span>にチェックします</li>
-<li><span class="label info">デフォルトゲートウェイ</span>にチェックします</li>
-<li><span class="label info">アドバタイズ設定のプレフィックス</span>の<span class="label info">プレフィックス</span>には、今回のネットワークアドレスである、<span class="label info">fdxx.xxxx.xxxx::</span>を入力します。また、一時アドレスは使わないので<span class="label info">匿名</span>のチェックを外します</li>
+<li><span class="label default">インターフェース</span>は、Port1を選択します</li>
+<li><span class="label default">マネージドフラグ</span>にチェックします</li>
+<li><span class="label default">アザーフラグ</span>にチェックします</li>
+<li><span class="label default">デフォルトゲートウェイ</span>にチェックします</li>
+<li><span class="label default">アドバタイズ設定のプレフィックス</span>の<span class="label default">プレフィックス</span>には、今回のネットワークアドレスである、<span class="label default">fdxx.xxxx.xxxx::</span>を入力します。また、一時アドレスは使わないので<span class="label default">匿名</span>のチェックを外します</li>
 <li>保存をクリックし、設定を完了させます</li>
 </ol>
-<div class="note primary no-icon">
-            <h2 id="Firewallルール設定"><a href="#Firewallルール設定" class="headerlink" title="Firewallルール設定"></a>Firewallルール設定</h2>
-          </div>
-
-<p>　ここまでの設定で、DHCPv6によるIPv6アドレスが割り振られています。インターネットに出ていくためには、Firewallルールの設定が必要となります。<br>　XGの左ペインメニューの<span class="label info">ルールとポリシー</span>で<span class="label info">IPv6</span>をクリックします。</p>
+<h2 id="Firewallルール設定"><a href="#Firewallルール設定" class="headerlink" title="Firewallルール設定"></a>Firewallルール設定</h2><p>ここまでの設定で、DHCPv6によるIPv6アドレスが割り振られています。インターネットに出ていくためには、Firewallルールの設定が必要となります。XGの左ペインメニューの<span class="label default">ルールとポリシー</span>で<span class="label default">IPv6</span>をクリックします。</p>
 <img src="/new-technology/2020/04/29/xg-ipv6-2/rule1.png" class="" title="alt">
 
- <span class="label info">ファイアウォールルールの追加</span>から<span class="label info">新しいファイアウォールルール</span>をクリックします。
-<p>　ここでの設定内容は、過去の記事<a href="/new-technology/2020/03/14/rule-policy2/" title="XG Firewall v18のOutboundルールを新規作成する">XG Firewall v18のOutboundルールを新規作成する</a>でIPv4について設定した内容と変わりません。<span class="label info">To Internet</span>というルールを作りましたが、それと同じ内容の設定となります。</p>
+<span class="label default">ファイアウォールルールの追加</span>から<span class="label default">新しいファイアウォールルール</span>をクリックします。
+<p>ここでの設定内容は、過去の記事<a href="/new-technology/2020/03/14/rule-policy2/" title="XG Firewall v18のOutboundルールを新規作成する">XG Firewall v18のOutboundルールを新規作成する</a>でIPv4について設定した内容と変わりません。<span class="label default">To Internet</span>というルールを作りましたが、それと同じ内容の設定となります。</p>
 <ol>
 <li>ルール名はここでは「To_Internet_IPv6」とします。</li>
 <li>送信元ゾーンには、LANを設定します。VPNを使う方はVPNも加えてください。宛先ゾーンはWANを指定します。</li>
@@ -412,44 +380,29 @@
 <li>IPSは「lantowan_general」を選択します</li>
 <li>保存ボタンをクリックします</li>
 </ul>
-<p>　続いて、NATルールの設定に移ります。<span class="label info">ルールとポリシー</span>の<span class="label info">NATルール</span>から<span class="label info">IPv6</span>をクリックします。</p>
-<p>　ここでは、既にIPv6の自動設定された情報が<span class="label info">Default SNAT IPv6</span> という名前で登録されています。ルールを開いて、<span class="label info">ルールのステータス</span>のトグルスイッチをOnにしてください。</p>
-<p>　最後に保存をクリックしてください。この段階ではSSLインスペクションの設定は出来ていませんが、IPv6で接続可能な状態になっています。</p>
-<p>　テストのために、ひとまず、<a href="https://ipv6.google.com/" target="_blank" rel="noopener">ipv6.google.com</a>が正しく表示出来るか確認してください。</p>
-<div class="note primary no-icon">
-            <h2 id="固定IPアドレスの登録"><a href="#固定IPアドレスの登録" class="headerlink" title="固定IPアドレスの登録"></a>固定IPアドレスの登録</h2>
-          </div>
-
-<p>　端末にルート証明書を導入できる端末（Windows、macOS、iOS）のみに対してSSLインスペクションを行いますので、DHCPv6では、該当端末が常に固定のIPv6アドレスを持つための設定を行います。</p>
-<p>　XGの左ペインの<span class="label info">ネットワーク</span>の<span class="label info">DHCP</span>から、<span class="label info">IPv6リース</span>の状況をみると、実際にIPv6のアドレスが割り当てられている一覧が確認できます。ここの<span class="label info">DUID</span>が端末固有情報であるため、この値を控えて、DHCPv6の設定にIPv6とDUIDのペアを登録していく事になります。</p>
-<p>　ここでは、DUIDの値をメモしてください。残念ながら以下の通りDUIDの文字列が長すぎて、表記が見切れます。マウスをポイントしてポップアップされたDUIDをメモする必要があります。</p>
+<p>続いて、NATルールの設定に移ります。<span class="label default">ルールとポリシー</span>の<span class="label default">NATルール</span>から<span class="label default">IPv6</span>をクリックします。ここでは、既にIPv6の自動設定された情報が<span class="label default">Default SNAT IPv6</span> という名前で登録されています。ルールを開いて、<span class="label default">ルールのステータス</span>のトグルスイッチをOnにしてください。最後に保存をクリックしてください。この段階ではSSLインスペクションの設定は出来ていませんが、IPv6で接続可能な状態になっています。</p>
+<p>テストのために、<a href="https://ipv6.google.com/" target="_blank" rel="noopener">ipv6.google.com</a>が正しく表示出来るか確認してください。</p>
+<h2 id="固定IPアドレスの登録"><a href="#固定IPアドレスの登録" class="headerlink" title="固定IPアドレスの登録"></a>固定IPアドレスの登録</h2><p>端末にルート証明書を導入できる端末（Windows、macOS、iOS）のみに対してSSLインスペクションを行いますので、DHCPv6では、該当端末が常に固定のIPv6アドレスを持つための設定を行います。XGの左ペインの<span class="label default">ネットワーク</span>の<span class="label default">DHCP</span>から、<span class="label default">IPv6リース</span>の状況をみると、実際にIPv6のアドレスが割り当てられている一覧が確認できます。ここの<span class="label default">DUID</span>が端末固有情報であるため、この値を控えて、DHCPv6の設定にIPv6とDUIDのペアを登録していく事になります。ここでは、DUIDの値をメモしてください。残念ながら以下の通りDUIDの文字列が長すぎて、表記が見切れます。マウスをポイントしてポップアップされたDUIDをメモする必要があります。</p>
 <img src="/new-technology/2020/04/29/xg-ipv6-2/dhcp1.png" class="" title="alt">
 
-<p>　再び、DHCPの設定画面で、<span class="label info">IPv6 DHCP Server</span>を選択します。以下のように、<span class="label info">スタティックIPのDUIDマッピング</span>の項目にDUIDとIPv6のセットを登録してください。</p>
+<p>再び、DHCPの設定画面で、<span class="label default">IPv6 DHCP Server</span>を選択します。以下のように、<span class="label default">スタティックIPのDUIDマッピング</span>の項目にDUIDとIPv6のセットを登録してください。</p>
 <img src="/new-technology/2020/04/29/xg-ipv6-2/dhcp2.png" class="" title="alt">
 
-<p>　注意点としては、SSLインスペクションでIPアドレスの範囲を設定する事になりますので、一定の範囲でスタティックのIPv6アドレスを設定するようにしてください。</p>
-<div class="note primary no-icon">
-            <h2 id="SSLインスペクションの設定"><a href="#SSLインスペクションの設定" class="headerlink" title="SSLインスペクションの設定"></a>SSLインスペクションの設定</h2>
-          </div>
-
-<p>　IPv6のSSLインスペクションの設定を行います。まずは、IPv4で対応した時と同じように、SSLインスペクションの対象範囲のIPホストを登録します。</p>
-<p>　XGの左ペインメニューの<span class="label info">ホストとサービス</span>から、<span class="label info">IPホスト</span>のタブで、<span class="label info">追加</span>ボタンをクリックします。</p>
+<p>注意点としては、SSLインスペクションでIPアドレスの範囲を設定する事になりますので、一定の範囲でスタティックのIPv6アドレスを設定するようにしてください。</p>
+<h2 id="SSLインスペクションの設定"><a href="#SSLインスペクションの設定" class="headerlink" title="SSLインスペクションの設定"></a>SSLインスペクションの設定</h2><p>IPv6のSSLインスペクションの設定を行います。まずは、IPv4で対応した時と同じように、SSLインスペクションの対象範囲のIPホストを登録します。XGの左ペインメニューの<span class="label default">ホストとサービス</span>から、<span class="label default">IPホスト</span>のタブで、<span class="label default">追加</span>ボタンをクリックします。</p>
 <img src="/new-technology/2020/04/29/xg-ipv6-2/host.png" class="" title="alt">
 
-<p>　上記の通り、SSLインスペクションのためのIPv6の範囲を<span class="label info">CA_Client_IPv6</span>として登録します。16進数のアドレス表記ですが、ここでもIPv4のアドレス体系に合わせておくと、ログを確認した時の視認性が上がります。</p>
-<p>　続いて、XGの左ペインメニューの<span class="label info">ルールとポリシー</span>から<span class="label info">SSL/TLSインスペクションルール</span>に進み、<span class="label info">IPv6</span>をクリックします。</p>
-<p>　以前の記事<a href="/new-technology/2020/03/20/ssl-inspection1/" title="XG Firewall v18のSSLインスペクションの設定">XG Firewall v18のSSLインスペクションの設定</a>で、このSSLインスペクションルールは一度作成しています。ここにIPv6の設定を加える事になります。</p>
+<p>上記の通り、SSLインスペクションのためのIPv6の範囲を<span class="label default">CA_Client_IPv6</span>として登録します。16進数のアドレス表記ですが、ここでもIPv4のアドレス体系に合わせておくと、ログを確認した時の視認性が上がります。続いて、XGの左ペインメニューの<span class="label default">ルールとポリシー</span>から<span class="label default">SSL/TLSインスペクションルール</span>に進み、<span class="label default">IPv6</span>をクリックします。以前の記事<a href="/new-technology/2020/03/20/ssl-inspection1/" title="XG Firewall v18のSSLインスペクションの設定">XG Firewall v18のSSLインスペクションの設定</a>で、このSSLインスペクションルールは一度作成しています。ここにIPv6の設定を加える事になります。</p>
 <img src="/new-technology/2020/04/29/xg-ipv6-2/rule2.png" class="" title="alt">
 
-<p>　上記のように、<span class="label info">送信元ネットワークとデバイス</span>に、今回作成した、IPv6のホスト群である、<span class="label info">CA_Client_IPv6</span>を選択して追加します。</p>
-<p>　これでIPv6に関する設定は完了です。IPv6についても、SSLインスペクションの対象となり、より多くのコンテンツフィルタリングが可能となりました。一度IPv4でXGのルート証明書を端末にインストールしてあれば、再度インストールする必要はありません。SSLインスペクションのための端末へのインストールについては、過去の記事、<a href="/new-technology/2020/03/20/ssl-inspection1/" title="XG Firewall v18のSSLインスペクションの設定">XG Firewall v18のSSLインスペクションの設定</a>を参照してください。</p>
-<p>　最後に、通信の確認です。XGのログのログビューアを開き、プルダウンから、<span class="label info">SSL/TLSインスペクション</span>を選択します。</p>
+<p>上記のように、<span class="label default">送信元ネットワークとデバイス</span>に、今回作成した、IPv6のホスト群である、<span class="label default">CA_Client_IPv6</span>を選択して追加します。</p>
+<p>これでIPv6に関する設定は完了です。IPv6についても、SSLインスペクションの対象となり、より多くのコンテンツフィルタリングが可能となりました。一度IPv4でXGのルート証明書を端末にインストールしてあれば、再度インストールする必要はありません。SSLインスペクションのための端末へのインストールについては、過去の記事、<a href="/new-technology/2020/03/20/ssl-inspection1/" title="XG Firewall v18のSSLインスペクションの設定">XG Firewall v18のSSLインスペクションの設定</a>を参照してください。</p>
+<p>最後に、通信の確認です。XGのログのログビューアを開き、プルダウンから、<span class="label default">SSL/TLSインスペクション</span>を選択します。</p>
 <img src="/new-technology/2020/04/29/xg-ipv6-2/rule3.png" class="" title="alt">
 
-<p>　上記の通り、同じホストでもIPv4とIPv6の通信が混在している事、またSSLインスペクションの対象/対象外についてもログの内容を見て確認できます。</p>
-<p><small id="note1">[1]<br>　ULAの48ビットに対するネットワークアドレスとして、fdxx:xxxx:xxxx:0000を使うため、複数のサブネットを扱う場合、実際に使うアドレスはfdxx:xxxx:xxxx:1::/64とするのが一般的です。今回はホームユーザー向けの一例として出来るだけ簡素化する事を目的とし、このような設定にしています。そういう私も自分の環境では、Prefixの後半16ビットは0001以降の数字を使っています。</small></p>
-<p><small id="note2">[2]<br>　DHCPv6とRAの戦いというものがあって、RA派は合理化を目指す方向です。ネットワーク管理者がIPアドレスの管理をすべきでサーバー管理者がやるべきでないという感じの論調で、たしかにそうだなとも思えます。DHCPv6派はなんといっても、クライアントが勝手に決めるのは困る、と。本質的にはやっぱりここなんですよね。SSLインスペクションを迂回されても困りますし。XGには頑張ってもらって、もう少し簡単に証明書が入っている端末を区別するための機能が欲しいとおもいます。</small></p>
+<p>上記の通り、同じホストでもIPv4とIPv6の通信が混在している事、またSSLインスペクションの対象/対象外についてもログの内容を見て確認できます。</p>
+<p><small id="note1"><strong>[1]</strong><br>ULAの48ビットに対するネットワークアドレスとして<code>fdxx:xxxx:xxxx:0000</code>を使うため、実際に使うアドレスは<code>fdxx:xxxx:xxxx:1::/64</code>とするのが一般的です。今回はホームユーザー向けの一例として出来るだけ簡素化する事を目的とし、できるだけ短い文字列で済むようにこのような設定にしています。そういう私も自分の環境では、Prefixの後半16ビットは<code>0001</code>以降の数字を使っています。</small></p>
+<p><small id="note2"><strong>[2]</strong><br>DHCPv6とRAの戦いというものがあって、RA派は合理化を目指す方向です。ネットワーク管理者がIPアドレスの管理をすべきでサーバー管理者がやるべきでないという論調です。DHCPv6派はクライアントが勝手にアドレスを決めるのは困るという理論です。Sophosには頑張ってもらって、もう少し簡単に証明書が入っている端末を区別できるように期待したいところです。</small></p>
 
     </div>
 
