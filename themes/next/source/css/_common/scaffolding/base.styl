@@ -22,6 +22,7 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
+  color: $black-deep;
   font-family: $font-family-headings;
   font-weight: bold;
   line-height: 1.5;
@@ -40,13 +41,18 @@ p {
 }
 
 a, span.exturl {
-  border-bottom: 1px solid $link-decoration-color;
+  // border-bottom: 1px solid $link-decoration-color;
+  border-bottom: 1px solid white;
   color: var(--link-color);
   outline: 0;
   text-decoration: none;
   word-wrap();
 
   &:hover {
+    // draw by primary color
+    // background: var(--content-bg-color);
+    // background: $label-primary;
+    // border-bottom: 1px solid $link-decoration-color;
     border-bottom-color: var(--link-hover-color);
     color: var(--link-hover-color);
   }
