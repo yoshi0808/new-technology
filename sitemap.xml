@@ -2,9 +2,37 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://yoshi0808.github.io/new-technology/2020/04/29/xg-ipv6-2/</loc>
+    
+    <lastmod>2020-05-30T14:15:27.563Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/2020/05/04/ips-policy/</loc>
+    
+    <lastmod>2020-05-30T14:14:33.649Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/2020/05/06/web-application-filter/</loc>
+    
+    <lastmod>2020-05-30T13:08:08.213Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/2020/05/09/best-practice/</loc>
+    
+    <lastmod>2020-05-30T12:53:57.239Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection/</loc>
     
-    <lastmod>2020-05-30T11:51:15.748Z</lastmod>
+    <lastmod>2020-05-30T12:25:03.412Z</lastmod>
     
   </url>
   
@@ -12,13 +40,6 @@
     <loc>https://yoshi0808.github.io/new-technology/2020/05/16/Intercept-DNS/</loc>
     
     <lastmod>2020-05-30T09:53:29.895Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/05/09/best-practice/</loc>
-    
-    <lastmod>2020-05-30T09:42:32.736Z</lastmod>
     
   </url>
   
@@ -163,30 +184,9 @@
   </url>
   
   <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/04/29/xg-ipv6-2/</loc>
-    
-    <lastmod>2020-05-27T09:09:24.676Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://yoshi0808.github.io/new-technology/2020/04/25/xg-ipv6-1/</loc>
     
     <lastmod>2020-05-27T08:49:17.971Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/05/04/ips-policy/</loc>
-    
-    <lastmod>2020-05-27T07:45:51.619Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/05/06/web-application-filter/</loc>
-    
-    <lastmod>2020-05-27T07:34:42.516Z</lastmod>
     
   </url>
   

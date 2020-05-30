@@ -20,17 +20,17 @@
     var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","scheme":"Mist","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="この記事で実現する内容について　XG Firewallのレイヤ7ファイアウォールとしてのメインでもある、Webフィルター、アプリケーションフィルターについてそれぞれの違い、および活用方法について理解を深めます。">
+  <meta name="description" content="この記事で実現することXG Firewallのレイヤ7ファイアウォールとしてのWebフィルタ・アプリケーションフィルタについて、それぞれの違いと活用方法について解説します。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="XG FirewallのWebとアプリケーションフィルタについて">
 <meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/05/06/web-application-filter/index.html">
 <meta property="og:site_name" content="New technologies in our life">
-<meta property="og:description" content="この記事で実現する内容について　XG Firewallのレイヤ7ファイアウォールとしてのメインでもある、Webフィルター、アプリケーションフィルターについてそれぞれの違い、および活用方法について理解を深めます。">
+<meta property="og:description" content="この記事で実現することXG Firewallのレイヤ7ファイアウォールとしてのWebフィルタ・アプリケーションフィルタについて、それぞれの違いと活用方法について解説します。">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/06/web-application-filter/onedrive.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/06/web-application-filter/appfilter2.png">
 <meta property="article:published_time" content="2020-05-06T05:54:00.000Z">
-<meta property="article:modified_time" content="2020-05-27T07:34:42.516Z">
+<meta property="article:modified_time" content="2020-05-30T13:08:08.213Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -244,7 +244,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">編集日</span>
-                <time title="修正日：2020-05-27 16:34:42" itemprop="dateModified" datetime="2020-05-27T16:34:42+09:00">2020-05-27</time>
+                <time title="修正日：2020-05-30 22:08:08" itemprop="dateModified" datetime="2020-05-30T22:08:08+09:00">2020-05-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -268,38 +268,42 @@
 
       
         <div class="note success">
-            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>　XG Firewallのレイヤ7ファイアウォールとしてのメインでもある、Webフィルター、アプリケーションフィルターについてそれぞれの違い、および活用方法について理解を深めます。</p>
+            <h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>XG Firewallのレイヤ7ファイアウォールとしてのWebフィルタ・アプリケーションフィルタについて、それぞれの違いと活用方法について解説します。</p>
           </div>
 
 <a id="more"></a>
 
-<h2 id="XGのWebフィルターについて"><a href="#XGのWebフィルターについて" class="headerlink" title="XGのWebフィルターについて"></a>XGのWebフィルターについて</h2><p>XGの左ペインメニューでは、<span class="label default">Web</span>、<span class="label default">アプリケーション</span>とそれぞれ分かれています。<span class="label default">Web</span>ではサイトのカテゴリが分かれていて、そのサイトのカテゴリによっては閲覧させないという使い方が一般的な使い方のように見えます。これらのポリシーは、<a href="https://community.sophos.com/kb/ja-jp/134155" target="_blank" rel="noopener">Sophosのサイト「Sophos XG Firewall: Web カテゴリ」</a>にも日本語の解説があります。サイトのカテゴリについては、ビジネス、ギャンブル、ゲーム、アダルト、ファイナンス等多岐に渡ります。ホームユーザーとしてはいわゆる怪しいサイトや過度な広告をフィルタする事が主目的になります。上記サイトのポリシーを眺めていると疑問に感じるところがあります。「ActiveX」、「Applets」、「SpamURLs」です。サイトのポリシーで判断しているのかと思いきや、ActiveXやAppletは単純にサーバー名とも関係ありません。企業やサイトの目的ではなく、そこに配置したコンテンツの内容まで判断するように見えます。サイトのカテゴリに関係なく、そこにSpamがある場合は排除される事のようですから、そのあとのフォルダ構成を含めたURLまで対象としているよです。</p>
-<p>上記の”Sophos XG Firewall:Webカテゴリ”には記載がないものの、XGの左ペインメニューの<span class="label default">Web</span>の<span class="label default">ファイルタイプ</span>の内容には、ファイル拡張子、MIMEヘッダーの情報が並びます。そしてここにはZIPファイルなどの<span class="label default">Compressed Files</span>、Windowsの実行ファイルである<span class="label default">Executable File</span>などの項目が並んでいます。</p>
-<p>ホームユーザーとしては、ZIPファイルやEXEファイルが使えないと不便なのでフィルタする事は考えにくいですが、何らかのMIMEタイプを拒否するポリシーを作成する場合は有効に機能しそうです。最終的には、Webフィルターは以下の種類の分類となります。</p>
+<h2 id="Webフィルタについて"><a href="#Webフィルタについて" class="headerlink" title="Webフィルタについて"></a>Webフィルタについて</h2><p>XGの左ペインメニューでは、<span class="label default">Web</span>、<span class="label default">アプリケーション</span>とそれぞれ分かれています。<span class="label default">Web</span>ではサイトのカテゴリが分かれていて、そのサイトのカテゴリによっては閲覧を制限する事が一般的な使い方です。これらのポリシーは、<a href="https://community.sophos.com/kb/ja-jp/134155" target="_blank" rel="noopener">Sophosのサイト「Sophos XG Firewall: Web カテゴリ」</a>にも日本語の解説があります。サイトのカテゴリについては、ビジネス、ギャンブル、ゲーム、アダルト、ファイナンス等多岐に渡ります。ホームユーザーとしてはいわゆる怪しいサイトや過度な広告をフィルタする事が主目的になります。しかし、上記サイトのポリシーを眺めていると疑問に感じるところがあります。”ActiveX”、”Applets”、”SpamURLs”です。ActiveXやAppletは単純にサーバー名とも関係ありません。サイトのカテゴリに加え、URLまでを対象としているようです。</p>
+<p>上記の”Sophos XG Firewall:Webカテゴリ”には記載がないものの、XGの左ペインメニューの<span class="label default">Web</span>の<span class="label default">ファイルタイプ</span>の内容には、ファイル拡張子、MIMEヘッダーの情報が並びます。そしてここにはZIPファイルなどの”Compressed Files”、Windowsの実行ファイルである”Executable File”などの項目が並んでいます。</p>
+<p>ホームユーザーとしては、ZIPファイルやEXEファイルが使えないと不便なのでフィルタする事は考えにくいですが、何らかのMIMEタイプを拒否するポリシーを作成する場合は有効に機能しそうです。最終的には、Webフィルタは以下の種類の分類となります。</p>
 <ul>
 <li>Webカテゴリ</li>
 <li>URLグループ（自身で作成したURLの集まり）、280blockerなどのURLデータベースもこのグループ</li>
 <li>ファイルタイプ</li>
 <li>ダイナミックカテゴリ（ActiveX・Applets・Cookies・HTTP Upload</li>
 </ul>
-<p>これらの事から、Webフィルターはカテゴリの分類という主目的はあるものの、ブラウザを対象としたフィルターの機能である事がわかります。</p>
-<h2 id="SNIとWebフィルターについて"><a href="#SNIとWebフィルターについて" class="headerlink" title="SNIとWebフィルターについて"></a>SNIとWebフィルターについて</h2><p>SNIとは、Server Name Indicationの略です。SSL/TLS通信において、クライアントからサーバ証明書を要求する時に<span class="label default">暗号化せず</span>情報がサーバーに渡されます。XGはこのSNIを見てWebフィルターを行っていますので、SSLインスペクションが行えなくともURLでアクセス許可・不可の判断は可能になります。全てのWebサーバーがSNIに対応しているわけではありませんが、SSLインスペクションが行えないAndroid端末であってもある程度の許可・不可の制御は可能となります。しかし、以前の記事、<a href="/new-technology/2020/03/21/ssl-inspection2/" title="XG Firewall v18のSSLインスペクションの動作確認と調整">XG Firewall v18のSSLインスペクションの動作確認と調整</a> で記載した通り、ZIP化されたマルウェアは検知できないなどSSLインスペクションを使わないと完全ではありません。</p>
-<h2 id="XGのアプリケーションフィルターについて"><a href="#XGのアプリケーションフィルターについて" class="headerlink" title="XGのアプリケーションフィルターについて"></a>XGのアプリケーションフィルターについて</h2><p>XGのアプリケーションフィルターは、XGの左ペインメニューの<span class="label default">アプリケーション</span>から確認できます。ブラウザーではないインターネットに接続するアプリケーションを対象にしています。ここの挙動の確認は非常に難しいものがあります。例えば、MicrosoftのOneDriveを題材にテストしてみましょう。</p>
-<p>OneDriveのURLは、現時点で、<span class="label default">https://onedrive.live.com/</span>です。Webフィルターで当該ドメインのフィルターを行うと、想定通りブラウザーからOneDriveにはアクセス出来ませんでした。</p>
+<p>これらの事から、Webフィルタはカテゴリの分類という主目的はあるものの、ブラウザを対象としたフィルタの機能である事がわかります。</p>
+<h2 id="SNIとフィルタとの関係"><a href="#SNIとフィルタとの関係" class="headerlink" title="SNIとフィルタとの関係"></a>SNIとフィルタとの関係</h2><p>SNIとは、Server Name Indicationの略です。SSL/TLS通信において、クライアントからサーバ証明書を要求する時に<strong>サーバ名（SNI）を暗号化せずサーバーに渡します</strong>。XGはこのSNIを見てWebフィルタを行っていますので、接続しようとしているドメインやサーバー単位にアクセス許可・不許可の判断が可能になります。しかし<strong>フォルダ構成やMIMEタイプ、引数やダウンロードするデータを検査するには、SSL/TLSインスペクションが必要です</strong>。もちろん、ドメイン単位の制御でIoT機器はある程度の防御が可能と言えますが、防御を最大限に高めるにはSSLインスペクションが必要です。以前の記事、<a href="/new-technology/2020/03/21/ssl-inspection2/" title="XG Firewall v18のSSLインスペクションの動作確認と調整">XG Firewall v18のSSLインスペクションの動作確認と調整</a> で記載した通り、ZIP化されたマルウェアはSSLインスペクションが行えなければ検知は出来ません。</p>
+<h2 id="アプリケーションフィルタについて"><a href="#アプリケーションフィルタについて" class="headerlink" title="アプリケーションフィルタについて"></a>アプリケーションフィルタについて</h2><p>XGのアプリケーションフィルタは、XGの左ペインメニューの<span class="label default">アプリケーション</span>から確認できます。ブラウザーではないインターネットに接続するアプリケーションを対象にしています。ここの挙動の確認は非常に難しいものがあります。例えば、MicrosoftのOneDriveを題材にテストしてみましょう。</p>
+<p>OneDriveのURLは、現時点で、<code>https://onedrive.live.com/</code>です。Webフィルタで当該ドメインのフィルタを行うと、想定通りブラウザーからOneDriveにはアクセス出来ません。</p>
 <img src="/new-technology/2020/05/06/web-application-filter/onedrive.png" class="" title="alt">
 
-<p>しかし、”Android端末にインストールしてあるOneDriveアプリ経由で画像をコピーできる”こと、”WindowsPCのエクスプローラーのOneDriveフォルダからこの画像は削除出来る”事実があります。検証のためにWebフィルターは削除、アプリケーションフィルターにOneDriveの項目があるので、そちらをフィルターしてみます（これは検証作業なのでこのブログをご覧の方が実施する作業ではありません）。</p>
-<p>XGの左ペインメニューの<span class="label default">アプリケーション</span>からファイアウォールルールで選択されているポリシーの先頭で<span class="label default">追加</span>ボタンをクリックし、<span class="label default">スマートフィルタ</span>に<span class="label default">onedrive</span>と入力し、Enterキーを押します。</p>
+<p>しかし、Android端末のOneDriveアプリ経由では制御が効かず画像をコピーできてしまうこと、WindowsPCのエクスプローラーのOneDriveフォルダからこの画像は削除出来てしまいます。これはアプリが使うWebAPIのURLとブラウザが使うURLとは異なるためにこういった事象が発生します。検証のためにWebフィルタは削除、アプリケーションフィルタにOneDriveの項目があるので、そちらをフィルタしてみます（これは検証作業なのでこのブログをご覧の方が実施する作業ではありません）。</p>
+<p>XGの左ペインメニューの<span class="label default">アプリケーション</span>からファイアウォールルールで選択されているポリシーの先頭で<span class="label default">追加</span>ボタンをクリックし、<span class="label default">スマートフィルタ</span>に<code>onedrive</code>と入力し、Enterキーを押します。</p>
 <img src="/new-technology/2020/05/06/web-application-filter/appfilter2.png" class="" title="alt">
 
-<p>OneDriveのルールがいくつか表示されるため、<span class="label default">アクション</span>は、<span class="label default">拒否</span>を選択して最後に<span class="label default">保存</span>をクリックします。この作業の結果は以下の通りの挙動でした。</p>
+<p>OneDriveのルールがいくつか表示されるため、<span class="label default">アクション</span>は、”拒否”を選択して最後に”保存”をクリックします。この作業の結果は以下の通りの挙動でした。</p>
 <ul>
-<li>ブラウザからOneDriveに接続出来ない</li>
-<li>WindowsエクスプローラーからOneDriveのツール上ではファイルの追加、削除は行えない</li>
-<li>AndroidからOneDriveのファイル追加は行えないが、<strong>削除は可能</strong></li>
+<li>ブラウザからOneDriveに接続不可</li>
+<li>WindowsエクスプローラーからOneDriveのツール上ではファイルの追加および削除不可</li>
+<li>AndroidからOneDriveのファイル追加不可だが、<strong>削除可能</strong></li>
 </ul>
-<p>これらの事から、アプリケーションフィルタは、アプリが利用しているAPIのURLやデータの中身を見て挙動の制限を行っている事がわかります。OneDriveはファイルのアップロード・ダウンロードと目的によって分かれていましたが、他のアプリケーションであるAppleのiCloudDriveに関しては、アプリケーションフィルタは1種類だけです。このようにアプリケーションフィルターは、アプリの作り方に左右されるものとなります。AndroidはSSLインスペクションが行えないため、URL（SNI）の検証は行えますが、データの中身はhttpsで暗号化されておりファイル削除については制御出来ません。アプリケーションフィルターの中には、<span class="label default">EXE File Download</span>というフィルタも存在しますが、あくまで汎用的なものです。全てのいかなるアプリケーションからのEXEファイルのダウンロードを禁止できるものではありません。ホームユーザーとしてリスクを抑制しつつ利便性を高めるには、どのようなフィルターを作っていくべきでしょうか。たくさん存在するアプリケーションを都度設定するのは管理も非常に大変で現実的ではありません。</p>
-<p>Webのカテゴリについては、個人の考え方でいろいろなフィルタの組み合わせがあるでしょうから、ご自身のポリシーでカスタマイズして下さい。但し攻撃から身を守るという課題については、ある程度のスタンダードはありますので、Sophos Communityの情報を頼りにホームユーザーのためのお勧め設定について次回に記載します。</p>
+<p>これらの事から、アプリケーションフィルタは、アプリが利用しているAPIのURLやデータの中身を見て挙動の制限を行っている事がわかります。OneDriveはファイルのアップロード・ダウンロードと目的によって分かれていましたが、他のアプリケーションであるAppleのiCloudDriveに関しては、アプリケーションフィルタは1種類だけです。このようにアプリケーションフィルタは、アプリの作り方に左右されるものとなります。AndroidはSSLインスペクションが行えないため、URL（SNI）の検証は行えますが、データの中身はhttpsで暗号化されておりファイル削除については制御出来ません。アプリケーションフィルタの中には、”EXE File Download”というフィルタも存在しますが、あくまで汎用的なものです。全てのいかなるアプリケーションからのEXEファイルのダウンロードを禁止できるものではありません。</p>
+<div class="note info">
+            <p>Webフィルタ・アプリケーションフィルタを完全に動作させるには、SSL/TLSインスペクションが必要です。</p>
+          </div>
+
+<p>このアプリケーションは止めておきたいというニーズに対して、都度メンテナンスしていくのはとても大変です。従い、高リスクのアプリケーションを拒否するという設定を行う事になります。具体的な設定については、こちらの記事、<a href="/new-technology/2020/05/09/best-practice/" title="XG Firewall V18の設定におけるベストプラクティス">XG Firewall V18の設定におけるベストプラクティス</a>を参照してください。</p>
 
     </div>
 
@@ -400,7 +404,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#この記事で実現する内容について"><span class="nav-number">1.</span> <span class="nav-text">この記事で実現する内容について</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XGのWebフィルターについて"><span class="nav-number">2.</span> <span class="nav-text">XGのWebフィルターについて</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SNIとWebフィルターについて"><span class="nav-number">3.</span> <span class="nav-text">SNIとWebフィルターについて</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XGのアプリケーションフィルターについて"><span class="nav-number">4.</span> <span class="nav-text">XGのアプリケーションフィルターについて</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#この記事で実現すること"><span class="nav-number">1.</span> <span class="nav-text">この記事で実現すること</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Webフィルタについて"><span class="nav-number">2.</span> <span class="nav-text">Webフィルタについて</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SNIとフィルタとの関係"><span class="nav-number">3.</span> <span class="nav-text">SNIとフィルタとの関係</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#アプリケーションフィルタについて"><span class="nav-number">4.</span> <span class="nav-text">アプリケーションフィルタについて</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
