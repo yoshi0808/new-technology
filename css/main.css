@@ -515,7 +515,7 @@ pre {
 }
 pre,
 code {
-  font-family: $font-family-monospace;
+  font-family: Menlo, Consolas, monospace, "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "BIZ UDPGothic", Meiryo, sans-serif;
 }
 code {
   background: #eee;
@@ -1494,7 +1494,7 @@ pre code {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #2a379c;
+  background: #2d6b4b;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
