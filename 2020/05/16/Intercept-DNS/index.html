@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","scheme":"Mist","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="この記事で実現する内容について自分で設定したDNS（多くはプロバイダDNS）に反し、行儀の悪いクライアントや悪意のあるプログラムはそれに従わず、全く別のDNSを参照する可能性があります。XG Firewall V18の機能を活用してDNSの安全性を確保します。">
+  <meta name="description" content="この記事で実現すること自分で設定したDNS（多くはプロバイダDNS）に反し、行儀の悪いクライアントや悪意のあるプログラムはそれに従わず、別のDNSを参照する可能性があります。XG Firewall V18の機能を活用してDNSの安全性を確保します。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="XG Firewall V18で正しいDNS利用を強制する">
 <meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/05/16/Intercept-DNS/index.html">
 <meta property="og:site_name" content="New technologies in our life">
-<meta property="og:description" content="この記事で実現する内容について自分で設定したDNS（多くはプロバイダDNS）に反し、行儀の悪いクライアントや悪意のあるプログラムはそれに従わず、全く別のDNSを参照する可能性があります。XG Firewall V18の機能を活用してDNSの安全性を確保します。">
+<meta property="og:description" content="この記事で実現すること自分で設定したDNS（多くはプロバイダDNS）に反し、行儀の悪いクライアントや悪意のあるプログラムはそれに従わず、別のDNSを参照する可能性があります。XG Firewall V18の機能を活用してDNSの安全性を確保します。">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/16/Intercept-DNS/mimetype.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/16/Intercept-DNS/mimetype2.png">
@@ -36,7 +36,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/16/Intercept-DNS/rule2.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/16/Intercept-DNS/rule3.png">
 <meta property="article:published_time" content="2020-05-16T02:39:23.000Z">
-<meta property="article:modified_time" content="2020-05-27T05:01:51.709Z">
+<meta property="article:modified_time" content="2020-05-30T09:53:29.895Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -250,7 +250,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">編集日</span>
-                <time title="修正日：2020-05-27 14:01:51" itemprop="dateModified" datetime="2020-05-27T14:01:51+09:00">2020-05-27</time>
+                <time title="修正日：2020-05-30 18:53:29" itemprop="dateModified" datetime="2020-05-30T18:53:29+09:00">2020-05-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -274,7 +274,7 @@
 
       
         <div class="note success">
-            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>自分で設定したDNS（多くはプロバイダDNS）に反し、行儀の悪いクライアントや悪意のあるプログラムはそれに従わず、全く別のDNSを参照する可能性があります。XG Firewall V18の機能を活用してDNSの安全性を確保します。</p>
+            <h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>自分で設定したDNS（多くはプロバイダDNS）に反し、行儀の悪いクライアントや悪意のあるプログラムはそれに従わず、別のDNSを参照する可能性があります。XG Firewall V18の機能を活用してDNSの安全性を確保します。</p>
           </div>
 
 <a id="more"></a>
@@ -287,55 +287,55 @@
             <i class="fa fa-quote-right"></i>
           </blockquote>
 
-<p>この一言で既にDNSの使い方については答えが出てしまいましたが、記事が2017年とやや古い事もあり、V18の機能を生かしたDNSのベストプラクティスを書いてみます。</p>
+<p>この一言で既にDNSの使い方については答えが出てしまいましたが、記事が2017年とやや古い事もあり、V18の機能を生かしたDNSの設定例を書きます。</p>
 <p>DNSとプライバシーは国によって扱いが変わるかも知れません。国が人々のネットのアクセス状況を把握している事が問題とされている場所では、パブリックDNSが好まれます。また海外ではプロバイダーがDNSを改ざんするといったニュースも見かけます。日本国内においては、プロバイダのDNSの応答速度が遅い事から利用されるケースが増えてきているようです。</p>
 <p>ブラウザのFireFoxでは、プライバシー保護を目的として、DNSについてHTTPSを利用したDNS over HTTPSに対応しています。この機能は日本ではデフォルトでオフになっていますが、HTTPSで暗号化されているため管理者側からは一般的なネットブラウジングと区別がつかず、トラフィックが見えづらくなります。</p>
 <p>私個人としてはDNSを含めたプライバシーの情報を無闇に拡散させない事が重要と考えています。また、Communityで言及されている通り、防御のためにDNSのPortは空けない事が重要と考えます。パブリックDNSの利用はユーザーそれぞれにとっては考え方は異なるかとおもいますので、これ以降は悪意をもったクライアントが本来のDNS設定を迂回する事の対策として読んでいただければとおもいます。</p>
-<h2 id="XG-V18で指定DNSを強制する方法"><a href="#XG-V18で指定DNSを強制する方法" class="headerlink" title="XG V18で指定DNSを強制する方法"></a>XG V18で指定DNSを強制する方法</h2><p>ここではDNS情報はDHCPで配布されている前提とします。このブログでは、クライアントが参照するDNSは、全てXGのDNSを指定するように設定しています。この前提で、これを回避しようとするクライアントに対して以下の対策を取ります。</p>
+<h2 id="XG-V18で指定DNSを強制する"><a href="#XG-V18で指定DNSを強制する" class="headerlink" title="XG V18で指定DNSを強制する"></a>XG V18で指定DNSを強制する</h2><p>ここではDNS情報はDHCPで配布されている前提とします。このブログでは、クライアントが参照するDNSは、全てXGのDNSを指定するように設定しています。この前提で、これを回避しようとするクライアントに対して以下の対策を取ります。</p>
 <ol>
 <li>DNS over TLS(DoT)は拒否<br>Port853の拒否</li>
-<li>DNS over HTTPS(DoH)は拒否<br>RFC8484に基づき、MIMEヘッダーの<span class="label default">application/dns-message</span>を見つけて、その通信を拒否</li>
+<li>DNS over HTTPS(DoH)は拒否<br>RFC8484に基づき、MIMEヘッダーの”application/dns-message”を見つけて、その通信を拒否</li>
 <li>Public DNSへのアクセス（Port53）は、強制的にXGのDNS経由で本来のDNSにアクセス<br>XGのDNATの機能を使い、WANインターフェースに対するPort53の通信だった場合、宛先IPをXGのLANのIPアドレスに変換</li>
 </ol>
 <p>1および2ですが、アプリケーションは、DoTやDoHを止められると（一般的には）通常のDNS(Port53)にフォールバックします。そしてXGは強制的にDNSの向き先を変えますが、クライアントはパブリックDNSにアクセスしたと思い込んだまま、返されたIPに対しアクセスする事になります。</p>
 <h2 id="DoHの拒否"><a href="#DoHの拒否" class="headerlink" title="DoHの拒否"></a>DoHの拒否</h2><p>DoHの定義についてサービスの登録を行います。</p>
-<p>XGの左ペインメニュー<span class="label default">Web</span>の<span class="label default">ファイルタイプ</span>から<span class="label default">追加</span>ボタンをクリックします。<span class="label default">名前</span>は<span class="label default">DoH</span>、<span class="label default">テンプレート</span>を空白とし、<span class="label default">MIMEヘッダー</span>に<span class="label default">application/dns-message</span>と入力し、<span class="label default">保存</span>します。</p>
+<p>XGの左ペインメニュー<span class="label default">Web</span>の<span class="label default">ファイルタイプ</span>から追加ボタンをクリックします。<span class="label default">名前</span>は”DoH”、<span class="label default">テンプレート</span>を空白とし、<span class="label default">MIMEヘッダー</span>に<code>application/dns-message</code>と入力し、保存します。</p>
 <img src="/new-technology/2020/05/16/Intercept-DNS/mimetype.png" class="" title="alt">
 
-<span class="label default">Web</span>の<span class="label default">ユーザーアクティビティ</span>から追加ボタンをクリックし、先ほどDoHとして登録したカテゴリを加え、<span class="label default">DNS over HTTPS</span>と名前を付けて保存します。
+<span class="label default">Web</span>の<span class="label default">ユーザーアクティビティ</span>から"追加"ボタンをクリックし、先ほどDoHとして登録したカテゴリを加え、`DNS over HTTPS`と名前を付けて保存します。
 
 <img src="/new-technology/2020/05/16/Intercept-DNS/mimetype2.png" class="" title="alt">
 
 <p>続いて、具体的な拒否設定です。</p>
-<span class="label default">Web</span>の<span class="label default">ポリシー</span>からご自身がFirewallルールで利用しているポリシー（ここではHome Policyを使っていると仮定しています）に、上記で登録してきた<span class="label default">DNS over HTTPS</span>を<span class="label default">拒否</span>する設定を加えます。
+<span class="label default">Web</span>の<span class="label default">ポリシー</span>からご自身がFirewallルールで利用しているポリシー（ここでは"Home Policy"を仮定しています）に、上記で登録してきた"DNS over HTTPS"を拒否する設定を加えます。
 
 <img src="/new-technology/2020/05/16/Intercept-DNS/policy.png" class="" title="alt">
 
-<h2 id="DoTの拒否"><a href="#DoTの拒否" class="headerlink" title="DoTの拒否"></a>DoTの拒否</h2><p>XGの左ペインメニュー<span class="label default">ホストとサービス</span>の<span class="label default">サービス</span>から、<span class="label default">追加</span>ボタンをクリックし、<span class="label default">送信元ポート</span>が1〜65535、<span class="label default">宛先ポート</span>853を指定し、<span class="label default">DoT</span>と名前を付け保存します。</p>
+<h2 id="DoTの拒否"><a href="#DoTの拒否" class="headerlink" title="DoTの拒否"></a>DoTの拒否</h2><p>XGの左ペインメニュー<span class="label default">ホストとサービス</span>の<span class="label default">サービス</span>から、”追加”ボタンをクリックし、”送信元ポート”1〜65535、”宛先ポート”853を指定し、”DoT”と名前を付け保存します。</p>
 <img src="/new-technology/2020/05/16/Intercept-DNS/service.png" class="" title="alt">
 
-<p>XGの左ペインメニュー<span class="label default">ルールとポリシー</span>から新しいファイアウォールルールを追加し、以下のようにDoTを<span class="label default">拒否</span>するルールを作成します。</p>
+<p>XGの左ペインメニュー<span class="label default">ルールとポリシー</span>から新しいファイアウォールルールを追加し、以下のようにDoTを”拒否”するルールを作成します。</p>
 <img src="/new-technology/2020/05/16/Intercept-DNS/rule1.png" class="" title="alt">
 
-<h2 id="DNSに関するDNATの登録"><a href="#DNSに関するDNATの登録" class="headerlink" title="DNSに関するDNATの登録"></a>DNSに関するDNATの登録</h2><p>最初にDNATで必要なホストの定義を行います。LANで使っているネットワークアドレスの登録とXG自身のIPアドレスの登録が必要です。ネットワークアドレスについてIPv4は例えば、192.168.1.0/24、IPv6は例えばfd00:1234:5678:abcd::1などの登録を行います。XG自身のIPアドレスも登録が必要です。</p>
+<h2 id="DNSに関するDNATの登録"><a href="#DNSに関するDNATの登録" class="headerlink" title="DNSに関するDNATの登録"></a>DNSに関するDNATの登録</h2><p>最初にDNATで必要なホストの定義を行います。LANで使っているネットワークアドレスの登録とXG自身のIPアドレスの登録が必要です。ネットワークアドレスについてIPv4は例えば、<code>192.168.1.0/24</code>、IPv6は例えば<code>fd00:beaf:cafe:0001::1</code>などの登録を行います。XG自身のIPアドレスも登録が必要です。</p>
 <img src="/new-technology/2020/05/16/Intercept-DNS/host.png" class="" title="alt">
 
-<p>XGの左ペインメニュー<span class="label default">ルールとポリシー</span>から、<span class="label default">NATルール</span>を選択、<span class="label default">NATルールの追加</span>ボタンをクリックします。DNATは本当に理解が難しいですが、以下の通り設定します。</p>
+<p>XGの左ペインメニュー<span class="label default">ルールとポリシー</span>から、<span class="label default">NATルール</span>を選択、”NATルールの追加”ボタンをクリックし、DNATを設定します。</p>
 <ol>
-<li><span class="label default">変換前の送信元</span>は、使っているネットワークのオブジェクトを登録します</li>
-<li><span class="label default">変換前のサービス</span>は、<span class="label default">DNS</span>を選択します</li>
-<li><span class="label default">返還後の宛先（DNAT）</span>は、XG自身のIPを指定します</li>
-<li><span class="label default">アウトバウンドインターフェース</span>には、WANである、<span class="label default">Port2</span>を選択します</li>
+<li>“変換前の送信元”は、使っているネットワークのオブジェクトを登録します</li>
+<li>“変換前のサービス”は、”DNS”を選択します</li>
+<li>“返還後の宛先（DNAT）”は、XG自身のIPを指定します</li>
+<li>“アウトバウンドインターフェース”には、WANである、”Port2”を選択します</li>
 <li>最後に追加ボタンをクリックして登録を完了します</li>
 </ol>
 <img src="/new-technology/2020/05/16/Intercept-DNS/rule2.png" class="" title="alt">
 
-<p>上記はIPv4の例ですが、IPv6を利用されている方は、同様にIPv6のDNATも設定して下さい。</p>
-<p>上記のDNATによる、DNSのインターセプトが有効になると、<span class="label default">ルールとポリシー</span>の<span class="label default">NATルール</span>画面で実際の変換された数が確認できるので、これで挙動確認を行ってください。</p>
+<p>上記はIPv4の例ですが、IPv6を利用されている方は、同様にIPv6のDNATも設定してください。</p>
+<p>上記DNATによるDNSのインターセプトが有効になると、<span class="label default">ルールとポリシー</span>の<span class="label default">NATルール</span>画面で実際の変換された数が確認できるので、これで挙動確認を行ってください。</p>
 <img src="/new-technology/2020/05/16/Intercept-DNS/rule3.png" class="" title="alt">
 
-<p> プロバイダーのDNS速度が極端に遅い場合はこれらの設定がベストにはなりませんが、<span class="label default">プライバシーと安全を鑑みたV18ならではのDNSのベストプラクティス</span>になるとおもいます。</p>
-<h2 id="その他DNSに関して補足すること"><a href="#その他DNSに関して補足すること" class="headerlink" title="その他DNSに関して補足すること"></a>その他DNSに関して補足すること</h2><p>GoogleDNSのDoHはRFC8484に従っていない独自プロトコルを使えるという事実があります。世界中のパブリックDNSを全て把握するのは困難ですが、Sophosの以下の記事を参考にWebフィルタのURLグループにパブリックDNSのドメインを登録し、拒否する設定を加えても良いでしょう。</p>
+<p> 以上がプライバシーと安全性を重視したV18ならではのDNSのベストプラクティスです。</p>
+<h2 id="DNSに関しての補足"><a href="#DNSに関しての補足" class="headerlink" title="DNSに関しての補足"></a>DNSに関しての補足</h2><p>GoogleDNSのDoHはRFC8484に従っていない独自プロトコルを使えるという事実があります。世界中のパブリックDNSを全て把握するのは困難ですが、Sophosの以下の記事を参考にWebフィルタのURLグループにパブリックDNSのドメインを登録し、拒否する設定を加えても良いでしょう。</p>
 <p><a href="https://community.sophos.com/kb/en-us/134644" target="_blank" rel="noopener">DNS over HTTPS (DoH) for web security</a></p>
 
     </div>
@@ -434,7 +434,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#この記事で実現する内容について"><span class="nav-number">1.</span> <span class="nav-text">この記事で実現する内容について</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DNSとプライバシー"><span class="nav-number">2.</span> <span class="nav-text">DNSとプライバシー</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG-V18で指定DNSを強制する方法"><span class="nav-number">3.</span> <span class="nav-text">XG V18で指定DNSを強制する方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DoHの拒否"><span class="nav-number">4.</span> <span class="nav-text">DoHの拒否</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DoTの拒否"><span class="nav-number">5.</span> <span class="nav-text">DoTの拒否</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DNSに関するDNATの登録"><span class="nav-number">6.</span> <span class="nav-text">DNSに関するDNATの登録</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#その他DNSに関して補足すること"><span class="nav-number">7.</span> <span class="nav-text">その他DNSに関して補足すること</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#この記事で実現すること"><span class="nav-number">1.</span> <span class="nav-text">この記事で実現すること</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DNSとプライバシー"><span class="nav-number">2.</span> <span class="nav-text">DNSとプライバシー</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG-V18で指定DNSを強制する"><span class="nav-number">3.</span> <span class="nav-text">XG V18で指定DNSを強制する</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DoHの拒否"><span class="nav-number">4.</span> <span class="nav-text">DoHの拒否</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DoTの拒否"><span class="nav-number">5.</span> <span class="nav-text">DoTの拒否</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DNSに関するDNATの登録"><span class="nav-number">6.</span> <span class="nav-text">DNSに関するDNATの登録</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DNSに関しての補足"><span class="nav-number">7.</span> <span class="nav-text">DNSに関しての補足</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
