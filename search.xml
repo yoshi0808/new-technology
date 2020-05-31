@@ -4,7 +4,7 @@
     <title>XG Firewall v18のインストール（事前準備）</title>
     <url>/new-technology/2020/03/06/InstallXG/</url>
     <content><![CDATA[<div class="note success">
-            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>Firewall v18をESXi（V6.7）で稼働させるためのインストールイメージ（isoファイル）をダウンロードし、ESXi上で、XGのための仮想マシンを構築できるようになります。</p>
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>Firewall v18をESXi 6.7で稼働させるためのインストールイメージ（isoファイル）をダウンロードし、ESXi上で、XGのための仮想マシンを構築できるようになります。</p>
           </div>
 
 <a id="more"></a>
@@ -79,8 +79,8 @@
 </ul>
 <pre class="mermaid" style="text-align: center;">
             graph LR
-            クライアント-- "192.168.1.0/24" ---XGFirewall;
-XGFirewall-- "192.168.0.0/24" ---ホームゲートウェイ;
+            クライアント-- "192.168.1.0/24" ---XGFirewall
+XGFirewall-- "192.168.0.0/24" ---ホームゲートウェイ
  
           </pre>
 
@@ -851,7 +851,7 @@ XGFirewall-- "192.168.0.0/24" ---ホームゲートウェイ;
     <title>VMware vSphere Hypervisor（ESXi）の設定</title>
     <url>/new-technology/2020/03/01/esxi-conf/</url>
     <content><![CDATA[<div class="note success">
-            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>Firewall V18をESXi（V6.7）上で稼働させるために、ホームゲートウェイの後ろに、XGを挟み込んだネットワーク全体の考え方を学びます。また、ESXi上で2枚のnicを利用し仮想スイッチの設定を行い、2枚のnicを持った仮想マシンを作成する環境が構築できるようになります。</p>
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>Firewall v18をESXi 6.7上で稼働させるために、ホームゲートウェイの後ろに、XGを挟み込んだネットワーク全体の考え方を学びます。また、ESXi上で2枚のnicを利用し仮想スイッチの設定を行い、2枚のnicを持った仮想マシンを作成する環境が構築できるようになります。</p>
           </div>
 
 <a id="more"></a>
@@ -879,7 +879,7 @@ XGFirewall-- "192.168.0.0/24" ---ホームゲートウェイ;
 </ul>
 <h2 id="WANのための仮想スイッチの作成"><a href="#WANのための仮想スイッチの作成" class="headerlink" title="WANのための仮想スイッチの作成"></a>WANのための仮想スイッチの作成</h2><img src="/new-technology/2020/03/01/esxi-conf/vswitch1.png" class="" title="alt">
 
-<p>XGのWAN側インタフェースを担う仮想スイッチを追加し、LANとWANとのネットワークポートを追加する事になります（赤字の部分）。</p>
+<p>XGのWAN側インタフェースを担う仮想スイッチを追加します（赤字の部分）。</p>
 <ol>
 <li>ESXiの管理画面の左ペイン、ネットワークをクリック、続いて仮想スイッチのタブをクリックします。</li>
 <li>標準仮想スイッチの追加をクリックします。</li>
@@ -890,14 +890,14 @@ XGFirewall-- "192.168.0.0/24" ---ホームゲートウェイ;
 
 <h2 id="ネットワークポートの作成"><a href="#ネットワークポートの作成" class="headerlink" title="ネットワークポートの作成"></a>ネットワークポートの作成</h2><ol>
 <li>vSwitch1をクリックし、物理NICのWan向けである、vmnic1と関連付けられている事を確認してください。</li>
-<li>XGのLanとWanのネットワークポートを作成します。左ペインのネットワークからポートグループのタブをクリックし、ポートグループの追加を選択します。</li>
-<li>新規ポートグループとして、LanはここではXG-Lanと命名し作成します。Lanなので、vSwitch0を関連づけます。</li>
-<li>続いてWanのために、XG-Wanと命名し、vSwitch1と関連づけます。</li>
+<li>XGのLANとWANのネットワークポートを作成します。左ペインのネットワークからポートグループのタブをクリックし、ポートグループの追加を選択します。</li>
+<li>新規ポートグループとして、LANはここではXG-Lanと命名し作成します。LANなので、vSwitch0を関連づけます。</li>
+<li>続いてWANのために、XG-Wanと命名し、vSwitch1と関連づけます。</li>
 </ol>
-<p>これらの設定が終わり、Lan側のネットワーク構成は以下の通りとなります。</p>
+<p>これらの設定が終わり、LAN側のネットワーク構成は以下の通りとなります。</p>
 <img src="/new-technology/2020/03/01/esxi-conf/vswitch3.png" class="" title="alt">
 
-<p>また、Wan側のネットワーク構成は以下の通りです。</p>
+<p>また、WAN側のネットワーク構成は以下の通りです。</p>
 <img src="/new-technology/2020/03/01/esxi-conf/vswitch4.png" class="" title="alt">
 
 <p>これで、ESXiのネットワーク設定は完了となります。面倒ですが、一旦またPCのネットワークを元に戻し、ホームゲートウェイに接続します。そしてXG Firewallのモジュールをダウンロードに進みます。</p>
