@@ -2,23 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/</loc>
-    
-    <lastmod>2020-05-31T01:48:40.052Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://yoshi0808.github.io/new-technology/2020/03/06/InstallXG2/</loc>
     
-    <lastmod>2020-05-31T01:43:28.694Z</lastmod>
+    <lastmod>2020-05-31T01:53:56.222Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/2020/03/06/InstallXG/</loc>
     
-    <lastmod>2020-05-31T01:40:15.728Z</lastmod>
+    <lastmod>2020-05-31T01:53:01.584Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/</loc>
+    
+    <lastmod>2020-05-31T01:52:11.300Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/2020/02/29/esxi/</loc>
+    
+    <lastmod>2020-05-31T01:51:23.947Z</lastmod>
     
   </url>
   
@@ -82,13 +89,6 @@
     <loc>https://yoshi0808.github.io/new-technology/2020/02/25/provision/</loc>
     
     <lastmod>2020-05-28T15:05:15.333Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/02/29/esxi/</loc>
-    
-    <lastmod>2020-05-28T15:00:42.393Z</lastmod>
     
   </url>
   
