@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/06/InstallXG2/setup5.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/06/InstallXG2/setup6.png">
 <meta property="article:published_time" content="2020-03-06T12:37:20.000Z">
-<meta property="article:modified_time" content="2020-05-31T01:53:56.222Z">
+<meta property="article:modified_time" content="2020-05-31T05:22:26.002Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -249,7 +249,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">編集日</span>
-                <time title="修正日：2020-05-31 10:53:56" itemprop="dateModified" datetime="2020-05-31T10:53:56+09:00">2020-05-31</time>
+                <time title="修正日：2020-05-31 14:22:26" itemprop="dateModified" datetime="2020-05-31T14:22:26+09:00">2020-05-31</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -281,12 +281,16 @@
 <ul>
 <li>XGのLAN側ネットワークアドレスはXGのデフォルトである<code>172.16.16.0/24</code>を使うか、自身で決めたESXiが属するネットワークアドレス<code>192.168.1.0/24</code>（例）を使う事になります。ここではXGのWAN側を<code>192.168.0.0/24</code>のネットワーク、XGのLAN側を<code>192.168.1.0/24</code>として説明します。</li>
 <li>クライアントPCとESXiをインストールしたハードウェアのLAN側ネットワークとを接続します。クライアントPCは手動でLANのIPアドレスを割り当てます。</li>
-<li>仮想マシンは事前に設定されたXGのインストールイメージ（ISOファイル）からブートさせるので、ブラウザでESXiにログインし、仮想マシンを起動してインストールを行います。ESXiをセットアップした機器にモニタを接続する必要はありません。</li>
+<li>仮想マシンは事前に設定されたXGのインストールイメージ（ISOファイル）からブートさせるので、ブラウザでESXiホストにログインし、仮想マシンを起動してインストールを行います。ESXiをセットアップした機器にモニタを接続する必要はありません。</li>
 </ul>
 <pre class="mermaid" style="text-align: center;">
             graph LR
-            クライアント-- "192.168.1.0/24" ---XGFirewall
-XGFirewall-- "192.168.0.0/24" ---ホームゲートウェイ
+            PC-- "192.168.1.0/24" ---XGFirewall
+PC-- "192.168.1.0/24" ---ESXiホスト
+subgraph ESXi_Hypervisor
+ESXiホスト-.->XGFirewall
+end
+XGFirewall-- "192.168.0.0/24" ---HGW
  
           </pre>
 
