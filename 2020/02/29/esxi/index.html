@@ -29,7 +29,7 @@
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/02/29/esxi/setup_esxi.png">
 <meta property="article:published_time" content="2020-02-29T04:23:22.000Z">
-<meta property="article:modified_time" content="2020-05-31T01:51:23.947Z">
+<meta property="article:modified_time" content="2020-05-31T12:35:27.871Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta property="article:tag" content="ESXi">
@@ -244,7 +244,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">編集日</span>
-                <time title="修正日：2020-05-31 10:51:23" itemprop="dateModified" datetime="2020-05-31T10:51:23+09:00">2020-05-31</time>
+                <time title="修正日：2020-05-31 21:35:27" itemprop="dateModified" datetime="2020-05-31T21:35:27+09:00">2020-05-31</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -273,7 +273,7 @@
 
 <a id="more"></a>
 
-<h2 id="インストールの前に"><a href="#インストールの前に" class="headerlink" title="インストールの前に"></a>インストールの前に</h2><p> XG Firewallの導入に必須ではないですが、バックアップや異なるバージョンの同居など色々便利なので、仮想環境（ESXi）を構築しその上にXGをインストールします。このホームユーザー向け（無償版）ESXiのインストールに関するドキュメントは、<a href="https://blogs.vmware.com/jp-cim/2014/05/vspherehypervisor.html" target="_blank" rel="noopener" title="vmware">VMWareのブログ</a>から辿ってください。</p>
+<h2 id="インストールの前に"><a href="#インストールの前に" class="headerlink" title="インストールの前に"></a>インストールの前に</h2><p> XG Firewallの導入に必須ではないですが、バックアップや異なるバージョンの同居など色々便利なので、仮想環境（ESXi）を構築しその上にXGをインストールします。このホームユーザー向け（無償版）ESXi（vSphere Hypervisor）に関するドキュメントは、<a href="https://www.vmware.com/jp/products/vsphere-hypervisor.html" target="_blank" rel="noopener">VMWareのサイト</a>を参照してください。</p>
 <!-- more -->
 
 <h2 id="準備"><a href="#準備" class="headerlink" title="準備"></a>準備</h2><ul>
@@ -283,10 +283,10 @@
 </ul>
 <div class="video-container"><iframe src="https://www.youtube.com/embed/7gYnyIaQH9A" frameborder="0" loading="lazy" allowfullscreen></iframe></div>
 
-<h2 id="ESXiのインストール"><a href="#ESXiのインストール" class="headerlink" title="ESXiのインストール"></a>ESXiのインストール</h2><p>以下のビデオを参考にしてください。</p>
+<h2 id="ESXiのインストール"><a href="#ESXiのインストール" class="headerlink" title="ESXiのインストール"></a>ESXiのインストール</h2><p>以下のビデオ（英語）を参考にしてください。</p>
 <iframe src='https://players.brightcove.net/1534342432001/Byh3doRJx_default/index.html?videoId=5738631329001' allowfullscreen frameborder=0></iframe>
 
-<p>注意点ですが、いつも使っているネットワークとは別のネットワークのIPアドレスを振ってセットアップします。いつもが<code>192.168.0.0/24</code>なら、今回は仮に<code>192.168.1.0/24</code>のネットワークに配置する予定としてESXiをセットアップする事にしましょう。これまでのネットワークにXG Firewallを挟み込む事になり、従来のネットワークはXGのWAN側とホームゲートウェイに利用され、XGのLAN側は新しいネットワークになるためです。新たにXGのLAN側と同じネットワークにESXiの管理ネットワークを構築する必要があります。なお、XGのLAN側のデフォルトIPアドレスは、<code>172.16.16.16</code>となっています。従って、XGのIPもセットアップ時に<code>192.168.1.0/24</code>のネットワークに変更する事とします。</p>
+<p>注意点ですが、いつも使っているネットワークとは別のネットワークのIPアドレスを振ってセットアップします。いつもが<code>192.168.0.0/24</code>なら、今回は仮に<code>192.168.1.0/24</code>のネットワークに配置する予定としてESXiをセットアップする事にしましょう。これまでのネットワークにXG Firewallを挟み込む事になり、従来のネットワークはXGのWAN側とホームゲートウェイに利用され、XGのLAN側は新しいネットワークになるためです。新たにXGのLAN側と同じネットワークにESXiの管理ネットワークを構築する必要があります。なお、XGのLAN側のデフォルトIPアドレスは、<code>172.16.16.16</code>となっています。ここではXGのIPもセットアップ時に<code>192.168.1.0/24</code>のネットワークに変更する事とします。</p>
 <ul>
 <li>USBメディアをESXiをインストールするPCに挿し、USBからブートし、セットアップを開始してください。</li>
 <li>vCenterはホームユーザー向けには使いませんので無視してください。</li>
@@ -296,7 +296,7 @@
 </ul>
 <img src="/new-technology/2020/02/29/esxi/setup_esxi.png" class="" title="alt">
 
-<p> セットアップ終了後は、上記のようなネットワーク構成となります。USBメディアを抜いて再起動後、ESXiの画面にIPアドレスが表示されます。ホームゲートウェイに繋っていたPCをネットワークから外し、ESXiのLAN側のNICと繋ぎます。PCのIPを変更（例えば、<code>192.168.1.101/24</code>）し、ESXiのIPアドレスにブラウザで接続してください。ログインは、ユーザー名がroot、パスワードはセットアップで指定したものになります。</p>
+<p>セットアップ終了後は、上記のようなネットワーク構成となります。USBメディアを抜いて再起動後、ESXiの画面にIPアドレスが表示されます。ホームゲートウェイに繋っていたPCをネットワークから外し、ESXiのLAN側のNICと繋ぎます。PCのIPを変更（例えば、<code>192.168.1.101/24</code>）し、ESXiのIPアドレスにブラウザで接続してください。ログインは、ユーザー名がroot、パスワードはセットアップで指定したものになります。</p>
 
     </div>
 

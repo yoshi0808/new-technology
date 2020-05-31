@@ -34,7 +34,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/vswitch3.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/vswitch4.png">
 <meta property="article:published_time" content="2020-03-01T00:30:49.000Z">
-<meta property="article:modified_time" content="2020-05-31T01:52:11.300Z">
+<meta property="article:modified_time" content="2020-05-31T12:20:37.542Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta property="article:tag" content="ESXi">
@@ -249,7 +249,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">編集日</span>
-                <time title="修正日：2020-05-31 10:52:11" itemprop="dateModified" datetime="2020-05-31T10:52:11+09:00">2020-05-31</time>
+                <time title="修正日：2020-05-31 21:20:37" itemprop="dateModified" datetime="2020-05-31T21:20:37+09:00">2020-05-31</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -286,13 +286,10 @@
             <p> 　物理NICが1つしかない場合は、XG Firewallのセットアップはできません。</p>
           </div>
 
-<h2 id="仮想環境におけるXG-Firewallの構成"><a href="#仮想環境におけるXG-Firewallの構成" class="headerlink" title="仮想環境におけるXG Firewallの構成"></a>仮想環境におけるXG Firewallの構成</h2><p>ESXiにおけるネットワークの構成は、物理NICと仮想スイッチとの関係を理解する事が必要です。以下の図のように、ESXiにおける物理NICはケーブルとして見立て、実際に仮想マシンが複数台存在する事を鑑み、ESXiの中にスイッチングハブが存在していると考えてください。</p>
+<h2 id="仮想環境上のFirewall向け構成"><a href="#仮想環境上のFirewall向け構成" class="headerlink" title="仮想環境上のFirewall向け構成"></a>仮想環境上のFirewall向け構成</h2><p>ESXiにおけるネットワークの構成は、物理NICと仮想スイッチとの関係を重要です。以下の図のように、ESXiにおける物理NICはケーブルとして見立て、実際に仮想マシンが複数台存在する事を鑑み、ESXiの中にスイッチングハブが存在していると考えてください。</p>
 <img src="/new-technology/2020/03/01/esxi-conf/vswitch.png" class="" title="alt">
 
-<div class="note info">
-            <p>便宜上、構成図にLinuxの仮想マシンを記載していますが、これまでのセットアップでは存在していません。</p>
-          </div>
-
+<p>※便宜上、一般的なホームユーザーの構成図としてLinuxの仮想マシンやWIFIアクセスポイント等を記載していますが、これまでのセットアップでは存在していません。また、XG Firewallのインストールに、LinuxやWIFIアクセスポイントは必要ありません。</p>
 <h2 id="セットアップ状況の確認"><a href="#セットアップ状況の確認" class="headerlink" title="セットアップ状況の確認"></a>セットアップ状況の確認</h2><p>ここまでのセットアップで、以下の構成になっています。</p>
 <ul>
 <li>物理NICであるvmnic0、vmnic1</li>
@@ -322,7 +319,7 @@
 <p>WAN側のネットワーク構成は以下の通りです。</p>
 <img src="/new-technology/2020/03/01/esxi-conf/vswitch4.png" class="" title="alt">
 
-<p>これで、ESXiのネットワーク設定は完了となります。面倒ですが、一旦またPCのネットワークを元に戻し、ホームゲートウェイに接続します。そしてXG Firewallのモジュールをダウンロードに進みます。</p>
+<p>これで、ESXiのネットワーク設定は完了となります。一旦PCのネットワークをホームゲートウェイに接続し、XG Firewallのモジュールをダウンロードしてください。</p>
 
     </div>
 
@@ -424,7 +421,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#この記事で実現すること"><span class="nav-number">1.</span> <span class="nav-text">この記事で実現すること</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ネットワークの確認"><span class="nav-number">2.</span> <span class="nav-text">ネットワークの確認</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#仮想環境におけるXG-Firewallの構成"><span class="nav-number">3.</span> <span class="nav-text">仮想環境におけるXG Firewallの構成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#セットアップ状況の確認"><span class="nav-number">4.</span> <span class="nav-text">セットアップ状況の確認</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WANの仮想スイッチの作成"><span class="nav-number">5.</span> <span class="nav-text">WANの仮想スイッチの作成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ネットワークポートの作成"><span class="nav-number">6.</span> <span class="nav-text">ネットワークポートの作成</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#この記事で実現すること"><span class="nav-number">1.</span> <span class="nav-text">この記事で実現すること</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ネットワークの確認"><span class="nav-number">2.</span> <span class="nav-text">ネットワークの確認</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#仮想環境上のFirewall向け構成"><span class="nav-number">3.</span> <span class="nav-text">仮想環境上のFirewall向け構成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#セットアップ状況の確認"><span class="nav-number">4.</span> <span class="nav-text">セットアップ状況の確認</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WANの仮想スイッチの作成"><span class="nav-number">5.</span> <span class="nav-text">WANの仮想スイッチの作成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ネットワークポートの作成"><span class="nav-number">6.</span> <span class="nav-text">ネットワークポートの作成</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

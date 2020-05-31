@@ -29,7 +29,7 @@
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/02/23/XG-Firewall/xg.png">
 <meta property="article:published_time" content="2020-02-23T00:57:41.000Z">
-<meta property="article:modified_time" content="2020-05-28T15:12:07.434Z">
+<meta property="article:modified_time" content="2020-05-31T12:41:35.212Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -243,7 +243,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">編集日</span>
-                <time title="修正日：2020-05-29 00:12:07" itemprop="dateModified" datetime="2020-05-29T00:12:07+09:00">2020-05-29</time>
+                <time title="修正日：2020-05-31 21:41:35" itemprop="dateModified" datetime="2020-05-31T21:41:35+09:00">2020-05-31</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -282,7 +282,7 @@
 <li>DNS/DHCP(IPv4,IPv6)</li>
 </ol>
 <p>細かな説明については、<a href="https://jscom.jp/wp-content/uploads/pamphlet_sophos_020pdf.pdf" target="_blank" rel="noopener">こちら</a>を参照してください。</p>
-<h2 id="XG-Firewall導入のメリット"><a href="#XG-Firewall導入のメリット" class="headerlink" title="XG Firewall導入のメリット"></a>XG Firewall導入のメリット</h2><ol>
+<h2 id="XG-Firewall導入メリット"><a href="#XG-Firewall導入メリット" class="headerlink" title="XG Firewall導入メリット"></a>XG Firewall導入メリット</h2><ol>
 <li>ドメイン単位にWebサイト毎のカテゴリがされているので、ギャンブルやゲーム、アダルトなどのカテゴリで禁止ルールを設定可能</li>
 <li>接続したくない国に対してアクセス制限ができる。Webブラウジングはもちろん、自宅にサーバーを建てた場合の接続元を日本からのみに絞る事も可能（IPv4のみ）</li>
 <li>IPS（Intrusion Prevention System）によるSSL通信の中身を検査できる</li>
@@ -290,10 +290,10 @@
 <li>VPNにおいてパスワード＋ワンタイムパスワードによる認証が可能（Windows、Mac、iOS、Android）</li>
 <li>エラーをフックし、メールでの通知が行える</li>
 </ol>
-<h2 id="XG-Firewall導入のデメリット"><a href="#XG-Firewall導入のデメリット" class="headerlink" title="XG Firewall導入のデメリット"></a>XG Firewall導入のデメリット</h2><ol>
-<li>新しいPCが必要（もちろん新品である必要はありませんが）。2枚のネットワークインタフェースが必要</li>
-<li>ネットのパフォーマンスが犠牲になる。回線帯域よりもレイテンシ（遅延）が大きくなると想定される</li>
-<li>XG Firewallによる保護はエンドポイントの保護を完全に不要にするものではないため、従来通りウィルス対策ソフトはインストールが必要（と考えています）</li>
+<h2 id="XG-Firewall導入の留意点"><a href="#XG-Firewall導入の留意点" class="headerlink" title="XG Firewall導入の留意点"></a>XG Firewall導入の留意点</h2><ol>
+<li>新しいPCが必要（新品である必要はありませんが）。2枚のネットワークインタフェースが必要</li>
+<li>ネットのパフォーマンスが犠牲になる。回線帯域よりもレイテンシ（遅延）が大きくなる</li>
+<li>XG Firewallによる保護はエンドポイントの保護を完全に不要にするものではないため、従来通りウィルス対策ソフト（Windows Defenderを含む）は必要</li>
 </ol>
 <p>システム要件は以下の通りとなっています（XG Firewallの<a href="https://www.sophos.com/ja-jp/products/free-tools/sophos-xg-firewall-home-edition.aspx" target="_blank" rel="noopener">ダウンロードページ</a>より引用）。</p>
 <blockquote>
@@ -429,7 +429,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#導入の背景"><span class="nav-number">1.</span> <span class="nav-text">導入の背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#主な機能"><span class="nav-number">2.</span> <span class="nav-text">主な機能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG-Firewall導入のメリット"><span class="nav-number">3.</span> <span class="nav-text">XG Firewall導入のメリット</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG-Firewall導入のデメリット"><span class="nav-number">4.</span> <span class="nav-text">XG Firewall導入のデメリット</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#導入の背景"><span class="nav-number">1.</span> <span class="nav-text">導入の背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#主な機能"><span class="nav-number">2.</span> <span class="nav-text">主な機能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG-Firewall導入メリット"><span class="nav-number">3.</span> <span class="nav-text">XG Firewall導入メリット</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG-Firewall導入の留意点"><span class="nav-number">4.</span> <span class="nav-text">XG Firewall導入の留意点</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

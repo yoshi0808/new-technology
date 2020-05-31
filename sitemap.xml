@@ -2,37 +2,65 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/03/06/InstallXG2/</loc>
+    <loc>https://yoshi0808.github.io/new-technology/2020/02/23/XG-Firewall/</loc>
     
-    <lastmod>2020-05-31T05:22:26.002Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection/</loc>
-    
-    <lastmod>2020-05-31T04:18:56.340Z</lastmod>
+    <lastmod>2020-05-31T12:41:35.212Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/03/06/InstallXG/</loc>
+    <loc>https://yoshi0808.github.io/new-technology/2020/02/25/provision/</loc>
     
-    <lastmod>2020-05-31T01:53:01.584Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/</loc>
-    
-    <lastmod>2020-05-31T01:52:11.300Z</lastmod>
+    <lastmod>2020-05-31T12:39:01.638Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/2020/02/29/esxi/</loc>
     
-    <lastmod>2020-05-31T01:51:23.947Z</lastmod>
+    <lastmod>2020-05-31T12:35:27.871Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/2020/03/14/rule-policy1/</loc>
+    
+    <lastmod>2020-05-31T12:26:26.745Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/2020/03/08/XG-MainPage/</loc>
+    
+    <lastmod>2020-05-31T12:23:00.280Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/</loc>
+    
+    <lastmod>2020-05-31T12:20:37.542Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/2020/03/06/InstallXG/</loc>
+    
+    <lastmod>2020-05-31T12:12:12.324Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/2020/03/06/InstallXG2/</loc>
+    
+    <lastmod>2020-05-31T12:11:41.449Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection/</loc>
+    
+    <lastmod>2020-05-31T11:30:57.125Z</lastmod>
     
   </url>
   
@@ -75,34 +103,6 @@
     <loc>https://yoshi0808.github.io/new-technology/2020/02/22/%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB/</loc>
     
     <lastmod>2020-05-28T15:15:48.720Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/02/23/XG-Firewall/</loc>
-    
-    <lastmod>2020-05-28T15:12:07.434Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/02/25/provision/</loc>
-    
-    <lastmod>2020-05-28T15:05:15.333Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/03/08/XG-MainPage/</loc>
-    
-    <lastmod>2020-05-28T14:36:22.248Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/03/14/rule-policy1/</loc>
-    
-    <lastmod>2020-05-28T14:26:45.451Z</lastmod>
     
   </url>
   
