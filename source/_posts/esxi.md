@@ -9,9 +9,9 @@ date: 2020-02-29 13:23:22
 ---
 {% note success  %}
 
-## この記事で実現する内容について
+## この記事で実現すること
 
-　XG Firewall v18をVMware ESXi上で稼働させるために、VMware Esxi6.7をインストール出来るようになります。
+　XG Firewall v18をVMware ESXi上で稼働させるために、VMware ESXi 6.7をインストールします。
 
 {% endnote %}
 
@@ -19,7 +19,7 @@ date: 2020-02-29 13:23:22
 
 ## インストールの前に
 
- XG Firewallの導入に必須というわけではないですが、バックアップや異なるバージョンの同居など色々便利なので、仮想環境（ESXi）を構築しその上にXGをインストールします。このホームユーザー向け（無償版）ESXiのインストールに関するドキュメントは正直解りやすい場所に掲載されてないのですが、[VMWareのブログ](https://blogs.vmware.com/jp-cim/2014/05/vspherehypervisor.html "vmware")から辿ると良いです。
+ XG Firewallの導入に必須ではないですが、バックアップや異なるバージョンの同居など色々便利なので、仮想環境（ESXi）を構築しその上にXGをインストールします。このホームユーザー向け（無償版）ESXiのインストールに関するドキュメントは、[VMWareのブログ](https://blogs.vmware.com/jp-cim/2014/05/vspherehypervisor.html "vmware")から辿ってください。
 <!-- more -->
 
 ## 準備

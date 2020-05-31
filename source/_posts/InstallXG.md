@@ -9,9 +9,9 @@ categories:
 ---
 {% note success  %}
 
-## この記事で実現する内容について
+## この記事で実現すること
 
-Firewall v18をESXi（V6.7）で稼働させるためのインストールイメージ（isoファイル）をダウンロードし、ESXi上で、XGのための仮想マシンを構築できるようになります。
+Firewall v18をESXi 6.7で稼働させるためのインストールイメージ（isoファイル）をダウンロードし、ESXi上で、XGのための仮想マシンを構築できるようになります。
 
 {% endnote %}
 
@@ -25,7 +25,7 @@ Sophosのサイトの[（無償ツール）](https://www.sophos.com/ja-jp/produc
 （4月4日追記）
 Sophosのサイトを確認したところ、現時点でもデフォルトのダウンロードはv17.5.10_MR10となっています。v18については、新しいファームウェアが出ており、[GA-build354のリリース](https://community.sophos.com/products/xg-firewall/b/blog/posts/xg-firewall-v18-ga_2d00_build354-is-now-available)が出ています。"SW-18.0.0_GA-Build354-354.iso"をダウンロードしてください。
 
-いつも使っているPC（Windowsなど）から、ESXi管理画面にログインします。ESXiの管理画面の左ペインのストレージからデフォルトのストレージである、datastore1を選択し、データストアブラウザをクリックして下さい。次にアップロードボタンをクリックし、ダウンロードされた"SW-18.0.0_GA-Build321-321.iso"ファイルをアップロードして下さい。
+クライアントPC（Windowsなど）から、ESXi管理画面にログインします。ESXiの管理画面の左ペインのストレージからデフォルトのストレージである、datastore1を選択し、データストアブラウザをクリックして下さい。次にアップロードボタンをクリックし、ダウンロードされた"SW-18.0.0_GA-Build321-321.iso"ファイルをアップロードして下さい。
 
 {% asset_img datastore.png alt %}
  　
