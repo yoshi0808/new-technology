@@ -29,7 +29,7 @@ Sophosのサイトを確認したところ、現時点でもデフォルトの�
 
 {% asset_img datastore.png alt %}
  　
-## XG Firewall仮想マシンの作成
+## 仮想マシンの作成
  　
 ここから仮想マシンの初期設定です。
 
