@@ -318,6 +318,33 @@ XGFirewall-- "192.168.0.0/24" ---HGW
       </tags>
   </entry>
   <entry>
+    <title>XG Firewall Sophos Communityについて</title>
+    <url>/new-technology/2020/03/26/SophosCommunity/</url>
+    <content><![CDATA[<h2 id="Sophos-Communityで情報を調べる"><a href="#Sophos-Communityで情報を調べる" class="headerlink" title="Sophos Communityで情報を調べる"></a>Sophos Communityで情報を調べる</h2><p>XG Firewall Home EditionはSophosによるサポートがなく、ユーザコミュニティの相互サポートによって成り立っています。そもそもこんなに素晴らしいソフトウェアが無料なのですから、それだけでも感謝すべき事ではありますが。サポートサイトは英語が中心ですが、セキュリティに関するビジネスをしている方とかも積極的に参加しているようで、勉強になります。</p>
+<blockquote>
+<p><a href="https://community.sophos.com/" target="_blank" rel="noopener">Sophos Community（英語）</a></p>
+</blockquote>
+<a id="more"></a>
+<p>さて、直接XGの話ではありませんが、ここ数日話題になっているドイツ製翻訳ソフトの<span class="label default">DeepL</span>が素晴らしいです。私はGoogle翻訳をずっと使っていましたが、こちらも使い勝手が良く便利です。<br>Windows、macOSのアプリケーションとしてインストールする事が出来ます。利用は無償（高機能な有償のpro版もあります）で、例えばブラウザで翻訳箇所を選択しCtrl+c(macはcommand+c)を2回押下するとDeepLが起動し、英訳と日本語が併記されます。</p>
+<p>DeepLのダウンロードは<a href="https://www.deepl.com/app" target="_blank" rel="noopener">こちら</a>です。</p>
+<p>これまで私がブログで書いてきたV18のSSL/TLSインスペクションですが、情報がたくさんあります。このブログで全てを説明するのは到底無理があります。Communityの素晴らしい知見を活用すべく、活用してみてください。</p>
+<blockquote>
+<p><a href="https://community.sophos.com/products/xg-firewall/f/recommended-reads/118753/sophos-xg-firewall-v18-troubleshooting-problems-with-the-dpi-engine" target="_blank" rel="noopener">Sophos XG Firewall v18: DPI エンジンのトラブルシューティング</a></p>
+</blockquote>
+<p>アプリでCtrl+cを2回押下して先頭部分の抜粋を抜粋します。</p>
+<img src="/new-technology/2020/03/26/SophosCommunity/community.png" class="" title="alt">
+
+<p>ぜひ、翻訳ソフトのDeepLを活用しながら、XGやSSLインスペクションの理解を深めてください。</p>
+]]></content>
+      <categories>
+        <category>Security</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+        <tag>DeepL</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Sophos XG Firewallの導入</title>
     <url>/new-technology/2020/02/23/XG-Firewall/</url>
     <content><![CDATA[<h2 id="導入の背景"><a href="#導入の背景" class="headerlink" title="導入の背景"></a>導入の背景</h2><p>元々、家庭用の無線ルータだけではセキュリティが不足していると考えていました。数年前よりランサムウェア等の脅威が出てきた事で、それなりの対策が必要と感じてきました。街のWIFIからも自宅のリソースに安全に接続したり、家のサーバーを踏み台にしてネットに繋げたいという欲も出てきて、今度はVPNが欲しいなと思い始めました。</p>
@@ -389,33 +416,6 @@ XGFirewall-- "192.168.0.0/24" ---HGW
       </categories>
       <tags>
         <tag>XG Firewall</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>XG Firewall Sophos Communityについて</title>
-    <url>/new-technology/2020/03/26/SophosCommunity/</url>
-    <content><![CDATA[<h2 id="Sophos-Communityで情報を調べる"><a href="#Sophos-Communityで情報を調べる" class="headerlink" title="Sophos Communityで情報を調べる"></a>Sophos Communityで情報を調べる</h2><p>XG Firewall Home EditionはSophosによるサポートがなく、ユーザコミュニティの相互サポートによって成り立っています。そもそもこんなに素晴らしいソフトウェアが無料なのですから、それだけでも感謝すべき事ではありますが。サポートサイトは英語が中心ですが、セキュリティに関するビジネスをしている方とかも積極的に参加しているようで、勉強になります。</p>
-<blockquote>
-<p><a href="https://community.sophos.com/" target="_blank" rel="noopener">Sophos Community（英語）</a></p>
-</blockquote>
-<a id="more"></a>
-<p>さて、直接XGの話ではありませんが、ここ数日話題になっているドイツ製翻訳ソフトの<span class="label default">DeepL</span>が素晴らしいです。私はGoogle翻訳をずっと使っていましたが、こちらも使い勝手が良く便利です。<br>Windows、macOSのアプリケーションとしてインストールする事が出来ます。利用は無償（高機能な有償のpro版もあります）で、例えばブラウザで翻訳箇所を選択しCtrl+c(macはcommand+c)を2回押下するとDeepLが起動し、英訳と日本語が併記されます。</p>
-<p>DeepLのダウンロードは<a href="https://www.deepl.com/app" target="_blank" rel="noopener">こちら</a>です。</p>
-<p>これまで私がブログで書いてきたV18のSSL/TLSインスペクションですが、情報がたくさんあります。このブログで全てを説明するのは到底無理があります。Communityの素晴らしい知見を活用すべく、活用してみてください。</p>
-<blockquote>
-<p><a href="https://community.sophos.com/products/xg-firewall/f/recommended-reads/118753/sophos-xg-firewall-v18-troubleshooting-problems-with-the-dpi-engine" target="_blank" rel="noopener">Sophos XG Firewall v18: DPI エンジンのトラブルシューティング</a></p>
-</blockquote>
-<p>アプリでCtrl+cを2回押下して先頭部分の抜粋を抜粋します。</p>
-<img src="/new-technology/2020/03/26/SophosCommunity/community.png" class="" title="alt">
-
-<p>ぜひ、翻訳ソフトのDeepLを活用しながら、XGやSSLインスペクションの理解を深めてください。</p>
-]]></content>
-      <categories>
-        <category>Security</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-        <tag>DeepL</tag>
       </tags>
   </entry>
   <entry>
@@ -1397,86 +1397,6 @@ Note over cl: 16.共通鍵で復号
       </tags>
   </entry>
   <entry>
-    <title>XG Firewall v18のSSLインスペクションの動作確認と調整</title>
-    <url>/new-technology/2020/03/21/ssl-inspection2/</url>
-    <content><![CDATA[<div class="note success">
-            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>XG FirewallのSSL/TLSインスペクションが有効に機能している事をテストマルウェアを使い検証します。また、SSLインスペクションによってサイトによっては接続出来なくなる場合があり、これを除外する方法を確認します。</p>
-          </div>
-<a id="more"></a>
-
-<h2 id="SSL-TLSインスペクションの動作確認"><a href="#SSL-TLSインスペクションの動作確認" class="headerlink" title="SSL/TLSインスペクションの動作確認"></a>SSL/TLSインスペクションの動作確認</h2><p>前回までの記事でXGのSSLインスペクションの設定が完了している事を前提にしています。過去の記事は以下をご覧ください。</p>
-<ul>
-<li><a href="/new-technology/2020/03/20/ssl-inspection/" title="XG Firewall v18のSSLインスペクションについて">XG Firewall v18のSSLインスペクションについて</a></li>
-<li><a href="/new-technology/2020/03/20/ssl-inspection1/" title="XG Firewall v18のSSLインスペクションの設定">XG Firewall v18のSSLインスペクションの設定</a>
-
-</li>
-</ul>
-<p>IPS（Intrusion Prevension System）によるSSLインスペクションでの動作確認のため、テストマルウェアの検知について行います。有名どころでは、<a href="https://www.eicar.org/" target="_blank" rel="noopener">eicar</a>のテストマルウェアが挙げられます。早速、ダウンロードページにまいりましょう。<a href="https://2016.eicar.org/85-0-Download.html" target="_blank" rel="noopener">eicarのダウンロードページ</a>に行くと、「IMPORTANT NOTE」とhttp、httpsの以下それぞれの種類の合計8つのダウンロードリンクがあります。</p>
-<img src="/new-technology/2020/03/21/ssl-inspection2/eicar.png" class="" title="alt">
-
-<ol>
-<li>実行ファイル</li>
-<li>実行ファイルをtxtに拡張子を変えたもの</li>
-<li>zipに圧縮したもの</li>
-<li>zipの二重圧縮</li>
-</ol>
-<p>実行ファイルについては、マルウェアを検知する前にXGのポリシーによって、実行ファイルをダウンロード出来ないという表示になる可能性があります。その際はWebのポリシーで修正するか、ルールとポリシーを修正し実行ファイルを一時的に許可し、確認してみて下さい。前回までの記事で記載してきた通り、SSLインスペクションが行えるクライアントと行えないクライアントで挙動は変わります。</p>
-<p>SSLインスペクションが行えるクライアントは、この8つを全て検出し、ブラウザにはXGによるマルウェア検知のエラー画面が表示されます。PCに入っているウィルス対策ソフトが検知する以前にダウンロードは行わない挙動となります。また、SSLインスペクション対象外のクライアントからのアクセスについてはhttpのものは検出できますが、httpsのダウンロードはマルウェアを検出できません。</p>
-<p>IPSは速度と検出能力という相反する事を同時に成り立たせなくてはいけません。上記のようにマルウェアの検出は可能ですが、あくまで通信で怪しいものをカットする程度に考え、クライアントにはウィルス対策ソフト（Windows Defenderを含む）やマルウェア対策ソフトの導入をお勧めします。Sophosはホームユーザー向けに無償のウィルス対策ソフトを提供していますが、個人的には異なる会社のソフトを組み合わせて使う事をお勧めします。</p>
-<h2 id="SSL-TLSインスペクションの除外設定"><a href="#SSL-TLSインスペクションの除外設定" class="headerlink" title="SSL/TLSインスペクションの除外設定"></a>SSL/TLSインスペクションの除外設定</h2><p>XGでは、Webフィルターやアプリケーションフィルターなどのポリシーで接続を拒否しますが、それ以外の理由で接続できないという問題も発生します。</p>
-<ol>
-<li>TLSが正当ではないと判断される</li>
-<li>XGの証明書がアプリケーションに認められない</li>
-</ol>
-<p>上記1については、XGの画面右上にログビューアというものがあるのでビューアからSSL/TLSインスペクションを選択します。私の環境では、norton.comが該当しています。TLSでエラーログが出力されていて、当該ドメインが安全と判断をするなら、以下の例外処置が行えます。Web→URLグループの”Local TLS Exclusion List”にドメインを追加する事でSSLインスペクションが行われません。以下の通り、SSLインスペクションルール画面では、デフォルトの除外項目に”Local TLS Exclusion List”が含まれています。</p>
-<img src="/new-technology/2020/03/21/ssl-inspection2/inspection-rule.png" class="" title="alt">
-<img src="/new-technology/2020/03/21/ssl-inspection2/inspection-rule1.png" class="" title="alt">
-
-<p>もう1つは対応が少し難しいのですが、アプリケーション自体が、OSにインストールされた証明書などを認めていないケースです。こちらはアプリケーションの内部に証明書を保持しており、その証明書の正当性を確認しているケースです。以下の例ではpython関連のモジュールをアップグレードするケースで以下のエラーが発生します。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt;pip3 install --upgrade pip</span><br><span class="line"></span><br><span class="line">WARNING: Retrying (Retry(total=4, connect=None, <span class="built_in">read</span>=None, redirect=None, status=None))</span><br><span class="line">after connection broken by <span class="string">'SSLError(SSLCertVerificationError(1,  </span></span><br><span class="line"><span class="string">'</span>[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get <span class="built_in">local</span> issuer certificate (_ssl.c:1076)<span class="string">'))'</span>: /simple/pip/</span><br></pre></td></tr></table></figure>
-
-<p>上記のように、この場合は当該ドメインのSSLインスペクションを外す事になりますが、どのドメインかが分からないという難しさがあります。この場合は色々調べなくてはなりません。あくまで一例ですが除外しておいた方が良いドメインを列挙してみます。</p>
-<table>
-<thead>
-<tr>
-<th>ドメイン</th>
-<th>内容</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>pypi.org, pythonhosted.org</td>
-<td>Python関連</td>
-</tr>
-<tr>
-<td>npmjs.org</td>
-<td>Node.js関連</td>
-</tr>
-<tr>
-<td>github.com</td>
-<td>GitHub</td>
-</tr>
-<tr>
-<td>auone.jp, paypay.ne.jp, merpay.com</td>
-<td>〜pay関連</td>
-</tr>
-<tr>
-<td>norton.com</td>
-<td>Norton AntiVirus関連</td>
-</tr>
-<tr>
-<td>d.line-scdn.net</td>
-<td>LINE動画</td>
-</tr>
-</tbody></table>
-]]></content>
-      <categories>
-        <category>Security</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>XG Firewall v18のSSLインスペクションの設定</title>
     <url>/new-technology/2020/03/20/ssl-inspection1/</url>
     <content><![CDATA[<div class="note success">
@@ -1563,6 +1483,86 @@ Note over cl: 16.共通鍵で復号
 <img src="/new-technology/2020/03/20/ssl-inspection1/installed_cert1.png" class="" title="alt">
 
 <p>これで証明書のインストールは完了です。この証明書のインストールがXG Firewallの設定で一番大切な部分です。</p>
+]]></content>
+      <categories>
+        <category>Security</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>XG Firewall v18のSSLインスペクションの動作確認と調整</title>
+    <url>/new-technology/2020/03/21/ssl-inspection2/</url>
+    <content><![CDATA[<div class="note success">
+            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>XG FirewallのSSL/TLSインスペクションが有効に機能している事をテストマルウェアを使い検証します。また、SSLインスペクションによってサイトによっては接続出来なくなる場合があり、これを除外する方法を確認します。</p>
+          </div>
+<a id="more"></a>
+
+<h2 id="SSL-TLSインスペクションの動作確認"><a href="#SSL-TLSインスペクションの動作確認" class="headerlink" title="SSL/TLSインスペクションの動作確認"></a>SSL/TLSインスペクションの動作確認</h2><p>前回までの記事でXGのSSLインスペクションの設定が完了している事を前提にしています。過去の記事は以下をご覧ください。</p>
+<ul>
+<li><a href="/new-technology/2020/03/20/ssl-inspection/" title="XG Firewall v18のSSLインスペクションについて">XG Firewall v18のSSLインスペクションについて</a></li>
+<li><a href="/new-technology/2020/03/20/ssl-inspection1/" title="XG Firewall v18のSSLインスペクションの設定">XG Firewall v18のSSLインスペクションの設定</a>
+
+</li>
+</ul>
+<p>IPS（Intrusion Prevension System）によるSSLインスペクションでの動作確認のため、テストマルウェアの検知について行います。有名どころでは、<a href="https://www.eicar.org/" target="_blank" rel="noopener">eicar</a>のテストマルウェアが挙げられます。早速、ダウンロードページにまいりましょう。<a href="https://2016.eicar.org/85-0-Download.html" target="_blank" rel="noopener">eicarのダウンロードページ</a>に行くと、「IMPORTANT NOTE」とhttp、httpsの以下それぞれの種類の合計8つのダウンロードリンクがあります。</p>
+<img src="/new-technology/2020/03/21/ssl-inspection2/eicar.png" class="" title="alt">
+
+<ol>
+<li>実行ファイル</li>
+<li>実行ファイルをtxtに拡張子を変えたもの</li>
+<li>zipに圧縮したもの</li>
+<li>zipの二重圧縮</li>
+</ol>
+<p>実行ファイルについては、マルウェアを検知する前にXGのポリシーによって、実行ファイルをダウンロード出来ないという表示になる可能性があります。その際はWebのポリシーで修正するか、ルールとポリシーを修正し実行ファイルを一時的に許可し、確認してみて下さい。前回までの記事で記載してきた通り、SSLインスペクションが行えるクライアントと行えないクライアントで挙動は変わります。</p>
+<p>SSLインスペクションが行えるクライアントは、この8つを全て検出し、ブラウザにはXGによるマルウェア検知のエラー画面が表示されます。PCに入っているウィルス対策ソフトが検知する以前にダウンロードは行わない挙動となります。また、SSLインスペクション対象外のクライアントからのアクセスについてはhttpのものは検出できますが、httpsのダウンロードはマルウェアを検出できません。</p>
+<p>IPSは速度と検出能力という相反する事を同時に成り立たせなくてはいけません。上記のようにマルウェアの検出は可能ですが、あくまで通信で怪しいものをカットする程度に考え、クライアントにはウィルス対策ソフト（Windows Defenderを含む）やマルウェア対策ソフトの導入をお勧めします。Sophosはホームユーザー向けに無償のウィルス対策ソフトを提供していますが、個人的には異なる会社のソフトを組み合わせて使う事をお勧めします。</p>
+<h2 id="SSL-TLSインスペクションの除外設定"><a href="#SSL-TLSインスペクションの除外設定" class="headerlink" title="SSL/TLSインスペクションの除外設定"></a>SSL/TLSインスペクションの除外設定</h2><p>XGでは、Webフィルターやアプリケーションフィルターなどのポリシーで接続を拒否しますが、それ以外の理由で接続できないという問題も発生します。</p>
+<ol>
+<li>TLSが正当ではないと判断される</li>
+<li>XGの証明書がアプリケーションに認められない</li>
+</ol>
+<p>上記1については、XGの画面右上にログビューアというものがあるのでビューアからSSL/TLSインスペクションを選択します。私の環境では、norton.comが該当しています。TLSでエラーログが出力されていて、当該ドメインが安全と判断をするなら、以下の例外処置が行えます。Web→URLグループの”Local TLS Exclusion List”にドメインを追加する事でSSLインスペクションが行われません。以下の通り、SSLインスペクションルール画面では、デフォルトの除外項目に”Local TLS Exclusion List”が含まれています。</p>
+<img src="/new-technology/2020/03/21/ssl-inspection2/inspection-rule.png" class="" title="alt">
+<img src="/new-technology/2020/03/21/ssl-inspection2/inspection-rule1.png" class="" title="alt">
+
+<p>もう1つは対応が少し難しいのですが、アプリケーション自体が、OSにインストールされた証明書などを認めていないケースです。こちらはアプリケーションの内部に証明書を保持しており、その証明書の正当性を確認しているケースです。以下の例ではpython関連のモジュールをアップグレードするケースで以下のエラーが発生します。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt;pip3 install --upgrade pip</span><br><span class="line"></span><br><span class="line">WARNING: Retrying (Retry(total=4, connect=None, <span class="built_in">read</span>=None, redirect=None, status=None))</span><br><span class="line">after connection broken by <span class="string">'SSLError(SSLCertVerificationError(1,  </span></span><br><span class="line"><span class="string">'</span>[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get <span class="built_in">local</span> issuer certificate (_ssl.c:1076)<span class="string">'))'</span>: /simple/pip/</span><br></pre></td></tr></table></figure>
+
+<p>上記のように、この場合は当該ドメインのSSLインスペクションを外す事になりますが、どのドメインかが分からないという難しさがあります。この場合は色々調べなくてはなりません。あくまで一例ですが除外しておいた方が良いドメインを列挙してみます。</p>
+<table>
+<thead>
+<tr>
+<th>ドメイン</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>pypi.org, pythonhosted.org</td>
+<td>Python関連</td>
+</tr>
+<tr>
+<td>npmjs.org</td>
+<td>Node.js関連</td>
+</tr>
+<tr>
+<td>github.com</td>
+<td>GitHub</td>
+</tr>
+<tr>
+<td>auone.jp, paypay.ne.jp, merpay.com</td>
+<td>〜pay関連</td>
+</tr>
+<tr>
+<td>norton.com</td>
+<td>Norton AntiVirus関連</td>
+</tr>
+<tr>
+<td>d.line-scdn.net</td>
+<td>LINE動画</td>
+</tr>
+</tbody></table>
 ]]></content>
       <categories>
         <category>Security</category>
@@ -1930,15 +1930,6 @@ Note over cl: 16.共通鍵で復号
       </tags>
   </entry>
   <entry>
-    <title>はじめに</title>
-    <url>/new-technology/2020/02/22/%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB/</url>
-    <content><![CDATA[<p>ホームユーザーのITを中心にポストしていきたいと考えてます。これまでの自身の仕事はプログラミング・ネットワーク・サーバ構築・セキュリティと、広く浅くITに関わってきました。エンジニアとしての仕事からは最近かなり遠ざかってますが、自分なりに新しい技術の習得も兼ねて、ブログ形式で掲載していきます。</p>
-<a id="more"></a>
-
-<p>単純にインストールして「できました」ではなく、導入後のITの使い方こそが重要です。最近は個人利用に限り利用無償のソフトウェアが増えてきました。また、商用利用であっても無償となるオープンソースソフトウェアの活用も見逃せません。これは大変ありがたい話で、座学ではなかなか理解が進まない固有技術であっても、こういった無料のプロダクトを通じて知見を高める事が可能となっています。私自身実務でITに関わっていますが、実務とは少し距離を置いたところで、自己啓発と家庭向けのIT活用を考えていきます。</p>
-]]></content>
-  </entry>
-  <entry>
     <title>XG FirewallでIPv6の設定を行う（後半）</title>
     <url>/new-technology/2020/04/29/xg-ipv6-2/</url>
     <content><![CDATA[<div class="note success">
@@ -2075,5 +2066,14 @@ Note over cl: 16.共通鍵で復号
         <tag>XG Firewall</tag>
         <tag>IPv6</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>はじめに</title>
+    <url>/new-technology/2020/02/22/%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB/</url>
+    <content><![CDATA[<p>ホームユーザーのITを中心にポストしていきたいと考えてます。これまでの自身の仕事はプログラミング・ネットワーク・サーバ構築・セキュリティと、広く浅くITに関わってきました。エンジニアとしての仕事からは最近かなり遠ざかってますが、自分なりに新しい技術の習得も兼ねて、ブログ形式で掲載していきます。</p>
+<a id="more"></a>
+
+<p>単純にインストールして「できました」ではなく、導入後のITの使い方こそが重要です。最近は個人利用に限り利用無償のソフトウェアが増えてきました。また、商用利用であっても無償となるオープンソースソフトウェアの活用も見逃せません。これは大変ありがたい話で、座学ではなかなか理解が進まない固有技術であっても、こういった無料のプロダクトを通じて知見を高める事が可能となっています。私自身実務でITに関わっていますが、実務とは少し距離を置いたところで、自己啓発と家庭向けのIT活用を考えていきます。</p>
+]]></content>
   </entry>
 </search>
