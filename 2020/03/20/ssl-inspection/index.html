@@ -29,7 +29,7 @@
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection/ssl-inspection.png">
 <meta property="article:published_time" content="2020-03-20T05:23:53.000Z">
-<meta property="article:modified_time" content="2020-05-30T12:25:03.412Z">
+<meta property="article:modified_time" content="2020-05-31T04:18:56.340Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -243,7 +243,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">編集日</span>
-                <time title="修正日：2020-05-30 21:25:03" itemprop="dateModified" datetime="2020-05-30T21:25:03+09:00">2020-05-30</time>
+                <time title="修正日：2020-05-31 13:18:56" itemprop="dateModified" datetime="2020-05-31T13:18:56+09:00">2020-05-31</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -287,19 +287,19 @@ participant sv as Webサーバー
 cl ->>+ xg : 1.Webサーバーへの接続
 xg ->>+ sv : 2.Webサーバーへの接続
 sv -->>- xg : 3.サーバー証明書と<br>公開鍵を送付
-Note right of xg: 4.サーバー証明書に紐づくルート証明書で<br>サーバー証明書の正当性を検証
+Note over xg: 4.サーバー証明書に紐づくルート証明書で<br>サーバー証明書の正当性を検証
 xg -->>- cl : 5.XGのサーバー証明書と公開鍵を送付
-Note right of cl: 6.XGのルート証明書でXGの証明書の正当性を検証
-Note right of cl: 7.一時的な共通鍵を作成し、XGの公開鍵で暗号化
+Note over cl: 6.XGのルート証明書でXGの証明書の正当性を検証
+Note over cl: 7.一時的な共通鍵を作成し、XGの公開鍵で暗号化
 cl ->>+ xg : 8.暗号化された共通鍵を送信
-Note right of xg: 9.XGの秘密鍵で復号化、共通鍵を取得
-Note right of xg : 10.共通鍵をWebサーバーの公開鍵で暗号化
+Note over xg: 9.XGの秘密鍵で復号化、共通鍵を取得
+Note over xg : 10.共通鍵をWebサーバーの公開鍵で暗号化
 xg ->>+ sv : 11.暗号化された共通鍵を送信
 sv -->>- xg : 12.共通鍵で暗号化されたデータの送信
-Note right of xg: 13.共通鍵で復号
-Note right of xg: 14.コンテンツの中身の検証
+Note over xg: 13.共通鍵で復号
+Note over xg: 14.コンテンツの中身の検証
 xg -->>- cl : 15.共通鍵で暗号化されたデータの送信
-Note right of cl: 16.共通鍵で復号
+Note over cl: 16.共通鍵で復号
 
           </pre>
 
