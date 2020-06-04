@@ -29,7 +29,7 @@
     "hexo-renderer-marked": "^2.0.0",
     "hexo-renderer-stylus": "^1.1.0",
     "hexo-server": "^1.0.0",
-    "hexo-tag-link-preview": "^1.2.3"
+    "hexo-tag-link-preview": "^1.2.4"
   },
   "devDependencies": {
     "textlint": "^11.6.3",
