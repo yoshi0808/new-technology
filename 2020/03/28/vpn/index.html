@@ -336,7 +336,7 @@
 <img src="/new-technology/2020/03/28/vpn/vpn2.png" class="" title="alt">
 
 <p>適用ボタンをクリックすると、”これにより、同じローカルピアとリモートピア間で設定したすべての接続の事前共有鍵が更新されます。続行してもよいですか？”と表示されます。OKをクリックすれば、VPNが有効になります。</p>
-<h2 id="XG側のFirewallルールの確認"><a href="#XG側のFirewallルールの確認" class="headerlink" title="XG側のFirewallルールの確認"></a>XG側のFirewallルールの確認</h2><p>上記で設定したVPNがFirewallのルールに登録されている事を確認します。SSLインスペクションが入ると難しくなるので、まずはこの記事ではVPNとWANの接続を優先に考え設定します。以前の記事<a href="/new-technology/2020/03/14/rule-policy2/" title="XG Firewall v18のOutboundルールを新規作成する">XG Firewall v18のOutboundルールを新規作成する</a>で、デフォルトのルール「To_Internet」を作成しました。ルールについて、以下の図のように<span class="label default">送信元ゾーン</span>が、LANとVPNとなっている事を確認してください。</p>
+<h2 id="XG側のFirewallルールの確認"><a href="#XG側のFirewallルールの確認" class="headerlink" title="XG側のFirewallルールの確認"></a>XG側のFirewallルールの確認</h2><p>上記で設定したVPNがFirewallのルールに登録されている事を確認します。SSLインスペクションが入ると難しくなるので、まずはこの記事ではVPNとWANの接続を優先に考え設定します。以前の記事<a href="/new-technology/2020/03/14/rule-policy2/" title="XG Firewall v18のルールを作成する">XG Firewall v18のルールを作成する</a>で、デフォルトのルール「To_Internet」を作成しました。ルールについて、以下の図のように<span class="label default">送信元ゾーン</span>が、LANとVPNとなっている事を確認してください。</p>
 <img src="/new-technology/2020/03/28/vpn/rule1.png" class="" title="alt">
 
 <p>続いて、VPNからLANへのルールを作成します。NATは使わず全てのトラフィックを通過させるものです。以下の通り、送信元ゾーンはVPN、宛先ゾーンはLANのルールを設定します。</p>

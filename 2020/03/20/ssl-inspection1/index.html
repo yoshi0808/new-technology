@@ -288,7 +288,7 @@
 <p>ここは個人の「決め」ですが、上記で証明書がインストール出来るグループを”IPホスト”としてXGに登録しましょう。左ペインの<span class="label default">ホストとサービス</span>から、IPホストのタブをクリックし追加ボタンをクリックします。以下の通り、ホストのIPの範囲を示す名前を入力し、IPの範囲を入力して保存ボタンをクリックします。ここでは、<span class="label default">CA_Client_IPv4</span>として登録する事にします。</p>
 <img src="/new-technology/2020/03/20/ssl-inspection1/host1.png" class="" title="alt">
 
-<h2 id="ファイアウォールルールの設定（確認）"><a href="#ファイアウォールルールの設定（確認）" class="headerlink" title="ファイアウォールルールの設定（確認）"></a>ファイアウォールルールの設定（確認）</h2><p>左ペインのルールとポリシーからルールとポリシーを選択します。以前の記事、<a href="/new-technology/2020/03/14/rule-policy2/" title="XG Firewall v18のOutboundルールを新規作成する">XG Firewall v18のOutboundルールを新規作成する</a>で、デフォルトのルール”To_Internet”を作成しました。<span class="label default">Traffic to WAN</span>のグループ配下に”To_Internet”ルールがある事を確認してください。このファイアウォールルールはLANおよびVPNからWANへの接続を許可するシンプルなものですが、今回これは修正しません。XG V18では、SSLインスペクションとファイアウォールルールは互いに独立していて、別メニューで設定を行う事になります。</p>
+<h2 id="ファイアウォールルールの設定（確認）"><a href="#ファイアウォールルールの設定（確認）" class="headerlink" title="ファイアウォールルールの設定（確認）"></a>ファイアウォールルールの設定（確認）</h2><p>左ペインのルールとポリシーからルールとポリシーを選択します。以前の記事、<a href="/new-technology/2020/03/14/rule-policy2/" title="XG Firewall v18のルールを作成する">XG Firewall v18のルールを作成する</a>で、デフォルトのルール”To_Internet”を作成しました。<span class="label default">Traffic to WAN</span>のグループ配下に”To_Internet”ルールがある事を確認してください。このファイアウォールルールはLANおよびVPNからWANへの接続を許可するシンプルなものですが、今回これは修正しません。XG V18では、SSLインスペクションとファイアウォールルールは互いに独立していて、別メニューで設定を行う事になります。</p>
 <h2 id="SSL-TLSインスペクションルールの設定"><a href="#SSL-TLSインスペクションルールの設定" class="headerlink" title="SSL/TLSインスペクションルールの設定"></a>SSL/TLSインスペクションルールの設定</h2><p>ここで、SSLインスペクショングループと非SSLインスペクショングループとの明確化を行います。左ペインのルールとポリシーからSSL/TLSインスペクションルールをクリックします。</p>
 <ol>
 <li>画面右側の追加ボタンをクリックします</li>
