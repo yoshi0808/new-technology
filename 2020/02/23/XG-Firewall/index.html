@@ -29,7 +29,7 @@
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/02/23/XG-Firewall/xg.png">
 <meta property="article:published_time" content="2020-02-23T00:57:41.000Z">
-<meta property="article:modified_time" content="2020-05-31T12:41:35.212Z">
+<meta property="article:modified_time" content="2020-06-14T01:53:50.561Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -243,7 +243,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">編集日</span>
-                <time title="修正日：2020-05-31 21:41:35" itemprop="dateModified" datetime="2020-05-31T21:41:35+09:00">2020-05-31</time>
+                <time title="修正日：2020-06-14 10:53:50" itemprop="dateModified" datetime="2020-06-14T10:53:50+09:00">2020-06-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -269,7 +269,7 @@
         <h2 id="導入の背景"><a href="#導入の背景" class="headerlink" title="導入の背景"></a>導入の背景</h2><p>元々、家庭用の無線ルータだけではセキュリティが不足していると考えていました。数年前よりランサムウェア等の脅威が出てきた事で、それなりの対策が必要と感じてきました。街のWIFIからも自宅のリソースに安全に接続したり、家のサーバーを踏み台にしてネットに繋げたいという欲も出てきて、今度はVPNが欲しいなと思い始めました。</p>
 <a id="more"></a>
 <p>そもそも、iCloudかOneDriveあたりにファイルを置いておけばいいんですが、漏洩よりも万が一のロストが不安です。それなりの容量だと、クラウドのお金も掛かります。オンプレの場合は盗難や火事というリスクもあり、人によって考え方は異なりますが、利便性と安全性のバランスを取る事を目指す事になるのでしょう。個人のセキュリティというものは、ビジネスにおけるリスクを極限まで抑制するという考えではなく、何かプラス α の安心感を求める程度という目線を目指す事になるのかと考えています。Sophos社が提供する<a href="https://www.sophos.com/ja-jp/products/free-tools.aspx" target="_blank" rel="noopener">Sophos XG Firewall Home Edition</a>は、業務用ながらホームユーザーには無料という事もあって、最良のセキュリティ防御の手段と考えています。かれこれ1年半くらいでしょうか。ずっと使わせてもらってます。</p>
-<p>V18が発表されて、大幅に機能強化されたのは良かったのですが、高度化に伴い設定方法が難しくなってしまいました。こんなに高機能なものを無料で使わせて頂いてるのだから、何か貢献すべきと考え、設定内容等を公開していく事にしました。スキマ時間に書いているのでスピードが遅いのはどうかご容赦ください。</p>
+<p>v18が発表されて、大幅に機能強化されたのは良かったのですが、高度化に伴い設定方法が難しくなってしまいました。こんなに高機能なものを無料で使わせて頂いてるのだから、何か貢献すべきと考え、設定内容等を公開していく事にしました。スキマ時間に書いているのでスピードが遅いのはどうかご容赦ください。</p>
 <img src="/new-technology/2020/02/23/XG-Firewall/xg.png" class="">
 
 <h2 id="主な機能"><a href="#主な機能" class="headerlink" title="主な機能"></a>主な機能</h2><ol>
@@ -278,16 +278,16 @@
 <li>DDoS対策機能（個人には不要とおもいます）</li>
 <li>国別フィルター（IPv4のみ）</li>
 <li>VPN（2要素認証対応）</li>
-<li>DNAT（Destination NAT※LANのサーバをネットに解放）</li>
+<li>DNAT（Destination NAT※LANのサーバをネットに公開）</li>
 <li>DNS/DHCP(IPv4,IPv6)</li>
 </ol>
 <p>細かな説明については、<a href="https://jscom.jp/wp-content/uploads/pamphlet_sophos_020pdf.pdf" target="_blank" rel="noopener">こちら</a>を参照してください。</p>
 <h2 id="XG-Firewall導入メリット"><a href="#XG-Firewall導入メリット" class="headerlink" title="XG Firewall導入メリット"></a>XG Firewall導入メリット</h2><ol>
-<li>ドメイン単位にWebサイト毎のカテゴリがされているので、ギャンブルやゲーム、アダルトなどのカテゴリで禁止ルールを設定可能</li>
+<li>レイヤ7Firewall（次世代Firewall）により、アプリケーション単位、ギャンブルやゲーム、アダルトなどのカテゴリで禁止ルールを設定可能</li>
 <li>接続したくない国に対してアクセス制限ができる。Webブラウジングはもちろん、自宅にサーバーを建てた場合の接続元を日本からのみに絞る事も可能（IPv4のみ）</li>
-<li>IPS（Intrusion Prevention System）によるSSL通信の中身を検査できる</li>
+<li>SSL/TLSインスペクションによりSSL/TLS通信の中身を検査し、さまざまな脅威からの保護</li>
 <li>ログ機能が充実している</li>
-<li>VPNにおいてパスワード＋ワンタイムパスワードによる認証が可能（Windows、Mac、iOS、Android）</li>
+<li>VPNが提供可能。ダイナミックDNSによる接続容易性に加え、ワンタイムパスワードによる2要素認証が可能（Windows、Mac、iOS、Android）</li>
 <li>エラーをフックし、メールでの通知が行える</li>
 </ol>
 <h2 id="XG-Firewall導入の留意点"><a href="#XG-Firewall導入の留意点" class="headerlink" title="XG Firewall導入の留意点"></a>XG Firewall導入の留意点</h2><ol>

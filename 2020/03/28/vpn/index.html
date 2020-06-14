@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","scheme":"Mist","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="この記事で実現する内容について外出先から、PC（Windows、macOS）を使い、宅内にあるXG FirewallのVPNへ接続できるようになります。それによりウィルスおよびマルウェア対策やWebフィルタなどを含んだ安全なネット閲覧や、宅内のLANリソースへリモートアクセス出来るようになります。">
+  <meta name="description" content="この記事で実現すること外出先から、PC（Windows、macOS）を使い、宅内にあるXG FirewallのVPNへ接続できるようになります。それによりウィルスおよびマルウェア対策やWebフィルタなどを含んだ安全なネット閲覧や、宅内のLANリソースへリモートアクセス出来るようになります。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="XG Firewall VPNについて">
 <meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/03/28/vpn/index.html">
 <meta property="og:site_name" content="New technologies in our life">
-<meta property="og:description" content="この記事で実現する内容について外出先から、PC（Windows、macOS）を使い、宅内にあるXG FirewallのVPNへ接続できるようになります。それによりウィルスおよびマルウェア対策やWebフィルタなどを含んだ安全なネット閲覧や、宅内のLANリソースへリモートアクセス出来るようになります。">
+<meta property="og:description" content="この記事で実現すること外出先から、PC（Windows、macOS）を使い、宅内にあるXG FirewallのVPNへ接続できるようになります。それによりウィルスおよびマルウェア対策やWebフィルタなどを含んだ安全なネット閲覧や、宅内のLANリソースへリモートアクセス出来るようになります。">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/28/vpn/dmz.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/28/vpn/portmapping.png">
@@ -46,7 +46,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/28/vpn/vpn3.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/28/vpn/vpn4.png">
 <meta property="article:published_time" content="2020-03-28T02:41:42.000Z">
-<meta property="article:modified_time" content="2020-05-27T13:50:44.802Z">
+<meta property="article:modified_time" content="2020-06-14T02:22:38.759Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -260,7 +260,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">編集日</span>
-                <time title="修正日：2020-05-27 22:50:44" itemprop="dateModified" datetime="2020-05-27T22:50:44+09:00">2020-05-27</time>
+                <time title="修正日：2020-06-14 11:22:38" itemprop="dateModified" datetime="2020-06-14T11:22:38+09:00">2020-06-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -288,12 +288,12 @@
 
       
         <div class="note success">
-            <h2 id="この記事で実現する内容について"><a href="#この記事で実現する内容について" class="headerlink" title="この記事で実現する内容について"></a>この記事で実現する内容について</h2><p>外出先から、PC（Windows、macOS）を使い、宅内にあるXG FirewallのVPNへ接続できるようになります。それによりウィルスおよびマルウェア対策やWebフィルタなどを含んだ安全なネット閲覧や、宅内のLANリソースへリモートアクセス出来るようになります。</p>
+            <h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>外出先から、PC（Windows、macOS）を使い、宅内にあるXG FirewallのVPNへ接続できるようになります。それによりウィルスおよびマルウェア対策やWebフィルタなどを含んだ安全なネット閲覧や、宅内のLANリソースへリモートアクセス出来るようになります。</p>
           </div>
 <a id="more"></a>
 
-<h2 id="XG-FirewallのVPNについて"><a href="#XG-FirewallのVPNについて" class="headerlink" title="XG FirewallのVPNについて"></a>XG FirewallのVPNについて</h2><p>XGのVPNはプロトコルが何種類かあります。一般的なSSL-VPN,L2TP,PPTP、そしてSophosConnectというIPSecベースのものがあります。SophosConnectは速く安定しているため、ここではSophosConnectのVPN導入について説明します。</p>
-<h2 id="Sophos-Connectの事前確認"><a href="#Sophos-Connectの事前確認" class="headerlink" title="Sophos Connectの事前確認"></a>Sophos Connectの事前確認</h2><p>Sophos Connectの設定にあたり、インターネットに接続されているホームゲートウェイから、VPNのパケットについては内部のXGのWANインターフェースに転送しなくてはなりません。一般的に市販されているルーターにも装備されていますが、この方法には2通りあります。</p>
+<h2 id="XG-FirewallのVPN"><a href="#XG-FirewallのVPN" class="headerlink" title="XG FirewallのVPN"></a>XG FirewallのVPN</h2><p>XGのVPNはプロトコルが何種類かあります。一般的なSSL-VPN,L2TP,PPTP、そしてSophosConnectというIPSecベースのものがあります。SophosConnectは速く安定しているため、ここではSophosConnectのVPN導入について説明します。</p>
+<h2 id="事前確認"><a href="#事前確認" class="headerlink" title="事前確認"></a>事前確認</h2><p>Sophos Connectの設定にあたり、インターネットに接続されているホームゲートウェイから、VPNのパケットについては内部のXGのWANインターフェースに転送しなくてはなりません。一般的に市販されているルーターにも装備されていますが、この方法には2通りあります。</p>
 <ol>
 <li><p>全ての宅内へのトラフィックは全てXGに転送する<br>ルーターやホームゲートウェイの製品によって呼び方は異なりますが、DMZホスト機能などと呼ばれます。この場合はインターネットから入ってくるデータは全てXGに送られますので、宅内にサーバーを立てる場合、ホームゲートウェイからはXG以外の端末は接続出来なくなります。ただし、設定は単純というメリットがあります。</p>
 <img src="/new-technology/2020/03/28/vpn/dmz.png" class="" title="alt">
@@ -307,7 +307,7 @@
 </ul>
 </li>
 </ol>
-<p>上記の2つのどちらか対応できれば、XGに対するVPN接続が行えます。この画面はホームゲートウェイの画面であり、契約しているインターネット回線業者により、提供される機器は異なりますのであくまで設定例という事で参考までに掲載しています。</p>
+<p>上記の2つのどちらか対応できれば、XGに対するVPN接続が行えます。この画面はホームゲートウェイの画面であり、契約しているインターネット回線業者により、提供される機器は異なりますのであくまで設定例は参考となります。</p>
 <h2 id="XG側のVPNユーザー作成"><a href="#XG側のVPNユーザー作成" class="headerlink" title="XG側のVPNユーザー作成"></a>XG側のVPNユーザー作成</h2><p>最初にユーザーの作成が必要です。VPNの最終接続形態としては、2要素認証対応のセキュアなものを目指します。ただし、いきなり全ての事を実施すると切り分けが難しいのでまずは2要素認証無しでの接続をし、次に2要素認証有りの接続に取り組みます。XGの左ペインメニューから<span class="label default">認証</span>を選択、<span class="label default">ユーザー</span>のタブから、追加ボタンをクリックします。そして以下のようにユーザー名、パスワードとメールアドレスを入力します。</p>
 <img src="/new-technology/2020/03/28/vpn/user1.png" class="" title="alt">
 <img src="/new-technology/2020/03/28/vpn/user2.png" class="" title="alt">
@@ -346,7 +346,7 @@
 <img src="/new-technology/2020/03/28/vpn/rule4.png" class="" title="alt">
 <img src="/new-technology/2020/03/28/vpn/rule5.png" class="" title="alt">
 
-<p>　NATルールで保存をクリックし、さらにルールで保存をクリックしてルールの設定は完成です。念のため現在のルールについて確認しましょう。<span class="label default">Traffic to Internal</span>として、VPNからLANへの接続ルールがあります。もう1つは、<span class="label default">Traffice to WAN</span>として、VPNおよびLANからWANへの接続ルールがあります。</p>
+<p>NATルールで保存をクリックし、さらにルールで保存をクリックしてルールの設定は完成です。念のため現在のルールについて確認しましょう。<span class="label default">Traffic to Internal</span>として、VPNからLANへの接続ルールがあります。もう1つは、<span class="label default">Traffice to WAN</span>として、VPNおよびLANからWANへの接続ルールがあります。</p>
 <img src="/new-technology/2020/03/28/vpn/rule6.png" class="" title="alt">
 
 <h2 id="XG側のDynamic-DNSの設定"><a href="#XG側のDynamic-DNSの設定" class="headerlink" title="XG側のDynamic DNSの設定"></a>XG側のDynamic DNSの設定</h2><p>素晴らしい事に、XGでは無償のダイナミックDNSを用意してくれています。VPNで接続する際には、グローバルIPアドレスが必要ですが、XG用のmyfirewall.coドメインが利用できます。他に使われていない一意のホスト名を設定する事になります。<span class="label default">IPv4アドレス</span>の箇所は、<span class="label default">NATされたパブリックIP</span>を選んでください。その他のNo-IPなどの有名どころのダイナミックDNSを選ぶ事も可能です。</p>
@@ -358,18 +358,20 @@
 <h2 id="XG側のデバイスのアクセス設定"><a href="#XG側のデバイスのアクセス設定" class="headerlink" title="XG側のデバイスのアクセス設定"></a>XG側のデバイスのアクセス設定</h2><p>XG側はこれが最後の設定です。左ペインの<span class="label default">管理</span>から、<span class="label default">デバイスのアクセス</span>へと進みます。そこに、LAN、WAN、VPN毎にサービスのアクセス権限が定めている一覧になります。ここでは以下の項目のアクセス権を加えます。</p>
 <ul>
 <li>管理サービス　HTTPS/SSH<br>XGの管理メニューにVPN経由でアクセスする事を可能とします。</li>
-<li>Ping/Ping6<br>VPNからは管理上pingは使えた方が便利かとおもいます。</li>
+<li>Ping/Ping6<br>こちらの設定は任意です。</li>
 <li>DNS<br>LANおよびVPNからのアクセスはXGのDNSをまず最初に参照します。LANにあるホストを参照する時は、XGのDNSがプライベートIPを返すように、スタティックのプライベートIPをDNSに登録しておきたいためです。これは後々サーバーを宅内に立てる場合、活用する事になります。</li>
 </ul>
 <h2 id="Sophos-Connectクライアントのダウンロード"><a href="#Sophos-Connectクライアントのダウンロード" class="headerlink" title="Sophos Connectクライアントのダウンロード"></a>Sophos Connectクライアントのダウンロード</h2><p>WindowsでVPN接続するためにはVPNクライアントをダウンロードします。上記のXGのVPN設定画面で<span class="label default">Sophos Connectクライアントのダウンロード</span>というボタンがありました。そちらをクリックし、ソフトウェアをダウンロードします。こちらは、Windows版、macOS版のダウンロードが出来ます。さらに、この画面の<span class="label default">接続のエクスポート</span>ボタンをクリックし、接続設定ファイルをダウンロードしてください（拡張子tgb）。この設定ファイルには先ほど設定したダイナミックDNSの内容も含まれています。</p>
 <h2 id="Sophos-Connectクライアントのセットアップ"><a href="#Sophos-Connectクライアントのセットアップ" class="headerlink" title="Sophos Connectクライアントのセットアップ"></a>Sophos Connectクライアントのセットアップ</h2><p>クライアントへのセットアップは、Windowsの場合は、SophosConnect.msiをインストールします。macOSの場合は、SophosConnect.pkgをインストールします。プログラム実行後、右上のメニューから、<span class="label default">Import Connection</span>をクリックし、先ほどダウンロードした接続設定ファイル（拡張子tgb）を読み込んでください。</p>
 <img src="/new-technology/2020/03/28/vpn/install.png" class="" title="alt">
 
-<span class="label default">Connect</span>をクリックし、VPN用に設定したユーザー名とパスワードでインターネットから、宅内のXGに接続します。
+<h2 id="VPNの接続確認"><a href="#VPNの接続確認" class="headerlink" title="VPNの接続確認"></a>VPNの接続確認</h2><span class="label default">Connect</span>をクリックし、VPN用に設定したユーザー名とパスワードでインターネットから、宅内のXGに接続します。
 
 <img src="/new-technology/2020/03/28/vpn/connected1.png" class="" title="alt">
 <img src="/new-technology/2020/03/28/vpn/connected2.png" class="" title="alt">
 
+<p>VPN経由でインターネットに接続し、ブラウザからアクセスできること、IPアドレスがプロバイダから貸与されたアドレスになっているか確認します。また、LANの機器との接続が行える事も確認してください。公衆WIFIからダイナミックDNSを用いた確認が検証としては最適ですが、接続業者によっては、VPNを通さないところもあります。</p>
+<p>なお、ここまで説明してきた通り、LANとVPNのネットワークセグメントは異なりますので、ブロードキャストで相手を見つけるようなアプリケーションはVPNからLANに対する接続は行えません。</p>
 <h2 id="VPNからWANに対するSSLインスペクションの設定"><a href="#VPNからWANに対するSSLインスペクションの設定" class="headerlink" title="VPNからWANに対するSSLインスペクションの設定"></a>VPNからWANに対するSSLインスペクションの設定</h2><p>ここまでの設定でVPNの設定は終了ですが、VPNについてもSSLインスペクションが有効となるように設定します。一旦はVPNのネットワークからインターネットにアクセスする場合は、全てがSSLインスペクションの対象とし、ファイアウォールルールを修正します。</p>
 <ol>
 <li>最初にVPNのネットワークアドレスを左ペインの<span class="label default">ホストとサービス</span>から<span class="label default">IPホスト</span>を登録します。</li>
@@ -381,7 +383,7 @@
 </li>
 <li><p>次に、左ペインの<span class="label default">ルールとポリシー</span>から、<span class="label default">SSL/TLSインスペクション</span>を選択します。</p>
 </li>
-<li><p>事前に作成してある<span class="label default">Catch SSL</span>ルールを選択し、ここにVPNのネットワークがSSL/TLSインスペクションの対象である事の設定を追加します。</p>
+<li><p>事前に作成してある<span class="label default">Catch SSL</span>ルールを選択し、ここにVPNのネットワークがSSL/TLSインスペクションの対象である事を設定します。</p>
 </li>
 </ol>
 <img src="/new-technology/2020/03/28/vpn/vpn4.png" class="" title="alt">
@@ -496,7 +498,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#この記事で実現する内容について"><span class="nav-number">1.</span> <span class="nav-text">この記事で実現する内容について</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG-FirewallのVPNについて"><span class="nav-number">2.</span> <span class="nav-text">XG FirewallのVPNについて</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sophos-Connectの事前確認"><span class="nav-number">3.</span> <span class="nav-text">Sophos Connectの事前確認</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG側のVPNユーザー作成"><span class="nav-number">4.</span> <span class="nav-text">XG側のVPNユーザー作成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG側のSophos-Connectの設定"><span class="nav-number">5.</span> <span class="nav-text">XG側のSophos Connectの設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG側のFirewallルールの確認"><span class="nav-number">6.</span> <span class="nav-text">XG側のFirewallルールの確認</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG側のDynamic-DNSの設定"><span class="nav-number">7.</span> <span class="nav-text">XG側のDynamic DNSの設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG側のデバイスのアクセス設定"><span class="nav-number">8.</span> <span class="nav-text">XG側のデバイスのアクセス設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sophos-Connectクライアントのダウンロード"><span class="nav-number">9.</span> <span class="nav-text">Sophos Connectクライアントのダウンロード</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sophos-Connectクライアントのセットアップ"><span class="nav-number">10.</span> <span class="nav-text">Sophos Connectクライアントのセットアップ</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VPNからWANに対するSSLインスペクションの設定"><span class="nav-number">11.</span> <span class="nav-text">VPNからWANに対するSSLインスペクションの設定</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#この記事で実現すること"><span class="nav-number">1.</span> <span class="nav-text">この記事で実現すること</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG-FirewallのVPN"><span class="nav-number">2.</span> <span class="nav-text">XG FirewallのVPN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事前確認"><span class="nav-number">3.</span> <span class="nav-text">事前確認</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG側のVPNユーザー作成"><span class="nav-number">4.</span> <span class="nav-text">XG側のVPNユーザー作成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG側のSophos-Connectの設定"><span class="nav-number">5.</span> <span class="nav-text">XG側のSophos Connectの設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG側のFirewallルールの確認"><span class="nav-number">6.</span> <span class="nav-text">XG側のFirewallルールの確認</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG側のDynamic-DNSの設定"><span class="nav-number">7.</span> <span class="nav-text">XG側のDynamic DNSの設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG側のデバイスのアクセス設定"><span class="nav-number">8.</span> <span class="nav-text">XG側のデバイスのアクセス設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sophos-Connectクライアントのダウンロード"><span class="nav-number">9.</span> <span class="nav-text">Sophos Connectクライアントのダウンロード</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sophos-Connectクライアントのセットアップ"><span class="nav-number">10.</span> <span class="nav-text">Sophos Connectクライアントのセットアップ</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VPNの接続確認"><span class="nav-number">11.</span> <span class="nav-text">VPNの接続確認</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VPNからWANに対するSSLインスペクションの設定"><span class="nav-number">12.</span> <span class="nav-text">VPNからWANに対するSSLインスペクションの設定</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
