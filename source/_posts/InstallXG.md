@@ -22,10 +22,13 @@ Sophosのサイトの[（無償ツール）](https://www.sophos.com/ja-jp/produc
 <!-- more -->
 ダウンロードはISOイメージです。2020年3月6日時点では、最新のバージョンはv17.5のようです。ただし、Sophosからのお知らせに[v18がリリースされたとの記載](https://community.sophos.com/products/xg-firewall/b/blog/posts/sophos-xg-firewall-v18-is-now-available)があるため、こちらのISOファイルからインストールします。"As usual, this firmware update is no charge for all licensed XG Firewall customers."とありますし問題なさそうです。VMware向けのテンプレートもダウンロード出来るようですが、仮想環境ではなくいきなり物理PCにインストールする方を鑑み、ISOファイルからのセットアップ手順とします。上記のリンクから、"SW-18.0.0_GA-Build321-321.iso"をダウンロードして下さい。
 
-（4月4日追記）
-Sophosのサイトを確認したところ、現時点でもデフォルトのダウンロードはv17.5.10_MR10となっています。v18については、新しいファームウェアが出ており、[GA-build354のリリース](https://community.sophos.com/products/xg-firewall/b/blog/posts/xg-firewall-v18-ga_2d00_build354-is-now-available)が出ています。"SW-18.0.0_GA-Build354-354.iso"をダウンロードしてください。
+（6月14日追記）
+6月11日時点で、Sophosのサイトでは、デフォルトのダウンロードはv17.5.12_MR12となっています。v18については、新しいファームウェアが出ており、[XG Firewall v18 MR-1-Build396](https://community.sophos.com/products/xg-firewall/b/blog/posts/xg-firewall-v18-mr1-build396)が出ています。"SW-18.0.1_MR-1-Build396-396.iso"をダウンロードしてください。
 
-クライアントPC（Windowsなど）から、ESXi管理画面にログインします。ESXiの管理画面の左ペインのストレージからデフォルトのストレージである、datastore1を選択し、データストアブラウザをクリックして下さい。次にアップロードボタンをクリックし、ダウンロードされた"SW-18.0.0_GA-Build321-321.iso"ファイルをアップロードして下さい。
+~~（4月4日追記）
+Sophosのサイトを確認したところ、現時点でもデフォルトのダウンロードはv17.5.10_MR10となっています。v18については、新しいファームウェアが出ており、[GA-build354のリリース](https://community.sophos.com/products/xg-firewall/b/blog/posts/xg-firewall-v18-ga_2d00_build354-is-now-available)が出ています。"SW-18.0.0_GA-Build354-354.iso"をダウンロードしてください。~~
+
+クライアントPC（Windowsなど）から、ESXi管理画面にログインします。ESXiの管理画面の左ペインのストレージからデフォルトのストレージである、datastore1を選択し、データストアブラウザをクリックして下さい。次にアップロードボタンをクリックし、ダウンロードされた"SW-18.0.1_MR-1-Build396-396.iso"ファイルをアップロードして下さい。
 
 {% asset_img datastore.png alt %}
  　
