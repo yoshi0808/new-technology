@@ -33,8 +33,9 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/esxi2.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/esxi3.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/esxi4.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/termius.png">
 <meta property="article:published_time" content="2020-06-14T13:19:20.000Z">
-<meta property="article:modified_time" content="2020-06-14T13:19:20.128Z">
+<meta property="article:modified_time" content="2020-06-15T12:27:07.561Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="ESXi">
 <meta name="twitter:card" content="summary">
@@ -243,6 +244,13 @@
 
               <time title="作成日：2020-06-14 22:19:20" itemprop="dateCreated datePublished" datetime="2020-06-14T22:19:20+09:00">2020-06-14</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">編集日</span>
+                <time title="修正日：2020-06-15 21:27:07" itemprop="dateModified" datetime="2020-06-15T21:27:07+09:00">2020-06-15</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -270,7 +278,8 @@
 
 <a id="more"></a>
 
-<h2 id="パッチ適用に必要なもの"><a href="#パッチ適用に必要なもの" class="headerlink" title="パッチ適用に必要なもの"></a>パッチ適用に必要なもの</h2><p>SSHでESXiに接続し、コマンドラインでパッチを適用します。クライアントPCからSSH接続が行えるクライアントアプリケーションを用意してください。無償で利用可能な<a href="https://www.termius.com" target="_blank" rel="noopener">Termius</a>などは英語ですが使いやすくお勧めです。Termiusは起動直後にアカウントを作成されるよう誘導されますが、ログインを選択後、画面右下の”Continue without Account”を選択して先に進めます。</p>
+<h2 id="パッチ適用に必要なもの"><a href="#パッチ適用に必要なもの" class="headerlink" title="パッチ適用に必要なもの"></a>パッチ適用に必要なもの</h2><p>SSHでESXiに接続し、コマンドラインでパッチを適用します。クライアントPCからSSH接続が行えるクライアントアプリケーションを用意してください。昔から有名なのはTera Termですが、その他にも無償で利用可能な<a href="https://www.termius.com" target="_blank" rel="noopener">Termius</a>が使いやすくお勧めです。</p>
+<h2 id="VMwareのパッチ情報"><a href="#VMwareのパッチ情報" class="headerlink" title="VMwareのパッチ情報"></a>VMwareのパッチ情報</h2><p>ESXi6.7のパッチ情報は<a href="https://docs.vmware.com/jp/VMware-vSphere/6.7/rn/esxi670-202006001.html" target="_blank" rel="noopener">こちら</a>です。このリンクは現時点で最も新しいパッチ（2020年6月9日）のリンクとなっていますが、過去のパッチの情報も提供されています。内容は不具合や脆弱性など様々ですが、このページでESXiのパッチの提供情報がわかります。</p>
 <h2 id="My-VMwareで製品パッチの情報を入手する"><a href="#My-VMwareで製品パッチの情報を入手する" class="headerlink" title="My VMwareで製品パッチの情報を入手する"></a>My VMwareで製品パッチの情報を入手する</h2><p>ESXiのセットアップ時にMy VMwareへの登録を行い、個人向けvSphere Hypervisorのライセンス（無償）を入手されている事を前提にしています。</p>
 <p><a href="https://my.vmware.com/jp/web/vmware/login?" target="_blank" rel="noopener">My VMware</a>にサインインし、<span class="label default">製品</span>メニューから、”製品パッチ”を選択します。</p>
 <img src="/new-technology/2020/06/14/esxi67-patch/myvm1.png" class="" title="alt">
@@ -300,11 +309,12 @@
 <li><p>ESXiをメンテナンスモードに切り替えます</p>
 <img src="/new-technology/2020/06/14/esxi67-patch/esxi2.png" class="" title="alt">
 </li>
-<li><p>パッチファイルのESXiへのアップロード<br>ESXiの左ペインメニューの”ストレージ”を選択、メインのストレージ（一般的にはdatastore1）を選択し、”データストアブラウザ”をクリックします。</p>
+<li><p>パッチファイルのESXiへのアップロード<br>ESXiの左ペインメニューの”ストレージ”を選択、メインのストレージ（一般的にはdatastore1）を選択し、”データストアブラウザ”をクリックします</p>
 <img src="/new-technology/2020/06/14/esxi67-patch/esxi3.png" class="" title="alt">
+
 <p>アップロードボタンをクリックし、ダウンロードしたパッチファイルをアップロードします。</p>
 </li>
-<li><p>SSHでESXiにログイン<br>ログイン後、パッチをアップロードしたフォルダ（<em>Datastore/DirectoryName</em>）に移動しアップロードしたパッチファイルが存在するか<code>ls</code>で確認します。</p>
+<li><p>SSHでESXiにログイン<br>ログイン後、パッチをアップロードしたフォルダ（<em>Datastore/DirectoryName</em>）に移動しアップロードしたパッチファイルが存在するか<code>ls</code>で確認します</p>
 </li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">The time and date of this login have been sent to the system logs.</span><br><span class="line"></span><br><span class="line">WARNING:</span><br><span class="line">   All commands run on the ESXi shell are logged and may be included <span class="keyword">in</span></span><br><span class="line">   support bundles. Do not provide passwords directly on the <span class="built_in">command</span> line.</span><br><span class="line">   Most tools can prompt <span class="keyword">for</span> secrets or accept them from standard input.</span><br><span class="line"></span><br><span class="line">VMware offers supported, powerful system administration tools.  Please</span><br><span class="line">see www.vmware.com/go/sysadmintools <span class="keyword">for</span> details.</span><br><span class="line"></span><br><span class="line">The ESXi Shell can be disabled by an administrative user. See the</span><br><span class="line">vSphere Security documentation <span class="keyword">for</span> more information.</span><br><span class="line">[root@esxi:~] <span class="built_in">cd</span> /vmfs/volumes/Datastore/DirectoryName</span><br><span class="line">[root@esxi:~] ls</span><br></pre></td></tr></table></figure>
@@ -315,14 +325,16 @@
 
 <p>実行後しばらくしてから、たくさんの更新結果としての文字の羅列が一気に表示され、再びコマンドプロンプトになるので、<code># reboot</code>としてESXiを再起動します</p>
 </li>
-<li><p>再起動完了後は、ESXiにログインし、左ペインメニューの”ホスト”をクリックし、バージョンの表記に今回パッチを当てたビルド番号が表示されている事を確認してください。</p>
+<li><p>再起動完了後、ESXiにログインします。左ペインメニューの”ホスト”をクリックし、バージョンの表記に今回パッチを当てたビルド番号が表示されている事を確認してください</p>
 <img src="/new-technology/2020/06/14/esxi67-patch/esxi4.png" class="" title="alt">
 </li>
-<li><p>最後にこれまで実施してきたメンテナンス準備の反対の作業を行います。メンテナンスモードの終了・SSHの無効化・仮想マシンの起動と続けます。</p>
+<li><p>最後にこれまで実施してきたメンテナンス準備の反対の作業を行います。メンテナンスモードの終了・SSHの無効化・仮想マシンの起動と続けます</p>
 </li>
 </ul>
 <p>以上で、ESXiに対するパッチ適用の作業は完了です。</p>
 <h2 id="My-VMwareの通知設定"><a href="#My-VMwareの通知設定" class="headerlink" title="My VMwareの通知設定"></a>My VMwareの通知設定</h2><p>パッチが提供された場合に通知を受けられるようにMyVMwareの通知設定を行っておく事をお勧めします。</p>
+<h2 id="Termiusについて"><a href="#Termiusについて" class="headerlink" title="Termiusについて"></a>Termiusについて</h2><p>Termiusは起動直後にアカウントを作成されるよう誘導されますが、ログインを選択後、画面右下の”Continue without Account”を選択して先に進めます。ターミナルに適合したフォント類がある事、カラーのバリエーションも選択可能です。Windows、macOS、Linux、iOS、Androidと対応OSも豊富に揃っています。</p>
+<img src="/new-technology/2020/06/14/esxi67-patch/termius.png" class="" title="alt">
 
     </div>
 
@@ -420,7 +432,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#この記事で実現すること"><span class="nav-number">1.</span> <span class="nav-text">この記事で実現すること</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#パッチ適用に必要なもの"><span class="nav-number">2.</span> <span class="nav-text">パッチ適用に必要なもの</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#My-VMwareで製品パッチの情報を入手する"><span class="nav-number">3.</span> <span class="nav-text">My VMwareで製品パッチの情報を入手する</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi上のパッチ適用作業"><span class="nav-number">4.</span> <span class="nav-text">ESXi上のパッチ適用作業</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#My-VMwareの通知設定"><span class="nav-number">5.</span> <span class="nav-text">My VMwareの通知設定</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#この記事で実現すること"><span class="nav-number">1.</span> <span class="nav-text">この記事で実現すること</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#パッチ適用に必要なもの"><span class="nav-number">2.</span> <span class="nav-text">パッチ適用に必要なもの</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VMwareのパッチ情報"><span class="nav-number">3.</span> <span class="nav-text">VMwareのパッチ情報</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#My-VMwareで製品パッチの情報を入手する"><span class="nav-number">4.</span> <span class="nav-text">My VMwareで製品パッチの情報を入手する</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi上のパッチ適用作業"><span class="nav-number">5.</span> <span class="nav-text">ESXi上のパッチ適用作業</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#My-VMwareの通知設定"><span class="nav-number">6.</span> <span class="nav-text">My VMwareの通知設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Termiusについて"><span class="nav-number">7.</span> <span class="nav-text">Termiusについて</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
