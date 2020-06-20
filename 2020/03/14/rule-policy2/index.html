@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/14/rule-policy2/rule1.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/14/rule-policy2/rule2.png">
 <meta property="article:published_time" content="2020-03-14T02:12:50.000Z">
-<meta property="article:modified_time" content="2020-06-04T09:31:14.949Z">
+<meta property="article:modified_time" content="2020-06-20T01:15:28.096Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -244,7 +244,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">編集日</span>
-                <time title="修正日：2020-06-04 18:31:14" itemprop="dateModified" datetime="2020-06-04T18:31:14+09:00">2020-06-04</time>
+                <time title="修正日：2020-06-20 10:15:28" itemprop="dateModified" datetime="2020-06-20T10:15:28+09:00">2020-06-20</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -290,8 +290,8 @@
 </ul>
 <p>保存ボタンをクリックするとルールの追加が行われます。Webポリシーが”Default Policy”で広告が禁止されていればブラウザではエラー画面が表示されます。またサイトのカテゴリ（ギャンブル、アダルト）などもDefault Policyの設定内容によって、どのようにアクセスが止まるのか確認をしてください。XG画面の右上に<span class="label default">ログビューア</span>があるので、”ファイアウォールルール”、”アプリケーションフィルタ”、”Webフィルタ”のログを確認してください。許可・拒否のログを確認しながら、さらに新しいルールを加えるなど、カスタマイズを進めてください。Webフィルタについての解説は、<a href="/new-technology/2020/03/14/customize-policy/" title="XG Firewall v18のポリシーをカスタマイズする">XG Firewall v18のポリシーをカスタマイズする</a>および<a href="/new-technology/2020/05/06/web-application-filter/" title="XG FirewallのWebとアプリケーションフィルタについて">XG FirewallのWebとアプリケーションフィルタについて</a>を参照してください。なお、SSL/TLSインスペクションの設定が有効になるまでは、アプリケーションフィルタやWebフィルタも完全には動作しません。Windows、macOS、iOSにはSSL/TLSインスペクションを設定される事をお勧めします。SSLインスペクションについては、こちらの記事、<a href="/new-technology/2020/03/20/ssl-inspection/" title="XG Firewall v18のSSLインスペクションについて">XG Firewall v18のSSLインスペクションについて</a>を参照してください。</p>
 <h2 id="宛先ネットワークの留意点"><a href="#宛先ネットワークの留意点" class="headerlink" title="宛先ネットワークの留意点"></a>宛先ネットワークの留意点</h2><p>宛先ネットワークの指定は、サブドメインで絞るなど使い方によっては非常に便利です。しかし、昨今では目的のサービスがAWS上にホストされていたりCDN（Content Delivery Network）に登録されているケースが多く、IPアドレスからホスト名を逆引きすると本来の宛先とは異なるFQDNが返ってくる事が少なくありません。この場合はサブドメインで絞る事は難しいのが実情です。稀に当該サービスのIPアドレス群が公開されているケースもあります。例えば、マイクロソフトの<a href="https://docs.microsoft.com/ja-jp/office365/enterprise/urls-and-ip-address-ranges" target="_blank" rel="noopener">Office365</a>のケースですが、とても情報量が多く設定は大変です。</p>
-<h2 id="3つのルール"><a href="#3つのルール" class="headerlink" title="3つのルール"></a>3つのルール</h2><p>ルールとポリシーのメニューには、”ファイアウォールルール”と”SSL/TLSインスペクションルール”、NATに関する”NATルール”の3つの設定があります。最初からビルトインされている”Default SNAT IPv4”というNATルールは、LAN側のプライベートIPアドレスからWANへ出ていく時に、パブリックIPへと変換するためのNATの仕組みが記述されています。LANのIPアドレスは、XGのWAN側IPアドレスに変換されて、インターネットに出ていきます。</p>
-<p>XG v17まではファイアウォールのルール1つ1つに対して、NATを行うか否かを設定していました。v18では、ファイアウォールルールとNATルールとは切り離されました。v18ではLANからWAN、VPNからWANなどのインタフェースやIPアドレス単位でNATの設定を行います。v17からv18にバージョンアップした際はマイグレーションプロセスによって、ルールとリンクされたNATが1つづつ作成されます。ホームユーザーにおいては、よほど複雑な環境でなければNATのルールはVPN+LANからWANへの1つで十分です。ルールの1つ1つにNATルールがあると、NATルールが解りづらくなってしまいます。このブログにおけるXG v18の設定では、リンクNATの利用は最低限に留め設定を行っていきます。</p>
+<h2 id="3つのルール"><a href="#3つのルール" class="headerlink" title="3つのルール"></a>3つのルール</h2><p>ルールとポリシーのメニューには、”ファイアウォールルール”と”SSL/TLSインスペクションルール”、NATに関する”NATルール”の3つの設定があります。最初からビルトインされている”Default SNAT IPv4”というNATルールは、プライベートIPアドレスからWANへ出ていく時に、パブリックIPへと変換するためのNATの仕組みが記述されています。具体的には、NATルールの<span class="label default">インターフェースの一致条件</span>において、”Port2”から出ていくパケットはSNATの”MASQ”が必要と記述されています。</p>
+<p>XG v17まではファイアウォールのルール1つ1つに対して、NATを行うか否かを設定していました。v18では、ファイアウォールルールとNATルールとは切り離されました。v18ではLANからWAN、VPNからWANなどのインタフェースやIPアドレス単位でNATの設定を行います。v17からv18にバージョンアップした際はマイグレーションプロセスによって、ファイアウォールルールとリンクされたNATが1つづつ作成されます。ホームユーザーにおいては、よほど複雑な環境でなければNATのルールはVPN+LANからWANへの1つで十分です。</p>
 <p><strong>3つのルールの関係</strong></p>
 <table>
 <thead>
@@ -306,11 +306,11 @@
 </tr>
 <tr>
 <td>NATルール</td>
-<td>インターフェース、IPアドレス単位にNATを行うか否かを決定します。最初からNATルール”Default SNAT IPv4”が登録されており、LANからWANへのトラフィックはファイアウォールルールの種類に関わらず、原則NATされます。</td>
+<td>インターフェース、IPアドレス単位にNATを行うか否かを決定します。最初からNATルール”Default SNAT IPv4”が登録されており、WANから出ていくトラフィックはファイアウォールルールの種類に関わらず、原則NATされます。</td>
 </tr>
 <tr>
 <td>SSL/TLSインスペクションルール</td>
-<td>SSL/TLSインスペクションを行う端末か対象外の端末かを決定します。また検査除外するドメインもここで決定します。</td>
+<td>SSL/TLSインスペクションを行う端末か対象外の端末かを決定します。TLSの低いバージョンを除外する仕組みを持ちます。また検査除外するドメインも指定可能です。</td>
 </tr>
 </tbody></table>
 

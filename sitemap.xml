@@ -2,9 +2,86 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://yoshi0808.github.io/new-technology/2020/05/09/best-practice/</loc>
+    
+    <lastmod>2020-06-20T01:39:45.834Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://yoshi0808.github.io/new-technology/2020/05/06/web-application-filter/</loc>
     
-    <lastmod>2020-06-15T12:41:45.368Z</lastmod>
+    <lastmod>2020-06-20T01:38:28.040Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/2020/04/25/xg-ipv6-1/</loc>
+    
+    <lastmod>2020-06-20T01:34:49.522Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/2020/04/18/ipv6/</loc>
+    
+    <lastmod>2020-06-20T01:32:03.392Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/2020/04/11/dnat/</loc>
+    
+    <lastmod>2020-06-20T01:30:59.596Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/2020/03/31/vpn-iphone/</loc>
+    
+    <lastmod>2020-06-20T01:28:26.941Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/2020/04/03/Notifications/</loc>
+    
+    <lastmod>2020-06-20T01:28:23.338Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/2020/03/21/ssl-inspection2/</loc>
+    
+    <lastmod>2020-06-20T01:26:08.965Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/</loc>
+    
+    <lastmod>2020-06-20T01:23:31.433Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection/</loc>
+    
+    <lastmod>2020-06-20T01:21:12.010Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/2020/03/14/rule-policy2/</loc>
+    
+    <lastmod>2020-06-20T01:15:28.096Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/2020/03/28/vpn/</loc>
+    
+    <lastmod>2020-06-20T01:04:48.630Z</lastmod>
     
   </url>
   
@@ -12,27 +89,6 @@
     <loc>https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/</loc>
     
     <lastmod>2020-06-15T12:27:07.561Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/04/03/Notifications/</loc>
-    
-    <lastmod>2020-06-14T02:29:16.693Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/03/31/vpn-iphone/</loc>
-    
-    <lastmod>2020-06-14T02:28:30.983Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/03/28/vpn/</loc>
-    
-    <lastmod>2020-06-14T02:22:38.759Z</lastmod>
     
   </url>
   
@@ -54,13 +110,6 @@
     <loc>https://yoshi0808.github.io/new-technology/2020/02/23/XG-Firewall/</loc>
     
     <lastmod>2020-06-14T01:53:50.561Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/03/14/rule-policy2/</loc>
-    
-    <lastmod>2020-06-04T09:31:14.949Z</lastmod>
     
   </url>
   
@@ -114,20 +163,6 @@
   </url>
   
   <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection/</loc>
-    
-    <lastmod>2020-05-31T11:30:57.125Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/05/09/best-practice/</loc>
-    
-    <lastmod>2020-05-31T01:38:27.158Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://yoshi0808.github.io/new-technology/2020/05/16/Intercept-DNS/</loc>
     
     <lastmod>2020-05-30T14:35:58.532Z</lastmod>
@@ -156,44 +191,9 @@
   </url>
   
   <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/</loc>
-    
-    <lastmod>2020-05-27T14:23:10.454Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/03/21/ssl-inspection2/</loc>
-    
-    <lastmod>2020-05-27T14:03:13.339Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://yoshi0808.github.io/new-technology/2020/03/26/SophosCommunity/</loc>
     
     <lastmod>2020-05-27T13:54:31.471Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/04/18/ipv6/</loc>
-    
-    <lastmod>2020-05-27T09:32:08.224Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/04/11/dnat/</loc>
-    
-    <lastmod>2020-05-27T09:27:09.329Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/04/25/xg-ipv6-1/</loc>
-    
-    <lastmod>2020-05-27T08:49:17.971Z</lastmod>
     
   </url>
   

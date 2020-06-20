@@ -35,8 +35,6 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/28/vpn/vpn2.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/28/vpn/rule1.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/28/vpn/rule2.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/28/vpn/rule4.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/28/vpn/rule5.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/28/vpn/rule6.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/28/vpn/ddns.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/28/vpn/ddns2.png">
@@ -46,7 +44,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/28/vpn/vpn3.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/28/vpn/vpn4.png">
 <meta property="article:published_time" content="2020-03-28T02:41:42.000Z">
-<meta property="article:modified_time" content="2020-06-14T02:22:38.759Z">
+<meta property="article:modified_time" content="2020-06-20T01:04:48.630Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -260,7 +258,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">編集日</span>
-                <time title="修正日：2020-06-14 11:22:38" itemprop="dateModified" datetime="2020-06-14T11:22:38+09:00">2020-06-14</time>
+                <time title="修正日：2020-06-20 10:04:48" itemprop="dateModified" datetime="2020-06-20T10:04:48+09:00">2020-06-20</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -342,11 +340,8 @@
 <p>続いて、VPNからLANへのルールを作成します。NATは使わず全てのトラフィックを通過させるものです。以下の通り、送信元ゾーンはVPN、宛先ゾーンはLANのルールを設定します。</p>
 <img src="/new-technology/2020/03/28/vpn/rule2.png" class="" title="alt">
 
-<p>以下の通り、<span class="label default">リンクNATルールの作成</span>を行います。こちらはVPNとLANの間であるため、NATは行いません。「NATは行わない事」を明示するために、今回は<span class="label default">Linked NAT</span>を設定します。とはいえ、NATの情報は何も入力する事はなく、単純に保存をクリックしておくだけです。</p>
-<img src="/new-technology/2020/03/28/vpn/rule4.png" class="" title="alt">
-<img src="/new-technology/2020/03/28/vpn/rule5.png" class="" title="alt">
-
-<p>NATルールで保存をクリックし、さらにルールで保存をクリックしてルールの設定は完成です。念のため現在のルールについて確認しましょう。<span class="label default">Traffic to Internal</span>として、VPNからLANへの接続ルールがあります。もう1つは、<span class="label default">Traffice to WAN</span>として、VPNおよびLANからWANへの接続ルールがあります。</p>
+<p>（2020-06-20更新）このルールでは、<span class="label default">リンクNATルールの作成</span>は行いません。NATの動作の確認のために「NATしない事を明示する」設定を行うと挙動がわかりやすいというメリットはありますが、v18では原則リンクNATは使わず運用可能という考え方のようで当初記載していたリンクNATの記述を削除しました。</p>
+<p>さらにルールで保存をクリックしてルールの設定は完成です。念のため現在のルールについて確認しましょう。<span class="label default">Traffic to Internal</span>として、VPNからLANへの接続ルールがあります。もう1つは、<span class="label default">Traffice to WAN</span>として、VPNおよびLANからWANへの接続ルールがあります。</p>
 <img src="/new-technology/2020/03/28/vpn/rule6.png" class="" title="alt">
 
 <h2 id="XG側のDynamic-DNSの設定"><a href="#XG側のDynamic-DNSの設定" class="headerlink" title="XG側のDynamic DNSの設定"></a>XG側のDynamic DNSの設定</h2><p>素晴らしい事に、XGでは無償のダイナミックDNSを用意してくれています。VPNで接続する際には、グローバルIPアドレスが必要ですが、XG用のmyfirewall.coドメインが利用できます。他に使われていない一意のホスト名を設定する事になります。<span class="label default">IPv4アドレス</span>の箇所は、<span class="label default">NATされたパブリックIP</span>を選んでください。その他のNo-IPなどの有名どころのダイナミックDNSを選ぶ事も可能です。</p>
