@@ -37,7 +37,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/09/best-practice/rule1.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/09/best-practice/ssl-inspection.png">
 <meta property="article:published_time" content="2020-05-09T08:55:26.000Z">
-<meta property="article:modified_time" content="2020-06-20T01:39:45.834Z">
+<meta property="article:modified_time" content="2020-06-24T13:41:58.288Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -251,7 +251,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">編集日</span>
-                <time title="修正日：2020-06-20 10:39:45" itemprop="dateModified" datetime="2020-06-20T10:39:45+09:00">2020-06-20</time>
+                <time title="修正日：2020-06-24 22:41:58" itemprop="dateModified" datetime="2020-06-24T22:41:58+09:00">2020-06-24</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -286,6 +286,7 @@
 <li><a href="https://community.sophos.com/kb/ja-jp/124744" target="_blank" rel="noopener">ランサムウェア: ソフォス製品による回避策のアドバイス</a></li>
 <li><a href="https://community.sophos.com/products/xg-firewall/f/intrusion-prevention/86274/sfos-16-05-0-ga-ips-set-maxpkts-size-question?pi2151=2#pi2151=1" target="_blank" rel="noopener">SFOS 16.05.0 GA IPS set maxpkts size question</a></li>
 <li><a href="https://community.sophos.com/kb/ja-jp/123102" target="_blank" rel="noopener">Sophos XG Firewall: 高リスクのアプリケーションをブロックする手順</a>　<sup><strong><a href="#note1">[1]</a></strong></sup></li>
+<li><a href="https://community.sophos.com/cfs-file/__key/communityserver-discussions-components-files/258/Securing-your-Sophos-XG-Firewall-_2D00_-Best-Practice-Guide.pdf" target="_blank" rel="noopener">“Best Practice Guide.pdf”</a>（2020-06-24追加）</li>
 </ol>
 <p>最初の記事がベストプラクティスとも言える内容になっており、この記事を中心に、関連する記事も参考にしながら設定します。</p>
 <h2 id="設定する内容"><a href="#設定する内容" class="headerlink" title="設定する内容"></a>設定する内容</h2><p>設定すべき概要は以下の通りです。</p>
@@ -318,10 +319,10 @@
 <ul>
 <li>maxsesbytes 0</li>
 <li>stream on</li>
-<li>maxpkts 80</li>
+<li>maxpkts 200（推奨値100〜300）</li>
 </ul>
-<p>デフォルトでは、maxpktsが8となっているので、以下のコマンドで80に変更します。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console&gt; <span class="built_in">set</span> ips maxpkts 80</span><br></pre></td></tr></table></figure>
+<p>デフォルトでは、maxpktsが8となっているので、以下のコマンドで200に変更します。ここはマシンスペックにもよるので、100から200の間で設定をチューニングしながらスループットを確認してください。これまでのCommunityでは、この値は80が推奨されていましたが、2020-06-24にSophosより公開された<a href="https://community.sophos.com/cfs-file/__key/communityserver-discussions-components-files/258/Securing-your-Sophos-XG-Firewall-_2D00_-Best-Practice-Guide.pdf" target="_blank" rel="noopener">“Best Practice Guide”</a>では、スループットを見ながら100〜300の間で設定する事が推奨されています。ここでは中央値の200を設定しています。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console&gt; <span class="built_in">set</span> ips maxpkts 200</span><br></pre></td></tr></table></figure>
 
 <h2 id="アプリケーションフィルタの設定"><a href="#アプリケーションフィルタの設定" class="headerlink" title="アプリケーションフィルタの設定"></a>アプリケーションフィルタの設定</h2><p>とにかくアプリケーションの数が多い事と、今後もメンテナンスしていく事を留意して設定します。高リスクというカテゴリであっても、ホームユーザーが利用するアプリケーションもそれなりにあります。ここでは、リコメンドされた拒否アプリの拒否設定をしつつ、ユーザー側で許可する設定を加えていく事になります。ただし下手にアプリを個別選択するようなフィルタにしてしまうと、新しいアプリケーションが追加される都度、メンテナンスが必要となってしまいます。従い<strong>リスクの高いアプリケーションは停止を原則とし、自分が許可するアプリの設定を加え</strong>、以後はなるべくメンテナンスが不要となるように設定します。</p>
 <p>XGの左メニューの<span class="label default">アプリケーション</span>の<span class="label default">アプリケーションリスト</span>の右上に”分類”というフィルタがあります。このフィルタをクリックし展開すると、新規/認証済み/許容/未認証とあります。これはクラウドアプリケーションとして登録されているものが対象となります。左ペインメニューの<span class="label default">アプリケーション</span>から<span class="label default">クラウドアプリケーション</span>で内容が確認できます。</p>
@@ -596,7 +597,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/new-technology/archives/">
         
-          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-count">29</span>
           <span class="site-state-item-name">ポスト</span>
         </a>
       </div>

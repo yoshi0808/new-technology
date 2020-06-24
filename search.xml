@@ -524,6 +524,7 @@ XGFirewall-- "192.168.0.0/24" ---HGW
 <li><a href="https://community.sophos.com/kb/ja-jp/124744" target="_blank" rel="noopener">ランサムウェア: ソフォス製品による回避策のアドバイス</a></li>
 <li><a href="https://community.sophos.com/products/xg-firewall/f/intrusion-prevention/86274/sfos-16-05-0-ga-ips-set-maxpkts-size-question?pi2151=2#pi2151=1" target="_blank" rel="noopener">SFOS 16.05.0 GA IPS set maxpkts size question</a></li>
 <li><a href="https://community.sophos.com/kb/ja-jp/123102" target="_blank" rel="noopener">Sophos XG Firewall: 高リスクのアプリケーションをブロックする手順</a>　<sup><strong><a href="#note1">[1]</a></strong></sup></li>
+<li><a href="https://community.sophos.com/cfs-file/__key/communityserver-discussions-components-files/258/Securing-your-Sophos-XG-Firewall-_2D00_-Best-Practice-Guide.pdf" target="_blank" rel="noopener">“Best Practice Guide.pdf”</a>（2020-06-24追加）</li>
 </ol>
 <p>最初の記事がベストプラクティスとも言える内容になっており、この記事を中心に、関連する記事も参考にしながら設定します。</p>
 <h2 id="設定する内容"><a href="#設定する内容" class="headerlink" title="設定する内容"></a>設定する内容</h2><p>設定すべき概要は以下の通りです。</p>
@@ -556,10 +557,10 @@ XGFirewall-- "192.168.0.0/24" ---HGW
 <ul>
 <li>maxsesbytes 0</li>
 <li>stream on</li>
-<li>maxpkts 80</li>
+<li>maxpkts 200（推奨値100〜300）</li>
 </ul>
-<p>デフォルトでは、maxpktsが8となっているので、以下のコマンドで80に変更します。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">console&gt; <span class="built_in">set</span> ips maxpkts 80</span><br></pre></td></tr></table></figure>
+<p>デフォルトでは、maxpktsが8となっているので、以下のコマンドで200に変更します。ここはマシンスペックにもよるので、100から200の間で設定をチューニングしながらスループットを確認してください。これまでのCommunityでは、この値は80が推奨されていましたが、2020-06-24にSophosより公開された<a href="https://community.sophos.com/cfs-file/__key/communityserver-discussions-components-files/258/Securing-your-Sophos-XG-Firewall-_2D00_-Best-Practice-Guide.pdf" target="_blank" rel="noopener">“Best Practice Guide”</a>では、スループットを見ながら100〜300の間で設定する事が推奨されています。ここでは中央値の200を設定しています。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">console&gt; <span class="built_in">set</span> ips maxpkts 200</span><br></pre></td></tr></table></figure>
 
 <h2 id="アプリケーションフィルタの設定"><a href="#アプリケーションフィルタの設定" class="headerlink" title="アプリケーションフィルタの設定"></a>アプリケーションフィルタの設定</h2><p>とにかくアプリケーションの数が多い事と、今後もメンテナンスしていく事を留意して設定します。高リスクというカテゴリであっても、ホームユーザーが利用するアプリケーションもそれなりにあります。ここでは、リコメンドされた拒否アプリの拒否設定をしつつ、ユーザー側で許可する設定を加えていく事になります。ただし下手にアプリを個別選択するようなフィルタにしてしまうと、新しいアプリケーションが追加される都度、メンテナンスが必要となってしまいます。従い<strong>リスクの高いアプリケーションは停止を原則とし、自分が許可するアプリの設定を加え</strong>、以後はなるべくメンテナンスが不要となるように設定します。</p>
 <p>XGの左メニューの<span class="label default">アプリケーション</span>の<span class="label default">アプリケーションリスト</span>の右上に”分類”というフィルタがあります。このフィルタをクリックし展開すると、新規/認証済み/許容/未認証とあります。これはクラウドアプリケーションとして登録されているものが対象となります。左ペインメニューの<span class="label default">アプリケーション</span>から<span class="label default">クラウドアプリケーション</span>で内容が確認できます。</p>
@@ -2222,6 +2223,52 @@ Note over cl: 16.共通鍵で復号
       <tags>
         <tag>XG Firewall</tag>
         <tag>IPv6</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>XG Firewall自身を防御する</title>
+    <url>/new-technology/2020/06/24/protect-xg/</url>
+    <content><![CDATA[<div class="note success">
+            <h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>XG Firewall自身を防御するためのベストプラクティスがSophosより本日公開されたため、最低限の防御として推奨されている設定内容を紹介します。</p>
+          </div>
+
+<a id="more"></a>
+
+<h2 id="Best-practices-for-securing-your-firewall"><a href="#Best-practices-for-securing-your-firewall" class="headerlink" title="Best practices for securing your firewall"></a>Best practices for securing your firewall</h2><p>2020-6-24にSophos Communityのお勧め記事に<a href="https://community.sophos.com/products/xg-firewall/f/recommended-reads/121461/sophos-xg-firewall-best-practices-for-securing-your-firewall" target="_blank" rel="noopener">“Sophos XG Firewall: Best practices for securing your firewall”</a>というタイトルの文書が投稿されました。以下の記載があります。</p>
+<blockquote class="blockquote-center">
+            <i class="fa fa-quote-left"></i>
+            <p>このドキュメントの焦点は、Sophos XG Firewallを最低限のレベルでセキュリティを確保するための基本的なガイダンスを提供することです。この文書では、内部ネットワークデバイスやリソースを保護する個々のファイアウォール機能についてのガイダンスは提供しません （詳細な Sophos XG Firewall ベストプラクティスガイドは後日公開される予定です）。</p>
+
+            <i class="fa fa-quote-right"></i>
+          </blockquote>
+
+<p>このブログの過去の記事”<a href="/new-technology/2020/05/09/best-practice/" title="XG Firewall V18の設定におけるベストプラクティス">XG Firewall V18の設定におけるベストプラクティス</a>”で記載した通り、ルールやポリシーについてのベストプラクティスを記載していますが、将来Sophosから詳細なベストプラクティスガイドが公開されるとの事です。今回公開されたものはルールやポリシーではなく、運用について記述されたものであり、どのようにしてFirewallを守るかに言及されています。IPSの設定については、過去記事をアップデートしています。</p>
+<h2 id="Firewall自身のセキュリティ強化"><a href="#Firewall自身のセキュリティ強化" class="headerlink" title="Firewall自身のセキュリティ強化"></a>Firewall自身のセキュリティ強化</h2><p>まずこのガイドの先頭には以下の説明があります。</p>
+<blockquote>
+<p>管理者は、ファイアウォール自体の安全性を確保する前に、内部ネットワークやリソースを保護するために、ファイアウォールの機能や機能を設定することに集中してしまうことがよくあります。<br>これはご指摘の通りで、確かにXG自身にログインするパスワードもLAN内からのアクセスだからという理由で単純なパスワードにしがちです。業務で利用するほど厳格では無いにせよ、ホームユーザーとしてもFirewall自身の管理をしっかりと行うべきです。具体的なドキュメントについては、上記のページから、<a href="https://community.sophos.com/cfs-file/__key/communityserver-discussions-components-files/258/Securing-your-Sophos-XG-Firewall-_2D00_-Best-Practice-Guide.pdf" target="_blank" rel="noopener">“Best Practice Guide.pdf”</a>へのリンクがあります。まずは上記のPDFを参照いただくのが一番ベストですが、ここではホームユーザーにとって重要と思われるものを紹介します。</p>
+</blockquote>
+<h2 id="ローカルサービスACL"><a href="#ローカルサービスACL" class="headerlink" title="ローカルサービスACL"></a>ローカルサービスACL</h2><p>XGの左ペインメニューの<span class="label default">管理</span>の”デバイスのアクセス”でWANなど外部ゾーンからのすべてのサービスを削除します。使わないサービスはオフにするのが原則であり、SSHを利用しないのであればLANゾーンのSSHもオフにしてしまうのがお勧めです。</p>
+<img src="/new-technology/2020/06/24/protect-xg/acl.png" class="" title="alt">
+
+<p>このSophosのドキュメントではSSHのために、公開鍵認証を行う事を勧めています。もし、LANやVPNからSSHを使うのであればこの”デバイスのアクセス”の画面の下部に”管理者の公開鍵認証”の項目があるので、そこで公開鍵を追加できます。</p>
+<h2 id="DDoS防御"><a href="#DDoS防御" class="headerlink" title="DDoS防御"></a>DDoS防御</h2><p>これまでも特にDDoS防御については説明してきていませんでした。ホームユーザーには不要と考えているためです。ping関連のDDoS防御の進めが記述されていますので紹介します。しかしこの設定を行うとダウンロードのスループットが低下するので確認しながら利用の判断可否が必要です。XGの左ペインメニューの<span class="label default">侵入防御</span>の”DoS／スプーフ防御”のタブにてICMP/ICMPv6フラッドの項目を以下の図のように設定します。</p>
+<img src="/new-technology/2020/06/24/protect-xg/ips.png" class="" title="alt">
+
+<p>このドキュメント上で”XG550”、”XG650”および”XG750”のハードウェア提供モデルのDDoS防御の設定が記載してありますが、XG Home（ソフトウェアバージョン）はこのDDoS防御の機能は持っていません。</p>
+<h2 id="管理者ID"><a href="#管理者ID" class="headerlink" title="管理者ID"></a>管理者ID</h2><p>XGの左ペインメニューの<span class="label default">管理</span>の”管理の設定”で以下のように管理者のログイン失敗時のブロック、パスワードの複雑性の登録を行います。新しい管理者アカウントを作成し、2要素認証の設定は可能ですが、デフォルト管理者のadminアカウントは無効に設定できません。業務上利用する場合は担当者が変わる場合など意味がありますが、ホームユーザーが利用する場合は定期的なパスワード変更も不要であり、2要素認証の設定は現時点ではあまり魅力はありません。adminアカウントの無効化対応を期待します。</p>
+<img src="/new-technology/2020/06/24/protect-xg/admin.png" class="" title="alt">
+
+<p>過去の記事の”<a href="/new-technology/2020/05/09/best-practice/" title="XG Firewall V18の設定におけるベストプラクティス">XG Firewall V18の設定におけるベストプラクティス</a>“で記載した通り、通知設定を行う事でログイン失敗の状況も迅速にキャッチする事が可能です。</p>
+<h2 id="HotFixの自動インストール"><a href="#HotFixの自動インストール" class="headerlink" title="HotFixの自動インストール"></a>HotFixの自動インストール</h2><p>XGに脆弱性が見つかった場合に、過去の事例では極めて迅速にパッチが自動適用されます。具体的には下記の図のように、左ペインメニューの<span class="label default">バックアップ＆ファームウェア</span>の”ファームウェア”タブの画面にある、”ホットフィックスの自動インストールを許可する”にチェックが付いている事を確認してください。</p>
+<img src="/new-technology/2020/06/24/protect-xg/hotfix.png" class="" title="alt">
+
+<p>また、定期的な設定のバックアップが推奨されています。この<span class="label default">バックアップ＆ファームウェア</span>メニュー上でのバックアップを取得されると共に、仮想環境をお使いの方は仮想環境上でのバックアップを取得される事をお勧めします。</p>
+]]></content>
+      <categories>
+        <category>Security</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
       </tags>
   </entry>
 </search>

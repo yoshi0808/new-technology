@@ -20,26 +20,25 @@
     var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","scheme":"Mist","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="この記事で実現することPC（Windows、macOS）からXG FirewallのVPNへ接続しているユーザーに、スマホアプリを使ったワンタイムパスワードによる2要素認証機能を追加し、セキュリティを高められるようになります。">
+  <meta name="description" content="この記事で実現することXG Firewall自身を防御するためのベストプラクティスがSophosより本日公開されたため、最低限の防御として推奨されている設定内容を紹介します。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="XG Firewall VPNに2要素認証を設定する">
-<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/03/28/vpnotp/index.html">
+<meta property="og:title" content="XG Firewall自身を防御する">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/06/24/protect-xg/index.html">
 <meta property="og:site_name" content="New technologies in our life">
-<meta property="og:description" content="この記事で実現することPC（Windows、macOS）からXG FirewallのVPNへ接続しているユーザーに、スマホアプリを使ったワンタイムパスワードによる2要素認証機能を追加し、セキュリティを高められるようになります。">
+<meta property="og:description" content="この記事で実現することXG Firewall自身を防御するためのベストプラクティスがSophosより本日公開されたため、最低限の防御として推奨されている設定内容を紹介します。">
 <meta property="og:locale" content="ja_JP">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/28/vpnotp/otp3.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/28/vpnotp/otp1.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/28/vpnotp/otp2.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/28/vpnotp/otp4.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/28/vpnotp/otp5.png">
-<meta property="article:published_time" content="2020-03-28T09:22:30.000Z">
-<meta property="article:modified_time" content="2020-06-14T02:22:20.365Z">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/24/protect-xg/acl.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/24/protect-xg/ips.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/24/protect-xg/admin.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/24/protect-xg/hotfix.png">
+<meta property="article:published_time" content="2020-06-24T09:46:11.000Z">
+<meta property="article:modified_time" content="2020-06-24T13:37:22.877Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2020/03/28/vpnotp/otp3.png">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2020/06/24/protect-xg/acl.png">
 
-<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2020/03/28/vpnotp/">
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2020/06/24/protect-xg/">
 
 
 <script id="page-configurations">
@@ -52,7 +51,7 @@
   };
 </script>
 
-  <title>XG Firewall VPNに2要素認証を設定する | New technologies in our life</title>
+  <title>XG Firewall自身を防御する | New technologies in our life</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-159928165-1"></script>
     <script>
@@ -217,7 +216,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="ja">
-    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2020/03/28/vpnotp/">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2020/06/24/protect-xg/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/new-technology/images/yoshi.png">
@@ -230,7 +229,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          XG Firewall VPNに2要素認証を設定する
+          XG Firewall自身を防御する
         </h1>
 
         <div class="post-meta">
@@ -239,16 +238,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">投稿日</span>
+              
 
-              <time title="作成日：2020-03-28 18:22:30" itemprop="dateCreated datePublished" datetime="2020-03-28T18:22:30+09:00">2020-03-28</time>
+              <time title="作成日：2020-06-24 18:46:11 / 修正日：22:37:22" itemprop="dateCreated datePublished" datetime="2020-06-24T18:46:11+09:00">2020-06-24</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">編集日</span>
-                <time title="修正日：2020-06-14 11:22:20" itemprop="dateModified" datetime="2020-06-14T11:22:20+09:00">2020-06-14</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -256,14 +249,6 @@
               <span class="post-meta-item-text">カテゴリ</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/new-technology/categories/Security/" itemprop="url" rel="index"><span itemprop="name">Security</span></a>
-                </span>
-                  、
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/new-technology/categories/Security/VPN/" itemprop="url" rel="index"><span itemprop="name">VPN</span></a>
-                </span>
-                  、
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/new-technology/categories/Security/VPN/%E3%83%AF%E3%83%B3%E3%82%BF%E3%82%A4%E3%83%A0%E3%83%91%E3%82%B9%E3%83%AF%E3%83%BC%E3%83%89/" itemprop="url" rel="index"><span itemprop="name">ワンタイムパスワード</span></a>
                 </span>
             </span>
 
@@ -279,45 +264,40 @@
 
       
         <div class="note success">
-            <h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>PC（Windows、macOS）からXG FirewallのVPNへ接続しているユーザーに、スマホアプリを使ったワンタイムパスワードによる2要素認証機能を追加し、セキュリティを高められるようになります。</p>
+            <h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>XG Firewall自身を防御するためのベストプラクティスがSophosより本日公開されたため、最低限の防御として推奨されている設定内容を紹介します。</p>
           </div>
+
 <a id="more"></a>
 
-<h2 id="XGが提供するVPNの2要素認証"><a href="#XGが提供するVPNの2要素認証" class="headerlink" title="XGが提供するVPNの2要素認証"></a>XGが提供するVPNの2要素認証</h2><p>XGのVPNにおいて、SSL-VPNとIPSecはワンタイムパスワードが設定できます。SSHのように、パスワードに加え、事前共有鍵を持つ事でずいぶんセキュリティは高まります。しかし、さらにワンタイムパスワードを加える事で、侵入者に突破される可能性はほぼ無いものと考えます。出先や多くの人がいる場所で端末に対し、IDとパスワードを入力するのも大きなリスクです。端末が指紋認証などで守られている前提で、XGのSophos ConnectはIDおよびパスワードを接続アプリケーションに保存しておけますので、ワンタイムパスワードのみでVPNに接続できます。</p>
-<h2 id="ワンタイムパスワードのアプリ"><a href="#ワンタイムパスワードのアプリ" class="headerlink" title="ワンタイムパスワードのアプリ"></a>ワンタイムパスワードのアプリ</h2><p>ワンタイムパスワードについては、定番のGoogleのオーセンティケーターが有名です。GoogleのオーセンティケーターはXGが表示するワンタイムパスワードのQRコードが読み込めません。Sophosからは、以下のスマホアプリが提供されています。</p>
-<ul>
-<li><a href="https://apps.apple.com/jp/app/sophos-intercept-x-for-mobile/id1086924662" target="_blank" rel="noopener">Sophos Intercept X for Mobile(iOS)</a></li>
-<li><a href="https://play.google.com/store/apps/details?id=com.sophos.smsec" target="_blank" rel="noopener">Sophos Intercept X for Mobile(Android)</a></li>
-</ul>
-<p>なお、私は複数の端末でワンタイムパスワードの同期ができる<a href="https://apps.apple.com/jp/app/authy/id494168017" target="_blank" rel="noopener">Authy</a>を利用しています。</p>
-<h2 id="ワンタイムパスワードの基本設定"><a href="#ワンタイムパスワードの基本設定" class="headerlink" title="ワンタイムパスワードの基本設定"></a>ワンタイムパスワードの基本設定</h2><p>XGにおけるワンタイムパスワードの設定は、左ペインの<span class="label default">認証</span>から<span class="label default">ワンタイムパスワード</span>へと進んでください。ここで以下の通り、設定ボタンをクリックし、以下の項目の設定を行います。</p>
-<ul>
-<li><span class="label default">ワンタイムパスワード</span>のトグルをオンにします</li>
-<li><span class="label default">全ユーザーのOTP</span>のトグルはオフにします</li>
-<li><span class="label default">ユーザーのOTPトークンを自動生成</span>のトグルはオンにします</li>
-<li><span class="label default">以下のユーザーとグループにOTPが必要</span>のリストボックスからは、Open Groupを選択します</li>
-<li><span class="label default">以下について、OTPを有効化</span>は、<span class="label default">ユーザーポータル</span>、<span class="label default">IPSecリモートアクセス</span>にチェックします</li>
-<li>最後に適用ボタンをクリックします</li>
-</ul>
-<img src="/new-technology/2020/03/28/vpnotp/otp3.png" class="" title="alt">
+<h2 id="Best-practices-for-securing-your-firewall"><a href="#Best-practices-for-securing-your-firewall" class="headerlink" title="Best practices for securing your firewall"></a>Best practices for securing your firewall</h2><p>2020-6-24にSophos Communityのお勧め記事に<a href="https://community.sophos.com/products/xg-firewall/f/recommended-reads/121461/sophos-xg-firewall-best-practices-for-securing-your-firewall" target="_blank" rel="noopener">“Sophos XG Firewall: Best practices for securing your firewall”</a>というタイトルの文書が投稿されました。以下の記載があります。</p>
+<blockquote class="blockquote-center">
+            <i class="fa fa-quote-left"></i>
+            <p>このドキュメントの焦点は、Sophos XG Firewallを最低限のレベルでセキュリティを確保するための基本的なガイダンスを提供することです。この文書では、内部ネットワークデバイスやリソースを保護する個々のファイアウォール機能についてのガイダンスは提供しません （詳細な Sophos XG Firewall ベストプラクティスガイドは後日公開される予定です）。</p>
 
-<h2 id="ユーザーポータル画面でのワンタイムパスワードの自動生成"><a href="#ユーザーポータル画面でのワンタイムパスワードの自動生成" class="headerlink" title="ユーザーポータル画面でのワンタイムパスワードの自動生成"></a>ユーザーポータル画面でのワンタイムパスワードの自動生成</h2><p>続いて、ユーザーポータルという画面にログインします。これは管理者向けではなく、ユーザー向けに提供されているものです。XGの管理者メニューは、デフォルトでは、<code>https://XGのIPアドレス:4444/</code>になっていますが、<code>https://XGのIPアドレス/</code>に接続するとユーザーポータル画面が開きます。この画面では、VPN向けに作成したユーザーとパスワードでログインします。すると、次にワンタイムパスワードのトークンが自動生成され、QRコードが表示されます。</p>
-<img src="/new-technology/2020/03/28/vpnotp/otp1.png" class="" title="alt">
+            <i class="fa fa-quote-right"></i>
+          </blockquote>
 
-<p>ここで、必ずワンタイムパスワードのアプリでQRコードを読み込み、アプリにトークンを取り込んでください。完了後、XGのメニューで<span class="label default">ログインに進む</span>をクリックすると、再びログイン画面になります。ここではユーザーはそのまま入力、パスワードの部分は、パスワード＋ワンタイムパスワードの数字6桁を続けて入力します。ユーザーポータルにログインできれば、ワンタイムパスワードは正しくアプリに取り込まれています。</p>
-<p>再び、XGの管理画面にadminでログインします。左ペインの<span class="label default">認証</span>から<span class="label default">ワンタイムパスワード</span>に進むと、<span class="label default">シークレット</span>が生成されている事がわかります。</p>
-<img src="/new-technology/2020/03/28/vpnotp/otp2.png" class="" title="alt">
+<p>このブログの過去の記事”<a href="/new-technology/2020/05/09/best-practice/" title="XG Firewall V18の設定におけるベストプラクティス">XG Firewall V18の設定におけるベストプラクティス</a>”で記載した通り、ルールやポリシーについてのベストプラクティスを記載していますが、将来Sophosから詳細なベストプラクティスガイドが公開されるとの事です。今回公開されたものはルールやポリシーではなく、運用について記述されたものであり、どのようにしてFirewallを守るかに言及されています。IPSの設定については、過去記事をアップデートしています。</p>
+<h2 id="Firewall自身のセキュリティ強化"><a href="#Firewall自身のセキュリティ強化" class="headerlink" title="Firewall自身のセキュリティ強化"></a>Firewall自身のセキュリティ強化</h2><p>まずこのガイドの先頭には以下の説明があります。</p>
+<blockquote>
+<p>管理者は、ファイアウォール自体の安全性を確保する前に、内部ネットワークやリソースを保護するために、ファイアウォールの機能や機能を設定することに集中してしまうことがよくあります。<br>これはご指摘の通りで、確かにXG自身にログインするパスワードもLAN内からのアクセスだからという理由で単純なパスワードにしがちです。業務で利用するほど厳格では無いにせよ、ホームユーザーとしてもFirewall自身の管理をしっかりと行うべきです。具体的なドキュメントについては、上記のページから、<a href="https://community.sophos.com/cfs-file/__key/communityserver-discussions-components-files/258/Securing-your-Sophos-XG-Firewall-_2D00_-Best-Practice-Guide.pdf" target="_blank" rel="noopener">“Best Practice Guide.pdf”</a>へのリンクがあります。まずは上記のPDFを参照いただくのが一番ベストですが、ここではホームユーザーにとって重要と思われるものを紹介します。</p>
+</blockquote>
+<h2 id="ローカルサービスACL"><a href="#ローカルサービスACL" class="headerlink" title="ローカルサービスACL"></a>ローカルサービスACL</h2><p>XGの左ペインメニューの<span class="label default">管理</span>の”デバイスのアクセス”でWANなど外部ゾーンからのすべてのサービスを削除します。使わないサービスはオフにするのが原則であり、SSHを利用しないのであればLANゾーンのSSHもオフにしてしまうのがお勧めです。</p>
+<img src="/new-technology/2020/06/24/protect-xg/acl.png" class="" title="alt">
 
-<p>これで、IPsecVPNにはワンタイムパスワードが必須となりました。以前作成したSophosConnectクライアントの接続設定ファイルについて、再設定が必要になります。前回のVPNのセットアップを行ったところで、クライアントソフトウェアをダウンロードしました。</p>
-<a href="/new-technology/2020/03/28/vpn/" title="XG Firewall VPNについて">XG Firewall VPNについて</a>
+<p>このSophosのドキュメントではSSHのために、公開鍵認証を行う事を勧めています。もし、LANやVPNからSSHを使うのであればこの”デバイスのアクセス”の画面の下部に”管理者の公開鍵認証”の項目があるので、そこで公開鍵を追加できます。</p>
+<h2 id="DDoS防御"><a href="#DDoS防御" class="headerlink" title="DDoS防御"></a>DDoS防御</h2><p>これまでも特にDDoS防御については説明してきていませんでした。ホームユーザーには不要と考えているためです。ping関連のDDoS防御の進めが記述されていますので紹介します。しかしこの設定を行うとダウンロードのスループットが低下するので確認しながら利用の判断可否が必要です。XGの左ペインメニューの<span class="label default">侵入防御</span>の”DoS／スプーフ防御”のタブにてICMP/ICMPv6フラッドの項目を以下の図のように設定します。</p>
+<img src="/new-technology/2020/06/24/protect-xg/ips.png" class="" title="alt">
 
-<h2 id="scadminツールで設定ファイルを作成する"><a href="#scadminツールで設定ファイルを作成する" class="headerlink" title="scadminツールで設定ファイルを作成する"></a>scadminツールで設定ファイルを作成する</h2><p>今回はSophosConnectクライアントではなく、もう1つの設定ファイル作成ツールである、scadminツールをWindowsにインストールします。このアプリケーションはmacOS版がありませんので、Windowsで設定ファイルを作成する事になります。出力された設定ファイルは、Windows、mac共に共通で利用出来ますので、それをSophosConnectクライアントに取り込みます。scadmin.msiをインストールし起動します。OPENボタンを押して、以前に生成された接続設定ファイル（拡張子tgb）ファイルを開きます。</p>
-<img src="/new-technology/2020/03/28/vpnotp/otp4.png" class="" title="alt">
+<p>このドキュメント上で”XG550”、”XG650”および”XG750”のハードウェア提供モデルのDDoS防御の設定が記載してありますが、XG Home（ソフトウェアバージョン）はこのDDoS防御の機能は持っていません。</p>
+<h2 id="管理者ID"><a href="#管理者ID" class="headerlink" title="管理者ID"></a>管理者ID</h2><p>XGの左ペインメニューの<span class="label default">管理</span>の”管理の設定”で以下のように管理者のログイン失敗時のブロック、パスワードの複雑性の登録を行います。新しい管理者アカウントを作成し、2要素認証の設定は可能ですが、デフォルト管理者のadminアカウントは無効に設定できません。業務上利用する場合は担当者が変わる場合など意味がありますが、ホームユーザーが利用する場合は定期的なパスワード変更も不要であり、2要素認証の設定は現時点ではあまり魅力はありません。adminアカウントの無効化対応を期待します。</p>
+<img src="/new-technology/2020/06/24/protect-xg/admin.png" class="" title="alt">
 
-<p>設定は<span class="label default">Allow Password Saving</span>と、<span class="label default">Prompt for 2FA</span>のトグルスイッチをOnにするのみです。そして、右下のSaveで保存してください。今回はファイルの拡張子は、scxとなっています。最後に、Sophos Connect Clientより、再度作成した設定ファイル（scx）を読み込み完了です。IDとパスワードにワンタイムパスワードをセットし、接続できる事を確認して下さい。次回の接続からは、以下の画面のように、ワンタイムパスワードのみを入力し接続する事になります。</p>
-<img src="/new-technology/2020/03/28/vpnotp/otp5.png" class="" title="alt">
+<p>過去の記事の”<a href="/new-technology/2020/05/09/best-practice/" title="XG Firewall V18の設定におけるベストプラクティス">XG Firewall V18の設定におけるベストプラクティス</a>“で記載した通り、通知設定を行う事でログイン失敗の状況も迅速にキャッチする事が可能です。</p>
+<h2 id="HotFixの自動インストール"><a href="#HotFixの自動インストール" class="headerlink" title="HotFixの自動インストール"></a>HotFixの自動インストール</h2><p>XGに脆弱性が見つかった場合に、過去の事例では極めて迅速にパッチが自動適用されます。具体的には下記の図のように、左ペインメニューの<span class="label default">バックアップ＆ファームウェア</span>の”ファームウェア”タブの画面にある、”ホットフィックスの自動インストールを許可する”にチェックが付いている事を確認してください。</p>
+<img src="/new-technology/2020/06/24/protect-xg/hotfix.png" class="" title="alt">
 
-<p>これまでの設定で2要素認証による堅牢な環境でLANの機器にアクセスしたり、安全なWebブラウジングができるようになりました。</p>
+<p>また、定期的な設定のバックアップが推奨されています。この<span class="label default">バックアップ＆ファームウェア</span>メニュー上でのバックアップを取得されると共に、仮想環境をお使いの方は仮想環境上でのバックアップを取得される事をお勧めします。</p>
 
     </div>
 
@@ -333,7 +313,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>記事へのリンク：</strong>
-    <a href="https://yoshi0808.github.io/new-technology/2020/03/28/vpnotp/" title="XG Firewall VPNに2要素認証を設定する">https://yoshi0808.github.io/new-technology/2020/03/28/vpnotp/</a>
+    <a href="https://yoshi0808.github.io/new-technology/2020/06/24/protect-xg/" title="XG Firewall自身を防御する">https://yoshi0808.github.io/new-technology/2020/06/24/protect-xg/</a>
   </li>
   <li class="post-copyright-license">
     <strong>著作権表示： </strong>このブログ内のすべての記事は、特別な記載がない限り <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> の下のライセンスで保護されています。また、免責事項・プライバシーポリシーについては、メニューのディスクレーマーをご覧ください。
@@ -353,13 +333,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/new-technology/2020/03/28/vpn/" rel="prev" title="XG Firewall VPNについて">
-      <i class="fa fa-chevron-left"></i> XG Firewall VPNについて
+    <a href="/new-technology/2020/06/14/esxi67-patch/" rel="prev" title="VMware ESXi6.7にパッチを適用する">
+      <i class="fa fa-chevron-left"></i> VMware ESXi6.7にパッチを適用する
     </a></div>
-      <div class="post-nav-item">
-    <a href="/new-technology/2020/03/31/vpn-iphone/" rel="next" title="XG Firewall VPNにスマホから接続する">
-      XG Firewall VPNにスマホから接続する <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -418,7 +395,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#この記事で実現すること"><span class="nav-number">1.</span> <span class="nav-text">この記事で実現すること</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XGが提供するVPNの2要素認証"><span class="nav-number">2.</span> <span class="nav-text">XGが提供するVPNの2要素認証</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ワンタイムパスワードのアプリ"><span class="nav-number">3.</span> <span class="nav-text">ワンタイムパスワードのアプリ</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ワンタイムパスワードの基本設定"><span class="nav-number">4.</span> <span class="nav-text">ワンタイムパスワードの基本設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ユーザーポータル画面でのワンタイムパスワードの自動生成"><span class="nav-number">5.</span> <span class="nav-text">ユーザーポータル画面でのワンタイムパスワードの自動生成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#scadminツールで設定ファイルを作成する"><span class="nav-number">6.</span> <span class="nav-text">scadminツールで設定ファイルを作成する</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#この記事で実現すること"><span class="nav-number">1.</span> <span class="nav-text">この記事で実現すること</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Best-practices-for-securing-your-firewall"><span class="nav-number">2.</span> <span class="nav-text">Best practices for securing your firewall</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Firewall自身のセキュリティ強化"><span class="nav-number">3.</span> <span class="nav-text">Firewall自身のセキュリティ強化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ローカルサービスACL"><span class="nav-number">4.</span> <span class="nav-text">ローカルサービスACL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DDoS防御"><span class="nav-number">5.</span> <span class="nav-text">DDoS防御</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#管理者ID"><span class="nav-number">6.</span> <span class="nav-text">管理者ID</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HotFixの自動インストール"><span class="nav-number">7.</span> <span class="nav-text">HotFixの自動インストール</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
