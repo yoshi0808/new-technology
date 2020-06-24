@@ -33,7 +33,8 @@ XG Firewall自身を防御するためのベストプラクティスがSophosよ
 
 まずこのガイドの先頭には以下の説明があります。
 >管理者は、ファイアウォール自体の安全性を確保する前に、内部ネットワークやリソースを保護するために、ファイアウォールの機能や機能を設定することに集中してしまうことがよくあります。
-これはご指摘の通りで、確かにXG自身にログインするパスワードもLAN内からのアクセスだからという理由で単純なパスワードにしがちです。業務で利用するほど厳格では無いにせよ、ホームユーザーとしてもFirewall自身の管理をしっかりと行うべきです。具体的なドキュメントについては、上記のページから、["Best Practice Guide.pdf"](https://community.sophos.com/cfs-file/__key/communityserver-discussions-components-files/258/Securing-your-Sophos-XG-Firewall-_2D00_-Best-Practice-Guide.pdf)へのリンクがあります。まずは上記のPDFを参照いただくのが一番ベストですが、ここではホームユーザーにとって重要と思われるものを紹介します。
+
+これはご指摘の通りで、確かにXG自身にログインするパスワードもLAN内からのアクセスだからという理由で単純なパスワードにしがちです。業務で利用するほど厳格では無いにせよ、ホームユーザーとしてもFirewall自身の管理をしっかりと行うべきです。具体的なドキュメントについては、上記のページから、["Best Practice Guide"](https://community.sophos.com/cfs-file/__key/communityserver-discussions-components-files/258/Securing-your-Sophos-XG-Firewall-_2D00_-Best-Practice-Guide.pdf)へのリンクがあります。まずは上記のPDFを参照いただくのが一番ベストですが、ここではホームユーザーにとって重要と思われるものを紹介します。
 
 ## ローカルサービスACL
 
