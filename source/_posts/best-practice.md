@@ -68,7 +68,7 @@ console> show ips-settings
 - stream on
 - maxpkts 200（推奨値100〜300）
 
-デフォルトでは、maxpktsが8となっているので、以下のコマンドで200に変更します。ここはマシンスペックにもよるので、100から200の間で設定をチューニングしながらスループットを確認してください。これまでのCommunityでは、この値は80が推奨されていましたが、2020-06-24にSophosより公開された["Best Practice Guide"](https://community.sophos.com/cfs-file/__key/communityserver-discussions-components-files/258/Securing-your-Sophos-XG-Firewall-_2D00_-Best-Practice-Guide.pdf)では、スループットを見ながら100〜300の間で設定する事が推奨されています。ここでは中央値の200を設定しています。
+デフォルトでは、maxpktsが8となっているので、以下のコマンドで200に変更します。ここはマシンスペックにもよるので、100から200の間で設定をチューニングしながらスループットを確認してください。これまでのCommunityでは、この値は80が推奨されていましたが、2020-06-24にSophosより公開された["Best Practice Guide"](https://community.sophos.com/cfs-file/__key/communityserver-discussions-components-files/258/Securing-your-Sophos-XG-Firewall-_2D00_-Best-Practice-Guide.pdf)ではスループットを確認しながら100〜300の間で設定する事が推奨されています。ここでは中央値の200を設定しています。
 
 ``` bash
 console> set ips maxpkts 200
