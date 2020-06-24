@@ -2245,8 +2245,9 @@ Note over cl: 16.共通鍵で復号
 <p>このブログの過去の記事”<a href="/new-technology/2020/05/09/best-practice/" title="XG Firewall V18の設定におけるベストプラクティス">XG Firewall V18の設定におけるベストプラクティス</a>”で記載した通り、ルールやポリシーについてのベストプラクティスを記載していますが、将来Sophosから詳細なベストプラクティスガイドが公開されるとの事です。今回公開されたものはルールやポリシーではなく、運用について記述されたものであり、どのようにしてFirewallを守るかに言及されています。IPSの設定については、過去記事をアップデートしています。</p>
 <h2 id="Firewall自身のセキュリティ強化"><a href="#Firewall自身のセキュリティ強化" class="headerlink" title="Firewall自身のセキュリティ強化"></a>Firewall自身のセキュリティ強化</h2><p>まずこのガイドの先頭には以下の説明があります。</p>
 <blockquote>
-<p>管理者は、ファイアウォール自体の安全性を確保する前に、内部ネットワークやリソースを保護するために、ファイアウォールの機能や機能を設定することに集中してしまうことがよくあります。<br>これはご指摘の通りで、確かにXG自身にログインするパスワードもLAN内からのアクセスだからという理由で単純なパスワードにしがちです。業務で利用するほど厳格では無いにせよ、ホームユーザーとしてもFirewall自身の管理をしっかりと行うべきです。具体的なドキュメントについては、上記のページから、<a href="https://community.sophos.com/cfs-file/__key/communityserver-discussions-components-files/258/Securing-your-Sophos-XG-Firewall-_2D00_-Best-Practice-Guide.pdf" target="_blank" rel="noopener">“Best Practice Guide.pdf”</a>へのリンクがあります。まずは上記のPDFを参照いただくのが一番ベストですが、ここではホームユーザーにとって重要と思われるものを紹介します。</p>
+<p>管理者は、ファイアウォール自体の安全性を確保する前に、内部ネットワークやリソースを保護するために、ファイアウォールの機能や機能を設定することに集中してしまうことがよくあります。</p>
 </blockquote>
+<p>これはご指摘の通りで、確かにXG自身にログインするパスワードもLAN内からのアクセスだからという理由で単純なパスワードにしがちです。業務で利用するほど厳格では無いにせよ、ホームユーザーとしてもFirewall自身の管理をしっかりと行うべきです。具体的なドキュメントについては、上記のページから、<a href="https://community.sophos.com/cfs-file/__key/communityserver-discussions-components-files/258/Securing-your-Sophos-XG-Firewall-_2D00_-Best-Practice-Guide.pdf" target="_blank" rel="noopener">“Best Practice Guide”</a>へのリンクがあります。まずは上記のPDFを参照いただくのが一番ベストですが、ここではホームユーザーにとって重要と思われるものを紹介します。</p>
 <h2 id="ローカルサービスACL"><a href="#ローカルサービスACL" class="headerlink" title="ローカルサービスACL"></a>ローカルサービスACL</h2><p>XGの左ペインメニューの<span class="label default">管理</span>の”デバイスのアクセス”でWANなど外部ゾーンからのすべてのサービスを削除します。使わないサービスはオフにするのが原則であり、SSHを利用しないのであればLANゾーンのSSHもオフにしてしまうのがお勧めです。</p>
 <img src="/new-technology/2020/06/24/protect-xg/acl.png" class="" title="alt">
 
