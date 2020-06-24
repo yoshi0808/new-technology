@@ -26,6 +26,7 @@ XG V18のレイヤ7ファイアウォールは、SSL/TLS通信をPort443に限�
 2. [ランサムウェア: ソフォス製品による回避策のアドバイス](https://community.sophos.com/kb/ja-jp/124744)
 3. [SFOS 16.05.0 GA IPS set maxpkts size question](https://community.sophos.com/products/xg-firewall/f/intrusion-prevention/86274/sfos-16-05-0-ga-ips-set-maxpkts-size-question?pi2151=2#pi2151=1)
 4. [Sophos XG Firewall: 高リスクのアプリケーションをブロックする手順](https://community.sophos.com/kb/ja-jp/123102)　<sup>**[[1]](#note1)**</sup>
+5. ["Best Practice Guide.pdf"](https://community.sophos.com/cfs-file/__key/communityserver-discussions-components-files/258/Securing-your-Sophos-XG-Firewall-_2D00_-Best-Practice-Guide.pdf)（2020-06-24追加）
 
 最初の記事がベストプラクティスとも言える内容になっており、この記事を中心に、関連する記事も参考にしながら設定します。
 
@@ -65,12 +66,12 @@ console> show ips-settings
 
 - maxsesbytes 0
 - stream on
-- maxpkts 80
+- maxpkts 200（推奨値100〜300）
 
-デフォルトでは、maxpktsが8となっているので、以下のコマンドで80に変更します。
+デフォルトでは、maxpktsが8となっているので、以下のコマンドで200に変更します。ここはマシンスペックにもよるので、100から200の間で設定をチューニングしながらスループットを確認してください。これまでのCommunityでは、この値は80が推奨されていましたが、2020-06-24にSophosより公開された["Best Practice Guide"](https://community.sophos.com/cfs-file/__key/communityserver-discussions-components-files/258/Securing-your-Sophos-XG-Firewall-_2D00_-Best-Practice-Guide.pdf)では、スループットを見ながら100〜300の間で設定する事が推奨されています。ここでは中央値の200を設定しています。
 
 ``` bash
-console> set ips maxpkts 80
+console> set ips maxpkts 200
 ```
 
 ## アプリケーションフィルタの設定
