@@ -77,12 +77,9 @@ XGの左ペインメニューから{% label @VPN %}を選択、{% label @Sophos 
 
 {% asset_img rule2.png alt %}
 
-以下の通り、{% label @リンクNATルールの作成 %}を行います。こちらはVPNとLANの間であるため、NATは行いません。「NATは行わない事」を明示するために、今回は{% label @Linked NAT %}を設定します。とはいえ、NATの情報は何も入力する事はなく、単純に保存をクリックしておくだけです。
+（2020-06-20更新）このルールでは、{% label @リンクNATルールの作成 %}は行いません。NATの動作の確認のために「NATしない事を明示する」設定を行うと挙動がわかりやすいというメリットはありますが、v18では原則リンクNATは使わず運用可能という考え方のようで当初記載していたリンクNATの記述を削除しました。
 
-{% asset_img rule4.png alt %}
-{% asset_img rule5.png alt %}
-
-NATルールで保存をクリックし、さらにルールで保存をクリックしてルールの設定は完成です。念のため現在のルールについて確認しましょう。{% label @Traffic to Internal %}として、VPNからLANへの接続ルールがあります。もう1つは、{% label @Traffice to WAN %}として、VPNおよびLANからWANへの接続ルールがあります。
+さらにルールで保存をクリックしてルールの設定は完成です。念のため現在のルールについて確認しましょう。{% label @Traffic to Internal %}として、VPNからLANへの接続ルールがあります。もう1つは、{% label @Traffice to WAN %}として、VPNおよびLANからWANへの接続ルールがあります。
 
 {% asset_img rule6.png alt %}
 

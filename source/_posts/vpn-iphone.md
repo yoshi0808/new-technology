@@ -13,14 +13,14 @@ date: 2020-03-31 19:44:58
 
 ## この記事で実現すること
 
-スマホ（iPhone、Android）からXG FirewallのVPNへ接続できるようになります。ワンタイムパスワードの設定も可能です。
+スマホ（iPhone、Android）からXG FirewallのVPNへ接続できるようになります。2要素認証の設定も可能です。
 
 {% endnote %}
 <!-- more -->
 
 ## 事前準備
 
-前回の記事でPC（WindowsおよびmacOS）からXGの{% label @VPN（Sophos Connect）%}にワンタイムパスワードを使って安全に接続できるようになりました。ここでは、スマホからVPNへ接続できるように設定していきます。この記事では、XG側に一通りVPNの設定が終わっている事を前提としています。以下の記事も参考にしてください。
+前回の記事でPC（WindowsおよびmacOS）からXGの{% label @VPN（Sophos Connect）%}に2要素認証で安全に接続できるようになりました。ここでは、スマホからVPNへ接続できるように設定していきます。この記事では、XG側に一通りVPNの設定が終わっている事を前提としています。以下の記事も参考にしてください。
 
 {% post_link vpn %}
 {% post_link vpnotp %}
