@@ -31,7 +31,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/21/ssl-inspection2/inspection-rule.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/21/ssl-inspection2/inspection-rule1.png">
 <meta property="article:published_time" content="2020-03-20T23:57:45.000Z">
-<meta property="article:modified_time" content="2020-06-20T01:26:08.965Z">
+<meta property="article:modified_time" content="2020-06-27T04:41:45.175Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -245,7 +245,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">編集日</span>
-                <time title="修正日：2020-06-20 10:26:08" itemprop="dateModified" datetime="2020-06-20T10:26:08+09:00">2020-06-20</time>
+                <time title="修正日：2020-06-27 13:41:45" itemprop="dateModified" datetime="2020-06-27T13:41:45+09:00">2020-06-27</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -275,7 +275,7 @@
 
 <h2 id="SSLインスペクションの動作確認"><a href="#SSLインスペクションの動作確認" class="headerlink" title="SSLインスペクションの動作確認"></a>SSLインスペクションの動作確認</h2><p>前回までの記事でXGのSSLインスペクションの設定が完了している事を前提にしています。過去の記事は以下をご覧ください。</p>
 <ul>
-<li><a href="/new-technology/2020/03/20/ssl-inspection/" title="XG Firewall v18のSSLインスペクションについて">XG Firewall v18のSSLインスペクションについて</a></li>
+<li><a href="/new-technology/2020/03/20/ssl-inspection/" title="SSLインスペクションについて">SSLインスペクションについて</a></li>
 <li><a href="/new-technology/2020/03/20/ssl-inspection1/" title="XG Firewall v18のSSLインスペクションの設定">XG Firewall v18のSSLインスペクションの設定</a>
 
 </li>
@@ -304,7 +304,7 @@
 <p>もう1つは対応が少し難しいのですが、アプリケーション自体が、OSにインストールされた証明書などを認めていないケースです。こちらはアプリケーションの内部に証明書を保持しており、その証明書の正当性を確認しているケースです。以下の例ではpython関連のモジュールをアップグレードするケースで以下のエラーが発生します。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;pip3 install --upgrade pip</span><br><span class="line"></span><br><span class="line">WARNING: Retrying (Retry(total=4, connect=None, <span class="built_in">read</span>=None, redirect=None, status=None))</span><br><span class="line">after connection broken by <span class="string">'SSLError(SSLCertVerificationError(1,  </span></span><br><span class="line"><span class="string">'</span>[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get <span class="built_in">local</span> issuer certificate (_ssl.c:1076)<span class="string">'))'</span>: /simple/pip/</span><br></pre></td></tr></table></figure>
 
-<p>上記のように、この場合は当該ドメインのSSLインスペクションを外す事になりますが、どのドメインかが分からないという難しさがあります。この場合は色々調べなくてはなりません。あくまで一例ですが除外しておいた方が良いドメインを列挙します。これらは上述した”Local TLS Exclusion List”にサブドメインを登録する事になります。</p>
+<p>上記のように、この場合は当該ドメインのSSLインスペクションを外す事になりますが、XGの右上画面にある”ログビューア”から”SSL/TLSインスペクション”を選択し、どのURLのSSLインスペクションが行われているのかを確認できます。下記はあくまで一例ですが除外しておいた方が良いドメインを列挙します。これらは上述した”Local TLS Exclusion List”にサブドメインを登録する事になります。</p>
 <table>
 <thead>
 <tr>
