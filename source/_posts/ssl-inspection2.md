@@ -60,7 +60,7 @@ after connection broken by 'SSLError(SSLCertVerificationError(1,
 '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1076)'))': /simple/pip/
 ```
 
-上記のように、この場合は当該ドメインのSSLインスペクションを外す事になりますが、どのドメインかが分からないという難しさがあります。この場合は色々調べなくてはなりません。あくまで一例ですが除外しておいた方が良いドメインを列挙します。これらは上述した"Local TLS Exclusion List"にサブドメインを登録する事になります。
+上記のように、この場合は当該ドメインのSSLインスペクションを外す事になりますが、XGの画面右上にある"ログビューア"から"SSL/TLSインスペクション"を選択し、どのURLのSSLインスペクションが行われているのかを確認できます。下記はあくまで一例ですが除外しておいた方が良いドメインを列挙します。これらは上述した"Local TLS Exclusion List"にサブドメインを登録する事になります。
 
 | ドメイン                           | 内容                 |
 | ---------------------------------- | -------------------- |

@@ -19,7 +19,7 @@ date: 2020-06-14 22:19:20
 
 ## パッチ適用に必要なもの
 
-SSHでESXiに接続し、コマンドラインでパッチを適用します。クライアントPCからSSH接続が行えるクライアントアプリケーションを用意してください。昔から有名なのはTera Termですが、その他にも無償で利用可能な[Termius](https://www.termius.com)が使いやすくお勧めです。
+SSHでESXiに接続し、コマンドラインでパッチを適用します。クライアントPCからSSH接続が行えるクライアントアプリケーションを用意してください。Windowsでは昔から有名なのはTera Termですが、その他にも無償で利用可能な[Termius](https://www.termius.com)などがあります。
 
 ## VMwareのパッチ情報
 
@@ -106,9 +106,3 @@ vSphere Security documentation for more information.
 ## My VMwareの通知設定
 
 パッチが提供された場合に通知を受けられるようにMyVMwareの通知設定を行っておく事をお勧めします。
-
-## Termiusについて
-
-Termiusは起動直後にアカウントを作成されるよう誘導されますが、ログインを選択後、画面右下の"Continue without Account"を選択して先に進めます。ターミナルに適合したフォント類がある事、カラーのバリエーションも選択可能です。Windows、macOS、Linux、iOS、Androidと対応OSも豊富に揃っています。
-
-{% asset_img termius.png alt %}
