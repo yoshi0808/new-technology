@@ -1661,7 +1661,7 @@ Note over cl: 16.共通鍵で復号
 <p>もう1つは対応が少し難しいのですが、アプリケーション自体が、OSにインストールされた証明書などを認めていないケースです。こちらはアプリケーションの内部に証明書を保持しており、その証明書の正当性を確認しているケースです。以下の例ではpython関連のモジュールをアップグレードするケースで以下のエラーが発生します。</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt;pip3 install --upgrade pip</span><br><span class="line"></span><br><span class="line">WARNING: Retrying (Retry(total=4, connect=None, <span class="built_in">read</span>=None, redirect=None, status=None))</span><br><span class="line">after connection broken by <span class="string">'SSLError(SSLCertVerificationError(1,  </span></span><br><span class="line"><span class="string">'</span>[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get <span class="built_in">local</span> issuer certificate (_ssl.c:1076)<span class="string">'))'</span>: /simple/pip/</span><br></pre></td></tr></table></figure>
 
-<p>上記のように、この場合は当該ドメインのSSLインスペクションを外す事になりますが、XGの右上画面にある”ログビューア”から”SSL/TLSインスペクション”を選択し、どのURLのSSLインスペクションが行われているのかを確認できます。下記はあくまで一例ですが除外しておいた方が良いドメインを列挙します。これらは上述した”Local TLS Exclusion List”にサブドメインを登録する事になります。</p>
+<p>上記のように、この場合は当該ドメインのSSLインスペクションを外す事になりますが、XGの画面右上にある”ログビューア”から”SSL/TLSインスペクション”を選択し、どのURLのSSLインスペクションが行われているのかを確認できます。下記はあくまで一例ですが除外しておいた方が良いドメインを列挙します。これらは上述した”Local TLS Exclusion List”にサブドメインを登録する事になります。</p>
 <table>
 <thead>
 <tr>
