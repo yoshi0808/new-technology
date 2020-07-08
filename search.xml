@@ -65,10 +65,10 @@
       </tags>
   </entry>
   <entry>
-    <title>XG Firewall V18で正しいDNS利用を強制する</title>
+    <title>XG Firewall v18で正しいDNS利用を強制する</title>
     <url>/new-technology/2020/05/16/Intercept-DNS/</url>
     <content><![CDATA[<div class="note success">
-            <h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>自分で設定したDNS（多くはプロバイダDNS）に反し、行儀の悪いクライアントや悪意のあるプログラムはそれに従わず、別のDNSを参照する可能性があります。XG Firewall V18の機能を活用してDNSの安全性を確保します。</p>
+            <h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>自分で設定したDNS（多くはプロバイダDNS）に反し、行儀の悪いクライアントや悪意のあるプログラムはそれに従わず、別のDNSを参照する可能性があります。XG Firewall v18の機能を活用してDNSの安全性を確保します。</p>
           </div>
 
 <a id="more"></a>
@@ -81,11 +81,11 @@
             <i class="fa fa-quote-right"></i>
           </blockquote>
 
-<p>この一言で既にDNSの使い方については答えが出てしまいましたが、記事が2017年とやや古い事もあり、V18の機能を生かしたDNSの設定例を書きます。</p>
+<p>この一言で既にDNSの使い方については答えが出てしまいましたが、記事が2017年とやや古い事もあり、v18の機能を生かしたDNSの設定例を書きます。</p>
 <p>DNSとプライバシーは国によって扱いが変わるかも知れません。国が人々のネットのアクセス状況を把握している事が問題とされている場所では、パブリックDNSが好まれます。また海外ではプロバイダーがDNSを改ざんするといったニュースも見かけます。日本国内においては、プロバイダのDNSの応答速度が遅い事から利用されるケースが増えてきているようです。</p>
 <p>ブラウザのFireFoxでは、プライバシー保護を目的として、DNSについてHTTPSを利用したDNS over HTTPSに対応しています。この機能は日本ではデフォルトでオフになっていますが、HTTPSで暗号化されているため管理者側からは一般的なネットブラウジングと区別がつかず、トラフィックが見えづらくなります。</p>
 <p>私個人としてはDNSを含めたプライバシーの情報を無闇に拡散させない事が重要と考えています。また、Communityで言及されている通り、防御のためにDNSのPortは空けない事が重要と考えます。パブリックDNSの利用はユーザーそれぞれにとっては考え方は異なるかとおもいますので、これ以降は悪意をもったクライアントが本来のDNS設定を迂回する事の対策として読んでいただければとおもいます。</p>
-<h2 id="XG-V18で指定DNSを強制する"><a href="#XG-V18で指定DNSを強制する" class="headerlink" title="XG V18で指定DNSを強制する"></a>XG V18で指定DNSを強制する</h2><p>ここではDNS情報はDHCPで配布されている前提とします。このブログでは、クライアントが参照するDNSは、全てXGのDNSを指定するように設定しています。この前提で、これを回避しようとするクライアントに対して以下の対策を取ります。</p>
+<h2 id="XG-v18で指定DNSを強制する"><a href="#XG-v18で指定DNSを強制する" class="headerlink" title="XG v18で指定DNSを強制する"></a>XG v18で指定DNSを強制する</h2><p>ここではDNS情報はDHCPで配布されている前提とします。このブログでは、クライアントが参照するDNSは、全てXGのDNSを指定するように設定しています。この前提で、これを回避しようとするクライアントに対して以下の対策を取ります。</p>
 <ol>
 <li>DNS over TLS(DoT)は拒否<br>Port853の拒否</li>
 <li>DNS over HTTPS(DoH)は拒否<br>RFC8484に基づき、MIMEヘッダーの”application/dns-message”を見つけて、その通信を拒否</li>
@@ -128,7 +128,7 @@
 <p>上記DNATによるDNSのインターセプトが有効になると、<span class="label default">ルールとポリシー</span>の<span class="label default">NATルール</span>画面で実際の変換された数が確認できるので、これで挙動確認を行ってください。</p>
 <img src="/new-technology/2020/05/16/Intercept-DNS/rule3.png" class="" title="alt">
 
-<p> 以上がプライバシーと安全性を重視したV18ならではのDNSのベストプラクティスです。</p>
+<p> 以上がプライバシーと安全性を重視したv18ならではのDNSのベストプラクティスです。</p>
 <h2 id="DNSに関しての補足"><a href="#DNSに関しての補足" class="headerlink" title="DNSに関しての補足"></a>DNSに関しての補足</h2><p>GoogleDNSのDoHはRFC8484に従っていない独自プロトコルを使えるという事実があります。世界中のパブリックDNSを全て把握するのは困難ですが、Sophosの以下の記事を参考にWebフィルタのURLグループにパブリックDNSのドメインを登録し、拒否する設定を加えても良いでしょう。</p>
 <p><a href="https://community.sophos.com/kb/en-us/134644" target="_blank" rel="noopener">DNS over HTTPS (DoH) for web security</a></p>
 ]]></content>
@@ -243,7 +243,7 @@
 <a id="more"></a>
 <p>さて、直接XGの話ではありませんが、ここ数日話題になっているドイツ製翻訳ソフトの<span class="label default">DeepL</span>が素晴らしいです。私はGoogle翻訳をずっと使っていましたが、こちらも使い勝手が良く便利です。<br>Windows、macOSのアプリケーションとしてインストールする事が出来ます。利用は無償（高機能な有償のpro版もあります）で、例えばブラウザで翻訳箇所を選択しCtrl+c(macはcommand+c)を2回押下するとDeepLが起動し、英訳と日本語が併記されます。</p>
 <p>DeepLのダウンロードは<a href="https://www.deepl.com/app" target="_blank" rel="noopener">こちら</a>です。</p>
-<p>これまで私がブログで書いてきたV18のSSL/TLSインスペクションですが、情報がたくさんあります。このブログで全てを説明するのは到底無理があります。Communityの素晴らしい知見を活用すべく、活用してみてください。</p>
+<p>これまで私がブログで書いてきたv18のSSL/TLSインスペクションですが、情報がたくさんあります。このブログで全てを説明するのは到底無理があります。Communityの素晴らしい知見を活用すべく、活用してみてください。</p>
 <blockquote>
 <p><a href="https://community.sophos.com/products/xg-firewall/f/recommended-reads/118753/sophos-xg-firewall-v18-troubleshooting-problems-with-the-dpi-engine" target="_blank" rel="noopener">Sophos XG Firewall v18: DPI エンジンのトラブルシューティング</a></p>
 </blockquote>
@@ -322,8 +322,9 @@
 <li><a href="/new-technology/2020/04/29/xg-ipv6-2/" title="XG FirewallでIPv6の設定を行う（後半）">XG FirewallでIPv6の設定を行う（後半）</a></li>
 <li><a href="/new-technology/2020/05/04/ips-policy/" title="XG FirewallでIPSのポリシーを確認する">XG FirewallでIPSのポリシーを確認する</a></li>
 <li><a href="/new-technology/2020/05/06/web-application-filter/" title="XG FirewallのWebとアプリケーションフィルタについて">XG FirewallのWebとアプリケーションフィルタについて</a></li>
-<li><a href="/new-technology/2020/05/09/best-practice/" title="XG Firewall V18の設定におけるベストプラクティス">XG Firewall V18の設定におけるベストプラクティス</a></li>
-<li><a href="/new-technology/2020/05/16/Intercept-DNS/" title="XG Firewall V18で正しいDNS利用を強制する">XG Firewall V18で正しいDNS利用を強制する</a>
+<li><a href="/new-technology/2020/05/09/best-practice/" title="XG Firewall v18の設定におけるベストプラクティス">XG Firewall v18の設定におけるベストプラクティス</a></li>
+<li><a href="/new-technology/2020/05/16/Intercept-DNS/" title="XG Firewall v18で正しいDNS利用を強制する">XG Firewall v18で正しいDNS利用を強制する</a></li>
+<li><a href="/new-technology/2020/06/24/protect-xg/" title="XG Firewall自身を防御する">XG Firewall自身を防御する</a>
 </li>
 </ul>
 ]]></content>
@@ -382,7 +383,7 @@
 </tr>
 </tbody></table>
 <p>右上のログビューアをクリックすると別画面でFirewallのログがポップアップします。</p>
-<h2 id="XG-v18の変更点"><a href="#XG-v18の変更点" class="headerlink" title="XG v18の変更点"></a>XG v18の変更点</h2><p>Sophos社による英語の動画解説が<a href="https://vimeo.com/387247792" target="_blank" rel="noopener">https://vimeo.com</a>にあります。V17との比較についても説明されているので、具体的にV18の設定を開始するにあたり、非常に理解が進みます。</p>
+<h2 id="XG-v18の変更点"><a href="#XG-v18の変更点" class="headerlink" title="XG v18の変更点"></a>XG v18の変更点</h2><p>Sophos社による英語の動画解説が<a href="https://vimeo.com/387247792" target="_blank" rel="noopener">https://vimeo.com</a>にあります。V17との比較についても説明されているので、具体的にv18の設定を開始するにあたり、非常に理解が進みます。</p>
 <h2 id="XG-v18の大幅な性能向上"><a href="#XG-v18の大幅な性能向上" class="headerlink" title="XG v18の大幅な性能向上"></a>XG v18の大幅な性能向上</h2><p>昔からv17以前のXGを使っている方のために私がお伝えしたいのは、v18から採用されている<span class="label default">XStreamアーキテクチャ</span>です。全て暗号化されたhttpsプロトコルの様々なアプリケーションを高速かつ適切に判断し、脅威から保護する仕組みとなっています。</p>
 <p>以下、Sophosのサイトから引用します。</p>
 <blockquote class="blockquote-center">
@@ -429,7 +430,7 @@
     <title>XG Firewall v18をESXi仮想マシンにインストールする</title>
     <url>/new-technology/2020/03/06/InstallXG2/</url>
     <content><![CDATA[<div class="note success">
-            <h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>ESXi 6.7に環境構築済みの仮想マシンに対し、XG Firewall V18のインストールを行います。ESXiを使わない場合、PC（物理マシン）にフラッシュメモリを接続し直接インストールする事になりますが、この場合も手順自体はほとんど変わりません。</p>
+            <h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>ESXi 6.7に環境構築済みの仮想マシンに対し、XG Firewall v18のインストールを行います。ESXiを使わない場合、PC（物理マシン）にフラッシュメモリを接続し直接インストールする事になりますが、この場合も手順自体はほとんど変わりません。</p>
           </div>
 <a id="more"></a>
 
@@ -563,15 +564,15 @@ XGFirewall-- "192.168.0.0/24" ---HGW
       </tags>
   </entry>
   <entry>
-    <title>XG Firewall V18の設定におけるベストプラクティス</title>
+    <title>XG Firewall v18の設定におけるベストプラクティス</title>
     <url>/new-technology/2020/05/09/best-practice/</url>
     <content><![CDATA[<div class="note success">
-            <h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>　XG Firewall V18のWebフィルタ・アプリケーションフィルタ・IPSの高速化・SSL証明書の検証を対象に、Sophos Communityを参考に、ホームユーザーにとってベストプラクティスとなる設定を行います。</p>
+            <h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>　XG Firewall v18のWebフィルタ・アプリケーションフィルタ・IPSの高速化・SSL証明書の検証を対象に、Sophos Communityを参考に、ホームユーザーにとってベストプラクティスとなる設定を行います。</p>
           </div>
 
 <a id="more"></a>
 
-<h2 id="XG-V18のベストプラクティス"><a href="#XG-V18のベストプラクティス" class="headerlink" title="XG V18のベストプラクティス"></a>XG V18のベストプラクティス</h2><p>XG V18のレイヤ7ファイアウォールは、SSL/TLS通信をPort443に限定していません。これまでの一連の設定で実施してきましたが、そもそもファイアウォールのルール自体は非常にシンプルです。https通信を通すのは原則であり、URL・アプリケーション・データの中身をどうチェックするかがレイヤ7ファイアウォールの肝となります。Sophos Communityにおいては、過去発生したランサムウェアや情報漏洩に繋がるProxyやVPN等、様々な検討、議論が重ねられ、ベストプラクティスといえるお勧めの設定が存在します。以下の記事を参考にします。</p>
+<h2 id="XG-v18のベストプラクティス"><a href="#XG-v18のベストプラクティス" class="headerlink" title="XG v18のベストプラクティス"></a>XG v18のベストプラクティス</h2><p>XG v18のレイヤ7ファイアウォールは、SSL/TLS通信をPort443に限定していません。これまでの一連の設定で実施してきましたが、そもそもファイアウォールのルール自体は非常にシンプルです。https通信を通すのは原則であり、URL・アプリケーション・データの中身をどうチェックするかがレイヤ7ファイアウォールの肝となります。Sophos Communityにおいては、過去発生したランサムウェアや情報漏洩に繋がるProxyやVPN等、様々な検討、議論が重ねられ、ベストプラクティスといえるお勧めの設定が存在します。以下の記事を参考にします。</p>
 <ol>
 <li><a href="https://community.sophos.com/products/xg-firewall/f/recommended-reads/119051/sophos-xg-firewall-cyberoam-application-filter-recommended-settings-for-better-application-detection" target="_blank" rel="noopener">Sophos XG Firewall / Cyberoam: Application filter recommended settings for better application detection</a></li>
 <li><a href="https://community.sophos.com/kb/ja-jp/124744" target="_blank" rel="noopener">ランサムウェア: ソフォス製品による回避策のアドバイス</a></li>
@@ -582,7 +583,7 @@ XGFirewall-- "192.168.0.0/24" ---HGW
 <p>最初の記事がベストプラクティスとも言える内容になっており、この記事を中心に、関連する記事も参考にしながら設定します。</p>
 <h2 id="設定する内容"><a href="#設定する内容" class="headerlink" title="設定する内容"></a>設定する内容</h2><p>設定すべき概要は以下の通りです。</p>
 <ol>
-<li>XGのコマンドラインでIPSの設定を変更します。初期設定から変更するのはmaxpktsの値です。これは、データの先頭からアプリケーションの判定に8パケットを渡すというもので、この値はパフォーマンスに影響するようです。チューニングされ、高速化に繋がるので、80パケットを設定するのがお勧めです。</li>
+<li>XGのコマンドラインでIPSの設定を変更します。初期設定から変更するのはmaxpktsの値です。これは、データの先頭からアプリケーションの判定に8パケットを渡すというもので、この値はパフォーマンスや検出精度に影響するようです。100〜300パケットを設定するのがお勧めとされています。</li>
 <li>アプリケーションフィルタでは、P2P/Proxy and Tunnel/DNS Multiple QNAME（DNS経由の情報漏洩）/OpenVPNを止めるべきと記載があります。また、ハイリスクアプリケーションのカテゴリ（Risk=4、High Risk=5）も止める事が推奨されるようにカテゴライズされています。</li>
 <li>Webフィルタでは、以下の項目が拒否対象です。<ul>
 <li>IPAddress</li>
@@ -604,7 +605,7 @@ XGFirewall-- "192.168.0.0/24" ---HGW
 <ul>
 <li>Midstream Connection Pickup Off</li>
 </ul>
-<p>ここはXGのV18であれば基本変更する必要はありません。次にIPSの設定です。</p>
+<p>ここはXGのv18であれば基本変更する必要はありません。次にIPSの設定です。</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">console&gt; show ips-settings</span><br></pre></td></tr></table></figure>
 
 <ul>
@@ -612,7 +613,7 @@ XGFirewall-- "192.168.0.0/24" ---HGW
 <li>stream on</li>
 <li>maxpkts 200（推奨値100〜300）</li>
 </ul>
-<p>デフォルトでは、maxpktsが8となっているので、以下のコマンドで200に変更します。ここはマシンスペックにもよるので、100から200の間で設定をチューニングしながらスループットを確認してください。これまでのCommunityでは、この値は80が推奨されていましたが、2020-06-24にSophosより公開された<a href="https://community.sophos.com/cfs-file/__key/communityserver-discussions-components-files/258/Securing-your-Sophos-XG-Firewall-_2D00_-Best-Practice-Guide.pdf" target="_blank" rel="noopener">“Best Practice Guide”</a>ではスループットを確認しながら100〜300の間で設定する事が推奨されています。ここでは中央値の200を設定しています。</p>
+<p>デフォルトでは、maxpktsが8となっているので、以下のコマンドで200に変更します。ここはマシンスペックにもよるので、100から300の間で設定をチューニングしながらスループットを確認してください。これまでのCommunityでは、この値は80が推奨されていましたが、2020-06-24にSophosより公開された<a href="https://community.sophos.com/cfs-file/__key/communityserver-discussions-components-files/258/Securing-your-Sophos-XG-Firewall-_2D00_-Best-Practice-Guide.pdf" target="_blank" rel="noopener">“Best Practice Guide”</a>ではスループットを確認しながら100〜300の間で設定する事が推奨されています。ここでは中央値の200を設定しています。</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">console&gt; <span class="built_in">set</span> ips maxpkts 200</span><br></pre></td></tr></table></figure>
 
 <h2 id="アプリケーションフィルタの設定"><a href="#アプリケーションフィルタの設定" class="headerlink" title="アプリケーションフィルタの設定"></a>アプリケーションフィルタの設定</h2><p>とにかくアプリケーションの数が多い事と、今後もメンテナンスしていく事を留意して設定します。高リスクというカテゴリであっても、ホームユーザーが利用するアプリケーションもそれなりにあります。ここでは、リコメンドされた拒否アプリの拒否設定をしつつ、ユーザー側で許可する設定を加えていく事になります。ただし下手にアプリを個別選択するようなフィルタにしてしまうと、新しいアプリケーションが追加される都度、メンテナンスが必要となってしまいます。従い<strong>リスクの高いアプリケーションは停止を原則とし、自分が許可するアプリの設定を加え</strong>、以後はなるべくメンテナンスが不要となるように設定します。</p>
@@ -1661,7 +1662,7 @@ Note over cl: 16.共通鍵で復号
           </div>
 <a id="more"></a>
 
-<h2 id="XG-Firewall-V18利用のメリット"><a href="#XG-Firewall-V18利用のメリット" class="headerlink" title="XG Firewall V18利用のメリット"></a>XG Firewall V18利用のメリット</h2><p>XGでは暗号化された通信を高速に解読し、ウィルスやマルウェアのダウンロードをPCやスマホが受信する前に防ぐ事が可能となります。また、利用を認めていないアプリケーションのデータのやりとりを未然に防ぐ事も可能です。v18では、全く新しい<span class="label default">XStreamアーキテクチャ</span>によって、この解読（SSLインスペクション）の速度が大幅に向上しました。</p>
+<h2 id="XG-Firewall-v18利用のメリット"><a href="#XG-Firewall-v18利用のメリット" class="headerlink" title="XG Firewall v18利用のメリット"></a>XG Firewall v18利用のメリット</h2><p>XGでは暗号化された通信を高速に解読し、ウィルスやマルウェアのダウンロードをPCやスマホが受信する前に防ぐ事が可能となります。また、利用を認めていないアプリケーションのデータのやりとりを未然に防ぐ事も可能です。v18では、全く新しい<span class="label default">XStreamアーキテクチャ</span>によって、この解読（SSLインスペクション）の速度が大幅に向上しました。</p>
 <h2 id="SSLインスペクションの対象とするホストの明確化"><a href="#SSLインスペクションの対象とするホストの明確化" class="headerlink" title="SSLインスペクションの対象とするホストの明確化"></a>SSLインスペクションの対象とするホストの明確化</h2><p>前回の記事”<a href="/new-technology/2020/03/20/ssl-inspection/" title="SSLインスペクションについて">SSLインスペクションについて</a>“に記載した通り、SSLインスペクションを行うためには、PC等のクライアントにXGのCA証明書をインストールする事が必須となります。従いSSLインスペクションの対象のグループ、家電やAndroidなどのSSLインスペクションを使えないグループとに分類します。この2つのグループはIPアドレスの範囲で分割するのが最も簡単な方法です。例えば、SSLインスペクショングループはスタティックでIPを割り当て、非SSLインスペクショングループはDHCPで動的なIPアドレスを配布する方法があります。XGのDHCPサーバーはMACアドレスを元に固定IPをスタティックに割り振る事が可能です。</p>
 <h2 id="SSLインスペクションの対象をDHCPに登録する"><a href="#SSLインスペクションの対象をDHCPに登録する" class="headerlink" title="SSLインスペクションの対象をDHCPに登録する"></a>SSLインスペクションの対象をDHCPに登録する</h2><p>左ペインのネットワークからDHCPのタブをクリックし、<span class="label default">Default DHCP Server</span>をクリックします。そこには、”スタティックIP_MACマッピング”があるので、DHCPで自動リースをしている以外のIPアドレスをスタティックに割り振って登録してください。管理の一例としては以下の通りです。</p>
 <ul>
