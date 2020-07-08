@@ -15,19 +15,26 @@
 	// 	],
 	// 	"description": "Log output to console"
 	// }
+	"Label Insert to": {
+		"prefix": ">label",
+		"body": [
+			"{% label @$1 %}"
+		],
+		"description": "Insert to label"
+	},
+	"Label Insert to": {
+		"prefix": ">post",
+		"body": [
+			"{% post_link $1 %}"
+		],
+		"description": "Insert to label"
+	},
 	"Insert to img": {
 		"prefix": ">img",
 		"body": [
 			"{% asset_img $1.png alt %}"
 		],
 		"description": "{% asset_img filename.png alt %}"
-	},
-	"Label default Insert to": {
-		"prefix": ">label default",
-		"body": [
-			"{% label default @$1 %}"
-		],
-		"description": "Insert to default label"
 	},
 	"Label primary Insert to": {
 		"prefix": ">label primary",

@@ -1,5 +1,5 @@
 ---
-title: XG Firewall V18の設定におけるベストプラクティス
+title: XG Firewall v18の設定におけるベストプラクティス
 tags:
   - XG Firewall
 categories:
@@ -12,15 +12,15 @@ date: 2020-05-09 17:55:26
 
 ## この記事で実現すること
 
-　XG Firewall V18のWebフィルタ・アプリケーションフィルタ・IPSの高速化・SSL証明書の検証を対象に、Sophos Communityを参考に、ホームユーザーにとってベストプラクティスとなる設定を行います。
+　XG Firewall v18のWebフィルタ・アプリケーションフィルタ・IPSの高速化・SSL証明書の検証を対象に、Sophos Communityを参考に、ホームユーザーにとってベストプラクティスとなる設定を行います。
 
 {% endnote %}
 
 <!-- more -->
 
-## XG V18のベストプラクティス
+## XG v18のベストプラクティス
 
-XG V18のレイヤ7ファイアウォールは、SSL/TLS通信をPort443に限定していません。これまでの一連の設定で実施してきましたが、そもそもファイアウォールのルール自体は非常にシンプルです。https通信を通すのは原則であり、URL・アプリケーション・データの中身をどうチェックするかがレイヤ7ファイアウォールの肝となります。Sophos Communityにおいては、過去発生したランサムウェアや情報漏洩に繋がるProxyやVPN等、様々な検討、議論が重ねられ、ベストプラクティスといえるお勧めの設定が存在します。以下の記事を参考にします。
+XG v18のレイヤ7ファイアウォールは、SSL/TLS通信をPort443に限定していません。これまでの一連の設定で実施してきましたが、そもそもファイアウォールのルール自体は非常にシンプルです。https通信を通すのは原則であり、URL・アプリケーション・データの中身をどうチェックするかがレイヤ7ファイアウォールの肝となります。Sophos Communityにおいては、過去発生したランサムウェアや情報漏洩に繋がるProxyやVPN等、様々な検討、議論が重ねられ、ベストプラクティスといえるお勧めの設定が存在します。以下の記事を参考にします。
 
 1. [Sophos XG Firewall / Cyberoam: Application filter recommended settings for better application detection](https://community.sophos.com/products/xg-firewall/f/recommended-reads/119051/sophos-xg-firewall-cyberoam-application-filter-recommended-settings-for-better-application-detection)
 2. [ランサムウェア: ソフォス製品による回避策のアドバイス](https://community.sophos.com/kb/ja-jp/124744)
@@ -34,7 +34,7 @@ XG V18のレイヤ7ファイアウォールは、SSL/TLS通信をPort443に限�
 
 設定すべき概要は以下の通りです。
 
-1. XGのコマンドラインでIPSの設定を変更します。初期設定から変更するのはmaxpktsの値です。これは、データの先頭からアプリケーションの判定に8パケットを渡すというもので、この値はパフォーマンスに影響するようです。チューニングされ、高速化に繋がるので、80パケットを設定するのがお勧めです。
+1. XGのコマンドラインでIPSの設定を変更します。初期設定から変更するのはmaxpktsの値です。これは、データの先頭からアプリケーションの判定に8パケットを渡すというもので、この値はパフォーマンスや検出精度に影響するようです。100〜300パケットを設定するのがお勧めとされています。
 2. アプリケーションフィルタでは、P2P/Proxy and Tunnel/DNS Multiple QNAME（DNS経由の情報漏洩）/OpenVPNを止めるべきと記載があります。また、ハイリスクアプリケーションのカテゴリ（Risk=4、High Risk=5）も止める事が推奨されるようにカテゴライズされています。
 3. Webフィルタでは、以下の項目が拒否対象です。
  - IPAddress
@@ -58,7 +58,7 @@ console> show advanced-firewall
 
 - Midstream Connection Pickup Off
 
-ここはXGのV18であれば基本変更する必要はありません。次にIPSの設定です。
+ここはXGのv18であれば基本変更する必要はありません。次にIPSの設定です。
 
 ``` bash
 console> show ips-settings
@@ -68,7 +68,7 @@ console> show ips-settings
 - stream on
 - maxpkts 200（推奨値100〜300）
 
-デフォルトでは、maxpktsが8となっているので、以下のコマンドで200に変更します。ここはマシンスペックにもよるので、100から200の間で設定をチューニングしながらスループットを確認してください。これまでのCommunityでは、この値は80が推奨されていましたが、2020-06-24にSophosより公開された["Best Practice Guide"](https://community.sophos.com/cfs-file/__key/communityserver-discussions-components-files/258/Securing-your-Sophos-XG-Firewall-_2D00_-Best-Practice-Guide.pdf)ではスループットを確認しながら100〜300の間で設定する事が推奨されています。ここでは中央値の200を設定しています。
+デフォルトでは、maxpktsが8となっているので、以下のコマンドで200に変更します。ここはマシンスペックにもよるので、100から300の間で設定をチューニングしながらスループットを確認してください。これまでのCommunityでは、この値は80が推奨されていましたが、2020-06-24にSophosより公開された["Best Practice Guide"](https://community.sophos.com/cfs-file/__key/communityserver-discussions-components-files/258/Securing-your-Sophos-XG-Firewall-_2D00_-Best-Practice-Guide.pdf)ではスループットを確認しながら100〜300の間で設定する事が推奨されています。ここでは中央値の200を設定しています。
 
 ``` bash
 console> set ips maxpkts 200

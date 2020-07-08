@@ -78,3 +78,4 @@ v18が発表されて、大幅に機能強化されたのは良かったので�
 - {% post_link web-application-filter %}
 - {% post_link best-practice %}
 - {% post_link Intercept-DNS %}
+- {% post_link protect-xg %}
