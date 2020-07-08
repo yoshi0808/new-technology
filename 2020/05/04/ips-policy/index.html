@@ -20,16 +20,16 @@
     var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","scheme":"Mist","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="この記事で実現することXG FirewallのIPS Policyは複数存在しますが、その内容について解説します。">
+  <meta name="description" content="この記事で実現することXG FirewallのIPS Policyは複数存在しますが、それぞれの内容について解説します。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="XG FirewallでIPSのポリシーを確認する">
 <meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/05/04/ips-policy/index.html">
 <meta property="og:site_name" content="New technologies in our life">
-<meta property="og:description" content="この記事で実現することXG FirewallのIPS Policyは複数存在しますが、その内容について解説します。">
+<meta property="og:description" content="この記事で実現することXG FirewallのIPS Policyは複数存在しますが、それぞれの内容について解説します。">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/04/ips-policy/lanwan.png">
 <meta property="article:published_time" content="2020-05-04T00:00:00.000Z">
-<meta property="article:modified_time" content="2020-05-30T14:14:33.649Z">
+<meta property="article:modified_time" content="2020-07-08T12:01:30.722Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -243,7 +243,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">編集日</span>
-                <time title="修正日：2020-05-30 23:14:33" itemprop="dateModified" datetime="2020-05-30T23:14:33+09:00">2020-05-30</time>
+                <time title="修正日：2020-07-08 21:01:30" itemprop="dateModified" datetime="2020-07-08T21:01:30+09:00">2020-07-08</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -267,12 +267,12 @@
 
       
         <div class="note success">
-            <h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>XG FirewallのIPS Policyは複数存在しますが、その内容について解説します。</p>
+            <h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>XG FirewallのIPS Policyは複数存在しますが、それぞれの内容について解説します。</p>
           </div>
 
 <a id="more"></a>
 
-<h2 id="XGのIPSポリシーについて"><a href="#XGのIPSポリシーについて" class="headerlink" title="XGのIPSポリシーについて"></a>XGのIPSポリシーについて</h2><p>このブログでのXGインストールの記事、<a href="/new-technology/2020/03/14/rule-policy2/" title="XG Firewall v18のルールを作成する">XG Firewall v18のルールを作成する</a> では、IPS Policyの選択として、”lantowan_general”を設定しました。初期セットアップではあまり十分な説明をしていませんでしたので、改めて中身の解説をします。XGのIPSポリシーは、左ペインメニューの<span class="label default">侵入防御</span>の<span class="label default">IPSポリシー</span>から確認できます。デフォルトで登録されているものには、以下の内容があります。</p>
+<h2 id="XGのIPSポリシーについて"><a href="#XGのIPSポリシーについて" class="headerlink" title="XGのIPSポリシーについて"></a>XGのIPSポリシーについて</h2><p>Intrusion Prevension System(IPS)は侵入防御を意味し、サイバー攻撃から内部のホストを防御します。このブログでのXGインストール時の記事”<a href="/new-technology/2020/03/14/rule-policy2/" title="XG Firewall v18のルールを作成する">XG Firewall v18のルールを作成する</a>“では、IPS Policyの選択として、”lantowan_general”を設定しました。初期セットアップではあまり十分な説明をしていませんでしたので、改めて中身の解説をします。XGのIPSポリシーは、左ペインメニューの<span class="label default">侵入防御</span>の<span class="label default">IPSポリシー</span>から確認できます。デフォルトで登録されているものには、以下の内容があります。</p>
 <ul>
 <li>DMZ TO LAN</li>
 <li>DMZ TO WAN</li>
@@ -288,18 +288,8 @@
 <p>前半の6つはそれぞれの接続形態に合わせたポリシーです。LAN TO WANでは、ブラウザやアプリからインターネットに接続する場合の攻撃を想定した防御ポリシーとなっています。XGの左ペインメニューの<span class="label default">侵入防御</span>から<span class="label default">IPSポリシー</span>を選択し、さらに”LAN TO WAN”を選択すると、以下の画面が表示されます。</p>
 <img src="/new-technology/2020/05/04/ips-policy/lanwan.png" class="" title="alt">
 
-<p>このポリシーは、<span class="label default">カテゴリ</span>、<span class="label default">重要度</span>、<span class="label default">プラットフォーム</span>、<span class="label default">対象</span>というそれぞれのメニューに分かれています。これはブラウザなどのクライアントを対象として、WindowsやLinuxのクライアントOSが確認できます。macOSはありませんが、実際に”All Client”として組み込まれているようです。このポリシーはどのような意図で作成されたのかは不明です。なぜWindowsとLinuxだけを切り出しているのでしょうか。さらに、前半6つの”DMZ TO LAN”〜”WAN TO LAN”ポリシーはカスタマイズ出来ません。”dmzpolicy”〜”lantowan strict”の4つのポリシーの中身はフィルタの種類の名前が異なっていますが、7126個あるXGのIPSポリシーが全て選択されており、4つのポリシーの中身は全く同じで何を選んでも変わりません。昔からカスタマイズ前提のポリシーのまま、中身が変えられていないというのが実態のようです。</p>
-<p>まず思いつくのが、明らかに不要なポリシーを外せばパフォーマンスアップするという期待です。しかし、XGでは既にパフォーマンス上工夫されていて、ポリシーを絞ったとしても殆ど効果はありません。これらの議論は、以下のSophos Communityの記事が参考になります。</p>
-<blockquote>
-<p>　<a href="https://community.sophos.com/products/xg-firewall/f/intrusion-prevention/98717/please-clarify-ips-policies" target="_blank" rel="noopener">Please clarify IPS Policies?</a></p>
-</blockquote>
-<blockquote class="blockquote-center">
-            <i class="fa fa-quote-left"></i>
-            <p>IPSを使用した場合のスループットのボトルネックに関しては、XGはSnortを使用していますが、SGシリーズを含む通常のファイアウォールに加えていくつかの工夫をしています。</p>
-
-            <i class="fa fa-quote-right"></i>
-          </blockquote>
-
+<p>このポリシーは、<span class="label default">カテゴリ</span>、<span class="label default">重要度</span>、<span class="label default">プラットフォーム</span>、<span class="label default">対象</span>というそれぞれのメニューに分かれています。これはブラウザなどのクライアントを対象として、WindowsやLinuxのクライアントOSが確認できます。macOSはありませんが、実際に”All Client”として組み込まれているようです。このポリシーはどのような意図で作成されたのかは不明です。なぜWindowsとLinuxだけを切り出しているのでしょうか。さらに、前半6つの”DMZ TO LAN”〜”WAN TO LAN”ポリシーはカスタマイズ出来ません。”dmzpolicy”〜”lantowan strict”の4つのポリシーの中身はフィルタの種類の名前が異なっていますが、7126個あるXGのIPSポリシーが全て選択されており、4つのポリシーの中身は全く同じで何を選んでも変わりません。昔からカスタマイズ前提で用意されており、明確な違いは無いというのが実態のようです。</p>
+<p>明らかに不要なポリシーを外せばパフォーマンスアップするという期待がありますが、XGでは既にパフォーマンス上工夫されていて、ポリシーを絞ったとしても殆ど効果はありません。XG v18の”Xstream Network Flow Fast Path”というトラフィック検査の高速化が功を奏しているのかもしれません。</p>
 <p>XGのIPSはオープンソースのセキュリティソフトであるSnortを使っているようです。私の検証では、下手にポリシーを絞り込むとかえってパフォーマンスが出なくなるように見えます（何10回も繰り返し統計をとったわけではありません）。”lantowan general”などの絞り込まないポリシーで全く不都合がないため、このままフィルターせずに利用しています。</p>
 <h2 id="脆弱性をXGで防御すること"><a href="#脆弱性をXGで防御すること" class="headerlink" title="脆弱性をXGで防御すること"></a>脆弱性をXGで防御すること</h2><p>話は変わりますが、Webサーバーのシェアは2017年に過半数を占めていたApacheは2020年4月には38.7％までシェアを落としています。代わりに高速性が売りのnginxが、足元32.1%で2番目のシェアを獲得しています。</p>
 <blockquote class="blockquote-center">

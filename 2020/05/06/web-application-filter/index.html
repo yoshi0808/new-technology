@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/06/web-application-filter/onedrive.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/06/web-application-filter/appfilter2.png">
 <meta property="article:published_time" content="2020-05-06T05:54:00.000Z">
-<meta property="article:modified_time" content="2020-06-20T01:38:28.040Z">
+<meta property="article:modified_time" content="2020-07-08T11:48:00.066Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -244,7 +244,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">編集日</span>
-                <time title="修正日：2020-06-20 10:38:28" itemprop="dateModified" datetime="2020-06-20T10:38:28+09:00">2020-06-20</time>
+                <time title="修正日：2020-07-08 20:48:00" itemprop="dateModified" datetime="2020-07-08T20:48:00+09:00">2020-07-08</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -280,7 +280,7 @@
 <li>Webカテゴリ</li>
 <li>URLグループ（自身で作成したURLの集まり）、280blockerなどのURLデータベースもこのグループ</li>
 <li>ファイルタイプ</li>
-<li>ダイナミックカテゴリ（ActiveX・Applets・Cookies・HTTP Upload</li>
+<li>ダイナミックカテゴリ（ActiveX・Applets・Cookies・HTTP Upload）</li>
 </ul>
 <p>これらの事から、Webフィルタはカテゴリの分類という主目的はあるものの、ブラウザを対象としたフィルタの機能である事がわかります。</p>
 <h2 id="SNIとフィルタとの関係"><a href="#SNIとフィルタとの関係" class="headerlink" title="SNIとフィルタとの関係"></a>SNIとフィルタとの関係</h2><p>SNIとは、Server Name Indicationの略です。SSL/TLS通信において、クライアントからサーバ証明書を要求する時に<strong>サーバ名（SNI）を暗号化せずサーバーに渡します</strong>。XGはこのSNIを見てWebフィルタを行っていますので、接続しようとしているドメインやサーバー単位にアクセス許可・不許可の判断が可能になります。しかし<strong>フォルダ構成やMIMEタイプ、引数やダウンロードするデータを検査するには、SSLインスペクションが必要です</strong>。もちろん、ドメイン単位の制御でIoT機器はある程度の防御が可能と言えますが、防御を最大限に高めるにはSSLインスペクションが必要です。以前の記事、<a href="/new-technology/2020/03/21/ssl-inspection2/" title="XG Firewall v18のSSLインスペクションの動作確認と調整">XG Firewall v18のSSLインスペクションの動作確認と調整</a> で記載した通り、ZIP化されたマルウェアはSSLインスペクションが行えなければ検知は出来ません。</p>
@@ -339,7 +339,7 @@
             <p>Webフィルタ・アプリケーションフィルタを完全に動作させるには、SSLインスペクションが必要です。</p>
           </div>
 
-<p>このアプリケーションは止めておきたいというニーズに対して、都度メンテナンスしていくのはとても大変です。従い、高リスクのアプリケーションを拒否するという設定を行う事になります。具体的な設定については、こちらの記事、<a href="/new-technology/2020/05/09/best-practice/" title="XG Firewall V18の設定におけるベストプラクティス">XG Firewall V18の設定におけるベストプラクティス</a>を参照してください。</p>
+<p>このアプリケーションは止めておきたいというニーズに対して、都度メンテナンスしていくのはとても大変です。従い、高リスクのアプリケーションを拒否するという設定を行う事になります。具体的な設定については、こちらの記事、<a href="/new-technology/2020/05/09/best-practice/" title="XG Firewall v18の設定におけるベストプラクティス">XG Firewall v18の設定におけるベストプラクティス</a>を参照してください。</p>
 <p>XGを運営しているプロダクトチームは、こういったトラフィックの中身を見ながら制御するポリシーを作るのですから、極めて大変な作業です。特にクラウドアプリケーションは予告なくURLやAPIが変更されるでしょうから、そのメンテナンスコストは計り知れません。</p>
 
     </div>

@@ -957,12 +957,12 @@ XGFirewall-- "192.168.0.0/24" ---HGW
     <title>XG FirewallでIPSのポリシーを確認する</title>
     <url>/new-technology/2020/05/04/ips-policy/</url>
     <content><![CDATA[<div class="note success">
-            <h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>XG FirewallのIPS Policyは複数存在しますが、その内容について解説します。</p>
+            <h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>XG FirewallのIPS Policyは複数存在しますが、それぞれの内容について解説します。</p>
           </div>
 
 <a id="more"></a>
 
-<h2 id="XGのIPSポリシーについて"><a href="#XGのIPSポリシーについて" class="headerlink" title="XGのIPSポリシーについて"></a>XGのIPSポリシーについて</h2><p>このブログでのXGインストールの記事、<a href="/new-technology/2020/03/14/rule-policy2/" title="XG Firewall v18のルールを作成する">XG Firewall v18のルールを作成する</a> では、IPS Policyの選択として、”lantowan_general”を設定しました。初期セットアップではあまり十分な説明をしていませんでしたので、改めて中身の解説をします。XGのIPSポリシーは、左ペインメニューの<span class="label default">侵入防御</span>の<span class="label default">IPSポリシー</span>から確認できます。デフォルトで登録されているものには、以下の内容があります。</p>
+<h2 id="XGのIPSポリシーについて"><a href="#XGのIPSポリシーについて" class="headerlink" title="XGのIPSポリシーについて"></a>XGのIPSポリシーについて</h2><p>Intrusion Prevension System(IPS)は侵入防御を意味し、サイバー攻撃から内部のホストを防御します。このブログでのXGインストール時の記事”<a href="/new-technology/2020/03/14/rule-policy2/" title="XG Firewall v18のルールを作成する">XG Firewall v18のルールを作成する</a>“では、IPS Policyの選択として、”lantowan_general”を設定しました。初期セットアップではあまり十分な説明をしていませんでしたので、改めて中身の解説をします。XGのIPSポリシーは、左ペインメニューの<span class="label default">侵入防御</span>の<span class="label default">IPSポリシー</span>から確認できます。デフォルトで登録されているものには、以下の内容があります。</p>
 <ul>
 <li>DMZ TO LAN</li>
 <li>DMZ TO WAN</li>
@@ -978,18 +978,8 @@ XGFirewall-- "192.168.0.0/24" ---HGW
 <p>前半の6つはそれぞれの接続形態に合わせたポリシーです。LAN TO WANでは、ブラウザやアプリからインターネットに接続する場合の攻撃を想定した防御ポリシーとなっています。XGの左ペインメニューの<span class="label default">侵入防御</span>から<span class="label default">IPSポリシー</span>を選択し、さらに”LAN TO WAN”を選択すると、以下の画面が表示されます。</p>
 <img src="/new-technology/2020/05/04/ips-policy/lanwan.png" class="" title="alt">
 
-<p>このポリシーは、<span class="label default">カテゴリ</span>、<span class="label default">重要度</span>、<span class="label default">プラットフォーム</span>、<span class="label default">対象</span>というそれぞれのメニューに分かれています。これはブラウザなどのクライアントを対象として、WindowsやLinuxのクライアントOSが確認できます。macOSはありませんが、実際に”All Client”として組み込まれているようです。このポリシーはどのような意図で作成されたのかは不明です。なぜWindowsとLinuxだけを切り出しているのでしょうか。さらに、前半6つの”DMZ TO LAN”〜”WAN TO LAN”ポリシーはカスタマイズ出来ません。”dmzpolicy”〜”lantowan strict”の4つのポリシーの中身はフィルタの種類の名前が異なっていますが、7126個あるXGのIPSポリシーが全て選択されており、4つのポリシーの中身は全く同じで何を選んでも変わりません。昔からカスタマイズ前提のポリシーのまま、中身が変えられていないというのが実態のようです。</p>
-<p>まず思いつくのが、明らかに不要なポリシーを外せばパフォーマンスアップするという期待です。しかし、XGでは既にパフォーマンス上工夫されていて、ポリシーを絞ったとしても殆ど効果はありません。これらの議論は、以下のSophos Communityの記事が参考になります。</p>
-<blockquote>
-<p>　<a href="https://community.sophos.com/products/xg-firewall/f/intrusion-prevention/98717/please-clarify-ips-policies" target="_blank" rel="noopener">Please clarify IPS Policies?</a></p>
-</blockquote>
-<blockquote class="blockquote-center">
-            <i class="fa fa-quote-left"></i>
-            <p>IPSを使用した場合のスループットのボトルネックに関しては、XGはSnortを使用していますが、SGシリーズを含む通常のファイアウォールに加えていくつかの工夫をしています。</p>
-
-            <i class="fa fa-quote-right"></i>
-          </blockquote>
-
+<p>このポリシーは、<span class="label default">カテゴリ</span>、<span class="label default">重要度</span>、<span class="label default">プラットフォーム</span>、<span class="label default">対象</span>というそれぞれのメニューに分かれています。これはブラウザなどのクライアントを対象として、WindowsやLinuxのクライアントOSが確認できます。macOSはありませんが、実際に”All Client”として組み込まれているようです。このポリシーはどのような意図で作成されたのかは不明です。なぜWindowsとLinuxだけを切り出しているのでしょうか。さらに、前半6つの”DMZ TO LAN”〜”WAN TO LAN”ポリシーはカスタマイズ出来ません。”dmzpolicy”〜”lantowan strict”の4つのポリシーの中身はフィルタの種類の名前が異なっていますが、7126個あるXGのIPSポリシーが全て選択されており、4つのポリシーの中身は全く同じで何を選んでも変わりません。昔からカスタマイズ前提で用意されており、明確な違いは無いというのが実態のようです。</p>
+<p>明らかに不要なポリシーを外せばパフォーマンスアップするという期待がありますが、XGでは既にパフォーマンス上工夫されていて、ポリシーを絞ったとしても殆ど効果はありません。XG v18の”Xstream Network Flow Fast Path”というトラフィック検査の高速化が功を奏しているのかもしれません。</p>
 <p>XGのIPSはオープンソースのセキュリティソフトであるSnortを使っているようです。私の検証では、下手にポリシーを絞り込むとかえってパフォーマンスが出なくなるように見えます（何10回も繰り返し統計をとったわけではありません）。”lantowan general”などの絞り込まないポリシーで全く不都合がないため、このままフィルターせずに利用しています。</p>
 <h2 id="脆弱性をXGで防御すること"><a href="#脆弱性をXGで防御すること" class="headerlink" title="脆弱性をXGで防御すること"></a>脆弱性をXGで防御すること</h2><p>話は変わりますが、Webサーバーのシェアは2017年に過半数を占めていたApacheは2020年4月には38.7％までシェアを落としています。代わりに高速性が売りのnginxが、足元32.1%で2番目のシェアを獲得しています。</p>
 <blockquote class="blockquote-center">
@@ -2068,10 +2058,10 @@ Note over cl: 16.共通鍵で復号
 
 <a id="more"></a>
 
-<h2 id="XGのIPv6"><a href="#XGのIPv6" class="headerlink" title="XGのIPv6"></a>XGのIPv6</h2><p>IPv6はその広大なアドレス空間によって、一般的にはNATを必要としていません。従い内部のホストに対してもパブリックIPアドレスを割り当て、IPv6独自の工夫として、端末を特定されないために一時アドレスを割り当てます。一時アドレスは端末再起動時に変更され、外部からホストの特定を防ぐ目的があります。IPv4の枯渇が課題だったがために、到達性と安全面を考慮した設計と推察されます。</p>
-<p>XGのIPv6の考え方としてはNATを前提にします。内部ホストから外部に出ていくものはSNAT（Source NAT）、公開するホストはDNAT（Destination NAT）で外部から内部ホストに転送するという原則があります。LAN側のIPv6にはプライベートIPの考え方に近い、ユニークローカルアドレス（ULA）を用います。</p>
-<p>ULAは、プライベート環境で自由に割り当てして良いというわけではなく、なるべく世界の中で一意にすべきという考え方です。企業向けとしては合併などがあった場合に重複しない事を前提としています。個人環境で絶対にインターネット側へ出ていかないのであれば、IPは何を割り振っても良いわけですが、誰かが使っている可能性のあるIPアドレス群を使うのはちょっと気持ちが悪いものです。<code>192.168.1.0/24</code>のように、誰でも使って良いアドレスとは異なるのがIPv6のULAです。このULAは一定のルールに従い、生成する必要があります。</p>
-<h2 id="XGのIPv6を構成するまでの流れ"><a href="#XGのIPv6を構成するまでの流れ" class="headerlink" title="XGのIPv6を構成するまでの流れ"></a>XGのIPv6を構成するまでの流れ</h2><p>以下の流れでXGのIPv6をセットアップしていきます。</p>
+<h2 id="XGのIPv6"><a href="#XGのIPv6" class="headerlink" title="XGのIPv6"></a>XGのIPv6</h2><p>IPv6は一般的に内部のホストに対してもパブリックIPアドレスを割り当てます。IPv6独自の工夫として、端末を特定されないために一時アドレスを割り当てます。一時アドレスは端末再起動時に変更され、外部からホストの特定を防ぐ目的があります。IPv4の枯渇が課題だったがために、到達性と安全面を考慮した設計と推察されます。</p>
+<p>一方、XGのIPv6の考え方としてはNATを前提にします。内部ホストから外部に出ていくものはSNAT（Source NAT）、公開するホストはDNAT（Destination NAT）で外部から内部ホストに転送するという原則があります。LAN側のIPv6にはプライベートIPの考え方に近い、ユニークローカルアドレス（ULA）を用います。</p>
+<p>ULAは、プライベート環境で自由に割り当てして良いというわけではなく、なるべく世界の中で一意にすべきという考え方です。企業向けとしては合併などがあった場合に重複しない事を前提としています。<code>192.168.1.0/24</code>のように、誰でも使って良いアドレスとは異なるのがIPv6のULAです。このULAは一定のルールに従い機械的に生成する必要があります。</p>
+<h2 id="XGのIPv6を構成するまでの流れ"><a href="#XGのIPv6を構成するまでの流れ" class="headerlink" title="XGのIPv6を構成するまでの流れ"></a>XGのIPv6を構成するまでの流れ</h2><p>以下の流れでXGのIPv6をセットアップします。</p>
 <ol>
 <li>ULAを生成</li>
 <li>XGのLAN側のIPアドレスにULAを設定</li>
@@ -2090,7 +2080,7 @@ Note over cl: 16.共通鍵で復号
 <p>ULAの生成は以下の通り過去記事でツールを置いてありますので、上記MACアドレスをコピーし、過去記事のULA生成ツールにMACアドレスを貼り付け、ULAを求めて下さい。</p>
 <a href="/new-technology/2020/04/18/ipv6/" title="IPv6のUnique Local Addressを生成する">IPv6のUnique Local Addressを生成する</a>  
 
-<p>結果として、以下のような情報が得られるので、First IPv6 Addressの<code>fd</code>から始まるULAをCopyして下さい。</p>
+<p>結果として、以下のような情報が得られるので、First IPv6 Addressの<code>fd</code>から始まるULAを控えてください。</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">First IPv6 Address-&gt; fd00:beaf:cafe::1/64</span><br></pre></td></tr></table></figure>
 
 <h2 id="LAN側IPv6アドレスにULAを設定"><a href="#LAN側IPv6アドレスにULAを設定" class="headerlink" title="LAN側IPv6アドレスにULAを設定"></a>LAN側IPv6アドレスにULAを設定</h2><p>XGの左ペインメニューの<span class="label default">ネットワーク</span>の<span class="label default">インターフェース</span>にある、<span class="label default">IPv6設定</span>のチェックボックスをチェックします。次に、<span class="label default">IPv6　プレフィックス</span>の項目に生成したULAを貼り付け、<code>/64</code>の部分を削除してください。画面を見てもらえると解りますが、IPv6のサブネット<span class="label default">/64</span>は画面上で固定表示されています。</p>
@@ -2099,7 +2089,7 @@ Note over cl: 16.共通鍵で復号
 <p>このアドレス体系は以下の通りです。</p>
 <ol>
 <li>IPv6の体系は128ビットで、ユニキャストアドレスは1つのセグメントが64ビットとなります。XGでも64ビットで扱います。</li>
-<li>48ビットのULAに16ビットの内部サブネット<code>0000</code>を加え、64ビットプレフィックスを定義しています。別のサブネットを作成するのであれば、ここを<code>0001</code>などとしていきます<sup><strong><a href="#note1">[1]</a></strong></sup>。</li>
+<li>48ビットのULAに16ビットの内部サブネット<code>0000</code>を加え、64ビットプレフィックスを定義しています。別のサブネットにするのであれば、ここを<code>0001</code>などとしていきます<sup><strong><a href="#note1">[1]</a></strong></sup>。</li>
 <li>IPv6における、デフォルトルーターは、リンクローカルアドレスの1とするのが一般的です（<code>fe00::1</code>）。これに倣い、XG自身のIPv6アドレスの後半64ビットのインターフェース識別子は<code>0000:0000:0000:0001</code>としています。</li>
 <li><code>::</code>は、IPv6アドレスの<code>0000</code>が続く部分を省略できるものです。（例）<code>fd00:beaf:cafe:0000:0000:0000:0000:0001/64</code>の連続する<code>0</code>部分を省略し、<code>fd00:beaf:cafe::1/64</code>としています。</li>
 </ol>
@@ -2130,11 +2120,11 @@ Note over cl: 16.共通鍵で復号
 </tr>
 <tr>
 <td>Oフラグ</td>
-<td>IPアドレス以外の情報をDHCPv6サーバから取得する（ON）、取得せず手動設定（OFF）</td>
+<td>IPアドレス以外の情報をDHCPv6サーバやRAから取得する（ON）、取得せず手動設定（OFF）</td>
 </tr>
 </tbody></table>
-<p>比較的時間の流れがゆっくりなIPv6において、最近のトレンドとしては、DHCPv6を使わずRAのみとする（Mフラグ＝OFF、Oフラグ＝ON）が定番です。長いIPv6アドレスの管理は大変なので、この設定が一番楽な管理方法です。しかし、私のXGに関する記事ではSSL/TLSインスペクションを最も重要視しています。MACアドレスをベースにクライアントがIPv6アドレスを生成すると、XGで証明書が登録されている端末か否かの判断が行えません。よって、Mフラグ＝ONでステートフルなIPv6アドレスとする必要があります。OフラグがOFFの場合はDNSの情報は手動設定であり、ステートフルなプロトコルを受け付け出来ないという解釈です。</p>
-<p>結論としては、<strong>ステートフルなDHCPv6で全てを管理するため、Mフラグ＝ON、Oフラグ＝ONとなります</strong>。やや管理者寄りの理論です<sup><strong><a href="#note2">[2]</a></strong></sup>。また、IPv6では上述した通り、一時アドレスというものが存在します（XG上では匿名）。これを認めると管理下にないIPv6アドレスで通信が行われ、SSLインスペクションを迂回されてしまいますからこの一時アドレスの設定もOFFにします。XGの左ペインメニューの<span class="label default">ネットワーク</span>から、<span class="label default">IPv6ルーターアドバタイズ</span>を選択し、”追加”ボタンをクリックし、以下の図のように登録していきます。</p>
+<p>比較的時間の流れがゆっくりなIPv6において、最近のトレンドとしては、DHCPv6を使わずRAのみとする（Mフラグ＝OFF、Oフラグ＝ON）が定番です。長いIPv6アドレスの管理は大変なので、この設定が一番楽な管理方法です。しかし、私のXGに関する記事ではSSL/TLSインスペクションを最も重要視しています。MACアドレスをベースにクライアントでIPv6アドレスが生成されると、XGでCA証明書が登録されている端末か否かの判断が行えません。よってMフラグ＝ONとし、XGがIPv6アドレスを管理する、ステートフルなIPv6アドレスとする必要があります。OフラグがOFFの場合はDNSの情報は手動設定であり、ステートフルなプロトコルを受け付け出来ないという解釈です。</p>
+<p>結論としては、<strong>ステートフルなDHCPv6で全てを管理するため、Mフラグ＝ON、Oフラグ＝ONとなります</strong>。やや管理者寄りの理論です<sup><strong><a href="#note2">[2]</a></strong></sup>。また、IPv6では上述した通り、一時IPv6アドレスというものが存在します（XG上では匿名）。これを認めると、クライアントが再起動の度にIPアドレスが変わり、SSLインスペクションを迂回されてしまいますからこの一時アドレスの設定もOFFにします。XGの左ペインメニューの<span class="label default">ネットワーク</span>から、<span class="label default">IPv6ルーターアドバタイズ</span>を選択し、”追加”ボタンをクリックし、以下の図のように登録していきます。</p>
 <img src="/new-technology/2020/04/29/xg-ipv6-2/ra.png" class="" title="alt">
 
 <ol>
@@ -2157,7 +2147,7 @@ Note over cl: 16.共通鍵で復号
 <li>セキュリティの”Webフィルタリング”をクリックし、詳細メニューをオープンします。</li>
 </ol>
 <ul>
-<li>Webポリシーは”Default Policy”を選択します</li>
+<li>Webポリシーは”Default Policy”を選択します（任意）</li>
 <li>“HTTPおよび復号化したHTTPSをスキャン”をチェックします</li>
 <li>“FTPのマルウェアをスキャン”をチェックします</li>
 <li>QUICプロトコルのブロックは任意選択です<br>  Googleのサービスで利用されています。私はチェックしています。Google自体は問題ないですがそのプロトコルを利用した悪質なサイトがFirewallを回避するリスクを減らすという意味で選択しています</li>
@@ -2177,11 +2167,11 @@ Note over cl: 16.共通鍵で復号
 <h2 id="SSLインスペクションの設定"><a href="#SSLインスペクションの設定" class="headerlink" title="SSLインスペクションの設定"></a>SSLインスペクションの設定</h2><p>IPv6のSSLインスペクションの設定を行います。まずは、IPv4で対応した時と同じように、SSLインスペクションの対象範囲のIPホストを登録します。XGの左ペインメニューの<span class="label default">ホストとサービス</span>から、<span class="label default">IPホスト</span>のタブで、<span class="label default">追加</span>ボタンをクリックします。</p>
 <img src="/new-technology/2020/04/29/xg-ipv6-2/host.png" class="" title="alt">
 
-<p>上記の通り、SSLインスペクションのためのIPv6の範囲を”CA_Client_IPv6”として登録します。16進数のアドレス表記ですが、ここでもIPv4のアドレス体系に合わせておくと、ログを確認した時の視認性が上がります。続いて、XGの左ペインメニューの<span class="label default">ルールとポリシー</span>から<span class="label default">SSL/TLSインスペクションルール</span>に進み、”IPv6”をクリックします。以前の記事、<a href="/new-technology/2020/03/20/ssl-inspection1/" title="XG Firewall v18のSSLインスペクションの設定">XG Firewall v18のSSLインスペクションの設定</a>で、このSSLインスペクションルールを一度作成しています。ここにIPv6の設定を加える事になります。</p>
+<p>上記の通り、SSLインスペクションのためのIPv6の範囲を”CA_Client_IPv6”として登録します。16進数のアドレス表記ですが、ここでもIPv4のアドレス体系に合わせておくと、ログを確認した時の視認性が上がります。続いて、XGの左ペインメニューの<span class="label default">ルールとポリシー</span>から<span class="label default">SSL/TLSインスペクションルール</span>に進み、”IPv6”をクリックします。以前の記事”<a href="/new-technology/2020/03/20/ssl-inspection1/" title="XG Firewall v18のSSLインスペクションの設定">XG Firewall v18のSSLインスペクションの設定</a>“で、このSSLインスペクションルールを一度作成しています。ここにIPv6の設定を加える事になります。</p>
 <img src="/new-technology/2020/04/29/xg-ipv6-2/rule2.png" class="" title="alt">
 
 <p>上記のように、<span class="label default">送信元ネットワークとデバイス</span>に、今回作成した、IPv6のホスト群である、”CA_Client_IPv6”を選択して追加します。</p>
-<p>これでIPv6に関する設定は完了です。IPv6についても、SSLインスペクションの対象となり、より多くのコンテンツフィルタが可能となりました。一度IPv4でXGのルート証明書を端末にインストールしてあれば、再度インストールする必要はありません。SSLインスペクションのための端末へのインストールについては、過去の記事、<a href="/new-technology/2020/03/20/ssl-inspection1/" title="XG Firewall v18のSSLインスペクションの設定">XG Firewall v18のSSLインスペクションの設定</a>を参照してください。</p>
+<p>これでIPv6に関する設定は完了です。IPv6についても、SSLインスペクションの対象となり、より多くのコンテンツフィルタが可能となりました。一度IPv4でXGのルート証明書を端末にインストールしてあれば、再度インストールする必要はありません。SSLインスペクションのための端末へのインストールについては、過去の記事”<a href="/new-technology/2020/03/20/ssl-inspection1/" title="XG Firewall v18のSSLインスペクションの設定">XG Firewall v18のSSLインスペクションの設定</a>“を参照してください。</p>
 <h2 id="動作確認"><a href="#動作確認" class="headerlink" title="動作確認"></a>動作確認</h2><p>IPv6サイトをブラウザ等で閲覧後、XGのログのログビューアを開き、プルダウンから、<span class="label default">SSL/TLSインスペクション</span>を選択します。</p>
 <img src="/new-technology/2020/04/29/xg-ipv6-2/rule3.png" class="" title="alt">
 
@@ -2222,7 +2212,7 @@ Note over cl: 16.共通鍵で復号
 <li>Webカテゴリ</li>
 <li>URLグループ（自身で作成したURLの集まり）、280blockerなどのURLデータベースもこのグループ</li>
 <li>ファイルタイプ</li>
-<li>ダイナミックカテゴリ（ActiveX・Applets・Cookies・HTTP Upload</li>
+<li>ダイナミックカテゴリ（ActiveX・Applets・Cookies・HTTP Upload）</li>
 </ul>
 <p>これらの事から、Webフィルタはカテゴリの分類という主目的はあるものの、ブラウザを対象としたフィルタの機能である事がわかります。</p>
 <h2 id="SNIとフィルタとの関係"><a href="#SNIとフィルタとの関係" class="headerlink" title="SNIとフィルタとの関係"></a>SNIとフィルタとの関係</h2><p>SNIとは、Server Name Indicationの略です。SSL/TLS通信において、クライアントからサーバ証明書を要求する時に<strong>サーバ名（SNI）を暗号化せずサーバーに渡します</strong>。XGはこのSNIを見てWebフィルタを行っていますので、接続しようとしているドメインやサーバー単位にアクセス許可・不許可の判断が可能になります。しかし<strong>フォルダ構成やMIMEタイプ、引数やダウンロードするデータを検査するには、SSLインスペクションが必要です</strong>。もちろん、ドメイン単位の制御でIoT機器はある程度の防御が可能と言えますが、防御を最大限に高めるにはSSLインスペクションが必要です。以前の記事、<a href="/new-technology/2020/03/21/ssl-inspection2/" title="XG Firewall v18のSSLインスペクションの動作確認と調整">XG Firewall v18のSSLインスペクションの動作確認と調整</a> で記載した通り、ZIP化されたマルウェアはSSLインスペクションが行えなければ検知は出来ません。</p>
@@ -2281,7 +2271,7 @@ Note over cl: 16.共通鍵で復号
             <p>Webフィルタ・アプリケーションフィルタを完全に動作させるには、SSLインスペクションが必要です。</p>
           </div>
 
-<p>このアプリケーションは止めておきたいというニーズに対して、都度メンテナンスしていくのはとても大変です。従い、高リスクのアプリケーションを拒否するという設定を行う事になります。具体的な設定については、こちらの記事、<a href="/new-technology/2020/05/09/best-practice/" title="XG Firewall V18の設定におけるベストプラクティス">XG Firewall V18の設定におけるベストプラクティス</a>を参照してください。</p>
+<p>このアプリケーションは止めておきたいというニーズに対して、都度メンテナンスしていくのはとても大変です。従い、高リスクのアプリケーションを拒否するという設定を行う事になります。具体的な設定については、こちらの記事、<a href="/new-technology/2020/05/09/best-practice/" title="XG Firewall v18の設定におけるベストプラクティス">XG Firewall v18の設定におけるベストプラクティス</a>を参照してください。</p>
 <p>XGを運営しているプロダクトチームは、こういったトラフィックの中身を見ながら制御するポリシーを作るのですから、極めて大変な作業です。特にクラウドアプリケーションは予告なくURLやAPIが変更されるでしょうから、そのメンテナンスコストは計り知れません。</p>
 ]]></content>
       <categories>
