@@ -1598,16 +1598,17 @@ Note over cl: 16.共通鍵で復号
 <li>TLSが正当ではないと判断される</li>
 <li>XGの証明書がアプリケーションに認められない</li>
 </ol>
-<p>接続できない理由は後述しますが、XGは、XG自身で最初からSSLインスペクションの対象外とするドメインリストを既に保持しています。そのリストになく、自身で利用するサイトやアプリケーションがSSLインスペクションによって動作しない場合は個別に除外ドメインを追加する事になります。</p>
+<p>接続できない理由は後述しますが、XGは、XG自身で最初からSSLインスペクションの対象外とするドメインリストを既に保持しています。そのリストになく、自身で利用するサイトやアプリケーションがSSLインスペクションによって動作しない場合は個別に当該ドメインをSSLインスペクションの対象外と指定します。</p>
 <p>XGで最初からSSLインスペクションの対象外となっているリストは、XGの左ペインメニュー<span class="label default">web</span>の”URLグループ”に”Managed TLS exclusion list”があり、ここに複数の有名なWebサイトのドメインが列挙されています。</p>
 <img src="/new-technology/2020/03/21/ssl-inspection2/exclusion.png" class="" title="alt">
 
-<h2 id="SSLインスペクションの除外設定"><a href="#SSLインスペクションの除外設定" class="headerlink" title="SSLインスペクションの除外設定"></a>SSLインスペクションの除外設定</h2><p>“Managed TLS exclusion list”にドメインが列挙されておらず、またポリシー上は利用できるはずのWebサイトに接続できない場合、XGの画面右上のログビューアからSSL/TLSインスペクションを選択しSSLインスペクションでエラーが発生していないか確認を行います。私の環境では、norton.comが該当しています。Web→URLグループの”Local TLS Exclusion List”という個別にカスタマイズ可能なリストがあるので、そのリストにドメインを追加する事でSSLインスペクションが行われません。以下の通り、SSLインスペクションルール画面では、デフォルトの除外項目に”Managed TLS exclusion list”および”Local TLS Exclusion List”が存在します。</p>
+<p>このリストは編集できません。ファームウェアの更新によって管理されます。</p>
+<h2 id="SSLインスペクションの除外設定"><a href="#SSLインスペクションの除外設定" class="headerlink" title="SSLインスペクションの除外設定"></a>SSLインスペクションの除外設定</h2><p>“Managed TLS exclusion list”にドメインが列挙されておらず、またポリシー上は利用できるはずのWebサイトに接続できない場合、XGの画面右上のログビューアからSSL/TLSインスペクションを選択しSSLインスペクションでエラーが発生していないか確認を行います。Web→URLグループの”Local TLS Exclusion List”という個別にカスタマイズ可能なリストがあるので、そのリストにドメインを追加する事でSSLインスペクションの対象外とする事ができます。以下の通り、SSLインスペクションルール画面では、デフォルトの除外項目に”Managed TLS exclusion list”および”Local TLS Exclusion List”が存在します。”Local TLS Exclusion List”の初期状態は何も登録されていません。</p>
 <img src="/new-technology/2020/03/21/ssl-inspection2/inspection-rule.png" class="" title="alt">
 <img src="/new-technology/2020/03/21/ssl-inspection2/inspection-rule1.png" class="" title="alt">
 
 <h3 id="SSLインスペクションによって接続できない理由"><a href="#SSLインスペクションによって接続できない理由" class="headerlink" title="SSLインスペクションによって接続できない理由"></a>SSLインスペクションによって接続できない理由</h3><p>SSLインスペクションで接続できない理由の1つ目は、SSL/TLS証明書の正当性を厳しくチェックしすぎる場合が該当します。過渡期ではありますが、まだまだ古いバージョンのTLSが利用されていサイトもあります。これを緩める場合は、XGの左ペインメニュー<span class="label default">ルールとポリシー</span>の”SSL/TLSインスペクションルール”画面で、SSLインスペクションを行っているプロファイルのルールを緩めるか、”SSL/TLSインスペクションの設定”をカスタマイズします。</p>
-<img src="/new-technology/2020/03/21/ssl-inspection2/inspection-rule1.png" class="" title="alt">
+<img src="/new-technology/2020/03/21/ssl-inspection2/inspection-rule2.png" class="" title="alt">
 
 <p>もう1つの接続できない理由は、アプリケーション自体が、OSにインストールされた証明書などを認めていないケースです。こちらはアプリケーションの内部に証明書を保持しており、その証明書の正当性を確認しているケースです。以下の例ではpython関連のモジュールをアップグレードするケースで以下のエラーが発生します。</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt;pip3 install --upgrade pip</span><br><span class="line"></span><br><span class="line">WARNING: Retrying (Retry(total=4, connect=None, <span class="built_in">read</span>=None, redirect=None, status=None))</span><br><span class="line">after connection broken by <span class="string">'SSLError(SSLCertVerificationError(1,  </span></span><br><span class="line"><span class="string">'</span>[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get <span class="built_in">local</span> issuer certificate (_ssl.c:1076)<span class="string">'))'</span>: /simple/pip/</span><br></pre></td></tr></table></figure>
