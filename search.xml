@@ -214,16 +214,17 @@
 <td>WANのIPアドレスを選択</td>
 </tr>
 </tbody></table>
-<p>最後に適用をクリックします。その後通知ボタンをクリックしてみます。無事通知されたでしょうか。</p>
+<p>最後に適用をクリックします。その後通知ボタンをクリックしテスト通知で正しく受信できる事を確認してください。それなりに重要度が高いものを対象とし、スマホで通知を受けると良いでしょう。</p>
 <h2 id="メール通知するイベントを選択する"><a href="#メール通知するイベントを選択する" class="headerlink" title="メール通知するイベントを選択する"></a>メール通知するイベントを選択する</h2><p>XGの左ペインから<span class="label default">システムサービス</span>→<span class="label default">通知リスト</span>と進みます。以下の通り、イベント毎に通知が設定可能となっているので、<span class="label default">メール通知</span>のトグルスイッチをオンにして、好みの通知について選択してください。</p>
 <img src="/new-technology/2020/04/03/Notifications/notify.png" class="" title="alt">
 
 <p>リスク観点で考えると、以下の内容をオンにしておくのがお勧めです。</p>
 <ul>
-<li>Adminのサインイン失敗</li>
+<li>ユーザーのサインイン失敗</li>
 <li>新しいファームウェアの通知</li>
 <li>システム関連（起動、CPU高、シグネチャ更新失敗）</li>
 <li>VPNの接続</li>
+<li>IPSの攻撃検知（サーバー公開している場合）</li>
 </ul>
 ]]></content>
       <categories>
@@ -797,6 +798,7 @@ XGFirewall-- "192.168.0.0/24" ---HGW
 <h2 id="この記事における設定例"><a href="#この記事における設定例" class="headerlink" title="この記事における設定例"></a>この記事における設定例</h2><p>一般的な設定例として、内部にあるWebサーバーのhttpsアクセス（Port443）をインターネットから接続するケースで説明します。自分の環境ですと、ちょうどQNAPのNASをPort443で稼働させているのでこれを例に説明します。<span class="label default">パブリックIPのPort443</span>→<span class="label default">プライベートIPのPort443</span>に着信させる実例です。</p>
 <h2 id="ホームゲートウェイでの事前設定"><a href="#ホームゲートウェイでの事前設定" class="headerlink" title="ホームゲートウェイでの事前設定"></a>ホームゲートウェイでの事前設定</h2><p>VPNの導入の記事でも書きましたが、まずはインターネットから内部のホストにデータを届けるためには、ホームゲートウェイとXGそれぞれに設定を行う必要があります。以下のように、ホームゲートウェイでPort443のトラフィックをXGのWAN側IPアドレスに転送する設定を行います。</p>
 <img src="/new-technology/2020/04/11/dnat/rule6.png" class="" title="alt">
+
 <p>この画面はホームゲートウェイの画面であり、契約しているインターネット回線業者により、提供される機器は異なりますのであくまで設定例という事で参考までに掲載しています。</p>
 <h2 id="XGのDNAT設定"><a href="#XGのDNAT設定" class="headerlink" title="XGのDNAT設定"></a>XGのDNAT設定</h2><p>早速、サーバーアクセスアシスタントを使ったDNATの設定を行います。まずXGの左ペインメニューから、ルールとポリシーを選択します。ルールの上にある<span class="label default">ファイアウォールルールの追加</span>をクリックし、<span class="label default">サーバーアクセスアシスタントDNAT</span>をクリックします。そうすると以下のウィザード画面が表示されます。</p>
 <img src="/new-technology/2020/04/11/dnat/rule1.png" class="" title="alt">
@@ -1591,16 +1593,23 @@ Note over cl: 16.共通鍵で復号
 <p>実行ファイルについては、マルウェアを検知する前にXGのポリシーによって、実行ファイルをダウンロード出来ないという表示になる可能性があります。その際はWebのポリシーで修正するか、ルールとポリシーを修正し実行ファイルを一時的に許可し、確認してみて下さい。前回までの記事で記載してきた通り、SSLインスペクションが行えるクライアントと行えないクライアントで挙動は変わります。</p>
 <p>SSLインスペクションが行えるクライアントは、この8つを全て検出し、ブラウザにはXGによるマルウェア検知のエラー画面が表示されます。PCに入っているウィルス対策ソフトが検知する以前にダウンロードは行わない挙動となります。また、SSLインスペクション対象外のクライアントからのアクセスについてはhttpのものは検出できますが、httpsのダウンロードはマルウェアを検出できません。</p>
 <p>IPSは速度と検出能力という相反する事を同時に成り立たせなくてはいけません。上記のようにマルウェアの検出は可能ですが、あくまで通信で怪しいものをカットする程度に考え、クライアントにはウィルス対策ソフト（Windows Defenderを含む）やマルウェア対策ソフトの導入をお勧めします。Sophosはホームユーザー向けに無償のウィルス対策ソフトを提供していますが、個人的には異なる会社のソフトを組み合わせて使う事をお勧めします。</p>
-<h2 id="SSLインスペクションの除外設定"><a href="#SSLインスペクションの除外設定" class="headerlink" title="SSLインスペクションの除外設定"></a>SSLインスペクションの除外設定</h2><p>XGでは、Webフィルターやアプリケーションフィルターなどのポリシーで接続を拒否しますが、それ以外の理由で接続できないという問題も発生します。</p>
+<h2 id="SSLインスペクションの除外について"><a href="#SSLインスペクションの除外について" class="headerlink" title="SSLインスペクションの除外について"></a>SSLインスペクションの除外について</h2><p>XGは、Webフィルターやアプリケーションフィルターなどのポリシーで接続の可否を判断しますが、実はSSLインスペクションが理由で接続できないという問題も発生します。これは以下の通りです。</p>
 <ol>
 <li>TLSが正当ではないと判断される</li>
 <li>XGの証明書がアプリケーションに認められない</li>
 </ol>
-<p>上記1については、XGの画面右上にログビューアというものがあるのでビューアからSSL/TLSインスペクションを選択します。私の環境では、norton.comが該当しています。TLSでエラーログが出力されていて、当該ドメインが安全と判断をするなら、以下の例外処置が行えます。Web→URLグループの”Local TLS Exclusion List”にドメインを追加する事でSSLインスペクションが行われません。以下の通り、SSLインスペクションルール画面では、デフォルトの除外項目に”Local TLS Exclusion List”が含まれています。</p>
+<p>接続できない理由は後述しますが、XGは、XG自身で最初からSSLインスペクションの対象外とするドメインリストを既に保持しています。そのリストになく、自身で利用するサイトやアプリケーションがSSLインスペクションによって動作しない場合は個別に除外ドメインを追加する事になります。</p>
+<p>XGで最初からSSLインスペクションの対象外となっているリストは、XGの左ペインメニュー<span class="label default">web</span>の”URLグループ”に”Managed TLS exclusion list”があり、ここに複数の有名なWebサイトのドメインが列挙されています。</p>
+<img src="/new-technology/2020/03/21/ssl-inspection2/exclusion.png" class="" title="alt">
+
+<h2 id="SSLインスペクションの除外設定"><a href="#SSLインスペクションの除外設定" class="headerlink" title="SSLインスペクションの除外設定"></a>SSLインスペクションの除外設定</h2><p>“Managed TLS exclusion list”にドメインが列挙されておらず、またポリシー上は利用できるはずのWebサイトに接続できない場合、XGの画面右上のログビューアからSSL/TLSインスペクションを選択しSSLインスペクションでエラーが発生していないか確認を行います。私の環境では、norton.comが該当しています。Web→URLグループの”Local TLS Exclusion List”という個別にカスタマイズ可能なリストがあるので、そのリストにドメインを追加する事でSSLインスペクションが行われません。以下の通り、SSLインスペクションルール画面では、デフォルトの除外項目に”Managed TLS exclusion list”および”Local TLS Exclusion List”が存在します。</p>
 <img src="/new-technology/2020/03/21/ssl-inspection2/inspection-rule.png" class="" title="alt">
 <img src="/new-technology/2020/03/21/ssl-inspection2/inspection-rule1.png" class="" title="alt">
 
-<p>もう1つは対応が少し難しいのですが、アプリケーション自体が、OSにインストールされた証明書などを認めていないケースです。こちらはアプリケーションの内部に証明書を保持しており、その証明書の正当性を確認しているケースです。以下の例ではpython関連のモジュールをアップグレードするケースで以下のエラーが発生します。</p>
+<h3 id="SSLインスペクションによって接続できない理由"><a href="#SSLインスペクションによって接続できない理由" class="headerlink" title="SSLインスペクションによって接続できない理由"></a>SSLインスペクションによって接続できない理由</h3><p>SSLインスペクションで接続できない理由の1つ目は、SSL/TLS証明書の正当性を厳しくチェックしすぎる場合が該当します。過渡期ではありますが、まだまだ古いバージョンのTLSが利用されていサイトもあります。これを緩める場合は、XGの左ペインメニュー<span class="label default">ルールとポリシー</span>の”SSL/TLSインスペクションルール”画面で、SSLインスペクションを行っているプロファイルのルールを緩めるか、”SSL/TLSインスペクションの設定”をカスタマイズします。</p>
+<img src="/new-technology/2020/03/21/ssl-inspection2/inspection-rule1.png" class="" title="alt">
+
+<p>もう1つの接続できない理由は、アプリケーション自体が、OSにインストールされた証明書などを認めていないケースです。こちらはアプリケーションの内部に証明書を保持しており、その証明書の正当性を確認しているケースです。以下の例ではpython関連のモジュールをアップグレードするケースで以下のエラーが発生します。</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt;pip3 install --upgrade pip</span><br><span class="line"></span><br><span class="line">WARNING: Retrying (Retry(total=4, connect=None, <span class="built_in">read</span>=None, redirect=None, status=None))</span><br><span class="line">after connection broken by <span class="string">'SSLError(SSLCertVerificationError(1,  </span></span><br><span class="line"><span class="string">'</span>[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get <span class="built_in">local</span> issuer certificate (_ssl.c:1076)<span class="string">'))'</span>: /simple/pip/</span><br></pre></td></tr></table></figure>
 
 <p>上記のように、この場合は当該ドメインのSSLインスペクションを外す事になりますが、XGの画面右上にある”ログビューア”から”SSL/TLSインスペクション”を選択し、どのURLのSSLインスペクションが行われているのかを確認できます。下記はあくまで一例ですが除外しておいた方が良いドメインを列挙します。これらは上述した”Local TLS Exclusion List”にサブドメインを登録する事になります。</p>
