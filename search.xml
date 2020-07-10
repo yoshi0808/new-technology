@@ -1582,7 +1582,7 @@ Note over cl: 16.共通鍵で復号
 </li>
 </ul>
 <p>IPS（Intrusion Prevension System）によるSSLインスペクションでの動作確認のため、テストマルウェアの検知について行います。有名どころでは、<a href="https://www.eicar.org/" target="_blank" rel="noopener">eicar</a>のテストマルウェアが挙げられます。早速、ダウンロードページにまいりましょう。<a href="https://2016.eicar.org/85-0-Download.html" target="_blank" rel="noopener">eicarのダウンロードページ</a>に行くと、「IMPORTANT NOTE」とhttp、httpsの以下それぞれの種類の合計8つのダウンロードリンクがあります。</p>
-<img src="/new-technology/2020/03/21/ssl-inspection2/eicar.png" class="" title="alt">
+<img src="/new-technology/2020/03/21/ssl-inspection2/eicar1.png" class="" title="alt">
 
 <ol>
 <li>実行ファイル</li>
