@@ -28,7 +28,7 @@ XGの左ペインメニューでは、{% label @Web %}、{% label @アプリケ�
 - Webカテゴリ
 - URLグループ（自身で作成したURLの集まり）、280blockerなどのURLデータベースもこのグループ
 - ファイルタイプ
-- ダイナミックカテゴリ（ActiveX・Applets・Cookies・HTTP Upload
+- ダイナミックカテゴリ（ActiveX・Applets・Cookies・HTTP Upload）
 
 これらの事から、Webフィルタはカテゴリの分類という主目的はあるものの、ブラウザを対象としたフィルタの機能である事がわかります。
 
