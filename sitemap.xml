@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://yoshi0808.github.io/new-technology/2020/05/16/Intercept-DNS/</loc>
+    
+    <lastmod>2020-07-11T10:51:22.403Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://yoshi0808.github.io/new-technology/2020/03/21/ssl-inspection2/</loc>
     
     <lastmod>2020-07-10T12:29:24.705Z</lastmod>
@@ -96,13 +103,6 @@
     <loc>https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/</loc>
     
     <lastmod>2020-07-08T11:24:16.895Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/05/16/Intercept-DNS/</loc>
-    
-    <lastmod>2020-07-08T11:22:53.763Z</lastmod>
     
   </url>
   
