@@ -872,7 +872,7 @@ XGFirewall-- "192.168.0.0/24" ---HGW
             <p> 　物理NICが1つしかない場合は、XG Firewallのセットアップはできません。</p>
           </div>
 
-<h2 id="仮想環境上のFirewall向け構成"><a href="#仮想環境上のFirewall向け構成" class="headerlink" title="仮想環境上のFirewall向け構成"></a>仮想環境上のFirewall向け構成</h2><p>ESXiにおけるネットワークの構成は、物理NICと仮想スイッチとの関係を重要です。以下の図のように、ESXiにおける物理NICはケーブルとして見立て、実際に仮想マシンが複数台存在する事を鑑み、ESXiの中にスイッチングハブが存在していると考えてください。</p>
+<h2 id="仮想環境上のFirewall向け構成"><a href="#仮想環境上のFirewall向け構成" class="headerlink" title="仮想環境上のFirewall向け構成"></a>仮想環境上のFirewall向け構成</h2><p>ESXiにおけるネットワークの構成は、物理NICと仮想スイッチとの関係が重要です。以下の図のように、ESXiにおける物理NICはケーブルとして見立て、実際に仮想マシンが複数台存在する事を鑑み、ESXiの中にスイッチングハブが存在していると考えてください。</p>
 <img src="/new-technology/2020/03/01/esxi-conf/vswitch.png" class="" title="alt">
 
 <p>※便宜上、一般的なホームユーザーの構成図としてLinuxの仮想マシンやWIFIアクセスポイント等を記載していますが、これまでのセットアップでは存在していません。また、XG Firewallのインストールに、LinuxやWIFIアクセスポイントは必要ありません。</p>
@@ -889,6 +889,7 @@ XGFirewall-- "192.168.0.0/24" ---HGW
 <li>ESXiの管理画面の左ペイン、ネットワークをクリック、続いて仮想スイッチのタブをクリックします。</li>
 <li>標準仮想スイッチの追加をクリックします。</li>
 <li>WAN側の仮想スイッチを作成するため、ここでは、vSwitch1と命名します。MTUは1500のままで構いません。</li>
+<li>“アップリンク1”は物理NICとの関連付けです。vmnic1などWAN側に使う予定の物理NICを選択してください。</li>
 </ol>
 <p>以下の通り、仮想スイッチの作成は完了です。</p>
 <img src="/new-technology/2020/03/01/esxi-conf/vswitch2.png" class="" title="alt">
