@@ -11,7 +11,7 @@ categories:
 
 ## この記事で実現すること
 
-Firewall v18をESXi 6.7で稼働させるためのインストールイメージ（isoファイル）をダウンロードし、ESXi上で、XGのための仮想マシンを構築できるようになります。
+XG Firewall v18をESXi 6.7で稼働させるためのインストールイメージ（isoファイル）をダウンロードし、ESXi上で、XGのための仮想マシンを構築できるようになります。
 
 {% endnote %}
 
@@ -20,13 +20,7 @@ Firewall v18をESXi 6.7で稼働させるためのインストールイメージ
 
 Sophosのサイトの[（無償ツール）](https://www.sophos.com/ja-jp/products/free-tools.aspx)より、"Sophos XG Firewall Home Edition"モジュールのダウンロードを行います。氏名、勤務先メールアドレスとありますが、ホームユースなので、遠慮なくGmailなどのアドレスを登録します。あっさりとISOファイルのダウンロードボタンが表示されると共に、メール宛にライセンス番号が送られてきます。送られてきたメールの本文には、「利用条件としては、あくまで家庭での個人的な使用に限って無料です」と丁寧な日本語で記載されています。
 <!-- more -->
-ダウンロードはISOイメージです。2020年3月6日時点では、最新のバージョンはv17.5のようです。ただし、Sophosからのお知らせに[v18がリリースされたとの記載](https://community.sophos.com/products/xg-firewall/b/blog/posts/sophos-xg-firewall-v18-is-now-available)があるため、こちらのISOファイルからインストールします。"As usual, this firmware update is no charge for all licensed XG Firewall customers."とありますし問題なさそうです。VMware向けのテンプレートもダウンロード出来るようですが、仮想環境ではなくいきなり物理PCにインストールする方を鑑み、ISOファイルからのセットアップ手順とします。上記のリンクから、"SW-18.0.0_GA-Build321-321.iso"をダウンロードして下さい。
-
-（6月14日追記）
-6月11日時点で、Sophosのサイトでは、デフォルトのダウンロードはv17.5.12_MR12となっています。v18については、新しいファームウェアが出ており、[XG Firewall v18 MR-1-Build396](https://community.sophos.com/products/xg-firewall/b/blog/posts/xg-firewall-v18-mr1-build396)が出ています。"SW-18.0.1_MR-1-Build396-396.iso"をダウンロードしてください。
-
-~~（4月4日追記）
-Sophosのサイトを確認したところ、現時点でもデフォルトのダウンロードはv17.5.10_MR10となっています。v18については、新しいファームウェアが出ており、[GA-build354のリリース](https://community.sophos.com/products/xg-firewall/b/blog/posts/xg-firewall-v18-ga_2d00_build354-is-now-available)が出ています。"SW-18.0.0_GA-Build354-354.iso"をダウンロードしてください。~~
+ダウンロードはISOイメージです。2020年7月26日時点では、最新のバージョンは"SW-18.0.1_MR-1-Build396-396.iso"となっています。
 
 クライアントPC（Windowsなど）から、ESXi管理画面にログインします。ESXiの管理画面の左ペインのストレージからデフォルトのストレージである、datastore1を選択し、データストアブラウザをクリックして下さい。次にアップロードボタンをクリックし、ダウンロードされた"SW-18.0.1_MR-1-Build396-396.iso"ファイルをアップロードして下さい。
 
@@ -38,7 +32,7 @@ Sophosのサイトを確認したところ、現時点でもデフォルトの�
 
 1. ESXiの管理画面の仮想マシンから新規仮想マシンを選択します。
 2. 仮想マシンの作成を選択し、次へのボタンを押します。
-3. 仮想マシンの名前を決め、ゲストOSを選択します。OSファミリはLinuxで、OSバージョンはその他のLinux4.x（64ビット）を選択します。※XG Firewall v17では、その他のLinux3.x（64ビット）を選択する必要がありました。
+3. 仮想マシンの名前を決め、ゲストOSを選択します。OSファミリはLinuxで、OSバージョンはその他のLinux4.x（64ビット）を選択します。
 
 {% asset_img vm2.png alt %}
 
