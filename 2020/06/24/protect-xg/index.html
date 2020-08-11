@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.1">
+<meta name="generator" content="Hexo 5.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/favicon-16x16-next.png">
@@ -269,7 +269,7 @@
 
 <a id="more"></a>
 
-<h2 id="Best-practices-for-securing-your-firewall"><a href="#Best-practices-for-securing-your-firewall" class="headerlink" title="Best practices for securing your firewall"></a>Best practices for securing your firewall</h2><p>2020-6-24にSophos Communityのお勧め記事に<a href="https://community.sophos.com/products/xg-firewall/f/recommended-reads/121461/sophos-xg-firewall-best-practices-for-securing-your-firewall" target="_blank" rel="noopener">“Sophos XG Firewall: Best practices for securing your firewall”</a>というタイトルの文書が投稿されました。以下の記載があります。</p>
+<h2 id="Best-practices-for-securing-your-firewall"><a href="#Best-practices-for-securing-your-firewall" class="headerlink" title="Best practices for securing your firewall"></a>Best practices for securing your firewall</h2><p>2020-6-24にSophos Communityのお勧め記事に<a target="_blank" rel="noopener" href="https://community.sophos.com/products/xg-firewall/f/recommended-reads/121461/sophos-xg-firewall-best-practices-for-securing-your-firewall">“Sophos XG Firewall: Best practices for securing your firewall”</a>というタイトルの文書が投稿されました。以下の記載があります。</p>
 <blockquote class="blockquote-center">
             <i class="fa fa-quote-left"></i>
             <p>このドキュメントの焦点は、Sophos XG Firewallを最低限のレベルでセキュリティを確保するための基本的なガイダンスを提供することです。この文書では、内部ネットワークデバイスやリソースを保護する個々のファイアウォール機能についてのガイダンスは提供しません （詳細な Sophos XG Firewall ベストプラクティスガイドは後日公開される予定です）。</p>
@@ -282,7 +282,7 @@
 <blockquote>
 <p>管理者は、ファイアウォール自体の安全性を確保する前に、内部ネットワークやリソースを保護するために、ファイアウォールの機能や機能を設定することに集中してしまうことがよくあります。</p>
 </blockquote>
-<p>これはご指摘の通りで、確かにXG自身にログインするパスワードもLAN内からのアクセスだからという理由で単純なパスワードにしがちです。業務で利用するほど厳格では無いにせよ、ホームユーザーとしてもFirewall自身の管理をしっかりと行うべきです。具体的なドキュメントについては、上記のページから、<a href="https://community.sophos.com/cfs-file/__key/communityserver-discussions-components-files/258/Securing-your-Sophos-XG-Firewall-_2D00_-Best-Practice-Guide.pdf" target="_blank" rel="noopener">“Best Practice Guide”</a>へのリンクがあります。まずは上記のPDFを参照いただくのが一番ベストですが、ここではホームユーザーにとって重要と思われるものを紹介します。</p>
+<p>これはご指摘の通りで、確かにXG自身にログインするパスワードもLAN内からのアクセスだからという理由で単純なパスワードにしがちです。業務で利用するほど厳格では無いにせよ、ホームユーザーとしてもFirewall自身の管理をしっかりと行うべきです。具体的なドキュメントについては、上記のページから、<a target="_blank" rel="noopener" href="https://community.sophos.com/cfs-file/__key/communityserver-discussions-components-files/258/Securing-your-Sophos-XG-Firewall-_2D00_-Best-Practice-Guide.pdf">“Best Practice Guide”</a>へのリンクがあります。まずは上記のPDFを参照いただくのが一番ベストですが、ここではホームユーザーにとって重要と思われるものを紹介します。</p>
 <h2 id="ローカルサービスACL"><a href="#ローカルサービスACL" class="headerlink" title="ローカルサービスACL"></a>ローカルサービスACL</h2><p>XGの左ペインメニューの<span class="label default">管理</span>の”デバイスのアクセス”でWANなど外部ゾーンからのすべてのサービスを削除します。使わないサービスはオフにするのが原則であり、SSHを利用しないのであればLANゾーンのSSHもオフにしてしまうのがお勧めです。</p>
 <img src="/new-technology/2020/06/24/protect-xg/acl.png" class="" title="alt">
 
@@ -396,7 +396,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#この記事で実現すること"><span class="nav-number">1.</span> <span class="nav-text">この記事で実現すること</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Best-practices-for-securing-your-firewall"><span class="nav-number">2.</span> <span class="nav-text">Best practices for securing your firewall</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Firewall自身のセキュリティ強化"><span class="nav-number">3.</span> <span class="nav-text">Firewall自身のセキュリティ強化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ローカルサービスACL"><span class="nav-number">4.</span> <span class="nav-text">ローカルサービスACL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DDoS防御"><span class="nav-number">5.</span> <span class="nav-text">DDoS防御</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#管理者ID"><span class="nav-number">6.</span> <span class="nav-text">管理者ID</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HotFixの自動インストール"><span class="nav-number">7.</span> <span class="nav-text">HotFixの自動インストール</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%93%E3%81%AE%E8%A8%98%E4%BA%8B%E3%81%A7%E5%AE%9F%E7%8F%BE%E3%81%99%E3%82%8B%E3%81%93%E3%81%A8"><span class="nav-number">1.</span> <span class="nav-text">この記事で実現すること</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Best-practices-for-securing-your-firewall"><span class="nav-number">2.</span> <span class="nav-text">Best practices for securing your firewall</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Firewall%E8%87%AA%E8%BA%AB%E3%81%AE%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3%E5%BC%B7%E5%8C%96"><span class="nav-number">3.</span> <span class="nav-text">Firewall自身のセキュリティ強化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%AD%E3%83%BC%E3%82%AB%E3%83%AB%E3%82%B5%E3%83%BC%E3%83%93%E3%82%B9ACL"><span class="nav-number">4.</span> <span class="nav-text">ローカルサービスACL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DDoS%E9%98%B2%E5%BE%A1"><span class="nav-number">5.</span> <span class="nav-text">DDoS防御</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%A1%E7%90%86%E8%80%85ID"><span class="nav-number">6.</span> <span class="nav-text">管理者ID</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HotFix%E3%81%AE%E8%87%AA%E5%8B%95%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><span class="nav-number">7.</span> <span class="nav-text">HotFixの自動インストール</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

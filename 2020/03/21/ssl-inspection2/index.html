@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.1">
+<meta name="generator" content="Hexo 5.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/favicon-16x16-next.png">
@@ -282,7 +282,7 @@
 
 </li>
 </ul>
-<p>IPS（Intrusion Prevension System）によるSSLインスペクションでの動作確認のため、テストマルウェアの検知について行います。有名どころでは、<a href="https://www.eicar.org/" target="_blank" rel="noopener">eicar</a>のテストマルウェアが挙げられます。早速、ダウンロードページにまいりましょう。<a href="https://2016.eicar.org/85-0-Download.html" target="_blank" rel="noopener">eicarのダウンロードページ</a>に行くと、「IMPORTANT NOTE」とhttp、httpsの以下それぞれの種類の合計8つのダウンロードリンクがあります。</p>
+<p>IPS（Intrusion Prevension System）によるSSLインスペクションでの動作確認のため、テストマルウェアの検知について行います。有名どころでは、<a target="_blank" rel="noopener" href="https://www.eicar.org/">eicar</a>のテストマルウェアが挙げられます。早速、ダウンロードページにまいりましょう。<a target="_blank" rel="noopener" href="https://2016.eicar.org/85-0-Download.html">eicarのダウンロードページ</a>に行くと、「IMPORTANT NOTE」とhttp、httpsの以下それぞれの種類の合計8つのダウンロードリンクがあります。</p>
 <img src="/new-technology/2020/03/21/ssl-inspection2/eicar1.png" class="" title="alt">
 
 <ol>
@@ -312,7 +312,7 @@
 <img src="/new-technology/2020/03/21/ssl-inspection2/inspection-rule2.png" class="" title="alt">
 
 <p>もう1つの接続できない理由は、アプリケーション自体が、OSにインストールされた証明書などを認めていないケースです。こちらはアプリケーションの内部に証明書を保持しており、その証明書の正当性を確認しているケースです。以下の例ではpython関連のモジュールをアップグレードするケースで以下のエラーが発生します。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;pip3 install --upgrade pip</span><br><span class="line"></span><br><span class="line">WARNING: Retrying (Retry(total=4, connect=None, <span class="built_in">read</span>=None, redirect=None, status=None))</span><br><span class="line">after connection broken by <span class="string">'SSLError(SSLCertVerificationError(1,  </span></span><br><span class="line"><span class="string">'</span>[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get <span class="built_in">local</span> issuer certificate (_ssl.c:1076)<span class="string">'))'</span>: /simple/pip/</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;pip3 install --upgrade pip</span><br><span class="line"></span><br><span class="line">WARNING: Retrying (Retry(total=4, connect=None, <span class="built_in">read</span>=None, redirect=None, status=None))</span><br><span class="line">after connection broken by <span class="string">&#x27;SSLError(SSLCertVerificationError(1,  </span></span><br><span class="line"><span class="string">&#x27;</span>[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get <span class="built_in">local</span> issuer certificate (_ssl.c:1076)<span class="string">&#x27;))&#x27;</span>: /simple/pip/</span><br></pre></td></tr></table></figure>
 
 <p>上記のように、この場合は当該ドメインのSSLインスペクションを外す事になりますが、XGの画面右上にある”ログビューア”から”SSL/TLSインスペクション”を選択し、どのURLのSSLインスペクションが行われているのかを確認できます。下記はあくまで一例ですが除外しておいた方が良いドメインを列挙します。これらは上述した”Local TLS Exclusion List”にサブドメインを登録する事になります。</p>
 <table>
@@ -447,7 +447,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#この記事で実現すること"><span class="nav-number">1.</span> <span class="nav-text">この記事で実現すること</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSLインスペクションの動作確認"><span class="nav-number">2.</span> <span class="nav-text">SSLインスペクションの動作確認</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSLインスペクションの除外について"><span class="nav-number">3.</span> <span class="nav-text">SSLインスペクションの除外について</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSLインスペクションの除外設定"><span class="nav-number">4.</span> <span class="nav-text">SSLインスペクションの除外設定</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SSLインスペクションによって接続できない理由"><span class="nav-number">4.1.</span> <span class="nav-text">SSLインスペクションによって接続できない理由</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%93%E3%81%AE%E8%A8%98%E4%BA%8B%E3%81%A7%E5%AE%9F%E7%8F%BE%E3%81%99%E3%82%8B%E3%81%93%E3%81%A8"><span class="nav-number">1.</span> <span class="nav-text">この記事で実現すること</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSL%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%9A%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%AE%E5%8B%95%E4%BD%9C%E7%A2%BA%E8%AA%8D"><span class="nav-number">2.</span> <span class="nav-text">SSLインスペクションの動作確認</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSL%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%9A%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%AE%E9%99%A4%E5%A4%96%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span class="nav-number">3.</span> <span class="nav-text">SSLインスペクションの除外について</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSL%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%9A%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%AE%E9%99%A4%E5%A4%96%E8%A8%AD%E5%AE%9A"><span class="nav-number">4.</span> <span class="nav-text">SSLインスペクションの除外設定</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SSL%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%9A%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%AB%E3%82%88%E3%81%A3%E3%81%A6%E6%8E%A5%E7%B6%9A%E3%81%A7%E3%81%8D%E3%81%AA%E3%81%84%E7%90%86%E7%94%B1"><span class="nav-number">4.1.</span> <span class="nav-text">SSLインスペクションによって接続できない理由</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

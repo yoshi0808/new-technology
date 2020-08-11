@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.1">
+<meta name="generator" content="Hexo 5.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/favicon-16x16-next.png">
@@ -277,10 +277,10 @@
 
 <a id="more"></a>
 
-<h2 id="パッチ適用に必要なもの"><a href="#パッチ適用に必要なもの" class="headerlink" title="パッチ適用に必要なもの"></a>パッチ適用に必要なもの</h2><p>SSHでESXiに接続し、コマンドラインでパッチを適用します。クライアントPCからSSH接続が行えるクライアントアプリケーションを用意してください。Windowsでは昔から有名なのはTera Termですが、その他にも無償で利用可能な<a href="https://www.termius.com" target="_blank" rel="noopener">Termius</a>などがあります。</p>
-<h2 id="VMwareのパッチ情報"><a href="#VMwareのパッチ情報" class="headerlink" title="VMwareのパッチ情報"></a>VMwareのパッチ情報</h2><p>ESXi6.7のパッチ情報は<a href="https://docs.vmware.com/jp/VMware-vSphere/6.7/rn/esxi670-202006001.html" target="_blank" rel="noopener">こちら</a>です。このリンクは現時点で最も新しいパッチ（2020年6月9日）のリンクとなっていますが、過去のパッチの情報も提供されています。内容は不具合や脆弱性など様々ですが、このページでESXiのパッチの提供情報がわかります。</p>
+<h2 id="パッチ適用に必要なもの"><a href="#パッチ適用に必要なもの" class="headerlink" title="パッチ適用に必要なもの"></a>パッチ適用に必要なもの</h2><p>SSHでESXiに接続し、コマンドラインでパッチを適用します。クライアントPCからSSH接続が行えるクライアントアプリケーションを用意してください。Windowsでは昔から有名なのはTera Termですが、その他にも無償で利用可能な<a target="_blank" rel="noopener" href="https://www.termius.com">Termius</a>などがあります。</p>
+<h2 id="VMwareのパッチ情報"><a href="#VMwareのパッチ情報" class="headerlink" title="VMwareのパッチ情報"></a>VMwareのパッチ情報</h2><p>ESXi6.7のパッチ情報は<a target="_blank" rel="noopener" href="https://docs.vmware.com/jp/VMware-vSphere/6.7/rn/esxi670-202006001.html">こちら</a>です。このリンクは現時点で最も新しいパッチ（2020年6月9日）のリンクとなっていますが、過去のパッチの情報も提供されています。内容は不具合や脆弱性など様々ですが、このページでESXiのパッチの提供情報がわかります。</p>
 <h2 id="My-VMwareで製品パッチの情報を入手する"><a href="#My-VMwareで製品パッチの情報を入手する" class="headerlink" title="My VMwareで製品パッチの情報を入手する"></a>My VMwareで製品パッチの情報を入手する</h2><p>ESXiのセットアップ時にMy VMwareへの登録を行い、個人向けvSphere Hypervisorのライセンス（無償）を入手されている事を前提にしています。</p>
-<p><a href="https://my.vmware.com/jp/web/vmware/login?" target="_blank" rel="noopener">My VMware</a>にサインインし、<span class="label default">製品</span>メニューから、”製品パッチ”を選択します。</p>
+<p><a target="_blank" rel="noopener" href="https://my.vmware.com/jp/web/vmware/login?">My VMware</a>にサインインし、<span class="label default">製品</span>メニューから、”製品パッチ”を選択します。</p>
 <img src="/new-technology/2020/06/14/esxi67-patch/myvm1.png" class="" title="alt">
 
 <p>さらに、”ESXi”とバージョンの”6.7”を選択し”検索”ボタンをクリックすると、パッチの一覧が表示されます。</p>
@@ -320,7 +320,7 @@
 
 <ul>
 <li><p>パッチ適用コマンドを入力します<br>コマンドは、esxcli software vib update -d “/vmfs/volumes/<em>Datastore/DirectoryName</em>/<em>patchName</em>.zip”となります。パッチファイルはフルパスで指定する事になります。従い、以下のコマンドを入力します。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@esxi:~] esxcli software vib update -d <span class="string">"/vmfs/volumes/Datastore/DirectoryName/ESXi670-202006001.zip"</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@esxi:~] esxcli software vib update -d <span class="string">&quot;/vmfs/volumes/Datastore/DirectoryName/ESXi670-202006001.zip&quot;</span></span><br></pre></td></tr></table></figure>
 
 <p>実行後しばらくしてから、たくさんの更新結果としての文字の羅列が一気に表示され、再びコマンドプロンプトになるので、<code># reboot</code>としてESXiを再起動します</p>
 </li>
@@ -432,7 +432,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#この記事で実現すること"><span class="nav-number">1.</span> <span class="nav-text">この記事で実現すること</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#パッチ適用に必要なもの"><span class="nav-number">2.</span> <span class="nav-text">パッチ適用に必要なもの</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VMwareのパッチ情報"><span class="nav-number">3.</span> <span class="nav-text">VMwareのパッチ情報</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#My-VMwareで製品パッチの情報を入手する"><span class="nav-number">4.</span> <span class="nav-text">My VMwareで製品パッチの情報を入手する</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi上のパッチ適用作業"><span class="nav-number">5.</span> <span class="nav-text">ESXi上のパッチ適用作業</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#My-VMwareの通知設定"><span class="nav-number">6.</span> <span class="nav-text">My VMwareの通知設定</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%93%E3%81%AE%E8%A8%98%E4%BA%8B%E3%81%A7%E5%AE%9F%E7%8F%BE%E3%81%99%E3%82%8B%E3%81%93%E3%81%A8"><span class="nav-number">1.</span> <span class="nav-text">この記事で実現すること</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%91%E3%83%83%E3%83%81%E9%81%A9%E7%94%A8%E3%81%AB%E5%BF%85%E8%A6%81%E3%81%AA%E3%82%82%E3%81%AE"><span class="nav-number">2.</span> <span class="nav-text">パッチ適用に必要なもの</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VMware%E3%81%AE%E3%83%91%E3%83%83%E3%83%81%E6%83%85%E5%A0%B1"><span class="nav-number">3.</span> <span class="nav-text">VMwareのパッチ情報</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#My-VMware%E3%81%A7%E8%A3%BD%E5%93%81%E3%83%91%E3%83%83%E3%83%81%E3%81%AE%E6%83%85%E5%A0%B1%E3%82%92%E5%85%A5%E6%89%8B%E3%81%99%E3%82%8B"><span class="nav-number">4.</span> <span class="nav-text">My VMwareで製品パッチの情報を入手する</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi%E4%B8%8A%E3%81%AE%E3%83%91%E3%83%83%E3%83%81%E9%81%A9%E7%94%A8%E4%BD%9C%E6%A5%AD"><span class="nav-number">5.</span> <span class="nav-text">ESXi上のパッチ適用作業</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#My-VMware%E3%81%AE%E9%80%9A%E7%9F%A5%E8%A8%AD%E5%AE%9A"><span class="nav-number">6.</span> <span class="nav-text">My VMwareの通知設定</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

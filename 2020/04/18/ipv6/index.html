@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.1">
+<meta name="generator" content="Hexo 5.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/favicon-16x16-next.png">
@@ -266,7 +266,7 @@
 
       
         <div class="note success">
-            <h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>ホームユーザー向けのユニークなIPv6アドレスが必要となった場合、自分の持つ機器のMACアドレスを用いて、Unique Local Address（ULA）を生成します。プログラムの実行が必要なので、外部サイトの<a href="https://www.jdoodle.com/" target="_blank" rel="noopener">JDoodle</a>サイト上でPython3のコードを実行してULAを求めます。</p>
+            <h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>ホームユーザー向けのユニークなIPv6アドレスが必要となった場合、自分の持つ機器のMACアドレスを用いて、Unique Local Address（ULA）を生成します。プログラムの実行が必要なので、外部サイトの<a target="_blank" rel="noopener" href="https://www.jdoodle.com/">JDoodle</a>サイト上でPython3のコードを実行してULAを求めます。</p>
           </div>
 
 <a id="more"></a>
@@ -274,7 +274,7 @@
 <h2 id="IPv6-Unique-Local-Address-ULA-について"><a href="#IPv6-Unique-Local-Address-ULA-について" class="headerlink" title="IPv6 Unique Local Address(ULA)について"></a>IPv6 Unique Local Address(ULA)について</h2><p>IPv6はその広大なアドレス空間により、NATを必要としません。ホームユーザー向けのインターネットサービスにおいても、多くのプロバイダでパブリックIPv6が振られ、NAT変換無しでインターネットに接続できます。ただしホームユーザー環境においての実運用としては、パブリックIPアドレスが変わった場合に宅内のIPアドレスも変更しなければならず、内側のホスト間通信の運用が困難になります。Firewallなど内部ホストを管理する必要のあるネットワークでは、IPv4のプライベートIPに近い考えであるIPv6のULAを使い、インターネットに対してはNAT変換を行うという方法が考えられます。厳密には、ULA≠プライベートIPアドレスなので、外部のサイトとは重複しないアドレスを利用する事が求められます。</p>
 <p>ULAは、MACアドレスと時刻からおおよそ一意となるIPv6アドレスを作成する事が可能となります。アドレスは、<code>fd00::/8</code>から始まる48ビットのプリフィックス（prefix）を持ちます。従い、<code>fdxx:xxxx:xxxx::/48</code>のプリフィックスに加え、<code>0000</code>〜<code>ffff</code>までのサブネットの範囲を持ちます。</p>
 <p><code>fdxx:xxxx:xxxx:0000::/64</code> - <code>fdxx:xxxx:xxxx:ffff::/64</code></p>
-<h2 id="IPv6-ULAの生成を行う"><a href="#IPv6-ULAの生成を行う" class="headerlink" title="IPv6 ULAの生成を行う"></a>IPv6 ULAの生成を行う</h2><p><a href="https://www.jdoodle.com/" target="_blank" rel="noopener">JDoodle(www.jdoodle.com)</a>サイトに配置したULAを算出するPythonプログラムを実行します。JDoodleは、教育用としてプログラムソースコードを登録すると、プログラムが実行できる機能を提供しています。このページでは、JDoodleサイトを埋め込んで表示しております。ここで入力されたデータはJDoodleに渡され、実行される事をご承知おきください。<sup><strong><a href="#note1">[1]</a></strong></sup></p>
+<h2 id="IPv6-ULAの生成を行う"><a href="#IPv6-ULAの生成を行う" class="headerlink" title="IPv6 ULAの生成を行う"></a>IPv6 ULAの生成を行う</h2><p><a target="_blank" rel="noopener" href="https://www.jdoodle.com/">JDoodle(www.jdoodle.com)</a>サイトに配置したULAを算出するPythonプログラムを実行します。JDoodleは、教育用としてプログラムソースコードを登録すると、プログラムが実行できる機能を提供しています。このページでは、JDoodleサイトを埋め込んで表示しております。ここで入力されたデータはJDoodleに渡され、実行される事をご承知おきください。<sup><strong><a href="#note1">[1]</a></strong></sup></p>
 <p>最初にIPv6を割り振りたいホストのMACアドレスを調べておいてください。算出時にMACアドレスを入力するので、<code>XX:XX:XX:XX:XX:XX</code>または<code>XX-XX-XX-XX-XX-XX</code>と表示されているMACアドレスを予めコピーしてください。大文字小文字はどちらでも構いません。また、仮想環境でサーバーなどを構築されている場合は仮想MACアドレスではなく、物理MACアドレスを採用される事をお勧めします。</p>
 <p>以下にPython3のソースコードとその下に3つの項目があります。</p>
 <ol>
@@ -284,11 +284,11 @@
 </ol>
 <div data-pym-src="https://www.jdoodle.com/embed/v0/20tR?stdin=1&arg=0"></div>
 
-<p>上記の<span class="label default">Stdin Inputs</span>に直接入力が可能です。MACアドレスを貼り付け、<span class="label default">▶︎Execute</span>ボタンをクリックしてください。もしお使いのブラウザでサードパーティのCookieを受け入れない設定を行っている方は、”This website uses cookies to ensure you get the best experience on our website.”という表示が出ているとおもいます。この場合は、別ウィンドウで<a href="https://jdoodle.com/a/20tR" target="_blank" rel="noopener">こちらのJDoodleサイト</a>を開き、実行してください。<span class="label default">Result</span>に、以下の4つの項目が表示されます。MACアドレスが正しく入力されなかった場合は、”Bad MAC Adderss”と表示されます。</p>
+<p>上記の<span class="label default">Stdin Inputs</span>に直接入力が可能です。MACアドレスを貼り付け、<span class="label default">▶︎Execute</span>ボタンをクリックしてください。もしお使いのブラウザでサードパーティのCookieを受け入れない設定を行っている方は、”This website uses cookies to ensure you get the best experience on our website.”という表示が出ているとおもいます。この場合は、別ウィンドウで<a target="_blank" rel="noopener" href="https://jdoodle.com/a/20tR">こちらのJDoodleサイト</a>を開き、実行してください。<span class="label default">Result</span>に、以下の4つの項目が表示されます。MACアドレスが正しく入力されなかった場合は、”Bad MAC Adderss”と表示されます。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Input MAC address:</span><br><span class="line">ULA Prefix        -&gt; fd00:1234:5678::/48</span><br><span class="line">First Subnet      -&gt; fd00:1234:5678::/64</span><br><span class="line">Last Subnet       -&gt; fd00:1234:5678:ffff::/64</span><br><span class="line">First IPv6 Address-&gt; fd00:1234:5678::1/64</span><br></pre></td></tr></table></figure>
 
 <p>これで他とのIPv6アドレスの重複が極めて少ないULAの生成ができました。</p>
-<h2 id="IPv6-ULAの生成ソースコードについて"><a href="#IPv6-ULAの生成ソースコードについて" class="headerlink" title="IPv6 ULAの生成ソースコードについて"></a>IPv6 ULAの生成ソースコードについて</h2><p>ソースコードはこちら→　<a class="btn" href="https://github.com/yoshi0808/ula-generator" target="_blank" rel="noopener" title="ula-generator source code">
+<h2 id="IPv6-ULAの生成ソースコードについて"><a href="#IPv6-ULAの生成ソースコードについて" class="headerlink" title="IPv6 ULAの生成ソースコードについて"></a>IPv6 ULAの生成ソースコードについて</h2><p>ソースコードはこちら→　<a class="btn" target="_blank" rel="noopener" href="https://github.com/yoshi0808/ula-generator" title="ula-generator source code">
             <i class="fab fa-github fa-fw fa-lg"></i>ula-generator
           </a></p>
 <ul>
@@ -400,7 +400,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#この記事で実現すること"><span class="nav-number">1.</span> <span class="nav-text">この記事で実現すること</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IPv6-Unique-Local-Address-ULA-について"><span class="nav-number">2.</span> <span class="nav-text">IPv6 Unique Local Address(ULA)について</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IPv6-ULAの生成を行う"><span class="nav-number">3.</span> <span class="nav-text">IPv6 ULAの生成を行う</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IPv6-ULAの生成ソースコードについて"><span class="nav-number">4.</span> <span class="nav-text">IPv6 ULAの生成ソースコードについて</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%93%E3%81%AE%E8%A8%98%E4%BA%8B%E3%81%A7%E5%AE%9F%E7%8F%BE%E3%81%99%E3%82%8B%E3%81%93%E3%81%A8"><span class="nav-number">1.</span> <span class="nav-text">この記事で実現すること</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IPv6-Unique-Local-Address-ULA-%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span class="nav-number">2.</span> <span class="nav-text">IPv6 Unique Local Address(ULA)について</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IPv6-ULA%E3%81%AE%E7%94%9F%E6%88%90%E3%82%92%E8%A1%8C%E3%81%86"><span class="nav-number">3.</span> <span class="nav-text">IPv6 ULAの生成を行う</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IPv6-ULA%E3%81%AE%E7%94%9F%E6%88%90%E3%82%BD%E3%83%BC%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span class="nav-number">4.</span> <span class="nav-text">IPv6 ULAの生成ソースコードについて</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
