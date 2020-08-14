@@ -636,6 +636,109 @@ XGFirewall-- "192.168.0.0/24" ---HGW
       </tags>
   </entry>
   <entry>
+    <title>VMware vSphere Hypervisor（ESXi）の設定</title>
+    <url>/new-technology/2020/03/01/esxi-conf/</url>
+    <content><![CDATA[<div class="note success">
+            <h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>XG Firewall v18をESXi 6.7上で稼働させるために、ホームゲートウェイの後ろに、XGを挟み込んだネットワーク全体の考え方を解説します。また、ESXi上で2枚のNICを利用し仮想スイッチの設定を行い、2枚のNICを持った仮想マシンを作成する環境を構築します。</p>
+          </div>
+
+<a id="more"></a>
+
+<h2 id="ネットワークの確認"><a href="#ネットワークの確認" class="headerlink" title="ネットワークの確認"></a>ネットワークの確認</h2><p>ESXiのWeb管理画面にログイン後、左ペインの”ネットワーク”をクリックし、”物理NIC”のタブをクリックすると、ESXiに認識されているNICの一覧がリストされます。</p>
+<img src="/new-technology/2020/03/01/esxi-conf/conf_esxi.png" class="" title="alt">
+
+<p>1GbpsのNICであれば、ドライバーはne1000として認識されています。（環境にもより異なりますが）vmnic0、vmnic1という物理NICが2つ表示されている事を確認してください。</p>
+ <div class="note danger">
+            <p> 　物理NICが1つしかない場合は、XG Firewallのセットアップはできません。</p>
+          </div>
+
+<h2 id="仮想環境上のFirewall向け構成"><a href="#仮想環境上のFirewall向け構成" class="headerlink" title="仮想環境上のFirewall向け構成"></a>仮想環境上のFirewall向け構成</h2><p>ESXiにおけるネットワークの構成は、物理NICと仮想スイッチとの関係が重要です。以下の図のように、ESXiにおける物理NICはケーブルとして見立て、実際に仮想マシンが複数台存在する事を鑑み、ESXiの中にスイッチングハブが存在していると考えてください。</p>
+<img src="/new-technology/2020/03/01/esxi-conf/vswitch.png" class="" title="alt">
+
+<p>※便宜上、一般的なホームユーザーの構成図としてLinuxの仮想マシンやWIFIアクセスポイント等を記載していますが、これまでのセットアップでは存在していません。また、XG Firewallのインストールに、LinuxやWIFIアクセスポイントは必要ありません。</p>
+<h2 id="セットアップ状況の確認"><a href="#セットアップ状況の確認" class="headerlink" title="セットアップ状況の確認"></a>セットアップ状況の確認</h2><p>ここまでのセットアップで、以下の構成になっています。</p>
+<ul>
+<li>物理NICであるvmnic0、vmnic1</li>
+<li>バーチャルスイッチのvSwitch0</li>
+<li>ネットワークポート（仮想IP）として、LAN側の管理用のManagement Networkおよびデフォルトで仮想マシンのために作成されているVM Network</li>
+</ul>
+<h2 id="WANの仮想スイッチの作成"><a href="#WANの仮想スイッチの作成" class="headerlink" title="WANの仮想スイッチの作成"></a>WANの仮想スイッチの作成</h2><img src="/new-technology/2020/03/01/esxi-conf/vswitch1.png" class="" title="alt">
+
+<p>XGのWAN側インタフェースを担う仮想スイッチを追加します（赤字の部分）。</p>
+<ol>
+<li>ESXiの管理画面の左ペイン、ネットワークをクリック、続いて仮想スイッチのタブをクリックします。</li>
+<li>標準仮想スイッチの追加をクリックします。</li>
+<li>WAN側の仮想スイッチを作成するため、ここでは、vSwitch1と命名します。MTUは1500のままで構いません。</li>
+<li>“アップリンク1”は物理NICとの関連付けです。vmnic1などWAN側に使う予定の物理NICを選択してください。</li>
+</ol>
+<p>以下の通り、仮想スイッチの作成は完了です。</p>
+<img src="/new-technology/2020/03/01/esxi-conf/vswitch2.png" class="" title="alt">
+
+<h2 id="ネットワークポートの作成"><a href="#ネットワークポートの作成" class="headerlink" title="ネットワークポートの作成"></a>ネットワークポートの作成</h2><ol>
+<li>vSwitch1をクリックし、物理NICのWAN向けである、vmnic1と関連付けられている事を確認してください。</li>
+<li>XGのLANとWANのネットワークポートを作成します。左ペインのネットワークからポートグループのタブをクリックし、ポートグループの追加を選択します。</li>
+<li>新規ポートグループとして、LANはここではXG-LANと命名し作成します。LANなので、vSwitch0を関連づけます。</li>
+<li>続いてWANのために、XG-WANと命名し、vSwitch1と関連づけます。</li>
+</ol>
+<p>これらの設定が終わり、LAN側のネットワーク構成は以下の通りとなります。</p>
+<img src="/new-technology/2020/03/01/esxi-conf/vswitch3.png" class="" title="alt">
+
+<p>WAN側のネットワーク構成は以下の通りです。</p>
+<img src="/new-technology/2020/03/01/esxi-conf/vswitch4.png" class="" title="alt">
+
+<p>これで、ESXiのネットワーク設定は完了となります。一旦PCのネットワークをホームゲートウェイに接続し、XG Firewallのモジュールをダウンロードしてください。</p>
+]]></content>
+      <categories>
+        <category>Software</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+        <tag>ESXi</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>VMware vSphere Hypervisor（ESXi）のインストール</title>
+    <url>/new-technology/2020/02/29/esxi/</url>
+    <content><![CDATA[<div class="note success">
+            <h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>　XG Firewall v18をVMware ESXi上で稼働させるために、VMware ESXi 6.7をインストールします。</p>
+          </div>
+
+<a id="more"></a>
+
+<h2 id="インストールの前に"><a href="#インストールの前に" class="headerlink" title="インストールの前に"></a>インストールの前に</h2><p> XG Firewallの導入に必須ではないですが、バックアップや異なるバージョンの同居など色々便利なので、仮想環境（ESXi）を構築しその上にXGをインストールします。このホームユーザー向け（無償版）ESXi（vSphere Hypervisor）に関するドキュメントは、<a href="https://www.vmware.com/jp/products/vsphere-hypervisor.html">VMWareのサイト</a>を参照してください。</p>
+<!-- more -->
+
+<h2 id="準備"><a href="#準備" class="headerlink" title="準備"></a>準備</h2><ul>
+<li>ESXiをインストールする予定の2つのNICを持ったPC1台と、ISOファイルをインストールするためのUSBメディアを用意してください。</li>
+<li>VMwareのアカウント（無償）を作成してください。</li>
+<li>VMwareサイトにログイン後、製品（vSphere Hypervisor v6.7）のダウンロードをしたら、ISOファイルをRufusを使ってUSBメディアに書き出します。</li>
+</ul>
+<div class="video-container"><iframe src="https://www.youtube.com/embed/7gYnyIaQH9A" frameborder="0" loading="lazy" allowfullscreen></iframe></div>
+
+<h2 id="ESXiのインストール"><a href="#ESXiのインストール" class="headerlink" title="ESXiのインストール"></a>ESXiのインストール</h2><p>以下のビデオ（英語）を参考にしてください。</p>
+<iframe src='https://players.brightcove.net/1534342432001/Byh3doRJx_default/index.html?videoId=5738631329001' allowfullscreen frameborder=0></iframe>
+
+<p>注意点ですが、いつも使っているネットワークとは別のネットワークのIPアドレスを振ってセットアップします。いつもが<code>192.168.0.0/24</code>なら、今回は仮に<code>192.168.1.0/24</code>のネットワークに配置する予定としてESXiをセットアップする事にしましょう。これまでのネットワークにXG Firewallを挟み込む事になり、従来のネットワークはXGのWAN側とホームゲートウェイに利用され、XGのLAN側は新しいネットワークになるためです。新たにXGのLAN側と同じネットワークにESXiの管理ネットワークを構築する必要があります。なお、XGのLAN側のデフォルトIPアドレスは、<code>172.16.16.16</code>となっています。ここではXGのIPもセットアップ時に<code>192.168.1.0/24</code>のネットワークに変更する事とします。</p>
+<ul>
+<li>USBメディアをESXiをインストールするPCに挿し、USBからブートし、セットアップを開始してください。</li>
+<li>vCenterはホームユーザー向けには使いませんので無視してください。</li>
+<li>NICが2枚ある事を前提にすると、Esxiの管理画面はLAN側のNICを対象とするように設定してください。今の時点では、WANは使いません。新しく振ったIP（<code>192.168.1.1/24</code>）をESXiの管理用IPとして、セットアップします。</li>
+<li>上記のビデオ（2:40前後の説明）では「冗長化のために」と説明がありますが、今回は冗長化を使いません。通常LAN側のvmnic0を管理用のNICとしてセットアップしてください。また、VLANも使いません。</li>
+<li>ESXi6.7では、vSphere Clientは使いません。インストールしたESXiのLAN側のIPアドレスに対してブラウザで接続し、ESXiのWeb管理画面で設定を行います。</li>
+</ul>
+<img src="/new-technology/2020/02/29/esxi/setup_esxi.png" class="" title="alt">
+
+<p>セットアップ終了後は、上記のようなネットワーク構成となります。USBメディアを抜いて再起動後、ESXiの画面にIPアドレスが表示されます。ホームゲートウェイに繋っていたPCをネットワークから外し、ESXiのLAN側のNICと繋ぎます。PCのIPを変更（例えば、<code>192.168.1.101/24</code>）し、ESXiのIPアドレスにブラウザで接続してください。ログインは、ユーザー名がroot、パスワードはセットアップで指定したものになります。</p>
+]]></content>
+      <categories>
+        <category>Security</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+        <tag>ESXi</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>VMware ESXi6.7にパッチを適用する</title>
     <url>/new-technology/2020/06/14/esxi67-patch/</url>
     <content><![CDATA[<div class="note success">
@@ -705,6 +808,99 @@ XGFirewall-- "192.168.0.0/24" ---HGW
       </categories>
       <tags>
         <tag>ESXi</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>IPv6のUnique Local Addressを生成する</title>
+    <url>/new-technology/2020/04/18/ipv6/</url>
+    <content><![CDATA[<div class="note success">
+            <h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>ホームユーザー向けのユニークなIPv6アドレスが必要となった場合、自分の持つ機器のMACアドレスを用いて、Unique Local Address（ULA）を生成します。プログラムの実行が必要なので、外部サイトの<a href="https://www.jdoodle.com/">JDoodle</a>サイト上でPython3のコードを実行してULAを求めます。</p>
+          </div>
+
+<a id="more"></a>
+
+<h2 id="IPv6-Unique-Local-Address-ULA-について"><a href="#IPv6-Unique-Local-Address-ULA-について" class="headerlink" title="IPv6 Unique Local Address(ULA)について"></a>IPv6 Unique Local Address(ULA)について</h2><p>IPv6はその広大なアドレス空間により、NATを必要としません。ホームユーザー向けのインターネットサービスにおいても、多くのプロバイダでパブリックIPv6が振られ、NAT変換無しでインターネットに接続できます。ただしホームユーザー環境においての実運用としては、パブリックIPアドレスが変わった場合に宅内のIPアドレスも変更しなければならず、内側のホスト間通信の運用が困難になります。Firewallなど内部ホストを管理する必要のあるネットワークでは、IPv4のプライベートIPに近い考えであるIPv6のULAを使い、インターネットに対してはNAT変換を行うという方法が考えられます。厳密には、ULA≠プライベートIPアドレスなので、外部のサイトとは重複しないアドレスを利用する事が求められます。</p>
+<p>ULAは、MACアドレスと時刻からおおよそ一意となるIPv6アドレスを作成する事が可能となります。アドレスは、<code>fd00::/8</code>から始まる48ビットのプリフィックス（prefix）を持ちます。従い、<code>fdxx:xxxx:xxxx::/48</code>のプリフィックスに加え、<code>0000</code>〜<code>ffff</code>までのサブネットの範囲を持ちます。</p>
+<p><code>fdxx:xxxx:xxxx:0000::/64</code> - <code>fdxx:xxxx:xxxx:ffff::/64</code></p>
+<h2 id="IPv6-ULAの生成を行う"><a href="#IPv6-ULAの生成を行う" class="headerlink" title="IPv6 ULAの生成を行う"></a>IPv6 ULAの生成を行う</h2><p><a href="https://www.jdoodle.com/">JDoodle(www.jdoodle.com)</a>サイトに配置したULAを算出するPythonプログラムを実行します。JDoodleは、教育用としてプログラムソースコードを登録すると、プログラムが実行できる機能を提供しています。このページでは、JDoodleサイトを埋め込んで表示しております。ここで入力されたデータはJDoodleに渡され、実行される事をご承知おきください。<sup><strong><a href="#note1">[1]</a></strong></sup></p>
+<p>最初にIPv6を割り振りたいホストのMACアドレスを調べておいてください。算出時にMACアドレスを入力するので、<code>XX:XX:XX:XX:XX:XX</code>または<code>XX-XX-XX-XX-XX-XX</code>と表示されているMACアドレスを予めコピーしてください。大文字小文字はどちらでも構いません。また、仮想環境でサーバーなどを構築されている場合は仮想MACアドレスではなく、物理MACアドレスを採用される事をお勧めします。</p>
+<p>以下にPython3のソースコードとその下に3つの項目があります。</p>
+<ol>
+<li>入力エリア　<span class="label default">Stdin Inputs</span></li>
+<li>実行ボタン　<span class="label default">▶︎Execute</span></li>
+<li>実行結果　<span class="label default">Result</span></li>
+</ol>
+<div data-pym-src="https://www.jdoodle.com/embed/v0/20tR?stdin=1&arg=0"></div>
+
+<p>上記の<span class="label default">Stdin Inputs</span>に直接入力が可能です。MACアドレスを貼り付け、<span class="label default">▶︎Execute</span>ボタンをクリックしてください。もしお使いのブラウザでサードパーティのCookieを受け入れない設定を行っている方は、”This website uses cookies to ensure you get the best experience on our website.”という表示が出ているとおもいます。この場合は、別ウィンドウで<a href="https://jdoodle.com/a/20tR">こちらのJDoodleサイト</a>を開き、実行してください。<span class="label default">Result</span>に、以下の4つの項目が表示されます。MACアドレスが正しく入力されなかった場合は、”Bad MAC Adderss”と表示されます。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Input MAC address:</span><br><span class="line">ULA Prefix        -&gt; fd00:1234:5678::/48</span><br><span class="line">First Subnet      -&gt; fd00:1234:5678::/64</span><br><span class="line">Last Subnet       -&gt; fd00:1234:5678:ffff::/64</span><br><span class="line">First IPv6 Address-&gt; fd00:1234:5678::1/64</span><br></pre></td></tr></table></figure>
+
+<p>これで他とのIPv6アドレスの重複が極めて少ないULAの生成ができました。</p>
+<h2 id="IPv6-ULAの生成ソースコードについて"><a href="#IPv6-ULAの生成ソースコードについて" class="headerlink" title="IPv6 ULAの生成ソースコードについて"></a>IPv6 ULAの生成ソースコードについて</h2><p>ソースコードはこちら→　<a class="btn" href="https://github.com/yoshi0808/ula-generator" title="ula-generator source code">
+            <i class="fab fa-github fa-fw fa-lg"></i>ula-generator
+          </a></p>
+<ul>
+<li>RFC4193に基づき生成しています</li>
+<li>MACアドレスから<span class="label default">Modified EUI-64</span>を生成するにあたり、RFC4291に基づき生成しています</li>
+<li>本来はNTPを利用してハッシュキーの一部に利用しますが、通信は行わずホストの時間を取得し、NTP時刻に変換しています</li>
+<li>NTPは64ビットのデータ型となっており、2036年にオーバーフローします。しかし、RFC4330で定義されているように再び0から開始し、正しく動く処理をしています</li>
+</ul>
+<p><small id="note1"><strong>[1]</strong>JDoodleの利用規約などを探してみましたが見つかりませんでした。学生向けに教育用としての利用を想定されているようです。このブログの目的から鑑み、利用目的が逸脱している事は無いと考え、利用させていただいております。</small></p>
+<script src="https://www.jdoodle.com/assets/jdoodle-pym.min.js" type="text/javascript"></script>
+]]></content>
+      <categories>
+        <category>Code</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+        <tag>IPv6</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>XG Firewall自身を防御する</title>
+    <url>/new-technology/2020/06/24/protect-xg/</url>
+    <content><![CDATA[<div class="note success">
+            <h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>XG Firewall自身を防御するためのベストプラクティスがSophosより本日公開されたため、最低限の防御として推奨されている設定内容を紹介します。</p>
+          </div>
+
+<a id="more"></a>
+
+<h2 id="Best-practices-for-securing-your-firewall"><a href="#Best-practices-for-securing-your-firewall" class="headerlink" title="Best practices for securing your firewall"></a>Best practices for securing your firewall</h2><p>2020-6-24にSophos Communityのお勧め記事に<a href="https://community.sophos.com/products/xg-firewall/f/recommended-reads/121461/sophos-xg-firewall-best-practices-for-securing-your-firewall">“Sophos XG Firewall: Best practices for securing your firewall”</a>というタイトルの文書が投稿されました。以下の記載があります。</p>
+<blockquote class="blockquote-center">
+            <i class="fa fa-quote-left"></i>
+            <p>このドキュメントの焦点は、Sophos XG Firewallを最低限のレベルでセキュリティを確保するための基本的なガイダンスを提供することです。この文書では、内部ネットワークデバイスやリソースを保護する個々のファイアウォール機能についてのガイダンスは提供しません （詳細な Sophos XG Firewall ベストプラクティスガイドは後日公開される予定です）。</p>
+
+            <i class="fa fa-quote-right"></i>
+          </blockquote>
+
+<p>このブログの過去の記事”<a href="/new-technology/2020/05/09/best-practice/" title="XG Firewall v18の設定におけるベストプラクティス">XG Firewall v18の設定におけるベストプラクティス</a>”で記載した通り、ルールやポリシーについてのベストプラクティスを記載していますが、将来Sophosから詳細なベストプラクティスガイドが公開されるとの事です。今回公開されたものはルールやポリシーではなく、運用について記述されたものであり、どのようにしてFirewallを守るかに言及されています。IPSの設定については、過去記事をアップデートしています。</p>
+<h2 id="Firewall自身のセキュリティ強化"><a href="#Firewall自身のセキュリティ強化" class="headerlink" title="Firewall自身のセキュリティ強化"></a>Firewall自身のセキュリティ強化</h2><p>まずこのガイドの先頭には以下の説明があります。</p>
+<blockquote>
+<p>管理者は、ファイアウォール自体の安全性を確保する前に、内部ネットワークやリソースを保護するために、ファイアウォールの機能や機能を設定することに集中してしまうことがよくあります。</p>
+</blockquote>
+<p>これはご指摘の通りで、確かにXG自身にログインするパスワードもLAN内からのアクセスだからという理由で単純なパスワードにしがちです。業務で利用するほど厳格では無いにせよ、ホームユーザーとしてもFirewall自身の管理をしっかりと行うべきです。具体的なドキュメントについては、上記のページから、<a href="https://community.sophos.com/cfs-file/__key/communityserver-discussions-components-files/258/Securing-your-Sophos-XG-Firewall-_2D00_-Best-Practice-Guide.pdf">“Best Practice Guide”</a>へのリンクがあります。まずは上記のPDFを参照いただくのが一番ベストですが、ここではホームユーザーにとって重要と思われるものを紹介します。</p>
+<h2 id="ローカルサービスACL"><a href="#ローカルサービスACL" class="headerlink" title="ローカルサービスACL"></a>ローカルサービスACL</h2><p>XGの左ペインメニューの<span class="label default">管理</span>の”デバイスのアクセス”でWANなど外部ゾーンからのすべてのサービスを削除します。使わないサービスはオフにするのが原則であり、SSHを利用しないのであればLANゾーンのSSHもオフにしてしまうのがお勧めです。</p>
+<img src="/new-technology/2020/06/24/protect-xg/acl.png" class="" title="alt">
+
+<p>このSophosのドキュメントではSSHのために、公開鍵認証を行う事を勧めています。もし、LANやVPNからSSHを使うのであればこの”デバイスのアクセス”の画面の下部に”管理者の公開鍵認証”の項目があるので、そこで公開鍵を追加できます。</p>
+<h2 id="DDoS防御"><a href="#DDoS防御" class="headerlink" title="DDoS防御"></a>DDoS防御</h2><p>これまでも特にDDoS防御については説明してきていませんでした。ホームユーザーには不要と考えているためです。ping関連のDDoS防御の勧めが記述されていますので紹介します。しかしこの設定を行うとダウンロードのスループットが低下するので確認しながら利用の判断可否が必要です。XGの左ペインメニューの<span class="label default">侵入防御</span>の”DoS／スプーフ防御”のタブにてICMP/ICMPv6フラッドの項目を以下の図のように設定します。</p>
+<img src="/new-technology/2020/06/24/protect-xg/ips.png" class="" title="alt">
+
+<p>このドキュメント上で”XG550”、”XG650”および”XG750”のハードウェア提供モデルのDDoS防御の設定が記載してありますが、XG Home（ソフトウェアバージョン）はこのDDoS防御の機能は持っていません。</p>
+<h2 id="管理者ID"><a href="#管理者ID" class="headerlink" title="管理者ID"></a>管理者ID</h2><p>XGの左ペインメニューの<span class="label default">管理</span>の”管理の設定”で以下のように管理者のログイン失敗時のブロック、パスワードの複雑性の登録を行います。新しい管理者アカウントを作成し、2要素認証の設定は可能ですが、デフォルト管理者のadminアカウントは無効に設定できません。業務上利用する場合は担当者が変わる場合など意味がありますが、ホームユーザーが利用する場合は定期的なパスワード変更も不要であり、2要素認証の設定は現時点ではあまり魅力はありません。adminアカウントの無効化対応を期待します。</p>
+<img src="/new-technology/2020/06/24/protect-xg/admin.png" class="" title="alt">
+
+<p>過去の記事の”<a href="/new-technology/2020/04/03/Notifications/" title="XG Firewallの通知設定を行う">XG Firewallの通知設定を行う</a>“で記載した通り、通知設定を行う事でログイン失敗の状況も迅速にキャッチする事が可能です。</p>
+<h2 id="HotFixの自動インストール"><a href="#HotFixの自動インストール" class="headerlink" title="HotFixの自動インストール"></a>HotFixの自動インストール</h2><p>XGに脆弱性が見つかった場合に、過去の事例では極めて迅速にパッチが自動適用されます。具体的には下記の図のように、左ペインメニューの<span class="label default">バックアップ＆ファームウェア</span>の”ファームウェア”タブの画面にある、”ホットフィックスの自動インストールを許可する”にチェックが付いている事を確認してください。</p>
+<img src="/new-technology/2020/06/24/protect-xg/hotfix.png" class="" title="alt">
+
+<p>また、定期的な設定のバックアップが推奨されています。この<span class="label default">バックアップ＆ファームウェア</span>メニュー上でのバックアップを取得されると共に、仮想環境をお使いの方は仮想環境上でのバックアップを取得される事をお勧めします。</p>
+]]></content>
+      <categories>
+        <category>Security</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
       </tags>
   </entry>
   <entry>
@@ -905,202 +1101,6 @@ XGFirewall-- "192.168.0.0/24" ---HGW
       </tags>
   </entry>
   <entry>
-    <title>IPv6のUnique Local Addressを生成する</title>
-    <url>/new-technology/2020/04/18/ipv6/</url>
-    <content><![CDATA[<div class="note success">
-            <h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>ホームユーザー向けのユニークなIPv6アドレスが必要となった場合、自分の持つ機器のMACアドレスを用いて、Unique Local Address（ULA）を生成します。プログラムの実行が必要なので、外部サイトの<a href="https://www.jdoodle.com/">JDoodle</a>サイト上でPython3のコードを実行してULAを求めます。</p>
-          </div>
-
-<a id="more"></a>
-
-<h2 id="IPv6-Unique-Local-Address-ULA-について"><a href="#IPv6-Unique-Local-Address-ULA-について" class="headerlink" title="IPv6 Unique Local Address(ULA)について"></a>IPv6 Unique Local Address(ULA)について</h2><p>IPv6はその広大なアドレス空間により、NATを必要としません。ホームユーザー向けのインターネットサービスにおいても、多くのプロバイダでパブリックIPv6が振られ、NAT変換無しでインターネットに接続できます。ただしホームユーザー環境においての実運用としては、パブリックIPアドレスが変わった場合に宅内のIPアドレスも変更しなければならず、内側のホスト間通信の運用が困難になります。Firewallなど内部ホストを管理する必要のあるネットワークでは、IPv4のプライベートIPに近い考えであるIPv6のULAを使い、インターネットに対してはNAT変換を行うという方法が考えられます。厳密には、ULA≠プライベートIPアドレスなので、外部のサイトとは重複しないアドレスを利用する事が求められます。</p>
-<p>ULAは、MACアドレスと時刻からおおよそ一意となるIPv6アドレスを作成する事が可能となります。アドレスは、<code>fd00::/8</code>から始まる48ビットのプリフィックス（prefix）を持ちます。従い、<code>fdxx:xxxx:xxxx::/48</code>のプリフィックスに加え、<code>0000</code>〜<code>ffff</code>までのサブネットの範囲を持ちます。</p>
-<p><code>fdxx:xxxx:xxxx:0000::/64</code> - <code>fdxx:xxxx:xxxx:ffff::/64</code></p>
-<h2 id="IPv6-ULAの生成を行う"><a href="#IPv6-ULAの生成を行う" class="headerlink" title="IPv6 ULAの生成を行う"></a>IPv6 ULAの生成を行う</h2><p><a href="https://www.jdoodle.com/">JDoodle(www.jdoodle.com)</a>サイトに配置したULAを算出するPythonプログラムを実行します。JDoodleは、教育用としてプログラムソースコードを登録すると、プログラムが実行できる機能を提供しています。このページでは、JDoodleサイトを埋め込んで表示しております。ここで入力されたデータはJDoodleに渡され、実行される事をご承知おきください。<sup><strong><a href="#note1">[1]</a></strong></sup></p>
-<p>最初にIPv6を割り振りたいホストのMACアドレスを調べておいてください。算出時にMACアドレスを入力するので、<code>XX:XX:XX:XX:XX:XX</code>または<code>XX-XX-XX-XX-XX-XX</code>と表示されているMACアドレスを予めコピーしてください。大文字小文字はどちらでも構いません。また、仮想環境でサーバーなどを構築されている場合は仮想MACアドレスではなく、物理MACアドレスを採用される事をお勧めします。</p>
-<p>以下にPython3のソースコードとその下に3つの項目があります。</p>
-<ol>
-<li>入力エリア　<span class="label default">Stdin Inputs</span></li>
-<li>実行ボタン　<span class="label default">▶︎Execute</span></li>
-<li>実行結果　<span class="label default">Result</span></li>
-</ol>
-<div data-pym-src="https://www.jdoodle.com/embed/v0/20tR?stdin=1&arg=0"></div>
-
-<p>上記の<span class="label default">Stdin Inputs</span>に直接入力が可能です。MACアドレスを貼り付け、<span class="label default">▶︎Execute</span>ボタンをクリックしてください。もしお使いのブラウザでサードパーティのCookieを受け入れない設定を行っている方は、”This website uses cookies to ensure you get the best experience on our website.”という表示が出ているとおもいます。この場合は、別ウィンドウで<a href="https://jdoodle.com/a/20tR">こちらのJDoodleサイト</a>を開き、実行してください。<span class="label default">Result</span>に、以下の4つの項目が表示されます。MACアドレスが正しく入力されなかった場合は、”Bad MAC Adderss”と表示されます。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Input MAC address:</span><br><span class="line">ULA Prefix        -&gt; fd00:1234:5678::/48</span><br><span class="line">First Subnet      -&gt; fd00:1234:5678::/64</span><br><span class="line">Last Subnet       -&gt; fd00:1234:5678:ffff::/64</span><br><span class="line">First IPv6 Address-&gt; fd00:1234:5678::1/64</span><br></pre></td></tr></table></figure>
-
-<p>これで他とのIPv6アドレスの重複が極めて少ないULAの生成ができました。</p>
-<h2 id="IPv6-ULAの生成ソースコードについて"><a href="#IPv6-ULAの生成ソースコードについて" class="headerlink" title="IPv6 ULAの生成ソースコードについて"></a>IPv6 ULAの生成ソースコードについて</h2><p>ソースコードはこちら→　<a class="btn" href="https://github.com/yoshi0808/ula-generator" title="ula-generator source code">
-            <i class="fab fa-github fa-fw fa-lg"></i>ula-generator
-          </a></p>
-<ul>
-<li>RFC4193に基づき生成しています</li>
-<li>MACアドレスから<span class="label default">Modified EUI-64</span>を生成するにあたり、RFC4291に基づき生成しています</li>
-<li>本来はNTPを利用してハッシュキーの一部に利用しますが、通信は行わずホストの時間を取得し、NTP時刻に変換しています</li>
-<li>NTPは64ビットのデータ型となっており、2036年にオーバーフローします。しかし、RFC4330で定義されているように再び0から開始し、正しく動く処理をしています</li>
-</ul>
-<p><small id="note1"><strong>[1]</strong>JDoodleの利用規約などを探してみましたが見つかりませんでした。学生向けに教育用としての利用を想定されているようです。このブログの目的から鑑み、利用目的が逸脱している事は無いと考え、利用させていただいております。</small></p>
-<script src="https://www.jdoodle.com/assets/jdoodle-pym.min.js" type="text/javascript"></script>
-]]></content>
-      <categories>
-        <category>Code</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-        <tag>IPv6</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>VMware vSphere Hypervisor（ESXi）のインストール</title>
-    <url>/new-technology/2020/02/29/esxi/</url>
-    <content><![CDATA[<div class="note success">
-            <h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>　XG Firewall v18をVMware ESXi上で稼働させるために、VMware ESXi 6.7をインストールします。</p>
-          </div>
-
-<a id="more"></a>
-
-<h2 id="インストールの前に"><a href="#インストールの前に" class="headerlink" title="インストールの前に"></a>インストールの前に</h2><p> XG Firewallの導入に必須ではないですが、バックアップや異なるバージョンの同居など色々便利なので、仮想環境（ESXi）を構築しその上にXGをインストールします。このホームユーザー向け（無償版）ESXi（vSphere Hypervisor）に関するドキュメントは、<a href="https://www.vmware.com/jp/products/vsphere-hypervisor.html">VMWareのサイト</a>を参照してください。</p>
-<!-- more -->
-
-<h2 id="準備"><a href="#準備" class="headerlink" title="準備"></a>準備</h2><ul>
-<li>ESXiをインストールする予定の2つのNICを持ったPC1台と、ISOファイルをインストールするためのUSBメディアを用意してください。</li>
-<li>VMwareのアカウント（無償）を作成してください。</li>
-<li>VMwareサイトにログイン後、製品（vSphere Hypervisor v6.7）のダウンロードをしたら、ISOファイルをRufusを使ってUSBメディアに書き出します。</li>
-</ul>
-<div class="video-container"><iframe src="https://www.youtube.com/embed/7gYnyIaQH9A" frameborder="0" loading="lazy" allowfullscreen></iframe></div>
-
-<h2 id="ESXiのインストール"><a href="#ESXiのインストール" class="headerlink" title="ESXiのインストール"></a>ESXiのインストール</h2><p>以下のビデオ（英語）を参考にしてください。</p>
-<iframe src='https://players.brightcove.net/1534342432001/Byh3doRJx_default/index.html?videoId=5738631329001' allowfullscreen frameborder=0></iframe>
-
-<p>注意点ですが、いつも使っているネットワークとは別のネットワークのIPアドレスを振ってセットアップします。いつもが<code>192.168.0.0/24</code>なら、今回は仮に<code>192.168.1.0/24</code>のネットワークに配置する予定としてESXiをセットアップする事にしましょう。これまでのネットワークにXG Firewallを挟み込む事になり、従来のネットワークはXGのWAN側とホームゲートウェイに利用され、XGのLAN側は新しいネットワークになるためです。新たにXGのLAN側と同じネットワークにESXiの管理ネットワークを構築する必要があります。なお、XGのLAN側のデフォルトIPアドレスは、<code>172.16.16.16</code>となっています。ここではXGのIPもセットアップ時に<code>192.168.1.0/24</code>のネットワークに変更する事とします。</p>
-<ul>
-<li>USBメディアをESXiをインストールするPCに挿し、USBからブートし、セットアップを開始してください。</li>
-<li>vCenterはホームユーザー向けには使いませんので無視してください。</li>
-<li>NICが2枚ある事を前提にすると、Esxiの管理画面はLAN側のNICを対象とするように設定してください。今の時点では、WANは使いません。新しく振ったIP（<code>192.168.1.1/24</code>）をESXiの管理用IPとして、セットアップします。</li>
-<li>上記のビデオ（2:40前後の説明）では「冗長化のために」と説明がありますが、今回は冗長化を使いません。通常LAN側のvmnic0を管理用のNICとしてセットアップしてください。また、VLANも使いません。</li>
-<li>ESXi6.7では、vSphere Clientは使いません。インストールしたESXiのLAN側のIPアドレスに対してブラウザで接続し、ESXiのWeb管理画面で設定を行います。</li>
-</ul>
-<img src="/new-technology/2020/02/29/esxi/setup_esxi.png" class="" title="alt">
-
-<p>セットアップ終了後は、上記のようなネットワーク構成となります。USBメディアを抜いて再起動後、ESXiの画面にIPアドレスが表示されます。ホームゲートウェイに繋っていたPCをネットワークから外し、ESXiのLAN側のNICと繋ぎます。PCのIPを変更（例えば、<code>192.168.1.101/24</code>）し、ESXiのIPアドレスにブラウザで接続してください。ログインは、ユーザー名がroot、パスワードはセットアップで指定したものになります。</p>
-]]></content>
-      <categories>
-        <category>Security</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-        <tag>ESXi</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>XG Firewall自身を防御する</title>
-    <url>/new-technology/2020/06/24/protect-xg/</url>
-    <content><![CDATA[<div class="note success">
-            <h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>XG Firewall自身を防御するためのベストプラクティスがSophosより本日公開されたため、最低限の防御として推奨されている設定内容を紹介します。</p>
-          </div>
-
-<a id="more"></a>
-
-<h2 id="Best-practices-for-securing-your-firewall"><a href="#Best-practices-for-securing-your-firewall" class="headerlink" title="Best practices for securing your firewall"></a>Best practices for securing your firewall</h2><p>2020-6-24にSophos Communityのお勧め記事に<a href="https://community.sophos.com/products/xg-firewall/f/recommended-reads/121461/sophos-xg-firewall-best-practices-for-securing-your-firewall">“Sophos XG Firewall: Best practices for securing your firewall”</a>というタイトルの文書が投稿されました。以下の記載があります。</p>
-<blockquote class="blockquote-center">
-            <i class="fa fa-quote-left"></i>
-            <p>このドキュメントの焦点は、Sophos XG Firewallを最低限のレベルでセキュリティを確保するための基本的なガイダンスを提供することです。この文書では、内部ネットワークデバイスやリソースを保護する個々のファイアウォール機能についてのガイダンスは提供しません （詳細な Sophos XG Firewall ベストプラクティスガイドは後日公開される予定です）。</p>
-
-            <i class="fa fa-quote-right"></i>
-          </blockquote>
-
-<p>このブログの過去の記事”<a href="/new-technology/2020/05/09/best-practice/" title="XG Firewall v18の設定におけるベストプラクティス">XG Firewall v18の設定におけるベストプラクティス</a>”で記載した通り、ルールやポリシーについてのベストプラクティスを記載していますが、将来Sophosから詳細なベストプラクティスガイドが公開されるとの事です。今回公開されたものはルールやポリシーではなく、運用について記述されたものであり、どのようにしてFirewallを守るかに言及されています。IPSの設定については、過去記事をアップデートしています。</p>
-<h2 id="Firewall自身のセキュリティ強化"><a href="#Firewall自身のセキュリティ強化" class="headerlink" title="Firewall自身のセキュリティ強化"></a>Firewall自身のセキュリティ強化</h2><p>まずこのガイドの先頭には以下の説明があります。</p>
-<blockquote>
-<p>管理者は、ファイアウォール自体の安全性を確保する前に、内部ネットワークやリソースを保護するために、ファイアウォールの機能や機能を設定することに集中してしまうことがよくあります。</p>
-</blockquote>
-<p>これはご指摘の通りで、確かにXG自身にログインするパスワードもLAN内からのアクセスだからという理由で単純なパスワードにしがちです。業務で利用するほど厳格では無いにせよ、ホームユーザーとしてもFirewall自身の管理をしっかりと行うべきです。具体的なドキュメントについては、上記のページから、<a href="https://community.sophos.com/cfs-file/__key/communityserver-discussions-components-files/258/Securing-your-Sophos-XG-Firewall-_2D00_-Best-Practice-Guide.pdf">“Best Practice Guide”</a>へのリンクがあります。まずは上記のPDFを参照いただくのが一番ベストですが、ここではホームユーザーにとって重要と思われるものを紹介します。</p>
-<h2 id="ローカルサービスACL"><a href="#ローカルサービスACL" class="headerlink" title="ローカルサービスACL"></a>ローカルサービスACL</h2><p>XGの左ペインメニューの<span class="label default">管理</span>の”デバイスのアクセス”でWANなど外部ゾーンからのすべてのサービスを削除します。使わないサービスはオフにするのが原則であり、SSHを利用しないのであればLANゾーンのSSHもオフにしてしまうのがお勧めです。</p>
-<img src="/new-technology/2020/06/24/protect-xg/acl.png" class="" title="alt">
-
-<p>このSophosのドキュメントではSSHのために、公開鍵認証を行う事を勧めています。もし、LANやVPNからSSHを使うのであればこの”デバイスのアクセス”の画面の下部に”管理者の公開鍵認証”の項目があるので、そこで公開鍵を追加できます。</p>
-<h2 id="DDoS防御"><a href="#DDoS防御" class="headerlink" title="DDoS防御"></a>DDoS防御</h2><p>これまでも特にDDoS防御については説明してきていませんでした。ホームユーザーには不要と考えているためです。ping関連のDDoS防御の勧めが記述されていますので紹介します。しかしこの設定を行うとダウンロードのスループットが低下するので確認しながら利用の判断可否が必要です。XGの左ペインメニューの<span class="label default">侵入防御</span>の”DoS／スプーフ防御”のタブにてICMP/ICMPv6フラッドの項目を以下の図のように設定します。</p>
-<img src="/new-technology/2020/06/24/protect-xg/ips.png" class="" title="alt">
-
-<p>このドキュメント上で”XG550”、”XG650”および”XG750”のハードウェア提供モデルのDDoS防御の設定が記載してありますが、XG Home（ソフトウェアバージョン）はこのDDoS防御の機能は持っていません。</p>
-<h2 id="管理者ID"><a href="#管理者ID" class="headerlink" title="管理者ID"></a>管理者ID</h2><p>XGの左ペインメニューの<span class="label default">管理</span>の”管理の設定”で以下のように管理者のログイン失敗時のブロック、パスワードの複雑性の登録を行います。新しい管理者アカウントを作成し、2要素認証の設定は可能ですが、デフォルト管理者のadminアカウントは無効に設定できません。業務上利用する場合は担当者が変わる場合など意味がありますが、ホームユーザーが利用する場合は定期的なパスワード変更も不要であり、2要素認証の設定は現時点ではあまり魅力はありません。adminアカウントの無効化対応を期待します。</p>
-<img src="/new-technology/2020/06/24/protect-xg/admin.png" class="" title="alt">
-
-<p>過去の記事の”<a href="/new-technology/2020/04/03/Notifications/" title="XG Firewallの通知設定を行う">XG Firewallの通知設定を行う</a>“で記載した通り、通知設定を行う事でログイン失敗の状況も迅速にキャッチする事が可能です。</p>
-<h2 id="HotFixの自動インストール"><a href="#HotFixの自動インストール" class="headerlink" title="HotFixの自動インストール"></a>HotFixの自動インストール</h2><p>XGに脆弱性が見つかった場合に、過去の事例では極めて迅速にパッチが自動適用されます。具体的には下記の図のように、左ペインメニューの<span class="label default">バックアップ＆ファームウェア</span>の”ファームウェア”タブの画面にある、”ホットフィックスの自動インストールを許可する”にチェックが付いている事を確認してください。</p>
-<img src="/new-technology/2020/06/24/protect-xg/hotfix.png" class="" title="alt">
-
-<p>また、定期的な設定のバックアップが推奨されています。この<span class="label default">バックアップ＆ファームウェア</span>メニュー上でのバックアップを取得されると共に、仮想環境をお使いの方は仮想環境上でのバックアップを取得される事をお勧めします。</p>
-]]></content>
-      <categories>
-        <category>Security</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>VMware vSphere Hypervisor（ESXi）の設定</title>
-    <url>/new-technology/2020/03/01/esxi-conf/</url>
-    <content><![CDATA[<div class="note success">
-            <h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>XG Firewall v18をESXi 6.7上で稼働させるために、ホームゲートウェイの後ろに、XGを挟み込んだネットワーク全体の考え方を解説します。また、ESXi上で2枚のNICを利用し仮想スイッチの設定を行い、2枚のNICを持った仮想マシンを作成する環境を構築します。</p>
-          </div>
-
-<a id="more"></a>
-
-<h2 id="ネットワークの確認"><a href="#ネットワークの確認" class="headerlink" title="ネットワークの確認"></a>ネットワークの確認</h2><p>ESXiのWeb管理画面にログイン後、左ペインの”ネットワーク”をクリックし、”物理NIC”のタブをクリックすると、ESXiに認識されているNICの一覧がリストされます。</p>
-<img src="/new-technology/2020/03/01/esxi-conf/conf_esxi.png" class="" title="alt">
-
-<p>1GbpsのNICであれば、ドライバーはne1000として認識されています。（環境にもより異なりますが）vmnic0、vmnic1という物理NICが2つ表示されている事を確認してください。</p>
- <div class="note danger">
-            <p> 　物理NICが1つしかない場合は、XG Firewallのセットアップはできません。</p>
-          </div>
-
-<h2 id="仮想環境上のFirewall向け構成"><a href="#仮想環境上のFirewall向け構成" class="headerlink" title="仮想環境上のFirewall向け構成"></a>仮想環境上のFirewall向け構成</h2><p>ESXiにおけるネットワークの構成は、物理NICと仮想スイッチとの関係が重要です。以下の図のように、ESXiにおける物理NICはケーブルとして見立て、実際に仮想マシンが複数台存在する事を鑑み、ESXiの中にスイッチングハブが存在していると考えてください。</p>
-<img src="/new-technology/2020/03/01/esxi-conf/vswitch.png" class="" title="alt">
-
-<p>※便宜上、一般的なホームユーザーの構成図としてLinuxの仮想マシンやWIFIアクセスポイント等を記載していますが、これまでのセットアップでは存在していません。また、XG Firewallのインストールに、LinuxやWIFIアクセスポイントは必要ありません。</p>
-<h2 id="セットアップ状況の確認"><a href="#セットアップ状況の確認" class="headerlink" title="セットアップ状況の確認"></a>セットアップ状況の確認</h2><p>ここまでのセットアップで、以下の構成になっています。</p>
-<ul>
-<li>物理NICであるvmnic0、vmnic1</li>
-<li>バーチャルスイッチのvSwitch0</li>
-<li>ネットワークポート（仮想IP）として、LAN側の管理用のManagement Networkおよびデフォルトで仮想マシンのために作成されているVM Network</li>
-</ul>
-<h2 id="WANの仮想スイッチの作成"><a href="#WANの仮想スイッチの作成" class="headerlink" title="WANの仮想スイッチの作成"></a>WANの仮想スイッチの作成</h2><img src="/new-technology/2020/03/01/esxi-conf/vswitch1.png" class="" title="alt">
-
-<p>XGのWAN側インタフェースを担う仮想スイッチを追加します（赤字の部分）。</p>
-<ol>
-<li>ESXiの管理画面の左ペイン、ネットワークをクリック、続いて仮想スイッチのタブをクリックします。</li>
-<li>標準仮想スイッチの追加をクリックします。</li>
-<li>WAN側の仮想スイッチを作成するため、ここでは、vSwitch1と命名します。MTUは1500のままで構いません。</li>
-<li>“アップリンク1”は物理NICとの関連付けです。vmnic1などWAN側に使う予定の物理NICを選択してください。</li>
-</ol>
-<p>以下の通り、仮想スイッチの作成は完了です。</p>
-<img src="/new-technology/2020/03/01/esxi-conf/vswitch2.png" class="" title="alt">
-
-<h2 id="ネットワークポートの作成"><a href="#ネットワークポートの作成" class="headerlink" title="ネットワークポートの作成"></a>ネットワークポートの作成</h2><ol>
-<li>vSwitch1をクリックし、物理NICのWAN向けである、vmnic1と関連付けられている事を確認してください。</li>
-<li>XGのLANとWANのネットワークポートを作成します。左ペインのネットワークからポートグループのタブをクリックし、ポートグループの追加を選択します。</li>
-<li>新規ポートグループとして、LANはここではXG-LANと命名し作成します。LANなので、vSwitch0を関連づけます。</li>
-<li>続いてWANのために、XG-WANと命名し、vSwitch1と関連づけます。</li>
-</ol>
-<p>これらの設定が終わり、LAN側のネットワーク構成は以下の通りとなります。</p>
-<img src="/new-technology/2020/03/01/esxi-conf/vswitch3.png" class="" title="alt">
-
-<p>WAN側のネットワーク構成は以下の通りです。</p>
-<img src="/new-technology/2020/03/01/esxi-conf/vswitch4.png" class="" title="alt">
-
-<p>これで、ESXiのネットワーク設定は完了となります。一旦PCのネットワークをホームゲートウェイに接続し、XG Firewallのモジュールをダウンロードしてください。</p>
-]]></content>
-      <categories>
-        <category>Software</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-        <tag>ESXi</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>PC（ハードウェア）の準備</title>
     <url>/new-technology/2020/02/25/provision/</url>
     <content><![CDATA[<h2 id="ネットワーク構成"><a href="#ネットワーク構成" class="headerlink" title="ネットワーク構成"></a>ネットワーク構成</h2><p>XG Firewall(以下、XG)を導入した場合のネットワーク構成は以下の図のようになります。一般的にはプロバイダーから貸与されるホームゲートウェイ（外側の光モデム等は省略）に直接PCを繋ぐか、ホームゲートウェイの無線機能でPCやスマホを接続する事になります。XGを導入する場合は、ホームゲートウェイとPCの間にXGを挟み込む形になります。XGは無線機能を持っていないので、HUBを用意しPCを繋ぐか、無線LAN経由でアクセスする事になります。</p>
@@ -1126,6 +1126,106 @@ XGFirewall-- "192.168.0.0/24" ---HGW
       <tags>
         <tag>XG Firewall</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>安全快適にリモートワークを行う</title>
+    <url>/new-technology/2020/08/14/remote-work/</url>
+    <content><![CDATA[<img src="/new-technology/2020/08/14/remote-work/title.png" class="" title="alt">
+
+<h2 id="安全な在宅勤務を行うために留意すること"><a href="#安全な在宅勤務を行うために留意すること" class="headerlink" title="安全な在宅勤務を行うために留意すること"></a>安全な在宅勤務を行うために留意すること</h2><p>すっかり在宅勤務が新たな日常として定着しつつありますが、2020-07-01に<a href="https://www.ict-isac.jp/index.html">一般社団法人 ICT-ISAC（アイシーティ・アイザック）</a>から<a href="https://www.ict-isac.jp/news/remote%20work%20reference%20guide.pdf">「家庭内で安全快適に在宅勤務を行うためのリファレンスガイド」</a>が公開されています。ICT-ISACは、サイバーセキュリティに関する情報収集・調査・分析等の業務を行っている組織で、<a href="https://www.ipa.go.jp">IPA情報処理推進機構</a>と同様に、情報セキュリティについて分かり易く記事が掲載されています。</p>
+<a id="more"></a>
+<h2 id="安全快適な在宅勤務のための技術的要件"><a href="#安全快適な在宅勤務のための技術的要件" class="headerlink" title="安全快適な在宅勤務のための技術的要件"></a>安全快適な在宅勤務のための技術的要件</h2><p>上記のリファレンスガイドは、大事な会議の内容を家族などに聞かれないなどの<strong>体制面</strong>の話と、Wi-Fiルーターの設定などの<strong>技術面</strong>の2つを両立する必要があります。会社のノートPCを貸与され、自宅の無線ルーターおよびインターネット回線を用い、VPNで会社に接続するのが一般的な形態ではないでしょうか。ここでは技術的要件として、セキュリティ上安全である事を筆頭に、大事な会議中に無線が切断されてしまう事の無い安定したリモートワークを実現するための無線ルーターの設定やソフトウェアなどの活用について紹介します。</p>
+<p>まず、上記のリファレンスをチェックシートにすると以下の内容となります。</p>
+<table>
+<thead>
+<tr>
+<th>要件</th>
+<th>対応方法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>P6 自宅のルーターの管理画面や機器がインターネットから見えていないこと</td>
+<td>(1)無線ルーターについて</td>
+</tr>
+<tr>
+<td>P8 自宅のルーターの管理画面のパスワードを適切に設定しておく</td>
+<td>(2)パスワード管理ソフトの導入</td>
+</tr>
+<tr>
+<td>P9 自宅のWi-Fiネットワークのセキュリティを適切に設定する</td>
+<td>(1)無線ルーターについて</td>
+</tr>
+<tr>
+<td>P12 パソコンの共有設定を確認しておく</td>
+<td>(1)無線ルーターについて</td>
+</tr>
+<tr>
+<td>P13 自宅のLANに接続されている機器を確認しておく</td>
+<td>(4)ネットワークチェックツールの利用</td>
+</tr>
+<tr>
+<td>P15 すべての機器のファームウェアを更新する</td>
+<td>(1)無線ルーターについて</td>
+</tr>
+<tr>
+<td>P16 すべての機器に対して適切なパスワードを設定する</td>
+<td>(2)パスワード管理ソフトの導入</td>
+</tr>
+<tr>
+<td>P18 パソコンに接続されたマイクやカメラの状態を意識する</td>
+<td>(3)セキュリティ対策ソフトの導入</td>
+</tr>
+<tr>
+<td>P20 利用機器のサポート体制を確認する</td>
+<td>(1)無線ルーターについて<p>※メーカーWebサイトの確認</td>
+</tr>
+</tbody></table>
+<h2 id="1-無線ルーターについて"><a href="#1-無線ルーターについて" class="headerlink" title="(1)無線ルーターについて"></a>(1)無線ルーターについて</h2><p>無線ルーターの設定のポイントは上記で示すようにたくさんあります。無線ルーターは毎年規格が新しくなっていくもので、耐用年数もPCなどと比較し、寿命が短いと言えます。</p>
+<ol>
+<li>ルーターの設定画面がインターネットから見えていないこと</li>
+<li>Wi-Fiネットワークのセキュリティを適切に設定する</li>
+<li>利用機器のサポート体制を確認する</li>
+</ol>
+<p>上記の1点目はデフォルト設定で特に問題は起きない内容ではあります。ルーターの設定画面についても、業務用ルーターを間違った使い方をしない限りは発生しないものです。Wi-Fiのセキュリティについて、WPA2も一時は脆弱性で話題となりましたが、最近発売されているルーターはきちんと対応がなされています。しかし、過去に販売されているものを継続して使っている場合はサポートが切れていないか確認が必要です。<strong>サポートが切れている機器はセキュリティ事故が発生する前に、速やかな交換が必要です</strong>。Wi-Fiセキュリティについて、最近はWPA3に対応した製品も発売されています。WPA3/WPA2と併用できるものもありますが、脆弱性の対応がなされているWPA2であれば無理をしてWPA3を併用する必要はありません。</p>
+<p> NECプラットフォームズ：<a href="https://www.aterm.jp/product/atermstation/info/2017/info1018.html">【重要】「WPA2」の脆弱性に関するお知らせ</a><br> バッファロー：<a href="https://www.buffalo.jp/news/detail/20171017-01.html">無線LAN商品のWPA2の脆弱性について</a></p>
+<ol start="4">
+<li><p>すべての機器のファームウェアを更新する<br>国内の無線LANの有名メーカーでは、ファームウェアは自動更新を行う方式に変わってきています。もし無線ルーターを買い換えるのであれば自動更新機能がついた機器を購入される事をお勧めします。過去の発売された無線ルーターもファームウェアの更新で、自動更新モードが加えられるケースもあります。脆弱性対応のために<strong>自動更新を設定する事</strong>をお勧めします。</p>
+<p>”<a href="https://dlpa.jp/pdf/dlpa_pr_20191218.pdf">ご家庭でWi-Fiルーターをより安全にお使い頂くために”</a>というタイトルで、Wi-Fiルーターを利用する上での注意喚起が公開されています。この提言を行っているのは以下の4社です。ITリテラシーの啓蒙だけではなく、こういう形でメーカー自らが主導する取り組みは素晴らしい事です。</p>
+<p>・株式会社アイ・オー・データ機器<br>・NECプラットフォームズ株式会社<br>・エレコム株式会社<br>・株式会社バッファロー</p>
+<p> NECプラットフォームズ：<a href="https://www.aterm.jp/product/atermstation/info/2019/info1218.html">【重要】Wi-Fiルータをより安全にお使いいただくためのお願い</a><br> バッファロー：<a href="https://www.buffalo.jp/support/faq/detail/15923.html">Wi-Fiルーター/中継機を最新のファームウェアに更新する方法（ファームウェア自動更新機能を利用）</a></p>
+</li>
+<li><p>パソコンの共有設定を確認しておく<br>会社から貸与されたPCを使う上でのポイントを記載します。会社が貸与するPCは流石にセキュリティ対策もしっかりしたものが行われていると考えられますが、完全にそれを信頼するわけにはいきません。逆もまた然りで、個人の利用するPCが会社の貸与PCに対しての脅威となる可能性があります。パソコンの共有設定を制限する代わりに、<strong>ゲスト用の無線APに接続する事で対策が可能</strong>となります。バッファローでは”ゲストポート”、NECプラットフォームズでは”ネットワーク分離機能”と呼ばれます。有線接続を含めた個人の機器へ一切アクセスさせずにインターネットの接続が可能となります。</p>
+</li>
+</ol>
+<h3 id="その他の無線ルーターのチェックポイント"><a href="#その他の無線ルーターのチェックポイント" class="headerlink" title="その他の無線ルーターのチェックポイント"></a>その他の無線ルーターのチェックポイント</h3><p>価格.COMの<a href="https://kakaku.com/pc/wireless-router/ranking_0077/">無線LANルーター(Wi-Fiルーター) 人気売れ筋ランキング 2020年8月</a>によれば（8月13日更新）、人気のある無線ルーターは、バッファロー、NECプラットフォームズ（Aterm）の製品が上位7位までを占めています。私見ですが、少しでも安定稼働、安全に利用するためのポイントを記載します。</p>
+<ol>
+<li><p>無線LANのAPモードにする場合は、固定IPを振る<br>無線LANをAPモードにする場合は親機やプロバイダ貸与のHGWからのDHCPによってIPを割り当てられますが、固定IPとする方が瞬断などの不具合の可能性を下げられます。</p>
+</li>
+<li><p>Wi-Fiの5GHzはW52固定を利用する<br>気象レーダーや軍事レーダーの影響でW53およびW56は1分間無線の出力を停止してしまう可能性があります。大事な会議では致命的です。レーダーの影響を受けない建物と確認できていれば気にする必要はありません。無線チャンネルが自動選択の場合（Atermではオートチャネルセレクトと呼ばれます）も瞬断の原因になりやすいため、使わない方が無難です。また最新の高性能ルーターでは160Mzhのオクタチャンネルで高速化を図る製品も出ていますが、これもW52の4チャネルでは不足し、他のチャネルを併用することになります。つまり、レーダーの影響を受ける事になるため、W52のクアッドチャネルまでに留めておいたほうが無難です。</p>
+</li>
+<li><p>暗号キーの自動更新間隔について<br>設定画面で暗号キーを一定間隔で更新するという機能があり、更新間隔の設定項目があります。基本的にビジネスで利用するアプリケーションは殆どがユニキャスト通信（1対1の通信）で、これの暗号キーはフレーム単位に鍵を変化させており、この設定間隔とは関係ありません。但しブロードキャストおよびマルチキャストのような1対1通信ではない場合は、1フレーム毎に変更というわけにはいかず、暗号キーを一定期間で更新する仕組みを取っています。従い暗号キーを一定間隔で更新しない事が即座に脆弱性となるわけではなく、ネットワークが混乱しないようにする仕組みと考えた方が良いようです。バッファローの初期値は0（更新しない）、Atermは30分となっています。ビジネス用途ではありませんが動画配信のDLNAプロトコルはマルチキャストですから、アプリケーションが利用するプロトコルによってはこの鍵更新のタイミングで視聴が途切れる場合があります。</p>
+</li>
+<li><p>マルチキャストの速度設定<br>上述したDLNAはオンデマンドTVやPanasonicのポータブルTV（アンテナのあるチューナーとモニタ間を無線接続）などで利用されます。このDLNAに利用されるマルチキャストは、バッファローであればマルチキャストレート、Atermであればマルチキャスト伝送速度という名前で記載されています。例えばAtermですと初期値が6Mbpsで、これだと十分に番組を伝送出来ない可能性があります。従いその値を増やす事でTV映像は安定します。しかし、マルチキャストは1対多で指定した帯域を確保し伝送するわけですから、Wi-Fiに参加している全ての端末に送りつけるわけです。こうなると無線機から遠い仕事用の端末はマルチキャストパケットの帯域確保が優先されてしまう事で、仕事上のTV会議などが影響を受けてしまう事になります。従いマルチキャストレートは上げすぎても良くないという事になります。</p>
+</li>
+</ol>
+<h2 id="2-パスワード管理ソフトの導入"><a href="#2-パスワード管理ソフトの導入" class="headerlink" title="(2)パスワード管理ソフトの導入"></a>(2)パスワード管理ソフトの導入</h2><p>無線ルーターの設定では、機器にログインするためのIDとSSIDに対するパスワード（暗号キー）を必ず変更して下さい。Wi-Fiに入られない限り安全だろうという理由で、無線ルーターのパスワードが短かったり単純なものは危険です。悪意のあるスマホアプリからWi-Fiを経由し、簡単に無線ルーターの乗っ取りが可能です。個人的にはパスワード管理ソフトとして、米国の<a href="https://bitwarden.com/">bitwarden</a>がお勧めです。以下がお勧めポイントです。</p>
+<ul>
+<li>パスワードの自動生成が可能</li>
+<li>Windows、macOS、iOS、Androidに対応</li>
+<li>スマホは指紋認証（Touch ID）や顔認証（Face ID）に対応</li>
+<li>主要ブラウザに対応</li>
+<li>サイトのURLに反応しID、パスワードを自動入力可能（フィッシング対策としても有効）</li>
+<li>無償（有償オプションもあるが無償でも十分利用可能）</li>
+<li>暗号化に関する部分のソースコードが公開されている</li>
+<li>日本語対応</li>
+</ul>
+<p>パスワードの使い回しが良くない事と理解しつつも、少しだけ変えた似たようなパスワードを使い、しかも忘れてしまいパスワードの再作成というのはよく経験する事でないでしょうか。ブラウザからでもオートコンプリートで一発入力なので非常に快適です。クラウド上にパスワードを置くのが怖いという考え方もありますが、2要素認証の標準化により、昔ほどパスワード漏洩が脅威では無くなりつつあります。何よりパスワードの使い回しより遥かに安全です。私は本当に重要なサイト、2要素認証アプリのパスワードを除き、bitwardenでランダムに生成した13桁程度の文字列をパスワードに利用し、全てbitwarden任せです。これは別の機会に記事を書く予定です。</p>
+<h2 id="3-セキュリティ対策ソフトの導入"><a href="#3-セキュリティ対策ソフトの導入" class="headerlink" title="(3)セキュリティ対策ソフトの導入"></a>(3)セキュリティ対策ソフトの導入</h2><p>有名どころのNortonやカスペルスキーなどでは、個人PCのカメラを意図して使われないようにコントロールできる機能を持っています。リモートワークでのTV会議の風景を録画されてしまう事の対策として利用を検討してみて下さい。個人的には多少ITスキルを要求しますが、ルーマニアのBitdefender SRL社が提供する<a href="https://www.bitdefender.com/">bitdefender</a>をお勧めします。私は、Windows、macOSなど複数の端末を持っているため、”トータルセキュリティ2020”という製品を利用しています。ちょっとだけ微妙な日本語はご愛嬌ですが、よりプライバシーに配慮したセキュリティ対策ソフトです。彼らのプラバシーポリシーはとても丁寧に記述されている事、どのソフトが通信しているかコントロールしやすい（かといって煩雑すぎもしない絶妙なバランス）点が挙げられます。こちらは有償のソフトウェアですが、対応している機能からすれば非常に安価です。こちらも機会を改め、記事を書く予定です。また、音声で留意する点は、Google Home、Apple HomePod、Amazon Echo(Alexa)の存在です。これはどのタイミングで音声をキャプチャされているか分かりませんので十分気を付ける必要があります。</p>
+<h2 id="4-ネットワークチェックツールの利用"><a href="#4-ネットワークチェックツールの利用" class="headerlink" title="(4)ネットワークチェックツールの利用"></a>(4)ネットワークチェックツールの利用</h2><p>上述したbitdefender社から、<a href="https://www.bitdefender.com/solutions/home-scanner.html">Home Scanner</a>という無償ツールが公開されています。これは彼らの製品であるbitdefender BOXと呼ばれるFirewallを売るためのチェックツールでもあります。ネットワーク上の端末やIoT機器に脆弱性のリスクがあると警告してくれます。実際の対策内容については触れず”bitdefender BOXの導入を”となるわけですが、まずは当該機器のファームウェア更新の有無を確認して下さい。忘れがちのIoT機器に気づくきっかけとなるでしょう。</p>
+]]></content>
+      <categories>
+        <category>Security</category>
+      </categories>
   </entry>
   <entry>
     <title>XG Firewall v18のルールとポリシーについて</title>
@@ -1877,15 +1977,6 @@ Note over cl: 16.共通鍵で復号
       </tags>
   </entry>
   <entry>
-    <title>はじめに</title>
-    <url>/new-technology/2020/02/22/%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB/</url>
-    <content><![CDATA[<p>ホームユーザーのITを中心にポストしていきたいと考えてます。これまでの自身の仕事はプログラミング・ネットワーク・サーバ構築・セキュリティと、広く浅くITに関わってきました。エンジニアとしての仕事からは最近かなり遠ざかってますが、自分なりに新しい技術の習得も兼ねて、ブログ形式で掲載していきます。</p>
-<a id="more"></a>
-
-<p>単純にインストールして「できました」ではなく、導入後のITの使い方こそが重要です。最近は個人利用に限り利用無償のソフトウェアが増えてきました。また、商用利用であっても無償となるオープンソースソフトウェアの活用も見逃せません。これは大変ありがたい話で、座学ではなかなか理解が進まない固有技術であっても、こういった無料のプロダクトを通じて知見を高める事が可能となっています。私自身実務でITに関わっていますが、実務とは少し距離を置いたところで、自己啓発と家庭向けのIT活用を考えていきます。</p>
-]]></content>
-  </entry>
-  <entry>
     <title>XG FirewallでIPv6の設定を行う（前半）</title>
     <url>/new-technology/2020/04/25/xg-ipv6-1/</url>
     <content><![CDATA[<div class="note success">
@@ -1935,6 +2026,15 @@ Note over cl: 16.共通鍵で復号
         <tag>XG Firewall</tag>
         <tag>IPv6</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>はじめに</title>
+    <url>/new-technology/2020/02/22/%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB/</url>
+    <content><![CDATA[<p>ホームユーザーのITを中心にポストしていきたいと考えてます。これまでの自身の仕事はプログラミング・ネットワーク・サーバ構築・セキュリティと、広く浅くITに関わってきました。エンジニアとしての仕事からは最近かなり遠ざかってますが、自分なりに新しい技術の習得も兼ねて、ブログ形式で掲載していきます。</p>
+<a id="more"></a>
+
+<p>単純にインストールして「できました」ではなく、導入後のITの使い方こそが重要です。最近は個人利用に限り利用無償のソフトウェアが増えてきました。また、商用利用であっても無償となるオープンソースソフトウェアの活用も見逃せません。これは大変ありがたい話で、座学ではなかなか理解が進まない固有技術であっても、こういった無料のプロダクトを通じて知見を高める事が可能となっています。私自身実務でITに関わっていますが、実務とは少し距離を置いたところで、自己啓発と家庭向けのIT活用を考えていきます。</p>
+]]></content>
   </entry>
   <entry>
     <title>XG Firewall v18の設定におけるベストプラクティス</title>
