@@ -96,5 +96,4 @@ tags:
 
 ## (4)ネットワークチェックツールの利用
 
-上述したbitdefender社から、[Home Scanner](https://www.bitdefender.com/solutions/home-scanner.html)という無償ツールが公開されています。これは彼らの製品であるbitdefender BOXと呼ばれるFirewallを売るためのチェックツールでもあります。ネットワーク上の端末やIoT機器に脆弱性のリスクがあると警告してくれます。実際の対策内容については触れず”bitdefender BOXの導入を”となるわけですが、私の環境ですと、きちんとファームウェアの更新された無線機器1台とQNAPのhttpで脆弱性ありとの診断結果でした。どういう点での脆弱性の可能性を指摘しているのかは一切不明で実態の把握しようがありませんでした。まずは当該機器のファームウェア更新の有無を確認して下さい。また、忘れがちのIoT機器に気づくきっかけとなるでしょう。前述した[「家庭内で安全快適に在宅勤務を行うためのリファレンスガイド」](https://www.ict-isac.jp/news/remote%20work%20reference%20guide.pdf)ではトレンドマイクロ社の[「オンラインスキャン for Home Network」](https://www.trendmicro.com/ja_jp/forHome/products/hw_onlinescan.html)が紹介されています。
-
+上述したbitdefender社から、[Home Scanner](https://www.bitdefender.com/solutions/home-scanner.html)という無償ツールが公開されています。これは彼らの製品であるbitdefender BOXと呼ばれるFirewallを売るためのチェックツールでもあります。ネットワーク上の端末やIoT機器に脆弱性のリスクがあると警告してくれます。実際の対策内容は”bitdefender BOXの導入を”となるわけですが、私の環境ですと、きちんとファームウェアの更新された無線機器1台とQNAPのhttpで脆弱性ありとの診断結果でした。QNAPではhttpを使っており、httpsに強制リダイレクトされるデザインなのですが、どういう点での脆弱性の可能性を指摘しているのかは一切不明で実態の把握しようがありませんでした。このツールを使い、まずは当該機器のファームウェア更新の有無を確認するために活用できるでしょう。また、忘れがちのIoT機器に気づくきっかけとなります。前述した[「家庭内で安全快適に在宅勤務を行うためのリファレンスガイド」](https://www.ict-isac.jp/news/remote%20work%20reference%20guide.pdf)ではトレンドマイクロ社の[「オンラインスキャン for Home Network」](https://www.trendmicro.com/ja_jp/forHome/products/hw_onlinescan.html)が紹介されています。
