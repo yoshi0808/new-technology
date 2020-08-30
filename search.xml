@@ -298,7 +298,7 @@ XGFirewall-- "192.168.0.0/24" ---HGW
 <video src="login.mp4" preload="metadata" controls playsinline poster="">Sorry, your browser does not support the video tag.</video>
 
 <p>サイトによって挙動は異なるのですが、価格.comの場合、ログインボタンをクリックするだけで、あとは勝手にbitwardenがIDとパスワードをセットしてくれます。</p>
-<p>これで、たくさんのパスワードに悩まされる事なく、パスワードの使い回しによる、”利用者の過失”というリスクから解放されます。私は、個人向けのセキュリティ対策はFirewallやウィルス対策ソフトよりも、認証管理が最も重要と考えています。なかなか興味が向かない分野ですが、参考にしていただければ幸いです。</p>
+<p>これで、たくさんのパスワードに悩まされる事なく、パスワードの使い回しによる、”利用者の過失”というリスクから解放されます。私は、個人向けのセキュリティ対策はまず最初に認証管理が重要と考えています。なかなか興味が向かない分野ですが、参考にしていただければ幸いです。</p>
 ]]></content>
       <categories>
         <category>Security</category>
