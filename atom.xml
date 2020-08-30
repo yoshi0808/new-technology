@@ -6,7 +6,7 @@
   <link href="/new-technology/atom.xml" rel="self"/>
   
   <link href="https://yoshi0808.github.io/new-technology/"/>
-  <updated>2020-08-29T07:56:38.631Z</updated>
+  <updated>2020-08-30T08:00:27.760Z</updated>
   <id>https://yoshi0808.github.io/new-technology/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>パスワード管理ソフトのbitwardenを活用する</title>
+    <link href="https://yoshi0808.github.io/new-technology/2020/08/30/bitwarden/"/>
+    <id>https://yoshi0808.github.io/new-technology/2020/08/30/bitwarden/</id>
+    <published>2020-08-30T04:35:30.000Z</published>
+    <updated>2020-08-30T08:00:27.760Z</updated>
+    
+    <content type="html"><![CDATA[<img src="/new-technology/2020/08/30/bitwarden/password.png" class="" title="alt"><h2 id="パスワード管理はソフトウェアに任せる"><a href="#パスワード管理はソフトウェアに任せる" class="headerlink" title="パスワード管理はソフトウェアに任せる"></a>パスワード管理はソフトウェアに任せる</h2><p>前回の記事、<a href="/new-technology/2020/08/14/remote-work/" title="安全快適にリモートワークを行う">安全快適にリモートワークを行う</a>で記載したように、リモートワークの活用機会が高まり、ますます各自のパスワード管理が重要になってきています。頭ではパスワードの使い回しは良く無いと理解していながら、結局は文字列＋数字で似たようなパスワードをいくつも作ってしまい、脆弱な状態にあるケースは多いように感じます。パスワード管理ソフトの導入はITリテラシが高く無いとなかなか取り組む機会はありませんが、個人のパスワードと会社のアカウントに利用しているパスワードが類似しているのは問題です。同僚とパスワードを共有してしまうという問題も多くあります。先日のニュースでは国内企業のVPNの脆弱性からパスワードが漏洩し、2要素認証を設定していた企業は救われたと記事になっていました。ここで紹介するパスワード管理ソフトですが、パスワードを管理する事と、ランダムな文字列でのパスワード生成機能の2つの機能を持ちます。また、このbitwardenは、パスワードが登録されたサイトに遷移すると顔認証等でパスワードが入力されます。当然ながら、URLが異なればパスワードを自動入力しないため、フィッシング対策にもなります。このプロダクトは無償、有償と選択が可能ですが、無償でも十分な機能を保持しています。Chromeのパスワード管理で十分という方であればこのページの説明は不要です。</p><a id="more"></a><h2 id="bitwardenを用いたパスワード管理の目指す姿"><a href="#bitwardenを用いたパスワード管理の目指す姿" class="headerlink" title="bitwardenを用いたパスワード管理の目指す姿"></a>bitwardenを用いたパスワード管理の目指す姿</h2><ol><li><p>信頼できるソフトウェアを活用する（bitwarden社について）<br>プロダクトを提供している企業のプライバシーポリシーがしっかり記載され、どの国に属するかが記載され、本人の同意なく情報を開示しないという基本事項がプライバシーポリシーに記載されている事は重要です。曖昧に記載している企業のソフトウェアはお勧めしません。最終的に企業が属する国の命令には逆らえませんが、明瞭である事は重要です。オープンソースである事などは、さらに企業のスタンスが明確です。</p></li><li><p>クロスプラットフォームで複数のチャネル、有名なブラウザーに対応し利便性が高いこと<br>クロスプラットフォームである事は利便性が高くなります。Windowsだけで使えても、スマホでは別管理というのではじきに使わなくなってしまいます。Windows、macOS、iOS、Androidに対応している事は必須条件でしょう。スマホやタブレットなどでは指紋認証や顔認証でスムーズにパスワードを利用できる事が前提です。</p></li><li><p>パスワード生成機能は所定の文字数で任意に数字や記号を含められること<br>サイトによっては文字列数の下限、上限が異なります。また記号の一部が含められないなどサイトによってルールは異なります。パスワード管理ソフトでは、サイトによって任意にルールを定めたうえで生成できる事が求められます。</p></li><li><p>ネットに繋がらなくてもパスワード管理ソフトを利用できること<br>ネットに繋げるためのパスワードや、ブラウザから利用するものがパスワード管理の全てではありません。クローズネットワークやスマホの機内モードであったとしても重要なデータにアクセスする機会はあり得ます。これはソフトウェアのデザインですが、bitwardenはそのシチュエーションを踏まえたソフトウェアのデザインがなされています。</p></li><li><p>可能な限り2要素認証を組み合わせること<br>これはユーザー側に求める要件です。パスワードが漏洩する可能性を踏まえ、利用するサイトやサービスでは2要素認証を設定しておくべきです。パスワード自体を第三者に預けられる前提が2要素認証です。もちろん、bitwardenからパスワード全体が漏洩する事は企業の存続に関わるわけですし、その可能性は低いと考えられますが完璧と考えるべきではありません。今や2要素認証はサービス提供業者の基本提供機能ですからパスワードが万が一漏洩しても水際で防ぐ事ができます。なお、使い方の注意として2要素認証のキーとなる要素をbitwardenに保存するべきではありません。2要素認証で有名なAuthyはバックアップパスワードなどの存在がありますが、これは主に利用するパスワード管理ソフトとは別に管理すべきです。</p></li><li><p>容易にバックアップが取得できること<br>パスワードは漏洩する事が最悪の事象ですが、ロストすると回復に時間を要し、大幅な時間をロスします。各個人の責任でバックアップは取得しておくべきです。bitwardenは、csvまたはjson形式で簡単にエクスポートする事が可能です。これを暗号化されたUSBメディアなどにバックアップし、ネットとは繋がらない場所に保管しておく事が求められます。</p></li><li><p>本当に重要なIDこそ自分で記憶する。金融に関わるパスワード管理<br>オンラインバンキングなど、漏洩した時には直接金銭的、かつ高額となり得るものはパスワード管理から除外される事をお勧めします。2要素認証があるのは当然としても、です。もちろん上述した暗号化されたUSBメディアに保存しておく事でも構いません。ネットで到達できる場所に保存されるべきではありません。クレジットカードの盗難とは異なり、オンラインバンキングではユーザー側の重過失によって補償減額、または補償せずという取り扱いになりえます。これはパスワードを記載した手帳を盗まれた、パスワードをスマホに保存してあったものが盗難されるなどした場合もユーザー側の重過失にあたる可能性があります。そのアカウントの利用でどういったリスクがあるのかを考えIDとパスワードを管理していく必要があります。○○payのQR決済もオンラインバンキング程は高額にならないものの、金銭流出のリスクがあります。主要なQR決済事業者は不正利用に対して補償するというスタンスが主流ではあるものの、パスワード管理におけるユーザー側の過失があれば補償されない可能性があります。各企業の約款、補償の事項に必ず目を通す必要があります。全ては個別事案での判断という事なのでしょうが、そもそもパスワードの使い回しは過失と言われても仕方がないのではないでしょうか。金融分野は極めてリスクが高いという事になります。QR決済は少額決済ですが、2要素認証は必須といえるでしょう。</p></li><li><p>クラウド管理かオンプレミス（ローカル環境）か<br>自宅のPCでパスワード管理する事とbitwardenのようにクラウドで管理する事のどちらが安全かと言われれば判断は難しいところです。ちなみに、bitwardenはオンプレミスで構築する事が可能です。実際に過去、ubuntu18.04LTSにdocker、docker composeを導入し、bitwardenをセットアップし利用していた事があります。ダイナミックDNSはno-ipを使い、SSLは無償のLet’s Encryptにbitwarden自身が登録すれば完了です。3カ月ごとにスクリプトを走らせればSSL証明書を自動更新し、dockerから最新イメージを自動ダウンロードしてシステムを最新に保ちます。Linux上でMS SQLServerが動作し、bitwardenはコンパクトながらとても技術の高さを感じました。しかし、個人でWAF導入やアクセスログのチェックなどセキュリティ対策を実施する事の難易度の高さも感じ、再びクラウド管理に戻しました。ビジネス目的にて、インターネットに接続されない企業内でbitwardenを活用するのは非常に良い方法です。個人のサイバーセキュリティ対策で実現可能な事は資金面やスキル面でも限界があります。隙を見せず、目立たず狙われにくい事が大切です。</p></li></ol><h2 id="bitwardenの初期セットアップ"><a href="#bitwardenの初期セットアップ" class="headerlink" title="bitwardenの初期セットアップ"></a>bitwardenの初期セットアップ</h2><img src="/new-technology/2020/08/30/bitwarden/bitwarden.png" class="" title="alt"><p>アカウント作成の最初の画面こそ英語ですが、実際のアカウント作成画面は日本語となります。利用するアプリも日本語ですので扱いはとても簡単に感じます。</p><img src="/new-technology/2020/08/30/bitwarden/account.png" class="" title="alt"><p>アカウントの作成が終了したらWebにログインし、もし現在利用されているパスワードマネージャがあるのであればそこからインポートが可能です。ChromeやFirefoxのパスワードをcsvに一旦出力し、そこからインポートする事も可能です。bitwardenではこのパスワードの集合体を保管庫と呼んでいます。</p><img src="/new-technology/2020/08/30/bitwarden/bitwarden1.png" class="" title="alt"><p>続いて<span class="label default">設定タブ</span>から2要素認証の設定を行います。おなじみのAuthyやメール通知を選択することが可能です。</p><img src="/new-technology/2020/08/30/bitwarden/bitwarden2.png" class="" title="alt"><p>次に、PCであれば、端末毎にbitwardenのクライアントアプリケーションおよび利用するブラウザの拡張機能としてbitwardenをインストールしてください。上記の画面ではYubikey、Duo、FIDOがプレミアム版としての表記がありますが、無償版のbitwardenであっても、Android、iOS、macOS（Appのみ）は生体認証に対応しています。</p><h2 id="bitwardenのブラウザでのセットアップ"><a href="#bitwardenのブラウザでのセットアップ" class="headerlink" title="bitwardenのブラウザでのセットアップ"></a>bitwardenのブラウザでのセットアップ</h2><p>bitwardenに対しパスワードの入力の都度、毎回マスターパスワードを入力するのは大変な作業で現実的ではありません。2要素認証を設定していれば、初回こそマスターパスワードと2要素認証が必要ですが、2回目以降のログインでは同一クライアントまたは同一ブラウザであれば2要素認証は不要です。bitwardenはさらにpinによる簡易な対話型認証を行い、保管庫にアクセスする事が可能となります。</p><img src="/new-technology/2020/08/30/bitwarden/bitwarden3.png" class="" title="alt"><p>ブラウザの拡張機能からbitwardenを呼び出し、”設定”から保管庫のタイムアウトはブラウザ再起動時とし、PINでロック解除にチェックします。すると右側の画面がポップアップするので、簡易なPINコードを決めたら入力し、”ブラウザー再起動時にマスターパスワードでロック”のチェックボックスは外します。最後に”送信”ボタンをクリックし確定します。</p><p>これでブラウザーを再起動しても、再びマスターパスワードは不要でPINコードで保管庫にアクセスできます。</p><h2 id="新規アカウントを作成時にbitwardenでパスワードを生成する"><a href="#新規アカウントを作成時にbitwardenでパスワードを生成する" class="headerlink" title="新規アカウントを作成時にbitwardenでパスワードを生成する"></a>新規アカウントを作成時にbitwardenでパスワードを生成する</h2><p>アカウント登録時に、どのようにパスワードを自動生成し登録していくのかを動画にしてありますので参考にしてください。</p><video src="add-account.mp4" preload="metadata" controls playsinline poster="">Sorry, your browser does not support the video tag.</video><p>実例として価格.comのサイトへのアカウント作成の挙動です。価格.comは半角英数の8〜12文字という制約があります。記号は使えません。パスワードの規則に添うようにパスワードを生成します。</p><p>一度登録してしまえば、ブラウザからのログインはとても簡単です。</p><video src="login.mp4" preload="metadata" controls playsinline poster="">Sorry, your browser does not support the video tag.</video><p>サイトによって挙動は異なるのですが、価格.comの場合、ログインボタンをクリックするだけで、あとは勝手にbitwardenがIDとパスワードをセットしてくれます。</p><p>これで、たくさんのパスワードに悩まされる事なく、パスワードの使い回しによる、”利用者の過失”というリスクから解放されます。私は、個人向けのセキュリティ対策はFirewallやウィルス対策ソフトよりも、認証管理が最も重要と考えています。なかなか興味が向かない分野ですが、参考にしていただければ幸いです。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;img src=&quot;/new-technology/2020/08/30/bitwarden/password.png&quot; class=&quot;&quot; title=&quot;alt&quot;&gt;
+
+&lt;h2 id=&quot;パスワード管理はソフトウェアに任せる&quot;&gt;&lt;a href=&quot;#パスワード管理はソフトウェアに任せる&quot; class=&quot;headerlink&quot; title=&quot;パスワード管理はソフトウェアに任せる&quot;&gt;&lt;/a&gt;パスワード管理はソフトウェアに任せる&lt;/h2&gt;&lt;p&gt;前回の記事、&lt;a href=&quot;/new-technology/2020/08/14/remote-work/&quot; title=&quot;安全快適にリモートワークを行う&quot;&gt;安全快適にリモートワークを行う&lt;/a&gt;で記載したように、リモートワークの活用機会が高まり、ますます各自のパスワード管理が重要になってきています。頭ではパスワードの使い回しは良く無いと理解していながら、結局は文字列＋数字で似たようなパスワードをいくつも作ってしまい、脆弱な状態にあるケースは多いように感じます。パスワード管理ソフトの導入はITリテラシが高く無いとなかなか取り組む機会はありませんが、個人のパスワードと会社のアカウントに利用しているパスワードが類似しているのは問題です。同僚とパスワードを共有してしまうという問題も多くあります。先日のニュースでは国内企業のVPNの脆弱性からパスワードが漏洩し、2要素認証を設定していた企業は救われたと記事になっていました。ここで紹介するパスワード管理ソフトですが、パスワードを管理する事と、ランダムな文字列でのパスワード生成機能の2つの機能を持ちます。また、このbitwardenは、パスワードが登録されたサイトに遷移すると顔認証等でパスワードが入力されます。当然ながら、URLが異なればパスワードを自動入力しないため、フィッシング対策にもなります。このプロダクトは無償、有償と選択が可能ですが、無償でも十分な機能を保持しています。Chromeのパスワード管理で十分という方であればこのページの説明は不要です。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Security" scheme="https://yoshi0808.github.io/new-technology/categories/Security/"/>
+    
+    
+      <category term="bitwarden" scheme="https://yoshi0808.github.io/new-technology/tags/bitwarden/"/>
+    
+  </entry>
   
   <entry>
     <title>安全快適にリモートワークを行う</title>
@@ -498,31 +523,6 @@
     
       &lt;div class=&quot;note success&quot;&gt;
             &lt;h2 id=&quot;この記事で実現すること&quot;&gt;&lt;a href=&quot;#この記事で実現すること&quot; class=&quot;headerlink&quot; title=&quot;この記事で実現すること&quot;&gt;&lt;/a&gt;この記事で実現すること&lt;/h2&gt;&lt;p&gt;XG Firewallなどの次世代Firewallで利用されているSSL/TLSインスペクションについて、PCやiPhone等（Windows/macOS/iOS）を防御する仕組み、および必要となる対応を説明します。&lt;/p&gt;
-          &lt;/div&gt;
-    
-    </summary>
-    
-    
-      <category term="Security" scheme="https://yoshi0808.github.io/new-technology/categories/Security/"/>
-    
-    
-      <category term="XG Firewall" scheme="https://yoshi0808.github.io/new-technology/tags/XG-Firewall/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>XG Firewall v18のポリシーをカスタマイズする</title>
-    <link href="https://yoshi0808.github.io/new-technology/2020/03/14/customize-policy/"/>
-    <id>https://yoshi0808.github.io/new-technology/2020/03/14/customize-policy/</id>
-    <published>2020-03-14T04:51:51.000Z</published>
-    <updated>2020-07-08T11:25:07.399Z</updated>
-    
-    <content type="html"><![CDATA[<div class="note success">            <h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>XG FirewallのWebポリシーをカスタマイズし、コンテンツのカテゴリ（ギャンブル、アダルト、Webメール）毎にアクセスを許可するか否かを設定できるようになります。また閲覧を拒否するドメインをインターネット上にあるデータベース等から入手し、XGに取り込む事ができるようになります。</p>          </div><a id="more"></a><h2 id="ポリシーのカスタマイズ"><a href="#ポリシーのカスタマイズ" class="headerlink" title="ポリシーのカスタマイズ"></a>ポリシーのカスタマイズ</h2><p>XGにおけるWebのポリシーというのはコンテンツのカテゴリを意味し、カテゴリによってアクセスを認めない制御が可能です。ギャンブル、アダルトからネットショッピングやチャットやWebメールまで多岐に渡ります。設定を行うには左ペインの”Web”をクリックします。</p><img src="/new-technology/2020/03/14/customize-policy/web1.png" class="" title="alt"><p>”Default Policy”の内容がまず最初に表示されているはずです。初期値では、”Blocked URLs for Default Policy”と2番目の行に”Risky Downloads”および”Suspicious（※怪しいもの）”が選択されています。”Risky Downloads”、”Suspicious”が含まれていると、Google検索で”広告”という表示のあるページを正しく表示出来ない場合があります。レイヤ7Firewallルールのポリシーはこういった箇所のカスタマイズが重要となります。これらのポリシーは、<a href="https://community.sophos.com/kb/ja-jp/134155">Sophosのサイト「Sophos XG Firewall: Web カテゴリ」</a>にも日本語の解説があります。この内容を見ながらWebポリシーのカスタマイズを行ってください。この部分は防御というよりは倫理の概念です。膨大なサイトの分類が既に登録されている事は素晴らしい事ですが、さらに自分で分類を追加する事も可能です。</p><h2 id="外部データベースを取り込む"><a href="#外部データベースを取り込む" class="headerlink" title="外部データベースを取り込む"></a>外部データベースを取り込む</h2><p>XGは外部のデータベース（ドメインのリスト形式）を取り込む事が可能です。ここでは<a href="https://280blocker.net/">280blocker | モバイル広告ブロッカー</a>のデータを取り込んでみます。名称の通り、スマホでの広告をカットするために利用されるデータベースです。利用については、<a href="https://280blocker.net/download/">ダウンロードのページ</a>の注意事項の確認をいただき、ご自身で利用の判断をお願いします。</p><ol><li>ダウンロードするデータとして”広告ドメインリスト（リスト形式）”をダウンロードします</li><li>XGの左ペインメニューの<span class="label default">Web</span>を選択し、”カテゴリ”のタブをクリックします</li><li>名前は”280blocker”とします</li><li>分類は”Objectionable”とします</li><li>設定のカテゴリはローカルのラジオボタンを選択します</li><li>domainのインポートから、先ほどダウンロードしたファイルを選択し取り込みます</li><li>“保存”ボタンをクリックします</li></ol><img src="/new-technology/2020/03/14/customize-policy/web2.png" class="" title="alt"><p>引き続き、<span class="label default">Web</span>の<span class="label default">ユーザーアクティビティ</span>をクリックします。</p><ol><li>画面右上の<span class="label default">追加</span>ボタンをクリックします</li><li>名前は”280blocker”とします</li><li>先ほど”カテゴリ”で作成した”280blocker”を選択し適用します</li><li>最後に”保存”ボタンを押します</li></ol><p>再びWebのポリシータブをクリックし、”Default Policy”の内容を表示します。ここで右側の編集（ペンのアイコン）を選択します。</p><ol><li>ルールの追加ボタンを押すと、先頭にルールが作成されます</li></ol><img src="/new-technology/2020/03/14/customize-policy/web3.png" class="" title="alt"><ol start="2"><li>先頭ルールのアクティビティを選択し”すべてのWebトラフィック”を削除し、”280blocker”を追加します</li><li>“アクション”は”HTTPをブロックする”という赤い盾のバツ印が表示されていますが、そのままにします</li><li>ステータスのトグルをOnにしてください</li><li>最後に画面を下にスクロールし、保存ボタンをクリックします</li></ol><p>これでブラウザやスマホなどで広告のあるサイトを閲覧すると広告が消えている事がわかります。また、ログビューアからWebフィルタを選択すると、”カテゴリ”に280blockerとURLが表示され赤字で拒否されています。スマホに広告ブロッカーを導入する事と結果は同じですが、XGで一括管理できるのとクライアントOSの種類に限らずIoTにも有効ですので導入する価値はあります。</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;div class=&quot;note success&quot;&gt;
-            &lt;h2 id=&quot;この記事で実現すること&quot;&gt;&lt;a href=&quot;#この記事で実現すること&quot; class=&quot;headerlink&quot; title=&quot;この記事で実現すること&quot;&gt;&lt;/a&gt;この記事で実現すること&lt;/h2&gt;&lt;p&gt;XG FirewallのWebポリシーをカスタマイズし、コンテンツのカテゴリ（ギャンブル、アダルト、Webメール）毎にアクセスを許可するか否かを設定できるようになります。また閲覧を拒否するドメインをインターネット上にあるデータベース等から入手し、XGに取り込む事ができるようになります。&lt;/p&gt;
           &lt;/div&gt;
     
     </summary>
