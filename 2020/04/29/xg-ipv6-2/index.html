@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.0.0">
+<meta name="generator" content="Hexo 5.1.1">
   <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/favicon-16x16-next.png">
@@ -314,7 +314,7 @@
 <p>このアドレス体系は以下の通りです。</p>
 <ol>
 <li>IPv6の体系は128ビットで、ユニキャストアドレスは1つのセグメントが64ビットとなります。XGでも64ビットで扱います。</li>
-<li>48ビットのULAに16ビットの内部サブネット<code>0000</code>を加え、64ビットプレフィックスを定義しています。別のサブネットにするのであれば、ここを<code>0001</code>などとしていきます<sup><strong><a href="#note1">[1]</a></strong></sup>。</li>
+<li>48ビットのULAに16ビットの内部サブネット<code>0000</code>を加え、64ビットプレフィックスを定義しています。別のサブネットにするのであれば、ここを<code>0001</code>などとしていきます<sup>**<a href="#note1">[1]</a>**</sup>。</li>
 <li>IPv6における、デフォルトルーターは、リンクローカルアドレスの1とするのが一般的です（<code>fe00::1</code>）。これに倣い、XG自身のIPv6アドレスの後半64ビットのインターフェース識別子は<code>0000:0000:0000:0001</code>としています。</li>
 <li><code>::</code>は、IPv6アドレスの<code>0000</code>が続く部分を省略できるものです。（例）<code>fd00:beaf:cafe:0000:0000:0000:0000:0001/64</code>の連続する<code>0</code>部分を省略し、<code>fd00:beaf:cafe::1/64</code>としています。</li>
 </ol>
@@ -349,7 +349,7 @@
 </tr>
 </tbody></table>
 <p>比較的時間の流れがゆっくりなIPv6において、最近のトレンドとしては、DHCPv6を使わずRAのみとする（Mフラグ＝OFF、Oフラグ＝ON）が定番です。長いIPv6アドレスの管理は大変なので、この設定が一番楽な管理方法です。しかし、私のXGに関する記事ではSSL/TLSインスペクションを最も重要視しています。MACアドレスをベースにクライアントでIPv6アドレスが生成されると、XGでCA証明書が登録されている端末か否かの判断が行えません。よってMフラグ＝ONとし、XGがIPv6アドレスを管理する、ステートフルなIPv6アドレスとする必要があります。OフラグがOFFの場合はDNSの情報は手動設定であり、ステートフルなプロトコルを受け付け出来ないという解釈です。</p>
-<p>結論としては、<strong>ステートフルなDHCPv6で全てを管理するため、Mフラグ＝ON、Oフラグ＝ONとなります</strong>。やや管理者寄りの理論です<sup><strong><a href="#note2">[2]</a></strong></sup>。また、IPv6では上述した通り、一時IPv6アドレスというものが存在します（XG上では匿名）。これを認めると、クライアントが再起動の度にIPアドレスが変わり、SSLインスペクションを迂回されてしまいますからこの一時アドレスの設定もOFFにします。XGの左ペインメニューの<span class="label default">ネットワーク</span>から、<span class="label default">IPv6ルーターアドバタイズ</span>を選択し、”追加”ボタンをクリックし、以下の図のように登録していきます。</p>
+<p>結論としては、<strong>ステートフルなDHCPv6で全てを管理するため、Mフラグ＝ON、Oフラグ＝ONとなります</strong>。やや管理者寄りの理論です<sup>**<a href="#note2">[2]</a>**</sup>。また、IPv6では上述した通り、一時IPv6アドレスというものが存在します（XG上では匿名）。これを認めると、クライアントが再起動の度にIPアドレスが変わり、SSLインスペクションを迂回されてしまいますからこの一時アドレスの設定もOFFにします。XGの左ペインメニューの<span class="label default">ネットワーク</span>から、<span class="label default">IPv6ルーターアドバタイズ</span>を選択し、”追加”ボタンをクリックし、以下の図のように登録していきます。</p>
 <img src="/new-technology/2020/04/29/xg-ipv6-2/ra.png" class="" title="alt">
 
 <ol>
