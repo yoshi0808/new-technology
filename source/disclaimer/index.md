@@ -17,15 +17,19 @@ date: 2020-04-26 13:23:30
 
 ### クッキー（Cookie）
 
-当ブログでは、一部のコンテンツについてCookie（クッキー）を利用しています。Cookieとは、サイトへアクセスした際ブラウザに保存される情報ですが、お名前やメールアドレス等の個人情報は含まれません。読者の興味に沿った記事の作成のために、当ブログにアクセスいただいた方々のアクセス解析にCookieの情報を利用させていただく場合があります。ブラウザの設定により、Cookieを使用しないようにすることも可能です。
+当ブログでは、一部のコンテンツについてCookieを利用しています。Cookieとは、サイトへアクセスした際ブラウザに保存される情報ですが、お名前やメールアドレス等の個人情報は含まれません。読者の興味に沿った記事の作成のために、当ブログにアクセスいただいた方々のアクセス解析を目的としてCookieの情報を利用させていただきます。アクセス解析以外の目的としてはCookieを利用しませんが、ブラウザの設定により、Cookieを使用しないようにすることも可能です。
 
 ### 他サイトからの埋め込みコンテンツ
 
 当ブログの投稿には他サイトからの埋め込みコンテンツを含む場合があります。当該ページへのアクセスは、そのサイトにアクセスした事と同じ挙動になります。これらのサイトは訪問者のデータの収集、Cookieの利用、サードパーティによるCookieを埋め込む事があります。当ブログでは、これらのCookieによって収集される情報のコントロールが行えません。ブラウザの設定により、Cookieを使用しないようにすることも可能です。
 
+### アフェリエイトリンクは利用しません
+
+このサイトではアフェリエイトリンクによる広告の収入は得ていません。また製品・商品の紹介は、具体的な製品の値段をユーザーに知らしめる目的を除き、可能な限り広告掲載が少ないサイトを選定しています。
+
 ### アクセス解析ツールについて
 
-当ブログでは、Googleによるアクセス解析ツール「Googleアナリティクス」を利用しています。このGoogleアナリティクスはトラフィックデータの収集のためにCookieを使用しています。このトラフィックデータは匿名で収集されており、個人を特定するものではありません。この機能はCookieを無効にすることで収集を拒否する事ができますので、お使いのブラウザの設定をご確認ください。「ユーザーがGoogleパートナーのサイトやアプリを使用する際のGoogleによるデータ使用」に関して確認したい場合は[ここをクリック](https://policies.google.com/technologies/partner-sites?hl=ja)してください。
+当ブログでは、Googleによるアクセス解析ツール「Googleアナリティクス」を利用しています。このGoogleアナリティクスはトラフィックデータの収集のためにCookieを使用しています。このトラフィックデータは匿名で収集されており、個人を特定するものではありません。この機能はCookieを無効にすることで収集を拒否できますので、お使いのブラウザの設定をご確認ください。「ユーザーがGoogleパートナーのサイトやアプリを使用する際のGoogleによるデータ使用」に関して確認したい場合は[ここをクリック](https://policies.google.com/technologies/partner-sites?hl=ja)してください。
 
 ### ブログの設置場所について
 
@@ -38,11 +42,12 @@ date: 2020-04-26 13:23:30
 ## 各社商標について
 
 - 「Amazon」、「Amazon.co.jp」および「Amazon.co.jp」ロゴは、Amazon.com, Inc. またはその関連会社の商標または登録商標です
-- Android、Android ロゴ、Chromecast、Gmail、Google、Google ロゴ、Google アシスタント、Google Chrome、Google Cloud Platform (GCP) 、Google Home、Google Home ロゴ、Google Home Mini、Google Home Mini ロゴ、Google マップ、Google Nest Mini、Google Nest Mini ロゴ、Google Play、Google Play ロゴ、Google Play Music、Google Play Music ロゴ、YouTube、YouTube ロゴは、Google LLC の商標です。Android ロボットは、Google が作成および提供している作品から複製または変更したものであり、クリエイティブ・コモンズ表示 3.0 ライセンスに記載された条件に従って使用しています
-- Apple、Appleロゴ、AirDrop、AirPlay、AirPods、AirMac、AirMac Time Capsule、AirPrint、Apple Music、Apple Pay、Apple TV、Apple Watch、Face ID、FaceTime、Finder、FireWire、Flyover、GarageBand、Handoff、iMovie、iPad、iPod、iPod touch、iTunes、iTunes U、Keynote、Launchpad、Lightning、Mac、Mac Pro、macOS、Magic Mouse、Magic Trackpad、Mission Control、Numbers、Pages、Retina、Safari、Siri、Spaces、Spotlight、Time Machine、Touch ID、およびwatchOSは、米国その他の国で登録されたApple Inc.の商標です。IOSは米国その他の国におけるCiscoの商標または登録商標であり、Apple Inc.がライセンス許諾を受けて使用されています。
+- Android、Androidロゴ、Chromecast、Gmail、Google、Googleロゴ、Googleアシスタント、Google Chrome、Google Cloud Platform （GCP） 、Google Home、Google Homeロゴ、Google Home Mini、Google Home Miniロゴ、Googleマップ、Google Nest Mini、Google Nest Miniロゴ、Google Play、Google Playロゴ、Google Play Music、Google Play Musicロゴ、YouTube、YouTubeロゴは、Google LLCの商標です。Androidロボットは、Googleが作成および提供している作品から複製または変更したものであり、クリエイティブ・コモンズ表示3.0ライセンスに記載された条件に従って使用しています
+- Apple、Appleロゴ、AirDrop、AirPlay、AirPods、AirMac、AirMac Time Capsule、AirPrint、Apple Music、Apple Pay、Apple TV、Apple Watch、Face ID、FaceTime、Finder、FireWire、Flyover、GarageBand、Handoff、iMovie、iPad、iPod、iPod touch、iTunes、iTunes U、Keynote、Launchpad、Lightning、Mac、Mac Pro、macOS、Magic Mouse、Magic Trackpad、Mission Control、Numbers、Pages、Retina、Safari、Siri、Spaces、Spotlight、Time Machine、Touch ID、およびwatchOSは、米国その他の国で登録されたApple Inc。の商標です。IOSは米国その他の国におけるCiscoの商標または登録商標であり、Apple Inc。がライセンス許諾を受けて使用されています。
 - Microsoft、MS、Windows、Windows10、OneDriveおよびExcelは、米国Microsoft Corporationの米国およびその他の国における登録商標です。Windowsの正式名称は、Microsoft Windows Operating Systemです
 
 #### 変更履歴
 
 - 2020年4月26日　新規作成
 - 2020年5月24日　免責事項にコンテンツに関する事項、コンテンツやアドレスの予告なき変更の項目を追加、各社商標についての記載を追加
+- 2020年9月21日　アフェリエイトリンクは未使用である旨の記載を追加
