@@ -2,16 +2,51 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/03/26/SophosCommunity/</loc>
+    <loc>https://yoshi0808.github.io/new-technology/disclaimer/index.html</loc>
     
-    <lastmod>2020-09-16</lastmod>
+    <lastmod>2020-09-21</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/2020/04/18/ipv6/</loc>
+    
+    <lastmod>2020-09-21</lastmod>
     
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/2020/08/30/bitwarden/</loc>
     
-    <lastmod>2020-09-12</lastmod>
+    <lastmod>2020-09-21</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/2020/03/31/vpn-iphone/</loc>
+    
+    <lastmod>2020-09-21</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/2020/02/22/%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB/</loc>
+    
+    <lastmod>2020-09-21</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/about/index.html</loc>
+    
+    <lastmod>2020-09-21</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/2020/03/26/SophosCommunity/</loc>
+    
+    <lastmod>2020-09-16</lastmod>
     
   </url>
   
@@ -107,20 +142,6 @@
   </url>
   
   <url>
-    <loc>https://yoshi0808.github.io/new-technology/about/index.html</loc>
-    
-    <lastmod>2020-07-08</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://yoshi0808.github.io/new-technology/disclaimer/index.html</loc>
-    
-    <lastmod>2020-07-08</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://yoshi0808.github.io/new-technology/2020/02/23/XG-Firewall/</loc>
     
     <lastmod>2020-07-08</lastmod>
@@ -198,20 +219,6 @@
   </url>
   
   <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/04/18/ipv6/</loc>
-    
-    <lastmod>2020-06-20</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/03/31/vpn-iphone/</loc>
-    
-    <lastmod>2020-06-20</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://yoshi0808.github.io/new-technology/2020/03/28/vpnotp/</loc>
     
     <lastmod>2020-06-14</lastmod>
@@ -222,13 +229,6 @@
     <loc>https://yoshi0808.github.io/new-technology/2020/02/25/provision/</loc>
     
     <lastmod>2020-06-03</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/02/22/%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB/</loc>
-    
-    <lastmod>2020-05-28</lastmod>
     
   </url>
   
@@ -249,7 +249,7 @@
 
   <url>
     <loc>https://yoshi0808.github.io/new-technology</loc>
-    <lastmod>2020-09-18</lastmod>
+    <lastmod>2020-09-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -257,35 +257,35 @@
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/tags/XG-Firewall/</loc>
-    <lastmod>2020-09-18</lastmod>
+    <lastmod>2020-09-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/tags/DeepL/</loc>
-    <lastmod>2020-09-18</lastmod>
+    <lastmod>2020-09-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/tags/bitwarden/</loc>
-    <lastmod>2020-09-18</lastmod>
+    <lastmod>2020-09-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/tags/ESXi/</loc>
-    <lastmod>2020-09-18</lastmod>
+    <lastmod>2020-09-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/tags/IPv6/</loc>
-    <lastmod>2020-09-18</lastmod>
+    <lastmod>2020-09-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
@@ -294,42 +294,42 @@
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/categories/Security/</loc>
-    <lastmod>2020-09-18</lastmod>
+    <lastmod>2020-09-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/categories/Security/%E3%83%9B%E3%82%B9%E3%83%88%E5%85%AC%E9%96%8B/</loc>
-    <lastmod>2020-09-18</lastmod>
+    <lastmod>2020-09-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/categories/Software/</loc>
-    <lastmod>2020-09-18</lastmod>
+    <lastmod>2020-09-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/categories/Code/</loc>
-    <lastmod>2020-09-18</lastmod>
+    <lastmod>2020-09-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/categories/Security/VPN/</loc>
-    <lastmod>2020-09-18</lastmod>
+    <lastmod>2020-09-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/categories/Security/VPN/%E3%83%AF%E3%83%B3%E3%82%BF%E3%82%A4%E3%83%A0%E3%83%91%E3%82%B9%E3%83%AF%E3%83%BC%E3%83%89/</loc>
-    <lastmod>2020-09-18</lastmod>
+    <lastmod>2020-09-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>

@@ -13,11 +13,13 @@
 <link rel="stylesheet" href="/new-technology/css/main.css">
 
 
-<link rel="stylesheet" href="/new-technology/lib/font-awesome/css/all.min.css">
 
-<script id="hexo-configurations">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","scheme":"Mist","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","scheme":"Mist","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
   </script>
 
   <meta name="description" content="この記事で実現すること外出先から、PC（Windows、macOS）を使い、宅内にあるXG FirewallのVPNへ接続できるようになります。それによりウィルスおよびマルウェア対策やWebフィルタなどを含んだ安全なネット閲覧や、宅内のLANリソースへリモートアクセス出来るようになります。">
@@ -50,10 +52,11 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2020/03/28/vpn/dmz.png">
 
+
 <link rel="canonical" href="https://yoshi0808.github.io/new-technology/2020/03/28/vpn/">
 
 
-<script id="page-configurations">
+<script class="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
@@ -82,57 +85,68 @@
 
   <noscript>
   <style>
-  .use-motion .brand,
+  body { margin-top: 2rem; }
+
   .use-motion .menu-item,
-  .sidebar-inner,
+  .use-motion .sidebar,
   .use-motion .post-block,
   .use-motion .pagination,
   .use-motion .comments,
   .use-motion .post-header,
   .use-motion .post-body,
-  .use-motion .collection-header { opacity: initial; }
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
 
   .use-motion .site-title,
-  .use-motion .site-subtitle {
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
     opacity: initial;
     top: initial;
   }
 
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
   </style>
 </noscript>
 
 <link rel="alternate" href="/new-technology/atom.xml" title="New technologies in our life" type="application/atom+xml">
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
-    <div class="headband"></div>
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
 
+  <main class="main">
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
     <div class="toggle" aria-label="ナビゲーションバーの切り替え">
-        <span class="toggle-line toggle-line-first"></span>
-        <span class="toggle-line toggle-line-middle"></span>
-        <span class="toggle-line toggle-line-last"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
   <div class="site-meta">
 
     <a href="/new-technology/" class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
+      <i class="logo-line"></i>
       <h1 class="site-title">New technologies in our life</h1>
-      <span class="logo-line-after"><i></i></span>
+      <i class="logo-line"></i>
     </a>
       <p class="site-subtitle" itemprop="description">Device,Network,Code,etc...</p>
   </div>
 
   <div class="site-nav-right">
     <div class="toggle popup-trigger">
-        <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
 </div>
@@ -140,7 +154,7 @@
 
 
 <nav class="site-nav">
-  <ul id="menu" class="main-menu menu">
+  <ul class="main-menu menu">
         <li class="menu-item menu-item-home">
 
     <a href="/new-technology/" rel="section"><i class="fa fa-home fa-fw"></i>ホーム</a>
@@ -171,318 +185,25 @@
     <a href="/new-technology/disclaimer/" rel="section"><i class="fa fa-check fa-fw"></i>ディスクレーマー</a>
 
   </li>
-      <li class="menu-item menu-item-search">
-        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
-        </a>
-      </li>
   </ul>
 </nav>
 
 
 
-  <div class="search-pop-overlay">
-    <div class="popup search-popup">
-        <div class="search-header">
-  <span class="search-icon">
-    <i class="fa fa-search"></i>
-  </span>
-  <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off"
-           placeholder="検索…" spellcheck="false"
-           type="search" class="search-input">
-  </div>
-  <span class="popup-btn-close">
-    <i class="fa fa-times-circle"></i>
-  </span>
-</div>
-<div id="search-result">
-  <div id="no-result">
-    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
-  </div>
-</div>
-
-    </div>
-  </div>
 
 </div>
-    </header>
-
-    
-  <div class="back-to-top">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
-  </div>
-
-  <a href="https://github.com/yoshi0808" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
-
-
-    <main class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
-
-          <div class="content post posts-expand">
-            
-
-    
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="ja">
-    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2020/03/28/vpn/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/new-technology/images/yoshi.png">
-      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
-      <meta itemprop="description" content="IT">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="New technologies in our life">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          XG Firewall VPNについて
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">投稿日</span>
-
-              <time title="作成日：2020-03-28 11:41:42" itemprop="dateCreated datePublished" datetime="2020-03-28T11:41:42+09:00">2020-03-28</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">編集日</span>
-                <time title="修正日：2020-07-08 20:24:24" itemprop="dateModified" datetime="2020-07-08T20:24:24+09:00">2020-07-08</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">カテゴリ</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/new-technology/categories/Security/" itemprop="url" rel="index"><span itemprop="name">Security</span></a>
-                </span>
-                  、
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/new-technology/categories/Security/VPN/" itemprop="url" rel="index"><span itemprop="name">VPN</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-        <div class="note success">
-            <h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>外出先から、PC（Windows、macOS）を使い、宅内にあるXG FirewallのVPNへ接続できるようになります。それによりウィルスおよびマルウェア対策やWebフィルタなどを含んだ安全なネット閲覧や、宅内のLANリソースへリモートアクセス出来るようになります。</p>
-          </div>
-<a id="more"></a>
-
-<h2 id="XG-FirewallのVPN"><a href="#XG-FirewallのVPN" class="headerlink" title="XG FirewallのVPN"></a>XG FirewallのVPN</h2><p>XGのVPNはプロトコルが何種類かあります。一般的なSSL-VPN,L2TP,PPTP、そしてSophosConnectというIPSecベースのものがあります。SophosConnectは速く安定しているため、ここではSophosConnectのVPN導入について説明します。</p>
-<h2 id="事前確認"><a href="#事前確認" class="headerlink" title="事前確認"></a>事前確認</h2><p>Sophos Connectの設定にあたり、インターネットに接続されているホームゲートウェイから、VPNのパケットについては内部のXGのWANインターフェースに転送しなくてはなりません。一般的に市販されているルーターにも装備されていますが、この方法には2通りあります。</p>
-<ol>
-<li><p>全ての宅内へのトラフィックは全てXGに転送する<br>ルーターやホームゲートウェイの製品によって呼び方は異なりますが、DMZホスト機能などと呼ばれます。この場合はインターネットから入ってくるデータは全てXGに送られますので、宅内にサーバーを立てる場合、ホームゲートウェイからはXG以外の端末は接続出来なくなります。ただし、設定は単純というメリットがあります。</p>
-<img src="/new-technology/2020/03/28/vpn/dmz.png" class="" title="alt">
-</li>
-<li><p>SophosConnectに必要なプロトコルおよび通信PortのみXGに転送する<br>こちらは一般的にポートマッピングと呼ばれます。内→外、外→内の方向について細かく設定を行う事になります。SophosConnectに必要なプロトコルとPortは外→内で以下の通信になります。</p>
-<ul>
-<li>ESPプロトコル（プロトコル番号：50）</li>
-<li>UDP 500,UDP 4500<img src="/new-technology/2020/03/28/vpn/portmapping.png" class="" title="alt">
-
-</li>
-</ul>
-</li>
-</ol>
-<p>上記の2つのどちらか対応できれば、XGに対するVPN接続が行えます。この画面はホームゲートウェイの画面であり、契約しているインターネット回線業者により、提供される機器は異なりますのであくまで設定例は参考となります。</p>
-<h2 id="XG側のVPNユーザー作成"><a href="#XG側のVPNユーザー作成" class="headerlink" title="XG側のVPNユーザー作成"></a>XG側のVPNユーザー作成</h2><p>最初にユーザーの作成が必要です。VPNの最終接続形態としては、2要素認証対応のセキュアなものを目指します。ただし、いきなり全ての事を実施すると切り分けが難しいのでまずは2要素認証無しでの接続をし、次に2要素認証有りの接続に取り組みます。XGの左ペインメニューから<span class="label default">認証</span>を選択、<span class="label default">ユーザー</span>のタブから、追加ボタンをクリックします。そして以下のようにユーザー名、パスワードとメールアドレスを入力します。</p>
-<img src="/new-technology/2020/03/28/vpn/user1.png" class="" title="alt">
-<img src="/new-technology/2020/03/28/vpn/user2.png" class="" title="alt">
-
-<p>他はグループのところで、<span class="label default">OPEN Group</span>を選択するくらいで設定するところはありません。このまま保存をクリックします。VPNは、このユーザー名/パスワードで接続する事になります。</p>
-<h2 id="XG側のSophos-Connectの設定"><a href="#XG側のSophos-Connectの設定" class="headerlink" title="XG側のSophos Connectの設定"></a>XG側のSophos Connectの設定</h2><p>XGの左ペインメニューから<span class="label default">VPN</span>を選択、<span class="label default">Sophos Connect</span>のタブを選択します。特に拘りがなければ、デジタル証明書ではなく、事前共有鍵を選択する事にしましょう。それなりの鍵の長さを設定しておけば安全です。また最終的にはワンタイムパスワードを設定する事でかなりの安心感が得られます。鍵はパスワードと異なり、一度クライアントに設定すれば接続の都度入力する必要もないため、複雑で長い鍵長の事前共有鍵の設定が好ましいでしょう。設定は以下の通りに行います。</p>
-<ul>
-<li><span class="label default">インターフェース</span>はPort2(WAN)を選択します</li>
-<li><span class="label default">認証タイプ</span>は事前共有鍵を選択します</li>
-<li><span class="label default">事前共有鍵</span>は文字列を入力、また繰り返し同じ鍵を入力します</li>
-<li><span class="label default">許可されたユーザー</span>には、上記で作成したユーザーを選択します
-
-</li>
-</ul>
-<img src="/new-technology/2020/03/28/vpn/vpn1.png" class="" title="alt">
-
-<ul>
-<li>名前はXGの配置場所として適当な名前を入力します</li>
-<li>XGのVPNの割り当てネットワークは、LANとは別のネットワークアドレスを入力します。例えばLANが<code>192.168.2.0/24</code>のネットワークならば、<code>192.168.20.1</code>〜<code>192.168.20.8</code>などと別のネットワークを入力します</li>
-<li>DNSについては、XG自身のDNS（XGのLAN側のIPアドレス）を入力します</li>
-<li>詳細設定の<span class="label default">トンネルがアイドルの時に切断</span>を有効にします</li>
-<li><span class="label default">アイドルセッション時間の間隔</span>は600にします（特段のこだわりはありません）
-
-</li>
-</ul>
-<img src="/new-technology/2020/03/28/vpn/vpn2.png" class="" title="alt">
-
-<p>適用ボタンをクリックすると、”これにより、同じローカルピアとリモートピア間で設定したすべての接続の事前共有鍵が更新されます。続行してもよいですか？”と表示されます。OKをクリックすれば、VPNが有効になります。</p>
-<h2 id="XG側のFirewallルールの確認"><a href="#XG側のFirewallルールの確認" class="headerlink" title="XG側のFirewallルールの確認"></a>XG側のFirewallルールの確認</h2><p>上記で設定したVPNがFirewallのルールに登録されている事を確認します。SSLインスペクションが入ると難しくなるので、まずはこの記事ではVPNとWANの接続を優先に考え設定します。以前の記事<a href="/new-technology/2020/03/14/rule-policy2/" title="XG Firewall v18のルールを作成する">XG Firewall v18のルールを作成する</a>で、デフォルトのルール「To_Internet」を作成しました。ルールについて、以下の図のように<span class="label default">送信元ゾーン</span>が、LANとVPNとなっている事を確認してください。</p>
-<img src="/new-technology/2020/03/28/vpn/rule1.png" class="" title="alt">
-
-<p>続いて、VPNからLANへのルールを作成します。NATは使わず全てのトラフィックを通過させるものです。以下の通り、送信元ゾーンはVPN、宛先ゾーンはLANのルールを設定します。</p>
-<img src="/new-technology/2020/03/28/vpn/rule2.png" class="" title="alt">
-
-<p>（2020-06-20更新）このルールでは、<span class="label default">リンクNATルールの作成</span>は行いません。NATの動作の確認のために「NATしない事を明示する」設定を行うと挙動がわかりやすいというメリットはありますが、v18では原則リンクNATは使わず運用可能という考え方のようで当初記載していたリンクNATの記述を削除しました。</p>
-<p>さらにルールで保存をクリックしてルールの設定は完成です。念のため現在のルールについて確認しましょう。<span class="label default">Traffic to Internal</span>として、VPNからLANへの接続ルールがあります。もう1つは、<span class="label default">Traffice to WAN</span>として、VPNおよびLANからWANへの接続ルールがあります。</p>
-<img src="/new-technology/2020/03/28/vpn/rule6.png" class="" title="alt">
-
-<h2 id="XG側のDynamic-DNSの設定"><a href="#XG側のDynamic-DNSの設定" class="headerlink" title="XG側のDynamic DNSの設定"></a>XG側のDynamic DNSの設定</h2><p>素晴らしい事に、XGでは無償のダイナミックDNSを用意してくれています。VPNで接続する際には、グローバルIPアドレスが必要ですが、XG用のmyfirewall.coドメインが利用できます。他に使われていない一意のホスト名を設定する事になります。<span class="label default">IPv4アドレス</span>の箇所は、<span class="label default">NATされたパブリックIP</span>を選んでください。その他のNo-IPなどの有名どころのダイナミックDNSを選ぶ事も可能です。</p>
-<img src="/new-technology/2020/03/28/vpn/ddns.png" class="" title="alt">
-
-<p>登録が終わると、直ちにグローバルIPがダイナミックDNSに登録されます。その後、<span class="label default">前回更新したIP</span>にグローバルIPが表示され、<span class="label default">前回更新した状態</span>にSuccessと表示されます。</p>
-<img src="/new-technology/2020/03/28/vpn/ddns2.png" class="" title="alt">
-
-<h2 id="XG側のデバイスのアクセス設定"><a href="#XG側のデバイスのアクセス設定" class="headerlink" title="XG側のデバイスのアクセス設定"></a>XG側のデバイスのアクセス設定</h2><p>XG側はこれが最後の設定です。左ペインの<span class="label default">管理</span>から、<span class="label default">デバイスのアクセス</span>へと進みます。そこに、LAN、WAN、VPN毎にサービスのアクセス権限が定めている一覧になります。ここでは以下の項目のアクセス権を加えます。</p>
-<ul>
-<li>管理サービス　HTTPS/SSH<br>XGの管理メニューにVPN経由でアクセスする事を可能とします。</li>
-<li>Ping/Ping6<br>こちらの設定は任意です。</li>
-<li>DNS<br>LANおよびVPNからのアクセスはXGのDNSをまず最初に参照します。LANにあるホストを参照する時は、XGのDNSがプライベートIPを返すように、スタティックのプライベートIPをDNSに登録しておきたいためです。これは後々サーバーを宅内に立てる場合、活用する事になります。</li>
-</ul>
-<h2 id="Sophos-Connectクライアントのダウンロード"><a href="#Sophos-Connectクライアントのダウンロード" class="headerlink" title="Sophos Connectクライアントのダウンロード"></a>Sophos Connectクライアントのダウンロード</h2><p>WindowsでVPN接続するためにはVPNクライアントをダウンロードします。上記のXGのVPN設定画面で<span class="label default">Sophos Connectクライアントのダウンロード</span>というボタンがありました。そちらをクリックし、ソフトウェアをダウンロードします。こちらは、Windows版、macOS版のダウンロードが出来ます。さらに、この画面の<span class="label default">接続のエクスポート</span>ボタンをクリックし、接続設定ファイルをダウンロードしてください（拡張子tgb）。この設定ファイルには先ほど設定したダイナミックDNSの内容も含まれています。</p>
-<h2 id="Sophos-Connectクライアントのセットアップ"><a href="#Sophos-Connectクライアントのセットアップ" class="headerlink" title="Sophos Connectクライアントのセットアップ"></a>Sophos Connectクライアントのセットアップ</h2><p>クライアントへのセットアップは、Windowsの場合は、SophosConnect.msiをインストールします。macOSの場合は、SophosConnect.pkgをインストールします。プログラム実行後、右上のメニューから、<span class="label default">Import Connection</span>をクリックし、先ほどダウンロードした接続設定ファイル（拡張子tgb）を読み込んでください。</p>
-<img src="/new-technology/2020/03/28/vpn/install.png" class="" title="alt">
-
-<h2 id="VPNの接続確認"><a href="#VPNの接続確認" class="headerlink" title="VPNの接続確認"></a>VPNの接続確認</h2><span class="label default">Connect</span>をクリックし、VPN用に設定したユーザー名とパスワードでインターネットから、宅内のXGに接続します。
-
-<img src="/new-technology/2020/03/28/vpn/connected1.png" class="" title="alt">
-<img src="/new-technology/2020/03/28/vpn/connected2.png" class="" title="alt">
-
-<p>VPN経由でインターネットに接続し、ブラウザからアクセスできること、IPアドレスがプロバイダから貸与されたアドレスになっているか確認します。また、LANの機器との接続が行える事も確認してください。公衆WIFIからダイナミックDNSを用いた確認が検証としては最適ですが、接続業者によっては、VPNを通さないところもあります。</p>
-<p>なお、ここまで説明してきた通り、LANとVPNのネットワークセグメントは異なりますので、ブロードキャストで相手を見つけるようなアプリケーションはVPNからLANに対する接続は行えません。</p>
-<h2 id="VPNからWANに対するSSLインスペクションの設定"><a href="#VPNからWANに対するSSLインスペクションの設定" class="headerlink" title="VPNからWANに対するSSLインスペクションの設定"></a>VPNからWANに対するSSLインスペクションの設定</h2><p>ここまでの設定でVPNの設定は終了ですが、VPNについてもSSLインスペクションが有効となるように設定します。一旦はVPNのネットワークからインターネットにアクセスする場合は、全てがSSLインスペクションの対象とし、ファイアウォールルールを修正します。</p>
-<ol>
-<li>最初にVPNのネットワークアドレスを左ペインの<span class="label default">ホストとサービス</span>から<span class="label default">IPホスト</span>を登録します。</li>
-</ol>
-<img src="/new-technology/2020/03/28/vpn/vpn3.png" class="" title="alt">
-
-<ol start="2">
-<li><p>上記のようにネットワークにIPアドレス（この記事では192.168.20.0/24としています）を登録します。VPNのネットワークは、LANのネットワークとは別のネットワークアドレスとする必要があります。</p>
-</li>
-<li><p>次に、左ペインの<span class="label default">ルールとポリシー</span>から、<span class="label default">SSL/TLSインスペクション</span>を選択します。</p>
-</li>
-<li><p>事前に作成してある<span class="label default">Catch SSL</span>ルールを選択し、ここにVPNのネットワークがSSL/TLSインスペクションの対象である事を設定します。</p>
-</li>
-</ol>
-<img src="/new-technology/2020/03/28/vpn/vpn4.png" class="" title="alt">
-
-<ol start="5">
-<li>上記の図では<span class="label default">送信元ネットワークとデバイス</span>に、CAがインストールされているPCおよびiPhoneを対象とするIPグループを<span class="label default">CA_Clinet_IPv4</span>として登録していました。これに今回はVPNのネットワーク<span class="label default">VPN_Network_IPv4</span>を追加登録します。</li>
-</ol>
-<p>ここまでの設定でIPSec-VPNの設定は一段落です。SSLインスペクションの設定および動作確認については、過去の記事を参照して下さい。</p>
-<ul>
-<li><a href="/new-technology/2020/03/20/ssl-inspection/" title="SSLインスペクションについて">SSLインスペクションについて</a></li>
-<li><a href="/new-technology/2020/03/20/ssl-inspection1/" title="XG Firewall v18のSSLインスペクションの設定">XG Firewall v18のSSLインスペクションの設定</a></li>
-<li><a href="/new-technology/2020/03/21/ssl-inspection2/" title="XG Firewall v18のSSLインスペクションの動作確認と調整">XG Firewall v18のSSLインスペクションの動作確認と調整</a>
-</li>
-</ul>
-
-    </div>
-
-    
-    
-    
         
-
-<div>
-<ul class="post-copyright">
-  <li class="post-copyright-author">
-    <strong>著者： </strong>阿部　吉伸(Yoshinobu ABE)
-  </li>
-  <li class="post-copyright-link">
-    <strong>記事へのリンク：</strong>
-    <a href="https://yoshi0808.github.io/new-technology/2020/03/28/vpn/" title="XG Firewall VPNについて">https://yoshi0808.github.io/new-technology/2020/03/28/vpn/</a>
-  </li>
-  <li class="post-copyright-license">
-    <strong>著作権表示： </strong>このブログ内のすべての記事は、特別な記載がない限り <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> の下のライセンスで保護されています。また、免責事項・プライバシーポリシーについては、メニューのディスクレーマーをご覧ください。
-  </li>
-</ul>
-</div>
-
-
-      <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/new-technology/tags/XG-Firewall/" rel="tag"># XG Firewall</a>
-          </div>
-
-        
-
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/new-technology/2020/03/26/SophosCommunity/" rel="prev" title="XG Firewall Sophos Communityについて">
-      <i class="fa fa-chevron-left"></i> XG Firewall Sophos Communityについて
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/new-technology/2020/03/28/vpnotp/" rel="next" title="XG Firewall VPNに2要素認証を設定する">
-      XG Firewall VPNに2要素認証を設定する <i class="fa fa-chevron-right"></i>
-    </a></div>
-    </div>
-      </footer>
-    
-  </article>
-  
-  
-  
-
-
-
-          </div>
-          
-
-<script>
-  window.addEventListener('tabs:register', () => {
-    let { activeClass } = CONFIG.comments;
-    if (CONFIG.comments.storage) {
-      activeClass = localStorage.getItem('comments_active') || activeClass;
-    }
-    if (activeClass) {
-      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
-      if (activeTab) {
-        activeTab.click();
-      }
-    }
-  });
-  if (CONFIG.comments.storage) {
-    window.addEventListener('tabs:click', event => {
-      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
-      let commentClass = event.target.classList[1];
-      localStorage.setItem('comments_active', commentClass);
-    });
-  }
-</script>
-
-        </div>
-          
   
   <div class="toggle sidebar-toggle">
-    <span class="toggle-line toggle-line-first"></span>
-    <span class="toggle-line toggle-line-middle"></span>
-    <span class="toggle-line toggle-line-last"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
   </div>
 
   <aside class="sidebar">
-    <div class="sidebar-inner">
 
-      <ul class="sidebar-nav motion-element">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           見出し
         </li>
@@ -492,19 +213,19 @@
       </ul>
 
       <!--noindex-->
-      <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%93%E3%81%AE%E8%A8%98%E4%BA%8B%E3%81%A7%E5%AE%9F%E7%8F%BE%E3%81%99%E3%82%8B%E3%81%93%E3%81%A8"><span class="nav-number">1.</span> <span class="nav-text">この記事で実現すること</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG-Firewall%E3%81%AEVPN"><span class="nav-number">2.</span> <span class="nav-text">XG FirewallのVPN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E5%89%8D%E7%A2%BA%E8%AA%8D"><span class="nav-number">3.</span> <span class="nav-text">事前確認</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG%E5%81%B4%E3%81%AEVPN%E3%83%A6%E3%83%BC%E3%82%B6%E3%83%BC%E4%BD%9C%E6%88%90"><span class="nav-number">4.</span> <span class="nav-text">XG側のVPNユーザー作成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG%E5%81%B4%E3%81%AESophos-Connect%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">5.</span> <span class="nav-text">XG側のSophos Connectの設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG%E5%81%B4%E3%81%AEFirewall%E3%83%AB%E3%83%BC%E3%83%AB%E3%81%AE%E7%A2%BA%E8%AA%8D"><span class="nav-number">6.</span> <span class="nav-text">XG側のFirewallルールの確認</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG%E5%81%B4%E3%81%AEDynamic-DNS%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">7.</span> <span class="nav-text">XG側のDynamic DNSの設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG%E5%81%B4%E3%81%AE%E3%83%87%E3%83%90%E3%82%A4%E3%82%B9%E3%81%AE%E3%82%A2%E3%82%AF%E3%82%BB%E3%82%B9%E8%A8%AD%E5%AE%9A"><span class="nav-number">8.</span> <span class="nav-text">XG側のデバイスのアクセス設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sophos-Connect%E3%82%AF%E3%83%A9%E3%82%A4%E3%82%A2%E3%83%B3%E3%83%88%E3%81%AE%E3%83%80%E3%82%A6%E3%83%B3%E3%83%AD%E3%83%BC%E3%83%89"><span class="nav-number">9.</span> <span class="nav-text">Sophos Connectクライアントのダウンロード</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sophos-Connect%E3%82%AF%E3%83%A9%E3%82%A4%E3%82%A2%E3%83%B3%E3%83%88%E3%81%AE%E3%82%BB%E3%83%83%E3%83%88%E3%82%A2%E3%83%83%E3%83%97"><span class="nav-number">10.</span> <span class="nav-text">Sophos Connectクライアントのセットアップ</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VPN%E3%81%AE%E6%8E%A5%E7%B6%9A%E7%A2%BA%E8%AA%8D"><span class="nav-number">11.</span> <span class="nav-text">VPNの接続確認</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VPN%E3%81%8B%E3%82%89WAN%E3%81%AB%E5%AF%BE%E3%81%99%E3%82%8BSSL%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%9A%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">12.</span> <span class="nav-text">VPNからWANに対するSSLインスペクションの設定</span></a></li></ol></div>
-      </div>
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%93%E3%81%AE%E8%A8%98%E4%BA%8B%E3%81%A7%E5%AE%9F%E7%8F%BE%E3%81%99%E3%82%8B%E3%81%93%E3%81%A8"><span class="nav-number">1.</span> <span class="nav-text">この記事で実現すること</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG-Firewall%E3%81%AEVPN"><span class="nav-number">2.</span> <span class="nav-text">XG FirewallのVPN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E5%89%8D%E7%A2%BA%E8%AA%8D"><span class="nav-number">3.</span> <span class="nav-text">事前確認</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG%E5%81%B4%E3%81%AEVPN%E3%83%A6%E3%83%BC%E3%82%B6%E3%83%BC%E4%BD%9C%E6%88%90"><span class="nav-number">4.</span> <span class="nav-text">XG側のVPNユーザー作成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG%E5%81%B4%E3%81%AESophos-Connect%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">5.</span> <span class="nav-text">XG側のSophos Connectの設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG%E5%81%B4%E3%81%AEFirewall%E3%83%AB%E3%83%BC%E3%83%AB%E3%81%AE%E7%A2%BA%E8%AA%8D"><span class="nav-number">6.</span> <span class="nav-text">XG側のFirewallルールの確認</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG%E5%81%B4%E3%81%AEDynamic-DNS%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">7.</span> <span class="nav-text">XG側のDynamic DNSの設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG%E5%81%B4%E3%81%AE%E3%83%87%E3%83%90%E3%82%A4%E3%82%B9%E3%81%AE%E3%82%A2%E3%82%AF%E3%82%BB%E3%82%B9%E8%A8%AD%E5%AE%9A"><span class="nav-number">8.</span> <span class="nav-text">XG側のデバイスのアクセス設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sophos-Connect%E3%82%AF%E3%83%A9%E3%82%A4%E3%82%A2%E3%83%B3%E3%83%88%E3%81%AE%E3%83%80%E3%82%A6%E3%83%B3%E3%83%AD%E3%83%BC%E3%83%89"><span class="nav-number">9.</span> <span class="nav-text">Sophos Connectクライアントのダウンロード</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sophos-Connect%E3%82%AF%E3%83%A9%E3%82%A4%E3%82%A2%E3%83%B3%E3%83%88%E3%81%AE%E3%82%BB%E3%83%83%E3%83%88%E3%82%A2%E3%83%83%E3%83%97"><span class="nav-number">10.</span> <span class="nav-text">Sophos Connectクライアントのセットアップ</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VPN%E3%81%AE%E6%8E%A5%E7%B6%9A%E7%A2%BA%E8%AA%8D"><span class="nav-number">11.</span> <span class="nav-text">VPNの接続確認</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VPN%E3%81%8B%E3%82%89WAN%E3%81%AB%E5%AF%BE%E3%81%99%E3%82%8BSSL%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%9A%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">12.</span> <span class="nav-text">VPNからWANに対するSSLインスペクションの設定</span></a></li></ol></div>
+      </section>
       <!--/noindex-->
 
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <img class="site-author-image" itemprop="image" alt="阿部　吉伸(Yoshinobu ABE)"
       src="/new-technology/images/yoshi.png">
   <p class="site-author-name" itemprop="name">阿部　吉伸(Yoshinobu ABE)</p>
   <div class="site-description" itemprop="description">IT</div>
 </div>
-<div class="site-state-wrap motion-element">
+<div class="site-state-wrap site-overview-item animated">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/new-technology/archives/">
@@ -527,7 +248,7 @@
       </div>
   </nav>
 </div>
-  <div class="links-of-author motion-element">
+  <div class="links-of-author site-overview-item animated">
       <span class="links-of-author-item">
         <a href="https://github.com/yoshi0808" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yoshi0808" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
       </span>
@@ -538,27 +259,270 @@
         <a href="https://twitter.com/yoshi0808_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yoshi0808_" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
       </span>
   </div>
-  <div class="cc-license motion-element" itemprop="license">
-    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/new-technology/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
-  </div>
 
 
 
-      </div>
-
+      </section>
     </div>
   </aside>
-  <div id="sidebar-dimmer"></div>
+  <div class="sidebar-dimmer"></div>
 
 
-      </div>
-    </main>
+    </header>
 
-    <footer class="footer">
-      <div class="footer-inner">
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="ja">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2020/03/28/vpn/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/new-technology/images/yoshi.png">
+      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
+      <meta itemprop="description" content="IT">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="New technologies in our life">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          XG Firewall VPNについて
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">投稿日</span>
+
+      <time title="作成日：2020-03-28 11:41:42" itemprop="dateCreated datePublished" datetime="2020-03-28T11:41:42+09:00">2020-03-28</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">編集日</span>
+        <time title="修正日：2020-07-08 20:24:24" itemprop="dateModified" datetime="2020-07-08T20:24:24+09:00">2020-07-08</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">カテゴリ</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/Security/" itemprop="url" rel="index"><span itemprop="name">Security</span></a>
+        </span>
+          、
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/Security/VPN/" itemprop="url" rel="index"><span itemprop="name">VPN</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <div class="note success"><h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>外出先から、PC（Windows、macOS）を使い、宅内にあるXG FirewallのVPNへ接続できるようになります。それによりウィルスおよびマルウェア対策やWebフィルタなどを含んだ安全なネット閲覧や、宅内のLANリソースへリモートアクセス出来るようになります。</p>
+</div>
+<a id="more"></a>
+
+<h2 id="XG-FirewallのVPN"><a href="#XG-FirewallのVPN" class="headerlink" title="XG FirewallのVPN"></a>XG FirewallのVPN</h2><p>XGのVPNはプロトコルが何種類かあります。一般的なSSL-VPN,L2TP,PPTP、そしてSophosConnectというIPSecベースのものがあります。SophosConnectは速く安定しているため、ここではSophosConnectのVPN導入について説明します。</p>
+<h2 id="事前確認"><a href="#事前確認" class="headerlink" title="事前確認"></a>事前確認</h2><p>Sophos Connectの設定にあたり、インターネットに接続されているホームゲートウェイから、VPNのパケットについては内部のXGのWANインターフェースに転送しなくてはなりません。一般的に市販されているルーターにも装備されていますが、この方法には2通りあります。</p>
+<ol>
+<li><p>全ての宅内へのトラフィックは全てXGに転送する<br>ルーターやホームゲートウェイの製品によって呼び方は異なりますが、DMZホスト機能などと呼ばれます。この場合はインターネットから入ってくるデータは全てXGに送られますので、宅内にサーバーを立てる場合、ホームゲートウェイからはXG以外の端末は接続出来なくなります。ただし、設定は単純というメリットがあります。</p>
+<img src="/new-technology/2020/03/28/vpn/dmz.png" class="" title="alt">
+</li>
+<li><p>SophosConnectに必要なプロトコルおよび通信PortのみXGに転送する<br>こちらは一般的にポートマッピングと呼ばれます。内→外、外→内の方向について細かく設定を行う事になります。SophosConnectに必要なプロトコルとPortは外→内で以下の通信になります。</p>
+<ul>
+<li>ESPプロトコル（プロトコル番号：50）</li>
+<li>UDP 500,UDP 4500<img src="/new-technology/2020/03/28/vpn/portmapping.png" class="" title="alt">
+
+</li>
+</ul>
+</li>
+</ol>
+<p>上記の2つのどちらか対応できれば、XGに対するVPN接続が行えます。この画面はホームゲートウェイの画面であり、契約しているインターネット回線業者により、提供される機器は異なりますのであくまで設定例は参考となります。</p>
+<h2 id="XG側のVPNユーザー作成"><a href="#XG側のVPNユーザー作成" class="headerlink" title="XG側のVPNユーザー作成"></a>XG側のVPNユーザー作成</h2><p>最初にユーザーの作成が必要です。VPNの最終接続形態としては、2要素認証対応のセキュアなものを目指します。ただし、いきなり全ての事を実施すると切り分けが難しいのでまずは2要素認証無しでの接続をし、次に2要素認証有りの接続に取り組みます。XGの左ペインメニューから<mark class="label ">認証</mark>を選択、<mark class="label ">ユーザー</mark>のタブから、追加ボタンをクリックします。そして以下のようにユーザー名、パスワードとメールアドレスを入力します。</p>
+<img src="/new-technology/2020/03/28/vpn/user1.png" class="" title="alt">
+<img src="/new-technology/2020/03/28/vpn/user2.png" class="" title="alt">
+
+<p>他はグループのところで、<mark class="label ">OPEN Group</mark>を選択するくらいで設定するところはありません。このまま保存をクリックします。VPNは、このユーザー名/パスワードで接続する事になります。</p>
+<h2 id="XG側のSophos-Connectの設定"><a href="#XG側のSophos-Connectの設定" class="headerlink" title="XG側のSophos Connectの設定"></a>XG側のSophos Connectの設定</h2><p>XGの左ペインメニューから<mark class="label ">VPN</mark>を選択、<mark class="label ">Sophos Connect</mark>のタブを選択します。特に拘りがなければ、デジタル証明書ではなく、事前共有鍵を選択する事にしましょう。それなりの鍵の長さを設定しておけば安全です。また最終的にはワンタイムパスワードを設定する事でかなりの安心感が得られます。鍵はパスワードと異なり、一度クライアントに設定すれば接続の都度入力する必要もないため、複雑で長い鍵長の事前共有鍵の設定が好ましいでしょう。設定は以下の通りに行います。</p>
+<ul>
+<li><mark class="label ">インターフェース</mark>はPort2(WAN)を選択します</li>
+<li><mark class="label ">認証タイプ</mark>は事前共有鍵を選択します</li>
+<li><mark class="label ">事前共有鍵</mark>は文字列を入力、また繰り返し同じ鍵を入力します</li>
+<li><mark class="label ">許可されたユーザー</mark>には、上記で作成したユーザーを選択します
+
+</li>
+</ul>
+<img src="/new-technology/2020/03/28/vpn/vpn1.png" class="" title="alt">
+
+<ul>
+<li>名前はXGの配置場所として適当な名前を入力します</li>
+<li>XGのVPNの割り当てネットワークは、LANとは別のネットワークアドレスを入力します。例えばLANが<code>192.168.2.0/24</code>のネットワークならば、<code>192.168.20.1</code>〜<code>192.168.20.8</code>などと別のネットワークを入力します</li>
+<li>DNSについては、XG自身のDNS（XGのLAN側のIPアドレス）を入力します</li>
+<li>詳細設定の<mark class="label ">トンネルがアイドルの時に切断</mark>を有効にします</li>
+<li><mark class="label ">アイドルセッション時間の間隔</mark>は600にします（特段のこだわりはありません）
+
+</li>
+</ul>
+<img src="/new-technology/2020/03/28/vpn/vpn2.png" class="" title="alt">
+
+<p>適用ボタンをクリックすると、”これにより、同じローカルピアとリモートピア間で設定したすべての接続の事前共有鍵が更新されます。続行してもよいですか？”と表示されます。OKをクリックすれば、VPNが有効になります。</p>
+<h2 id="XG側のFirewallルールの確認"><a href="#XG側のFirewallルールの確認" class="headerlink" title="XG側のFirewallルールの確認"></a>XG側のFirewallルールの確認</h2><p>上記で設定したVPNがFirewallのルールに登録されている事を確認します。SSLインスペクションが入ると難しくなるので、まずはこの記事ではVPNとWANの接続を優先に考え設定します。以前の記事<a href="/new-technology/2020/03/14/rule-policy2/" title="XG Firewall v18のルールを作成する">XG Firewall v18のルールを作成する</a>で、デフォルトのルール「To_Internet」を作成しました。ルールについて、以下の図のように<mark class="label ">送信元ゾーン</mark>が、LANとVPNとなっている事を確認してください。</p>
+<img src="/new-technology/2020/03/28/vpn/rule1.png" class="" title="alt">
+
+<p>続いて、VPNからLANへのルールを作成します。NATは使わず全てのトラフィックを通過させるものです。以下の通り、送信元ゾーンはVPN、宛先ゾーンはLANのルールを設定します。</p>
+<img src="/new-technology/2020/03/28/vpn/rule2.png" class="" title="alt">
+
+<p>（2020-06-20更新）このルールでは、<mark class="label ">リンクNATルールの作成</mark>は行いません。NATの動作の確認のために「NATしない事を明示する」設定を行うと挙動がわかりやすいというメリットはありますが、v18では原則リンクNATは使わず運用可能という考え方のようで当初記載していたリンクNATの記述を削除しました。</p>
+<p>さらにルールで保存をクリックしてルールの設定は完成です。念のため現在のルールについて確認しましょう。<mark class="label ">Traffic to Internal</mark>として、VPNからLANへの接続ルールがあります。もう1つは、<mark class="label ">Traffice to WAN</mark>として、VPNおよびLANからWANへの接続ルールがあります。</p>
+<img src="/new-technology/2020/03/28/vpn/rule6.png" class="" title="alt">
+
+<h2 id="XG側のDynamic-DNSの設定"><a href="#XG側のDynamic-DNSの設定" class="headerlink" title="XG側のDynamic DNSの設定"></a>XG側のDynamic DNSの設定</h2><p>素晴らしい事に、XGでは無償のダイナミックDNSを用意してくれています。VPNで接続する際には、グローバルIPアドレスが必要ですが、XG用のmyfirewall.coドメインが利用できます。他に使われていない一意のホスト名を設定する事になります。<mark class="label ">IPv4アドレス</mark>の箇所は、<mark class="label ">NATされたパブリックIP</mark>を選んでください。その他のNo-IPなどの有名どころのダイナミックDNSを選ぶ事も可能です。</p>
+<img src="/new-technology/2020/03/28/vpn/ddns.png" class="" title="alt">
+
+<p>登録が終わると、直ちにグローバルIPがダイナミックDNSに登録されます。その後、<mark class="label ">前回更新したIP</mark>にグローバルIPが表示され、<mark class="label ">前回更新した状態</mark>にSuccessと表示されます。</p>
+<img src="/new-technology/2020/03/28/vpn/ddns2.png" class="" title="alt">
+
+<h2 id="XG側のデバイスのアクセス設定"><a href="#XG側のデバイスのアクセス設定" class="headerlink" title="XG側のデバイスのアクセス設定"></a>XG側のデバイスのアクセス設定</h2><p>XG側はこれが最後の設定です。左ペインの<mark class="label ">管理</mark>から、<mark class="label ">デバイスのアクセス</mark>へと進みます。そこに、LAN、WAN、VPN毎にサービスのアクセス権限が定めている一覧になります。ここでは以下の項目のアクセス権を加えます。</p>
+<ul>
+<li>管理サービス　HTTPS/SSH<br>XGの管理メニューにVPN経由でアクセスする事を可能とします。</li>
+<li>Ping/Ping6<br>こちらの設定は任意です。</li>
+<li>DNS<br>LANおよびVPNからのアクセスはXGのDNSをまず最初に参照します。LANにあるホストを参照する時は、XGのDNSがプライベートIPを返すように、スタティックのプライベートIPをDNSに登録しておきたいためです。これは後々サーバーを宅内に立てる場合、活用する事になります。</li>
+</ul>
+<h2 id="Sophos-Connectクライアントのダウンロード"><a href="#Sophos-Connectクライアントのダウンロード" class="headerlink" title="Sophos Connectクライアントのダウンロード"></a>Sophos Connectクライアントのダウンロード</h2><p>WindowsでVPN接続するためにはVPNクライアントをダウンロードします。上記のXGのVPN設定画面で<mark class="label ">Sophos Connectクライアントのダウンロード</mark>というボタンがありました。そちらをクリックし、ソフトウェアをダウンロードします。こちらは、Windows版、macOS版のダウンロードが出来ます。さらに、この画面の<mark class="label ">接続のエクスポート</mark>ボタンをクリックし、接続設定ファイルをダウンロードしてください（拡張子tgb）。この設定ファイルには先ほど設定したダイナミックDNSの内容も含まれています。</p>
+<h2 id="Sophos-Connectクライアントのセットアップ"><a href="#Sophos-Connectクライアントのセットアップ" class="headerlink" title="Sophos Connectクライアントのセットアップ"></a>Sophos Connectクライアントのセットアップ</h2><p>クライアントへのセットアップは、Windowsの場合は、SophosConnect.msiをインストールします。macOSの場合は、SophosConnect.pkgをインストールします。プログラム実行後、右上のメニューから、<mark class="label ">Import Connection</mark>をクリックし、先ほどダウンロードした接続設定ファイル（拡張子tgb）を読み込んでください。</p>
+<img src="/new-technology/2020/03/28/vpn/install.png" class="" title="alt">
+
+<h2 id="VPNの接続確認"><a href="#VPNの接続確認" class="headerlink" title="VPNの接続確認"></a>VPNの接続確認</h2><mark class="label ">Connect</mark>をクリックし、VPN用に設定したユーザー名とパスワードでインターネットから、宅内のXGに接続します。
+
+<img src="/new-technology/2020/03/28/vpn/connected1.png" class="" title="alt">
+<img src="/new-technology/2020/03/28/vpn/connected2.png" class="" title="alt">
+
+<p>VPN経由でインターネットに接続し、ブラウザからアクセスできること、IPアドレスがプロバイダから貸与されたアドレスになっているか確認します。また、LANの機器との接続が行える事も確認してください。公衆WIFIからダイナミックDNSを用いた確認が検証としては最適ですが、接続業者によっては、VPNを通さないところもあります。</p>
+<p>なお、ここまで説明してきた通り、LANとVPNのネットワークセグメントは異なりますので、ブロードキャストで相手を見つけるようなアプリケーションはVPNからLANに対する接続は行えません。</p>
+<h2 id="VPNからWANに対するSSLインスペクションの設定"><a href="#VPNからWANに対するSSLインスペクションの設定" class="headerlink" title="VPNからWANに対するSSLインスペクションの設定"></a>VPNからWANに対するSSLインスペクションの設定</h2><p>ここまでの設定でVPNの設定は終了ですが、VPNについてもSSLインスペクションが有効となるように設定します。一旦はVPNのネットワークからインターネットにアクセスする場合は、全てがSSLインスペクションの対象とし、ファイアウォールルールを修正します。</p>
+<ol>
+<li>最初にVPNのネットワークアドレスを左ペインの<mark class="label ">ホストとサービス</mark>から<mark class="label ">IPホスト</mark>を登録します。</li>
+</ol>
+<img src="/new-technology/2020/03/28/vpn/vpn3.png" class="" title="alt">
+
+<ol start="2">
+<li><p>上記のようにネットワークにIPアドレス（この記事では192.168.20.0/24としています）を登録します。VPNのネットワークは、LANのネットワークとは別のネットワークアドレスとする必要があります。</p>
+</li>
+<li><p>次に、左ペインの<mark class="label ">ルールとポリシー</mark>から、<mark class="label ">SSL/TLSインスペクション</mark>を選択します。</p>
+</li>
+<li><p>事前に作成してある<mark class="label ">Catch SSL</mark>ルールを選択し、ここにVPNのネットワークがSSL/TLSインスペクションの対象である事を設定します。</p>
+</li>
+</ol>
+<img src="/new-technology/2020/03/28/vpn/vpn4.png" class="" title="alt">
+
+<ol start="5">
+<li>上記の図では<mark class="label ">送信元ネットワークとデバイス</mark>に、CAがインストールされているPCおよびiPhoneを対象とするIPグループを<mark class="label ">CA_Clinet_IPv4</mark>として登録していました。これに今回はVPNのネットワーク<mark class="label ">VPN_Network_IPv4</mark>を追加登録します。</li>
+</ol>
+<p>ここまでの設定でIPSec-VPNの設定は一段落です。SSLインスペクションの設定および動作確認については、過去の記事を参照して下さい。</p>
+<ul>
+<li><a href="/new-technology/2020/03/20/ssl-inspection/" title="SSLインスペクションについて">SSLインスペクションについて</a></li>
+<li><a href="/new-technology/2020/03/20/ssl-inspection1/" title="XG Firewall v18のSSLインスペクションの設定">XG Firewall v18のSSLインスペクションの設定</a></li>
+<li><a href="/new-technology/2020/03/21/ssl-inspection2/" title="XG Firewall v18のSSLインスペクションの動作確認と調整">XG Firewall v18のSSLインスペクションの動作確認と調整</a>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/new-technology/tags/XG-Firewall/" rel="tag"><i class="fa fa-tag"></i> XG Firewall</a>
+          </div>
+
         
 
-        
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/new-technology/2020/03/26/SophosCommunity/" rel="prev" title="XG Firewall Sophos Communityについて">
+                  <i class="fa fa-chevron-left"></i> XG Firewall Sophos Communityについて
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/new-technology/2020/03/28/vpnotp/" rel="next" title="XG Firewall VPNに2要素認証を設定する">
+                  XG Firewall VPNに2要素認証を設定する <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
 
 <div class="copyright">
   
@@ -572,44 +536,16 @@
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
   </div>
 
-        
-
-
-
-
-
-
-
-
-      </div>
-    </footer>
-  </div>
+    </div>
+  </footer>
 
   
-  <script src="/new-technology/lib/anime.min.js"></script>
-  <script src="/new-technology/lib/velocity/velocity.min.js"></script>
-  <script src="/new-technology/lib/velocity/velocity.ui.min.js"></script>
-
-<script src="/new-technology/js/utils.js"></script>
-
-<script src="/new-technology/js/motion.js"></script>
-
-
-<script src="/new-technology/js/schemes/muse.js"></script>
-
-
-<script src="/new-technology/js/next-boot.js"></script>
-
-
-
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/new-technology/js/utils.js"></script><script src="/new-technology/js/motion.js"></script><script src="/new-technology/js/schemes/muse.js"></script><script src="/new-technology/js/next-boot.js"></script>
 
   
 
 
-
-
-  
-<script src="/new-technology/js/local-search.js"></script>
 
 
 
@@ -622,18 +558,30 @@
 
 
 <script>
-if (document.querySelectorAll('pre.mermaid').length) {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
-    mermaid.initialize({
-      theme    : 'default',
+if (document.querySelectorAll('.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8.7.0/dist/mermaid.min.js', () => {
+    mermaid.init({
+      theme    : 'forest',
       logLevel : 3,
       flowchart: { curve     : 'linear' },
       gantt    : { axisFormat: '%m/%d/%Y' },
       sequence : { actorMargin: 50 }
-    });
+    }, '.mermaid');
   }, window.mermaid);
 }
 </script>
+
+
+
+
+
+  
+
+
+
+
+
+
 
 
   

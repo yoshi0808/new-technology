@@ -13,11 +13,13 @@
 <link rel="stylesheet" href="/new-technology/css/main.css">
 
 
-<link rel="stylesheet" href="/new-technology/lib/font-awesome/css/all.min.css">
 
-<script id="hexo-configurations">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","scheme":"Mist","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","scheme":"Mist","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
   </script>
 
   <meta name="description" content="この記事で実現すること　XG Firewall v18のWebフィルタ・アプリケーションフィルタ・IPSの高速化・SSL証明書の検証を対象に、Sophos Communityを参考に、ホームユーザーにとってベストプラクティスとなる設定を行います。">
@@ -43,10 +45,11 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2020/05/09/best-practice/filter.png">
 
+
 <link rel="canonical" href="https://yoshi0808.github.io/new-technology/2020/05/09/best-practice/">
 
 
-<script id="page-configurations">
+<script class="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
@@ -75,57 +78,68 @@
 
   <noscript>
   <style>
-  .use-motion .brand,
+  body { margin-top: 2rem; }
+
   .use-motion .menu-item,
-  .sidebar-inner,
+  .use-motion .sidebar,
   .use-motion .post-block,
   .use-motion .pagination,
   .use-motion .comments,
   .use-motion .post-header,
   .use-motion .post-body,
-  .use-motion .collection-header { opacity: initial; }
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
 
   .use-motion .site-title,
-  .use-motion .site-subtitle {
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
     opacity: initial;
     top: initial;
   }
 
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
   </style>
 </noscript>
 
 <link rel="alternate" href="/new-technology/atom.xml" title="New technologies in our life" type="application/atom+xml">
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
-    <div class="headband"></div>
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
 
+  <main class="main">
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
     <div class="toggle" aria-label="ナビゲーションバーの切り替え">
-        <span class="toggle-line toggle-line-first"></span>
-        <span class="toggle-line toggle-line-middle"></span>
-        <span class="toggle-line toggle-line-last"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
   <div class="site-meta">
 
     <a href="/new-technology/" class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
+      <i class="logo-line"></i>
       <h1 class="site-title">New technologies in our life</h1>
-      <span class="logo-line-after"><i></i></span>
+      <i class="logo-line"></i>
     </a>
       <p class="site-subtitle" itemprop="description">Device,Network,Code,etc...</p>
   </div>
 
   <div class="site-nav-right">
     <div class="toggle popup-trigger">
-        <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
 </div>
@@ -133,7 +147,7 @@
 
 
 <nav class="site-nav">
-  <ul id="menu" class="main-menu menu">
+  <ul class="main-menu menu">
         <li class="menu-item menu-item-home">
 
     <a href="/new-technology/" rel="section"><i class="fa fa-home fa-fw"></i>ホーム</a>
@@ -164,40 +178,89 @@
     <a href="/new-technology/disclaimer/" rel="section"><i class="fa fa-check fa-fw"></i>ディスクレーマー</a>
 
   </li>
-      <li class="menu-item menu-item-search">
-        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
-        </a>
-      </li>
   </ul>
 </nav>
 
 
 
-  <div class="search-pop-overlay">
-    <div class="popup search-popup">
-        <div class="search-header">
-  <span class="search-icon">
-    <i class="fa fa-search"></i>
-  </span>
-  <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off"
-           placeholder="検索…" spellcheck="false"
-           type="search" class="search-input">
-  </div>
-  <span class="popup-btn-close">
-    <i class="fa fa-times-circle"></i>
-  </span>
-</div>
-<div id="search-result">
-  <div id="no-result">
-    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
-  </div>
-</div>
 
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          見出し
+        </li>
+        <li class="sidebar-nav-overview">
+          概要
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%93%E3%81%AE%E8%A8%98%E4%BA%8B%E3%81%A7%E5%AE%9F%E7%8F%BE%E3%81%99%E3%82%8B%E3%81%93%E3%81%A8"><span class="nav-number">1.</span> <span class="nav-text">この記事で実現すること</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG-v18%E3%81%AE%E3%83%99%E3%82%B9%E3%83%88%E3%83%97%E3%83%A9%E3%82%AF%E3%83%86%E3%82%A3%E3%82%B9"><span class="nav-number">2.</span> <span class="nav-text">XG v18のベストプラクティス</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B%E5%86%85%E5%AE%B9"><span class="nav-number">3.</span> <span class="nav-text">設定する内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IPS%E3%81%AE%E8%A8%AD%E5%AE%9A%E5%A4%89%E6%9B%B4"><span class="nav-number">4.</span> <span class="nav-text">IPSの設定変更</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%83%95%E3%82%A3%E3%83%AB%E3%82%BF%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">5.</span> <span class="nav-text">アプリケーションフィルタの設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Web%E3%83%95%E3%82%A3%E3%83%AB%E3%82%BF%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">6.</span> <span class="nav-text">Webフィルタの設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%AB%E3%83%BC%E3%83%AB%E3%81%A8%E3%83%9D%E3%83%AA%E3%82%B7%E3%83%BC%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">7.</span> <span class="nav-text">ルールとポリシーの設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSL-TLS%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%9A%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3%E3%83%AB%E3%83%BC%E3%83%AB%E3%81%AE%E7%A2%BA%E8%AA%8D"><span class="nav-number">8.</span> <span class="nav-text">SSL&#x2F;TLSインスペクションルールの確認</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%99%A4%E5%A4%96%E3%81%97%E3%81%9F%E8%A8%AD%E5%AE%9A"><span class="nav-number">9.</span> <span class="nav-text">除外した設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8B%95%E4%BD%9C%E7%A2%BA%E8%AA%8D"><span class="nav-number">10.</span> <span class="nav-text">動作確認</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="阿部　吉伸(Yoshinobu ABE)"
+      src="/new-technology/images/yoshi.png">
+  <p class="site-author-name" itemprop="name">阿部　吉伸(Yoshinobu ABE)</p>
+  <div class="site-description" itemprop="description">IT</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/new-technology/archives/">
+        
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">ポスト</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/new-technology/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">カテゴリ</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/new-technology/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">タグ</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yoshi0808" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yoshi0808" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yoshi0808.blog@gmail.com" title="E-Mail → mailto:yoshi0808.blog@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yoshi0808_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yoshi0808_" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+
+
+
+      </section>
     </div>
-  </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
 
-</div>
+
     </header>
 
     
@@ -206,16 +269,15 @@
     <span>0%</span>
   </div>
 
-  <a href="https://github.com/yoshi0808" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
 
 
-    <main class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
+    <div class="main-inner post posts-expand">
+      
 
-          <div class="content post posts-expand">
-            
+      
 
     
   
@@ -232,38 +294,43 @@
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="New technologies in our life">
     </span>
+
+    
+    
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           XG Firewall v18の設定におけるベストプラクティス
         </h1>
 
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">投稿日</span>
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">投稿日</span>
 
-              <time title="作成日：2020-05-09 17:55:26" itemprop="dateCreated datePublished" datetime="2020-05-09T17:55:26+09:00">2020-05-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">編集日</span>
-                <time title="修正日：2020-07-08 20:34:03" itemprop="dateModified" datetime="2020-07-08T20:34:03+09:00">2020-07-08</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">カテゴリ</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/new-technology/categories/Security/" itemprop="url" rel="index"><span itemprop="name">Security</span></a>
-                </span>
-            </span>
+      <time title="作成日：2020-05-09 17:55:26" itemprop="dateCreated datePublished" datetime="2020-05-09T17:55:26+09:00">2020-05-09</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">編集日</span>
+        <time title="修正日：2020-07-08 20:34:03" itemprop="dateModified" datetime="2020-07-08T20:34:03+09:00">2020-07-08</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">カテゴリ</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/Security/" itemprop="url" rel="index"><span itemprop="name">Security</span></a>
+        </span>
+    </span>
 
-          
+  
+</div>
 
         </div>
       </header>
@@ -272,11 +339,8 @@
     
     
     <div class="post-body" itemprop="articleBody">
-
-      
-        <div class="note success">
-            <h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>　XG Firewall v18のWebフィルタ・アプリケーションフィルタ・IPSの高速化・SSL証明書の検証を対象に、Sophos Communityを参考に、ホームユーザーにとってベストプラクティスとなる設定を行います。</p>
-          </div>
+        <div class="note success"><h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>　XG Firewall v18のWebフィルタ・アプリケーションフィルタ・IPSの高速化・SSL証明書の検証を対象に、Sophos Communityを参考に、ホームユーザーにとってベストプラクティスとなる設定を行います。</p>
+</div>
 
 <a id="more"></a>
 
@@ -307,7 +371,7 @@
 </li>
 <li>個別のファイアウォールのルールでUDP443のQUICを認めない設定、不正なSSL証明書を許可しない等の設定が必要です。</li>
 </ol>
-<h2 id="IPSの設定変更"><a href="#IPSの設定変更" class="headerlink" title="IPSの設定変更"></a>IPSの設定変更</h2><p>XGの画面右上にある、<span class="label default">admin▼</span>から<span class="label default">コンソール</span>を選択し起動します。パスワードを入力し、<span class="label default">4.Device Console</span>に入ります。そして、以下のコマンドを入力し、期待する設定値を合っているか確認します。</p>
+<h2 id="IPSの設定変更"><a href="#IPSの設定変更" class="headerlink" title="IPSの設定変更"></a>IPSの設定変更</h2><p>XGの画面右上にある、<mark class="label ">admin▼</mark>から<mark class="label ">コンソール</mark>を選択し起動します。パスワードを入力し、<mark class="label ">4.Device Console</mark>に入ります。そして、以下のコマンドを入力し、期待する設定値を合っているか確認します。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console&gt; show advanced-firewall</span><br></pre></td></tr></table></figure>
 
 <ul>
@@ -325,7 +389,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console&gt; <span class="built_in">set</span> ips maxpkts 200</span><br></pre></td></tr></table></figure>
 
 <h2 id="アプリケーションフィルタの設定"><a href="#アプリケーションフィルタの設定" class="headerlink" title="アプリケーションフィルタの設定"></a>アプリケーションフィルタの設定</h2><p>とにかくアプリケーションの数が多い事と、今後もメンテナンスしていく事を留意して設定します。高リスクというカテゴリであっても、ホームユーザーが利用するアプリケーションもそれなりにあります。ここでは、リコメンドされた拒否アプリの拒否設定をしつつ、ユーザー側で許可する設定を加えていく事になります。ただし下手にアプリを個別選択するようなフィルタにしてしまうと、新しいアプリケーションが追加される都度、メンテナンスが必要となってしまいます。従い<strong>リスクの高いアプリケーションは停止を原則とし、自分が許可するアプリの設定を加え</strong>、以後はなるべくメンテナンスが不要となるように設定します。</p>
-<p>XGの左メニューの<span class="label default">アプリケーション</span>の<span class="label default">アプリケーションリスト</span>の右上に”分類”というフィルタがあります。このフィルタをクリックし展開すると、新規/認証済み/許容/未認証とあります。これはクラウドアプリケーションとして登録されているものが対象となります。左ペインメニューの<span class="label default">アプリケーション</span>から<span class="label default">クラウドアプリケーション</span>で内容が確認できます。</p>
+<p>XGの左メニューの<mark class="label ">アプリケーション</mark>の<mark class="label ">アプリケーションリスト</mark>の右上に”分類”というフィルタがあります。このフィルタをクリックし展開すると、新規/認証済み/許容/未認証とあります。これはクラウドアプリケーションとして登録されているものが対象となります。左ペインメニューの<mark class="label ">アプリケーション</mark>から<mark class="label ">クラウドアプリケーション</mark>で内容が確認できます。</p>
 <img src="/new-technology/2020/05/09/best-practice/filter.png" class="" title="alt">
 
 <p>“未認証”というのは不許可の意味です。デフォルトで、”新規”か”設定なし（空白）”となっています。リスクの高低によらず、自身で”認証済み”または”許容”としたものは許可する事になります。またリスクが低くとも明らかに使わないものは”未認証”を設定すると、そのアプリケーションは直ちに拒否されるようになります。</p>
@@ -376,11 +440,11 @@
 <td>-</td>
 </tr>
 </tbody></table>
-<p>XGの左メニューの<span class="label default">アプリケーション</span>の<span class="label default">アプリケーションフィルタ</span>から、”追加”ボタンをクリックしてください。フィルタの名前を決めます。テンプレートは”Allow ALL”のままで構いません。ここでは、”Block High Risk Apps”と命名します。</p>
+<p>XGの左メニューの<mark class="label ">アプリケーション</mark>の<mark class="label ">アプリケーションフィルタ</mark>から、”追加”ボタンをクリックしてください。フィルタの名前を決めます。テンプレートは”Allow ALL”のままで構いません。ここでは、”Block High Risk Apps”と命名します。</p>
 <img src="/new-technology/2020/05/09/best-practice/application1.png" class="" title="alt">
 
 <ol>
-<li>以下のようにカテゴリで<span class="label default">リスク</span>のプルダウンからHigh、Very Highのものを選択し、アクションは”拒否”を選び保存してください。</li>
+<li>以下のようにカテゴリで<mark class="label ">リスク</mark>のプルダウンからHigh、Very Highのものを選択し、アクションは”拒否”を選び保存してください。</li>
 </ol>
 <img src="/new-technology/2020/05/09/best-practice/application2.png" class="" title="alt">
 
@@ -388,15 +452,15 @@
 <img src="/new-technology/2020/05/09/best-practice/application3.png" class="" title="alt">
 
 <ol>
-<li><span class="label default">追加</span>ボタンをクリックし、フィルタを追加します。今度はカテゴリから、P2PとProxyを選び、<span class="label default">アクション</span>は"拒否"を選び保存します。</li>
+<li><mark class="label ">追加</mark>ボタンをクリックし、フィルタを追加します。今度はカテゴリから、P2PとProxyを選び、<mark class="label ">アクション</mark>は"拒否"を選び保存します。</li>
 <li>“DNS QNAME”と”OpenVPN”とをフィルタします。一番右側のプルダウンのスマートフィルタに<code>qname</code>と入力し、Enterキーを押下してください。一旦”DNS Multiple QNAME”が絞り込まれスマートフィルタの欄が空白になりますので、引き続き<code>openvpn</code>と入力し、Enterキーを押下してください。これで2つのフィルタが絞り込まれているので、”拒否”を選択し、”保存”をクリックしてください。</li>
 <li>ご自身で利用しているアプリが高リスクまたはP2PとProxyに含まれる場合の除外設定です。ログビューアでアプリケーションフィルタログを見ながら拒否されてしまった対象を除外する設定が必要です。ホームユーザーには最低限度EXEファイルおよびZIPファイルは必要でしょうから、スマートフィルタを活用し<code>exe file</code>、<code>zip file</code>と入力し、許可と設定します。</li>
-<li><span class="label default">分類</span>から"未認証"を選ぶと、自動で"Cloud Application"が選択されます。これを"拒否"として保存します。</li>
-<li><span class="label default">分類</span>から"許容"と"認証済み"を選択し、<span class="label default">アクション</span>は"許可"として登録します。
+<li><mark class="label ">分類</mark>から"未認証"を選ぶと、自動で"Cloud Application"が選択されます。これを"拒否"として保存します。</li>
+<li><mark class="label ">分類</mark>から"許容"と"認証済み"を選択し、<mark class="label ">アクション</mark>は"許可"として登録します。
 
 </li>
 </ol>
-<p>クラウドアプリケーションの画面では、以下の通り、過去に通信のあったアプリケーション一覧が表示されます。既に安全と分かっているものについては、<span class="label default">classify</span>から分類を”認証済み”にマークできます。未認証と設定した場合は、アプリケーションフィルタで即座に通信が停止されます。</p>
+<p>クラウドアプリケーションの画面では、以下の通り、過去に通信のあったアプリケーション一覧が表示されます。既に安全と分かっているものについては、<mark class="label ">classify</mark>から分類を”認証済み”にマークできます。未認証と設定した場合は、アプリケーションフィルタで即座に通信が停止されます。</p>
 <p>これでアプリケーションフィルタの設定は終了です。今後Sophosによりフィルタが定期的に追加されていきますが、リスクの高いアプリケーションは自動的にフィルタされる事になります。また、クラウドアプリケーションはリスクが高でも即座に拒否とはなりませんので、上記の記載のとおり、定期的にクラウドアプリケーションの利用状況を確認してください。</p>
 <h2 id="Webフィルタの設定"><a href="#Webフィルタの設定" class="headerlink" title="Webフィルタの設定"></a>Webフィルタの設定</h2><p>続いてWebフィルタの設定を行います。フィルタとその内容は以下の通りです。</p>
 <table>
@@ -443,35 +507,35 @@
 <td>分類不能なサイト</td>
 </tr>
 </tbody></table>
-<p>XGの左ペインメニューの、<span class="label default">Web</span>、<span class="label default">ポリシー</span>から、”追加”ボタンをクリックします。</p>
+<p>XGの左ペインメニューの、<mark class="label ">Web</mark>、<mark class="label ">ポリシー</mark>から、”追加”ボタンをクリックします。</p>
 <img src="/new-technology/2020/05/09/best-practice/webfilter1.png" class="" title="alt">
 
 <p>上記の図のとおり名前を入力します。ここでは、”Home Policy”とします。デフォルトは許可で、その上に拒否するルールを追加していきます。</p>
 <p>以下の図のとおり拒否する対象を選択する時には”すべて表示”とし、全てのカテゴリを表示させ、選択してください。</p>
 <img src="/new-technology/2020/05/09/best-practice/webfilter2.png" class="" title="alt">
 
-<p>登録が終わったら、画面の最下部にある、<span class="label default">変更を適用</span>をクリックしてください。</p>
-<p>最後にWebの<span class="label default">全般設定</span>をクリックします。</p>
+<p>登録が終わったら、画面の最下部にある、<mark class="label ">変更を適用</mark>をクリックしてください。</p>
+<p>最後にWebの<mark class="label ">全般設定</mark>をクリックします。</p>
 <ul>
-<li><span class="label default">認識されていないSSLプロトコルをブロック</span>にチェックします</li>
-<li><span class="label default">無効な証明書をブロック</span>にチェックします</li>
-<li><span class="label default">スキャンエンジンの選択</span>は"デュアルエンジン"を選択します
+<li><mark class="label ">認識されていないSSLプロトコルをブロック</mark>にチェックします</li>
+<li><mark class="label ">無効な証明書をブロック</mark>にチェックします</li>
+<li><mark class="label ">スキャンエンジンの選択</mark>は"デュアルエンジン"を選択します
 
 </li>
 </ul>
 <img src="/new-technology/2020/05/09/best-practice/webfilter3.png" class="" title="alt">
 
-<h2 id="ルールとポリシーの設定"><a href="#ルールとポリシーの設定" class="headerlink" title="ルールとポリシーの設定"></a>ルールとポリシーの設定</h2><p>XGの左ペインの<span class="label default">ルールとポリシー</span>で設定を見直します。デフォルトポリシーとしているルールを選択します。</p>
+<h2 id="ルールとポリシーの設定"><a href="#ルールとポリシーの設定" class="headerlink" title="ルールとポリシーの設定"></a>ルールとポリシーの設定</h2><p>XGの左ペインの<mark class="label ">ルールとポリシー</mark>で設定を見直します。デフォルトポリシーとしているルールを選択します。</p>
 <img src="/new-technology/2020/05/09/best-practice/rule1.png" class="" title="alt">
 
 <p>これまでの記事では”To Internet”というデフォルトのルールを作ってきましたので、そのルールを修正します。</p>
 <ul>
-<li><span class="label default">Webポリシー</span>に、"Home Policy"を設定します。</li>
-<li><span class="label default">アプリケーションコントロール</span>に、"Block High Risk Apps"を設定します。</li>
-<li>Sophos推奨の<span class="label default">QUICプロトコルのブロック</span>にチェックします。</li>
+<li><mark class="label ">Webポリシー</mark>に、"Home Policy"を設定します。</li>
+<li><mark class="label ">アプリケーションコントロール</mark>に、"Block High Risk Apps"を設定します。</li>
+<li>Sophos推奨の<mark class="label ">QUICプロトコルのブロック</mark>にチェックします。</li>
 </ul>
 <p>IPv6を有効にされている方は、IPv4と同様にIPv6のポリシーを設定してください。</p>
-<h2 id="SSL-TLSインスペクションルールの確認"><a href="#SSL-TLSインスペクションルールの確認" class="headerlink" title="SSL/TLSインスペクションルールの確認"></a>SSL/TLSインスペクションルールの確認</h2><p>いよいよ設定も最後です。XGの左ペインメニューの<span class="label default">ルールとポリシー</span>から<span class="label default">SSL/TLSインスペクションルール</span>に進み、右上の<span class="label default">SSL/TLSインスペクションの設定</span>をクリックします。特に設定変更は不要ですが、以下の通りである事を確認してください。</p>
+<h2 id="SSL-TLSインスペクションルールの確認"><a href="#SSL-TLSインスペクションルールの確認" class="headerlink" title="SSL/TLSインスペクションルールの確認"></a>SSL/TLSインスペクションルールの確認</h2><p>いよいよ設定も最後です。XGの左ペインメニューの<mark class="label ">ルールとポリシー</mark>から<mark class="label ">SSL/TLSインスペクションルール</mark>に進み、右上の<mark class="label ">SSL/TLSインスペクションの設定</mark>をクリックします。特に設定変更は不要ですが、以下の通りである事を確認してください。</p>
 <img src="/new-technology/2020/05/09/best-practice/ssl-inspection.png" class="" title="alt">
 
 <h2 id="除外した設定"><a href="#除外した設定" class="headerlink" title="除外した設定"></a>除外した設定</h2><p>ベストプラクティスとして記事に記載のある中で今回設定していないものがあります。以下の記載の部分です。</p>
@@ -487,45 +551,27 @@
     
     
     
-        
 
-<div>
-<ul class="post-copyright">
-  <li class="post-copyright-author">
-    <strong>著者： </strong>阿部　吉伸(Yoshinobu ABE)
-  </li>
-  <li class="post-copyright-link">
-    <strong>記事へのリンク：</strong>
-    <a href="https://yoshi0808.github.io/new-technology/2020/05/09/best-practice/" title="XG Firewall v18の設定におけるベストプラクティス">https://yoshi0808.github.io/new-technology/2020/05/09/best-practice/</a>
-  </li>
-  <li class="post-copyright-license">
-    <strong>著作権表示： </strong>このブログ内のすべての記事は、特別な記載がない限り <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> の下のライセンスで保護されています。また、免責事項・プライバシーポリシーについては、メニューのディスクレーマーをご覧ください。
-  </li>
-</ul>
-</div>
-
-
-      <footer class="post-footer">
+    <footer class="post-footer">
           <div class="post-tags">
-              <a href="/new-technology/tags/XG-Firewall/" rel="tag"># XG Firewall</a>
+              <a href="/new-technology/tags/XG-Firewall/" rel="tag"><i class="fa fa-tag"></i> XG Firewall</a>
           </div>
 
         
 
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/new-technology/2020/05/06/web-application-filter/" rel="prev" title="XG FirewallのWebとアプリケーションフィルタについて">
-      <i class="fa fa-chevron-left"></i> XG FirewallのWebとアプリケーションフィルタについて
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/new-technology/2020/05/16/Intercept-DNS/" rel="next" title="XG Firewall v18で正しいDNS利用を強制する">
-      XG Firewall v18で正しいDNS利用を強制する <i class="fa fa-chevron-right"></i>
-    </a></div>
-    </div>
-      </footer>
-    
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/new-technology/2020/05/06/web-application-filter/" rel="prev" title="XG FirewallのWebとアプリケーションフィルタについて">
+                  <i class="fa fa-chevron-left"></i> XG FirewallのWebとアプリケーションフィルタについて
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/new-technology/2020/05/16/Intercept-DNS/" rel="next" title="XG Firewall v18で正しいDNS利用を強制する">
+                  XG Firewall v18で正しいDNS利用を強制する <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
   </article>
   
   
@@ -533,8 +579,7 @@
 
 
 
-          </div>
-          
+      
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -543,7 +588,7 @@
       activeClass = localStorage.getItem('comments_active') || activeClass;
     }
     if (activeClass) {
-      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
       if (activeTab) {
         activeTab.click();
       }
@@ -552,101 +597,20 @@
   if (CONFIG.comments.storage) {
     window.addEventListener('tabs:click', event => {
       if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
-      let commentClass = event.target.classList[1];
+      const commentClass = event.target.classList[1];
       localStorage.setItem('comments_active', commentClass);
     });
   }
 </script>
 
-        </div>
-          
-  
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line toggle-line-first"></span>
-    <span class="toggle-line toggle-line-middle"></span>
-    <span class="toggle-line toggle-line-last"></span>
-  </div>
-
-  <aside class="sidebar">
-    <div class="sidebar-inner">
-
-      <ul class="sidebar-nav motion-element">
-        <li class="sidebar-nav-toc">
-          見出し
-        </li>
-        <li class="sidebar-nav-overview">
-          概要
-        </li>
-      </ul>
-
-      <!--noindex-->
-      <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%93%E3%81%AE%E8%A8%98%E4%BA%8B%E3%81%A7%E5%AE%9F%E7%8F%BE%E3%81%99%E3%82%8B%E3%81%93%E3%81%A8"><span class="nav-number">1.</span> <span class="nav-text">この記事で実現すること</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG-v18%E3%81%AE%E3%83%99%E3%82%B9%E3%83%88%E3%83%97%E3%83%A9%E3%82%AF%E3%83%86%E3%82%A3%E3%82%B9"><span class="nav-number">2.</span> <span class="nav-text">XG v18のベストプラクティス</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B%E5%86%85%E5%AE%B9"><span class="nav-number">3.</span> <span class="nav-text">設定する内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IPS%E3%81%AE%E8%A8%AD%E5%AE%9A%E5%A4%89%E6%9B%B4"><span class="nav-number">4.</span> <span class="nav-text">IPSの設定変更</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%83%95%E3%82%A3%E3%83%AB%E3%82%BF%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">5.</span> <span class="nav-text">アプリケーションフィルタの設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Web%E3%83%95%E3%82%A3%E3%83%AB%E3%82%BF%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">6.</span> <span class="nav-text">Webフィルタの設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%AB%E3%83%BC%E3%83%AB%E3%81%A8%E3%83%9D%E3%83%AA%E3%82%B7%E3%83%BC%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">7.</span> <span class="nav-text">ルールとポリシーの設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSL-TLS%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%9A%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3%E3%83%AB%E3%83%BC%E3%83%AB%E3%81%AE%E7%A2%BA%E8%AA%8D"><span class="nav-number">8.</span> <span class="nav-text">SSL&#x2F;TLSインスペクションルールの確認</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%99%A4%E5%A4%96%E3%81%97%E3%81%9F%E8%A8%AD%E5%AE%9A"><span class="nav-number">9.</span> <span class="nav-text">除外した設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8B%95%E4%BD%9C%E7%A2%BA%E8%AA%8D"><span class="nav-number">10.</span> <span class="nav-text">動作確認</span></a></li></ol></div>
-      </div>
-      <!--/noindex-->
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="阿部　吉伸(Yoshinobu ABE)"
-      src="/new-technology/images/yoshi.png">
-  <p class="site-author-name" itemprop="name">阿部　吉伸(Yoshinobu ABE)</p>
-  <div class="site-description" itemprop="description">IT</div>
-</div>
-<div class="site-state-wrap motion-element">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-          <a href="/new-technology/archives/">
-        
-          <span class="site-state-item-count">31</span>
-          <span class="site-state-item-name">ポスト</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-            <a href="/new-technology/categories/">
-          
-        <span class="site-state-item-count">6</span>
-        <span class="site-state-item-name">カテゴリ</span></a>
-      </div>
-      <div class="site-state-item site-state-tags">
-            <a href="/new-technology/tags/">
-          
-        <span class="site-state-item-count">5</span>
-        <span class="site-state-item-name">タグ</span></a>
-      </div>
-  </nav>
-</div>
-  <div class="links-of-author motion-element">
-      <span class="links-of-author-item">
-        <a href="https://github.com/yoshi0808" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yoshi0808" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
-      </span>
-      <span class="links-of-author-item">
-        <a href="mailto:yoshi0808.blog@gmail.com" title="E-Mail → mailto:yoshi0808.blog@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
-      </span>
-      <span class="links-of-author-item">
-        <a href="https://twitter.com/yoshi0808_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yoshi0808_" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
-      </span>
-  </div>
-  <div class="cc-license motion-element" itemprop="license">
-    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/new-technology/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
-  </div>
-
-
-
-      </div>
-
     </div>
-  </aside>
-  <div id="sidebar-dimmer"></div>
+  </main>
 
+  <footer class="footer">
+    <div class="footer-inner">
+      
 
-      </div>
-    </main>
-
-    <footer class="footer">
-      <div class="footer-inner">
-        
-
-        
+      
 
 <div class="copyright">
   
@@ -660,44 +624,16 @@
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
   </div>
 
-        
-
-
-
-
-
-
-
-
-      </div>
-    </footer>
-  </div>
+    </div>
+  </footer>
 
   
-  <script src="/new-technology/lib/anime.min.js"></script>
-  <script src="/new-technology/lib/velocity/velocity.min.js"></script>
-  <script src="/new-technology/lib/velocity/velocity.ui.min.js"></script>
-
-<script src="/new-technology/js/utils.js"></script>
-
-<script src="/new-technology/js/motion.js"></script>
-
-
-<script src="/new-technology/js/schemes/muse.js"></script>
-
-
-<script src="/new-technology/js/next-boot.js"></script>
-
-
-
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/new-technology/js/utils.js"></script><script src="/new-technology/js/motion.js"></script><script src="/new-technology/js/schemes/muse.js"></script><script src="/new-technology/js/next-boot.js"></script>
 
   
 
 
-
-
-  
-<script src="/new-technology/js/local-search.js"></script>
 
 
 
@@ -710,18 +646,30 @@
 
 
 <script>
-if (document.querySelectorAll('pre.mermaid').length) {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
-    mermaid.initialize({
-      theme    : 'default',
+if (document.querySelectorAll('.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8.7.0/dist/mermaid.min.js', () => {
+    mermaid.init({
+      theme    : 'forest',
       logLevel : 3,
       flowchart: { curve     : 'linear' },
       gantt    : { axisFormat: '%m/%d/%Y' },
       sequence : { actorMargin: 50 }
-    });
+    }, '.mermaid');
   }, window.mermaid);
 }
 </script>
+
+
+
+
+
+  
+
+
+
+
+
+
 
 
   
