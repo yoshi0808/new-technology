@@ -234,6 +234,12 @@ span.exturl:hover {
   border-bottom-color: var(--link-hover-color);
   color: var(--link-hover-color);
 }
+a[target="_blank"]::after {
+  font-family: "Font Awesome 5 Free";
+  font-weight: bold;
+  content: "\f35d";
+  margin: 0 4px;
+}
 iframe,
 img,
 video,
@@ -2718,7 +2724,7 @@ hr {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #a6f4a4;
+  background: #acffc3;
   display: inline-block;
   margin-right: 3px;
   transform: translateY(-2px);
