@@ -53,6 +53,13 @@ a, span.exturl {
   cursor: pointer;
 }
 
+a[target="_blank"]::after {
+  font-family: $font-icons;
+  font-weight: bold;
+  content: "\f35d";
+  margin: 0 4px;
+}
+
 iframe, img, video, embed {
   display: block;
   margin-left: auto;

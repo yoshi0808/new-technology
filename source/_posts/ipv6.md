@@ -42,7 +42,7 @@ ULAは、MACアドレスと時刻からおおよそ一意となるIPv6アドレ�
 
 上記の{% label @Stdin Inputs %}に直接入力が可能です。MACアドレスを貼り付け、{% label @▶︎Execute %}ボタンをクリックしてください。もしお使いのブラウザでエラー表示が出ている場合は、以下のリンクからULA生成ツールを開き実行してください。
 
-{% btn https://jdoodle.com/a/20tR, ULA生成ツール（JDoodleサイトを別ウィンドウで開きます）, external-link-alt fa-fw fa-lg %}<p><p>
+- [ULA生成ツール（jdoodle.com）](https://jdoodle.com/a/20tR)
 
 {% label @Result %}に、以下の4つの項目が表示されます。MACアドレスが正しく入力されなかった場合は、"Bad MAC Adderss"と表示されます。
 
