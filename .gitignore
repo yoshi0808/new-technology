@@ -7,3 +7,4 @@ public/
 .deploy*/
 themes/next/
 themes/next/source/images/fuku.png
+*.pem
