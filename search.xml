@@ -144,6 +144,127 @@ XGFirewall-- &quot;192.168.0.0&#x2F;24&quot; ---HGW
       </tags>
   </entry>
   <entry>
+    <title>XG Firewallの通知設定を行う</title>
+    <url>/new-technology/2020/04/03/Notifications/</url>
+    <content><![CDATA[<div class="note success"><h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>XG Firewallで重要なエラーが発生した場合、VPNの接続通知、バージョンアップの通知をメールで受信できるようになります。</p>
+</div>
+
+<a id="more"></a>
+<h2 id="Gmailからメールを通知する設定を行う"><a href="#Gmailからメールを通知する設定を行う" class="headerlink" title="Gmailからメールを通知する設定を行う"></a>Gmailからメールを通知する設定を行う</h2><p>XG Firewallのセットアップ時に通知用のメールアドレスを設定しても、メール通知がされません。プロバイダをはじめどこのサービスでも、SPAM対策がなされており、簡単にメールを送信する事は出来なくなっています。これは、<mark class="label ">Outbound Port 25 Blocking</mark>と呼ばれています。この回避策として、Googleアカウントを使う事で、メール通知が可能となります。</p>
+<ol>
+<li>Googleアカウントをお持ちでない方はアカウントを作成し、あらかじめ2段階認証の設定を行ってください。次に<a href="https://myaccount.google.com/?tab=kk">Googleアカウントのページ</a>に行き、左ペインの<mark class="label ">セキュリティ</mark>をクリックしてください。</li>
+<li>アプリパスワードをクリックします。</li>
+</ol>
+<img src="/new-technology/2020/04/03/Notifications/googleacount.png" class="" title="alt">
+
+<ol start="3">
+<li>Googleアカウントのパスワードで認証します</li>
+<li><mark class="label ">アプリ パスワードを生成するアプリとデバイスを選択してください。</mark>という説明があるので、そこでXG用のパスワードと分かるように以下を入力してください</li>
+<li>アプリを選択　→　メールを選択します</li>
+<li>デバイスを選択　→　その他（名前を選択）を選択します</li>
+</ol>
+<img src="/new-technology/2020/04/03/Notifications/googleacount1.png" class="" title="alt">
+
+<ol start="7">
+<li>名前をXG Firewallのものと分かるように入力します</li>
+<li>生成ボタンをクリックします</li>
+<li>生成されたアプリパスワードが表示されます</li>
+<li>パスワードを控えておきます</li>
+<li>完了ボタンをクリックし、Googleでの設定を終了します</li>
+</ol>
+<img src="/new-technology/2020/04/03/Notifications/googleacount2.png" class="" title="alt">
+
+<p>続いて、XG側の設定となります。左ペインの<mark class="label ">管理</mark>から、<mark class="label ">通知の設定</mark>をクリックします。以下の通り、<mark class="label ">外部メールサーバー</mark>を選択し、先ほどのGmailアカウントに関する情報を入力していきます。</p>
+<img src="/new-technology/2020/04/03/Notifications/googleacount3.png" class="" title="alt">
+
+<table>
+<thead>
+<tr>
+<th>説明</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>メールサーバーアドレス</td>
+<td>smtp.gmail.com</td>
+</tr>
+<tr>
+<td>ポート</td>
+<td>587</td>
+</tr>
+<tr>
+<td>ユーザ名</td>
+<td><a href="mailto:&#x79;&#111;&#x75;&#x72;&#95;&#x61;&#x63;&#x63;&#111;&#117;&#x6e;&#x74;&#64;&#x67;&#x6d;&#97;&#105;&#108;&#46;&#99;&#x6f;&#x6d;">&#x79;&#111;&#x75;&#x72;&#95;&#x61;&#x63;&#x63;&#111;&#117;&#x6e;&#x74;&#64;&#x67;&#x6d;&#97;&#105;&#108;&#46;&#99;&#x6f;&#x6d;</a></td>
+</tr>
+<tr>
+<td>パスワード</td>
+<td>Googleで取得した16桁のアプリパスワード</td>
+</tr>
+<tr>
+<td>接続のセキュリティ</td>
+<td>STARTTLS</td>
+</tr>
+<tr>
+<td>送信元メールアドレス</td>
+<td><a href="mailto:&#x79;&#111;&#117;&#x72;&#95;&#x61;&#x63;&#99;&#111;&#x75;&#110;&#x74;&#64;&#103;&#109;&#x61;&#x69;&#108;&#46;&#99;&#111;&#x6d;">&#x79;&#111;&#117;&#x72;&#95;&#x61;&#x63;&#99;&#111;&#x75;&#110;&#x74;&#64;&#103;&#109;&#x61;&#x69;&#108;&#46;&#99;&#111;&#x6d;</a></td>
+</tr>
+<tr>
+<td>メールアドレスに通知を送信</td>
+<td>通知を受け取りたいメールアドレス</td>
+</tr>
+<tr>
+<td>管理インターフェースのIPアドレス</td>
+<td>WANのIPアドレスを選択</td>
+</tr>
+</tbody></table>
+<p>最後に適用をクリックします。その後通知ボタンをクリックしテスト通知で正しく受信できる事を確認してください。それなりに重要度が高いものを対象とし、スマホで通知を受けると良いでしょう。</p>
+<h2 id="メール通知するイベントを選択する"><a href="#メール通知するイベントを選択する" class="headerlink" title="メール通知するイベントを選択する"></a>メール通知するイベントを選択する</h2><p>XGの左ペインから<mark class="label ">システムサービス</mark>→<mark class="label ">通知リスト</mark>と進みます。以下の通り、イベント毎に通知が設定可能となっているので、<mark class="label ">メール通知</mark>のトグルスイッチをオンにして、好みの通知について選択してください。</p>
+<img src="/new-technology/2020/04/03/Notifications/notify.png" class="" title="alt">
+
+<p>リスク観点で考えると、以下の内容をオンにしておくのがお勧めです。</p>
+<ul>
+<li>ユーザーのサインイン失敗</li>
+<li>新しいファームウェアの通知</li>
+<li>システム関連（起動、CPU高、シグネチャ更新失敗）</li>
+<li>VPNの接続</li>
+<li>IPSの攻撃検知（サーバー公開している場合）</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Security</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>XG Firewall Sophos Communityについて</title>
+    <url>/new-technology/2020/03/26/SophosCommunity/</url>
+    <content><![CDATA[<h2 id="Sophos-Communityで情報を調べる"><a href="#Sophos-Communityで情報を調べる" class="headerlink" title="Sophos Communityで情報を調べる"></a>Sophos Communityで情報を調べる</h2><p>XG Firewall Home EditionはSophosによるサポートがなく、ユーザコミュニティの相互サポートによって成り立っています。そもそもこんなに素晴らしいソフトウェアが無料なのですから、それだけでも感謝すべき事ではありますが。サポートサイトは英語が中心ですが、セキュリティに関するビジネスをしている方とかも積極的に参加しているようで、勉強になります。</p>
+<blockquote>
+<p><a href="https://community.sophos.com/">Sophos Community（英語）</a></p>
+</blockquote>
+<a id="more"></a>
+<p>さて、直接XGの話ではありませんが、ここ数日話題になっているドイツ製翻訳ソフトの<mark class="label ">DeepL</mark>が素晴らしいです。私はGoogle翻訳をずっと使っていましたが、こちらも使い勝手が良く便利です。<br>Windows、macOSのアプリケーションとしてインストールする事が出来ます。利用は無償（高機能な有償のpro版もあります）で、例えばブラウザで翻訳箇所を選択しCtrl+c(macはcommand+c)を2回押下するとDeepLが起動し、英訳と日本語が併記されます。</p>
+<p>DeepLのダウンロードは<a href="https://www.deepl.com/app">こちら</a>です。</p>
+<p>これまで私がブログで書いてきたv18のSSL/TLSインスペクションですが、情報がたくさんあります。このブログで全てを説明するのは到底無理があります。Communityの素晴らしい知見を活用すべく、活用してみてください。</p>
+<blockquote>
+<p><a href="https://community.sophos.com/products/xg-firewall/f/recommended-reads/118753/sophos-xg-firewall-v18-troubleshooting-problems-with-the-dpi-engine">Sophos XG Firewall v18: DPI エンジンのトラブルシューティング</a></p>
+</blockquote>
+<p>アプリでCtrl+cを2回押下して先頭部分の抜粋を抜粋します。</p>
+<img src="/new-technology/2020/03/26/SophosCommunity/community.png" class="" title="alt">
+
+<p>ぜひ、翻訳ソフトのDeepLを活用しながら、XGやSSLインスペクションの理解を深めてください。</p>
+]]></content>
+      <categories>
+        <category>Security</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+        <tag>DeepL</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>XG Firewall v18で正しいDNS利用を強制する</title>
     <url>/new-technology/2020/05/16/Intercept-DNS/</url>
     <content><![CDATA[<div class="note success"><h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>自分で設定したDNS（多くはプロバイダDNS）に反し、行儀の悪いクライアントや悪意のあるプログラムはそれに従わず、別のDNSを参照する可能性があります。XG Firewall v18の機能を活用してDNSの安全性を確保します。</p>
@@ -218,33 +339,6 @@ XGFirewall-- &quot;192.168.0.0&#x2F;24&quot; ---HGW
       </tags>
   </entry>
   <entry>
-    <title>XG Firewall Sophos Communityについて</title>
-    <url>/new-technology/2020/03/26/SophosCommunity/</url>
-    <content><![CDATA[<h2 id="Sophos-Communityで情報を調べる"><a href="#Sophos-Communityで情報を調べる" class="headerlink" title="Sophos Communityで情報を調べる"></a>Sophos Communityで情報を調べる</h2><p>XG Firewall Home EditionはSophosによるサポートがなく、ユーザコミュニティの相互サポートによって成り立っています。そもそもこんなに素晴らしいソフトウェアが無料なのですから、それだけでも感謝すべき事ではありますが。サポートサイトは英語が中心ですが、セキュリティに関するビジネスをしている方とかも積極的に参加しているようで、勉強になります。</p>
-<blockquote>
-<p><a href="https://community.sophos.com/">Sophos Community（英語）</a></p>
-</blockquote>
-<a id="more"></a>
-<p>さて、直接XGの話ではありませんが、ここ数日話題になっているドイツ製翻訳ソフトの<mark class="label ">DeepL</mark>が素晴らしいです。私はGoogle翻訳をずっと使っていましたが、こちらも使い勝手が良く便利です。<br>Windows、macOSのアプリケーションとしてインストールする事が出来ます。利用は無償（高機能な有償のpro版もあります）で、例えばブラウザで翻訳箇所を選択しCtrl+c(macはcommand+c)を2回押下するとDeepLが起動し、英訳と日本語が併記されます。</p>
-<p>DeepLのダウンロードは<a href="https://www.deepl.com/app">こちら</a>です。</p>
-<p>これまで私がブログで書いてきたv18のSSL/TLSインスペクションですが、情報がたくさんあります。このブログで全てを説明するのは到底無理があります。Communityの素晴らしい知見を活用すべく、活用してみてください。</p>
-<blockquote>
-<p><a href="https://community.sophos.com/products/xg-firewall/f/recommended-reads/118753/sophos-xg-firewall-v18-troubleshooting-problems-with-the-dpi-engine">Sophos XG Firewall v18: DPI エンジンのトラブルシューティング</a></p>
-</blockquote>
-<p>アプリでCtrl+cを2回押下して先頭部分の抜粋を抜粋します。</p>
-<img src="/new-technology/2020/03/26/SophosCommunity/community.png" class="" title="alt">
-
-<p>ぜひ、翻訳ソフトのDeepLを活用しながら、XGやSSLインスペクションの理解を深めてください。</p>
-]]></content>
-      <categories>
-        <category>Security</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-        <tag>DeepL</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Sophos XG Firewallの導入</title>
     <url>/new-technology/2020/02/23/XG-Firewall/</url>
     <content><![CDATA[<h2 id="導入の背景"><a href="#導入の背景" class="headerlink" title="導入の背景"></a>導入の背景</h2><p>元々、家庭用の無線ルータだけではセキュリティが不足していると考えていました。数年前よりランサムウェア等の脅威が出てきた事で、それなりの対策が必要と感じてきました。街のWIFIからも自宅のリソースに安全に接続したり、家のサーバーを踏み台にしてネットに繋げたいという欲も出てきて、今度はVPNが欲しいなと思い始めました。</p>
@@ -310,100 +404,6 @@ XGFirewall-- &quot;192.168.0.0&#x2F;24&quot; ---HGW
 <li><a href="/new-technology/2020/05/16/Intercept-DNS/" title="XG Firewall v18で正しいDNS利用を強制する">XG Firewall v18で正しいDNS利用を強制する</a></li>
 <li><a href="/new-technology/2020/06/24/protect-xg/" title="XG Firewall自身を防御する">XG Firewall自身を防御する</a>
 </li>
-</ul>
-]]></content>
-      <categories>
-        <category>Security</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>XG Firewallの通知設定を行う</title>
-    <url>/new-technology/2020/04/03/Notifications/</url>
-    <content><![CDATA[<div class="note success"><h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>XG Firewallで重要なエラーが発生した場合、VPNの接続通知、バージョンアップの通知をメールで受信できるようになります。</p>
-</div>
-
-<a id="more"></a>
-<h2 id="Gmailからメールを通知する設定を行う"><a href="#Gmailからメールを通知する設定を行う" class="headerlink" title="Gmailからメールを通知する設定を行う"></a>Gmailからメールを通知する設定を行う</h2><p>XG Firewallのセットアップ時に通知用のメールアドレスを設定しても、メール通知がされません。プロバイダをはじめどこのサービスでも、SPAM対策がなされており、簡単にメールを送信する事は出来なくなっています。これは、<mark class="label ">Outbound Port 25 Blocking</mark>と呼ばれています。この回避策として、Googleアカウントを使う事で、メール通知が可能となります。</p>
-<ol>
-<li>Googleアカウントをお持ちでない方はアカウントを作成し、あらかじめ2段階認証の設定を行ってください。次に<a href="https://myaccount.google.com/?tab=kk">Googleアカウントのページ</a>に行き、左ペインの<mark class="label ">セキュリティ</mark>をクリックしてください。</li>
-<li>アプリパスワードをクリックします。</li>
-</ol>
-<img src="/new-technology/2020/04/03/Notifications/googleacount.png" class="" title="alt">
-
-<ol start="3">
-<li>Googleアカウントのパスワードで認証します</li>
-<li><mark class="label ">アプリ パスワードを生成するアプリとデバイスを選択してください。</mark>という説明があるので、そこでXG用のパスワードと分かるように以下を入力してください</li>
-<li>アプリを選択　→　メールを選択します</li>
-<li>デバイスを選択　→　その他（名前を選択）を選択します</li>
-</ol>
-<img src="/new-technology/2020/04/03/Notifications/googleacount1.png" class="" title="alt">
-
-<ol start="7">
-<li>名前をXG Firewallのものと分かるように入力します</li>
-<li>生成ボタンをクリックします</li>
-<li>生成されたアプリパスワードが表示されます</li>
-<li>パスワードを控えておきます</li>
-<li>完了ボタンをクリックし、Googleでの設定を終了します</li>
-</ol>
-<img src="/new-technology/2020/04/03/Notifications/googleacount2.png" class="" title="alt">
-
-<p>続いて、XG側の設定となります。左ペインの<mark class="label ">管理</mark>から、<mark class="label ">通知の設定</mark>をクリックします。以下の通り、<mark class="label ">外部メールサーバー</mark>を選択し、先ほどのGmailアカウントに関する情報を入力していきます。</p>
-<img src="/new-technology/2020/04/03/Notifications/googleacount3.png" class="" title="alt">
-
-<table>
-<thead>
-<tr>
-<th>説明</th>
-<th>内容</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>メールサーバーアドレス</td>
-<td>smtp.gmail.com</td>
-</tr>
-<tr>
-<td>ポート</td>
-<td>587</td>
-</tr>
-<tr>
-<td>ユーザ名</td>
-<td><a href="mailto:&#121;&#x6f;&#x75;&#x72;&#95;&#x61;&#99;&#x63;&#111;&#117;&#110;&#x74;&#x40;&#x67;&#x6d;&#97;&#105;&#x6c;&#x2e;&#99;&#x6f;&#109;">&#121;&#x6f;&#x75;&#x72;&#95;&#x61;&#99;&#x63;&#111;&#117;&#110;&#x74;&#x40;&#x67;&#x6d;&#97;&#105;&#x6c;&#x2e;&#99;&#x6f;&#109;</a></td>
-</tr>
-<tr>
-<td>パスワード</td>
-<td>Googleで取得した16桁のアプリパスワード</td>
-</tr>
-<tr>
-<td>接続のセキュリティ</td>
-<td>STARTTLS</td>
-</tr>
-<tr>
-<td>送信元メールアドレス</td>
-<td><a href="mailto:&#121;&#x6f;&#117;&#x72;&#95;&#97;&#x63;&#x63;&#111;&#x75;&#110;&#x74;&#64;&#103;&#109;&#x61;&#105;&#108;&#x2e;&#99;&#111;&#109;">&#121;&#x6f;&#117;&#x72;&#95;&#97;&#x63;&#x63;&#111;&#x75;&#110;&#x74;&#64;&#103;&#109;&#x61;&#105;&#108;&#x2e;&#99;&#111;&#109;</a></td>
-</tr>
-<tr>
-<td>メールアドレスに通知を送信</td>
-<td>通知を受け取りたいメールアドレス</td>
-</tr>
-<tr>
-<td>管理インターフェースのIPアドレス</td>
-<td>WANのIPアドレスを選択</td>
-</tr>
-</tbody></table>
-<p>最後に適用をクリックします。その後通知ボタンをクリックしテスト通知で正しく受信できる事を確認してください。それなりに重要度が高いものを対象とし、スマホで通知を受けると良いでしょう。</p>
-<h2 id="メール通知するイベントを選択する"><a href="#メール通知するイベントを選択する" class="headerlink" title="メール通知するイベントを選択する"></a>メール通知するイベントを選択する</h2><p>XGの左ペインから<mark class="label ">システムサービス</mark>→<mark class="label ">通知リスト</mark>と進みます。以下の通り、イベント毎に通知が設定可能となっているので、<mark class="label ">メール通知</mark>のトグルスイッチをオンにして、好みの通知について選択してください。</p>
-<img src="/new-technology/2020/04/03/Notifications/notify.png" class="" title="alt">
-
-<p>リスク観点で考えると、以下の内容をオンにしておくのがお勧めです。</p>
-<ul>
-<li>ユーザーのサインイン失敗</li>
-<li>新しいファームウェアの通知</li>
-<li>システム関連（起動、CPU高、シグネチャ更新失敗）</li>
-<li>VPNの接続</li>
-<li>IPSの攻撃検知（サーバー公開している場合）</li>
 </ul>
 ]]></content>
       <categories>
@@ -498,67 +498,6 @@ XGFirewall-- &quot;192.168.0.0&#x2F;24&quot; ---HGW
       </categories>
       <tags>
         <tag>XG Firewall</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>パスワード管理ソフトのbitwardenを活用する</title>
-    <url>/new-technology/2020/08/30/bitwarden/</url>
-    <content><![CDATA[<img src="/new-technology/2020/08/30/bitwarden/password.png" class="" title="alt">
-
-<h2 id="パスワード管理はソフトウェアに任せる"><a href="#パスワード管理はソフトウェアに任せる" class="headerlink" title="パスワード管理はソフトウェアに任せる"></a>パスワード管理はソフトウェアに任せる</h2><p>前回の記事、<a href="/new-technology/2020/08/14/remote-work/" title="安全快適にリモートワークを行う">安全快適にリモートワークを行う</a>で記載したように、リモートワークの活用機会が高まり、ますます各自のパスワード管理が重要になってきています。頭ではパスワードの使い回しは良く無いと理解していながら、結局は文字列＋数字で似たようなパスワードをいくつも作ってしまい、脆弱な状態にあるケースは多いように感じます。パスワード管理ソフトの導入はITリテラシが高く無いとなかなか取り組む機会はありませんが、個人のパスワードと会社のアカウントに利用しているパスワードが類似しているのは問題です。同僚とパスワードを共有してしまうという問題も多くあります。先日のニュースでは国内企業のVPNの脆弱性からパスワードが漏洩し、2要素認証を設定していた企業は救われたと記事になっていました。ここで紹介するパスワード管理ソフトですが、パスワードを管理する事と、ランダムな文字列でのパスワード生成機能の2つの機能を持ちます。また、このbitwardenは、パスワードが登録されたサイトに遷移すると顔認証等でパスワードが入力されます。当然ながら、URLが異なればパスワードを自動入力しないため、フィッシング対策にもなります。このプロダクトは無償、有償と選択が可能ですが、無償でも十分な機能を保持しています。</p>
-<a id="more"></a>
-<h2 id="bitwardenを用いたパスワード管理の目指す姿"><a href="#bitwardenを用いたパスワード管理の目指す姿" class="headerlink" title="bitwardenを用いたパスワード管理の目指す姿"></a>bitwardenを用いたパスワード管理の目指す姿</h2><ol>
-<li><p>信頼できるソフトウェアを活用する（bitwarden社について）<br>プロダクトを提供している企業のプライバシーポリシーがしっかり記載され、どの国に属するかが記載され、本人の同意なく情報を開示しないという基本事項がプライバシーポリシーに記載されている事は重要です。曖昧に記載している企業のソフトウェアはお勧めしません。最終的に企業が属する国の命令には逆らえませんが、明瞭である事は重要です。オープンソースである事などは、さらに企業のスタンスが明確です。</p>
-</li>
-<li><p>クロスプラットフォームで複数のチャネル、有名なブラウザーに対応し利便性が高いこと<br>クロスプラットフォームである事は利便性が高くなります。Windowsだけで使えても、スマホでは別管理というのではじきに使わなくなってしまいます。Windows、macOS、iOS、Androidに対応している事は必須条件でしょう。スマホやタブレットなどでは指紋認証や顔認証でスムーズにパスワードを利用できる事が前提です。</p>
-</li>
-<li><p>パスワード生成機能は所定の文字数で任意に数字や記号を含められること<br>サイトによっては文字列数の下限、上限が異なります。また記号の一部が含められないなどサイトによってルールは異なります。パスワード管理ソフトでは、サイトによって任意にルールを定めたうえで生成できる事が求められます。</p>
-</li>
-<li><p>ネットに繋がらなくてもパスワード管理ソフトを利用できること<br>ネットに繋げるためのパスワードや、ブラウザから利用するものがパスワード管理の全てではありません。クローズネットワークやスマホの機内モードであったとしても重要なデータにアクセスする機会はあり得ます。これはソフトウェアのデザインですが、bitwardenはそのシチュエーションを踏まえたソフトウェアのデザインがなされています。</p>
-</li>
-<li><p>可能な限り2要素認証を組み合わせること<br>これはユーザー側に求める要件です。パスワードが漏洩する可能性を踏まえ、利用するサイトやサービスでは2要素認証を設定しておくべきです。パスワード自体を第三者に預けられる前提が2要素認証です。もちろん、bitwardenからパスワード全体が漏洩する事は企業の存続に関わるわけですし、その可能性は低いと考えられますが完璧と考えるべきではありません。今や2要素認証はサービス提供業者の基本提供機能ですからパスワードが万が一漏洩しても水際で防ぐ事ができます。なお、使い方の注意として2要素認証のキーとなる要素をbitwardenに保存するべきではありません。2要素認証で有名なAuthyはバックアップパスワードなどの存在がありますが、これは主に利用するパスワード管理ソフトとは別に管理すべきです。</p>
-</li>
-<li><p>容易にバックアップが取得できること<br>パスワードは漏洩する事が最悪の事象ですが、ロストすると回復に時間を要し、大幅な時間をロスします。各個人の責任でバックアップは取得しておくべきです。bitwardenは、csvまたはjson形式で簡単にエクスポートする事が可能です。これを暗号化されたUSBメディアなどにバックアップし、ネットとは繋がらない場所に保管しておく事が求められます。</p>
-</li>
-<li><p>本当に重要なIDこそ自分で記憶する。金融に関わるパスワード管理<br>オンラインバンキングなど、漏洩した時には直接金銭的、かつ高額となり得るものはパスワード管理から除外される事をお勧めします。2要素認証があるのは当然としても、です。もちろん上述した暗号化されたUSBメディアに保存しておく事でも構いません。ネットで到達できる場所に保存されるべきではありません。クレジットカードの盗難とは異なり、オンラインバンキングではユーザー側の重過失によって補償減額、または補償せずという取り扱いになりえます。これはパスワードを記載した手帳を盗まれた、パスワードをスマホに保存してあったものが盗難されるなどした場合もユーザー側の重過失にあたる可能性があります。そのアカウントの利用でどういったリスクがあるのかを考えIDとパスワードを管理していく必要があります。○○payのQR決済もオンラインバンキング程は高額にならないものの、金銭流出のリスクがあります。主要なQR決済事業者は不正利用に対して補償するというスタンスが主流ではあるものの、パスワード管理におけるユーザー側の過失があれば補償されない可能性があります。各企業の約款、補償の事項に必ず目を通す必要があります。全ては個別事案での判断という事なのでしょうが、そもそもパスワードの使い回しは過失と言われても仕方がないのではないでしょうか。金融分野は極めてリスクが高いという事になります。QR決済は少額決済ですが、2要素認証は必須といえるでしょう。</p>
-</li>
-<li><p>クラウド管理かオンプレミス（ローカル環境）か<br>自宅のPCでパスワード管理する事とbitwardenのようにクラウドで管理する事のどちらが安全かと言われれば判断は難しいところです。ちなみに、bitwardenはオンプレミスで構築する事が可能です。実際に過去、ubuntu18.04LTSにdocker、docker composeを導入し、bitwardenをセットアップし利用していた事があります。ダイナミックDNSはno-ipを使い、SSLは無償のLet’s Encryptにbitwarden自身が登録すれば完了です。3カ月ごとにスクリプトを走らせればSSL証明書を自動更新し、dockerから最新イメージを自動ダウンロードしてシステムを最新に保ちます。Linux上でMS SQLServerが動作し、bitwardenはコンパクトながらとても技術の高さを感じました。しかし、個人でWAF導入やアクセスログのチェックなどセキュリティ対策を実施する事の難易度の高さも感じ、再びクラウド管理に戻しました。ビジネス目的にて、インターネットに接続されない企業内でbitwardenを活用するのは非常に良い方法です。個人のサイバーセキュリティ対策で実現可能な事は資金面やスキル面でも限界があります。隙を見せず、目立たず狙われにくい事が大切です。</p>
-</li>
-</ol>
-<h2 id="bitwardenの初期セットアップ"><a href="#bitwardenの初期セットアップ" class="headerlink" title="bitwardenの初期セットアップ"></a>bitwardenの初期セットアップ</h2><img src="/new-technology/2020/08/30/bitwarden/bitwarden.png" class="" title="alt">
-
-<p>アカウント作成の最初の画面こそ英語ですが、実際のアカウント作成画面は日本語となります。利用するアプリも日本語ですので扱いはとても簡単に感じます。</p>
-<img src="/new-technology/2020/08/30/bitwarden/account.png" class="" title="alt">
-
-<p>アカウントの作成が終了したらWebにログインし、もし現在利用されているパスワードマネージャがあるのであればそこからインポートが可能です。ChromeやFirefoxのパスワードをcsvに一旦出力し、そこからインポートする事も可能です。bitwardenではこのパスワードの集合体を保管庫と呼んでいます。</p>
-<img src="/new-technology/2020/08/30/bitwarden/bitwarden1.png" class="" title="alt">
-
-<p>続いて<mark class="label ">設定タブ</mark>から2要素認証を設定します。おなじみのAuthyやメール通知を選択できます。</p>
-<img src="/new-technology/2020/08/30/bitwarden/bitwarden2.png" class="" title="alt">
-
-<p>次に、PCであれば、端末毎にbitwardenのクライアントアプリケーションおよび利用するブラウザの拡張機能としてbitwardenをインストールしてください。上記の画面ではYubikey、Duo、FIDOがプレミアム版としての表記がありますが、無償版のbitwardenであっても、Android、iOS、macOS（Appのみ）は生体認証に対応しています。プレミアム版に登録しDuoを選択した場合は、2要素認証の6桁の数字を入力する事なく、シングルサインオンでスマホに通知がきますので以下のように”Approve”をタップするだけでログインが完了します。これはあくまでbitwardenのログインの話であって、各サイトのログイン時にシングルサインオンが可能になるわけではありません。</p>
-<img src="/new-technology/2020/08/30/bitwarden/duo.png" class="" title="alt">
-
-<h2 id="bitwardenのブラウザでのセットアップ"><a href="#bitwardenのブラウザでのセットアップ" class="headerlink" title="bitwardenのブラウザでのセットアップ"></a>bitwardenのブラウザでのセットアップ</h2><p>bitwardenに対しパスワードの入力の都度、毎回マスターパスワードを入力するのは大変な作業で現実的ではありません。2要素認証を設定していれば、初回こそマスターパスワードと2要素認証が必要ですが、2回目以降のログインでは同一クライアントまたは同一ブラウザであれば2要素認証は不要です。bitwardenはさらにpinによる簡易な対話型認証を行い、保管庫にアクセスする事が可能となります。</p>
-<img src="/new-technology/2020/08/30/bitwarden/bitwarden3.png" class="" title="alt">
-
-<p>ブラウザの拡張機能からbitwardenを呼び出し、”設定”から保管庫のタイムアウトはブラウザ再起動時とし、PINでロック解除にチェックします。すると右側の画面がポップアップするので、簡易なPINコードを決めたら入力し、”ブラウザー再起動時にマスターパスワードでロック”のチェックボックスは外します。最後に”送信”ボタンをクリックし確定します。</p>
-<p>これでブラウザーを再起動しても、再びマスターパスワードは不要でPINコードで保管庫にアクセスできます。</p>
-<h2 id="新規アカウントを作成時にbitwardenでパスワードを生成する"><a href="#新規アカウントを作成時にbitwardenでパスワードを生成する" class="headerlink" title="新規アカウントを作成時にbitwardenでパスワードを生成する"></a>新規アカウントを作成時にbitwardenでパスワードを生成する</h2><p>アカウント登録時に、どのようにパスワードを自動生成し登録していくのかを動画にしてありますので参考にしてください。</p>
-<video src="add-account.mp4" preload="metadata" controls playsinline poster="">Sorry, your browser does not support the video tag.</video>
-
-<p>実例として価格.comのサイトへのアカウント作成の挙動です。価格.comは半角英数の8〜12文字という制約があります。記号は使えません。パスワードの規則に添うようにパスワードを生成します。</p>
-<p>一度登録してしまえば、ブラウザからのログインはとても簡単です。</p>
-<video src="login.mp4" preload="metadata" controls playsinline poster="">Sorry, your browser does not support the video tag.</video>
-
-<p>サイトによって挙動は異なるのですが、価格.comの場合、ログインボタンをクリックするだけで、あとは勝手にbitwardenがIDとパスワードをセットしてくれます。</p>
-<p>これで、たくさんのパスワードに悩まされる事なく、パスワードの使い回しによる、”利用者の過失”というリスクから解放されます。私は、個人向けのセキュリティ対策はまず最初に認証管理が重要と考えています。なかなか興味が向かない分野ですが、参考にしていただければ幸いです。</p>
-]]></content>
-      <categories>
-        <category>Security</category>
-      </categories>
-      <tags>
-        <tag>bitwarden</tag>
       </tags>
   </entry>
   <entry>
@@ -681,6 +620,67 @@ XGFirewall-- &quot;192.168.0.0&#x2F;24&quot; ---HGW
       </categories>
       <tags>
         <tag>XG Firewall</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>パスワード管理ソフトのbitwardenを活用する</title>
+    <url>/new-technology/2020/08/30/bitwarden/</url>
+    <content><![CDATA[<img src="/new-technology/2020/08/30/bitwarden/password.png" class="" title="alt">
+
+<h2 id="パスワード管理はソフトウェアに任せる"><a href="#パスワード管理はソフトウェアに任せる" class="headerlink" title="パスワード管理はソフトウェアに任せる"></a>パスワード管理はソフトウェアに任せる</h2><p>前回の記事、<a href="/new-technology/2020/08/14/remote-work/" title="安全快適にリモートワークを行う">安全快適にリモートワークを行う</a>で記載したように、リモートワークの活用機会が高まり、ますます各自のパスワード管理が重要になってきています。頭ではパスワードの使い回しは良く無いと理解していながら、結局は文字列＋数字で似たようなパスワードをいくつも作ってしまい、脆弱な状態にあるケースは多いように感じます。パスワード管理ソフトの導入はITリテラシが高く無いとなかなか取り組む機会はありませんが、個人のパスワードと会社のアカウントに利用しているパスワードが類似しているのは問題です。同僚とパスワードを共有してしまうという問題も多くあります。先日のニュースでは国内企業のVPNの脆弱性からパスワードが漏洩し、2要素認証を設定していた企業は救われたと記事になっていました。ここで紹介するパスワード管理ソフトですが、パスワードを管理する事と、ランダムな文字列でのパスワード生成機能の2つの機能を持ちます。また、このbitwardenは、パスワードが登録されたサイトに遷移すると顔認証等でパスワードが入力されます。当然ながら、URLが異なればパスワードを自動入力しないため、フィッシング対策にもなります。このプロダクトは無償、有償と選択が可能ですが、無償でも十分な機能を保持しています。</p>
+<a id="more"></a>
+<h2 id="bitwardenを用いたパスワード管理の目指す姿"><a href="#bitwardenを用いたパスワード管理の目指す姿" class="headerlink" title="bitwardenを用いたパスワード管理の目指す姿"></a>bitwardenを用いたパスワード管理の目指す姿</h2><ol>
+<li><p>信頼できるソフトウェアを活用する（bitwarden社について）<br>プロダクトを提供している企業のプライバシーポリシーがしっかり記載され、どの国に属するかが記載され、本人の同意なく情報を開示しないという基本事項がプライバシーポリシーに記載されている事は重要です。曖昧に記載している企業のソフトウェアはお勧めしません。最終的に企業が属する国の命令には逆らえませんが、明瞭である事は重要です。オープンソースである事などは、さらに企業のスタンスが明確です。</p>
+</li>
+<li><p>クロスプラットフォームで複数のチャネル、有名なブラウザーに対応し利便性が高いこと<br>クロスプラットフォームである事は利便性が高くなります。Windowsだけで使えても、スマホでは別管理というのではじきに使わなくなってしまいます。Windows、macOS、iOS、Androidに対応している事は必須条件でしょう。スマホやタブレットなどでは指紋認証や顔認証でスムーズにパスワードを利用できる事が前提です。</p>
+</li>
+<li><p>パスワード生成機能は所定の文字数で任意に数字や記号を含められること<br>サイトによっては文字列数の下限、上限が異なります。また記号の一部が含められないなどサイトによってルールは異なります。パスワード管理ソフトでは、サイトによって任意にルールを定めたうえで生成できる事が求められます。</p>
+</li>
+<li><p>ネットに繋がらなくてもパスワード管理ソフトを利用できること<br>ネットに繋げるためのパスワードや、ブラウザから利用するものがパスワード管理の全てではありません。クローズネットワークやスマホの機内モードであったとしても重要なデータにアクセスする機会はあり得ます。これはソフトウェアのデザインですが、bitwardenはそのシチュエーションを踏まえたソフトウェアのデザインがなされています。</p>
+</li>
+<li><p>可能な限り2要素認証を組み合わせること<br>これはユーザー側に求める要件です。パスワードが漏洩する可能性を踏まえ、利用するサイトやサービスでは2要素認証を設定しておくべきです。パスワード自体を第三者に預けられる前提が2要素認証です。もちろん、bitwardenからパスワード全体が漏洩する事は企業の存続に関わるわけですし、その可能性は低いと考えられますが完璧と考えるべきではありません。今や2要素認証はサービス提供業者の基本提供機能ですからパスワードが万が一漏洩しても水際で防ぐ事ができます。なお、使い方の注意として2要素認証のキーとなる要素をbitwardenに保存するべきではありません。2要素認証で有名なAuthyはバックアップパスワードなどの存在がありますが、これは主に利用するパスワード管理ソフトとは別に管理すべきです。</p>
+</li>
+<li><p>容易にバックアップが取得できること<br>パスワードは漏洩する事が最悪の事象ですが、ロストすると回復に時間を要し、大幅な時間をロスします。各個人の責任でバックアップは取得しておくべきです。bitwardenは、csvまたはjson形式で簡単にエクスポートする事が可能です。これを暗号化されたUSBメディアなどにバックアップし、ネットとは繋がらない場所に保管しておく事が求められます。</p>
+</li>
+<li><p>本当に重要なIDこそ自分で記憶する。金融に関わるパスワード管理<br>オンラインバンキングなど、漏洩した時には直接金銭的、かつ高額となり得るものはパスワード管理から除外される事をお勧めします。2要素認証があるのは当然としても、です。もちろん上述した暗号化されたUSBメディアに保存しておく事でも構いません。ネットで到達できる場所に保存されるべきではありません。クレジットカードの盗難とは異なり、オンラインバンキングではユーザー側の重過失によって補償減額、または補償せずという取り扱いになりえます。これはパスワードを記載した手帳を盗まれた、パスワードをスマホに保存してあったものが盗難されるなどした場合もユーザー側の重過失にあたる可能性があります。そのアカウントの利用でどういったリスクがあるのかを考えIDとパスワードを管理していく必要があります。○○payのQR決済もオンラインバンキング程は高額にならないものの、金銭流出のリスクがあります。主要なQR決済事業者は不正利用に対して補償するというスタンスが主流ではあるものの、パスワード管理におけるユーザー側の過失があれば補償されない可能性があります。各企業の約款、補償の事項に必ず目を通す必要があります。全ては個別事案での判断という事なのでしょうが、そもそもパスワードの使い回しは過失と言われても仕方がないのではないでしょうか。金融分野は極めてリスクが高いという事になります。QR決済は少額決済ですが、2要素認証は必須といえるでしょう。</p>
+</li>
+<li><p>クラウド管理かオンプレミス（ローカル環境）か<br>自宅のPCでパスワード管理する事とbitwardenのようにクラウドで管理する事のどちらが安全かと言われれば判断は難しいところです。ちなみに、bitwardenはオンプレミスで構築する事が可能です。実際に過去、ubuntu18.04LTSにdocker、docker composeを導入し、bitwardenをセットアップし利用していた事があります。ダイナミックDNSはno-ipを使い、SSLは無償のLet’s Encryptにbitwarden自身が登録すれば完了です。3カ月ごとにスクリプトを走らせればSSL証明書を自動更新し、dockerから最新イメージを自動ダウンロードしてシステムを最新に保ちます。Linux上でMS SQLServerが動作し、bitwardenはコンパクトながらとても技術の高さを感じました。しかし、個人でWAF導入やアクセスログのチェックなどセキュリティ対策を実施する事の難易度の高さも感じ、再びクラウド管理に戻しました。ビジネス目的にて、インターネットに接続されない企業内でbitwardenを活用するのは非常に良い方法です。個人のサイバーセキュリティ対策で実現可能な事は資金面やスキル面でも限界があります。隙を見せず、目立たず狙われにくい事が大切です。</p>
+</li>
+</ol>
+<h2 id="bitwardenの初期セットアップ"><a href="#bitwardenの初期セットアップ" class="headerlink" title="bitwardenの初期セットアップ"></a>bitwardenの初期セットアップ</h2><img src="/new-technology/2020/08/30/bitwarden/bitwarden.png" class="" title="alt">
+
+<p>アカウント作成の最初の画面こそ英語ですが、実際のアカウント作成画面は日本語となります。利用するアプリも日本語ですので扱いはとても簡単に感じます。</p>
+<img src="/new-technology/2020/08/30/bitwarden/account.png" class="" title="alt">
+
+<p>アカウントの作成が終了したらWebにログインし、もし現在利用されているパスワードマネージャがあるのであればそこからインポートが可能です。ChromeやFirefoxのパスワードをcsvに一旦出力し、そこからインポートする事も可能です。bitwardenではこのパスワードの集合体を保管庫と呼んでいます。</p>
+<img src="/new-technology/2020/08/30/bitwarden/bitwarden1.png" class="" title="alt">
+
+<p>続いて<mark class="label ">設定タブ</mark>から2要素認証を設定します。おなじみのAuthyやメール通知を選択できます。</p>
+<img src="/new-technology/2020/08/30/bitwarden/bitwarden2.png" class="" title="alt">
+
+<p>次に、PCであれば、端末毎にbitwardenのクライアントアプリケーションおよび利用するブラウザの拡張機能としてbitwardenをインストールしてください。上記の画面ではYubikey、Duo、FIDOがプレミアム版としての表記がありますが、無償版のbitwardenであっても、Android、iOS、macOS（Appのみ）は生体認証に対応しています。プレミアム版に登録しDuoを選択した場合は、2要素認証の6桁の数字を入力する事なく、シングルサインオンでスマホに通知がきますので以下のように”Approve”をタップするだけでログインが完了します。これはあくまでbitwardenのログインの話であって、各サイトのログイン時にシングルサインオンが可能になるわけではありません。</p>
+<img src="/new-technology/2020/08/30/bitwarden/duo1.png" class="" title="alt">
+
+<h2 id="bitwardenのブラウザでのセットアップ"><a href="#bitwardenのブラウザでのセットアップ" class="headerlink" title="bitwardenのブラウザでのセットアップ"></a>bitwardenのブラウザでのセットアップ</h2><p>bitwardenに対しパスワードの入力の都度、毎回マスターパスワードを入力するのは大変な作業で現実的ではありません。2要素認証を設定していれば、初回こそマスターパスワードと2要素認証が必要ですが、2回目以降のログインでは同一クライアントまたは同一ブラウザであれば2要素認証は不要です。bitwardenはさらにpinによる簡易な対話型認証を行い、保管庫にアクセスする事が可能となります。</p>
+<img src="/new-technology/2020/08/30/bitwarden/bitwarden3.png" class="" title="alt">
+
+<p>ブラウザの拡張機能からbitwardenを呼び出し、”設定”から保管庫のタイムアウトはブラウザ再起動時とし、PINでロック解除にチェックします。すると右側の画面がポップアップするので、簡易なPINコードを決めたら入力し、”ブラウザー再起動時にマスターパスワードでロック”のチェックボックスは外します。最後に”送信”ボタンをクリックし確定します。</p>
+<p>これでブラウザーを再起動しても、再びマスターパスワードは不要でPINコードで保管庫にアクセスできます。</p>
+<h2 id="新規アカウントを作成時にbitwardenでパスワードを生成する"><a href="#新規アカウントを作成時にbitwardenでパスワードを生成する" class="headerlink" title="新規アカウントを作成時にbitwardenでパスワードを生成する"></a>新規アカウントを作成時にbitwardenでパスワードを生成する</h2><p>アカウント登録時に、どのようにパスワードを自動生成し登録していくのかを動画にしてありますので参考にしてください。</p>
+<video src="add-account.mp4" preload="metadata" controls playsinline poster="">Sorry, your browser does not support the video tag.</video>
+
+<p>実例として価格.comのサイトへのアカウント作成の挙動です。価格.comは半角英数の8〜12文字という制約があります。記号は使えません。パスワードの規則に添うようにパスワードを生成します。</p>
+<p>一度登録してしまえば、ブラウザからのログインはとても簡単です。</p>
+<video src="login.mp4" preload="metadata" controls playsinline poster="">Sorry, your browser does not support the video tag.</video>
+
+<p>サイトによって挙動は異なるのですが、価格.comの場合、ログインボタンをクリックするだけで、あとは勝手にbitwardenがIDとパスワードをセットしてくれます。</p>
+<p>これで、たくさんのパスワードに悩まされる事なく、パスワードの使い回しによる、”利用者の過失”というリスクから解放されます。私は、個人向けのセキュリティ対策はまず最初に認証管理が重要と考えています。なかなか興味が向かない分野ですが、参考にしていただければ幸いです。</p>
+]]></content>
+      <categories>
+        <category>Security</category>
+      </categories>
+      <tags>
+        <tag>bitwarden</tag>
       </tags>
   </entry>
   <entry>
@@ -1049,50 +1049,6 @@ XGFirewall-- &quot;192.168.0.0&#x2F;24&quot; ---HGW
       </tags>
   </entry>
   <entry>
-    <title>XG Firewall自身を防御する</title>
-    <url>/new-technology/2020/06/24/protect-xg/</url>
-    <content><![CDATA[<div class="note success"><h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>XG Firewall自身を防御するためのベストプラクティスがSophosより本日公開されたため、最低限の防御として推奨されている設定内容を紹介します。</p>
-</div>
-
-<a id="more"></a>
-
-<h2 id="Best-practices-for-securing-your-firewall"><a href="#Best-practices-for-securing-your-firewall" class="headerlink" title="Best practices for securing your firewall"></a>Best practices for securing your firewall</h2><p>2020-6-24にSophos Communityのお勧め記事に<a href="https://community.sophos.com/products/xg-firewall/f/recommended-reads/121461/sophos-xg-firewall-best-practices-for-securing-your-firewall">“Sophos XG Firewall: Best practices for securing your firewall”</a>というタイトルの文書が投稿されました。以下の記載があります。</p>
-<blockquote class="blockquote-center">
-<p>このドキュメントの焦点は、Sophos XG Firewallを最低限のレベルでセキュリティを確保するための基本的なガイダンスを提供することです。この文書では、内部ネットワークデバイスやリソースを保護する個々のファイアウォール機能についてのガイダンスは提供しません （詳細な Sophos XG Firewall ベストプラクティスガイドは後日公開される予定です）。</p>
-
-</blockquote>
-
-<p>このブログの過去の記事”<a href="/new-technology/2020/05/09/best-practice/" title="XG Firewall v18の設定におけるベストプラクティス">XG Firewall v18の設定におけるベストプラクティス</a>”で記載した通り、ルールやポリシーについてのベストプラクティスを記載していますが、将来Sophosから詳細なベストプラクティスガイドが公開されるとの事です。今回公開されたものはルールやポリシーではなく、運用について記述されたものであり、どのようにしてFirewallを守るかに言及されています。IPSの設定については、過去記事をアップデートしています。</p>
-<h2 id="Firewall自身のセキュリティ強化"><a href="#Firewall自身のセキュリティ強化" class="headerlink" title="Firewall自身のセキュリティ強化"></a>Firewall自身のセキュリティ強化</h2><p>まずこのガイドの先頭には以下の説明があります。</p>
-<blockquote>
-<p>管理者は、ファイアウォール自体の安全性を確保する前に、内部ネットワークやリソースを保護するために、ファイアウォールの機能や機能を設定することに集中してしまうことがよくあります。</p>
-</blockquote>
-<p>これはご指摘の通りで、確かにXG自身にログインするパスワードもLAN内からのアクセスだからという理由で単純なパスワードにしがちです。業務で利用するほど厳格では無いにせよ、ホームユーザーとしてもFirewall自身の管理をしっかりと行うべきです。具体的なドキュメントについては、上記のページから、<a href="https://community.sophos.com/cfs-file/__key/communityserver-discussions-components-files/258/Securing-your-Sophos-XG-Firewall-_2D00_-Best-Practice-Guide.pdf">“Best Practice Guide”</a>へのリンクがあります。まずは上記のPDFを参照いただくのが一番ベストですが、ここではホームユーザーにとって重要と思われるものを紹介します。</p>
-<h2 id="ローカルサービスACL"><a href="#ローカルサービスACL" class="headerlink" title="ローカルサービスACL"></a>ローカルサービスACL</h2><p>XGの左ペインメニューの<mark class="label ">管理</mark>の”デバイスのアクセス”でWANなど外部ゾーンからのすべてのサービスを削除します。使わないサービスはオフにするのが原則であり、SSHを利用しないのであればLANゾーンのSSHもオフにしてしまうのがお勧めです。</p>
-<img src="/new-technology/2020/06/24/protect-xg/acl.png" class="" title="alt">
-
-<p>このSophosのドキュメントではSSHのために、公開鍵認証を行う事を勧めています。もし、LANやVPNからSSHを使うのであればこの”デバイスのアクセス”の画面の下部に”管理者の公開鍵認証”の項目があるので、そこで公開鍵を追加できます。</p>
-<h2 id="DDoS防御"><a href="#DDoS防御" class="headerlink" title="DDoS防御"></a>DDoS防御</h2><p>これまでも特にDDoS防御については説明してきていませんでした。ホームユーザーには不要と考えているためです。ping関連のDDoS防御の勧めが記述されていますので紹介します。しかしこの設定を行うとダウンロードのスループットが低下するので確認しながら利用の判断可否が必要です。XGの左ペインメニューの<mark class="label ">侵入防御</mark>の”DoS／スプーフ防御”のタブにてICMP/ICMPv6フラッドの項目を以下の図のように設定します。</p>
-<img src="/new-technology/2020/06/24/protect-xg/ips.png" class="" title="alt">
-
-<p>このドキュメント上で”XG550”、”XG650”および”XG750”のハードウェア提供モデルのDDoS防御の設定が記載してありますが、XG Home（ソフトウェアバージョン）はこのDDoS防御の機能は持っていません。</p>
-<h2 id="管理者ID"><a href="#管理者ID" class="headerlink" title="管理者ID"></a>管理者ID</h2><p>XGの左ペインメニューの<mark class="label ">管理</mark>の”管理の設定”で以下のように管理者のログイン失敗時のブロック、パスワードの複雑性の登録を行います。新しい管理者アカウントを作成し、2要素認証の設定は可能ですが、デフォルト管理者のadminアカウントは無効に設定できません。業務上利用する場合は担当者が変わる場合など意味がありますが、ホームユーザーが利用する場合は定期的なパスワード変更も不要であり、2要素認証の設定は現時点ではあまり魅力はありません。adminアカウントの無効化対応を期待します。</p>
-<img src="/new-technology/2020/06/24/protect-xg/admin.png" class="" title="alt">
-
-<p>過去の記事の”<a href="/new-technology/2020/04/03/Notifications/" title="XG Firewallの通知設定を行う">XG Firewallの通知設定を行う</a>“で記載した通り、通知設定を行う事でログイン失敗の状況も迅速にキャッチする事が可能です。</p>
-<h2 id="HotFixの自動インストール"><a href="#HotFixの自動インストール" class="headerlink" title="HotFixの自動インストール"></a>HotFixの自動インストール</h2><p>XGに脆弱性が見つかった場合に、過去の事例では極めて迅速にパッチが自動適用されます。具体的には下記の図のように、左ペインメニューの<mark class="label ">バックアップ＆ファームウェア</mark>の”ファームウェア”タブの画面にある、”ホットフィックスの自動インストールを許可する”にチェックが付いている事を確認してください。</p>
-<img src="/new-technology/2020/06/24/protect-xg/hotfix.png" class="" title="alt">
-
-<p>また、定期的な設定のバックアップが推奨されています。この<mark class="label ">バックアップ＆ファームウェア</mark>メニュー上でのバックアップを取得されると共に、仮想環境をお使いの方は仮想環境上でのバックアップを取得される事をお勧めします。</p>
-]]></content>
-      <categories>
-        <category>Security</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>IPv6のUnique Local Addressを生成する</title>
     <url>/new-technology/2020/04/18/ipv6/</url>
     <content><![CDATA[<div class="note success"><h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>ホームユーザー向けのユニークなIPv6アドレスが必要となった場合、自分の持つ機器のMACアドレスを用いて、Unique Local Address（ULA）を生成します。プログラムの実行が必要なので、外部サイトの<a href="https://www.jdoodle.com/">JDoodle</a>サイト上でPython3のコードを実行してULAを求めます。</p>
@@ -1138,6 +1094,50 @@ XGFirewall-- &quot;192.168.0.0&#x2F;24&quot; ---HGW
       <tags>
         <tag>XG Firewall</tag>
         <tag>IPv6</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>XG Firewall自身を防御する</title>
+    <url>/new-technology/2020/06/24/protect-xg/</url>
+    <content><![CDATA[<div class="note success"><h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>XG Firewall自身を防御するためのベストプラクティスがSophosより本日公開されたため、最低限の防御として推奨されている設定内容を紹介します。</p>
+</div>
+
+<a id="more"></a>
+
+<h2 id="Best-practices-for-securing-your-firewall"><a href="#Best-practices-for-securing-your-firewall" class="headerlink" title="Best practices for securing your firewall"></a>Best practices for securing your firewall</h2><p>2020-6-24にSophos Communityのお勧め記事に<a href="https://community.sophos.com/products/xg-firewall/f/recommended-reads/121461/sophos-xg-firewall-best-practices-for-securing-your-firewall">“Sophos XG Firewall: Best practices for securing your firewall”</a>というタイトルの文書が投稿されました。以下の記載があります。</p>
+<blockquote class="blockquote-center">
+<p>このドキュメントの焦点は、Sophos XG Firewallを最低限のレベルでセキュリティを確保するための基本的なガイダンスを提供することです。この文書では、内部ネットワークデバイスやリソースを保護する個々のファイアウォール機能についてのガイダンスは提供しません （詳細な Sophos XG Firewall ベストプラクティスガイドは後日公開される予定です）。</p>
+
+</blockquote>
+
+<p>このブログの過去の記事”<a href="/new-technology/2020/05/09/best-practice/" title="XG Firewall v18の設定におけるベストプラクティス">XG Firewall v18の設定におけるベストプラクティス</a>”で記載した通り、ルールやポリシーについてのベストプラクティスを記載していますが、将来Sophosから詳細なベストプラクティスガイドが公開されるとの事です。今回公開されたものはルールやポリシーではなく、運用について記述されたものであり、どのようにしてFirewallを守るかに言及されています。IPSの設定については、過去記事をアップデートしています。</p>
+<h2 id="Firewall自身のセキュリティ強化"><a href="#Firewall自身のセキュリティ強化" class="headerlink" title="Firewall自身のセキュリティ強化"></a>Firewall自身のセキュリティ強化</h2><p>まずこのガイドの先頭には以下の説明があります。</p>
+<blockquote>
+<p>管理者は、ファイアウォール自体の安全性を確保する前に、内部ネットワークやリソースを保護するために、ファイアウォールの機能や機能を設定することに集中してしまうことがよくあります。</p>
+</blockquote>
+<p>これはご指摘の通りで、確かにXG自身にログインするパスワードもLAN内からのアクセスだからという理由で単純なパスワードにしがちです。業務で利用するほど厳格では無いにせよ、ホームユーザーとしてもFirewall自身の管理をしっかりと行うべきです。具体的なドキュメントについては、上記のページから、<a href="https://community.sophos.com/cfs-file/__key/communityserver-discussions-components-files/258/Securing-your-Sophos-XG-Firewall-_2D00_-Best-Practice-Guide.pdf">“Best Practice Guide”</a>へのリンクがあります。まずは上記のPDFを参照いただくのが一番ベストですが、ここではホームユーザーにとって重要と思われるものを紹介します。</p>
+<h2 id="ローカルサービスACL"><a href="#ローカルサービスACL" class="headerlink" title="ローカルサービスACL"></a>ローカルサービスACL</h2><p>XGの左ペインメニューの<mark class="label ">管理</mark>の”デバイスのアクセス”でWANなど外部ゾーンからのすべてのサービスを削除します。使わないサービスはオフにするのが原則であり、SSHを利用しないのであればLANゾーンのSSHもオフにしてしまうのがお勧めです。</p>
+<img src="/new-technology/2020/06/24/protect-xg/acl.png" class="" title="alt">
+
+<p>このSophosのドキュメントではSSHのために、公開鍵認証を行う事を勧めています。もし、LANやVPNからSSHを使うのであればこの”デバイスのアクセス”の画面の下部に”管理者の公開鍵認証”の項目があるので、そこで公開鍵を追加できます。</p>
+<h2 id="DDoS防御"><a href="#DDoS防御" class="headerlink" title="DDoS防御"></a>DDoS防御</h2><p>これまでも特にDDoS防御については説明してきていませんでした。ホームユーザーには不要と考えているためです。ping関連のDDoS防御の勧めが記述されていますので紹介します。しかしこの設定を行うとダウンロードのスループットが低下するので確認しながら利用の判断可否が必要です。XGの左ペインメニューの<mark class="label ">侵入防御</mark>の”DoS／スプーフ防御”のタブにてICMP/ICMPv6フラッドの項目を以下の図のように設定します。</p>
+<img src="/new-technology/2020/06/24/protect-xg/ips.png" class="" title="alt">
+
+<p>このドキュメント上で”XG550”、”XG650”および”XG750”のハードウェア提供モデルのDDoS防御の設定が記載してありますが、XG Home（ソフトウェアバージョン）はこのDDoS防御の機能は持っていません。</p>
+<h2 id="管理者ID"><a href="#管理者ID" class="headerlink" title="管理者ID"></a>管理者ID</h2><p>XGの左ペインメニューの<mark class="label ">管理</mark>の”管理の設定”で以下のように管理者のログイン失敗時のブロック、パスワードの複雑性の登録を行います。新しい管理者アカウントを作成し、2要素認証の設定は可能ですが、デフォルト管理者のadminアカウントは無効に設定できません。業務上利用する場合は担当者が変わる場合など意味がありますが、ホームユーザーが利用する場合は定期的なパスワード変更も不要であり、2要素認証の設定は現時点ではあまり魅力はありません。adminアカウントの無効化対応を期待します。</p>
+<img src="/new-technology/2020/06/24/protect-xg/admin.png" class="" title="alt">
+
+<p>過去の記事の”<a href="/new-technology/2020/04/03/Notifications/" title="XG Firewallの通知設定を行う">XG Firewallの通知設定を行う</a>“で記載した通り、通知設定を行う事でログイン失敗の状況も迅速にキャッチする事が可能です。</p>
+<h2 id="HotFixの自動インストール"><a href="#HotFixの自動インストール" class="headerlink" title="HotFixの自動インストール"></a>HotFixの自動インストール</h2><p>XGに脆弱性が見つかった場合に、過去の事例では極めて迅速にパッチが自動適用されます。具体的には下記の図のように、左ペインメニューの<mark class="label ">バックアップ＆ファームウェア</mark>の”ファームウェア”タブの画面にある、”ホットフィックスの自動インストールを許可する”にチェックが付いている事を確認してください。</p>
+<img src="/new-technology/2020/06/24/protect-xg/hotfix.png" class="" title="alt">
+
+<p>また、定期的な設定のバックアップが推奨されています。この<mark class="label ">バックアップ＆ファームウェア</mark>メニュー上でのバックアップを取得されると共に、仮想環境をお使いの方は仮想環境上でのバックアップを取得される事をお勧めします。</p>
+]]></content>
+      <categories>
+        <category>Security</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
       </tags>
   </entry>
   <entry>
@@ -1568,92 +1568,6 @@ Note over cl: 16.共通鍵で復号
       </tags>
   </entry>
   <entry>
-    <title>XG Firewall VPNにスマホから接続する</title>
-    <url>/new-technology/2020/03/31/vpn-iphone/</url>
-    <content><![CDATA[<div class="note success"><h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>スマホ（iPhone、Android）からXG FirewallのVPNへ接続できるようになります。2要素認証の設定も可能です。</p>
-</div>
-<a id="more"></a>
-
-<h2 id="事前準備"><a href="#事前準備" class="headerlink" title="事前準備"></a>事前準備</h2><p>前回の記事でPC（WindowsおよびmacOS）からXGの<mark class="label ">VPN（Sophos Connect）</mark>に2要素認証で安全に接続できるようになりました。ここでは、スマホからVPNへ接続できるように設定していきます。この記事では、XG側に一通りVPNの設定が終わっている事を前提としています。以下の記事も参考にしてください。</p>
-<ul>
-<li><a href="/new-technology/2020/03/28/vpn/" title="XG Firewall VPNについて">XG Firewall VPNについて</a></li>
-<li><a href="/new-technology/2020/03/28/vpnotp/" title="XG Firewall VPNに2要素認証を設定する">XG Firewall VPNに2要素認証を設定する</a>
-
-</li>
-</ul>
-<p>前提条件は以下の通りです。なお、この記事では、ワンタイムパスワードを必ず必須とはしていません。PCとは異なり、移動しながら使うスマホは毎回ワンタイムパスワードを入力するのでは利便性に欠けます。ここは利便性とセキュリティの安全面を比較し判断という事になります。</p>
-<ul>
-<li>XGにVPN(Sophos Connect)の設定を終えている</li>
-<li>XGの外側（インターネット側）にホームゲートウェイがあり、ホームゲートウェイからXGに対し必要なVPNのパケットを転送出来ている</li>
-</ul>
-<h2 id="iOS-iPhone-、AndroidのVPN設定を行う"><a href="#iOS-iPhone-、AndroidのVPN設定を行う" class="headerlink" title="iOS(iPhone)、AndroidのVPN設定を行う"></a>iOS(iPhone)、AndroidのVPN設定を行う</h2><div class="tabs" id="one-unique-name"><ul class="nav-tabs"><li class="tab active"><a href="#one-unique-name-1"><i class="fab fa-apple"></i>iOS</a></li><li class="tab"><a href="#one-unique-name-2"><i class="fab fa-android"></i>Android</a></li></ul><div class="tab-content"><div class="tab-pane active" id="one-unique-name-1"><p><strong>iOSにおけるVPN接続の設定方法</strong></p>
-<p>LAN環境にて、XGのユーザーポータル<code>https://XGのIPアドレス/</code>に接続します。ユーザーポータルには、前回までに作成したVPNユーザーでログインします。ポータルのログイン後には、以下の画面のように、iPhone（iOS）のIPSec VPNに必要な設定ファイルをダウンロードできるようになっています。</p>
-<img src="/new-technology/2020/03/31/vpn-iphone/iphone.png" class="" title="alt">
-
-<div class="note warning"><p>ダウンロードした設定ファイルは一部修正が必要ですので、PCでダウンロードしファイルを修正の後、iOSにインストールする事をお勧めします。</p>
-</div>
-
-<p>ファイルをダウンロードしたらメモ帳やテキストエディットなどで設定ファイルを開きます。以下はファイルの先頭からの抜粋ですが、11行目にXGのWAN側のIPアドレスが記載されている行があります。内容は以下の通りです。</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plist</span> <span class="attr">version</span>=<span class="string">&quot;1.0&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">key</span>&gt;</span>PayloadContent<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">key</span>&gt;</span>IPSec<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">key</span>&gt;</span>AuthenticationMethod<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">string</span>&gt;</span>SharedSecret<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">key</span>&gt;</span>RemoteAddress<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">string</span>&gt;</span>192.168.x.x<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>上記のIPアドレスをXGで設定してあるダイナミックDNSのホスト名に書き換えます（Sophos社が提供しているダイナミックDNSであれば、xxxx.myfirewall.coです）。その後、ファイルを保存し、iCloudまたはメールなどでiPhoneに転送し、iPhoneから設定ファイルをインストールします。macOSだとFinderからファイルを選んでAirDropでiPhoneに送信すると簡単ですね。iPhoneではプロファイルのインストール時には、最初にiPhoneのパスワードを求められますのでiPhoneのパスワードを入力します。次にXGの接続ユーザーのパスワードを求められますが、ここはワンタイムパスワードの有無で設定が異なります。前回の記事ではワンタイムパスワードが必要なユーザーを作成しましたが、ワンタイムパスワードが不要であれば、ワンタイムパスワードを使わないユーザーを改めて作成してください。</p>
-<p>以下の場合は、XGの接続ユーザーのパスワードを入力します。</p>
-<ul>
-<li>ワンタイムパスワードは利用しない</li>
-<li>iPhoneにパスワードを記憶させたい</li>
-</ul>
-<p>以下の場合は、パスワードを入力せずプロファイルのインストールを完了させます。</p>
-<ul>
-<li>ワンタイムパスワードを利用する</li>
-<li>iPhoneにパスワードを記憶させたくない</li>
-</ul>
-<h3 id="iOS-iPhone-からVPNに接続する"><a href="#iOS-iPhone-からVPNに接続する" class="headerlink" title="iOS(iPhone)からVPNに接続する"></a>iOS(iPhone)からVPNに接続する</h3><p>iPhoneの設定アプリからVPNを選択、XGの接続先が選択されている状態で<mark class="label ">状況</mark>のトグルスイッチをオンにします。パスワードが設定済みの方は短い時間でXGへの接続が完了します。ワンタイムパスワードを設定している方、或いはパスワードを記憶させていない方は、パスワード入力のポップアップが表示されます。ワンタイムパスワードは、パスワードのあと続けてワンタイムパスワードの6つの数字を続けて入力します。一旦ポップアップが表示されると他のアプリに切り替えられないので一旦キャンセルします。ワンタイムパスワードアプリで6桁の数字を記憶するかコピーするなどし、最大30秒以内で設定アプリに再度切り替え、VPNのパスワードを完成させ接続する事になります。</p></div><div class="tab-pane" id="one-unique-name-2"><p><strong>AndroidにおけるVPN接続の設定方法</strong></p>
-<p>AndroidからVPNに接続する場合は、以下の設定を行います。今回の実例はAndroidのバージョン9のタブレットで説明します。機種によって操作は異なるかとおもいますが、ご容赦ください。無線とネットワーク→VPN→<mark class="label ">VPNネットワークの追加</mark>をタップします。</p>
-<table>
-<thead>
-<tr>
-<th>説明</th>
-<th>内容</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>名前</td>
-<td>接続名を入力します</td>
-</tr>
-<tr>
-<td>タイプ</td>
-<td><mark class="label ">IPSec Xauth PSK</mark>を選択します</td>
-</tr>
-<tr>
-<td>サーバー</td>
-<td>xxx.myfirewall.coなどのダイナミックDNSのホスト名を入力します</td>
-</tr>
-<tr>
-<td>IPSec ID</td>
-<td>空白のままで構いません</td>
-</tr>
-<tr>
-<td>IPSec事前共有鍵</td>
-<td>XGで設定した共有鍵を入力します</td>
-</tr>
-</tbody></table>
-<img src="/new-technology/2020/03/31/vpn-iphone/android.png" class="" title="alt">
-
-<h3 id="AndroidからVPNに接続する"><a href="#AndroidからVPNに接続する" class="headerlink" title="AndroidからVPNに接続する"></a>AndroidからVPNに接続する</h3><p><mark class="label ">設定</mark>から<mark class="label ">無線とネットワーク</mark>に進みVPNを選択し、ユーザーIDとパスワードを入力し接続します。ワンタイムパスワードを利用する場合は、パスワードの後ろにワンタイムパスワード（6桁の数字）を続けて入力します。</p>
-<p>Androidに関しては1点、注意点があります。Androidは、SSLインスペクションについて、Chromeブラウザ以外のアプリからは使えない前提があります。そこで、Android専用のVPNユーザーを作成しSSLインスペクションの対象からAndroidユーザーを除外するなどの設定が必要となります。</p></div></div></div>
-
-<p>これまでの設定で、スマホからXG Firewallを活用した安全なネットアクセスや宅内に設置してあるデータへのアクセス、サーバーの操作が行えるようになりました。私はVPN接続ユーザーを2つ有効にしており、2要素認証が必要なユーザーはLANへのアクセスを許可するもの、2要素認証を不要としているユーザーはLANおよびHGWのセグメントへのアクセスを不許可とするルールを作成しています。またVPNからXGの管理画面には接続できないようにもしています。</p>
-]]></content>
-      <categories>
-        <category>Security</category>
-        <category>VPN</category>
-        <category>ワンタイムパスワード</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>XG Firewall VPNについて</title>
     <url>/new-technology/2020/03/28/vpn/</url>
     <content><![CDATA[<div class="note success"><h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>外出先から、PC（Windows、macOS）を使い、宅内にあるXG FirewallのVPNへ接続できるようになります。それによりウィルスおよびマルウェア対策やWebフィルタなどを含んだ安全なネット閲覧や、宅内のLANリソースへリモートアクセス出来るようになります。</p>
@@ -1767,6 +1681,92 @@ Note over cl: 16.共通鍵で復号
       <categories>
         <category>Security</category>
         <category>VPN</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>XG Firewall VPNにスマホから接続する</title>
+    <url>/new-technology/2020/03/31/vpn-iphone/</url>
+    <content><![CDATA[<div class="note success"><h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>スマホ（iPhone、Android）からXG FirewallのVPNへ接続できるようになります。2要素認証の設定も可能です。</p>
+</div>
+<a id="more"></a>
+
+<h2 id="事前準備"><a href="#事前準備" class="headerlink" title="事前準備"></a>事前準備</h2><p>前回の記事でPC（WindowsおよびmacOS）からXGの<mark class="label ">VPN（Sophos Connect）</mark>に2要素認証で安全に接続できるようになりました。ここでは、スマホからVPNへ接続できるように設定していきます。この記事では、XG側に一通りVPNの設定が終わっている事を前提としています。以下の記事も参考にしてください。</p>
+<ul>
+<li><a href="/new-technology/2020/03/28/vpn/" title="XG Firewall VPNについて">XG Firewall VPNについて</a></li>
+<li><a href="/new-technology/2020/03/28/vpnotp/" title="XG Firewall VPNに2要素認証を設定する">XG Firewall VPNに2要素認証を設定する</a>
+
+</li>
+</ul>
+<p>前提条件は以下の通りです。なお、この記事では、ワンタイムパスワードを必ず必須とはしていません。PCとは異なり、移動しながら使うスマホは毎回ワンタイムパスワードを入力するのでは利便性に欠けます。ここは利便性とセキュリティの安全面を比較し判断という事になります。</p>
+<ul>
+<li>XGにVPN(Sophos Connect)の設定を終えている</li>
+<li>XGの外側（インターネット側）にホームゲートウェイがあり、ホームゲートウェイからXGに対し必要なVPNのパケットを転送出来ている</li>
+</ul>
+<h2 id="iOS-iPhone-、AndroidのVPN設定を行う"><a href="#iOS-iPhone-、AndroidのVPN設定を行う" class="headerlink" title="iOS(iPhone)、AndroidのVPN設定を行う"></a>iOS(iPhone)、AndroidのVPN設定を行う</h2><div class="tabs" id="one-unique-name"><ul class="nav-tabs"><li class="tab active"><a href="#one-unique-name-1"><i class="fab fa-apple"></i>iOS</a></li><li class="tab"><a href="#one-unique-name-2"><i class="fab fa-android"></i>Android</a></li></ul><div class="tab-content"><div class="tab-pane active" id="one-unique-name-1"><p><strong>iOSにおけるVPN接続の設定方法</strong></p>
+<p>LAN環境にて、XGのユーザーポータル<code>https://XGのIPアドレス/</code>に接続します。ユーザーポータルには、前回までに作成したVPNユーザーでログインします。ポータルのログイン後には、以下の画面のように、iPhone（iOS）のIPSec VPNに必要な設定ファイルをダウンロードできるようになっています。</p>
+<img src="/new-technology/2020/03/31/vpn-iphone/iphone.png" class="" title="alt">
+
+<div class="note warning"><p>ダウンロードした設定ファイルは一部修正が必要ですので、PCでダウンロードしファイルを修正の後、iOSにインストールする事をお勧めします。</p>
+</div>
+
+<p>ファイルをダウンロードしたらメモ帳やテキストエディットなどで設定ファイルを開きます。以下はファイルの先頭からの抜粋ですが、11行目にXGのWAN側のIPアドレスが記載されている行があります。内容は以下の通りです。</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plist</span> <span class="attr">version</span>=<span class="string">&quot;1.0&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">key</span>&gt;</span>PayloadContent<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">key</span>&gt;</span>IPSec<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">key</span>&gt;</span>AuthenticationMethod<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">string</span>&gt;</span>SharedSecret<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">key</span>&gt;</span>RemoteAddress<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">string</span>&gt;</span>192.168.x.x<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>上記のIPアドレスをXGで設定してあるダイナミックDNSのホスト名に書き換えます（Sophos社が提供しているダイナミックDNSであれば、xxxx.myfirewall.coです）。その後、ファイルを保存し、iCloudまたはメールなどでiPhoneに転送し、iPhoneから設定ファイルをインストールします。macOSだとFinderからファイルを選んでAirDropでiPhoneに送信すると簡単ですね。iPhoneではプロファイルのインストール時には、最初にiPhoneのパスワードを求められますのでiPhoneのパスワードを入力します。次にXGの接続ユーザーのパスワードを求められますが、ここはワンタイムパスワードの有無で設定が異なります。前回の記事ではワンタイムパスワードが必要なユーザーを作成しましたが、ワンタイムパスワードが不要であれば、ワンタイムパスワードを使わないユーザーを改めて作成してください。</p>
+<p>以下の場合は、XGの接続ユーザーのパスワードを入力します。</p>
+<ul>
+<li>ワンタイムパスワードは利用しない</li>
+<li>iPhoneにパスワードを記憶させたい</li>
+</ul>
+<p>以下の場合は、パスワードを入力せずプロファイルのインストールを完了させます。</p>
+<ul>
+<li>ワンタイムパスワードを利用する</li>
+<li>iPhoneにパスワードを記憶させたくない</li>
+</ul>
+<h3 id="iOS-iPhone-からVPNに接続する"><a href="#iOS-iPhone-からVPNに接続する" class="headerlink" title="iOS(iPhone)からVPNに接続する"></a>iOS(iPhone)からVPNに接続する</h3><p>iPhoneの設定アプリからVPNを選択、XGの接続先が選択されている状態で<mark class="label ">状況</mark>のトグルスイッチをオンにします。パスワードが設定済みの方は短い時間でXGへの接続が完了します。ワンタイムパスワードを設定している方、或いはパスワードを記憶させていない方は、パスワード入力のポップアップが表示されます。ワンタイムパスワードは、パスワードのあと続けてワンタイムパスワードの6つの数字を続けて入力します。一旦ポップアップが表示されると他のアプリに切り替えられないので一旦キャンセルします。ワンタイムパスワードアプリで6桁の数字を記憶するかコピーするなどし、最大30秒以内で設定アプリに再度切り替え、VPNのパスワードを完成させ接続する事になります。</p></div><div class="tab-pane" id="one-unique-name-2"><p><strong>AndroidにおけるVPN接続の設定方法</strong></p>
+<p>AndroidからVPNに接続する場合は、以下の設定を行います。今回の実例はAndroidのバージョン9のタブレットで説明します。機種によって操作は異なるかとおもいますが、ご容赦ください。無線とネットワーク→VPN→<mark class="label ">VPNネットワークの追加</mark>をタップします。</p>
+<table>
+<thead>
+<tr>
+<th>説明</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>名前</td>
+<td>接続名を入力します</td>
+</tr>
+<tr>
+<td>タイプ</td>
+<td><mark class="label ">IPSec Xauth PSK</mark>を選択します</td>
+</tr>
+<tr>
+<td>サーバー</td>
+<td>xxx.myfirewall.coなどのダイナミックDNSのホスト名を入力します</td>
+</tr>
+<tr>
+<td>IPSec ID</td>
+<td>空白のままで構いません</td>
+</tr>
+<tr>
+<td>IPSec事前共有鍵</td>
+<td>XGで設定した共有鍵を入力します</td>
+</tr>
+</tbody></table>
+<img src="/new-technology/2020/03/31/vpn-iphone/android.png" class="" title="alt">
+
+<h3 id="AndroidからVPNに接続する"><a href="#AndroidからVPNに接続する" class="headerlink" title="AndroidからVPNに接続する"></a>AndroidからVPNに接続する</h3><p><mark class="label ">設定</mark>から<mark class="label ">無線とネットワーク</mark>に進みVPNを選択し、ユーザーIDとパスワードを入力し接続します。ワンタイムパスワードを利用する場合は、パスワードの後ろにワンタイムパスワード（6桁の数字）を続けて入力します。</p>
+<p>Androidに関しては1点、注意点があります。Androidは、SSLインスペクションについて、Chromeブラウザ以外のアプリからは使えない前提があります。そこで、Android専用のVPNユーザーを作成しSSLインスペクションの対象からAndroidユーザーを除外するなどの設定が必要となります。</p></div></div></div>
+
+<p>これまでの設定で、スマホからXG Firewallを活用した安全なネットアクセスや宅内に設置してあるデータへのアクセス、サーバーの操作が行えるようになりました。私はVPN接続ユーザーを2つ有効にしており、2要素認証が必要なユーザーはLANへのアクセスを許可するもの、2要素認証を不要としているユーザーはLANおよびHGWのセグメントへのアクセスを不許可とするルールを作成しています。またVPNからXGの管理画面には接続できないようにもしています。</p>
+]]></content>
+      <categories>
+        <category>Security</category>
+        <category>VPN</category>
+        <category>ワンタイムパスワード</category>
       </categories>
       <tags>
         <tag>XG Firewall</tag>

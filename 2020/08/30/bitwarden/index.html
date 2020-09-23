@@ -19,7 +19,7 @@
 
 <script class="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","scheme":"Mist","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
+    var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","scheme":"Mist","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
   <meta name="description" content="パスワード管理はソフトウェアに任せる前回の記事、安全快適にリモートワークを行うで記載したように、リモートワークの活用機会が高まり、ますます各自のパスワード管理が重要になってきています。頭ではパスワードの使い回しは良く無いと理解していながら、結局は文字列＋数字で似たようなパスワードをいくつも作ってしまい、脆弱な状態にあるケースは多いように感じます。パスワード管理ソフトの導入はITリテラシが高く無">
@@ -34,10 +34,10 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/08/30/bitwarden/account.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/08/30/bitwarden/bitwarden1.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/08/30/bitwarden/bitwarden2.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/08/30/bitwarden/duo.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/08/30/bitwarden/duo1.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/08/30/bitwarden/bitwarden3.png">
 <meta property="article:published_time" content="2020-08-30T04:35:30.000Z">
-<meta property="article:modified_time" content="2020-09-21T02:11:29.823Z">
+<meta property="article:modified_time" content="2020-09-23T07:25:34.438Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="bitwarden">
 <meta name="twitter:card" content="summary">
@@ -138,6 +138,7 @@
 
   <div class="site-nav-right">
     <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
 </div>
@@ -176,11 +177,38 @@
     <a href="/new-technology/disclaimer/" rel="section"><i class="fa fa-check fa-fw"></i>ディスクレーマー</a>
 
   </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
+        </a>
+      </li>
   </ul>
 </nav>
 
 
 
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="検索…" spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
 
 </div>
         
@@ -318,7 +346,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">編集日</span>
-        <time title="修正日：2020-09-21 11:11:29" itemprop="dateModified" datetime="2020-09-21T11:11:29+09:00">2020-09-21</time>
+        <time title="修正日：2020-09-23 16:25:34" itemprop="dateModified" datetime="2020-09-23T16:25:34+09:00">2020-09-23</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -374,7 +402,7 @@
 <img src="/new-technology/2020/08/30/bitwarden/bitwarden2.png" class="" title="alt">
 
 <p>次に、PCであれば、端末毎にbitwardenのクライアントアプリケーションおよび利用するブラウザの拡張機能としてbitwardenをインストールしてください。上記の画面ではYubikey、Duo、FIDOがプレミアム版としての表記がありますが、無償版のbitwardenであっても、Android、iOS、macOS（Appのみ）は生体認証に対応しています。プレミアム版に登録しDuoを選択した場合は、2要素認証の6桁の数字を入力する事なく、シングルサインオンでスマホに通知がきますので以下のように”Approve”をタップするだけでログインが完了します。これはあくまでbitwardenのログインの話であって、各サイトのログイン時にシングルサインオンが可能になるわけではありません。</p>
-<img src="/new-technology/2020/08/30/bitwarden/duo.png" class="" title="alt">
+<img src="/new-technology/2020/08/30/bitwarden/duo1.png" class="" title="alt">
 
 <h2 id="bitwardenのブラウザでのセットアップ"><a href="#bitwardenのブラウザでのセットアップ" class="headerlink" title="bitwardenのブラウザでのセットアップ"></a>bitwardenのブラウザでのセットアップ</h2><p>bitwardenに対しパスワードの入力の都度、毎回マスターパスワードを入力するのは大変な作業で現実的ではありません。2要素認証を設定していれば、初回こそマスターパスワードと2要素認証が必要ですが、2回目以降のログインでは同一クライアントまたは同一ブラウザであれば2要素認証は不要です。bitwardenはさらにpinによる簡易な対話型認証を行い、保管庫にアクセスする事が可能となります。</p>
 <img src="/new-technology/2020/08/30/bitwarden/bitwarden3.png" class="" title="alt">
@@ -488,12 +516,15 @@
 
   
   <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
 <script src="/new-technology/js/utils.js"></script><script src="/new-technology/js/motion.js"></script><script src="/new-technology/js/schemes/muse.js"></script><script src="/new-technology/js/next-boot.js"></script>
 
   
 
 
 
+
+  <script src="/new-technology/js/local-search.js"></script>
 
 
 
