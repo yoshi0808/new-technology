@@ -39,7 +39,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/mac_ca3.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/installed_cert1.png">
 <meta property="article:published_time" content="2020-03-20T12:32:29.000Z">
-<meta property="article:modified_time" content="2020-07-08T11:24:16.895Z">
+<meta property="article:modified_time" content="2020-09-30T09:02:52.092Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -348,7 +348,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">編集日</span>
-        <time title="修正日：2020-07-08 20:24:16" itemprop="dateModified" datetime="2020-07-08T20:24:16+09:00">2020-07-08</time>
+        <time title="修正日：2020-09-30 18:02:52" itemprop="dateModified" datetime="2020-09-30T18:02:52+09:00">2020-09-30</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -454,6 +454,7 @@
 <img src="/new-technology/2020/03/20/ssl-inspection1/installed_cert1.png" class="" title="alt">
 
 <p>これで証明書のインストールは完了です。この証明書のインストールがXG Firewallの設定で一番大切な部分です。</p>
+<p>（2020-09-30追記）<br>iOS14より、Wi-Fiの設定に<mark class="label ">プライベートアドレス</mark>という項目が追加されています。これはWi-Fiネットワーク毎にMACアドレスを自動的に変更し、匿名性を保つ機能になります。このページでXGのSSL/TLSインスペクションを利用する際は、MACアドレスを元にDHCPでいつも同じIPアドレスが配布される仕組みを推奨しています。しかし、このMACアドレスが毎回変わるようだと固定IPを割り当て出来ません。これの対策としては、自宅のWi-Fiについては<mark class="label ">プライベートアドレス</mark>をオフにする（推奨）、或いはiOSに最初からスタティックのIPアドレスを割り振る方法があります。</p>
 
     </div>
 
