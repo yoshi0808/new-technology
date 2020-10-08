@@ -663,7 +663,7 @@ XGFirewall-- &quot;192.168.0.0&#x2F;24&quot; ---HGW
 
 <p><a href="https://duo.com/">Duo Security</a>は2018年にCisco社が買収しています。CiscoのAnyConnectを使う場合の2要素認証に使われるもので、どちらかといえば法人がターゲットです。最近だとMicrosoft365でも使えるようになりました。個人利用は無償です。</p>
 <img src="/new-technology/2020/08/30/bitwarden/duo2.png" class="" title="alt">
-<p>“Free Trial”と言われると基本は有償サービスのように感じますが、”Free Trial”からアカウントを作成し、速やかに無料アカウント（Duo Free）に切り替え可能です。<br>bitwardenとの連携は以下のようにDUOの画面からbitwardenの情報を元にID、秘密鍵、APIサーバーを設定します。そしてスマホアプリの”Duo Mobile”をセットアップし利用します。</p>
+<p>“Free Trial”と言われると基本は有償サービスのように感じますが、”Free Trial”からアカウントを作成し、速やかに無料アカウント（Duo Free）に切り替え可能です。<br>bitwardenとの連携は以下のようにDuoの画面からbitwardenの情報を元にID、秘密鍵、APIサーバーを設定します。そしてスマホアプリの”Duo Mobile”をセットアップし利用します。</p>
 <img src="/new-technology/2020/08/30/bitwarden/duo3.png" class="" title="alt">
 
 <p>そもそもコストの低いbitwardenでDuoのPushサービスが利用できるという事は、Duoは法人向けの利用料も廉価なのでしょうか。今後色々なサービスでもDuoを利用する機会が増えてくる事が期待されます。</p>
