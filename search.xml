@@ -661,12 +661,12 @@ XGFirewall-- &quot;192.168.0.0&#x2F;24&quot; ---HGW
 <p>次に、PCであれば、端末毎にbitwardenのクライアントアプリケーションおよび利用するブラウザの拡張機能としてbitwardenをインストールしてください。上記の画面ではYubikey、Duo、FIDOがプレミアム版としての表記がありますが、無償版のbitwardenであっても、Android、iOS、macOS（Appのみ）は生体認証に対応しています。プレミアム版に登録しDuoを選択した場合は、2要素認証の6桁の数字を入力する事なく、シングルサインオンでスマホに通知がきますので以下のように”Approve”をタップするだけでログインが完了します。これはあくまでbitwardenのログインの話であって、各サイトのログイン時にシングルサインオンが可能になるわけではありません。</p>
 <img src="/new-technology/2020/08/30/bitwarden/duo1.png" class="" title="alt">
 
-<p>Duoについては、CiscoのAnyConnectを使う場合の2要素認証に使われるもので、どちらかといえば法人がターゲットです。最近だとMicrosoft365でも使えるようになりました。個人利用は無償です。</p>
+<p><a href="https://duo.com/">Duo Security</a>は2018年にCisco社が買収しています。CiscoのAnyConnectを使う場合の2要素認証に使われるもので、どちらかといえば法人がターゲットです。最近だとMicrosoft365でも使えるようになりました。個人利用は無償です。</p>
 <img src="/new-technology/2020/08/30/bitwarden/duo2.png" class="" title="alt">
-<p>上記のような画面でアカウントを作成する事になります。”Free Trial”と言われると基本は有償サービスのように感じますが、Free Trialからアカウントを作成し<br>、速やかに無料アカウント（Duo Free）に切り替えする事が可能です。</p>
-<p>bitwardenとの連携は以下のようにDUOの画面からbitwardenの情報を元にID、秘密鍵、APIサーバーの設定を行う事になります。そしてスマホアプリの”Duo Mobile”をセットアップし利用します。</p>
+<p>“Free Trial”と言われると基本は有償サービスのように感じますが、”Free Trial”からアカウントを作成し、速やかに無料アカウント（Duo Free）に切り替え可能です。<br>bitwardenとの連携は以下のようにDUOの画面からbitwardenの情報を元にID、秘密鍵、APIサーバーを設定します。そしてスマホアプリの”Duo Mobile”をセットアップし利用します。</p>
 <img src="/new-technology/2020/08/30/bitwarden/duo3.png" class="" title="alt">
-<p>個人向けの2要素認証はAuthyがデファクトスタンダードとは思いますが、そもそもコストの低いbitwardenでDuoのPushサービスが利用できるという事は、Duoは法人向けの利用料も廉価なのでしょうか。今後色々なサービスでもDuoを利用する機会は増えてくるかもしれません。</p>
+
+<p>そもそもコストの低いbitwardenでDuoのPushサービスが利用できるという事は、Duoは法人向けの利用料も廉価なのでしょうか。今後色々なサービスでもDuoを利用する機会が増えてくる事が期待されます。</p>
 <h2 id="bitwardenのブラウザでのセットアップ"><a href="#bitwardenのブラウザでのセットアップ" class="headerlink" title="bitwardenのブラウザでのセットアップ"></a>bitwardenのブラウザでのセットアップ</h2><p>bitwardenに対しパスワードの入力の都度、毎回マスターパスワードを入力するのは大変な作業で現実的ではありません。2要素認証を設定していれば、初回こそマスターパスワードと2要素認証が必要ですが、2回目以降のログインでは同一クライアントまたは同一ブラウザであれば2要素認証は不要です。bitwardenはさらにpinによる簡易な対話型認証を行い、保管庫にアクセスする事が可能となります。</p>
 <img src="/new-technology/2020/08/30/bitwarden/bitwarden3.png" class="" title="alt">
 
@@ -677,11 +677,11 @@ XGFirewall-- &quot;192.168.0.0&#x2F;24&quot; ---HGW
 <h2 id="新規アカウントを作成時にbitwardenでパスワードを生成する"><a href="#新規アカウントを作成時にbitwardenでパスワードを生成する" class="headerlink" title="新規アカウントを作成時にbitwardenでパスワードを生成する"></a>新規アカウントを作成時にbitwardenでパスワードを生成する</h2><p>アカウント登録時に、どのようにパスワードを自動生成し登録していくのかを動画にしてありますので参考にしてください。</p>
 <video src="add-account.mp4" preload="metadata" controls playsinline poster="">Sorry, your browser does not support the video tag.</video>
 
-<p>実例として価格.comのサイトへのアカウント作成の挙動です。価格.comは半角英数の8〜12文字という制約があります。記号は使えません。パスワードの規則に添うようにパスワードを生成します。</p>
+<p>実例として価格。comのサイトへのアカウント作成の挙動です。価格。comは半角英数の8〜12文字という制約があります。記号は使えません。パスワードの規則に添うようにパスワードを生成します。</p>
 <p>一度登録してしまえば、ブラウザからのログインはとても簡単です。</p>
 <video src="login.mp4" preload="metadata" controls playsinline poster="">Sorry, your browser does not support the video tag.</video>
 
-<p>サイトによって挙動は異なるのですが、価格.comの場合、ログインボタンをクリックするだけで、あとは勝手にbitwardenがIDとパスワードをセットしてくれます。</p>
+<p>サイトによって挙動は異なるのですが、価格。comの場合、ログインボタンをクリックするだけで、あとは勝手にbitwardenがIDとパスワードをセットしてくれます。</p>
 <p>これで、たくさんのパスワードに悩まされる事なく、パスワードの使い回しによる、”利用者の過失”というリスクから解放されます。私は、個人向けのセキュリティ対策はまず最初に認証管理が重要と考えています。なかなか興味が向かない分野ですが、参考にしていただければ幸いです。</p>
 ]]></content>
       <categories>
