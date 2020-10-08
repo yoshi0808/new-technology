@@ -66,7 +66,7 @@ categories:
 
 {% asset_img duo2.png alt %}
 "Free Trial"と言われると基本は有償サービスのように感じますが、”Free Trial”からアカウントを作成し、速やかに無料アカウント（Duo Free）に切り替え可能です。
-bitwardenとの連携は以下のようにDUOの画面からbitwardenの情報を元にID、秘密鍵、APIサーバーを設定します。そしてスマホアプリの"Duo Mobile"をセットアップし利用します。
+bitwardenとの連携は以下のようにDuoの画面からbitwardenの情報を元にID、秘密鍵、APIサーバーを設定します。そしてスマホアプリの"Duo Mobile"をセットアップし利用します。
 
 {% asset_img duo3.png alt %}
 
