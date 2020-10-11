@@ -39,7 +39,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/10/11/esxi-backup/esxi2.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/10/11/esxi-backup/esxi3.png">
 <meta property="article:published_time" content="2020-10-11T02:45:41.000Z">
-<meta property="article:modified_time" content="2020-10-11T08:28:05.130Z">
+<meta property="article:modified_time" content="2020-10-11T08:30:52.894Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta property="article:tag" content="ESXi">
@@ -343,7 +343,7 @@
       <span class="post-meta-item-text">投稿日</span>
       
 
-      <time title="作成日：2020-10-11 11:45:41 / 修正日：17:28:05" itemprop="dateCreated datePublished" datetime="2020-10-11T11:45:41+09:00">2020-10-11</time>
+      <time title="作成日：2020-10-11 11:45:41 / 修正日：17:30:52" itemprop="dateCreated datePublished" datetime="2020-10-11T11:45:41+09:00">2020-10-11</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -402,7 +402,7 @@
 <h2 id="ESXiからNFSサーバーに接続する"><a href="#ESXiからNFSサーバーに接続する" class="headerlink" title="ESXiからNFSサーバーに接続する"></a>ESXiからNFSサーバーに接続する</h2><p>ESXi側からNFSでファイルをマウントするのは簡単です。ESXiの左ペインメニューの<mark class="label ">ストレージ</mark>から、<mark class="label ">新しいデータストア</mark>を選択します。次に<mark class="label ">NFSデータストアのマウント</mark>を選びます。以下のダイアログが表示されますので、ESXiで使うボリューム名を決め、NFSサーバーのIPアドレス、マウント名、NFSv4であればユーザーIDとパスワードを入力します。NFSv3の場合は、ユーザーIDとパスワードを入力する場所はありません。</p>
 <img src="/new-technology/2020/10/11/esxi-backup/esxi1.png" class="" title="alt">
 
-<p>これで、ESXiでは、”/vmfs/volumes/NFSデータストア名”としてnfsサーバーのフォルダがマウントされます。nfsサーバーを”¥¥YourNAS”、ESXiのマウント名を”your-nfs”とするならば、¥¥YourNAS¥backup¥の中身が/vmfs/volumes/your-nfs/に対応します。</p>
+<p>これで、ESXiでは、”/vmfs/volumes/NFSデータストア名”としてnfsサーバーのフォルダがマウントされます。nfsサーバーを”¥¥YourNAS”、ESXiのデータストア名を”your-nfs”とするならば、¥¥YourNAS¥backup¥の中身が/vmfs/volumes/your-nfs/に対応します。</p>
 <h2 id="ESXiでghettoVCBを稼働させるための事前準備"><a href="#ESXiでghettoVCBを稼働させるための事前準備" class="headerlink" title="ESXiでghettoVCBを稼働させるための事前準備"></a>ESXiでghettoVCBを稼働させるための事前準備</h2><ol>
 <li>ESXiにSSHで接続する必要があるため、ESXiの左ペインメニューの<mark class="label ">ホスト→管理</mark>から<mark class="label ">サービス</mark>タブをクリックし、<mark class="label ">TSM</mark>および<mark class="label ">TSM-SSH</mark>を起動します。</li>
 <li>ESXiのストレージ、nfsボリュームを選択し、データストアブラウザを開きます。アップロードボタンをクリックし、ダウンロード済みの<mark class="label ">ghettoVCB-master.zip</mark>をアップロードします。</li>
