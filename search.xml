@@ -62,6 +62,80 @@
       </tags>
   </entry>
   <entry>
+    <title>XG Firewall v18で正しいDNS利用を強制する</title>
+    <url>/new-technology/2020/05/16/Intercept-DNS/</url>
+    <content><![CDATA[<div class="note success"><h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>自分で設定したDNS（多くはプロバイダDNS）に反し、行儀の悪いクライアントや悪意のあるプログラムはそれに従わず、別のDNSを参照する可能性があります。XG Firewall v18の機能を活用してDNSの安全性を確保します。</p>
+</div>
+
+<a id="more"></a>
+
+<h2 id="DNSとプライバシー"><a href="#DNSとプライバシー" class="headerlink" title="DNSとプライバシー"></a>DNSとプライバシー</h2><p>Sophos CommunityでもDNSの扱いについてはいろいろ議論されていますが、ベストプラクティスとしては<a href="https://community.sophos.com/products/xg-firewall/f/network-and-routing/95100/dns-best-practices-for-xg">DNS Best Practices for XG</a>の記事にあります。</p>
+<blockquote class="blockquote-center">
+<p>The best protection is to use XG as dns server, configure dns request routing and nothing else. Avoid to open udp port 53.<br>最良の防御策はXGをDNSサーバとして使用し、DNSリクエストのルーティングを設定すること。それ以外は何も行わないことです。udpポート53を開かないようにしてください。</p>
+
+</blockquote>
+
+<p>この一言で既にDNSの使い方については答えが出てしまいましたが、記事が2017年とやや古い事もあり、v18の機能を生かしたDNSの設定例を書きます。</p>
+<p>DNSとプライバシーは国によって扱いが変わるかも知れません。国が人々のネットのアクセス状況を把握している事が問題とされている場所では、パブリックDNSが好まれます。また海外ではプロバイダーがDNSを改ざんするといったニュースも見かけます。日本国内においては、プロバイダのDNSの応答速度が遅い事から利用されるケースが増えてきているようです。</p>
+<p>ブラウザのFireFoxでは、プライバシー保護を目的として、DNSについてHTTPSを利用したDNS over HTTPSに対応しています。この機能は日本ではデフォルトでオフになっていますが、HTTPSで暗号化されているため管理者側からは一般的なネットブラウジングと区別がつかず、トラフィックが見えづらくなります。</p>
+<p>私個人としてはDNSを含めたプライバシーの情報を無闇に拡散させない事が重要と考えています。また、Communityで言及されている通り、防御のためにDNSのPortは空けない事が重要と考えます。パブリックDNSの利用はユーザーそれぞれにとっては考え方は異なるかとおもいますので、これ以降は悪意をもったクライアントが本来のDNS設定を迂回する事の対策として読んでいただければとおもいます。</p>
+<h2 id="XG-v18で指定DNSを強制する"><a href="#XG-v18で指定DNSを強制する" class="headerlink" title="XG v18で指定DNSを強制する"></a>XG v18で指定DNSを強制する</h2><p>ここではDNS情報はDHCPで配布されている前提とします。このブログでは、クライアントが参照するDNSは、全てXGのDNSを指定するように設定しています。この前提で、これを回避しようとするクライアントに対して以下の対策を取ります。</p>
+<ol>
+<li>DNS over TLS(DoT)は拒否<br>Port853の拒否</li>
+<li>DNS over HTTPS(DoH)は拒否<br>RFC8484に基づき、MIMEヘッダーの”application/dns-message”を見つけて、その通信を拒否</li>
+<li>Public DNSへのアクセス（Port53）は、強制的にXGのDNS経由で本来のDNSにアクセス<br>XGのDNATの機能を使い、WANインターフェースに対するPort53の通信だった場合、宛先IPをXGのLANのIPアドレスに変換</li>
+</ol>
+<img src="/new-technology/2020/05/16/Intercept-DNS/xg-dns.png" class="" title="alt">
+
+<p>1および2ですが、アプリケーションは、DoTやDoHを止められると（一般的には）通常のDNS(Port53)にフォールバックします。そしてXGは強制的にDNSの向き先を変えますが、クライアントはパブリックDNSにアクセスしたと思い込んだまま、返されたIPに対しアクセスする事になります。</p>
+<h2 id="DoHの拒否"><a href="#DoHの拒否" class="headerlink" title="DoHの拒否"></a>DoHの拒否</h2><p>DoHの定義についてサービスの登録を行います。</p>
+<p>XGの左ペインメニュー<mark class="label ">Web</mark>の<mark class="label ">ファイルタイプ</mark>から追加ボタンをクリックします。<mark class="label ">名前</mark>は”DoH”、<mark class="label ">テンプレート</mark>を空白とし、<mark class="label ">MIMEヘッダー</mark>に<code>application/dns-message</code>と入力し、保存します。</p>
+<img src="/new-technology/2020/05/16/Intercept-DNS/mimetype.png" class="" title="alt">
+
+<mark class="label ">Web</mark>の<mark class="label ">ユーザーアクティビティ</mark>から"追加"ボタンをクリックし、先ほどDoHとして登録したカテゴリを加え、`DNS over HTTPS`と名前を付けて保存します。
+
+<img src="/new-technology/2020/05/16/Intercept-DNS/mimetype2.png" class="" title="alt">
+
+<p>続いて、具体的な拒否設定です。</p>
+<mark class="label ">Web</mark>の<mark class="label ">ポリシー</mark>からご自身がFirewallルールで利用しているポリシー（ここでは"Home Policy"を仮定しています）に、上記で登録してきた"DNS over HTTPS"を拒否する設定を加えます。
+
+<img src="/new-technology/2020/05/16/Intercept-DNS/policy.png" class="" title="alt">
+
+<h2 id="DoTの拒否"><a href="#DoTの拒否" class="headerlink" title="DoTの拒否"></a>DoTの拒否</h2><p>XGの左ペインメニュー<mark class="label ">ホストとサービス</mark>の<mark class="label ">サービス</mark>から、”追加”ボタンをクリックし、”送信元ポート”1〜65535、”宛先ポート”853を指定し、”DoT”と名前を付け保存します。</p>
+<img src="/new-technology/2020/05/16/Intercept-DNS/service.png" class="" title="alt">
+
+<p>XGの左ペインメニュー<mark class="label ">ルールとポリシー</mark>から新しいファイアウォールルールを追加し、以下のようにDoTを”拒否”するルールを作成します。</p>
+<img src="/new-technology/2020/05/16/Intercept-DNS/rule1.png" class="" title="alt">
+
+<h2 id="DNSに関するDNATの登録"><a href="#DNSに関するDNATの登録" class="headerlink" title="DNSに関するDNATの登録"></a>DNSに関するDNATの登録</h2><p>最初にDNATで必要なホストの定義を行います。LANで使っているネットワークアドレスの登録とXG自身のIPアドレスの登録が必要です。ネットワークアドレスについてIPv4は例えば、<code>192.168.1.0/24</code>、IPv6は例えば<code>fd00:beaf:cafe::/64</code>などの登録を行います。XG自身のIPアドレスも登録が必要です。</p>
+<img src="/new-technology/2020/05/16/Intercept-DNS/host.png" class="" title="alt">
+
+<p>XGの左ペインメニュー<mark class="label ">ルールとポリシー</mark>から、<mark class="label ">NATルール</mark>を選択、”NATルールの追加”ボタンをクリックし、DNATを設定します。</p>
+<ol>
+<li>“変換前の送信元”は、使っているネットワークのオブジェクトを登録します</li>
+<li>“変換前のサービス”は、”DNS”を選択します</li>
+<li>“返還後の宛先（DNAT）”は、XG自身のIPを指定します</li>
+<li>“アウトバウンドインターフェース”には、WANである、”Port2”を選択します</li>
+<li>最後に追加ボタンをクリックして登録を完了します</li>
+</ol>
+<img src="/new-technology/2020/05/16/Intercept-DNS/rule2.png" class="" title="alt">
+
+<p>上記はIPv4の例ですが、IPv6を利用されている方は、同様にIPv6のDNATも設定してください。</p>
+<p>上記DNATによるDNSのインターセプトが有効になると、<mark class="label ">ルールとポリシー</mark>の<mark class="label ">NATルール</mark>画面で実際の変換された数が確認できるので、これで挙動確認を行ってください。</p>
+<img src="/new-technology/2020/05/16/Intercept-DNS/rule3.png" class="" title="alt">
+
+<p> 以上がプライバシーと安全性を重視したv18ならではのDNSのベストプラクティスです。</p>
+<h2 id="DNSに関しての補足"><a href="#DNSに関しての補足" class="headerlink" title="DNSに関しての補足"></a>DNSに関しての補足</h2><p>GoogleDNSのDoHはRFC8484に従っていない独自プロトコルを使えるという事実があります。世界中のパブリックDNSを全て把握するのは困難ですが、Sophosの以下の記事を参考にWebフィルタのURLグループにパブリックDNSのドメインを登録し、拒否する設定を加えても良いでしょう。</p>
+<p><a href="https://community.sophos.com/kb/en-us/134644">DNS over HTTPS (DoH) for web security</a></p>
+]]></content>
+      <categories>
+        <category>Security</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>XG Firewall v18をESXi仮想マシンにインストールする</title>
     <url>/new-technology/2020/03/06/InstallXG2/</url>
     <content><![CDATA[<div class="note success"><h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>ESXi 6.7に環境構築済みの仮想マシンに対し、XG Firewall v18のインストールを行います。ESXiを使わない場合、PC（物理マシン）にフラッシュメモリを接続し直接インストールする事になりますが、この場合も手順自体はほとんど変わりません。</p>
@@ -194,7 +268,7 @@ XGFirewall-- &quot;192.168.0.0&#x2F;24&quot; ---HGW
 </tr>
 <tr>
 <td>ユーザ名</td>
-<td><a href="mailto:&#x79;&#111;&#x75;&#x72;&#95;&#x61;&#x63;&#x63;&#111;&#117;&#x6e;&#x74;&#64;&#x67;&#x6d;&#97;&#105;&#108;&#46;&#99;&#x6f;&#x6d;">&#x79;&#111;&#x75;&#x72;&#95;&#x61;&#x63;&#x63;&#111;&#117;&#x6e;&#x74;&#64;&#x67;&#x6d;&#97;&#105;&#108;&#46;&#99;&#x6f;&#x6d;</a></td>
+<td><a href="mailto:&#x79;&#111;&#x75;&#x72;&#x5f;&#x61;&#99;&#x63;&#x6f;&#117;&#110;&#116;&#64;&#x67;&#x6d;&#x61;&#x69;&#x6c;&#46;&#99;&#111;&#x6d;">&#x79;&#111;&#x75;&#x72;&#x5f;&#x61;&#99;&#x63;&#x6f;&#117;&#110;&#116;&#64;&#x67;&#x6d;&#x61;&#x69;&#x6c;&#46;&#99;&#111;&#x6d;</a></td>
 </tr>
 <tr>
 <td>パスワード</td>
@@ -206,7 +280,7 @@ XGFirewall-- &quot;192.168.0.0&#x2F;24&quot; ---HGW
 </tr>
 <tr>
 <td>送信元メールアドレス</td>
-<td><a href="mailto:&#x79;&#111;&#117;&#x72;&#95;&#x61;&#x63;&#99;&#111;&#x75;&#110;&#x74;&#64;&#103;&#109;&#x61;&#x69;&#108;&#46;&#99;&#111;&#x6d;">&#x79;&#111;&#117;&#x72;&#95;&#x61;&#x63;&#99;&#111;&#x75;&#110;&#x74;&#64;&#103;&#109;&#x61;&#x69;&#108;&#46;&#99;&#111;&#x6d;</a></td>
+<td><a href="mailto:&#x79;&#111;&#x75;&#x72;&#x5f;&#x61;&#x63;&#99;&#x6f;&#117;&#x6e;&#x74;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#x63;&#111;&#109;">&#x79;&#111;&#x75;&#x72;&#x5f;&#x61;&#x63;&#99;&#x6f;&#117;&#x6e;&#x74;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#x63;&#111;&#109;</a></td>
 </tr>
 <tr>
 <td>メールアドレスに通知を送信</td>
@@ -262,80 +336,6 @@ XGFirewall-- &quot;192.168.0.0&#x2F;24&quot; ---HGW
       <tags>
         <tag>XG Firewall</tag>
         <tag>DeepL</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>XG Firewall v18で正しいDNS利用を強制する</title>
-    <url>/new-technology/2020/05/16/Intercept-DNS/</url>
-    <content><![CDATA[<div class="note success"><h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>自分で設定したDNS（多くはプロバイダDNS）に反し、行儀の悪いクライアントや悪意のあるプログラムはそれに従わず、別のDNSを参照する可能性があります。XG Firewall v18の機能を活用してDNSの安全性を確保します。</p>
-</div>
-
-<a id="more"></a>
-
-<h2 id="DNSとプライバシー"><a href="#DNSとプライバシー" class="headerlink" title="DNSとプライバシー"></a>DNSとプライバシー</h2><p>Sophos CommunityでもDNSの扱いについてはいろいろ議論されていますが、ベストプラクティスとしては<a href="https://community.sophos.com/products/xg-firewall/f/network-and-routing/95100/dns-best-practices-for-xg">DNS Best Practices for XG</a>の記事にあります。</p>
-<blockquote class="blockquote-center">
-<p>The best protection is to use XG as dns server, configure dns request routing and nothing else. Avoid to open udp port 53.<br>最良の防御策はXGをDNSサーバとして使用し、DNSリクエストのルーティングを設定すること。それ以外は何も行わないことです。udpポート53を開かないようにしてください。</p>
-
-</blockquote>
-
-<p>この一言で既にDNSの使い方については答えが出てしまいましたが、記事が2017年とやや古い事もあり、v18の機能を生かしたDNSの設定例を書きます。</p>
-<p>DNSとプライバシーは国によって扱いが変わるかも知れません。国が人々のネットのアクセス状況を把握している事が問題とされている場所では、パブリックDNSが好まれます。また海外ではプロバイダーがDNSを改ざんするといったニュースも見かけます。日本国内においては、プロバイダのDNSの応答速度が遅い事から利用されるケースが増えてきているようです。</p>
-<p>ブラウザのFireFoxでは、プライバシー保護を目的として、DNSについてHTTPSを利用したDNS over HTTPSに対応しています。この機能は日本ではデフォルトでオフになっていますが、HTTPSで暗号化されているため管理者側からは一般的なネットブラウジングと区別がつかず、トラフィックが見えづらくなります。</p>
-<p>私個人としてはDNSを含めたプライバシーの情報を無闇に拡散させない事が重要と考えています。また、Communityで言及されている通り、防御のためにDNSのPortは空けない事が重要と考えます。パブリックDNSの利用はユーザーそれぞれにとっては考え方は異なるかとおもいますので、これ以降は悪意をもったクライアントが本来のDNS設定を迂回する事の対策として読んでいただければとおもいます。</p>
-<h2 id="XG-v18で指定DNSを強制する"><a href="#XG-v18で指定DNSを強制する" class="headerlink" title="XG v18で指定DNSを強制する"></a>XG v18で指定DNSを強制する</h2><p>ここではDNS情報はDHCPで配布されている前提とします。このブログでは、クライアントが参照するDNSは、全てXGのDNSを指定するように設定しています。この前提で、これを回避しようとするクライアントに対して以下の対策を取ります。</p>
-<ol>
-<li>DNS over TLS(DoT)は拒否<br>Port853の拒否</li>
-<li>DNS over HTTPS(DoH)は拒否<br>RFC8484に基づき、MIMEヘッダーの”application/dns-message”を見つけて、その通信を拒否</li>
-<li>Public DNSへのアクセス（Port53）は、強制的にXGのDNS経由で本来のDNSにアクセス<br>XGのDNATの機能を使い、WANインターフェースに対するPort53の通信だった場合、宛先IPをXGのLANのIPアドレスに変換</li>
-</ol>
-<img src="/new-technology/2020/05/16/Intercept-DNS/xg-dns.png" class="" title="alt">
-
-<p>1および2ですが、アプリケーションは、DoTやDoHを止められると（一般的には）通常のDNS(Port53)にフォールバックします。そしてXGは強制的にDNSの向き先を変えますが、クライアントはパブリックDNSにアクセスしたと思い込んだまま、返されたIPに対しアクセスする事になります。</p>
-<h2 id="DoHの拒否"><a href="#DoHの拒否" class="headerlink" title="DoHの拒否"></a>DoHの拒否</h2><p>DoHの定義についてサービスの登録を行います。</p>
-<p>XGの左ペインメニュー<mark class="label ">Web</mark>の<mark class="label ">ファイルタイプ</mark>から追加ボタンをクリックします。<mark class="label ">名前</mark>は”DoH”、<mark class="label ">テンプレート</mark>を空白とし、<mark class="label ">MIMEヘッダー</mark>に<code>application/dns-message</code>と入力し、保存します。</p>
-<img src="/new-technology/2020/05/16/Intercept-DNS/mimetype.png" class="" title="alt">
-
-<mark class="label ">Web</mark>の<mark class="label ">ユーザーアクティビティ</mark>から"追加"ボタンをクリックし、先ほどDoHとして登録したカテゴリを加え、`DNS over HTTPS`と名前を付けて保存します。
-
-<img src="/new-technology/2020/05/16/Intercept-DNS/mimetype2.png" class="" title="alt">
-
-<p>続いて、具体的な拒否設定です。</p>
-<mark class="label ">Web</mark>の<mark class="label ">ポリシー</mark>からご自身がFirewallルールで利用しているポリシー（ここでは"Home Policy"を仮定しています）に、上記で登録してきた"DNS over HTTPS"を拒否する設定を加えます。
-
-<img src="/new-technology/2020/05/16/Intercept-DNS/policy.png" class="" title="alt">
-
-<h2 id="DoTの拒否"><a href="#DoTの拒否" class="headerlink" title="DoTの拒否"></a>DoTの拒否</h2><p>XGの左ペインメニュー<mark class="label ">ホストとサービス</mark>の<mark class="label ">サービス</mark>から、”追加”ボタンをクリックし、”送信元ポート”1〜65535、”宛先ポート”853を指定し、”DoT”と名前を付け保存します。</p>
-<img src="/new-technology/2020/05/16/Intercept-DNS/service.png" class="" title="alt">
-
-<p>XGの左ペインメニュー<mark class="label ">ルールとポリシー</mark>から新しいファイアウォールルールを追加し、以下のようにDoTを”拒否”するルールを作成します。</p>
-<img src="/new-technology/2020/05/16/Intercept-DNS/rule1.png" class="" title="alt">
-
-<h2 id="DNSに関するDNATの登録"><a href="#DNSに関するDNATの登録" class="headerlink" title="DNSに関するDNATの登録"></a>DNSに関するDNATの登録</h2><p>最初にDNATで必要なホストの定義を行います。LANで使っているネットワークアドレスの登録とXG自身のIPアドレスの登録が必要です。ネットワークアドレスについてIPv4は例えば、<code>192.168.1.0/24</code>、IPv6は例えば<code>fd00:beaf:cafe::/64</code>などの登録を行います。XG自身のIPアドレスも登録が必要です。</p>
-<img src="/new-technology/2020/05/16/Intercept-DNS/host.png" class="" title="alt">
-
-<p>XGの左ペインメニュー<mark class="label ">ルールとポリシー</mark>から、<mark class="label ">NATルール</mark>を選択、”NATルールの追加”ボタンをクリックし、DNATを設定します。</p>
-<ol>
-<li>“変換前の送信元”は、使っているネットワークのオブジェクトを登録します</li>
-<li>“変換前のサービス”は、”DNS”を選択します</li>
-<li>“返還後の宛先（DNAT）”は、XG自身のIPを指定します</li>
-<li>“アウトバウンドインターフェース”には、WANである、”Port2”を選択します</li>
-<li>最後に追加ボタンをクリックして登録を完了します</li>
-</ol>
-<img src="/new-technology/2020/05/16/Intercept-DNS/rule2.png" class="" title="alt">
-
-<p>上記はIPv4の例ですが、IPv6を利用されている方は、同様にIPv6のDNATも設定してください。</p>
-<p>上記DNATによるDNSのインターセプトが有効になると、<mark class="label ">ルールとポリシー</mark>の<mark class="label ">NATルール</mark>画面で実際の変換された数が確認できるので、これで挙動確認を行ってください。</p>
-<img src="/new-technology/2020/05/16/Intercept-DNS/rule3.png" class="" title="alt">
-
-<p> 以上がプライバシーと安全性を重視したv18ならではのDNSのベストプラクティスです。</p>
-<h2 id="DNSに関しての補足"><a href="#DNSに関しての補足" class="headerlink" title="DNSに関しての補足"></a>DNSに関しての補足</h2><p>GoogleDNSのDoHはRFC8484に従っていない独自プロトコルを使えるという事実があります。世界中のパブリックDNSを全て把握するのは困難ですが、Sophosの以下の記事を参考にWebフィルタのURLグループにパブリックDNSのドメインを登録し、拒否する設定を加えても良いでしょう。</p>
-<p><a href="https://community.sophos.com/kb/en-us/134644">DNS over HTTPS (DoH) for web security</a></p>
-]]></content>
-      <categories>
-        <category>Security</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
       </tags>
   </entry>
   <entry>
@@ -501,6 +501,75 @@ XGFirewall-- &quot;192.168.0.0&#x2F;24&quot; ---HGW
       </tags>
   </entry>
   <entry>
+    <title>パスワード管理ソフトのbitwardenを活用する</title>
+    <url>/new-technology/2020/08/30/bitwarden/</url>
+    <content><![CDATA[<img src="/new-technology/2020/08/30/bitwarden/password.png" class="" title="alt">
+
+<h2 id="パスワード管理はソフトウェアに任せる"><a href="#パスワード管理はソフトウェアに任せる" class="headerlink" title="パスワード管理はソフトウェアに任せる"></a>パスワード管理はソフトウェアに任せる</h2><p>前回の記事、<a href="/new-technology/2020/08/14/remote-work/" title="安全快適にリモートワークを行う">安全快適にリモートワークを行う</a>で記載したように、リモートワークの活用機会が高まり、ますます各自のパスワード管理が重要になってきています。頭ではパスワードの使い回しは良く無いと理解していながら、結局は文字列＋数字で似たようなパスワードをいくつも作ってしまい、脆弱な状態にあるケースは多いように感じます。パスワード管理ソフトの導入はITリテラシが高く無いとなかなか取り組む機会はありませんが、個人のパスワードと会社のアカウントに利用しているパスワードが類似しているのは問題です。同僚とパスワードを共有してしまうという問題も多くあります。先日のニュースでは国内企業のVPNの脆弱性からパスワードが漏洩し、2要素認証を設定していた企業は救われたと記事になっていました。ここで紹介するパスワード管理ソフトですが、パスワードを管理する事と、ランダムな文字列でのパスワード生成機能の2つの機能を持ちます。また、このbitwardenは、パスワードが登録されたサイトに遷移すると顔認証等でパスワードが入力されます。当然ながら、URLが異なればパスワードを自動入力しないため、フィッシング対策にもなります。このプロダクトは無償、有償と選択が可能ですが、無償でも十分な機能を保持しています。</p>
+<a id="more"></a>
+<h2 id="bitwardenを用いたパスワード管理の目指す姿"><a href="#bitwardenを用いたパスワード管理の目指す姿" class="headerlink" title="bitwardenを用いたパスワード管理の目指す姿"></a>bitwardenを用いたパスワード管理の目指す姿</h2><ol>
+<li><p>信頼できるソフトウェアを活用する（bitwarden社について）<br>プロダクトを提供している企業のプライバシーポリシーがしっかり記載され、どの国に属するかが記載され、本人の同意なく情報を開示しないという基本事項がプライバシーポリシーに記載されている事は重要です。曖昧に記載している企業のソフトウェアはお勧めしません。最終的に企業が属する国の命令には逆らえませんが、明瞭である事は重要です。オープンソースである事などは、さらに企業のスタンスが明確です。</p>
+</li>
+<li><p>クロスプラットフォームで複数のチャネル、有名なブラウザーに対応し利便性が高いこと<br>クロスプラットフォームである事は利便性が高くなります。Windowsだけで使えても、スマホでは別管理というのではじきに使わなくなってしまいます。Windows、macOS、iOS、Androidに対応している事は必須条件でしょう。スマホやタブレットなどでは指紋認証や顔認証でスムーズにパスワードを利用できる事が前提です。</p>
+</li>
+<li><p>パスワード生成機能は所定の文字数で任意に数字や記号を含められること<br>サイトによっては文字列数の下限、上限が異なります。また記号の一部が含められないなどサイトによってルールは異なります。パスワード管理ソフトでは、サイトによって任意にルールを定めたうえで生成できる事が求められます。</p>
+</li>
+<li><p>ネットに繋がらなくてもパスワード管理ソフトを利用できること<br>ネットに繋げるためのパスワードや、ブラウザから利用するものがパスワード管理の全てではありません。クローズネットワークやスマホの機内モードであったとしても重要なデータにアクセスする機会はあり得ます。これはソフトウェアのデザインですが、bitwardenはそのシチュエーションを踏まえたソフトウェアのデザインがなされています。</p>
+</li>
+<li><p>可能な限り2要素認証を組み合わせること<br>これはユーザー側に求める要件です。パスワードが漏洩する可能性を踏まえ、利用するサイトやサービスでは2要素認証を設定しておくべきです。パスワード自体を第三者に預けられる前提が2要素認証です。もちろん、bitwardenからパスワード全体が漏洩する事は企業の存続に関わるわけですし、その可能性は低いと考えられますが完璧と考えるべきではありません。今や2要素認証はサービス提供業者の基本提供機能ですからパスワードが万が一漏洩しても水際で防ぐ事ができます。なお、使い方の注意として2要素認証のキーとなる要素をbitwardenに保存するべきではありません。2要素認証で有名なAuthyはバックアップパスワードなどの存在がありますが、これは主に利用するパスワード管理ソフトとは別に管理すべきです。</p>
+</li>
+<li><p>容易にバックアップが取得できること<br>パスワードは漏洩する事が最悪の事象ですが、ロストすると回復に時間を要し、大幅な時間をロスします。各個人の責任でバックアップは取得しておくべきです。bitwardenは、csvまたはjson形式で簡単にエクスポートできます。これを暗号化されたUSBメディアなどにバックアップし、ネットとは繋がらない場所に保管しておく事が求められます。</p>
+</li>
+<li><p>本当に重要なIDこそ自分で記憶する。金融に関わるパスワード管理<br>オンラインバンキングなど、漏洩した時には直接金銭的、かつ高額となり得るものはパスワード管理システムから除外される事をお勧めします。2要素認証があるのは当然としても、です。もちろん上述した暗号化されたUSBメディアに保存しておく事でも構いません。ネットで到達できる場所に保存されるべきではありません。クレジットカードの盗難とは異なり、オンラインバンキングではユーザー側の重過失によって補償減額、または補償せずという取り扱いになりえます。これはパスワードを記載した手帳を盗まれた、パスワードをスマホに保存してあったものが盗難されるなどした場合もユーザー側の重過失にあたる可能性があります。そのアカウントの利用でどういったリスクがあるのかを考えIDとパスワードを管理していく必要があります。●●payのQR決済もオンラインバンキング程は高額にならないものの、金銭流出のリスクがあります。主要なQR決済事業者は不正利用に対して補償するというスタンスが主流ではあるものの、パスワード管理におけるユーザー側の過失があれば補償されない可能性があります。各企業の約款、補償の事項に必ず目を通す必要があります。全ては個別事案での判断という事なのでしょうが、そもそもパスワードの使い回しは過失と言われても仕方がないのではないでしょうか。金融分野は極めてリスクが高いという事になります。QR決済は少額決済ですが、2要素認証は必須といえるでしょう。英単語と数字の単純な組み合わせではない複雑さを持ったパスワードを設定される事をお勧めします。</p>
+</li>
+<li><p>クラウド管理かオンプレミス（ローカル環境）か<br>自宅のPCでパスワード管理する事とbitwardenのようにクラウドで管理する事のどちらが安全かと言われれば判断は難しいところです。ちなみに、bitwardenはオンプレミスで構築できます。実際に過去、ubuntu18.04LTSにdocker、docker composeを導入し、bitwardenをセットアップし利用していた事があります。ダイナミックDNSはno-ipを使い、SSLは無償のLet’s Encryptにbitwarden自身が登録すれば完了です。3カ月ごとにスクリプトを走らせればSSL証明書を自動更新し、dockerから最新イメージを自動ダウンロードしてシステムを最新に保ちます。Linux上でMS SQLServerが動作し、bitwardenはコンパクトながらとても技術の高さを感じました。しかし、個人でWAF導入やアクセスログのチェックなどセキュリティ対策を実施する事の難易度の高さも感じ、再びクラウド管理に戻しました。ビジネス目的にて、インターネットに接続されない企業内でbitwardenを活用するのは非常に良い方法です。個人のサイバーセキュリティ対策で実現可能な事は資金面やスキル面でも限界があります。隙を見せず、目立たず狙われにくい事が大切です。</p>
+</li>
+</ol>
+<h2 id="bitwardenの初期セットアップ"><a href="#bitwardenの初期セットアップ" class="headerlink" title="bitwardenの初期セットアップ"></a>bitwardenの初期セットアップ</h2><img src="/new-technology/2020/08/30/bitwarden/bitwarden.png" class="" title="alt">
+
+<p>アカウント作成の最初の画面こそ英語ですが、実際のアカウント作成画面は日本語となります。利用するアプリも日本語ですので扱いはとても簡単に感じます。</p>
+<img src="/new-technology/2020/08/30/bitwarden/account.png" class="" title="alt">
+
+<p>アカウントの作成が終了したらWebにログインし、もし現在利用されているパスワードマネージャがあるのであればそこからインポートが可能です。ChromeやFirefoxのパスワードをcsvに一旦出力し、そこからインポートする事も可能です。bitwardenではこのパスワードの集合体を保管庫と呼んでいます。</p>
+<img src="/new-technology/2020/08/30/bitwarden/bitwarden1.png" class="" title="alt">
+
+<p>続いて<mark class="label ">設定タブ</mark>から2要素認証を設定します。おなじみのAuthyやメール通知を選択できます。</p>
+<img src="/new-technology/2020/08/30/bitwarden/bitwarden2.png" class="" title="alt">
+
+<p>次に、PCであれば、端末毎にbitwardenのクライアントアプリケーションおよび利用するブラウザの拡張機能としてbitwardenをインストールしてください。上記の画面ではYubikey、Duo、FIDOがプレミアム版としての表記がありますが、無償版のbitwardenであっても、Android、iOS、macOS（Appのみ）は生体認証に対応しています。プレミアム版に登録しDuoを選択した場合は、2要素認証の6桁の数字を入力する事なく、シングルサインオンでスマホに通知がきますので以下のように”Approve”をタップするだけでログインが完了します。これはあくまでbitwardenのログインの話であって、各サイトのログイン時にシングルサインオンが可能になるわけではありません。</p>
+<img src="/new-technology/2020/08/30/bitwarden/duo1.png" class="" title="alt">
+
+<p><a href="https://duo.com/">Duo Security</a>は2018年にCisco社が買収しています。CiscoのAnyConnectを使う場合の2要素認証に使われるもので、どちらかといえば法人がターゲットです。最近だとMicrosoft365でも使えるようになりました。個人利用は無償です。</p>
+<img src="/new-technology/2020/08/30/bitwarden/duo2.png" class="" title="alt">
+<p>“Free Trial”と言われると基本は有償サービスのように感じますが、”Free Trial”からアカウントを作成し、速やかに無料アカウント（Duo Free）に切り替え可能です。<br>bitwardenとの連携は以下のようにDuoの画面からbitwardenの情報を元にID、秘密鍵、APIサーバーを設定します。そしてスマホアプリの”Duo Mobile”をセットアップし利用します。</p>
+<img src="/new-technology/2020/08/30/bitwarden/duo3.png" class="" title="alt">
+
+<p>そもそもコストの低いbitwardenでDuoのPushサービスが利用できるという事は、Duoは法人向けの利用料も廉価なのでしょうか。今後色々なサービスでもDuoを利用する機会が増えてくる事が期待されます。</p>
+<h2 id="bitwardenのブラウザでのセットアップ"><a href="#bitwardenのブラウザでのセットアップ" class="headerlink" title="bitwardenのブラウザでのセットアップ"></a>bitwardenのブラウザでのセットアップ</h2><p>bitwardenに対しパスワードの入力の都度、毎回マスターパスワードを入力するのは大変な作業で現実的ではありません。2要素認証を設定していれば、初回こそマスターパスワードと2要素認証が必要ですが、2回目以降のログインでは同一クライアントまたは同一ブラウザであれば2要素認証は不要です。bitwardenはさらにpinによる簡易な対話型認証を行い、保管庫にアクセスする事が可能となります。</p>
+<img src="/new-technology/2020/08/30/bitwarden/bitwarden3.png" class="" title="alt">
+
+<p>ブラウザの拡張機能からbitwardenを呼び出し、”設定”から保管庫のタイムアウトはブラウザ再起動時とし、PINでロック解除にチェックします。すると右側の画面がポップアップするので、簡易なPINコードを決めたら入力し、”ブラウザー再起動時にマスターパスワードでロック”のチェックボックスは外します。最後に”送信”ボタンをクリックし確定します。</p>
+<p>これでブラウザーを再起動しても、再びマスターパスワードは不要でPINコードで保管庫にアクセスできます。</p>
+<p>カスタマイズする箇所としては、<mark class="label ">クリップボードの消去</mark>で、他のアプリケーションからクリップボードの中身を読み取られる可能性を考え、速やかに消去する設定がお勧めです。</p>
+<p>（2020-09-30追記）<br>iOS14から、クリップボードを読み取ったアプリケーションについて画面上部に表示される機能が加わりました。これまでこっそりクリップボードの内容を読み取っていたアプリ提供者も釈明に追われる事でしょう。そのようなアプリは多くないようですが、パスワードや他の重要な情報を読み取られてしまうリスクを念頭に対処してください。</p>
+<h2 id="新規アカウントを作成時にbitwardenでパスワードを生成する"><a href="#新規アカウントを作成時にbitwardenでパスワードを生成する" class="headerlink" title="新規アカウントを作成時にbitwardenでパスワードを生成する"></a>新規アカウントを作成時にbitwardenでパスワードを生成する</h2><p>アカウント登録時に、どのようにパスワードを自動生成し登録していくのかを動画にしてありますので参考にしてください。</p>
+<video src="add-account.mp4" preload="metadata" controls playsinline poster="">Sorry, your browser does not support the video tag.</video>
+
+<p>実例として価格。comのサイトへのアカウント作成の挙動です。価格。comは半角英数の8〜12文字という制約があります。記号は使えません。パスワードの規則に添うようにパスワードを生成します。</p>
+<p>一度登録してしまえば、ブラウザからのログインはとても簡単です。</p>
+<video src="login.mp4" preload="metadata" controls playsinline poster="">Sorry, your browser does not support the video tag.</video>
+
+<p>サイトによって挙動は異なるのですが、価格。comの場合、ログインボタンをクリックするだけで、あとは勝手にbitwardenがIDとパスワードをセットしてくれます。</p>
+<p>これで、たくさんのパスワードに悩まされる事なく、パスワードの使い回しによる、”利用者の過失”というリスクから解放されます。私は、個人向けのセキュリティ対策はまず最初に認証管理が重要と考えています。なかなか興味が向かない分野ですが、参考にしていただければ幸いです。</p>
+]]></content>
+      <categories>
+        <category>Security</category>
+      </categories>
+      <tags>
+        <tag>bitwarden</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>XG Firewall v18のポリシーをカスタマイズする</title>
     <url>/new-technology/2020/03/14/customize-policy/</url>
     <content><![CDATA[<div class="note success"><h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>XG FirewallのWebポリシーをカスタマイズし、コンテンツのカテゴリ（ギャンブル、アダルト、Webメール）毎にアクセスを許可するか否かを設定できるようになります。また閲覧を拒否するドメインをインターネット上にあるデータベース等から入手し、XGに取り込む事ができるようになります。</p>
@@ -620,75 +689,6 @@ XGFirewall-- &quot;192.168.0.0&#x2F;24&quot; ---HGW
       </categories>
       <tags>
         <tag>XG Firewall</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>パスワード管理ソフトのbitwardenを活用する</title>
-    <url>/new-technology/2020/08/30/bitwarden/</url>
-    <content><![CDATA[<img src="/new-technology/2020/08/30/bitwarden/password.png" class="" title="alt">
-
-<h2 id="パスワード管理はソフトウェアに任せる"><a href="#パスワード管理はソフトウェアに任せる" class="headerlink" title="パスワード管理はソフトウェアに任せる"></a>パスワード管理はソフトウェアに任せる</h2><p>前回の記事、<a href="/new-technology/2020/08/14/remote-work/" title="安全快適にリモートワークを行う">安全快適にリモートワークを行う</a>で記載したように、リモートワークの活用機会が高まり、ますます各自のパスワード管理が重要になってきています。頭ではパスワードの使い回しは良く無いと理解していながら、結局は文字列＋数字で似たようなパスワードをいくつも作ってしまい、脆弱な状態にあるケースは多いように感じます。パスワード管理ソフトの導入はITリテラシが高く無いとなかなか取り組む機会はありませんが、個人のパスワードと会社のアカウントに利用しているパスワードが類似しているのは問題です。同僚とパスワードを共有してしまうという問題も多くあります。先日のニュースでは国内企業のVPNの脆弱性からパスワードが漏洩し、2要素認証を設定していた企業は救われたと記事になっていました。ここで紹介するパスワード管理ソフトですが、パスワードを管理する事と、ランダムな文字列でのパスワード生成機能の2つの機能を持ちます。また、このbitwardenは、パスワードが登録されたサイトに遷移すると顔認証等でパスワードが入力されます。当然ながら、URLが異なればパスワードを自動入力しないため、フィッシング対策にもなります。このプロダクトは無償、有償と選択が可能ですが、無償でも十分な機能を保持しています。</p>
-<a id="more"></a>
-<h2 id="bitwardenを用いたパスワード管理の目指す姿"><a href="#bitwardenを用いたパスワード管理の目指す姿" class="headerlink" title="bitwardenを用いたパスワード管理の目指す姿"></a>bitwardenを用いたパスワード管理の目指す姿</h2><ol>
-<li><p>信頼できるソフトウェアを活用する（bitwarden社について）<br>プロダクトを提供している企業のプライバシーポリシーがしっかり記載され、どの国に属するかが記載され、本人の同意なく情報を開示しないという基本事項がプライバシーポリシーに記載されている事は重要です。曖昧に記載している企業のソフトウェアはお勧めしません。最終的に企業が属する国の命令には逆らえませんが、明瞭である事は重要です。オープンソースである事などは、さらに企業のスタンスが明確です。</p>
-</li>
-<li><p>クロスプラットフォームで複数のチャネル、有名なブラウザーに対応し利便性が高いこと<br>クロスプラットフォームである事は利便性が高くなります。Windowsだけで使えても、スマホでは別管理というのではじきに使わなくなってしまいます。Windows、macOS、iOS、Androidに対応している事は必須条件でしょう。スマホやタブレットなどでは指紋認証や顔認証でスムーズにパスワードを利用できる事が前提です。</p>
-</li>
-<li><p>パスワード生成機能は所定の文字数で任意に数字や記号を含められること<br>サイトによっては文字列数の下限、上限が異なります。また記号の一部が含められないなどサイトによってルールは異なります。パスワード管理ソフトでは、サイトによって任意にルールを定めたうえで生成できる事が求められます。</p>
-</li>
-<li><p>ネットに繋がらなくてもパスワード管理ソフトを利用できること<br>ネットに繋げるためのパスワードや、ブラウザから利用するものがパスワード管理の全てではありません。クローズネットワークやスマホの機内モードであったとしても重要なデータにアクセスする機会はあり得ます。これはソフトウェアのデザインですが、bitwardenはそのシチュエーションを踏まえたソフトウェアのデザインがなされています。</p>
-</li>
-<li><p>可能な限り2要素認証を組み合わせること<br>これはユーザー側に求める要件です。パスワードが漏洩する可能性を踏まえ、利用するサイトやサービスでは2要素認証を設定しておくべきです。パスワード自体を第三者に預けられる前提が2要素認証です。もちろん、bitwardenからパスワード全体が漏洩する事は企業の存続に関わるわけですし、その可能性は低いと考えられますが完璧と考えるべきではありません。今や2要素認証はサービス提供業者の基本提供機能ですからパスワードが万が一漏洩しても水際で防ぐ事ができます。なお、使い方の注意として2要素認証のキーとなる要素をbitwardenに保存するべきではありません。2要素認証で有名なAuthyはバックアップパスワードなどの存在がありますが、これは主に利用するパスワード管理ソフトとは別に管理すべきです。</p>
-</li>
-<li><p>容易にバックアップが取得できること<br>パスワードは漏洩する事が最悪の事象ですが、ロストすると回復に時間を要し、大幅な時間をロスします。各個人の責任でバックアップは取得しておくべきです。bitwardenは、csvまたはjson形式で簡単にエクスポートできます。これを暗号化されたUSBメディアなどにバックアップし、ネットとは繋がらない場所に保管しておく事が求められます。</p>
-</li>
-<li><p>本当に重要なIDこそ自分で記憶する。金融に関わるパスワード管理<br>オンラインバンキングなど、漏洩した時には直接金銭的、かつ高額となり得るものはパスワード管理システムから除外される事をお勧めします。2要素認証があるのは当然としても、です。もちろん上述した暗号化されたUSBメディアに保存しておく事でも構いません。ネットで到達できる場所に保存されるべきではありません。クレジットカードの盗難とは異なり、オンラインバンキングではユーザー側の重過失によって補償減額、または補償せずという取り扱いになりえます。これはパスワードを記載した手帳を盗まれた、パスワードをスマホに保存してあったものが盗難されるなどした場合もユーザー側の重過失にあたる可能性があります。そのアカウントの利用でどういったリスクがあるのかを考えIDとパスワードを管理していく必要があります。●●payのQR決済もオンラインバンキング程は高額にならないものの、金銭流出のリスクがあります。主要なQR決済事業者は不正利用に対して補償するというスタンスが主流ではあるものの、パスワード管理におけるユーザー側の過失があれば補償されない可能性があります。各企業の約款、補償の事項に必ず目を通す必要があります。全ては個別事案での判断という事なのでしょうが、そもそもパスワードの使い回しは過失と言われても仕方がないのではないでしょうか。金融分野は極めてリスクが高いという事になります。QR決済は少額決済ですが、2要素認証は必須といえるでしょう。英単語と数字の単純な組み合わせではない複雑さを持ったパスワードを設定される事をお勧めします。</p>
-</li>
-<li><p>クラウド管理かオンプレミス（ローカル環境）か<br>自宅のPCでパスワード管理する事とbitwardenのようにクラウドで管理する事のどちらが安全かと言われれば判断は難しいところです。ちなみに、bitwardenはオンプレミスで構築できます。実際に過去、ubuntu18.04LTSにdocker、docker composeを導入し、bitwardenをセットアップし利用していた事があります。ダイナミックDNSはno-ipを使い、SSLは無償のLet’s Encryptにbitwarden自身が登録すれば完了です。3カ月ごとにスクリプトを走らせればSSL証明書を自動更新し、dockerから最新イメージを自動ダウンロードしてシステムを最新に保ちます。Linux上でMS SQLServerが動作し、bitwardenはコンパクトながらとても技術の高さを感じました。しかし、個人でWAF導入やアクセスログのチェックなどセキュリティ対策を実施する事の難易度の高さも感じ、再びクラウド管理に戻しました。ビジネス目的にて、インターネットに接続されない企業内でbitwardenを活用するのは非常に良い方法です。個人のサイバーセキュリティ対策で実現可能な事は資金面やスキル面でも限界があります。隙を見せず、目立たず狙われにくい事が大切です。</p>
-</li>
-</ol>
-<h2 id="bitwardenの初期セットアップ"><a href="#bitwardenの初期セットアップ" class="headerlink" title="bitwardenの初期セットアップ"></a>bitwardenの初期セットアップ</h2><img src="/new-technology/2020/08/30/bitwarden/bitwarden.png" class="" title="alt">
-
-<p>アカウント作成の最初の画面こそ英語ですが、実際のアカウント作成画面は日本語となります。利用するアプリも日本語ですので扱いはとても簡単に感じます。</p>
-<img src="/new-technology/2020/08/30/bitwarden/account.png" class="" title="alt">
-
-<p>アカウントの作成が終了したらWebにログインし、もし現在利用されているパスワードマネージャがあるのであればそこからインポートが可能です。ChromeやFirefoxのパスワードをcsvに一旦出力し、そこからインポートする事も可能です。bitwardenではこのパスワードの集合体を保管庫と呼んでいます。</p>
-<img src="/new-technology/2020/08/30/bitwarden/bitwarden1.png" class="" title="alt">
-
-<p>続いて<mark class="label ">設定タブ</mark>から2要素認証を設定します。おなじみのAuthyやメール通知を選択できます。</p>
-<img src="/new-technology/2020/08/30/bitwarden/bitwarden2.png" class="" title="alt">
-
-<p>次に、PCであれば、端末毎にbitwardenのクライアントアプリケーションおよび利用するブラウザの拡張機能としてbitwardenをインストールしてください。上記の画面ではYubikey、Duo、FIDOがプレミアム版としての表記がありますが、無償版のbitwardenであっても、Android、iOS、macOS（Appのみ）は生体認証に対応しています。プレミアム版に登録しDuoを選択した場合は、2要素認証の6桁の数字を入力する事なく、シングルサインオンでスマホに通知がきますので以下のように”Approve”をタップするだけでログインが完了します。これはあくまでbitwardenのログインの話であって、各サイトのログイン時にシングルサインオンが可能になるわけではありません。</p>
-<img src="/new-technology/2020/08/30/bitwarden/duo1.png" class="" title="alt">
-
-<p><a href="https://duo.com/">Duo Security</a>は2018年にCisco社が買収しています。CiscoのAnyConnectを使う場合の2要素認証に使われるもので、どちらかといえば法人がターゲットです。最近だとMicrosoft365でも使えるようになりました。個人利用は無償です。</p>
-<img src="/new-technology/2020/08/30/bitwarden/duo2.png" class="" title="alt">
-<p>“Free Trial”と言われると基本は有償サービスのように感じますが、”Free Trial”からアカウントを作成し、速やかに無料アカウント（Duo Free）に切り替え可能です。<br>bitwardenとの連携は以下のようにDuoの画面からbitwardenの情報を元にID、秘密鍵、APIサーバーを設定します。そしてスマホアプリの”Duo Mobile”をセットアップし利用します。</p>
-<img src="/new-technology/2020/08/30/bitwarden/duo3.png" class="" title="alt">
-
-<p>そもそもコストの低いbitwardenでDuoのPushサービスが利用できるという事は、Duoは法人向けの利用料も廉価なのでしょうか。今後色々なサービスでもDuoを利用する機会が増えてくる事が期待されます。</p>
-<h2 id="bitwardenのブラウザでのセットアップ"><a href="#bitwardenのブラウザでのセットアップ" class="headerlink" title="bitwardenのブラウザでのセットアップ"></a>bitwardenのブラウザでのセットアップ</h2><p>bitwardenに対しパスワードの入力の都度、毎回マスターパスワードを入力するのは大変な作業で現実的ではありません。2要素認証を設定していれば、初回こそマスターパスワードと2要素認証が必要ですが、2回目以降のログインでは同一クライアントまたは同一ブラウザであれば2要素認証は不要です。bitwardenはさらにpinによる簡易な対話型認証を行い、保管庫にアクセスする事が可能となります。</p>
-<img src="/new-technology/2020/08/30/bitwarden/bitwarden3.png" class="" title="alt">
-
-<p>ブラウザの拡張機能からbitwardenを呼び出し、”設定”から保管庫のタイムアウトはブラウザ再起動時とし、PINでロック解除にチェックします。すると右側の画面がポップアップするので、簡易なPINコードを決めたら入力し、”ブラウザー再起動時にマスターパスワードでロック”のチェックボックスは外します。最後に”送信”ボタンをクリックし確定します。</p>
-<p>これでブラウザーを再起動しても、再びマスターパスワードは不要でPINコードで保管庫にアクセスできます。</p>
-<p>カスタマイズする箇所としては、<mark class="label ">クリップボードの消去</mark>で、他のアプリケーションからクリップボードの中身を読み取られる可能性を考え、速やかに消去する設定がお勧めです。</p>
-<p>（2020-09-30追記）<br>iOS14から、クリップボードを読み取ったアプリケーションについて画面上部に表示される機能が加わりました。これまでこっそりクリップボードの内容を読み取っていたアプリ提供者も釈明に追われる事でしょう。そのようなアプリは多くないようですが、パスワードや他の重要な情報を読み取られてしまうリスクを念頭に対処してください。</p>
-<h2 id="新規アカウントを作成時にbitwardenでパスワードを生成する"><a href="#新規アカウントを作成時にbitwardenでパスワードを生成する" class="headerlink" title="新規アカウントを作成時にbitwardenでパスワードを生成する"></a>新規アカウントを作成時にbitwardenでパスワードを生成する</h2><p>アカウント登録時に、どのようにパスワードを自動生成し登録していくのかを動画にしてありますので参考にしてください。</p>
-<video src="add-account.mp4" preload="metadata" controls playsinline poster="">Sorry, your browser does not support the video tag.</video>
-
-<p>実例として価格。comのサイトへのアカウント作成の挙動です。価格。comは半角英数の8〜12文字という制約があります。記号は使えません。パスワードの規則に添うようにパスワードを生成します。</p>
-<p>一度登録してしまえば、ブラウザからのログインはとても簡単です。</p>
-<video src="login.mp4" preload="metadata" controls playsinline poster="">Sorry, your browser does not support the video tag.</video>
-
-<p>サイトによって挙動は異なるのですが、価格。comの場合、ログインボタンをクリックするだけで、あとは勝手にbitwardenがIDとパスワードをセットしてくれます。</p>
-<p>これで、たくさんのパスワードに悩まされる事なく、パスワードの使い回しによる、”利用者の過失”というリスクから解放されます。私は、個人向けのセキュリティ対策はまず最初に認証管理が重要と考えています。なかなか興味が向かない分野ですが、参考にしていただければ幸いです。</p>
-]]></content>
-      <categories>
-        <category>Security</category>
-      </categories>
-      <tags>
-        <tag>bitwarden</tag>
       </tags>
   </entry>
   <entry>
@@ -1587,6 +1587,92 @@ Note over cl: 16.共通鍵で復号
       </tags>
   </entry>
   <entry>
+    <title>XG Firewall VPNにスマホから接続する</title>
+    <url>/new-technology/2020/03/31/vpn-iphone/</url>
+    <content><![CDATA[<div class="note success"><h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>スマホ（iPhone、Android）からXG FirewallのVPNへ接続できるようになります。2要素認証の設定も可能です。</p>
+</div>
+<a id="more"></a>
+
+<h2 id="事前準備"><a href="#事前準備" class="headerlink" title="事前準備"></a>事前準備</h2><p>前回の記事でPC（WindowsおよびmacOS）からXGの<mark class="label ">VPN（Sophos Connect）</mark>に2要素認証で安全に接続できるようになりました。ここでは、スマホからVPNへ接続できるように設定していきます。この記事では、XG側に一通りVPNの設定が終わっている事を前提としています。以下の記事も参考にしてください。</p>
+<ul>
+<li><a href="/new-technology/2020/03/28/vpn/" title="XG Firewall VPNについて">XG Firewall VPNについて</a></li>
+<li><a href="/new-technology/2020/03/28/vpnotp/" title="XG Firewall VPNに2要素認証を設定する">XG Firewall VPNに2要素認証を設定する</a>
+
+</li>
+</ul>
+<p>前提条件は以下の通りです。なお、この記事では、ワンタイムパスワードを必ず必須とはしていません。PCとは異なり、移動しながら使うスマホは毎回ワンタイムパスワードを入力するのでは利便性に欠けます。ここは利便性とセキュリティの安全面を比較し判断という事になります。</p>
+<ul>
+<li>XGにVPN(Sophos Connect)の設定を終えている</li>
+<li>XGの外側（インターネット側）にホームゲートウェイがあり、ホームゲートウェイからXGに対し必要なVPNのパケットを転送出来ている</li>
+</ul>
+<h2 id="iOS-iPhone-、AndroidのVPN設定を行う"><a href="#iOS-iPhone-、AndroidのVPN設定を行う" class="headerlink" title="iOS(iPhone)、AndroidのVPN設定を行う"></a>iOS(iPhone)、AndroidのVPN設定を行う</h2><div class="tabs" id="one-unique-name"><ul class="nav-tabs"><li class="tab active"><a href="#one-unique-name-1"><i class="fab fa-apple"></i>iOS</a></li><li class="tab"><a href="#one-unique-name-2"><i class="fab fa-android"></i>Android</a></li></ul><div class="tab-content"><div class="tab-pane active" id="one-unique-name-1"><p><strong>iOSにおけるVPN接続の設定方法</strong></p>
+<p>LAN環境にて、XGのユーザーポータル<code>https://XGのIPアドレス/</code>に接続します。ユーザーポータルには、前回までに作成したVPNユーザーでログインします。ポータルのログイン後には、以下の画面のように、iPhone（iOS）のIPSec VPNに必要な設定ファイルをダウンロードできるようになっています。</p>
+<img src="/new-technology/2020/03/31/vpn-iphone/iphone.png" class="" title="alt">
+
+<div class="note warning"><p>ダウンロードした設定ファイルは一部修正が必要ですので、PCでダウンロードしファイルを修正の後、iOSにインストールする事をお勧めします。</p>
+</div>
+
+<p>ファイルをダウンロードしたらメモ帳やテキストエディットなどで設定ファイルを開きます。以下はファイルの先頭からの抜粋ですが、11行目にXGのWAN側のIPアドレスが記載されている行があります。内容は以下の通りです。</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plist</span> <span class="attr">version</span>=<span class="string">&quot;1.0&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">key</span>&gt;</span>PayloadContent<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">key</span>&gt;</span>IPSec<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">key</span>&gt;</span>AuthenticationMethod<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">string</span>&gt;</span>SharedSecret<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">key</span>&gt;</span>RemoteAddress<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">string</span>&gt;</span>192.168.x.x<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>上記のIPアドレスをXGで設定してあるダイナミックDNSのホスト名に書き換えます（Sophos社が提供しているダイナミックDNSであれば、xxxx.myfirewall.coです）。その後、ファイルを保存し、iCloudまたはメールなどでiPhoneに転送し、iPhoneから設定ファイルをインストールします。macOSだとFinderからファイルを選んでAirDropでiPhoneに送信すると簡単ですね。iPhoneではプロファイルのインストール時には、最初にiPhoneのパスワードを求められますのでiPhoneのパスワードを入力します。次にXGの接続ユーザーのパスワードを求められますが、ここはワンタイムパスワードの有無で設定が異なります。前回の記事ではワンタイムパスワードが必要なユーザーを作成しましたが、ワンタイムパスワードが不要であれば、ワンタイムパスワードを使わないユーザーを改めて作成してください。</p>
+<p>以下の場合は、XGの接続ユーザーのパスワードを入力します。</p>
+<ul>
+<li>ワンタイムパスワードは利用しない</li>
+<li>iPhoneにパスワードを記憶させたい</li>
+</ul>
+<p>以下の場合は、パスワードを入力せずプロファイルのインストールを完了させます。</p>
+<ul>
+<li>ワンタイムパスワードを利用する</li>
+<li>iPhoneにパスワードを記憶させたくない</li>
+</ul>
+<h3 id="iOS-iPhone-からVPNに接続する"><a href="#iOS-iPhone-からVPNに接続する" class="headerlink" title="iOS(iPhone)からVPNに接続する"></a>iOS(iPhone)からVPNに接続する</h3><p>iPhoneの設定アプリからVPNを選択、XGの接続先が選択されている状態で<mark class="label ">状況</mark>のトグルスイッチをオンにします。パスワードが設定済みの方は短い時間でXGへの接続が完了します。ワンタイムパスワードを設定している方、或いはパスワードを記憶させていない方は、パスワード入力のポップアップが表示されます。ワンタイムパスワードは、パスワードのあと続けてワンタイムパスワードの6つの数字を続けて入力します。一旦ポップアップが表示されると他のアプリに切り替えられないので一旦キャンセルします。ワンタイムパスワードアプリで6桁の数字を記憶するかコピーするなどし、最大30秒以内で設定アプリに再度切り替え、VPNのパスワードを完成させ接続する事になります。</p></div><div class="tab-pane" id="one-unique-name-2"><p><strong>AndroidにおけるVPN接続の設定方法</strong></p>
+<p>AndroidからVPNに接続する場合は、以下の設定を行います。今回の実例はAndroidのバージョン9のタブレットで説明します。機種によって操作は異なるかとおもいますが、ご容赦ください。無線とネットワーク→VPN→<mark class="label ">VPNネットワークの追加</mark>をタップします。</p>
+<table>
+<thead>
+<tr>
+<th>説明</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>名前</td>
+<td>接続名を入力します</td>
+</tr>
+<tr>
+<td>タイプ</td>
+<td><mark class="label ">IPSec Xauth PSK</mark>を選択します</td>
+</tr>
+<tr>
+<td>サーバー</td>
+<td>xxx.myfirewall.coなどのダイナミックDNSのホスト名を入力します</td>
+</tr>
+<tr>
+<td>IPSec ID</td>
+<td>空白のままで構いません</td>
+</tr>
+<tr>
+<td>IPSec事前共有鍵</td>
+<td>XGで設定した共有鍵を入力します</td>
+</tr>
+</tbody></table>
+<img src="/new-technology/2020/03/31/vpn-iphone/android.png" class="" title="alt">
+
+<h3 id="AndroidからVPNに接続する"><a href="#AndroidからVPNに接続する" class="headerlink" title="AndroidからVPNに接続する"></a>AndroidからVPNに接続する</h3><p><mark class="label ">設定</mark>から<mark class="label ">無線とネットワーク</mark>に進みVPNを選択し、ユーザーIDとパスワードを入力し接続します。ワンタイムパスワードを利用する場合は、パスワードの後ろにワンタイムパスワード（6桁の数字）を続けて入力します。</p>
+<p>Androidに関しては1点、注意点があります。Androidは、SSLインスペクションについて、Chromeブラウザ以外のアプリからは使えない前提があります。そこで、Android専用のVPNユーザーを作成しSSLインスペクションの対象からAndroidユーザーを除外するなどの設定が必要となります。</p></div></div></div>
+
+<p>これまでの設定で、スマホからXG Firewallを活用した安全なネットアクセスや宅内に設置してあるデータへのアクセス、サーバーの操作が行えるようになりました。私はVPN接続ユーザーを2つ有効にしており、2要素認証が必要なユーザーはLANへのアクセスを許可するもの、2要素認証を不要としているユーザーはLANおよびHGWのセグメントへのアクセスを不許可とするルールを作成しています。またVPNからXGの管理画面には接続できないようにもしています。</p>
+]]></content>
+      <categories>
+        <category>Security</category>
+        <category>VPN</category>
+        <category>ワンタイムパスワード</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>XG Firewall VPNについて</title>
     <url>/new-technology/2020/03/28/vpn/</url>
     <content><![CDATA[<div class="note success"><h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>外出先から、PC（Windows、macOS）を使い、宅内にあるXG FirewallのVPNへ接続できるようになります。それによりウィルスおよびマルウェア対策やWebフィルタなどを含んだ安全なネット閲覧や、宅内のLANリソースへリモートアクセス出来るようになります。</p>
@@ -1700,92 +1786,6 @@ Note over cl: 16.共通鍵で復号
       <categories>
         <category>Security</category>
         <category>VPN</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>XG Firewall VPNにスマホから接続する</title>
-    <url>/new-technology/2020/03/31/vpn-iphone/</url>
-    <content><![CDATA[<div class="note success"><h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>スマホ（iPhone、Android）からXG FirewallのVPNへ接続できるようになります。2要素認証の設定も可能です。</p>
-</div>
-<a id="more"></a>
-
-<h2 id="事前準備"><a href="#事前準備" class="headerlink" title="事前準備"></a>事前準備</h2><p>前回の記事でPC（WindowsおよびmacOS）からXGの<mark class="label ">VPN（Sophos Connect）</mark>に2要素認証で安全に接続できるようになりました。ここでは、スマホからVPNへ接続できるように設定していきます。この記事では、XG側に一通りVPNの設定が終わっている事を前提としています。以下の記事も参考にしてください。</p>
-<ul>
-<li><a href="/new-technology/2020/03/28/vpn/" title="XG Firewall VPNについて">XG Firewall VPNについて</a></li>
-<li><a href="/new-technology/2020/03/28/vpnotp/" title="XG Firewall VPNに2要素認証を設定する">XG Firewall VPNに2要素認証を設定する</a>
-
-</li>
-</ul>
-<p>前提条件は以下の通りです。なお、この記事では、ワンタイムパスワードを必ず必須とはしていません。PCとは異なり、移動しながら使うスマホは毎回ワンタイムパスワードを入力するのでは利便性に欠けます。ここは利便性とセキュリティの安全面を比較し判断という事になります。</p>
-<ul>
-<li>XGにVPN(Sophos Connect)の設定を終えている</li>
-<li>XGの外側（インターネット側）にホームゲートウェイがあり、ホームゲートウェイからXGに対し必要なVPNのパケットを転送出来ている</li>
-</ul>
-<h2 id="iOS-iPhone-、AndroidのVPN設定を行う"><a href="#iOS-iPhone-、AndroidのVPN設定を行う" class="headerlink" title="iOS(iPhone)、AndroidのVPN設定を行う"></a>iOS(iPhone)、AndroidのVPN設定を行う</h2><div class="tabs" id="one-unique-name"><ul class="nav-tabs"><li class="tab active"><a href="#one-unique-name-1"><i class="fab fa-apple"></i>iOS</a></li><li class="tab"><a href="#one-unique-name-2"><i class="fab fa-android"></i>Android</a></li></ul><div class="tab-content"><div class="tab-pane active" id="one-unique-name-1"><p><strong>iOSにおけるVPN接続の設定方法</strong></p>
-<p>LAN環境にて、XGのユーザーポータル<code>https://XGのIPアドレス/</code>に接続します。ユーザーポータルには、前回までに作成したVPNユーザーでログインします。ポータルのログイン後には、以下の画面のように、iPhone（iOS）のIPSec VPNに必要な設定ファイルをダウンロードできるようになっています。</p>
-<img src="/new-technology/2020/03/31/vpn-iphone/iphone.png" class="" title="alt">
-
-<div class="note warning"><p>ダウンロードした設定ファイルは一部修正が必要ですので、PCでダウンロードしファイルを修正の後、iOSにインストールする事をお勧めします。</p>
-</div>
-
-<p>ファイルをダウンロードしたらメモ帳やテキストエディットなどで設定ファイルを開きます。以下はファイルの先頭からの抜粋ですが、11行目にXGのWAN側のIPアドレスが記載されている行があります。内容は以下の通りです。</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plist</span> <span class="attr">version</span>=<span class="string">&quot;1.0&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">key</span>&gt;</span>PayloadContent<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">key</span>&gt;</span>IPSec<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">key</span>&gt;</span>AuthenticationMethod<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">string</span>&gt;</span>SharedSecret<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">key</span>&gt;</span>RemoteAddress<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">string</span>&gt;</span>192.168.x.x<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>上記のIPアドレスをXGで設定してあるダイナミックDNSのホスト名に書き換えます（Sophos社が提供しているダイナミックDNSであれば、xxxx.myfirewall.coです）。その後、ファイルを保存し、iCloudまたはメールなどでiPhoneに転送し、iPhoneから設定ファイルをインストールします。macOSだとFinderからファイルを選んでAirDropでiPhoneに送信すると簡単ですね。iPhoneではプロファイルのインストール時には、最初にiPhoneのパスワードを求められますのでiPhoneのパスワードを入力します。次にXGの接続ユーザーのパスワードを求められますが、ここはワンタイムパスワードの有無で設定が異なります。前回の記事ではワンタイムパスワードが必要なユーザーを作成しましたが、ワンタイムパスワードが不要であれば、ワンタイムパスワードを使わないユーザーを改めて作成してください。</p>
-<p>以下の場合は、XGの接続ユーザーのパスワードを入力します。</p>
-<ul>
-<li>ワンタイムパスワードは利用しない</li>
-<li>iPhoneにパスワードを記憶させたい</li>
-</ul>
-<p>以下の場合は、パスワードを入力せずプロファイルのインストールを完了させます。</p>
-<ul>
-<li>ワンタイムパスワードを利用する</li>
-<li>iPhoneにパスワードを記憶させたくない</li>
-</ul>
-<h3 id="iOS-iPhone-からVPNに接続する"><a href="#iOS-iPhone-からVPNに接続する" class="headerlink" title="iOS(iPhone)からVPNに接続する"></a>iOS(iPhone)からVPNに接続する</h3><p>iPhoneの設定アプリからVPNを選択、XGの接続先が選択されている状態で<mark class="label ">状況</mark>のトグルスイッチをオンにします。パスワードが設定済みの方は短い時間でXGへの接続が完了します。ワンタイムパスワードを設定している方、或いはパスワードを記憶させていない方は、パスワード入力のポップアップが表示されます。ワンタイムパスワードは、パスワードのあと続けてワンタイムパスワードの6つの数字を続けて入力します。一旦ポップアップが表示されると他のアプリに切り替えられないので一旦キャンセルします。ワンタイムパスワードアプリで6桁の数字を記憶するかコピーするなどし、最大30秒以内で設定アプリに再度切り替え、VPNのパスワードを完成させ接続する事になります。</p></div><div class="tab-pane" id="one-unique-name-2"><p><strong>AndroidにおけるVPN接続の設定方法</strong></p>
-<p>AndroidからVPNに接続する場合は、以下の設定を行います。今回の実例はAndroidのバージョン9のタブレットで説明します。機種によって操作は異なるかとおもいますが、ご容赦ください。無線とネットワーク→VPN→<mark class="label ">VPNネットワークの追加</mark>をタップします。</p>
-<table>
-<thead>
-<tr>
-<th>説明</th>
-<th>内容</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>名前</td>
-<td>接続名を入力します</td>
-</tr>
-<tr>
-<td>タイプ</td>
-<td><mark class="label ">IPSec Xauth PSK</mark>を選択します</td>
-</tr>
-<tr>
-<td>サーバー</td>
-<td>xxx.myfirewall.coなどのダイナミックDNSのホスト名を入力します</td>
-</tr>
-<tr>
-<td>IPSec ID</td>
-<td>空白のままで構いません</td>
-</tr>
-<tr>
-<td>IPSec事前共有鍵</td>
-<td>XGで設定した共有鍵を入力します</td>
-</tr>
-</tbody></table>
-<img src="/new-technology/2020/03/31/vpn-iphone/android.png" class="" title="alt">
-
-<h3 id="AndroidからVPNに接続する"><a href="#AndroidからVPNに接続する" class="headerlink" title="AndroidからVPNに接続する"></a>AndroidからVPNに接続する</h3><p><mark class="label ">設定</mark>から<mark class="label ">無線とネットワーク</mark>に進みVPNを選択し、ユーザーIDとパスワードを入力し接続します。ワンタイムパスワードを利用する場合は、パスワードの後ろにワンタイムパスワード（6桁の数字）を続けて入力します。</p>
-<p>Androidに関しては1点、注意点があります。Androidは、SSLインスペクションについて、Chromeブラウザ以外のアプリからは使えない前提があります。そこで、Android専用のVPNユーザーを作成しSSLインスペクションの対象からAndroidユーザーを除外するなどの設定が必要となります。</p></div></div></div>
-
-<p>これまでの設定で、スマホからXG Firewallを活用した安全なネットアクセスや宅内に設置してあるデータへのアクセス、サーバーの操作が行えるようになりました。私はVPN接続ユーザーを2つ有効にしており、2要素認証が必要なユーザーはLANへのアクセスを許可するもの、2要素認証を不要としているユーザーはLANおよびHGWのセグメントへのアクセスを不許可とするルールを作成しています。またVPNからXGの管理画面には接続できないようにもしています。</p>
-]]></content>
-      <categories>
-        <category>Security</category>
-        <category>VPN</category>
-        <category>ワンタイムパスワード</category>
       </categories>
       <tags>
         <tag>XG Firewall</tag>
@@ -2200,6 +2200,122 @@ Note over cl: 16.共通鍵で復号
       </categories>
       <tags>
         <tag>XG Firewall</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>VMware ESXiの仮想マシンをバックアップする</title>
+    <url>/new-technology/2020/10/11/esxi-backup/</url>
+    <content><![CDATA[<img src="/new-technology/2020/10/11/esxi-backup/backup.png" class="" title="alt">
+
+<div class="note success"><h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>無償版ESXi6.7（VMware vSphere Hypervisor6.7）にセットアップしたXG Firewallなどの仮想マシンをバックアップする方法について記載します。</p>
+</div>
+
+<a id="more"></a>
+
+<h2 id="ghettoVCBで仮想マシンのバックアップを取得する"><a href="#ghettoVCBで仮想マシンのバックアップを取得する" class="headerlink" title="ghettoVCBで仮想マシンのバックアップを取得する"></a>ghettoVCBで仮想マシンのバックアップを取得する</h2><p>このブログで紹介している<mark class="label ">XG Firewall</mark>は、ESXi上にセットアップする事をお勧めしています。その理由としては仮想マシンは比較的バックアップが取得しやすく、万が一のトラブル発生時に速やかに復元（レストア）しやすい事が理由でもあります。もちろん、XG Firewallには設定ファイルをバックアップする機能が存在しますが、バージョンアップやデバイスの入れ替え等何らかのきっかけでうまく稼働しなくなるリスクがあります。XG Firewall自体OSとして起動するため、マシンに直接インストールした場合はバックアップが事実上不可能です。このghettoVCBはESXi上で動作させるコマンドラインのスクリプトですが、利用は難しくありません。</p>
+<h2 id="ESXiのスナップショット"><a href="#ESXiのスナップショット" class="headerlink" title="ESXiのスナップショット"></a>ESXiのスナップショット</h2><p>ESXiはスナップショットという機能を持っており、その時点の稼働状態について保存可能です。動画の一瞬を絵として切り取るという表現が適切でしょうか、これは一瞬で完了し、いつでもロールバックが可能です。複数の世代を持て使い勝手はとても良好です。ビジネスの世界では本番環境にパッチを当てる際などの最終確認フェーズで活用されます。つまり、万が一の時にはロールバックする事で速やかに以前の状態に戻す事が可能です。但し、このスナップショットを取ったまま長時間運用する事をVMWareは推奨していません。スナップショットを取得した後のメモリを含む稼働状況の差分をDiskに記録していく必要があり、これがパフォーマンスに悪影響を及ぼすためです。従い、スナップショットは恒久的なバックアップの役割にはなりません。</p>
+<h2 id="ghettoVCBについて"><a href="#ghettoVCBについて" class="headerlink" title="ghettoVCBについて"></a>ghettoVCBについて</h2><p>このghettoVCBは<a href="https://www.virtuallyghetto.com/">William Lam氏</a>が作成したMITライセンス（フリーソフト）のソフトウェアで、VMWareの正式な製品ではありません。但し、フリーのESXi向けにはデファクトスタンダードとも言えるスクリプトです。ソフトウェアはGitHub上にあります。以下のGitHubから<mark class="label ">Codeボタン</mark>→<mark class="label ">Download ZIP</mark>と進み、<mark class="label ">ghettoVCB-master.zip</mark>をダウンロードしてください。私はESXi6.7の環境で動作検証していますが、このブログを記載している途中の2020-10-10に”Adding support for ESXi 7.0 update 1”と更新が入りましたので、新しいESXiのバージョンにも積極的に対応されているようです。</p>
+<a class="btn" href="https://github.com/lamw/ghettoVCB" title="ghettoVCB Software"><i class="fab fa-github fa-fw fa-lg"></i>ghettoVCB</a>
+
+<p>このghettoVCBは前述したスナップショットを活用し、システムを止める事なくスナップショットを取り、バックアップを行ってくれるため非常に便利です。またバックアップを複数世代持つ事が可能です。単一のファイルとしてバックアップされるため、非常に取り扱いがしやすいのも特徴です。</p>
+<p>ESXiをバックアップする製品はたくさん存在するのですが、基本はESXiの有償版が前提です。バックアップに使用されるvStorage APIは無償のESXi向けにはロックが掛かっており使えません。GUIによる製品も全く無いわけではありませんが、イチオシはghettoVCBになります。</p>
+<h2 id="バックアップ先の準備"><a href="#バックアップ先の準備" class="headerlink" title="バックアップ先の準備"></a>バックアップ先の準備</h2><p>ESXi上のディスクにバックアップを取得し、作成されたファイルをESXiのデータストアブラウザからダウンロードしたり、SCPを使いPCなどにファイルコピーする事は最もシンプルな方法です。しかし、NASがあると非常に便利です。最近のNASはNFSによるファイル共有が使えるので、予めNASに設定したNFSドライブをESXiからマウントし、その領域にghettoVCBでバックアップを取得するのがお勧めです。QNAP・SynologyというNASの2大メーカーは、NFSおよびブロックベースのiSCSIにも対応しています。速度的にはNFSよりブロックベースのiSCSIの方が若干早いのとNAS上のVMFSフォーマットされたディスク上では複製した仮想マシンを立ち上げられます（ネットワーク越しとなるため遅いですが）。万が一のサルベージ（復旧作業）はNFSやファイルベースのiSCSIの方がNASからファイルを確認できる事、NFSは特に扱いがシンプルなため、まずはNFSのファイル共有がお勧めです。</p>
+<h3 id="NAS上でのNFSの設定"><a href="#NAS上でのNFSの設定" class="headerlink" title="NAS上でのNFSの設定"></a>NAS上でのNFSの設定</h3><p>まず、ESXiでサポートされるNFSのバージョンは3および4となります。v3はシンプルにクライアントのIPアドレスで認証し、v4はIPアドレスに加えユーザー単位の認証が可能です。</p>
+<p>ここではQNAPを実例に設定を記載します。<br>・<mark class="label ">コントロールパネル</mark>から、<mark class="label ">ネットワークサービスとファイルサービス</mark>を選択し、NFSv3またはNFSv4を有効にします。</p>
+<img src="/new-technology/2020/10/11/esxi-backup/qnap1.png" class="" title="alt">
+
+<h4 id="NFSv3の場合"><a href="#NFSv3の場合" class="headerlink" title="NFSv3の場合"></a>NFSv3の場合</h4><p>・バックアップを取得する共有フォルダを作成します。<mark class="label ">コントロールパネル</mark>の、<mark class="label ">権限設定</mark>でバックアップを取得する共有フォルダを選択し、共有フォルダの権限画面を設定します。</p>
+<img src="/new-technology/2020/10/11/esxi-backup/qnap2.png" class="" title="alt">
+
+<p>・NFSについて設定します。ユーザーはguest扱いで接続します。</p>
+<img src="/new-technology/2020/10/11/esxi-backup/qnap3.png" class="" title="alt">
+
+<h4 id="NFSv4の場合"><a href="#NFSv4の場合" class="headerlink" title="NFSv4の場合"></a>NFSv4の場合</h4><p>・認証するバックアップ専用のユーザー（一般ユーザー）を作成します。<br>・バックアップを取得する共有フォルダを作成し、管理者とバックアップ専用ユーザーにアクセス権を付与します。<mark class="label ">コントロールパネル</mark>の、<mark class="label ">権限設定</mark>でバックアップを取得する共有フォルダを選択し、共有フォルダの権限を設定します。</p>
+<img src="/new-technology/2020/10/11/esxi-backup/qnap2.png" class="" title="alt">
+
+<p> ここでは、bkupという一般ユーザーでbackupという共有フォルダのアクセス権を設定しています。bkupユーザーはこのbackupフォルダのみにアクセス権を与えており、他のフォルダにはアクセスしない設定にします。</p>
+<p>・NFSv4ではESXiのrootで接続された場合を含め、権限を一般ユーザーに格下げする、Squashオプションに”ALL_SQUASH”を設定します。</p>
+<img src="/new-technology/2020/10/11/esxi-backup/qnap4.png" class="" title="alt">
+
+<p> QNAP以外のNASでも若干設定内容は異なりますが、大きく違いはありません。</p>
+<p>・セキュリティ強化のため、今回NFS向けとして作成したユーザーに対し、NFS以外のNASアクセス権の解除およびNASへのログイン時に2要素認証を必須（通常Webサービスにログインしないので実質無効化という意味合いです）とする設定をお勧めします。</p>
+<h2 id="ESXiからNFSサーバーに接続する"><a href="#ESXiからNFSサーバーに接続する" class="headerlink" title="ESXiからNFSサーバーに接続する"></a>ESXiからNFSサーバーに接続する</h2><p>ESXi側からNFSでファイルをマウントするのは簡単です。ESXiの左ペインメニューの<mark class="label ">ストレージ</mark>から、<mark class="label ">新しいデータストア</mark>を選択します。次に<mark class="label ">NFSデータストアのマウント</mark>を選びます。以下のダイアログが表示されますので、ESXiで使うボリューム名を決め、NFSサーバーのIPアドレス、マウント名、NFSv4であればユーザーIDとパスワードを入力します。NFSv3の場合は、ユーザーIDとパスワードを入力する場所はありません。</p>
+<img src="/new-technology/2020/10/11/esxi-backup/esxi1.png" class="" title="alt">
+
+<p>これで、ESXiでは、”/vmfs/volumes/マウント名”としてnfsサーバーのフォルダがマウントされます。nfsサーバーを”¥¥YourNAS”、ESXiのマウント名を”your-nfs”とするならば、¥¥YourNAS¥backup¥の中身が/vmfs/volumes/your-nfs/に対応します。</p>
+<h2 id="ESXiでghettoVCBを稼働させるための事前準備"><a href="#ESXiでghettoVCBを稼働させるための事前準備" class="headerlink" title="ESXiでghettoVCBを稼働させるための事前準備"></a>ESXiでghettoVCBを稼働させるための事前準備</h2><ol>
+<li>ESXiにSSHで接続する必要があるため、ESXiの左ペインメニューの<mark class="label ">ホスト→管理</mark>から<mark class="label ">サービス</mark>タブをクリックし、<mark class="label ">TSM</mark>および<mark class="label ">TSM-SSH</mark>を起動します。</li>
+<li>ESXiのストレージ、nfsボリュームを選択し、データストアブラウザを開きます。アップロードボタンをクリックし、ダウンロード済みの<mark class="label ">ghettoVCB-master.zip</mark>をアップロードします。</li>
+</ol>
+<h3 id="ghettoVCBの展開"><a href="#ghettoVCBの展開" class="headerlink" title="ghettoVCBの展開"></a>ghettoVCBの展開</h3><p>sshクライアントから、rootユーザーでESXiに接続し、ghettoVCBのzipを展開します。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">The ESXi Shell can be disabled by an administrative user. See the</span><br><span class="line">vSphere Security documentation <span class="keyword">for</span> more information.</span><br><span class="line">[root@esxi:~] <span class="built_in">cd</span> /vmfs/volumes/your-nfs/</span><br><span class="line">[root@esxi:/vmfs/volumes/your-nfs] ls</span><br><span class="line">ghettoVCB-master.zip</span><br><span class="line">[root@esxi:/vmfs/volumes/your-nfs] unzip ghettoVCB-master.zip</span><br><span class="line">Archive:  ghettoVCB-master.zip</span><br><span class="line">   creating: ghettoVCB-master/</span><br><span class="line">  inflating: ghettoVCB-master/README.md</span><br><span class="line">  inflating: ghettoVCB-master/ghettoVCB-restore.sh</span><br><span class="line">  inflating: ghettoVCB-master/ghettoVCB-restore_vm_restore_configuration_template</span><br><span class="line">  inflating: ghettoVCB-master/ghettoVCB-vm_backup_configuration_template</span><br><span class="line">  inflating: ghettoVCB-master/ghettoVCB.conf</span><br><span class="line">  inflating: ghettoVCB-master/ghettoVCB.sh</span><br><span class="line">  inflating: ghettoVCB-master/vghetto-ghettoVCB-offline-bundle.zip</span><br><span class="line">  inflating: ghettoVCB-master/vghetto-ghettoVCB.vib</span><br><span class="line">[root@esxi:/vmfs/volumes/your-nfs]</span><br></pre></td></tr></table></figure>
+
+<h2 id="ghettoVCB-shでバックアップを行う"><a href="#ghettoVCB-shでバックアップを行う" class="headerlink" title="ghettoVCB.shでバックアップを行う"></a>ghettoVCB.shでバックアップを行う</h2><p>バックアップを行う本体は、<mark class="label ">ghettoVCB.sh</mark>です。新しく作成されたghettoVCB-masterフォルダに移動し、ghettoVCB.shをviで開きます。このスクリプトで変更すべき箇所は最低1箇所で、15行目にバックアップを保存するパスを指定します。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Author: William Lam</span></span><br><span class="line"><span class="comment"># Created Date: 11/17/2008</span></span><br><span class="line"><span class="comment"># http://www.virtuallyghetto.com/</span></span><br><span class="line"><span class="comment"># https://github.com/lamw/ghettoVCB</span></span><br><span class="line"><span class="comment"># http://communities.vmware.com/docs/DOC-8760</span></span><br><span class="line"></span><br><span class="line"><span class="comment">##################################################################</span></span><br><span class="line"><span class="comment">#                   User Definable Parameters</span></span><br><span class="line"><span class="comment">##################################################################</span></span><br><span class="line"></span><br><span class="line">LAST_MODIFIED_DATE=2020_10_10</span><br><span class="line">VERSION=4</span><br><span class="line"></span><br><span class="line"><span class="comment"># directory that all VM backups should go (e.g. /vmfs/volumes/SAN_LUN1/mybackupdir)</span></span><br><span class="line">VM_BACKUP_VOLUME=/vmfs/volumes/your-nfs/backups</span><br></pre></td></tr></table></figure>
+
+<p>上記で指定した”backups”フォルダを作成します。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@esxi:/vmfs/volumes/your-nfs] mkdir backups</span><br><span class="line">[root@esxi:/vmfs/volumes/your-nfs]</span><br></pre></td></tr></table></figure>
+
+<p>さらに、バックアップ対象となるvmのListを作成します。1行1ホストとなります。XGFirewall、Win10という仮想マシンが2つ存在しそれをバックアップするのであれば、以下のようにghettoVCB-masterフォルダでvmlist.txtなどの名前で仮想マシンの一覧を作成します。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@esxi:/vmfs/volumes/your-nfs/ghettoVCB-master] vi vmlist.txt</span><br><span class="line"></span><br><span class="line">XGFirewall</span><br><span class="line">Win10</span><br></pre></td></tr></table></figure>
+
+<h3 id="ghettoVCB-shの実行"><a href="#ghettoVCB-shの実行" class="headerlink" title="ghettoVCB.shの実行"></a>ghettoVCB.shの実行</h3><p>ghettoVCB-masterフォルダから以下のコマンドでバックアップが取得できます。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@esxi:/vmfs/volumes/your-nfs/ghettoVCB-master] /bin/sh ./ghettoVCB.sh -f ./vmlist.txt</span><br></pre></td></tr></table></figure>
+
+<p>私の環境での実行結果（一部ホスト名などは書き換えています）は以下の通りです。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">2020-10-10 13:29:17 -- info: Initiate backup <span class="keyword">for</span> XGFirewall</span><br><span class="line">2020-10-10 13:29:17 -- info: Creating Snapshot <span class="string">&quot;ghettoVCB-snapshot-2020-10-10&quot;</span> <span class="keyword">for</span> XGFirewall</span><br><span class="line">Option --adaptertype is deprecated and hence will be ignored</span><br><span class="line">Destination disk format: VMFS thin-provisioned</span><br><span class="line">Cloning disk <span class="string">&#x27;/vmfs/volumes/datastore1/XGFirewall/XGFirewall/XGFirewall-0.vmdk&#x27;</span>...</span><br><span class="line">Clone: 100% <span class="keyword">done</span>.</span><br><span class="line">2020-10-10 13:30:59 -- info: Removing snapshot from XGFirewall ...</span><br><span class="line">2020-10-10 13:31:00 -- info: Slept 1 seconds to work around NFS I/O error</span><br><span class="line">2020-10-10 13:31:00 -- info: Backup Duration: 1.72 Minutes</span><br><span class="line">2020-10-10 13:31:00 -- info: Successfully completed backup <span class="keyword">for</span> XGFirewall!</span><br></pre></td></tr></table></figure>
+
+<h3 id="ghettoVCB-shの実行結果確認"><a href="#ghettoVCB-shの実行結果確認" class="headerlink" title="ghettoVCB.shの実行結果確認"></a>ghettoVCB.shの実行結果確認</h3><p>実際にバックアップが作成されたフォルダを確認すると以下のようになっています。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@esxi:/vmfs/volumes/your-nfs/backups/XGFirewall/XGFirewall-2020-10-10_13-29-16] ls -al</span><br><span class="line">total 29407336</span><br><span class="line">drwxr-xr-x    2 root     root          4096 Oct 10 13:30 .</span><br><span class="line">drwxr-xr-x    5 root     root          4096 Oct 10 13:30 ..</span><br><span class="line">-rw-r--r--    1 root     root            30 Oct 10 13:30 STATUS.ok</span><br><span class="line">-rw-------    1 root     root       2621952 Oct 10 13:30 XGFirewall-0-ctk.vmdk</span><br><span class="line">-rw-------    1 root     root     42949672960 Oct 10 13:30 XGFirewall-0-flat.vmdk</span><br><span class="line">-rw-------    1 root     root           612 Oct 10 13:30 XGFirewall-0.vmdk</span><br><span class="line">-rwxr-xr-x    1 root     root          3712 Oct 10 13:29 XGFirewall.vmx</span><br></pre></td></tr></table></figure>
+
+<p>環境によってファイル名は少し異なります。仮想マシンは、-flat.vmdkが本体です。私の場合は、別のバックアップソフトで差分バックアップを有効にしているため別にファイル名が”-ctk.vmdk”というものもあります。これはvSphereの機能であるCBT（Changed Block Tracking）を用いて更新のあったブロックのみを差分バックアップする機能で、これを使うとvmdkが2つ作成されます。このCBTはghettoVCBには無関係ですが混乱を避けるために参考までに記載しました。</p>
+<p>ファイルのサイズを確認すると、<code>XGFirewall-0-flat.vmdk</code>は40GByteとなっています。これはそもそもの仮想マシンを作成した時に設定したサイズが示されています。ghettoVCBはデフォルトのthinモードでバックアップするため、thickで構成された仮想マシンよりは実際の消費されているディスク量は小さく済みます。実際に消費されたディスクは以下の通り確認できます。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@esxi:/vmfs/volumes/your-nfs/backups/XGFirewall/XGFirewall-2020-10-10_13-29-16] du -h</span><br><span class="line">28.0G	.</span><br></pre></td></tr></table></figure>
+
+<p>つまり、シンプロビジョニング（通称シンプロ）はこうやってディスク領域を節約する仕組みになっているわけです。</p>
+<p>私の環境ではNFSサーバーはQNAPのTVS473eというモデルでウェスタンデジタル社のHDDを4台RAID10で使っており、NICはAquantia AQC107です。ESXi側のNICはintel X550T2で、共に10GbpsのNICです。XGの仮想マシン（28ギガバイト）をバックアップするのに1分40秒ですのでまずまずの速度でしょうか。参考までに、殆どアプリの入っていないWin10だと、4分20秒程度でした。<br>デフォルトでは3世代バックアップを取得するようになっていますが、その他カスタマイズする箇所については、<a href="https://communities.vmware.com/docs/DOC-8760">英語版の公式マニュアル</a>を確認してください。</p>
+<h2 id="ESXiのちょっと特殊な点について"><a href="#ESXiのちょっと特殊な点について" class="headerlink" title="ESXiのちょっと特殊な点について"></a>ESXiのちょっと特殊な点について</h2><p>このシェルを実行する時に、頭に<code>/bin/sh</code>を加えました。単体でghettoVCB.shを実行すると<code>-sh: ./ghettoVCB.sh: Operation not permitted</code>と実行できません。ghettoVCB.shには、実行権も最初から付与されています。スクリプトの先頭にShebang（#!/bin/sh）が無いのでそれが原因かと思い加えても動作しません。これは、ESXiがUEFIのセキュアブートだとこのような挙動になるようです。スクリプトでバックアップができるようになると、Cronに登録して定期的に実行したくなりますが、改ざん防止のためそれも不可能なようです。ESXiのセキュアブートをしないように変更すれば可能ですが、XGを載せたFirewallの役割から考えると非常に悩ましいところです。定期的にバックアップ可能なソフトウェアについて、今後紹介できればと考えています。</p>
+<h2 id="ghettoVCB-restore-shでレストアを行う"><a href="#ghettoVCB-restore-shでレストアを行う" class="headerlink" title="ghettoVCB-restore.shでレストアを行う"></a>ghettoVCB-restore.shでレストアを行う</h2><p>さて、バックアップから戻す場合です。ESXiのハードウェア毎故障してしまってもバックアップがあれば安全です。戻し方には2つあります。</p>
+<ol>
+<li>バックアップを取得した仮想マシンと同じ場所に戻す</li>
+<li>バックアップを取得した仮想マシンの情報で、新しい仮想マシンを作成する</li>
+</ol>
+<p>1の方法は元の仮想マシンを一旦ESXiメニューから削除してから同じフォルダを再作成して復旧するので比較的単純です。2の方法は重複して作成する事になるため、そのままだとネットワーク周りの環境が重複し、MACアドレスなど別の構成にしてレストアする事になります。より慎重な人は別の仮想マシンとして起動する事を確認してから元の仮想環境を削除する方法を選びたいのではないでしょうか。今回は少し手間が掛かりますが、上記でバックアップされたXGFirewallを新しい仮想マシンとして復元する方法について記載します。</p>
+<h3 id="レストアの事前設定"><a href="#レストアの事前設定" class="headerlink" title="レストアの事前設定"></a>レストアの事前設定</h3><p>通常仮想マシンが稼働しているvmfsフォーマットのフォルダを確認します。通常は<code>/vmfs/volumes/datastore1</code>ですが、ここでは、｀/vmfs/volumes/your-datastore/`とします。</p>
+<p>バックアップしたXGFirewallを新しい仮想マシンをレストアする場所として、datastore配下に”XGFW18”フォルダを作成します。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@esxi:/vmfs/volumes/your-datastore] mkdir XGFW18</span><br><span class="line">[root@esxi:/vmfs/volumes/your-datastore]</span><br></pre></td></tr></table></figure>
+
+<p>次に、ghettoVCBフォルダに移動し、レストア設定ファイルを新規作成します。以下の通り、バックアップしたファイル、戻し先と仮想マシンのディスクフォーマット（ここではデフォルトのzeroedthick”1”を指定）、仮想マシンの名称を記述します。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@esxi:/vmfs/volumes/your-nfs/ghettoVCB-master] vi vm_restore_list.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># DISK_FORMATS</span></span><br><span class="line"><span class="comment"># 1 = zeroedthick</span></span><br><span class="line"><span class="comment"># 2 = 2gbsparse</span></span><br><span class="line"><span class="comment"># 3 = thin</span></span><br><span class="line"><span class="comment"># 4 = eagerzeroedthick</span></span><br><span class="line"><span class="comment"># e.g.</span></span><br><span class="line"><span class="string">&quot;/vmfs/volumes/your-nfs/backups/XGFirewll/XGFirewall-2020-10-10_13-29-16;/vmfs/volumes/your-datastore/XGFW18;1;XGFW18&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="ghettoVCB-restore-shでレストアの実行"><a href="#ghettoVCB-restore-shでレストアの実行" class="headerlink" title="ghettoVCB-restore.shでレストアの実行"></a>ghettoVCB-restore.shでレストアの実行</h2><p>ghettoVCB-masterフォルダから以下のコマンドでレストアを実行します。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root@esxi:/vmfs/volumes/your-nfs/ghettoVCB-master] /bin/sh ./ghettoVCB-restore.sh -c ./vm_restore_list.txt</span><br></pre></td></tr></table></figure>
+
+<h3 id="実行結果"><a href="#実行結果" class="headerlink" title="実行結果"></a>実行結果</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">################## Restoring VM: XGFW18  #####################</span></span><br><span class="line">Start time: Sun Oct 11 04:14:58 UTC 2020</span><br><span class="line">Restoring VM from: <span class="string">&quot;/vmfs/volumes/your-nfs/backups/XGFirewall/XGFirewall-2020-10-10_13-29-16&quot;</span></span><br><span class="line">Restoring VM to Datastore: <span class="string">&quot;/vmfs/volumes/your-datastore/XGFW18&quot;</span> using Disk Format: <span class="string">&quot;zeroedthick&quot;</span></span><br><span class="line">Creating VM directory: <span class="string">&quot;/vmfs/volumes/your-datastore/XGFW18/XGFW18&quot;</span> ...</span><br><span class="line">Copying <span class="string">&quot;XGFW.vmx&quot;</span> file ...</span><br><span class="line">Restoring VM<span class="string">&#x27;s VMDK(s) ...</span></span><br><span class="line"><span class="string">Updating VMDK entry in &quot;XGFW18.vmx&quot; file ...</span></span><br><span class="line"><span class="string">Option --adaptertype is deprecated and hence will be ignored</span></span><br><span class="line"><span class="string">Destination disk format: VMFS zeroedthick</span></span><br><span class="line"><span class="string">Cloning disk &#x27;</span>/vmfs/volumes/your-nfs/backups/XGFirewall/XGFW-2020-10-10_13-29-16/XGFirewall-0.vmdk<span class="string">&#x27;...</span></span><br><span class="line"><span class="string">Clone: 100% done.</span></span><br><span class="line"><span class="string">Registering XGFW18 ...</span></span><br><span class="line"><span class="string">10</span></span><br><span class="line"><span class="string">End time: Sun Oct 11 04:26:17 UTC 2020</span></span><br><span class="line"><span class="string">################## Completed restore for XGFW18! #####################</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Start time: Sun Oct 11 04:14:58 UTC 2020</span></span><br><span class="line"><span class="string">End   time: Sun Oct 11 04:26:17 UTC 2020</span></span><br><span class="line"><span class="string">Duration  : 11.32 Minutes</span></span><br></pre></td></tr></table></figure>
+
+<p>これでESXiのメニューを確認すると既に左ペインの仮想マシンに新しくレストアした”XGFW18”がインベントリ登録まで完了し停止状態となっています。すぐに起動といきたいところですが、今稼働中のXGとIPアドレスなど全てが重複しますので、事前に修正する箇所があります。</p>
+<img src="/new-technology/2020/10/11/esxi-backup/esxi2.png" class="" title="alt">
+
+<ol>
+<li>ネットワーク部分ですが、ESXiの左ペインのネットワークから新しいポートグループをLANとWANとの2つ作成し、それぞれ物理NICのvmnicと関連付けます。</li>
+<li>ネットワークアダプタ1（LAN）、2（WAN）とも新しいポートグループに置き換えます。</li>
+<li>既存のXGが起動中の場合は、IPアドレスが重複する事、そもそも1つのライセンスで複数起動は認められていませんので、停止します。</li>
+<li>既存のXGが停止してから、新しいXGFW18を起動します。初回起動時には以下のダイアログが表示されますので、<mark class="label ">コピーしました</mark>を選択し<mark class="label ">回答</mark>します。バックアップした仮想マシンを既に削除している場合は、<mark class="label ">移動しました</mark>を選択します。</li>
+</ol>
+<img src="/new-technology/2020/10/11/esxi-backup/esxi3.png" class="" title="alt">
+
+<p>これでバックアップされたXGが復元されました。ただし前述した通り、MACアドレスが初期化されていますので、ホームゲートウェイから割り当てられたIPアドレスが変わっています。また、LANで利用しているL2スイッチでMACアドレスフィルタなどACLを使っている場合も通信できなくなりますので、ご注意ください。<br>レストアの処理時間は11分20秒と少し時間が掛かるようですが、頻繁に行う作業ではないため、許容範囲ではないでしょうか。</p>
+<div class="note warning no-icon"><p>復元された新しいXGをメインとして利用していく場合は、古い仮想マシンについて自動起動をオフにし、同時起動しないようにご注意ください。</p>
+</div>
+
+<p>レストアに関する詳細は、<a href="https://communities.vmware.com/docs/DOC-10595">公式マニュアル</a>をご覧ください。</p>
+]]></content>
+      <categories>
+        <category>Software</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+        <tag>ESXi</tag>
       </tags>
   </entry>
   <entry>
