@@ -85,7 +85,7 @@ ESXi側からNFSでファイルをマウントするのは簡単です。ESXiの
 
 {% asset_img esxi1.png alt %}
 
-これで、ESXiでは、"/vmfs/volumes/マウント名"としてnfsサーバーのフォルダがマウントされます。nfsサーバーを"¥¥YourNAS"、ESXiのマウント名を"your-nfs"とするならば、¥¥YourNAS¥backup¥の中身が/vmfs/volumes/your-nfs/に対応します。
+これで、ESXiでは、"/vmfs/volumes/NFSデータストア名"としてnfsサーバーのフォルダがマウントされます。nfsサーバーを"¥¥YourNAS"、ESXiのマウント名を"your-nfs"とするならば、¥¥YourNAS¥backup¥の中身が/vmfs/volumes/your-nfs/に対応します。
 
 ## ESXiでghettoVCBを稼働させるための事前準備
 
