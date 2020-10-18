@@ -199,61 +199,6 @@ h6 {
   line-height: 1.5;
   margin: 80px 0 40px;
 }
-h2 {
-  position: relative;
-  background: #f1f8ff;
-  padding: 0.25em 0.5em;
-  border-left: solid 2em #5c9ee7;
-}
-h2:before {
-  position: absolute;
-  content: "\f303";
-  padding: 0em;
-  color: #fff;
-  font-weight: 900;
-  left: -1.35em;
-  top: 50%;
-  -webkit-transform: translateY(-50%);
-  transform: translateY(-50%);
-}
-h3 {
-  padding-top: 0.5em;
-  padding-bottom: 0.5em;
-  margin-bottom: 2em;
-  position: relative;
-  margin: 3em 0 2em;
-  color: #39a38d; /* フォント色 */
-}
-h3:before {
-  position: absolute;
-  content: "";
-  display: block;
-  width: 100%;
-  height: 4px;
-  background: repeating-linear-gradient(90deg, #3eaf36 0%, #369fad 20%, #ab6150 50%, #a0ad36 100%);
-  bottom: 0;
-  left: 0;
-  z-index: 0;
-}
-h4 {
-  padding-top: 0.5em;
-  padding-bottom: 0.5em;
-  padding-left: 1.4em;
-  margin-bottom: 2em;
-  position: relative;
-  line-height: 1.4;
-  color: #17b7b1;
-/*フォント色*/
-}
-h4:before {
-  position: absolute;
-  content: "\f00c";
-  font-weight: 900;
-  font-size: 1em;
-  left: 0;
-  top: 0.5em;
-  color: #17b7b1;
-}
 h1 {
   font-size: 1.5em;
 }
@@ -278,7 +223,7 @@ p {
 a,
 span.exturl {
   border-bottom: 1px solid #fff;
-  color: var(--link-color);
+  color: var(--text-color);
   outline: 0;
   text-decoration: none;
   overflow-wrap: break-word;
@@ -288,12 +233,6 @@ a:hover,
 span.exturl:hover {
   border-bottom-color: var(--link-hover-color);
   color: var(--link-hover-color);
-}
-a[target="_blank"]::after {
-  font-family: "Font Awesome 5 Free";
-  font-weight: bold;
-  content: "\f35d";
-  margin: 0 4px;
 }
 iframe,
 img,
@@ -2021,9 +1960,84 @@ pre code {
 .post-body h6:hover .headerlink:hover {
   opacity: 1;
 }
+.post-body h2 {
+  position: relative;
+  background: #f1f8ff;
+  padding: 0.25em 0.5em;
+  border-left: solid 2em #5c9ee7;
+}
+.post-body h2:before {
+  position: absolute;
+  content: "\f303";
+  padding: 0em;
+  color: #fff;
+  font-weight: 900;
+  left: -1.35em;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+.post-body h3 {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  margin-bottom: 2em;
+  position: relative;
+  margin: 3em 0 2em;
+  color: #39a38d; /* フォント色 */
+}
+.post-body h3:before {
+  position: absolute;
+  content: "";
+  display: block;
+  width: 100%;
+  height: 4px;
+  background: repeating-linear-gradient(90deg, #3eaf36 0%, #369fad 20%, #ab6150 50%, #a0ad36 100%);
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+}
+.post-body h4 {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  padding-left: 1.4em;
+  margin-bottom: 2em;
+  position: relative;
+  line-height: 1.4;
+  color: #17b7b1;
+/*フォント色*/
+}
+.post-body h4:before {
+  position: absolute;
+  content: "\f00c";
+  font-weight: 900;
+  font-size: 1em;
+  left: 0;
+  top: 0.5em;
+  color: #17b7b1;
+}
 .post-body .exturl .fa {
   font-size: 0.875em;
   margin-left: 4px;
+}
+.post-body a,
+.post-body span.exturl {
+  border-bottom: 1px solid #fff;
+  color: var(--link-color);
+  outline: 0;
+  text-decoration: none;
+  overflow-wrap: break-word;
+  cursor: pointer;
+}
+.post-body a:hover,
+.post-body span.exturl:hover {
+  border-bottom-color: var(--link-hover-color);
+  color: var(--link-hover-color);
+}
+.post-body a[target="_blank"]::after {
+  font-family: "Font Awesome 5 Free";
+  font-weight: bold;
+  content: "\f35d";
+  margin: 0 4px;
 }
 .post-body .image-caption,
 .post-body .figure .caption {
@@ -2894,7 +2908,7 @@ hr {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #ffafff;
+  background: #c68a3b;
   display: inline-block;
   margin-right: 3px;
   transform: translateY(-2px);
