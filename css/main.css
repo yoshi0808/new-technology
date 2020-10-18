@@ -2894,7 +2894,7 @@ hr {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #b958ff;
+  background: #ffafff;
   display: inline-block;
   margin-right: 3px;
   transform: translateY(-2px);
@@ -2937,9 +2937,9 @@ hr {
 /*タブ*/
   position: absolute;
   font-family: "Font Awesome 5 Free";
-  font-size: 1.18em;
+  font-size: 0.95em;
   font-weight: 900;
-  content: "\f0a7";
+  content: "\f0a7\ POINT";
   background: #80c8d1;
   color: #fff;
   left: 0px;

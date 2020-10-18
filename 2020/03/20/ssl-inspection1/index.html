@@ -39,7 +39,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/mac_ca3.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/installed_cert1.png">
 <meta property="article:published_time" content="2020-03-20T12:32:29.000Z">
-<meta property="article:modified_time" content="2020-10-18T04:19:37.781Z">
+<meta property="article:modified_time" content="2020-10-18T06:45:18.137Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -348,7 +348,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">編集日</span>
-        <time title="修正日：2020-10-18 13:19:37" itemprop="dateModified" datetime="2020-10-18T13:19:37+09:00">2020-10-18</time>
+        <time title="修正日：2020-10-18 15:45:18" itemprop="dateModified" datetime="2020-10-18T15:45:18+09:00">2020-10-18</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -374,7 +374,7 @@
 XG Firewall v18のSSL/TLSインスペクションを使い、暗号化されたSSL通信を解読します。これにより、ウィルスやマルウェアなどの脅威を通信中に検出し、PCやiPhone等（Windows、macOS、iOS）が攻撃を受ける前に防御する事が出来るようになります。
 <a id="more"></a>
 
-<h2 id="XG-Firewall-v18利用のメリット"><a href="#XG-Firewall-v18利用のメリット" class="headerlink" title="XG Firewall v18利用のメリット"></a>XG Firewall v18利用のメリット</h2><p>XGでは暗号化された通信を高速に解読し、ウィルスやマルウェアのダウンロードをPCやスマホが受信する前に防ぐ事が可能となります。また、利用を認めていないアプリケーションのデータのやりとりを未然に防ぐ事も可能です。v18では、全く新しい<mark class="label ">XStreamアーキテクチャ</mark>によって、この解読（SSLインスペクション）の速度が大幅に向上しました。</p>
+<h2 id="XG-Firewall-v18利用のメリット"><a href="#XG-Firewall-v18利用のメリット" class="headerlink" title="XG Firewall v18利用のメリット"></a>XG Firewall v18利用のメリット</h2><p>XGでは暗号化された通信を高速に解読し、ウィルスやマルウェアのダウンロードをPCやスマホが受信する前に防ぐ事が可能となります。また、利用を認めていないアプリケーションのデータのやりとりを未然に防ぐ事も可能です。v18では、全く新しい<mark class="label primary">XStreamアーキテクチャ</mark>によって、この解読（SSLインスペクション）の速度が大幅に向上しました。</p>
 <h2 id="SSLインスペクションの対象とするホストの明確化"><a href="#SSLインスペクションの対象とするホストの明確化" class="headerlink" title="SSLインスペクションの対象とするホストの明確化"></a>SSLインスペクションの対象とするホストの明確化</h2><p>前回の記事”<a href="/new-technology/2020/03/20/ssl-inspection/" title="SSLインスペクションについて">SSLインスペクションについて</a>“に記載した通り、SSLインスペクションを行うためには、PC等のクライアントにXGのCA証明書をインストールする事が必須となります。従いSSLインスペクションの対象のグループ、家電やAndroidなどのSSLインスペクションを使えないグループとに分類します。この2つのグループはIPアドレスの範囲で分割するのが最も簡単な方法です。例えば、SSLインスペクショングループはスタティックでIPを割り当て、非SSLインスペクショングループはDHCPで動的なIPアドレスを配布する方法があります。<strong>XGのDHCPサーバーはMACアドレスを元に固定IPをスタティックに割り振る事が可能です</strong>。</p>
 <h2 id="SSLインスペクションの対象をDHCPに登録する"><a href="#SSLインスペクションの対象をDHCPに登録する" class="headerlink" title="SSLインスペクションの対象をDHCPに登録する"></a>SSLインスペクションの対象をDHCPに登録する</h2><p>左ペインのネットワークからDHCPのタブをクリックし、<mark class="label primary">Default DHCP Server</mark>をクリックします。そこには、”スタティックIP_MACマッピング”があるので、DHCPで自動リースをしている以外のIPアドレスをスタティックに割り振って登録してください。管理の一例としては以下の通りです。</p>
 <ul>
@@ -404,28 +404,28 @@ XG Firewall v18のSSL/TLSインスペクションを使い、暗号化されたS
 <p>ルート証明書をダウンロードした後、クライアントへのインストールについては、OS毎に以下の3種類の手順をそれぞれ確認し設定します。</p>
 <div class="tabs" id="one-unique-name"><ul class="nav-tabs"><li class="tab active"><a href="#one-unique-name-1">Windows</a></li><li class="tab"><a href="#one-unique-name-2"><i class="fab fa-apple"></i>macOS</a></li><li class="tab"><a href="#one-unique-name-3"><i class="fa fa-mobile-alt"></i>iOS</a></li></ul><div class="tab-content"><div class="tab-pane active" id="one-unique-name-1"><p><strong>Windowsにルート証明書をインストールする方法</strong></p>
 <ol>
-<li><mark class="label ">プログラムとファイル名の検索</mark>のボックスに<mark class="label ">MMC</mark>と入力して<mark class="label ">Microsoft Management Console</mark>を開きます。</li>
-<li><mark class="label ">ファイル</mark>-<mark class="label ">スナップインの追加と削除</mark>を選択して”スナップインの追加と削除”を開きます。</li>
+<li><mark class="label primary">プログラムとファイル名の検索</mark>のボックスに<mark class="label primary">MMC</mark>と入力して<mark class="label primary">Microsoft Management Console</mark>を開きます。</li>
+<li><mark class="label primary">ファイル</mark>-<mark class="label primary">スナップインの追加と削除</mark>を選択して”スナップインの追加と削除”を開きます。</li>
 </ol>
 <img src="/new-technology/2020/03/20/ssl-inspection1/win1.png" class="" title="alt">
 
 <ol start="3">
-<li>一覧から<mark class="label ">証明書</mark> を選択して、<mark class="label ">追加</mark>をクリックすると”スナップインの追加と削除”のウィンドウが開かれます。</li>
-<li><mark class="label ">コンピュータアカウント</mark>を選択して、<mark class="label ">次へ</mark>をクリックします。</li>
-<li>ローカルコンピューターがラジオボタンで選択されている事を確認し<mark class="label ">完了</mark>をクリックします。</li>
-<li>“OK”をクリックして証明書をスナップインに追加すると”スナップインの追加と削除”のウィンドウに<mark class="label ">証明書（ローカルコンピューター）</mark>が表示されます。</li>
+<li>一覧から<mark class="label primary">証明書</mark> を選択して、<mark class="label primary">追加</mark>をクリックすると”スナップインの追加と削除”のウィンドウが開かれます。</li>
+<li><mark class="label primary">コンピュータアカウント</mark>を選択して、<mark class="label primary">次へ</mark>をクリックします。</li>
+<li>ローカルコンピューターがラジオボタンで選択されている事を確認し<mark class="label primary">完了</mark>をクリックします。</li>
+<li>“OK”をクリックして証明書をスナップインに追加すると”スナップインの追加と削除”のウィンドウに<mark class="label primary">証明書（ローカルコンピューター）</mark>が表示されます。</li>
 </ol>
 <img src="/new-technology/2020/03/20/ssl-inspection1/win2.png" class="" title="alt">
 
 <ol start="7">
-<li>証明書（ローカルコンピューター）のコンテナを展開して、<mark class="label ">信頼されたルート証明機関</mark>を右クリックして、”すべてのタスク &gt; インポート”を選択して証明書インポートのウィザードを開始します。</li>
-<li>証明書インポートのウィザードでは、<mark class="label ">参照</mark>ボタンをクリックして、拡張子pemを読み込むため<mark class="label ">すべてのファイル(＊.＊)</mark>を選び、XGからダウンロードした、<mark class="label ">Security Appliance_SSL_CA.pem</mark>を選択します。</li>
+<li>証明書（ローカルコンピューター）のコンテナを展開して、<mark class="label primary">信頼されたルート証明機関</mark>を右クリックして、”すべてのタスク &gt; インポート”を選択して証明書インポートのウィザードを開始します。</li>
+<li>証明書インポートのウィザードでは、<mark class="label primary">参照</mark>ボタンをクリックして、拡張子pemを読み込むため<mark class="label primary">すべてのファイル(＊.＊)</mark>を選び、XGからダウンロードした、<mark class="label primary">Security Appliance_SSL_CA.pem</mark>を選択します。</li>
 </ol>
 <img src="/new-technology/2020/03/20/ssl-inspection1/win3.png" class="" title="alt">
 
 <img src="/new-technology/2020/03/20/ssl-inspection1/win4.png" class="" title="alt">
 
-<p>9.<mark class="label ">信頼されたルート証明機関</mark>としてXGの証明書を登録し完了です。</p></div><div class="tab-pane" id="one-unique-name-2"><p><strong>macOSにルート証明書をインストールする方法</strong></p>
+<p>9.<mark class="label primary">信頼されたルート証明機関</mark>としてXGの証明書を登録し完了です。</p></div><div class="tab-pane" id="one-unique-name-2"><p><strong>macOSにルート証明書をインストールする方法</strong></p>
 <ol>
 <li>iCloud Driveに証明書を配置します</li>
 <li>ローカルドライブに証明書をコピーします</li>
