@@ -6,16 +6,8 @@ categories:
   - Security
 date: 2020-05-16 11:39:23
 ---
-
-
-{% note success  %}
-
-## この記事で実現すること
-
+<p class="onepoint">この記事で実現すること</p>
 自分で設定したDNS（多くはプロバイダDNS）に反し、行儀の悪いクライアントや悪意のあるプログラムはそれに従わず、別のDNSを参照する可能性があります。XG Firewall v18の機能を活用してDNSの安全性を確保します。
-
-
-{% endnote %}
 
 <!-- more -->
 

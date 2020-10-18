@@ -89,9 +89,9 @@ $font-family-base         = "Helvetica Neue", Arial,"Hiragino Kaku Gothic ProN",
 $font-family-logo         = $font-family-base;
 $font-family-logo         = get_font_family('title'), $font-family-base if get_font_family('title');
 
-// $font-family-headings     = $font-family-base;
+$font-family-headings     = $font-family-base;
 // $font-family-headings     = get_font_family('headings'), $font-family-base if get_font_family('headings');
-$font-family-headings     = "ヒラギノ明朝 ProN W3", "Hiragino Mincho ProN", "游明朝", YuMincho, serif;
+// $font-family-headings     = "ヒラギノ明朝 ProN W3", "Hiragino Mincho ProN", "游明朝", YuMincho, serif;
 
 $font-family-posts        = $font-family-base;
 $font-family-posts        = get_font_family('posts'), $font-family-base if get_font_family('posts');
@@ -119,14 +119,14 @@ $font-size-smaller        = .8125em;
 $font-size-small          = .875em;
 $font-size-medium         = 0.95em;
 $font-size-large          = 1.068em;
-$font-size-larger         = 1.25em;
-$font-size-largest        = 1.65em;
+$font-size-larger         = 1.18em;
+$font-size-largest        = 1.5em;
 
 
 // Headings font size
 $font-size-headings-step  = .125em;
-// $font-size-headings-base  = (hexo-config('font.enable') and hexo-config('font.headings.size') is a 'unit') ? unit(hexo-config('font.headings.size'), em) : 1.625em;
-$font-size-headings-base  = (hexo-config('font.enable') and hexo-config('font.headings.size') is a 'unit') ? unit(hexo-config('font.headings.size'), em) : 1.8em;
+$font-size-headings-base  = (hexo-config('font.enable') and hexo-config('font.headings.size') is a 'unit') ? unit(hexo-config('font.headings.size'), em) : 1.625em;
+// $font-size-headings-base  = (hexo-config('font.enable') and hexo-config('font.headings.size') is a 'unit') ? unit(hexo-config('font.headings.size'), em) : 1.8em;
 
 
 // Global line height

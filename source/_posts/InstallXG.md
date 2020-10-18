@@ -7,13 +7,8 @@ categories:
   - Security
 #comments: false
 ---
-{% note success  %}
-
-## この記事で実現すること
-
+<p class="onepoint">この記事で実現すること</p>
 XG Firewall v18をESXi 6.7で稼働させるためのインストールイメージ（isoファイル）をダウンロードし、ESXi上で、XGのための仮想マシンを構築できるようになります。
-
-{% endnote %}
 
 <!-- more -->
 ## XG Firewallのダウンロード

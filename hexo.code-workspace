@@ -8,6 +8,9 @@
 		"textlint.nodePath": "/Users/kuma/git/new-technology/node_modules",
 		"textlint.configPath": "/Users/kuma/git/new-technology/source/_posts/.textlintrc",
 		"editor.formatOnSave": true,
-		"textlint.autoFixOnSave": true
+		"textlint.autoFixOnSave": true,
+		"markdownlint.ignore": [
+			"MD033"
+		]
 	}
 }

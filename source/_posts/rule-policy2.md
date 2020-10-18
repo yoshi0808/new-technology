@@ -6,14 +6,8 @@ tags:
 categories:
   - Security
 ---
-
-{% note success  %}
-
-## この記事で実現すること
-
+<p class="onepoint">この記事で実現すること</p>
 XG Firewall v18を使ったインターネットアクセスのための、デフォルトのルールを作成します。この際にリスクの大きい通信を止めたり、Webのポリシー（閲覧が好ましくないサイト）の設定が出来るようになります。また、v18のNATについての概要を学びます。
-
-{% endnote %}
 <!-- more -->
 
 ## Traffic to Wanルールの作成

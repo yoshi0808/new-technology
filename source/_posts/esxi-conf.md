@@ -7,13 +7,9 @@ categories:
   - Software
 date: 2020-03-01 09:30:49
 ---
-{% note success  %}
-
-## この記事で実現すること
+<p class="onepoint">この記事で実現すること</p>
 
 XG Firewall v18をESXi 6.7上で稼働させるために、ホームゲートウェイの後ろに、XGを挟み込んだネットワーク全体の考え方を解説します。また、ESXi上で2枚のNICを利用し仮想スイッチの設定を行い、2枚のNICを持った仮想マシンを作成する環境を構築します。
-
-{% endnote %}
 
 <!-- more -->
 

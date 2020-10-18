@@ -6,14 +6,8 @@ categories:
   - Security
 date: 2020-03-20 14:23:53
 ---
-
-{% note success  %}
-
-## この記事で実現すること
-
+<p class="onepoint">この記事で実現すること</p>
 XG Firewallなどの次世代Firewallで利用されているSSL/TLSインスペクションについて、PCやiPhone等（Windows/macOS/iOS）を防御する仕組み、および必要となる対応を説明します。
-
-{% endnote %}
 <!-- more -->
 
 ## SSLインスペクションとは

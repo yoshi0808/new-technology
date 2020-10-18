@@ -6,14 +6,8 @@ tags:
 categories:
   - Security
 ---
-
-{% note success  %}
-
-## この記事で実現すること
-
+<p class="onepoint">この記事で実現すること</p>
 XG Firewall v18のルールとポリシーの基本的な機能を紹介します。また、インストール後、最初から設定されているデフォルトポリシーの内容を解説します。
-
-{% endnote %}
 <!-- more -->
 
 ## ルールとポリシーの機能説明

@@ -6,14 +6,8 @@ categories:
   - Security
 date: 2020-05-04 09:00:00
 ---
-
-{% note success  %}
-
-## この記事で実現すること
-
+<p class="onepoint">この記事で実現すること</p>
 XG FirewallのIPS Policyは複数存在しますが、それぞれの内容について解説します。
-
-{% endnote %}
 
 <!-- more -->
 

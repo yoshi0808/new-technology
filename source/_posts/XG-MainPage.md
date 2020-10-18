@@ -6,13 +6,9 @@ tags:
 categories:
   - Security
 ---
-{% note success  %}
-
-## この記事で実現すること
-
+<p class="onepoint">この記事で実現すること</p>
 XG Firewall v18の管理画面とメニューを参照し、製品の持つ機能とどのメニューで設定を行うのかを説明します。またv17と比較し、v18で機能向上した点やパフォーマンス（転送レート）を解説します。
 
-{% endnote %}
 <!-- more -->
 ## XG v18のメインページ
 

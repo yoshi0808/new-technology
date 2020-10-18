@@ -7,13 +7,10 @@ categories:
   - Security
 date: 2020-02-29 13:23:22
 ---
-{% note success  %}
 
-## この記事で実現すること
+<p class="onepoint">この記事で実現すること</p>
 
-　XG Firewall v18をVMware ESXi上で稼働させるために、VMware ESXi 6.7をインストールします。
-
-{% endnote %}
+XG Firewall v18をVMware ESXi上で稼働させるために、VMware ESXi 6.7をインストールします。
 
 <!-- more -->
 

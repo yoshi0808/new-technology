@@ -6,14 +6,8 @@ categories:
   - Security
 date: 2020-04-03 22:24:39
 ---
-
-{% note success  %}
-
-## この記事で実現すること
-
+<p class="onepoint">この記事で実現すること</p>
 XG Firewallで重要なエラーが発生した場合、VPNの接続通知、バージョンアップの通知をメールで受信できるようになります。
-
-{% endnote %}
 
 <!-- more -->
 ## Gmailからメールを通知する設定を行う

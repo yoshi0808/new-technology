@@ -7,14 +7,9 @@ categories:
 date: 2020-05-09 17:55:26
 ---
 
+<p class="onepoint">この記事で実現すること</p>
 
-{% note success  %}
-
-## この記事で実現すること
-
-　XG Firewall v18のWebフィルタ・アプリケーションフィルタ・IPSの高速化・SSL証明書の検証を対象に、Sophos Communityを参考に、ホームユーザーにとってベストプラクティスとなる設定を行います。
-
-{% endnote %}
+XG Firewall v18のWebフィルタ・アプリケーションフィルタ・IPSの高速化・SSL証明書の検証を対象に、Sophos Communityを参考に、ホームユーザーにとってベストプラクティスとなる設定を行います。
 
 <!-- more -->
 

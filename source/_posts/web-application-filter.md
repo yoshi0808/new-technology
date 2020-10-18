@@ -6,14 +6,8 @@ categories:
   - Security
 date: 2020-05-06 14:54:00
 ---
-
-{% note success  %}
-
-## この記事で実現すること
-
+<p class="onepoint">この記事で実現すること</p>
 XG Firewallのレイヤ7ファイアウォールとしてのWebフィルタ・アプリケーションフィルタについて、それぞれの違いと活用方法について解説します。
-
-{% endnote %}
 
 <!-- more -->
 

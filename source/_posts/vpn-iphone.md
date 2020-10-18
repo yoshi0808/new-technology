@@ -8,14 +8,9 @@ categories:
   - ワンタイムパスワード
 date: 2020-03-31 19:44:58
 ---
-
-{% note success  %}
-
-## この記事で実現すること
-
+<p class="onepoint">この記事で実現すること</p>
 スマホ（iPhone、Android）からXG FirewallのVPNへ接続できるようになります。2要素認証の設定も可能です。
 
-{% endnote %}
 <!-- more -->
 
 ## 事前準備

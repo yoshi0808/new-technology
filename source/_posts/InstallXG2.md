@@ -7,13 +7,9 @@ categories:
   - Security
 #comments: false
 ---
-{% note success  %}
-
-## この記事で実現すること
-
+<p class="onepoint">この記事で実現すること</p>
 ESXi 6.7に環境構築済みの仮想マシンに対し、XG Firewall v18のインストールを行います。ESXiを使わない場合、PC（物理マシン）にフラッシュメモリを接続し直接インストールする事になりますが、この場合も手順自体はほとんど変わりません。
 
-{% endnote %}
 <!-- more -->
 
 ## XGのインストール概要

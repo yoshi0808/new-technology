@@ -7,13 +7,9 @@ categories:
 date: 2020-06-14 22:19:20
 ---
 
-{% note success  %}
-
-## この記事で実現すること
+<p class="onepoint">この記事で実現すること</p>
 
 無償版ESXi6.7（VMware vSphere Hypervisor6.7）について、VMwareのサイトから製品パッチに関する情報を入手し、ESXi上でパッチを適用します。
-
-{% endnote %}
 
 <!-- more -->
 

@@ -6,14 +6,8 @@ tags:
 categories:
   - Security
 ---
-
-{% note success  %}
-
-## この記事で実現すること
-
+<p class="onepoint">この記事で実現すること</p>
 XG FirewallのSSLインスペクションが有効に機能している事をテストマルウェアを使い検証します。また、SSLインスペクションによってサイトによっては接続出来なくなる場合があり、これを除外する方法を確認します。
-
-{% endnote %}
 <!-- more -->
 
 ## SSLインスペクションの動作確認

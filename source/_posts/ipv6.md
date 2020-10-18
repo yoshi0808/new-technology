@@ -7,14 +7,8 @@ categories:
   - Code
 date: 2020-04-18 21:16:31
 ---
-
-{% note success  %}
-
-## この記事で実現すること
-
+<p class="onepoint">この記事で実現すること</p>
 ホームユーザー向けのユニークなIPv6アドレスが必要となった場合、自分の持つ機器のMACアドレスを用いて、Unique Local Address（ULA）を生成します。プログラムの実行が必要なので、外部サイトの[JDoodle](https://www.jdoodle.com/)サイト上でPython3のコードを実行してULAを求めます。
-
-{% endnote %}
 
 <!-- more -->
 

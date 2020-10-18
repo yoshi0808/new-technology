@@ -7,15 +7,8 @@ categories:
   - Security
 date: 2020-04-29 20:13:18
 ---
-
-
-{% note success  %}
-
-## この記事で実現すること
-
+<p class="onepoint">この記事で実現すること</p>
 XG Firewall配下のクライアントにIPv6アドレスを配布し、インターネット接続を可能とし、同時にSSLインスペクションを設定します。
-
-{% endnote %}
 
 <!-- more -->
 

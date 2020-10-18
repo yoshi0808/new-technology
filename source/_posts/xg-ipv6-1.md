@@ -7,14 +7,8 @@ categories:
   - Security
 date: 2020-04-25 15:00:17
 ---
-
-{% note success  %}
-
-## この記事で実現すること
-
+<p class="onepoint">この記事で実現すること</p>
 XG FirewallからホームゲートウェイとをIPv6で接続し、IPv6ホストの名前解決が行えるか確認します。
-
-{% endnote %}
 
 <!-- more -->
 

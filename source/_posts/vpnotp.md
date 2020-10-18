@@ -8,14 +8,9 @@ categories:
   - ワンタイムパスワード
 date: 2020-03-28 18:22:30
 ---
-
-{% note success  %}
-
-## この記事で実現すること
-
+<p class="onepoint">この記事で実現すること</p>
 PC（Windows、macOS）からXG FirewallのVPNへ接続しているユーザーに、スマホアプリを使ったワンタイムパスワードによる2要素認証機能を追加し、セキュリティを高められるようになります。
 
-{% endnote %}
 <!-- more -->
 
 ## XGが提供するVPNの2要素認証

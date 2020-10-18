@@ -6,16 +6,8 @@ categories:
   - Security
 date: 2020-06-24 18:46:11
 ---
-
-
-{% note success  %}
-
-## この記事で実現すること
-
+<p class="onepoint">この記事で実現すること</p>
 XG Firewall自身を防御するためのベストプラクティスがSophosより本日公開されたため、最低限の防御として推奨されている設定内容を紹介します。
-
-{% endnote %}
-
 <!-- more -->
 
 ## Best practices for securing your firewall

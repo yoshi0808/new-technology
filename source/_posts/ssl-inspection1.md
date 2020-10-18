@@ -6,14 +6,8 @@ categories:
   - Security
 date: 2020-03-20 21:32:29
 ---
-
-{% note success  %}
-
-## この記事で実現すること
-
+<p class="onepoint">この記事で実現すること</p>
 XG Firewall v18のSSL/TLSインスペクションを使い、暗号化されたSSL通信を解読します。これにより、ウィルスやマルウェアなどの脅威を通信中に検出し、PCやiPhone等（Windows、macOS、iOS）が攻撃を受ける前に防御する事が出来るようになります。
-
-{% endnote %}
 <!-- more -->
 
 ## XG Firewall v18利用のメリット
