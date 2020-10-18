@@ -49,27 +49,27 @@ DNSとプライバシーは国によって扱いが変わるかも知れませ�
 
 DoHの定義についてサービスの登録を行います。
 
-XGの左ペインメニュー{% label @Web %}の{% label @ファイルタイプ %}から追加ボタンをクリックします。{% label @名前 %}は"DoH"、{% label @テンプレート %}を空白とし、{% label @MIMEヘッダー %}に`application/dns-message`と入力し、保存します。
+XGの左ペインメニュー{% label primary@Web %}の{% label primary@ファイルタイプ %}から追加ボタンをクリックします。{% label primary@名前 %}は"DoH"、{% label primary@テンプレート %}を空白とし、{% label primary@MIMEヘッダー %}に`application/dns-message`と入力し、保存します。
 
 {% asset_img mimetype.png alt %}
 
-{% label @Web %}の{% label @ユーザーアクティビティ %}から"追加"ボタンをクリックし、先ほどDoHとして登録したカテゴリを加え、`DNS over HTTPS`と名前を付けて保存します。
+{% label primary@Web %}の{% label primary@ユーザーアクティビティ %}から"追加"ボタンをクリックし、先ほどDoHとして登録したカテゴリを加え、`DNS over HTTPS`と名前を付けて保存します。
 
 {% asset_img mimetype2.png alt %}
 
 続いて、具体的な拒否設定です。
 
-{% label @Web %}の{% label @ポリシー %}からご自身がFirewallルールで利用しているポリシー（ここでは"Home Policy"を仮定しています）に、上記で登録してきた"DNS over HTTPS"を拒否する設定を加えます。
+{% label primary@Web %}の{% label primary@ポリシー %}からご自身がFirewallルールで利用しているポリシー（ここでは"Home Policy"を仮定しています）に、上記で登録してきた"DNS over HTTPS"を拒否する設定を加えます。
 
 {% asset_img policy.png alt %}
 
 ## DoTの拒否
 
-XGの左ペインメニュー{% label @ホストとサービス %}の{% label @サービス %}から、"追加"ボタンをクリックし、"送信元ポート"1〜65535、"宛先ポート"853を指定し、"DoT"と名前を付け保存します。
+XGの左ペインメニュー{% label primary@ホストとサービス %}の{% label primary@サービス %}から、"追加"ボタンをクリックし、"送信元ポート"1〜65535、"宛先ポート"853を指定し、"DoT"と名前を付け保存します。
 
 {% asset_img service.png alt %}
 
-XGの左ペインメニュー{% label @ルールとポリシー %}から新しいファイアウォールルールを追加し、以下のようにDoTを"拒否"するルールを作成します。
+XGの左ペインメニュー{% label primary@ルールとポリシー %}から新しいファイアウォールルールを追加し、以下のようにDoTを"拒否"するルールを作成します。
 
 {% asset_img rule1.png alt %}
 
@@ -79,7 +79,7 @@ XGの左ペインメニュー{% label @ルールとポリシー %}から新し�
 
 {% asset_img host.png alt %}
 
-XGの左ペインメニュー{% label @ルールとポリシー %}から、{% label @NATルール %}を選択、"NATルールの追加"ボタンをクリックし、DNATを設定します。
+XGの左ペインメニュー{% label primary@ルールとポリシー %}から、{% label primary@NATルール %}を選択、"NATルールの追加"ボタンをクリックし、DNATを設定します。
 
 1. "変換前の送信元"は、使っているネットワークのオブジェクトを登録します
 2. "変換前のサービス"は、"DNS"を選択します
@@ -91,7 +91,7 @@ XGの左ペインメニュー{% label @ルールとポリシー %}から、{% la
 
 上記はIPv4の例ですが、IPv6を利用されている方は、同様にIPv6のDNATも設定してください。
 
-上記DNATによるDNSのインターセプトが有効になると、{% label @ルールとポリシー %}の{% label @NATルール %}画面で実際の変換された数が確認できるので、これで挙動確認を行ってください。
+上記DNATによるDNSのインターセプトが有効になると、{% label primary@ルールとポリシー %}の{% label primary@NATルール %}画面で実際の変換された数が確認できるので、これで挙動確認を行ってください。
 
 {% asset_img rule3.png alt %}
 

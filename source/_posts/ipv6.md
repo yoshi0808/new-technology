@@ -28,17 +28,17 @@ ULAは、MACアドレスと時刻からおおよそ一意となるIPv6アドレ�
 
 以下にPython3のソースコードとその下に3つの項目があります。
 
-1. 入力エリア　{% label @Stdin Inputs %}
-2. 実行ボタン　{% label @▶︎Execute %}
-3. 実行結果　{% label @Result %}
+1. 入力エリア　{% label primary@Stdin Inputs %}
+2. 実行ボタン　{% label primary@▶︎Execute %}
+3. 実行結果　{% label primary@Result %}
 
 <div data-pym-src="https://www.jdoodle.com/embed/v0/20tR?stdin=1&arg=0"></div>
 
-上記の{% label @Stdin Inputs %}に直接入力が可能です。MACアドレスを貼り付け、{% label @▶︎Execute %}ボタンをクリックしてください。もしお使いのブラウザでエラー表示が出ている場合は、以下のリンクからULA生成ツールを開き実行してください。
+上記の{% label primary@Stdin Inputs %}に直接入力が可能です。MACアドレスを貼り付け、{% label primary@▶︎Execute %}ボタンをクリックしてください。もしお使いのブラウザでエラー表示が出ている場合は、以下のリンクからULA生成ツールを開き実行してください。
 
 - [ULA生成ツール（jdoodle.com）](https://jdoodle.com/a/20tR)
 
-{% label @Result %}に、以下の4つの項目が表示されます。MACアドレスが正しく入力されなかった場合は、"Bad MAC Adderss"と表示されます。
+{% label primary@Result %}に、以下の4つの項目が表示されます。MACアドレスが正しく入力されなかった場合は、"Bad MAC Adderss"と表示されます。
 
 {% asset_img jdoodle.png alt %}
 
@@ -49,7 +49,7 @@ ULAは、MACアドレスと時刻からおおよそ一意となるIPv6アドレ�
 ソースコードはこちら→　{% btn https://github.com/yoshi0808/ula-generator, ula-generator, fab fa-github fa-fw fa-lg, ula-generator source code %}
 
 - RFC4193に基づき生成しています
-- MACアドレスから{% label @Modified EUI-64 %}を生成するにあたり、RFC4291に基づき生成しています
+- MACアドレスから{% label primary@Modified EUI-64 %}を生成するにあたり、RFC4291に基づき生成しています
 - 本来はNTPを利用してハッシュキーの一部に利用しますが、通信は行わずホストの時間を取得し、NTP時刻に変換しています
 - NTPは64ビットのデータ型となっており、2036年にオーバーフローします。しかし、RFC4330で定義されているように再び0から開始し、正しく動く処理をしています
 

@@ -13,9 +13,9 @@ XG Firewallのレイヤ7ファイアウォールとしてのWebフィルタ・�
 
 ## Webフィルタについて
 
-XGの左ペインメニューでは、{% label @Web %}、{% label @アプリケーション %}とそれぞれ分かれています。{% label @Web %}ではサイトのカテゴリが分かれていて、そのサイトのカテゴリによっては閲覧を制限する事が一般的な使い方です。これらのポリシーは、[Sophosのサイト「Sophos XG Firewall: Web カテゴリ」](https://community.sophos.com/kb/ja-jp/134155)にも日本語の解説があります。サイトのカテゴリについては、ビジネス、ギャンブル、ゲーム、アダルト、ファイナンス等多岐に渡ります。ホームユーザーとしてはいわゆる怪しいサイトや過度な広告をフィルタする事が主目的になります。しかし、上記サイトのポリシーを眺めていると疑問に感じるところがあります。"ActiveX"、"Applets"、"SpamURLs"です。ActiveXやAppletは単純にサーバー名とも関係ありません。サイトのカテゴリに加え、URLまでを対象としているようです。
+XGの左ペインメニューでは、{% label primary@Web %}、{% label primary@アプリケーション %}とそれぞれ分かれています。{% label primary@Web %}ではサイトのカテゴリが分かれていて、そのサイトのカテゴリによっては閲覧を制限する事が一般的な使い方です。これらのポリシーは、[Sophosのサイト「Sophos XG Firewall: Web カテゴリ」](https://community.sophos.com/kb/ja-jp/134155)にも日本語の解説があります。サイトのカテゴリについては、ビジネス、ギャンブル、ゲーム、アダルト、ファイナンス等多岐に渡ります。ホームユーザーとしてはいわゆる怪しいサイトや過度な広告をフィルタする事が主目的になります。しかし、上記サイトのポリシーを眺めていると疑問に感じるところがあります。"ActiveX"、"Applets"、"SpamURLs"です。ActiveXやAppletは単純にサーバー名とも関係ありません。サイトのカテゴリに加え、URLまでを対象としているようです。
 
-上記の”Sophos XG Firewall:Webカテゴリ”には記載がないものの、XGの左ペインメニューの{% label @Web %}の{% label @ファイルタイプ %}の内容には、ファイル拡張子、MIMEヘッダーの情報が並びます。そしてここにはZIPファイルなどの"Compressed Files"、Windowsの実行ファイルである"Executable File"などの項目が並んでいます。
+上記の”Sophos XG Firewall:Webカテゴリ”には記載がないものの、XGの左ペインメニューの{% label primary@Web %}の{% label primary@ファイルタイプ %}の内容には、ファイル拡張子、MIMEヘッダーの情報が並びます。そしてここにはZIPファイルなどの"Compressed Files"、Windowsの実行ファイルである"Executable File"などの項目が並んでいます。
 
 ホームユーザーとしては、ZIPファイルやEXEファイルが使えないと不便なのでフィルタする事は考えにくいですが、何らかのMIMEタイプを拒否するポリシーを作成する場合は有効に機能しそうです。最終的には、Webフィルタは以下の種類の分類となります。
 
@@ -32,7 +32,7 @@ SNIとは、Server Name Indicationの略です。SSL/TLS通信において、ク
 
 ## アプリケーションフィルタについて
 
-XGのアプリケーションフィルタは、XGの左ペインメニューの{% label @アプリケーション %}から確認できます。ブラウザーではないインターネットに接続するアプリケーションを対象にしています。ここの挙動の確認は非常に難しいものがあります。例えば、MicrosoftのOneDriveを題材にテストしてみましょう。SSLインスペクションが行えるWindows端末とSSLインスペクションが行えないAndroid端末を用いて検証します。
+XGのアプリケーションフィルタは、XGの左ペインメニューの{% label primary@アプリケーション %}から確認できます。ブラウザーではないインターネットに接続するアプリケーションを対象にしています。ここの挙動の確認は非常に難しいものがあります。例えば、MicrosoftのOneDriveを題材にテストしてみましょう。SSLインスペクションが行えるWindows端末とSSLインスペクションが行えないAndroid端末を用いて検証します。
 
 OneDriveのURLは、現時点で、`https://onedrive.live.com/`です。Webフィルタで当該ドメインのフィルタを行うと、想定通りブラウザーからOneDriveにはアクセス出来ません。これはSNIで判断できるため、SSLインスペクションの有無に関わらずアクセス不可が実現できます。
 
@@ -42,11 +42,11 @@ OneDriveのURLは、現時点で、`https://onedrive.live.com/`です。Webフ�
 
 さらに検証を続けます。一旦Webフィルタを削除し、アプリケーションフィルタにOneDriveの項目があるので、そちらをフィルタしてみます。
 
-XGの左ペインメニューの{% label @アプリケーション %}からファイアウォールルールで選択されているポリシーの先頭で{% label @追加 %}ボタンをクリックし、{% label @スマートフィルタ %}に`onedrive`と入力し、Enterキーを押します。
+XGの左ペインメニューの{% label primary@アプリケーション %}からファイアウォールルールで選択されているポリシーの先頭で{% label primary@追加 %}ボタンをクリックし、{% label primary@スマートフィルタ %}に`onedrive`と入力し、Enterキーを押します。
 
 {% asset_img appfilter2.png alt %}
 
-OneDriveのルールがいくつか表示されます。"OneDrive Application","OneDrive Base","OneDrive File Download","OneDrive File Upload"です。{% label @アクション %}を"拒否"して最後に"保存"をクリックします。この作業の結果は以下の通りの挙動でした。
+OneDriveのルールがいくつか表示されます。"OneDrive Application","OneDrive Base","OneDrive File Download","OneDrive File Upload"です。{% label primary@アクション %}を"拒否"して最後に"保存"をクリックします。この作業の結果は以下の通りの挙動でした。
 
 | OS      | テスト内容                                        | 結果     |
 | ------- | ------------------------------------------------- | -------- |

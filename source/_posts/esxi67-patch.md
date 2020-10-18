@@ -25,7 +25,7 @@ ESXi6.7のパッチ情報は[こちら](https://docs.vmware.com/jp/VMware-vSpher
 
 ESXiのセットアップ時にMy VMwareへの登録を行い、個人向けvSphere Hypervisorのライセンス（無償）を入手されている事を前提にしています。
 
-[My VMware](https://my.vmware.com/jp/web/vmware/login?)にサインインし、{% label @製品 %}メニューから、"製品パッチ"を選択します。
+[My VMware](https://my.vmware.com/jp/web/vmware/login?)にサインインし、{% label primary@製品 %}メニューから、"製品パッチ"を選択します。
 
 {% asset_img myvm1.png alt %}
 
@@ -49,7 +49,7 @@ ESXiにログインし、以下の作業を行います。
 9. 仮想マシンを起動します
 
 - SSHを有効にする
- ESXiの左ペインの{% label @ホストー管理 %}から、"サービス"のタブをクリックし、"TSM-SSH"を選択し"起動"ボタンをクリックし、SSHを有効にします。
+ ESXiの左ペインの{% label primary@ホストー管理 %}から、"サービス"のタブをクリックし、"TSM-SSH"を選択し"起動"ボタンをクリックし、SSHを有効にします。
  {% asset_img esxi1.png alt %}
 
 - 仮想マシンを全てシャットダウンします
