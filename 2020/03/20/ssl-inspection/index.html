@@ -22,16 +22,16 @@
     var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","scheme":"Mist","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="この記事で実現することXG Firewallなどの次世代Firewallで利用されているSSL&#x2F;TLSインスペクションについて、PCやiPhone等（Windows&#x2F;macOS&#x2F;iOS）を防御する仕組み、および必要となる対応を説明します。">
+  <meta name="description" content="この記事で実現すること XG Firewallなどの次世代Firewallで利用されているSSL&#x2F;TLSインスペクションについて、PCやiPhone等（Windows&#x2F;macOS&#x2F;iOS）を防御する仕組み、および必要となる対応を説明します。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SSLインスペクションについて">
 <meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection/index.html">
 <meta property="og:site_name" content="New technologies in our life">
-<meta property="og:description" content="この記事で実現することXG Firewallなどの次世代Firewallで利用されているSSL&#x2F;TLSインスペクションについて、PCやiPhone等（Windows&#x2F;macOS&#x2F;iOS）を防御する仕組み、および必要となる対応を説明します。">
+<meta property="og:description" content="この記事で実現すること XG Firewallなどの次世代Firewallで利用されているSSL&#x2F;TLSインスペクションについて、PCやiPhone等（Windows&#x2F;macOS&#x2F;iOS）を防御する仕組み、および必要となる対応を説明します。">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection/ssl-inspection.png">
 <meta property="article:published_time" content="2020-03-20T05:23:53.000Z">
-<meta property="article:modified_time" content="2020-07-21T11:37:44.076Z">
+<meta property="article:modified_time" content="2020-10-18T02:50:53.449Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -227,7 +227,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%93%E3%81%AE%E8%A8%98%E4%BA%8B%E3%81%A7%E5%AE%9F%E7%8F%BE%E3%81%99%E3%82%8B%E3%81%93%E3%81%A8"><span class="nav-number">1.</span> <span class="nav-text">この記事で実現すること</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSL%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%9A%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%A8%E3%81%AF"><span class="nav-number">2.</span> <span class="nav-text">SSLインスペクションとは</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%96%E3%83%A9%E3%82%A6%E3%82%B6%E3%81%A8%E3%82%B5%E3%83%BC%E3%83%90%E3%83%BC%E3%81%AESSL-TLS%E9%80%9A%E4%BF%A1%E3%81%AE%E3%82%B7%E3%83%BC%E3%82%B1%E3%83%B3%E3%82%B9"><span class="nav-number">3.</span> <span class="nav-text">ブラウザとサーバーのSSL&#x2F;TLS通信のシーケンス</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Firewall%E3%81%8C%E5%87%A6%E7%90%86%E3%81%99%E3%82%8BSSL%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%9A%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%AE%E3%82%B7%E3%83%BC%E3%82%B1%E3%83%B3%E3%82%B9"><span class="nav-number">4.</span> <span class="nav-text">Firewallが処理するSSLインスペクションのシーケンス</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%81%93%E3%81%AE%E3%82%B7%E3%83%BC%E3%82%B1%E3%83%B3%E3%82%B9%E3%81%A7%E9%87%8D%E8%A6%81%E3%81%AA%E3%83%9D%E3%82%A4%E3%83%B3%E3%83%88"><span class="nav-number">4.1.</span> <span class="nav-text">このシーケンスで重要なポイント</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%82%B3%E3%83%B3%E3%83%86%E3%83%B3%E3%83%84%E3%81%AE%E4%B8%AD%E8%BA%AB%E3%81%AE%E6%A4%9C%E8%A8%BC%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span class="nav-number">4.2.</span> <span class="nav-text">コンテンツの中身の検証について</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CA%E8%A8%BC%E6%98%8E%E6%9B%B8%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><span class="nav-number">5.</span> <span class="nav-text">CA証明書のインストール</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SNI%E3%81%AB%E3%82%88%E3%82%8B%E6%8E%A5%E7%B6%9A%E6%99%82%E6%A4%9C%E6%9F%BB"><span class="nav-number">6.</span> <span class="nav-text">SNIによる接続時検査</span></a></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#SSL%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%9A%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%A8%E3%81%AF"><span class="nav-number">1.</span> <span class="nav-text">SSLインスペクションとは</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%96%E3%83%A9%E3%82%A6%E3%82%B6%E3%81%A8%E3%82%B5%E3%83%BC%E3%83%90%E3%83%BC%E3%81%AESSL-TLS%E9%80%9A%E4%BF%A1%E3%81%AE%E3%82%B7%E3%83%BC%E3%82%B1%E3%83%B3%E3%82%B9"><span class="nav-number">2.</span> <span class="nav-text">ブラウザとサーバーのSSL&#x2F;TLS通信のシーケンス</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Firewall%E3%81%8C%E5%87%A6%E7%90%86%E3%81%99%E3%82%8BSSL%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%9A%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%AE%E3%82%B7%E3%83%BC%E3%82%B1%E3%83%B3%E3%82%B9"><span class="nav-number">3.</span> <span class="nav-text">Firewallが処理するSSLインスペクションのシーケンス</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%81%93%E3%81%AE%E3%82%B7%E3%83%BC%E3%82%B1%E3%83%B3%E3%82%B9%E3%81%A7%E9%87%8D%E8%A6%81%E3%81%AA%E3%83%9D%E3%82%A4%E3%83%B3%E3%83%88"><span class="nav-number">3.1.</span> <span class="nav-text">このシーケンスで重要なポイント</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%82%B3%E3%83%B3%E3%83%86%E3%83%B3%E3%83%84%E3%81%AE%E4%B8%AD%E8%BA%AB%E3%81%AE%E6%A4%9C%E8%A8%BC%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span class="nav-number">3.2.</span> <span class="nav-text">コンテンツの中身の検証について</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CA%E8%A8%BC%E6%98%8E%E6%9B%B8%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><span class="nav-number">4.</span> <span class="nav-text">CA証明書のインストール</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SNI%E3%81%AB%E3%82%88%E3%82%8B%E6%8E%A5%E7%B6%9A%E6%99%82%E6%A4%9C%E6%9F%BB"><span class="nav-number">5.</span> <span class="nav-text">SNIによる接続時検査</span></a></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -340,7 +340,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">編集日</span>
-        <time title="修正日：2020-07-21 20:37:44" itemprop="dateModified" datetime="2020-07-21T20:37:44+09:00">2020-07-21</time>
+        <time title="修正日：2020-10-18 11:50:53" itemprop="dateModified" datetime="2020-10-18T11:50:53+09:00">2020-10-18</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -362,8 +362,8 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <div class="note success"><h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>XG Firewallなどの次世代Firewallで利用されているSSL/TLSインスペクションについて、PCやiPhone等（Windows/macOS/iOS）を防御する仕組み、および必要となる対応を説明します。</p>
-</div>
+        <p class="onepoint">この記事で実現すること</p>
+XG Firewallなどの次世代Firewallで利用されているSSL/TLSインスペクションについて、PCやiPhone等（Windows/macOS/iOS）を防御する仕組み、および必要となる対応を説明します。
 <a id="more"></a>
 
 <h2 id="SSLインスペクションとは"><a href="#SSLインスペクションとは" class="headerlink" title="SSLインスペクションとは"></a>SSLインスペクションとは</h2><p>https通信では、サーバーとクライアント間がSSLで暗号化されます。SSLというのは本来はTLS（Transport Layer Security）が正しい名称ですが、SSLという言葉が定着しているので、今日でも”SSL証明書”などSSLという言葉は一般的に使われます。この暗号化された通信をIPS（Intrusion Prevension System）は暗号を解読しながらコンテンツの中身の検査を行います。暗号通信の復号化方法として<mark class="label ">SSL/TLSインスペクション</mark>という方式が採用されています。このSSLインスペクションについては、解りやすい文献がありますので紹介します。セキュリティベンダーの（株）ラック社から提供されているドキュメントです。</p>

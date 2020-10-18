@@ -22,12 +22,12 @@
     var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","scheme":"Mist","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="この記事で実現することESXi 6.7に環境構築済みの仮想マシンに対し、XG Firewall v18のインストールを行います。ESXiを使わない場合、PC（物理マシン）にフラッシュメモリを接続し直接インストールする事になりますが、この場合も手順自体はほとんど変わりません。">
+  <meta name="description" content="この記事で実現すること ESXi 6.7に環境構築済みの仮想マシンに対し、XG Firewall v18のインストールを行います。ESXiを使わない場合、PC（物理マシン）にフラッシュメモリを接続し直接インストールする事になりますが、この場合も手順自体はほとんど変わりません。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="XG Firewall v18をESXi仮想マシンにインストールする">
 <meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/03/06/InstallXG2/index.html">
 <meta property="og:site_name" content="New technologies in our life">
-<meta property="og:description" content="この記事で実現することESXi 6.7に環境構築済みの仮想マシンに対し、XG Firewall v18のインストールを行います。ESXiを使わない場合、PC（物理マシン）にフラッシュメモリを接続し直接インストールする事になりますが、この場合も手順自体はほとんど変わりません。">
+<meta property="og:description" content="この記事で実現すること ESXi 6.7に環境構築済みの仮想マシンに対し、XG Firewall v18のインストールを行います。ESXiを使わない場合、PC（物理マシン）にフラッシュメモリを接続し直接インストールする事になりますが、この場合も手順自体はほとんど変わりません。">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/06/InstallXG2/conf.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/06/InstallXG2/setup1.png">
@@ -37,7 +37,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/06/InstallXG2/setup5.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/06/InstallXG2/setup6.png">
 <meta property="article:published_time" content="2020-03-06T12:37:20.000Z">
-<meta property="article:modified_time" content="2020-07-08T11:25:23.840Z">
+<meta property="article:modified_time" content="2020-10-18T02:42:25.780Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -233,7 +233,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%93%E3%81%AE%E8%A8%98%E4%BA%8B%E3%81%A7%E5%AE%9F%E7%8F%BE%E3%81%99%E3%82%8B%E3%81%93%E3%81%A8"><span class="nav-number">1.</span> <span class="nav-text">この記事で実現すること</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E6%A6%82%E8%A6%81"><span class="nav-number">2.</span> <span class="nav-text">XGのインストール概要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%AE%E6%83%B3%E3%83%9E%E3%82%B7%E3%83%B3%E3%82%92%E8%B5%B7%E5%8B%95%E3%81%99%E3%82%8B"><span class="nav-number">3.</span> <span class="nav-text">仮想マシンを起動する</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG-Firewall%E3%81%AE%E5%88%9D%E6%9C%9F%E8%A8%AD%E5%AE%9A"><span class="nav-number">4.</span> <span class="nav-text">XG Firewallの初期設定</span></a></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#XG%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E6%A6%82%E8%A6%81"><span class="nav-number">1.</span> <span class="nav-text">XGのインストール概要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%AE%E6%83%B3%E3%83%9E%E3%82%B7%E3%83%B3%E3%82%92%E8%B5%B7%E5%8B%95%E3%81%99%E3%82%8B"><span class="nav-number">2.</span> <span class="nav-text">仮想マシンを起動する</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG-Firewall%E3%81%AE%E5%88%9D%E6%9C%9F%E8%A8%AD%E5%AE%9A"><span class="nav-number">3.</span> <span class="nav-text">XG Firewallの初期設定</span></a></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -346,7 +346,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">編集日</span>
-        <time title="修正日：2020-07-08 20:25:23" itemprop="dateModified" datetime="2020-07-08T20:25:23+09:00">2020-07-08</time>
+        <time title="修正日：2020-10-18 11:42:25" itemprop="dateModified" datetime="2020-10-18T11:42:25+09:00">2020-10-18</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -368,8 +368,9 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <div class="note success"><h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>ESXi 6.7に環境構築済みの仮想マシンに対し、XG Firewall v18のインストールを行います。ESXiを使わない場合、PC（物理マシン）にフラッシュメモリを接続し直接インストールする事になりますが、この場合も手順自体はほとんど変わりません。</p>
-</div>
+        <p class="onepoint">この記事で実現すること</p>
+ESXi 6.7に環境構築済みの仮想マシンに対し、XG Firewall v18のインストールを行います。ESXiを使わない場合、PC（物理マシン）にフラッシュメモリを接続し直接インストールする事になりますが、この場合も手順自体はほとんど変わりません。
+
 <a id="more"></a>
 
 <h2 id="XGのインストール概要"><a href="#XGのインストール概要" class="headerlink" title="XGのインストール概要"></a>XGのインストール概要</h2><p>事前準備の記事、<a href="/new-technology/2020/03/01/esxi-conf/" title="VMware vSphere Hypervisor（ESXi）の設定">VMware vSphere Hypervisor（ESXi）の設定</a>、<a href="/new-technology/2020/03/06/InstallXG/" title="XG Firewall v18のインストール（事前準備）">XG Firewall v18のインストール（事前準備）</a>で、ネットワークアドレスを決めました。XGのインストール概要は以下の通りです。</p>

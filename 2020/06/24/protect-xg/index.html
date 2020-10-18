@@ -22,19 +22,19 @@
     var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","scheme":"Mist","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="この記事で実現することXG Firewall自身を防御するためのベストプラクティスがSophosより本日公開されたため、最低限の防御として推奨されている設定内容を紹介します。">
+  <meta name="description" content="この記事で実現すること XG Firewall自身を防御するためのベストプラクティスがSophosより本日公開されたため、最低限の防御として推奨されている設定内容を紹介します。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="XG Firewall自身を防御する">
 <meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/06/24/protect-xg/index.html">
 <meta property="og:site_name" content="New technologies in our life">
-<meta property="og:description" content="この記事で実現することXG Firewall自身を防御するためのベストプラクティスがSophosより本日公開されたため、最低限の防御として推奨されている設定内容を紹介します。">
+<meta property="og:description" content="この記事で実現すること XG Firewall自身を防御するためのベストプラクティスがSophosより本日公開されたため、最低限の防御として推奨されている設定内容を紹介します。">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/24/protect-xg/acl.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/24/protect-xg/ips.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/24/protect-xg/admin.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/24/protect-xg/hotfix.png">
 <meta property="article:published_time" content="2020-06-24T09:46:11.000Z">
-<meta property="article:modified_time" content="2020-06-24T14:15:51.185Z">
+<meta property="article:modified_time" content="2020-10-18T02:43:48.247Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -230,7 +230,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%93%E3%81%AE%E8%A8%98%E4%BA%8B%E3%81%A7%E5%AE%9F%E7%8F%BE%E3%81%99%E3%82%8B%E3%81%93%E3%81%A8"><span class="nav-number">1.</span> <span class="nav-text">この記事で実現すること</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Best-practices-for-securing-your-firewall"><span class="nav-number">2.</span> <span class="nav-text">Best practices for securing your firewall</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Firewall%E8%87%AA%E8%BA%AB%E3%81%AE%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3%E5%BC%B7%E5%8C%96"><span class="nav-number">3.</span> <span class="nav-text">Firewall自身のセキュリティ強化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%AD%E3%83%BC%E3%82%AB%E3%83%AB%E3%82%B5%E3%83%BC%E3%83%93%E3%82%B9ACL"><span class="nav-number">4.</span> <span class="nav-text">ローカルサービスACL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DDoS%E9%98%B2%E5%BE%A1"><span class="nav-number">5.</span> <span class="nav-text">DDoS防御</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%A1%E7%90%86%E8%80%85ID"><span class="nav-number">6.</span> <span class="nav-text">管理者ID</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HotFix%E3%81%AE%E8%87%AA%E5%8B%95%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><span class="nav-number">7.</span> <span class="nav-text">HotFixの自動インストール</span></a></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Best-practices-for-securing-your-firewall"><span class="nav-number">1.</span> <span class="nav-text">Best practices for securing your firewall</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Firewall%E8%87%AA%E8%BA%AB%E3%81%AE%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3%E5%BC%B7%E5%8C%96"><span class="nav-number">2.</span> <span class="nav-text">Firewall自身のセキュリティ強化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%AD%E3%83%BC%E3%82%AB%E3%83%AB%E3%82%B5%E3%83%BC%E3%83%93%E3%82%B9ACL"><span class="nav-number">3.</span> <span class="nav-text">ローカルサービスACL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DDoS%E9%98%B2%E5%BE%A1"><span class="nav-number">4.</span> <span class="nav-text">DDoS防御</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%A1%E7%90%86%E8%80%85ID"><span class="nav-number">5.</span> <span class="nav-text">管理者ID</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HotFix%E3%81%AE%E8%87%AA%E5%8B%95%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><span class="nav-number">6.</span> <span class="nav-text">HotFixの自動インストール</span></a></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -335,10 +335,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">投稿日</span>
-      
 
-      <time title="作成日：2020-06-24 18:46:11 / 修正日：23:15:51" itemprop="dateCreated datePublished" datetime="2020-06-24T18:46:11+09:00">2020-06-24</time>
+      <time title="作成日：2020-06-24 18:46:11" itemprop="dateCreated datePublished" datetime="2020-06-24T18:46:11+09:00">2020-06-24</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">編集日</span>
+        <time title="修正日：2020-10-18 11:43:48" itemprop="dateModified" datetime="2020-10-18T11:43:48+09:00">2020-10-18</time>
+      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -359,9 +365,8 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <div class="note success"><h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>XG Firewall自身を防御するためのベストプラクティスがSophosより本日公開されたため、最低限の防御として推奨されている設定内容を紹介します。</p>
-</div>
-
+        <p class="onepoint">この記事で実現すること</p>
+XG Firewall自身を防御するためのベストプラクティスがSophosより本日公開されたため、最低限の防御として推奨されている設定内容を紹介します。
 <a id="more"></a>
 
 <h2 id="Best-practices-for-securing-your-firewall"><a href="#Best-practices-for-securing-your-firewall" class="headerlink" title="Best practices for securing your firewall"></a>Best practices for securing your firewall</h2><p>2020-6-24にSophos Communityのお勧め記事に<a target="_blank" rel="noopener" href="https://community.sophos.com/products/xg-firewall/f/recommended-reads/121461/sophos-xg-firewall-best-practices-for-securing-your-firewall">“Sophos XG Firewall: Best practices for securing your firewall”</a>というタイトルの文書が投稿されました。以下の記載があります。</p>

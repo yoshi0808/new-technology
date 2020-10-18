@@ -22,19 +22,19 @@
     var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","scheme":"Mist","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="この記事で実現することXG Firewall v18のルールとポリシーの基本的な機能を紹介します。また、インストール後、最初から設定されているデフォルトポリシーの内容を解説します。">
+  <meta name="description" content="この記事で実現すること XG Firewall v18のルールとポリシーの基本的な機能を紹介します。また、インストール後、最初から設定されているデフォルトポリシーの内容を解説します。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="XG Firewall v18のルールとポリシーについて">
 <meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/03/14/rule-policy1/index.html">
 <meta property="og:site_name" content="New technologies in our life">
-<meta property="og:description" content="この記事で実現することXG Firewall v18のルールとポリシーの基本的な機能を紹介します。また、インストール後、最初から設定されているデフォルトポリシーの内容を解説します。">
+<meta property="og:description" content="この記事で実現すること XG Firewall v18のルールとポリシーの基本的な機能を紹介します。また、インストール後、最初から設定されているデフォルトポリシーの内容を解説します。">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/14/rule-policy1/rule_menu.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/14/rule-policy1/rule1.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/14/rule-policy1/rule2.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/14/rule-policy1/rule3.png">
 <meta property="article:published_time" content="2020-03-14T00:23:01.000Z">
-<meta property="article:modified_time" content="2020-07-08T11:25:02.562Z">
+<meta property="article:modified_time" content="2020-10-18T02:50:03.875Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -230,7 +230,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%93%E3%81%AE%E8%A8%98%E4%BA%8B%E3%81%A7%E5%AE%9F%E7%8F%BE%E3%81%99%E3%82%8B%E3%81%93%E3%81%A8"><span class="nav-number">1.</span> <span class="nav-text">この記事で実現すること</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%AB%E3%83%BC%E3%83%AB%E3%81%A8%E3%83%9D%E3%83%AA%E3%82%B7%E3%83%BC%E3%81%AE%E6%A9%9F%E8%83%BD%E8%AA%AC%E6%98%8E"><span class="nav-number">2.</span> <span class="nav-text">ルールとポリシーの機能説明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E2%80%9CDefault-Network-Policy%E2%80%9D%E3%81%AE%E8%AA%AC%E6%98%8E"><span class="nav-number">3.</span> <span class="nav-text">“Default Network Policy”の説明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%95%E3%82%A1%E3%82%A4%E3%82%A2%E3%82%A6%E3%82%A9%E3%83%BC%E3%83%AB%E3%83%AB%E3%83%BC%E3%83%AB%E3%81%AE%E7%B5%84%E3%81%BF%E7%AB%8B%E3%81%A6%E6%96%B9"><span class="nav-number">4.</span> <span class="nav-text">ファイアウォールルールの組み立て方</span></a></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%AB%E3%83%BC%E3%83%AB%E3%81%A8%E3%83%9D%E3%83%AA%E3%82%B7%E3%83%BC%E3%81%AE%E6%A9%9F%E8%83%BD%E8%AA%AC%E6%98%8E"><span class="nav-number">1.</span> <span class="nav-text">ルールとポリシーの機能説明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E2%80%9CDefault-Network-Policy%E2%80%9D%E3%81%AE%E8%AA%AC%E6%98%8E"><span class="nav-number">2.</span> <span class="nav-text">“Default Network Policy”の説明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%95%E3%82%A1%E3%82%A4%E3%82%A2%E3%82%A6%E3%82%A9%E3%83%BC%E3%83%AB%E3%83%AB%E3%83%BC%E3%83%AB%E3%81%AE%E7%B5%84%E3%81%BF%E7%AB%8B%E3%81%A6%E6%96%B9"><span class="nav-number">3.</span> <span class="nav-text">ファイアウォールルールの組み立て方</span></a></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -343,7 +343,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">編集日</span>
-        <time title="修正日：2020-07-08 20:25:02" itemprop="dateModified" datetime="2020-07-08T20:25:02+09:00">2020-07-08</time>
+        <time title="修正日：2020-10-18 11:50:03" itemprop="dateModified" datetime="2020-10-18T11:50:03+09:00">2020-10-18</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -365,8 +365,8 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <div class="note success"><h2 id="この記事で実現すること"><a href="#この記事で実現すること" class="headerlink" title="この記事で実現すること"></a>この記事で実現すること</h2><p>XG Firewall v18のルールとポリシーの基本的な機能を紹介します。また、インストール後、最初から設定されているデフォルトポリシーの内容を解説します。</p>
-</div>
+        <p class="onepoint">この記事で実現すること</p>
+XG Firewall v18のルールとポリシーの基本的な機能を紹介します。また、インストール後、最初から設定されているデフォルトポリシーの内容を解説します。
 <a id="more"></a>
 
 <h2 id="ルールとポリシーの機能説明"><a href="#ルールとポリシーの機能説明" class="headerlink" title="ルールとポリシーの機能説明"></a>ルールとポリシーの機能説明</h2><p>この記事では、XG Firewallの具体的な設定を行います。Firewallは、TCP/UDPのレイヤ3またはレイヤ4の制御が一般的です。httpsであればPort443、SSH（セキュアシェル）であればPort22などに対し、通過させるか拒否するかを決めます。XG Firewallはレイヤ7、つまりアプリケーションの中身を見て可否を判断する事が可能です。サイトがどういうサービスを提供しているかジャンル分けされており、好ましくないサイトには接続しないように設定が出来ます。従来の方法、例えばSSHであればPort22を止めるだけのFirewallは時代に合わなくなってきています。</p>
