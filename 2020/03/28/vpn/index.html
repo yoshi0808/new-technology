@@ -46,7 +46,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/28/vpn/vpn3.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/28/vpn/vpn4.png">
 <meta property="article:published_time" content="2020-03-28T02:41:42.000Z">
-<meta property="article:modified_time" content="2020-10-18T02:51:48.815Z">
+<meta property="article:modified_time" content="2020-10-18T04:19:37.792Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -355,7 +355,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">編集日</span>
-        <time title="修正日：2020-10-18 11:51:48" itemprop="dateModified" datetime="2020-10-18T11:51:48+09:00">2020-10-18</time>
+        <time title="修正日：2020-10-18 13:19:37" itemprop="dateModified" datetime="2020-10-18T13:19:37+09:00">2020-10-18</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -402,17 +402,17 @@
 </li>
 </ol>
 <p>上記の2つのどちらか対応できれば、XGに対するVPN接続が行えます。この画面はホームゲートウェイの画面であり、契約しているインターネット回線業者により、提供される機器は異なりますのであくまで設定例は参考となります。</p>
-<h2 id="XG側のVPNユーザー作成"><a href="#XG側のVPNユーザー作成" class="headerlink" title="XG側のVPNユーザー作成"></a>XG側のVPNユーザー作成</h2><p>最初にユーザーの作成が必要です。VPNの最終接続形態としては、2要素認証対応のセキュアなものを目指します。ただし、いきなり全ての事を実施すると切り分けが難しいのでまずは2要素認証無しでの接続をし、次に2要素認証有りの接続に取り組みます。XGの左ペインメニューから<mark class="label ">認証</mark>を選択、<mark class="label ">ユーザー</mark>のタブから、追加ボタンをクリックします。そして以下のようにユーザー名、パスワードとメールアドレスを入力します。</p>
+<h2 id="XG側のVPNユーザー作成"><a href="#XG側のVPNユーザー作成" class="headerlink" title="XG側のVPNユーザー作成"></a>XG側のVPNユーザー作成</h2><p>最初にユーザーの作成が必要です。VPNの最終接続形態としては、2要素認証対応のセキュアなものを目指します。ただし、いきなり全ての事を実施すると切り分けが難しいのでまずは2要素認証無しでの接続をし、次に2要素認証有りの接続に取り組みます。XGの左ペインメニューから<mark class="label primary">認証</mark>を選択、<mark class="label primary">ユーザー</mark>のタブから、追加ボタンをクリックします。そして以下のようにユーザー名、パスワードとメールアドレスを入力します。</p>
 <img src="/new-technology/2020/03/28/vpn/user1.png" class="" title="alt">
 <img src="/new-technology/2020/03/28/vpn/user2.png" class="" title="alt">
 
-<p>他はグループのところで、<mark class="label ">OPEN Group</mark>を選択するくらいで設定するところはありません。このまま保存をクリックします。VPNは、このユーザー名/パスワードで接続する事になります。</p>
-<h2 id="XG側のSophos-Connectの設定"><a href="#XG側のSophos-Connectの設定" class="headerlink" title="XG側のSophos Connectの設定"></a>XG側のSophos Connectの設定</h2><p>XGの左ペインメニューから<mark class="label ">VPN</mark>を選択、<mark class="label ">Sophos Connect</mark>のタブを選択します。特に拘りがなければ、デジタル証明書ではなく、事前共有鍵を選択する事にしましょう。それなりの鍵の長さを設定しておけば安全です。また最終的にはワンタイムパスワードを設定する事でかなりの安心感が得られます。鍵はパスワードと異なり、一度クライアントに設定すれば接続の都度入力する必要もないため、複雑で長い鍵長の事前共有鍵の設定が好ましいでしょう。設定は以下の通りに行います。</p>
+<p>他はグループのところで、<mark class="label primary">OPEN Group</mark>を選択するくらいで設定するところはありません。このまま保存をクリックします。VPNは、このユーザー名/パスワードで接続する事になります。</p>
+<h2 id="XG側のSophos-Connectの設定"><a href="#XG側のSophos-Connectの設定" class="headerlink" title="XG側のSophos Connectの設定"></a>XG側のSophos Connectの設定</h2><p>XGの左ペインメニューから<mark class="label primary">VPN</mark>を選択、<mark class="label primary">Sophos Connect</mark>のタブを選択します。特に拘りがなければ、デジタル証明書ではなく、事前共有鍵を選択する事にしましょう。それなりの鍵の長さを設定しておけば安全です。また最終的にはワンタイムパスワードを設定する事でかなりの安心感が得られます。鍵はパスワードと異なり、一度クライアントに設定すれば接続の都度入力する必要もないため、複雑で長い鍵長の事前共有鍵の設定が好ましいでしょう。設定は以下の通りに行います。</p>
 <ul>
-<li><mark class="label ">インターフェース</mark>はPort2(WAN)を選択します</li>
-<li><mark class="label ">認証タイプ</mark>は事前共有鍵を選択します</li>
-<li><mark class="label ">事前共有鍵</mark>は文字列を入力、また繰り返し同じ鍵を入力します</li>
-<li><mark class="label ">許可されたユーザー</mark>には、上記で作成したユーザーを選択します
+<li><mark class="label primary">インターフェース</mark>はPort2(WAN)を選択します</li>
+<li><mark class="label primary">認証タイプ</mark>は事前共有鍵を選択します</li>
+<li><mark class="label primary">事前共有鍵</mark>は文字列を入力、また繰り返し同じ鍵を入力します</li>
+<li><mark class="label primary">許可されたユーザー</mark>には、上記で作成したユーザーを選択します
 
 </li>
 </ul>
@@ -422,41 +422,41 @@
 <li>名前はXGの配置場所として適当な名前を入力します</li>
 <li>XGのVPNの割り当てネットワークは、LANとは別のネットワークアドレスを入力します。例えばLANが<code>192.168.2.0/24</code>のネットワークならば、<code>192.168.20.1</code>〜<code>192.168.20.8</code>などと別のネットワークを入力します</li>
 <li>DNSについては、XG自身のDNS（XGのLAN側のIPアドレス）を入力します</li>
-<li>詳細設定の<mark class="label ">トンネルがアイドルの時に切断</mark>を有効にします</li>
-<li><mark class="label ">アイドルセッション時間の間隔</mark>は600にします（特段のこだわりはありません）
+<li>詳細設定の<mark class="label primary">トンネルがアイドルの時に切断</mark>を有効にします</li>
+<li><mark class="label primary">アイドルセッション時間の間隔</mark>は600にします（特段のこだわりはありません）
 
 </li>
 </ul>
 <img src="/new-technology/2020/03/28/vpn/vpn2.png" class="" title="alt">
 
 <p>適用ボタンをクリックすると、”これにより、同じローカルピアとリモートピア間で設定したすべての接続の事前共有鍵が更新されます。続行してもよいですか？”と表示されます。OKをクリックすれば、VPNが有効になります。</p>
-<h2 id="XG側のFirewallルールの確認"><a href="#XG側のFirewallルールの確認" class="headerlink" title="XG側のFirewallルールの確認"></a>XG側のFirewallルールの確認</h2><p>上記で設定したVPNがFirewallのルールに登録されている事を確認します。SSLインスペクションが入ると難しくなるので、まずはこの記事ではVPNとWANの接続を優先に考え設定します。以前の記事<a href="/new-technology/2020/03/14/rule-policy2/" title="XG Firewall v18のルールを作成する">XG Firewall v18のルールを作成する</a>で、デフォルトのルール「To_Internet」を作成しました。ルールについて、以下の図のように<mark class="label ">送信元ゾーン</mark>が、LANとVPNとなっている事を確認してください。</p>
+<h2 id="XG側のFirewallルールの確認"><a href="#XG側のFirewallルールの確認" class="headerlink" title="XG側のFirewallルールの確認"></a>XG側のFirewallルールの確認</h2><p>上記で設定したVPNがFirewallのルールに登録されている事を確認します。SSLインスペクションが入ると難しくなるので、まずはこの記事ではVPNとWANの接続を優先に考え設定します。以前の記事<a href="/new-technology/2020/03/14/rule-policy2/" title="XG Firewall v18のルールを作成する">XG Firewall v18のルールを作成する</a>で、デフォルトのルール「To_Internet」を作成しました。ルールについて、以下の図のように<mark class="label primary">送信元ゾーン</mark>が、LANとVPNとなっている事を確認してください。</p>
 <img src="/new-technology/2020/03/28/vpn/rule1.png" class="" title="alt">
 
 <p>続いて、VPNからLANへのルールを作成します。NATは使わず全てのトラフィックを通過させるものです。以下の通り、送信元ゾーンはVPN、宛先ゾーンはLANのルールを設定します。</p>
 <img src="/new-technology/2020/03/28/vpn/rule2.png" class="" title="alt">
 
-<p>（2020-06-20更新）このルールでは、<mark class="label ">リンクNATルールの作成</mark>は行いません。NATの動作の確認のために「NATしない事を明示する」設定を行うと挙動がわかりやすいというメリットはありますが、v18では原則リンクNATは使わず運用可能という考え方のようで当初記載していたリンクNATの記述を削除しました。</p>
-<p>さらにルールで保存をクリックしてルールの設定は完成です。念のため現在のルールについて確認しましょう。<mark class="label ">Traffic to Internal</mark>として、VPNからLANへの接続ルールがあります。もう1つは、<mark class="label ">Traffice to WAN</mark>として、VPNおよびLANからWANへの接続ルールがあります。</p>
+<p>（2020-06-20更新）このルールでは、<mark class="label primary">リンクNATルールの作成</mark>は行いません。NATの動作の確認のために「NATしない事を明示する」設定を行うと挙動がわかりやすいというメリットはありますが、v18では原則リンクNATは使わず運用可能という考え方のようで当初記載していたリンクNATの記述を削除しました。</p>
+<p>さらにルールで保存をクリックしてルールの設定は完成です。念のため現在のルールについて確認しましょう。<mark class="label primary">Traffic to Internal</mark>として、VPNからLANへの接続ルールがあります。もう1つは、<mark class="label primary">Traffice to WAN</mark>として、VPNおよびLANからWANへの接続ルールがあります。</p>
 <img src="/new-technology/2020/03/28/vpn/rule6.png" class="" title="alt">
 
-<h2 id="XG側のDynamic-DNSの設定"><a href="#XG側のDynamic-DNSの設定" class="headerlink" title="XG側のDynamic DNSの設定"></a>XG側のDynamic DNSの設定</h2><p>素晴らしい事に、XGでは無償のダイナミックDNSを用意してくれています。VPNで接続する際には、グローバルIPアドレスが必要ですが、XG用のmyfirewall.coドメインが利用できます。他に使われていない一意のホスト名を設定する事になります。<mark class="label ">IPv4アドレス</mark>の箇所は、<mark class="label ">NATされたパブリックIP</mark>を選んでください。その他のNo-IPなどの有名どころのダイナミックDNSを選ぶ事も可能です。</p>
+<h2 id="XG側のDynamic-DNSの設定"><a href="#XG側のDynamic-DNSの設定" class="headerlink" title="XG側のDynamic DNSの設定"></a>XG側のDynamic DNSの設定</h2><p>素晴らしい事に、XGでは無償のダイナミックDNSを用意してくれています。VPNで接続する際には、グローバルIPアドレスが必要ですが、XG用のmyfirewall.coドメインが利用できます。他に使われていない一意のホスト名を設定する事になります。<mark class="label primary">IPv4アドレス</mark>の箇所は、<mark class="label primary">NATされたパブリックIP</mark>を選んでください。その他のNo-IPなどの有名どころのダイナミックDNSを選ぶ事も可能です。</p>
 <img src="/new-technology/2020/03/28/vpn/ddns.png" class="" title="alt">
 
-<p>登録が終わると、直ちにグローバルIPがダイナミックDNSに登録されます。その後、<mark class="label ">前回更新したIP</mark>にグローバルIPが表示され、<mark class="label ">前回更新した状態</mark>にSuccessと表示されます。</p>
+<p>登録が終わると、直ちにグローバルIPがダイナミックDNSに登録されます。その後、<mark class="label primary">前回更新したIP</mark>にグローバルIPが表示され、<mark class="label primary">前回更新した状態</mark>にSuccessと表示されます。</p>
 <img src="/new-technology/2020/03/28/vpn/ddns2.png" class="" title="alt">
 
-<h2 id="XG側のデバイスのアクセス設定"><a href="#XG側のデバイスのアクセス設定" class="headerlink" title="XG側のデバイスのアクセス設定"></a>XG側のデバイスのアクセス設定</h2><p>XG側はこれが最後の設定です。左ペインの<mark class="label ">管理</mark>から、<mark class="label ">デバイスのアクセス</mark>へと進みます。そこに、LAN、WAN、VPN毎にサービスのアクセス権限が定めている一覧になります。ここでは以下の項目のアクセス権を加えます。</p>
+<h2 id="XG側のデバイスのアクセス設定"><a href="#XG側のデバイスのアクセス設定" class="headerlink" title="XG側のデバイスのアクセス設定"></a>XG側のデバイスのアクセス設定</h2><p>XG側はこれが最後の設定です。左ペインの<mark class="label primary">管理</mark>から、<mark class="label primary">デバイスのアクセス</mark>へと進みます。そこに、LAN、WAN、VPN毎にサービスのアクセス権限が定めている一覧になります。ここでは以下の項目のアクセス権を加えます。</p>
 <ul>
 <li>管理サービス　HTTPS/SSH<br>XGの管理メニューにVPN経由でアクセスする事を可能とします。</li>
 <li>Ping/Ping6<br>こちらの設定は任意です。</li>
 <li>DNS<br>LANおよびVPNからのアクセスはXGのDNSをまず最初に参照します。LANにあるホストを参照する時は、XGのDNSがプライベートIPを返すように、スタティックのプライベートIPをDNSに登録しておきたいためです。これは後々サーバーを宅内に立てる場合、活用する事になります。</li>
 </ul>
-<h2 id="Sophos-Connectクライアントのダウンロード"><a href="#Sophos-Connectクライアントのダウンロード" class="headerlink" title="Sophos Connectクライアントのダウンロード"></a>Sophos Connectクライアントのダウンロード</h2><p>WindowsでVPN接続するためにはVPNクライアントをダウンロードします。上記のXGのVPN設定画面で<mark class="label ">Sophos Connectクライアントのダウンロード</mark>というボタンがありました。そちらをクリックし、ソフトウェアをダウンロードします。こちらは、Windows版、macOS版のダウンロードが出来ます。さらに、この画面の<mark class="label ">接続のエクスポート</mark>ボタンをクリックし、接続設定ファイルをダウンロードしてください（拡張子tgb）。この設定ファイルには先ほど設定したダイナミックDNSの内容も含まれています。</p>
-<h2 id="Sophos-Connectクライアントのセットアップ"><a href="#Sophos-Connectクライアントのセットアップ" class="headerlink" title="Sophos Connectクライアントのセットアップ"></a>Sophos Connectクライアントのセットアップ</h2><p>クライアントへのセットアップは、Windowsの場合は、SophosConnect.msiをインストールします。macOSの場合は、SophosConnect.pkgをインストールします。プログラム実行後、右上のメニューから、<mark class="label ">Import Connection</mark>をクリックし、先ほどダウンロードした接続設定ファイル（拡張子tgb）を読み込んでください。</p>
+<h2 id="Sophos-Connectクライアントのダウンロード"><a href="#Sophos-Connectクライアントのダウンロード" class="headerlink" title="Sophos Connectクライアントのダウンロード"></a>Sophos Connectクライアントのダウンロード</h2><p>WindowsでVPN接続するためにはVPNクライアントをダウンロードします。上記のXGのVPN設定画面で<mark class="label primary">Sophos Connectクライアントのダウンロード</mark>というボタンがありました。そちらをクリックし、ソフトウェアをダウンロードします。こちらは、Windows版、macOS版のダウンロードが出来ます。さらに、この画面の<mark class="label primary">接続のエクスポート</mark>ボタンをクリックし、接続設定ファイルをダウンロードしてください（拡張子tgb）。この設定ファイルには先ほど設定したダイナミックDNSの内容も含まれています。</p>
+<h2 id="Sophos-Connectクライアントのセットアップ"><a href="#Sophos-Connectクライアントのセットアップ" class="headerlink" title="Sophos Connectクライアントのセットアップ"></a>Sophos Connectクライアントのセットアップ</h2><p>クライアントへのセットアップは、Windowsの場合は、SophosConnect.msiをインストールします。macOSの場合は、SophosConnect.pkgをインストールします。プログラム実行後、右上のメニューから、<mark class="label primary">Import Connection</mark>をクリックし、先ほどダウンロードした接続設定ファイル（拡張子tgb）を読み込んでください。</p>
 <img src="/new-technology/2020/03/28/vpn/install.png" class="" title="alt">
 
-<h2 id="VPNの接続確認"><a href="#VPNの接続確認" class="headerlink" title="VPNの接続確認"></a>VPNの接続確認</h2><mark class="label ">Connect</mark>をクリックし、VPN用に設定したユーザー名とパスワードでインターネットから、宅内のXGに接続します。
+<h2 id="VPNの接続確認"><a href="#VPNの接続確認" class="headerlink" title="VPNの接続確認"></a>VPNの接続確認</h2><mark class="label primary">Connect</mark>をクリックし、VPN用に設定したユーザー名とパスワードでインターネットから、宅内のXGに接続します。
 
 <img src="/new-technology/2020/03/28/vpn/connected1.png" class="" title="alt">
 <img src="/new-technology/2020/03/28/vpn/connected2.png" class="" title="alt">
@@ -465,22 +465,22 @@
 <p>なお、ここまで説明してきた通り、LANとVPNのネットワークセグメントは異なりますので、ブロードキャストで相手を見つけるようなアプリケーションはVPNからLANに対する接続は行えません。</p>
 <h2 id="VPNからWANに対するSSLインスペクションの設定"><a href="#VPNからWANに対するSSLインスペクションの設定" class="headerlink" title="VPNからWANに対するSSLインスペクションの設定"></a>VPNからWANに対するSSLインスペクションの設定</h2><p>ここまでの設定でVPNの設定は終了ですが、VPNについてもSSLインスペクションが有効となるように設定します。一旦はVPNのネットワークからインターネットにアクセスする場合は、全てがSSLインスペクションの対象とし、ファイアウォールルールを修正します。</p>
 <ol>
-<li>最初にVPNのネットワークアドレスを左ペインの<mark class="label ">ホストとサービス</mark>から<mark class="label ">IPホスト</mark>を登録します。</li>
+<li>最初にVPNのネットワークアドレスを左ペインの<mark class="label primary">ホストとサービス</mark>から<mark class="label primary">IPホスト</mark>を登録します。</li>
 </ol>
 <img src="/new-technology/2020/03/28/vpn/vpn3.png" class="" title="alt">
 
 <ol start="2">
 <li><p>上記のようにネットワークにIPアドレス（この記事では192.168.20.0/24としています）を登録します。VPNのネットワークは、LANのネットワークとは別のネットワークアドレスとする必要があります。</p>
 </li>
-<li><p>次に、左ペインの<mark class="label ">ルールとポリシー</mark>から、<mark class="label ">SSL/TLSインスペクション</mark>を選択します。</p>
+<li><p>次に、左ペインの<mark class="label primary">ルールとポリシー</mark>から、<mark class="label primary">SSL/TLSインスペクション</mark>を選択します。</p>
 </li>
-<li><p>事前に作成してある<mark class="label ">Catch SSL</mark>ルールを選択し、ここにVPNのネットワークがSSL/TLSインスペクションの対象である事を設定します。</p>
+<li><p>事前に作成してある<mark class="label primary">Catch SSL</mark>ルールを選択し、ここにVPNのネットワークがSSL/TLSインスペクションの対象である事を設定します。</p>
 </li>
 </ol>
 <img src="/new-technology/2020/03/28/vpn/vpn4.png" class="" title="alt">
 
 <ol start="5">
-<li>上記の図では<mark class="label ">送信元ネットワークとデバイス</mark>に、CAがインストールされているPCおよびiPhoneを対象とするIPグループを<mark class="label ">CA_Clinet_IPv4</mark>として登録していました。これに今回はVPNのネットワーク<mark class="label ">VPN_Network_IPv4</mark>を追加登録します。</li>
+<li>上記の図では<mark class="label primary">送信元ネットワークとデバイス</mark>に、CAがインストールされているPCおよびiPhoneを対象とするIPグループを<mark class="label primary">CA_Clinet_IPv4</mark>として登録していました。これに今回はVPNのネットワーク<mark class="label primary">VPN_Network_IPv4</mark>を追加登録します。</li>
 </ol>
 <p>ここまでの設定でIPSec-VPNの設定は一段落です。SSLインスペクションの設定および動作確認については、過去の記事を参照して下さい。</p>
 <ul>

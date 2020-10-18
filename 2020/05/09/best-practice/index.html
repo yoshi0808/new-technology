@@ -39,7 +39,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/09/best-practice/rule1.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/09/best-practice/ssl-inspection.png">
 <meta property="article:published_time" content="2020-05-09T08:55:26.000Z">
-<meta property="article:modified_time" content="2020-10-18T02:38:22.778Z">
+<meta property="article:modified_time" content="2020-10-18T04:19:37.804Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -348,7 +348,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">編集日</span>
-        <time title="修正日：2020-10-18 11:38:22" itemprop="dateModified" datetime="2020-10-18T11:38:22+09:00">2020-10-18</time>
+        <time title="修正日：2020-10-18 13:19:37" itemprop="dateModified" datetime="2020-10-18T13:19:37+09:00">2020-10-18</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -402,7 +402,7 @@
 </li>
 <li>個別のファイアウォールのルールでUDP443のQUICを認めない設定、不正なSSL証明書を許可しない等の設定が必要です。</li>
 </ol>
-<h2 id="IPSの設定変更"><a href="#IPSの設定変更" class="headerlink" title="IPSの設定変更"></a>IPSの設定変更</h2><p>XGの画面右上にある、<mark class="label ">admin▼</mark>から<mark class="label ">コンソール</mark>を選択し起動します。パスワードを入力し、<mark class="label ">4.Device Console</mark>に入ります。そして、以下のコマンドを入力し、期待する設定値を合っているか確認します。</p>
+<h2 id="IPSの設定変更"><a href="#IPSの設定変更" class="headerlink" title="IPSの設定変更"></a>IPSの設定変更</h2><p>XGの画面右上にある、<mark class="label primary">admin▼</mark>から<mark class="label primary">コンソール</mark>を選択し起動します。パスワードを入力し、<mark class="label primary">4.Device Console</mark>に入ります。そして、以下のコマンドを入力し、期待する設定値を合っているか確認します。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console&gt; show advanced-firewall</span><br></pre></td></tr></table></figure>
 
 <ul>
@@ -420,7 +420,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console&gt; <span class="built_in">set</span> ips maxpkts 200</span><br></pre></td></tr></table></figure>
 
 <h2 id="アプリケーションフィルタの設定"><a href="#アプリケーションフィルタの設定" class="headerlink" title="アプリケーションフィルタの設定"></a>アプリケーションフィルタの設定</h2><p>とにかくアプリケーションの数が多い事と、今後もメンテナンスしていく事を留意して設定します。高リスクというカテゴリであっても、ホームユーザーが利用するアプリケーションもそれなりにあります。ここでは、リコメンドされた拒否アプリの拒否設定をしつつ、ユーザー側で許可する設定を加えていく事になります。ただし下手にアプリを個別選択するようなフィルタにしてしまうと、新しいアプリケーションが追加される都度、メンテナンスが必要となってしまいます。従い<strong>リスクの高いアプリケーションは停止を原則とし、自分が許可するアプリの設定を加え</strong>、以後はなるべくメンテナンスが不要となるように設定します。</p>
-<p>XGの左メニューの<mark class="label ">アプリケーション</mark>の<mark class="label ">アプリケーションリスト</mark>の右上に”分類”というフィルタがあります。このフィルタをクリックし展開すると、新規/認証済み/許容/未認証とあります。これはクラウドアプリケーションとして登録されているものが対象となります。左ペインメニューの<mark class="label ">アプリケーション</mark>から<mark class="label ">クラウドアプリケーション</mark>で内容が確認できます。</p>
+<p>XGの左メニューの<mark class="label primary">アプリケーション</mark>の<mark class="label primary">アプリケーションリスト</mark>の右上に”分類”というフィルタがあります。このフィルタをクリックし展開すると、新規/認証済み/許容/未認証とあります。これはクラウドアプリケーションとして登録されているものが対象となります。左ペインメニューの<mark class="label primary">アプリケーション</mark>から<mark class="label primary">クラウドアプリケーション</mark>で内容が確認できます。</p>
 <img src="/new-technology/2020/05/09/best-practice/filter.png" class="" title="alt">
 
 <p>“未認証”というのは不許可の意味です。デフォルトで、”新規”か”設定なし（空白）”となっています。リスクの高低によらず、自身で”認証済み”または”許容”としたものは許可する事になります。またリスクが低くとも明らかに使わないものは”未認証”を設定すると、そのアプリケーションは直ちに拒否されるようになります。</p>
@@ -471,11 +471,11 @@
 <td>-</td>
 </tr>
 </tbody></table>
-<p>XGの左メニューの<mark class="label ">アプリケーション</mark>の<mark class="label ">アプリケーションフィルタ</mark>から、”追加”ボタンをクリックしてください。フィルタの名前を決めます。テンプレートは”Allow ALL”のままで構いません。ここでは、”Block High Risk Apps”と命名します。</p>
+<p>XGの左メニューの<mark class="label primary">アプリケーション</mark>の<mark class="label primary">アプリケーションフィルタ</mark>から、”追加”ボタンをクリックしてください。フィルタの名前を決めます。テンプレートは”Allow ALL”のままで構いません。ここでは、”Block High Risk Apps”と命名します。</p>
 <img src="/new-technology/2020/05/09/best-practice/application1.png" class="" title="alt">
 
 <ol>
-<li>以下のようにカテゴリで<mark class="label ">リスク</mark>のプルダウンからHigh、Very Highのものを選択し、アクションは”拒否”を選び保存してください。</li>
+<li>以下のようにカテゴリで<mark class="label primary">リスク</mark>のプルダウンからHigh、Very Highのものを選択し、アクションは”拒否”を選び保存してください。</li>
 </ol>
 <img src="/new-technology/2020/05/09/best-practice/application2.png" class="" title="alt">
 
@@ -483,15 +483,15 @@
 <img src="/new-technology/2020/05/09/best-practice/application3.png" class="" title="alt">
 
 <ol>
-<li><mark class="label ">追加</mark>ボタンをクリックし、フィルタを追加します。今度はカテゴリから、P2PとProxyを選び、<mark class="label ">アクション</mark>は"拒否"を選び保存します。</li>
+<li><mark class="label primary">追加</mark>ボタンをクリックし、フィルタを追加します。今度はカテゴリから、P2PとProxyを選び、<mark class="label primary">アクション</mark>は"拒否"を選び保存します。</li>
 <li>“DNS QNAME”と”OpenVPN”とをフィルタします。一番右側のプルダウンのスマートフィルタに<code>qname</code>と入力し、Enterキーを押下してください。一旦”DNS Multiple QNAME”が絞り込まれスマートフィルタの欄が空白になりますので、引き続き<code>openvpn</code>と入力し、Enterキーを押下してください。これで2つのフィルタが絞り込まれているので、”拒否”を選択し、”保存”をクリックしてください。</li>
 <li>ご自身で利用しているアプリが高リスクまたはP2PとProxyに含まれる場合の除外設定です。ログビューアでアプリケーションフィルタログを見ながら拒否されてしまった対象を除外する設定が必要です。ホームユーザーには最低限度EXEファイルおよびZIPファイルは必要でしょうから、スマートフィルタを活用し<code>exe file</code>、<code>zip file</code>と入力し、許可と設定します。</li>
-<li><mark class="label ">分類</mark>から"未認証"を選ぶと、自動で"Cloud Application"が選択されます。これを"拒否"として保存します。</li>
-<li><mark class="label ">分類</mark>から"許容"と"認証済み"を選択し、<mark class="label ">アクション</mark>は"許可"として登録します。
+<li><mark class="label primary">分類</mark>から"未認証"を選ぶと、自動で"Cloud Application"が選択されます。これを"拒否"として保存します。</li>
+<li><mark class="label primary">分類</mark>から"許容"と"認証済み"を選択し、<mark class="label primary">アクション</mark>は"許可"として登録します。
 
 </li>
 </ol>
-<p>クラウドアプリケーションの画面では、以下の通り、過去に通信のあったアプリケーション一覧が表示されます。既に安全と分かっているものについては、<mark class="label ">classify</mark>から分類を”認証済み”にマークできます。未認証と設定した場合は、アプリケーションフィルタで即座に通信が停止されます。</p>
+<p>クラウドアプリケーションの画面では、以下の通り、過去に通信のあったアプリケーション一覧が表示されます。既に安全と分かっているものについては、<mark class="label primary">classify</mark>から分類を”認証済み”にマークできます。未認証と設定した場合は、アプリケーションフィルタで即座に通信が停止されます。</p>
 <p>これでアプリケーションフィルタの設定は終了です。今後Sophosによりフィルタが定期的に追加されていきますが、リスクの高いアプリケーションは自動的にフィルタされる事になります。また、クラウドアプリケーションはリスクが高でも即座に拒否とはなりませんので、上記の記載のとおり、定期的にクラウドアプリケーションの利用状況を確認してください。</p>
 <h2 id="Webフィルタの設定"><a href="#Webフィルタの設定" class="headerlink" title="Webフィルタの設定"></a>Webフィルタの設定</h2><p>続いてWebフィルタの設定を行います。フィルタとその内容は以下の通りです。</p>
 <table>
@@ -538,35 +538,35 @@
 <td>分類不能なサイト</td>
 </tr>
 </tbody></table>
-<p>XGの左ペインメニューの、<mark class="label ">Web</mark>、<mark class="label ">ポリシー</mark>から、”追加”ボタンをクリックします。</p>
+<p>XGの左ペインメニューの、<mark class="label primary">Web</mark>、<mark class="label primary">ポリシー</mark>から、”追加”ボタンをクリックします。</p>
 <img src="/new-technology/2020/05/09/best-practice/webfilter1.png" class="" title="alt">
 
 <p>上記の図のとおり名前を入力します。ここでは、”Home Policy”とします。デフォルトは許可で、その上に拒否するルールを追加していきます。</p>
 <p>以下の図のとおり拒否する対象を選択する時には”すべて表示”とし、全てのカテゴリを表示させ、選択してください。</p>
 <img src="/new-technology/2020/05/09/best-practice/webfilter2.png" class="" title="alt">
 
-<p>登録が終わったら、画面の最下部にある、<mark class="label ">変更を適用</mark>をクリックしてください。</p>
-<p>最後にWebの<mark class="label ">全般設定</mark>をクリックします。</p>
+<p>登録が終わったら、画面の最下部にある、<mark class="label primary">変更を適用</mark>をクリックしてください。</p>
+<p>最後にWebの<mark class="label primary">全般設定</mark>をクリックします。</p>
 <ul>
-<li><mark class="label ">認識されていないSSLプロトコルをブロック</mark>にチェックします</li>
-<li><mark class="label ">無効な証明書をブロック</mark>にチェックします</li>
-<li><mark class="label ">スキャンエンジンの選択</mark>は"デュアルエンジン"を選択します
+<li><mark class="label primary">認識されていないSSLプロトコルをブロック</mark>にチェックします</li>
+<li><mark class="label primary">無効な証明書をブロック</mark>にチェックします</li>
+<li><mark class="label primary">スキャンエンジンの選択</mark>は"デュアルエンジン"を選択します
 
 </li>
 </ul>
 <img src="/new-technology/2020/05/09/best-practice/webfilter3.png" class="" title="alt">
 
-<h2 id="ルールとポリシーの設定"><a href="#ルールとポリシーの設定" class="headerlink" title="ルールとポリシーの設定"></a>ルールとポリシーの設定</h2><p>XGの左ペインの<mark class="label ">ルールとポリシー</mark>で設定を見直します。デフォルトポリシーとしているルールを選択します。</p>
+<h2 id="ルールとポリシーの設定"><a href="#ルールとポリシーの設定" class="headerlink" title="ルールとポリシーの設定"></a>ルールとポリシーの設定</h2><p>XGの左ペインの<mark class="label primary">ルールとポリシー</mark>で設定を見直します。デフォルトポリシーとしているルールを選択します。</p>
 <img src="/new-technology/2020/05/09/best-practice/rule1.png" class="" title="alt">
 
 <p>これまでの記事では”To Internet”というデフォルトのルールを作ってきましたので、そのルールを修正します。</p>
 <ul>
-<li><mark class="label ">Webポリシー</mark>に、"Home Policy"を設定します。</li>
-<li><mark class="label ">アプリケーションコントロール</mark>に、"Block High Risk Apps"を設定します。</li>
-<li>Sophos推奨の<mark class="label ">QUICプロトコルのブロック</mark>にチェックします。</li>
+<li><mark class="label primary">Webポリシー</mark>に、"Home Policy"を設定します。</li>
+<li><mark class="label primary">アプリケーションコントロール</mark>に、"Block High Risk Apps"を設定します。</li>
+<li>Sophos推奨の<mark class="label primary">QUICプロトコルのブロック</mark>にチェックします。</li>
 </ul>
 <p>IPv6を有効にされている方は、IPv4と同様にIPv6のポリシーを設定してください。</p>
-<h2 id="SSL-TLSインスペクションルールの確認"><a href="#SSL-TLSインスペクションルールの確認" class="headerlink" title="SSL/TLSインスペクションルールの確認"></a>SSL/TLSインスペクションルールの確認</h2><p>いよいよ設定も最後です。XGの左ペインメニューの<mark class="label ">ルールとポリシー</mark>から<mark class="label ">SSL/TLSインスペクションルール</mark>に進み、右上の<mark class="label ">SSL/TLSインスペクションの設定</mark>をクリックします。特に設定変更は不要ですが、以下の通りである事を確認してください。</p>
+<h2 id="SSL-TLSインスペクションルールの確認"><a href="#SSL-TLSインスペクションルールの確認" class="headerlink" title="SSL/TLSインスペクションルールの確認"></a>SSL/TLSインスペクションルールの確認</h2><p>いよいよ設定も最後です。XGの左ペインメニューの<mark class="label primary">ルールとポリシー</mark>から<mark class="label primary">SSL/TLSインスペクションルール</mark>に進み、右上の<mark class="label primary">SSL/TLSインスペクションの設定</mark>をクリックします。特に設定変更は不要ですが、以下の通りである事を確認してください。</p>
 <img src="/new-technology/2020/05/09/best-practice/ssl-inspection.png" class="" title="alt">
 
 <h2 id="除外した設定"><a href="#除外した設定" class="headerlink" title="除外した設定"></a>除外した設定</h2><p>ベストプラクティスとして記事に記載のある中で今回設定していないものがあります。以下の記載の部分です。</p>

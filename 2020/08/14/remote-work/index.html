@@ -31,7 +31,7 @@
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/08/14/remote-work/title.png">
 <meta property="article:published_time" content="2020-08-14T11:19:00.000Z">
-<meta property="article:modified_time" content="2020-09-30T09:07:22.084Z">
+<meta property="article:modified_time" content="2020-10-18T04:19:37.812Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2020/08/14/remote-work/title.png">
@@ -339,7 +339,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">編集日</span>
-        <time title="修正日：2020-09-30 18:07:22" itemprop="dateModified" datetime="2020-09-30T18:07:22+09:00">2020-09-30</time>
+        <time title="修正日：2020-10-18 13:19:37" itemprop="dateModified" datetime="2020-10-18T13:19:37+09:00">2020-10-18</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -455,7 +455,7 @@
 <h2 id="（4）ネットワークチェックツールの利用"><a href="#（4）ネットワークチェックツールの利用" class="headerlink" title="（4）ネットワークチェックツールの利用"></a>（4）ネットワークチェックツールの利用</h2><p>上述したbitdefender社から、<a target="_blank" rel="noopener" href="https://www.bitdefender.com/solutions/home-scanner.html">Home Scanner</a>という無償ツールが公開されています。これは彼らの製品であるbitdefender BOXと呼ばれるFirewallを売るためのチェックツールでもあります。ネットワーク上の端末やIoT機器に脆弱性のリスクがあると警告してくれます。実際の対策内容は”bitdefender BOXの導入を”となるわけですが、私の環境ですと、きちんとファームウェアの更新された無線機器1台とQNAPのhttpで脆弱性ありとの診断結果でした。QNAPではhttpを使っており、httpsに強制リダイレクトされるデザインなのですが、どういう点での脆弱性の可能性を指摘しているのかは一切不明で実態の把握しようがありませんでした。初級者〜中級者向けにはこのツールを使い、まずは当該機器のファームウェア更新の有無を確認するために活用できるでしょう。また、忘れがちのIoT機器に気づくきっかけとなります。前述した<a target="_blank" rel="noopener" href="https://www.ict-isac.jp/news/remote%20work%20reference%20guide.pdf">「家庭内で安全快適に在宅勤務を行うためのリファレンスガイド」</a>ではトレンドマイクロ社の<a target="_blank" rel="noopener" href="https://www.trendmicro.com/ja_jp/forHome/products/hw_onlinescan.html">「オンラインスキャン for Home Network」</a>が紹介されています。</p>
 <p>上級者向けには、ビジネスでは有名どころのTenable社の<a target="_blank" rel="noopener" href="https://jp.tenable.com/products/nessus">Nessus</a>が候補に挙げられます。Nessusは16IPを上限に検査できるNessus Essential（無償）が提供されています。しょっちゅう稼働させるプロダクトではありませんので、ノートPCにインストールしておき、普段はサービスを停止させておくと便利です。前出のNASのQNAPに対しNessusのBasicスキャンをかけてみると、<del>リスク＝Mediumとして、アクセス権がなくともNFSのディレクトリ名が参照可能（これは許容）の結果でした。</del> <sup><strong><a href="#note1">[1]</a></strong></sup> Windowsで利用しているSMB（Port445）については、送受信するデータに署名が行われていないので中間者攻撃が可能（リスク＝Medium）との結果でした。結局QNAPのNASとクライアントとは別方式でデータ連携する事とし、QNAPのWindowsネットワークは止めました。SMBはssh（Port22）に続き、攻撃手段の数が多いプロトコルですからリスクも高いです。</p>
 <p>あくまでも個人それぞれの考え方ですので参考程度の話ではありますが、私の自宅のネットワーク環境はゼロトラストで考えています。Windowsはパブリックネットワーク、macOSではOSが持つFirewallを有効にしています（AppleのAirDropだけはとても便利なので許可しています）。パブリックネットワークの設定でもプリンターは使えますし、さほど不便はありません。FirewallでSSLインスペクションが使えないIoTやAndroid端末もネットワークの他のホストとは通信させず可能な限り分離させています。</p>
-<p>（2020-09-30追記）<br>iOS14では設定に<mark class="label ">ローカルネットワーク</mark>という項目が追加されました。悪意のあるスマホアプリがネットワーク上の機器に不正アクセスするリスクを危惧していましたが、ネットワーク内にある他の端末にアクセス可能なアプリを最低限度に抑える事ができるようになりました。こちらも是非設定される事をお勧めします。</p>
+<p>（2020-09-30追記）<br>iOS14では設定に<mark class="label primary">ローカルネットワーク</mark>という項目が追加されました。悪意のあるスマホアプリがネットワーク上の機器に不正アクセスするリスクを危惧していましたが、ネットワーク内にある他の端末にアクセス可能なアプリを最低限度に抑える事ができるようになりました。こちらも是非設定される事をお勧めします。</p>
 <p><small id="note1"><strong>[1]</strong><br>2020-09-04発表のQTS4.4.3.1421で解消（Fixed a vulnerability concerning world-readable NFS shared folders.）<br></small></p>
 
     </div>

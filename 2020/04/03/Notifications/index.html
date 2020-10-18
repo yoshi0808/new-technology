@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/04/03/Notifications/googleacount3.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/04/03/Notifications/notify.png">
 <meta property="article:published_time" content="2020-04-03T13:24:39.000Z">
-<meta property="article:modified_time" content="2020-10-18T02:43:33.625Z">
+<meta property="article:modified_time" content="2020-10-18T04:19:37.803Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -344,7 +344,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">編集日</span>
-        <time title="修正日：2020-10-18 11:43:33" itemprop="dateModified" datetime="2020-10-18T11:43:33+09:00">2020-10-18</time>
+        <time title="修正日：2020-10-18 13:19:37" itemprop="dateModified" datetime="2020-10-18T13:19:37+09:00">2020-10-18</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -370,16 +370,16 @@
 XG Firewallで重要なエラーが発生した場合、VPNの接続通知、バージョンアップの通知をメールで受信できるようになります。
 
 <a id="more"></a>
-<h2 id="Gmailからメールを通知する設定を行う"><a href="#Gmailからメールを通知する設定を行う" class="headerlink" title="Gmailからメールを通知する設定を行う"></a>Gmailからメールを通知する設定を行う</h2><p>XG Firewallのセットアップ時に通知用のメールアドレスを設定しても、メール通知がされません。プロバイダをはじめどこのサービスでも、SPAM対策がなされており、簡単にメールを送信する事は出来なくなっています。これは、<mark class="label ">Outbound Port 25 Blocking</mark>と呼ばれています。この回避策として、Googleアカウントを使う事で、メール通知が可能となります。</p>
+<h2 id="Gmailからメールを通知する設定を行う"><a href="#Gmailからメールを通知する設定を行う" class="headerlink" title="Gmailからメールを通知する設定を行う"></a>Gmailからメールを通知する設定を行う</h2><p>XG Firewallのセットアップ時に通知用のメールアドレスを設定しても、メール通知がされません。プロバイダをはじめどこのサービスでも、SPAM対策がなされており、簡単にメールを送信する事は出来なくなっています。これは、<mark class="label primary">Outbound Port 25 Blocking</mark>と呼ばれています。この回避策として、Googleアカウントを使う事で、メール通知が可能となります。</p>
 <ol>
-<li>Googleアカウントをお持ちでない方はアカウントを作成し、あらかじめ2段階認証の設定を行ってください。次に<a target="_blank" rel="noopener" href="https://myaccount.google.com/?tab=kk">Googleアカウントのページ</a>に行き、左ペインの<mark class="label ">セキュリティ</mark>をクリックしてください。</li>
+<li>Googleアカウントをお持ちでない方はアカウントを作成し、あらかじめ2段階認証の設定を行ってください。次に<a target="_blank" rel="noopener" href="https://myaccount.google.com/?tab=kk">Googleアカウントのページ</a>に行き、左ペインの<mark class="label primary">セキュリティ</mark>をクリックしてください。</li>
 <li>アプリパスワードをクリックします。</li>
 </ol>
 <img src="/new-technology/2020/04/03/Notifications/googleacount.png" class="" title="alt">
 
 <ol start="3">
 <li>Googleアカウントのパスワードで認証します</li>
-<li><mark class="label ">アプリ パスワードを生成するアプリとデバイスを選択してください。</mark>という説明があるので、そこでXG用のパスワードと分かるように以下を入力してください</li>
+<li><mark class="label primary">アプリ パスワードを生成するアプリとデバイスを選択してください。</mark>という説明があるので、そこでXG用のパスワードと分かるように以下を入力してください</li>
 <li>アプリを選択　→　メールを選択します</li>
 <li>デバイスを選択　→　その他（名前を選択）を選択します</li>
 </ol>
@@ -394,7 +394,7 @@ XG Firewallで重要なエラーが発生した場合、VPNの接続通知、バ
 </ol>
 <img src="/new-technology/2020/04/03/Notifications/googleacount2.png" class="" title="alt">
 
-<p>続いて、XG側の設定となります。左ペインの<mark class="label ">管理</mark>から、<mark class="label ">通知の設定</mark>をクリックします。以下の通り、<mark class="label ">外部メールサーバー</mark>を選択し、先ほどのGmailアカウントに関する情報を入力していきます。</p>
+<p>続いて、XG側の設定となります。左ペインの<mark class="label primary">管理</mark>から、<mark class="label primary">通知の設定</mark>をクリックします。以下の通り、<mark class="label primary">外部メールサーバー</mark>を選択し、先ほどのGmailアカウントに関する情報を入力していきます。</p>
 <img src="/new-technology/2020/04/03/Notifications/googleacount3.png" class="" title="alt">
 
 <table>
@@ -414,7 +414,7 @@ XG Firewallで重要なエラーが発生した場合、VPNの接続通知、バ
 </tr>
 <tr>
 <td>ユーザ名</td>
-<td><a href="mailto:&#121;&#x6f;&#117;&#114;&#x5f;&#x61;&#99;&#99;&#111;&#x75;&#110;&#x74;&#64;&#x67;&#x6d;&#97;&#105;&#x6c;&#46;&#x63;&#x6f;&#109;">&#121;&#x6f;&#117;&#114;&#x5f;&#x61;&#99;&#99;&#111;&#x75;&#110;&#x74;&#64;&#x67;&#x6d;&#97;&#105;&#x6c;&#46;&#x63;&#x6f;&#109;</a></td>
+<td><a href="mailto:&#x79;&#x6f;&#117;&#x72;&#x5f;&#97;&#x63;&#x63;&#111;&#117;&#x6e;&#116;&#x40;&#x67;&#x6d;&#x61;&#x69;&#108;&#x2e;&#x63;&#x6f;&#x6d;">&#x79;&#x6f;&#117;&#x72;&#x5f;&#97;&#x63;&#x63;&#111;&#117;&#x6e;&#116;&#x40;&#x67;&#x6d;&#x61;&#x69;&#108;&#x2e;&#x63;&#x6f;&#x6d;</a></td>
 </tr>
 <tr>
 <td>パスワード</td>
@@ -426,7 +426,7 @@ XG Firewallで重要なエラーが発生した場合、VPNの接続通知、バ
 </tr>
 <tr>
 <td>送信元メールアドレス</td>
-<td><a href="mailto:&#121;&#x6f;&#x75;&#114;&#95;&#x61;&#x63;&#x63;&#x6f;&#117;&#x6e;&#x74;&#x40;&#x67;&#109;&#x61;&#105;&#x6c;&#x2e;&#x63;&#x6f;&#x6d;">&#121;&#x6f;&#x75;&#114;&#95;&#x61;&#x63;&#x63;&#x6f;&#117;&#x6e;&#x74;&#x40;&#x67;&#109;&#x61;&#105;&#x6c;&#x2e;&#x63;&#x6f;&#x6d;</a></td>
+<td><a href="mailto:&#121;&#x6f;&#117;&#x72;&#95;&#x61;&#99;&#99;&#x6f;&#117;&#110;&#x74;&#64;&#103;&#109;&#x61;&#x69;&#108;&#46;&#99;&#x6f;&#109;">&#121;&#x6f;&#117;&#x72;&#95;&#x61;&#99;&#99;&#x6f;&#117;&#110;&#x74;&#64;&#103;&#109;&#x61;&#x69;&#108;&#46;&#99;&#x6f;&#109;</a></td>
 </tr>
 <tr>
 <td>メールアドレスに通知を送信</td>
@@ -438,7 +438,7 @@ XG Firewallで重要なエラーが発生した場合、VPNの接続通知、バ
 </tr>
 </tbody></table>
 <p>最後に適用をクリックします。その後通知ボタンをクリックしテスト通知で正しく受信できる事を確認してください。それなりに重要度が高いものを対象とし、スマホで通知を受けると良いでしょう。</p>
-<h2 id="メール通知するイベントを選択する"><a href="#メール通知するイベントを選択する" class="headerlink" title="メール通知するイベントを選択する"></a>メール通知するイベントを選択する</h2><p>XGの左ペインから<mark class="label ">システムサービス</mark>→<mark class="label ">通知リスト</mark>と進みます。以下の通り、イベント毎に通知が設定可能となっているので、<mark class="label ">メール通知</mark>のトグルスイッチをオンにして、好みの通知について選択してください。</p>
+<h2 id="メール通知するイベントを選択する"><a href="#メール通知するイベントを選択する" class="headerlink" title="メール通知するイベントを選択する"></a>メール通知するイベントを選択する</h2><p>XGの左ペインから<mark class="label primary">システムサービス</mark>→<mark class="label primary">通知リスト</mark>と進みます。以下の通り、イベント毎に通知が設定可能となっているので、<mark class="label primary">メール通知</mark>のトグルスイッチをオンにして、好みの通知について選択してください。</p>
 <img src="/new-technology/2020/04/03/Notifications/notify.png" class="" title="alt">
 
 <p>リスク観点で考えると、以下の内容をオンにしておくのがお勧めです。</p>

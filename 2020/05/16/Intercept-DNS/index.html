@@ -39,7 +39,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/16/Intercept-DNS/rule2.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/16/Intercept-DNS/rule3.png">
 <meta property="article:published_time" content="2020-05-16T02:39:23.000Z">
-<meta property="article:modified_time" content="2020-10-18T02:42:41.036Z">
+<meta property="article:modified_time" content="2020-10-18T04:19:37.792Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -348,7 +348,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">編集日</span>
-        <time title="修正日：2020-10-18 11:42:41" itemprop="dateModified" datetime="2020-10-18T11:42:41+09:00">2020-10-18</time>
+        <time title="修正日：2020-10-18 13:19:37" itemprop="dateModified" datetime="2020-10-18T13:19:37+09:00">2020-10-18</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -395,28 +395,28 @@
 
 <p>1および2ですが、アプリケーションは、DoTやDoHを止められると（一般的には）通常のDNS(Port53)にフォールバックします。そしてXGは強制的にDNSの向き先を変えますが、クライアントはパブリックDNSにアクセスしたと思い込んだまま、返されたIPに対しアクセスする事になります。</p>
 <h2 id="DoHの拒否"><a href="#DoHの拒否" class="headerlink" title="DoHの拒否"></a>DoHの拒否</h2><p>DoHの定義についてサービスの登録を行います。</p>
-<p>XGの左ペインメニュー<mark class="label ">Web</mark>の<mark class="label ">ファイルタイプ</mark>から追加ボタンをクリックします。<mark class="label ">名前</mark>は”DoH”、<mark class="label ">テンプレート</mark>を空白とし、<mark class="label ">MIMEヘッダー</mark>に<code>application/dns-message</code>と入力し、保存します。</p>
+<p>XGの左ペインメニュー<mark class="label primary">Web</mark>の<mark class="label primary">ファイルタイプ</mark>から追加ボタンをクリックします。<mark class="label primary">名前</mark>は”DoH”、<mark class="label primary">テンプレート</mark>を空白とし、<mark class="label primary">MIMEヘッダー</mark>に<code>application/dns-message</code>と入力し、保存します。</p>
 <img src="/new-technology/2020/05/16/Intercept-DNS/mimetype.png" class="" title="alt">
 
-<mark class="label ">Web</mark>の<mark class="label ">ユーザーアクティビティ</mark>から"追加"ボタンをクリックし、先ほどDoHとして登録したカテゴリを加え、`DNS over HTTPS`と名前を付けて保存します。
+<mark class="label primary">Web</mark>の<mark class="label primary">ユーザーアクティビティ</mark>から"追加"ボタンをクリックし、先ほどDoHとして登録したカテゴリを加え、`DNS over HTTPS`と名前を付けて保存します。
 
 <img src="/new-technology/2020/05/16/Intercept-DNS/mimetype2.png" class="" title="alt">
 
 <p>続いて、具体的な拒否設定です。</p>
-<mark class="label ">Web</mark>の<mark class="label ">ポリシー</mark>からご自身がFirewallルールで利用しているポリシー（ここでは"Home Policy"を仮定しています）に、上記で登録してきた"DNS over HTTPS"を拒否する設定を加えます。
+<mark class="label primary">Web</mark>の<mark class="label primary">ポリシー</mark>からご自身がFirewallルールで利用しているポリシー（ここでは"Home Policy"を仮定しています）に、上記で登録してきた"DNS over HTTPS"を拒否する設定を加えます。
 
 <img src="/new-technology/2020/05/16/Intercept-DNS/policy.png" class="" title="alt">
 
-<h2 id="DoTの拒否"><a href="#DoTの拒否" class="headerlink" title="DoTの拒否"></a>DoTの拒否</h2><p>XGの左ペインメニュー<mark class="label ">ホストとサービス</mark>の<mark class="label ">サービス</mark>から、”追加”ボタンをクリックし、”送信元ポート”1〜65535、”宛先ポート”853を指定し、”DoT”と名前を付け保存します。</p>
+<h2 id="DoTの拒否"><a href="#DoTの拒否" class="headerlink" title="DoTの拒否"></a>DoTの拒否</h2><p>XGの左ペインメニュー<mark class="label primary">ホストとサービス</mark>の<mark class="label primary">サービス</mark>から、”追加”ボタンをクリックし、”送信元ポート”1〜65535、”宛先ポート”853を指定し、”DoT”と名前を付け保存します。</p>
 <img src="/new-technology/2020/05/16/Intercept-DNS/service.png" class="" title="alt">
 
-<p>XGの左ペインメニュー<mark class="label ">ルールとポリシー</mark>から新しいファイアウォールルールを追加し、以下のようにDoTを”拒否”するルールを作成します。</p>
+<p>XGの左ペインメニュー<mark class="label primary">ルールとポリシー</mark>から新しいファイアウォールルールを追加し、以下のようにDoTを”拒否”するルールを作成します。</p>
 <img src="/new-technology/2020/05/16/Intercept-DNS/rule1.png" class="" title="alt">
 
 <h2 id="DNSに関するDNATの登録"><a href="#DNSに関するDNATの登録" class="headerlink" title="DNSに関するDNATの登録"></a>DNSに関するDNATの登録</h2><p>最初にDNATで必要なホストの定義を行います。LANで使っているネットワークアドレスの登録とXG自身のIPアドレスの登録が必要です。ネットワークアドレスについてIPv4は例えば、<code>192.168.1.0/24</code>、IPv6は例えば<code>fd00:beaf:cafe::/64</code>などの登録を行います。XG自身のIPアドレスも登録が必要です。</p>
 <img src="/new-technology/2020/05/16/Intercept-DNS/host.png" class="" title="alt">
 
-<p>XGの左ペインメニュー<mark class="label ">ルールとポリシー</mark>から、<mark class="label ">NATルール</mark>を選択、”NATルールの追加”ボタンをクリックし、DNATを設定します。</p>
+<p>XGの左ペインメニュー<mark class="label primary">ルールとポリシー</mark>から、<mark class="label primary">NATルール</mark>を選択、”NATルールの追加”ボタンをクリックし、DNATを設定します。</p>
 <ol>
 <li>“変換前の送信元”は、使っているネットワークのオブジェクトを登録します</li>
 <li>“変換前のサービス”は、”DNS”を選択します</li>
@@ -427,7 +427,7 @@
 <img src="/new-technology/2020/05/16/Intercept-DNS/rule2.png" class="" title="alt">
 
 <p>上記はIPv4の例ですが、IPv6を利用されている方は、同様にIPv6のDNATも設定してください。</p>
-<p>上記DNATによるDNSのインターセプトが有効になると、<mark class="label ">ルールとポリシー</mark>の<mark class="label ">NATルール</mark>画面で実際の変換された数が確認できるので、これで挙動確認を行ってください。</p>
+<p>上記DNATによるDNSのインターセプトが有効になると、<mark class="label primary">ルールとポリシー</mark>の<mark class="label primary">NATルール</mark>画面で実際の変換された数が確認できるので、これで挙動確認を行ってください。</p>
 <img src="/new-technology/2020/05/16/Intercept-DNS/rule3.png" class="" title="alt">
 
 <p> 以上がプライバシーと安全性を重視したv18ならではのDNSのベストプラクティスです。</p>
