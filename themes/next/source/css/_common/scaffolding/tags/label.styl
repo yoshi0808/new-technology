@@ -4,7 +4,8 @@
 
   for $type in $note-types {
     &.{$type} {
-      background: lookup('$label-' + $type);
+      // background: lookup('$label-' + $type);
+      background: linear-gradient(transparent 60%, lookup('$label-' + $type) 60%);
     }
   }
 }
