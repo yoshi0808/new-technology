@@ -1960,6 +1960,10 @@ pre code {
 .post-body h6:hover .headerlink:hover {
   opacity: 1;
 }
+.post-body .exturl .fa {
+  font-size: 0.875em;
+  margin-left: 4px;
+}
 .post-body h2 {
   position: relative;
   background: #f1f8ff;
@@ -2015,9 +2019,11 @@ pre code {
   top: 0.5em;
   color: #17b7b1;
 }
-.post-body .exturl .fa {
-  font-size: 0.875em;
-  margin-left: 4px;
+.post-body a[target="_blank"]::after {
+  font-family: "Font Awesome 5 Free";
+  font-weight: bold;
+  content: "\f35d";
+  margin: 0 4px;
 }
 .post-body a,
 .post-body span.exturl {
@@ -2032,12 +2038,6 @@ pre code {
 .post-body span.exturl:hover {
   border-bottom-color: var(--link-hover-color);
   color: var(--link-hover-color);
-}
-.post-body a[target="_blank"]::after {
-  font-family: "Font Awesome 5 Free";
-  font-weight: bold;
-  content: "\f35d";
-  margin: 0 4px;
 }
 .post-body .image-caption,
 .post-body .figure .caption {
@@ -2908,7 +2908,7 @@ hr {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #c68a3b;
+  background: #4b1221;
   display: inline-block;
   margin-right: 3px;
   transform: translateY(-2px);
