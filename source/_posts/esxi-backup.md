@@ -25,13 +25,13 @@ ESXiはスナップショットという機能を持っており、その時点�
 
 ## ghettoVCBについて
 
-このghettoVCBは[William Lam氏](https://www.virtuallyghetto.com)が作成したMITライセンス（フリーソフト）のソフトウェアで、VMWareの正式な製品ではありません。但し、フリーのESXi向けにはデファクトスタンダードとも言えるスクリプトです。ソフトウェアはGitHub上にあります。以下のGitHubから{% label primary@Codeボタン %}→{% label primary@Download ZIP %}と進み、{% label primary@ghettoVCB-master.zip %}をダウンロードしてください。私はESXi6.7の環境で動作検証していますが、このブログを記載している途中の2020-10-10に"Adding support for ESXi 7.0 update 1"と更新が入りましたので、新しいESXiのバージョンにも積極的に対応されているようです。
+このghettoVCBはWilliam Lam氏が作成したMITライセンス（フリーソフト）のソフトウェアで、VMWareの正式な製品ではありません。但し、フリーのESXi向けにはデファクトスタンダードとも言えるスクリプトです。ソフトウェアはGitHub上にあります。以下のGitHubから{% label primary@Codeボタン %}→{% label primary@Download ZIP %}と進み、{% label primary@ghettoVCB-master.zip %}をダウンロードしてください。私はESXi6.7の環境で動作検証していますが、このブログを記載している途中の2020-10-10に"Adding support for ESXi 7.0 update 1"と更新が入りましたので、新しいESXiのバージョンにも積極的に対応されているようです。
 
-{% btn https://github.com/lamw/ghettoVCB, ghettoVCB, fab fa-github fa-fw fa-lg, ghettoVCB Software %}
+- [GitHub ghettoVCB-master.zip ＞](https://github.com/lamw/ghettoVCB)
 
 このghettoVCBは前述したスナップショットを活用し、システムを止める事なくスナップショットを取り、バックアップを行ってくれるため非常に便利です。またバックアップを複数世代持つ事が可能です。単一のファイルとしてバックアップされるため、非常に取り扱いがしやすいのも特徴です。
 
-ESXiをバックアップする製品はたくさん存在するのですが、基本はESXiの有償版が前提です。バックアップに使用されるvStorage APIは無償のESXi向けにはロックが掛かっており使えません。GUIによる製品も全く無いわけではありませんが、イチオシはghettoVCBになります。
+ESXiをバックアップする製品はたくさん存在するのですが、基本はESXiの有償版が前提です。バックアップに使用されるvStorage APIは無償のESXi向けにはロックが掛かっており使えません。GUIによる製品も全く無いわけではありませんが、イチオシはghettoVCBになります。William Lam氏のホームページは[こちら](https://www.virtuallyghetto.com)をご参照ください。
 
 ## バックアップ先の準備
 
