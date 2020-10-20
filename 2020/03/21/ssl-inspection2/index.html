@@ -22,12 +22,12 @@
     var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","scheme":"Mist","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="この記事で実現すること XG FirewallのSSLインスペクションが有効に機能している事をテストマルウェアを使い検証します。また、SSLインスペクションによってサイトによっては接続出来なくなる場合があり、これを除外する方法を確認します。">
+  <meta name="description" content="この記事で実現すること XG FirewallのSSLインスペクションが有効に機能している事をテストマルウェアを使い検証します。また、SSLインスペクションによって接続出来なくなる場合は除外設定を行います。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="XG Firewall v18のSSLインスペクションの動作確認と調整">
 <meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/03/21/ssl-inspection2/index.html">
 <meta property="og:site_name" content="New technologies in our life">
-<meta property="og:description" content="この記事で実現すること XG FirewallのSSLインスペクションが有効に機能している事をテストマルウェアを使い検証します。また、SSLインスペクションによってサイトによっては接続出来なくなる場合があり、これを除外する方法を確認します。">
+<meta property="og:description" content="この記事で実現すること XG FirewallのSSLインスペクションが有効に機能している事をテストマルウェアを使い検証します。また、SSLインスペクションによって接続出来なくなる場合は除外設定を行います。">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/21/ssl-inspection2/eicar1.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/21/ssl-inspection2/exclusion.png">
@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/21/ssl-inspection2/inspection-rule4.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/21/ssl-inspection2/inspection-rule2.png">
 <meta property="article:published_time" content="2020-03-20T23:57:45.000Z">
-<meta property="article:modified_time" content="2020-10-18T05:56:38.079Z">
+<meta property="article:modified_time" content="2020-10-20T23:13:33.946Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -344,7 +344,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">編集日</span>
-        <time title="修正日：2020-10-18 14:56:38" itemprop="dateModified" datetime="2020-10-18T14:56:38+09:00">2020-10-18</time>
+        <time title="修正日：2020-10-21 08:13:33" itemprop="dateModified" datetime="2020-10-21T08:13:33+09:00">2020-10-21</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -367,10 +367,10 @@
     
     <div class="post-body" itemprop="articleBody">
         <p class="onepoint">この記事で実現すること</p>
-XG FirewallのSSLインスペクションが有効に機能している事をテストマルウェアを使い検証します。また、SSLインスペクションによってサイトによっては接続出来なくなる場合があり、これを除外する方法を確認します。
+XG FirewallのSSLインスペクションが有効に機能している事をテストマルウェアを使い検証します。また、SSLインスペクションによって接続出来なくなる場合は除外設定を行います。
 <a id="more"></a>
 
-<h2 id="SSLインスペクションの動作確認"><a href="#SSLインスペクションの動作確認" class="headerlink" title="SSLインスペクションの動作確認"></a>SSLインスペクションの動作確認</h2><p>前回までの記事でXGのSSLインスペクションの設定が完了している事を前提にしています。過去の記事は以下をご覧ください。</p>
+<h2 id="SSLインスペクションの動作確認"><a href="#SSLインスペクションの動作確認" class="headerlink" title="SSLインスペクションの動作確認"></a>SSLインスペクションの動作確認</h2><p>前回までの記事でXGのSSLインスペクションの設定が完了している事を前提にしています。SSLインスペクションに関する記事は以下を参照してください。</p>
 <ul>
 <li><a href="/new-technology/2020/03/20/ssl-inspection/" title="SSLインスペクションについて">SSLインスペクションについて</a></li>
 <li><a href="/new-technology/2020/03/20/ssl-inspection1/" title="XG Firewall v18のSSLインスペクションの設定">XG Firewall v18のSSLインスペクションの設定</a>
@@ -380,13 +380,13 @@ XG FirewallのSSLインスペクションが有効に機能している事をテ
 <p>IPS（Intrusion Prevension System）によるSSLインスペクションでの動作確認のため、テストマルウェアの検知について行います。有名どころでは、<a target="_blank" rel="noopener" href="https://www.eicar.org/">eicar</a>のテストマルウェアが挙げられます。早速、ダウンロードページにまいりましょう。<a target="_blank" rel="noopener" href="https://2016.eicar.org/85-0-Download.html">eicarのダウンロードページ</a>に行くと、「IMPORTANT NOTE」とhttp、httpsの以下それぞれの種類の合計8つのダウンロードリンクがあります。</p>
 <img src="/new-technology/2020/03/21/ssl-inspection2/eicar1.png" class="" title="alt">
 
-<ol>
+<ul>
 <li>実行ファイル</li>
 <li>実行ファイルをtxtに拡張子を変えたもの</li>
 <li>zipに圧縮したもの</li>
 <li>zipの二重圧縮</li>
-</ol>
-<p>実行ファイルについては、マルウェアを検知する前にXGのポリシーによって、実行ファイルをダウンロード出来ないという表示になる可能性があります。その際はWebのポリシーで修正するか、ルールとポリシーを修正し実行ファイルを一時的に許可し、確認してみて下さい。前回までの記事で記載してきた通り、SSLインスペクションが行えるクライアントと行えないクライアントで挙動は変わります。</p>
+</ul>
+<p>実行ファイルについては、マルウェアを検知する前にXGのポリシーによって、実行ファイルをダウンロードできないという表示になる可能性があります。その際はWebのポリシーで修正するか、ルールとポリシーを修正し実行ファイルを一時的に許可し、確認してみて下さい。前回までの記事で記載してきた通り、SSLインスペクションが行えるクライアントと行えないクライアントで挙動は変わります。</p>
 <p>SSLインスペクションが行えるクライアントは、この8つを全て検出し、ブラウザにはXGによるマルウェア検知のエラー画面が表示されます。PCに入っているウィルス対策ソフトが検知する以前にダウンロードは行わない挙動となります。また、SSLインスペクション対象外のクライアントからのアクセスについてはhttpのものは検出できますが、httpsのダウンロードはマルウェアを検出できません。</p>
 <p>IPSは速度と検出能力という相反する事を同時に成り立たせなくてはいけません。上記のようにマルウェアの検出は可能ですが、あくまで通信で怪しいものをカットする程度に考え、クライアントにはウィルス対策ソフト（Windows Defenderを含む）やマルウェア対策ソフトの導入をお勧めします。Sophosはホームユーザー向けに無償のウィルス対策ソフトを提供していますが、個人的には異なる会社のソフトを組み合わせて使う事をお勧めします。</p>
 <h2 id="SSLインスペクションの除外について"><a href="#SSLインスペクションの除外について" class="headerlink" title="SSLインスペクションの除外について"></a>SSLインスペクションの除外について</h2><p>XGは、Webフィルターやアプリケーションフィルターなどのポリシーで接続の可否を判断しますが、実はSSLインスペクションが理由で接続できないという問題も発生します。これは以下の通りです。</p>
@@ -395,11 +395,13 @@ XG FirewallのSSLインスペクションが有効に機能している事をテ
 <li>XGの証明書がアプリケーションに認められない</li>
 </ol>
 <p>接続できない理由は後述しますが、XGは、XG自身で最初からSSLインスペクションの対象外とするドメインリストを既に保持しています。そのリストになく、自身で利用するサイトやアプリケーションがSSLインスペクションによって動作しない場合は個別に当該ドメインをSSLインスペクションの対象外と指定します。</p>
-<p>XGで最初からSSLインスペクションの対象外となっているリストは、XGの左ペインメニュー<mark class="label primary">web</mark>の”URLグループ”に”Managed TLS exclusion list”があり、ここに複数の有名なWebサイトのドメインが列挙されています。</p>
+<p>XGで最初からSSLインスペクションの対象外となっているリストは、XGの左ペインメニュー<mark class="label primary">web</mark>の”URLグループ”に<mark class="label primary">Managed TLS exclusion list</mark>があり、ここに複数の有名なWebサイトのドメインが列挙されています。</p>
 <img src="/new-technology/2020/03/21/ssl-inspection2/exclusion.png" class="" title="alt">
 
-<p>このリストは編集できません。ファームウェアの更新によって管理されます。</p>
-<h2 id="SSLインスペクションの除外設定"><a href="#SSLインスペクションの除外設定" class="headerlink" title="SSLインスペクションの除外設定"></a>SSLインスペクションの除外設定</h2><p>“Managed TLS exclusion list”にドメインが列挙されておらず、またポリシー上は利用できるはずのWebサイトに接続できない場合、XGの画面右上のログビューアからSSL/TLSインスペクションを選択しSSLインスペクションでエラーが発生していないか確認を行います。Web→URLグループの”Local TLS Exclusion List”という個別にカスタマイズ可能なリストがあるので、そのリストにドメインを追加する事でSSLインスペクションの対象外とする事ができます。以下の通り、SSLインスペクションルール画面では、デフォルトの除外項目に”Managed TLS exclusion list”および”Local TLS Exclusion List”が存在します。”Local TLS Exclusion List”の初期状態は何も登録されていません。</p>
+<div class="note warning no-icon"><p>このリストは編集できません。ファームウェアの更新によって管理されます。</p>
+</div>
+
+<h2 id="SSLインスペクションの除外設定"><a href="#SSLインスペクションの除外設定" class="headerlink" title="SSLインスペクションの除外設定"></a>SSLインスペクションの除外設定</h2><p>除外リスト<mark class="label primary">Managed TLS exclusion list</mark>にドメインが列挙されておらず、またポリシー上は利用できるはずのWebサイトに接続できない場合、XGの画面右上のログビューアからSSL/TLSインスペクションを選択しSSLインスペクションでエラーが発生していないか確認を行います。Web→URLグループの<mark class="label primary">Local TLS Exclusion List</mark>という個別にカスタマイズ可能なリストがあるので、そのリストにドメインを追加する事でSSLインスペクションの対象外とする事ができます。以下の通り、SSLインスペクションルール画面では、デフォルトの除外リストに<mark class="label primary">Managed TLS exclusion list</mark>および<mark class="label primary">Local TLS Exclusion List</mark>が存在します。<mark class="label primary">Local TLS Exclusion List</mark>の初期状態は何も登録されていません。</p>
 <img src="/new-technology/2020/03/21/ssl-inspection2/inspection-rule3.png" class="" title="alt">
 <img src="/new-technology/2020/03/21/ssl-inspection2/inspection-rule4.png" class="" title="alt">
 

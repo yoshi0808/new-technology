@@ -22,16 +22,16 @@
     var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","scheme":"Mist","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="この記事で実現すること XG FirewallのIPS Policyは複数存在しますが、それぞれの内容について解説します。">
+  <meta name="description" content="この記事で実現すること XG FirewallのIPSポリシーは複数存在しますが、それぞれの内容について説明します。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="XG FirewallでIPSのポリシーを確認する">
 <meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/05/04/ips-policy/index.html">
 <meta property="og:site_name" content="New technologies in our life">
-<meta property="og:description" content="この記事で実現すること XG FirewallのIPS Policyは複数存在しますが、それぞれの内容について解説します。">
+<meta property="og:description" content="この記事で実現すること XG FirewallのIPSポリシーは複数存在しますが、それぞれの内容について説明します。">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/04/ips-policy/lanwan.png">
 <meta property="article:published_time" content="2020-05-04T00:00:00.000Z">
-<meta property="article:modified_time" content="2020-10-18T05:56:37.976Z">
+<meta property="article:modified_time" content="2020-10-20T22:59:52.601Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -340,7 +340,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">編集日</span>
-        <time title="修正日：2020-10-18 14:56:37" itemprop="dateModified" datetime="2020-10-18T14:56:37+09:00">2020-10-18</time>
+        <time title="修正日：2020-10-21 07:59:52" itemprop="dateModified" datetime="2020-10-21T07:59:52+09:00">2020-10-21</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -363,11 +363,11 @@
     
     <div class="post-body" itemprop="articleBody">
         <p class="onepoint">この記事で実現すること</p>
-XG FirewallのIPS Policyは複数存在しますが、それぞれの内容について解説します。
+XG FirewallのIPSポリシーは複数存在しますが、それぞれの内容について説明します。
 
 <a id="more"></a>
 
-<h2 id="XGのIPSポリシーについて"><a href="#XGのIPSポリシーについて" class="headerlink" title="XGのIPSポリシーについて"></a>XGのIPSポリシーについて</h2><p>Intrusion Prevension System(IPS)は侵入防御を意味し、サイバー攻撃から内部のホストを防御します。このブログでのXGインストール時の記事”<a href="/new-technology/2020/03/14/rule-policy2/" title="XG Firewall v18のルールを作成する">XG Firewall v18のルールを作成する</a>“では、IPS Policyの選択として、”lantowan_general”を設定しました。初期セットアップではあまり十分な説明をしていませんでしたので、改めて中身の解説をします。XGのIPSポリシーは、左ペインメニューの<mark class="label primary">侵入防御</mark>の<mark class="label primary">IPSポリシー</mark>から確認できます。デフォルトで登録されているものには、以下の内容があります。</p>
+<h2 id="XGのIPSポリシーについて"><a href="#XGのIPSポリシーについて" class="headerlink" title="XGのIPSポリシーについて"></a>XGのIPSポリシーについて</h2><p>Intrusion Prevension System(IPS)は侵入防御を意味し、サイバー攻撃から内部のホストを防御します。「<a href="/new-technology/2020/03/14/rule-policy2/" title="XG Firewall v18のルールを作成する">XG Firewall v18のルールを作成する</a>」では、IPS Policyの選択として、”lantowan_general”を設定しました。初期セットアップではあまり十分な説明をしていませんでしたので、改めて中身を説明します。XGのIPSポリシーは、左ペインメニューの<mark class="label primary">侵入防御</mark>の<mark class="label primary">IPSポリシー</mark>から確認できます。デフォルトで登録されているものには、以下の内容があります。</p>
 <ul>
 <li>DMZ TO LAN</li>
 <li>DMZ TO WAN</li>

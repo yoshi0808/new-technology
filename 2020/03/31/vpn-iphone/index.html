@@ -22,17 +22,17 @@
     var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","scheme":"Mist","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="この記事で実現すること スマホ（iPhone、Android）からXG FirewallのVPNへ接続できるようになります。2要素認証の設定も可能です。">
+  <meta name="description" content="この記事で実現すること スマホ（iPhone、Android）からXG FirewallのVPNに接続できます。2要素認証の設定も可能です。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="XG Firewall VPNにスマホから接続する">
 <meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/03/31/vpn-iphone/index.html">
 <meta property="og:site_name" content="New technologies in our life">
-<meta property="og:description" content="この記事で実現すること スマホ（iPhone、Android）からXG FirewallのVPNへ接続できるようになります。2要素認証の設定も可能です。">
+<meta property="og:description" content="この記事で実現すること スマホ（iPhone、Android）からXG FirewallのVPNに接続できます。2要素認証の設定も可能です。">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/31/vpn-iphone/iphone.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/31/vpn-iphone/android.png">
 <meta property="article:published_time" content="2020-03-31T10:44:58.000Z">
-<meta property="article:modified_time" content="2020-10-18T05:56:38.096Z">
+<meta property="article:modified_time" content="2020-10-20T23:08:02.087Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -228,7 +228,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E5%89%8D%E6%BA%96%E5%82%99"><span class="nav-number">1.</span> <span class="nav-text">事前準備</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iOS-iPhone-%E3%80%81Android%E3%81%AEVPN%E8%A8%AD%E5%AE%9A%E3%82%92%E8%A1%8C%E3%81%86"><span class="nav-number">2.</span> <span class="nav-text">iOS(iPhone)、AndroidのVPN設定を行う</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#iOS-iPhone-%E3%81%8B%E3%82%89VPN%E3%81%AB%E6%8E%A5%E7%B6%9A%E3%81%99%E3%82%8B"><span class="nav-number">2.1.</span> <span class="nav-text">iOS(iPhone)からVPNに接続する</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Android%E3%81%8B%E3%82%89VPN%E3%81%AB%E6%8E%A5%E7%B6%9A%E3%81%99%E3%82%8B"><span class="nav-number">2.2.</span> <span class="nav-text">AndroidからVPNに接続する</span></a></li></ol></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E5%89%8D%E6%BA%96%E5%82%99"><span class="nav-number">1.</span> <span class="nav-text">事前準備</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iOS-iPhone-%E3%80%81Android%E3%81%AEVPN%E8%A8%AD%E5%AE%9A%E3%82%92%E8%A1%8C%E3%81%86"><span class="nav-number">2.</span> <span class="nav-text">iOS(iPhone)、AndroidのVPN設定を行う</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#iOS%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8BVPN%E6%8E%A5%E7%B6%9A%E3%81%AE%E8%A8%AD%E5%AE%9A%E6%96%B9%E6%B3%95"><span class="nav-number">2.1.</span> <span class="nav-text">iOSにおけるVPN接続の設定方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#iOS-iPhone-%E3%81%8B%E3%82%89VPN%E3%81%AB%E6%8E%A5%E7%B6%9A%E3%81%99%E3%82%8B"><span class="nav-number">2.2.</span> <span class="nav-text">iOS(iPhone)からVPNに接続する</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Android%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8BVPN%E6%8E%A5%E7%B6%9A%E3%81%AE%E8%A8%AD%E5%AE%9A%E6%96%B9%E6%B3%95"><span class="nav-number">2.3.</span> <span class="nav-text">AndroidにおけるVPN接続の設定方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Android%E3%81%8B%E3%82%89VPN%E3%81%AB%E6%8E%A5%E7%B6%9A%E3%81%99%E3%82%8B"><span class="nav-number">2.4.</span> <span class="nav-text">AndroidからVPNに接続する</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E8%A6%81%E7%B4%A0%E8%AA%8D%E8%A8%BC%E3%81%AE%E6%9C%89%E7%84%A1%E3%81%AB%E3%82%88%E3%82%8B%E4%BD%BF%E3%81%84%E5%88%86%E3%81%91%EF%BC%88%E4%BE%8B%EF%BC%89"><span class="nav-number">3.</span> <span class="nav-text">2要素認証の有無による使い分け（例）</span></a></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -341,7 +341,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">編集日</span>
-        <time title="修正日：2020-10-18 14:56:38" itemprop="dateModified" datetime="2020-10-18T14:56:38+09:00">2020-10-18</time>
+        <time title="修正日：2020-10-21 08:08:02" itemprop="dateModified" datetime="2020-10-21T08:08:02+09:00">2020-10-21</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -372,11 +372,11 @@
     
     <div class="post-body" itemprop="articleBody">
         <p class="onepoint">この記事で実現すること</p>
-スマホ（iPhone、Android）からXG FirewallのVPNへ接続できるようになります。2要素認証の設定も可能です。
+スマホ（iPhone、Android）からXG FirewallのVPNに接続できます。2要素認証の設定も可能です。
 
 <a id="more"></a>
 
-<h2 id="事前準備"><a href="#事前準備" class="headerlink" title="事前準備"></a>事前準備</h2><p>前回の記事でPC（WindowsおよびmacOS）からXGの<mark class="label primary">VPN（Sophos Connect）</mark>に2要素認証で安全に接続できるようになりました。ここでは、スマホからVPNへ接続できるように設定していきます。この記事では、XG側に一通りVPNの設定が終わっている事を前提としています。以下の記事も参考にしてください。</p>
+<h2 id="事前準備"><a href="#事前準備" class="headerlink" title="事前準備"></a>事前準備</h2><p>前回の記事でPC（WindowsおよびmacOS）からXGの<mark class="label primary">VPN（Sophos Connect）</mark>に2要素認証で安全に接続できるようになりました。ここでは、スマホからVPNへ接続できるように設定していきます。この記事では、XG側に一通りVPNの設定が終わっている事を前提としています。以下の記事を参考にしてください。</p>
 <ul>
 <li><a href="/new-technology/2020/03/28/vpn/" title="XG Firewall VPNについて">XG Firewall VPNについて</a></li>
 <li><a href="/new-technology/2020/03/28/vpnotp/" title="XG Firewall VPNに2要素認証を設定する">XG Firewall VPNに2要素認証を設定する</a>
@@ -388,8 +388,7 @@
 <li>XGにVPN(Sophos Connect)の設定を終えている</li>
 <li>XGの外側（インターネット側）にホームゲートウェイがあり、ホームゲートウェイからXGに対し必要なVPNのパケットを転送出来ている</li>
 </ul>
-<h2 id="iOS-iPhone-、AndroidのVPN設定を行う"><a href="#iOS-iPhone-、AndroidのVPN設定を行う" class="headerlink" title="iOS(iPhone)、AndroidのVPN設定を行う"></a>iOS(iPhone)、AndroidのVPN設定を行う</h2><div class="tabs" id="one-unique-name"><ul class="nav-tabs"><li class="tab active"><a href="#one-unique-name-1"><i class="fab fa-apple"></i>iOS</a></li><li class="tab"><a href="#one-unique-name-2"><i class="fab fa-android"></i>Android</a></li></ul><div class="tab-content"><div class="tab-pane active" id="one-unique-name-1"><p><strong>iOSにおけるVPN接続の設定方法</strong></p>
-<p>LAN環境にて、XGのユーザーポータル<code>https://XGのIPアドレス/</code>に接続します。ユーザーポータルには、前回までに作成したVPNユーザーでログインします。ポータルのログイン後には、以下の画面のように、iPhone（iOS）のIPSec VPNに必要な設定ファイルをダウンロードできるようになっています。</p>
+<h2 id="iOS-iPhone-、AndroidのVPN設定を行う"><a href="#iOS-iPhone-、AndroidのVPN設定を行う" class="headerlink" title="iOS(iPhone)、AndroidのVPN設定を行う"></a>iOS(iPhone)、AndroidのVPN設定を行う</h2><h3 id="iOSにおけるVPN接続の設定方法"><a href="#iOSにおけるVPN接続の設定方法" class="headerlink" title="iOSにおけるVPN接続の設定方法"></a>iOSにおけるVPN接続の設定方法</h3><p>LAN環境にて、XGのユーザーポータル<code>https://XGのIPアドレス/</code>に接続します。ユーザーポータルには、前回までに作成したVPNユーザーでログインします。ポータルのログイン後には、以下の画面のように、iPhone（iOS）のIPSec VPNに必要な設定ファイルをダウンロードできるようになっています。</p>
 <img src="/new-technology/2020/03/31/vpn-iphone/iphone.png" class="" title="alt">
 
 <div class="note warning"><p>ダウンロードした設定ファイルは一部修正が必要ですので、PCでダウンロードしファイルを修正の後、iOSにインストールする事をお勧めします。</p>
@@ -409,8 +408,8 @@
 <li>ワンタイムパスワードを利用する</li>
 <li>iPhoneにパスワードを記憶させたくない</li>
 </ul>
-<h3 id="iOS-iPhone-からVPNに接続する"><a href="#iOS-iPhone-からVPNに接続する" class="headerlink" title="iOS(iPhone)からVPNに接続する"></a>iOS(iPhone)からVPNに接続する</h3><p>iPhoneの設定アプリからVPNを選択、XGの接続先が選択されている状態で<mark class="label primary">状況</mark>のトグルスイッチをオンにします。パスワードが設定済みの方は短い時間でXGへの接続が完了します。ワンタイムパスワードを設定している方、或いはパスワードを記憶させていない方は、パスワード入力のポップアップが表示されます。ワンタイムパスワードは、パスワードのあと続けてワンタイムパスワードの6つの数字を続けて入力します。一旦ポップアップが表示されると他のアプリに切り替えられないので一旦キャンセルします。ワンタイムパスワードアプリで6桁の数字を記憶するかコピーするなどし、最大30秒以内で設定アプリに再度切り替え、VPNのパスワードを完成させ接続する事になります。</p></div><div class="tab-pane" id="one-unique-name-2"><p><strong>AndroidにおけるVPN接続の設定方法</strong></p>
-<p>AndroidからVPNに接続する場合は、以下の設定を行います。今回の実例はAndroidのバージョン9のタブレットで説明します。機種によって操作は異なるかとおもいますが、ご容赦ください。無線とネットワーク→VPN→<mark class="label primary">VPNネットワークの追加</mark>をタップします。</p>
+<h3 id="iOS-iPhone-からVPNに接続する"><a href="#iOS-iPhone-からVPNに接続する" class="headerlink" title="iOS(iPhone)からVPNに接続する"></a>iOS(iPhone)からVPNに接続する</h3><p>iPhoneの設定アプリからVPNを選択、XGの接続先が選択されている状態で<mark class="label primary">状況</mark>のトグルスイッチをオンにします。パスワードが設定済みの方は短い時間でXGへの接続が完了します。ワンタイムパスワードを設定している方、或いはパスワードを記憶させていない方は、パスワード入力のポップアップが表示されます。ワンタイムパスワードは、パスワードのあと続けてワンタイムパスワードの6つの数字を続けて入力します。一旦ポップアップが表示されると他のアプリに切り替えられないので一旦キャンセルします。ワンタイムパスワードアプリで6桁の数字を記憶するかコピーするなどし、最大30秒以内で設定アプリに再度切り替え、VPNのパスワードを完成させ接続する事になります。</p>
+<h3 id="AndroidにおけるVPN接続の設定方法"><a href="#AndroidにおけるVPN接続の設定方法" class="headerlink" title="AndroidにおけるVPN接続の設定方法"></a>AndroidにおけるVPN接続の設定方法</h3><p>AndroidからVPNに接続する場合は、以下の設定を行います。今回の実例はAndroidのバージョン9のタブレットで説明します。機種によって操作は異なるかとおもいますが、ご容赦ください。無線とネットワーク→VPN→<mark class="label primary">VPNネットワークの追加</mark>をタップします。</p>
 <table>
 <thead>
 <tr>
@@ -441,10 +440,10 @@
 </tbody></table>
 <img src="/new-technology/2020/03/31/vpn-iphone/android.png" class="" title="alt">
 
-<h3 id="AndroidからVPNに接続する"><a href="#AndroidからVPNに接続する" class="headerlink" title="AndroidからVPNに接続する"></a>AndroidからVPNに接続する</h3><p><mark class="label primary">設定</mark>から<mark class="label primary">無線とネットワーク</mark>に進みVPNを選択し、ユーザーIDとパスワードを入力し接続します。ワンタイムパスワードを利用する場合は、パスワードの後ろにワンタイムパスワード（6桁の数字）を続けて入力します。</p>
-<p>Androidに関しては1点、注意点があります。Androidは、SSLインスペクションについて、Chromeブラウザ以外のアプリからは使えない前提があります。そこで、Android専用のVPNユーザーを作成しSSLインスペクションの対象からAndroidユーザーを除外するなどの設定が必要となります。</p></div></div></div>
+<h3 id="AndroidからVPNに接続する"><a href="#AndroidからVPNに接続する" class="headerlink" title="AndroidからVPNに接続する"></a>AndroidからVPNに接続する</h3><mark class="label primary">設定</mark>から<mark class="label primary">無線とネットワーク</mark>に進みVPNを選択し、ユーザーIDとパスワードを入力し接続します。ワンタイムパスワードを利用する場合は、パスワードの後ろにワンタイムパスワード（6桁の数字）を続けて入力します。
 
-<p>これまでの設定で、スマホからXG Firewallを活用した安全なネットアクセスや宅内に設置してあるデータへのアクセス、サーバーの操作が行えるようになりました。私はVPN接続ユーザーを2つ有効にしており、2要素認証が必要なユーザーはLANへのアクセスを許可するもの、2要素認証を不要としているユーザーはLANおよびHGWのセグメントへのアクセスを不許可とするルールを作成しています。またVPNからXGの管理画面には接続できないようにもしています。</p>
+<p>Androidに関しては1点、注意点があります。Androidは、SSLインスペクションについて、Chromeブラウザ以外のアプリからは使えない前提があります。そこで、Android専用のVPNユーザーを作成しSSLインスペクションの対象からAndroidユーザーを除外するなどの設定が必要となります。</p>
+<h2 id="2要素認証の有無による使い分け（例）"><a href="#2要素認証の有無による使い分け（例）" class="headerlink" title="2要素認証の有無による使い分け（例）"></a>2要素認証の有無による使い分け（例）</h2><p>私はVPN接続ユーザーを2つ有効にしています。2要素認証が必要なユーザーはLANへのアクセスを許可するもの、2要素認証を不要としているユーザーはLANおよびHGWのセグメントへのアクセスを不許可とするルールを作成しています。またVPNからXGの管理画面には接続できないようにもしています。</p>
 
     </div>
 

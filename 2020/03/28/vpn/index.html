@@ -22,12 +22,12 @@
     var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","scheme":"Mist","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="この記事で実現すること 外出先から、PC（Windows、macOS）を使い、宅内にあるXG FirewallのVPNへ接続できるようになります。それによりウィルスおよびマルウェア対策やWebフィルタなどを含んだ安全なネット閲覧や、宅内のLANリソースへリモートアクセス出来るようになります。">
+  <meta name="description" content="この記事で実現すること 外出先から、PC（Windows、macOS）を使い、宅内にあるXG FirewallのVPNへ接続できます。それによりウィルスおよびマルウェア対策やWebフィルタなどを含んだ安全なネット閲覧や、宅内のLANリソースへリモートアクセスができます。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="XG Firewall VPNについて">
 <meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/03/28/vpn/index.html">
 <meta property="og:site_name" content="New technologies in our life">
-<meta property="og:description" content="この記事で実現すること 外出先から、PC（Windows、macOS）を使い、宅内にあるXG FirewallのVPNへ接続できるようになります。それによりウィルスおよびマルウェア対策やWebフィルタなどを含んだ安全なネット閲覧や、宅内のLANリソースへリモートアクセス出来るようになります。">
+<meta property="og:description" content="この記事で実現すること 外出先から、PC（Windows、macOS）を使い、宅内にあるXG FirewallのVPNへ接続できます。それによりウィルスおよびマルウェア対策やWebフィルタなどを含んだ安全なネット閲覧や、宅内のLANリソースへリモートアクセスができます。">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/28/vpn/dmz.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/28/vpn/portmapping.png">
@@ -46,7 +46,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/28/vpn/vpn3.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/28/vpn/vpn4.png">
 <meta property="article:published_time" content="2020-03-28T02:41:42.000Z">
-<meta property="article:modified_time" content="2020-10-18T05:56:38.105Z">
+<meta property="article:modified_time" content="2020-10-20T23:11:23.892Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -355,7 +355,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">編集日</span>
-        <time title="修正日：2020-10-18 14:56:38" itemprop="dateModified" datetime="2020-10-18T14:56:38+09:00">2020-10-18</time>
+        <time title="修正日：2020-10-21 08:11:23" itemprop="dateModified" datetime="2020-10-21T08:11:23+09:00">2020-10-21</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -382,7 +382,7 @@
     
     <div class="post-body" itemprop="articleBody">
         <p class="onepoint">この記事で実現すること</p>
-外出先から、PC（Windows、macOS）を使い、宅内にあるXG FirewallのVPNへ接続できるようになります。それによりウィルスおよびマルウェア対策やWebフィルタなどを含んだ安全なネット閲覧や、宅内のLANリソースへリモートアクセス出来るようになります。
+外出先から、PC（Windows、macOS）を使い、宅内にあるXG FirewallのVPNへ接続できます。それによりウィルスおよびマルウェア対策やWebフィルタなどを含んだ安全なネット閲覧や、宅内のLANリソースへリモートアクセスができます。
 
 <a id="more"></a>
 
@@ -423,14 +423,14 @@
 <li>XGのVPNの割り当てネットワークは、LANとは別のネットワークアドレスを入力します。例えばLANが<code>192.168.2.0/24</code>のネットワークならば、<code>192.168.20.1</code>〜<code>192.168.20.8</code>などと別のネットワークを入力します</li>
 <li>DNSについては、XG自身のDNS（XGのLAN側のIPアドレス）を入力します</li>
 <li>詳細設定の<mark class="label primary">トンネルがアイドルの時に切断</mark>を有効にします</li>
-<li><mark class="label primary">アイドルセッション時間の間隔</mark>は600にします（特段のこだわりはありません）
+<li><mark class="label primary">アイドルセッション時間の間隔</mark>は600にします（ご自身で希望の値を設定してください）
 
 </li>
 </ul>
 <img src="/new-technology/2020/03/28/vpn/vpn2.png" class="" title="alt">
 
 <p>適用ボタンをクリックすると、”これにより、同じローカルピアとリモートピア間で設定したすべての接続の事前共有鍵が更新されます。続行してもよいですか？”と表示されます。OKをクリックすれば、VPNが有効になります。</p>
-<h2 id="XG側のFirewallルールの確認"><a href="#XG側のFirewallルールの確認" class="headerlink" title="XG側のFirewallルールの確認"></a>XG側のFirewallルールの確認</h2><p>上記で設定したVPNがFirewallのルールに登録されている事を確認します。SSLインスペクションが入ると難しくなるので、まずはこの記事ではVPNとWANの接続を優先に考え設定します。以前の記事<a href="/new-technology/2020/03/14/rule-policy2/" title="XG Firewall v18のルールを作成する">XG Firewall v18のルールを作成する</a>で、デフォルトのルール「To_Internet」を作成しました。ルールについて、以下の図のように<mark class="label primary">送信元ゾーン</mark>が、LANとVPNとなっている事を確認してください。</p>
+<h2 id="XG側のFirewallルールの確認"><a href="#XG側のFirewallルールの確認" class="headerlink" title="XG側のFirewallルールの確認"></a>XG側のFirewallルールの確認</h2><p>上記で設定したVPNがFirewallのルールに登録されている事を確認します。VPNとWANの接続を優先に考え設定します。「<a href="/new-technology/2020/03/14/rule-policy2/" title="XG Firewall v18のルールを作成する">XG Firewall v18のルールを作成する</a>」では、デフォルトのルール”To_Internet”を作成しました。ルールについて、以下の図のように<mark class="label primary">送信元ゾーン</mark>が、LANとVPNとなっている事を確認してください。</p>
 <img src="/new-technology/2020/03/28/vpn/rule1.png" class="" title="alt">
 
 <p>続いて、VPNからLANへのルールを作成します。NATは使わず全てのトラフィックを通過させるものです。以下の通り、送信元ゾーンはVPN、宛先ゾーンはLANのルールを設定します。</p>
@@ -465,24 +465,18 @@
 <p>なお、ここまで説明してきた通り、LANとVPNのネットワークセグメントは異なりますので、ブロードキャストで相手を見つけるようなアプリケーションはVPNからLANに対する接続は行えません。</p>
 <h2 id="VPNからWANに対するSSLインスペクションの設定"><a href="#VPNからWANに対するSSLインスペクションの設定" class="headerlink" title="VPNからWANに対するSSLインスペクションの設定"></a>VPNからWANに対するSSLインスペクションの設定</h2><p>ここまでの設定でVPNの設定は終了ですが、VPNについてもSSLインスペクションが有効となるように設定します。一旦はVPNのネットワークからインターネットにアクセスする場合は、全てがSSLインスペクションの対象とし、ファイアウォールルールを修正します。</p>
 <ol>
-<li>最初にVPNのネットワークアドレスを左ペインの<mark class="label primary">ホストとサービス</mark>から<mark class="label primary">IPホスト</mark>を登録します。</li>
-</ol>
-<img src="/new-technology/2020/03/28/vpn/vpn3.png" class="" title="alt">
-
-<ol start="2">
+<li><p>最初にVPNのネットワークアドレスを左ペインの<mark class="label primary">ホストとサービス</mark>から<mark class="label primary">IPホスト</mark>を登録します。<img src="/new-technology/2020/03/28/vpn/vpn3.png" class="" title="alt"></p>
+</li>
 <li><p>上記のようにネットワークにIPアドレス（この記事では192.168.20.0/24としています）を登録します。VPNのネットワークは、LANのネットワークとは別のネットワークアドレスとする必要があります。</p>
 </li>
 <li><p>次に、左ペインの<mark class="label primary">ルールとポリシー</mark>から、<mark class="label primary">SSL/TLSインスペクション</mark>を選択します。</p>
 </li>
-<li><p>事前に作成してある<mark class="label primary">Catch SSL</mark>ルールを選択し、ここにVPNのネットワークがSSL/TLSインスペクションの対象である事を設定します。</p>
+<li><p>事前に作成してある<mark class="label primary">Catch SSL</mark>ルールを選択し、ここにVPNのネットワークがSSL/TLSインスペクションの対象である事を設定します。<img src="/new-technology/2020/03/28/vpn/vpn4.png" class="" title="alt"></p>
+</li>
+<li><p>上記の図では<mark class="label primary">送信元ネットワークとデバイス</mark>に、CAがインストールされているPCおよびiPhoneを対象とするIPグループを<mark class="label primary">CA_Clinet_IPv4</mark>として登録していました。これに今回はVPNのネットワーク<mark class="label primary">VPN_Network_IPv4</mark>を追加登録します。</p>
 </li>
 </ol>
-<img src="/new-technology/2020/03/28/vpn/vpn4.png" class="" title="alt">
-
-<ol start="5">
-<li>上記の図では<mark class="label primary">送信元ネットワークとデバイス</mark>に、CAがインストールされているPCおよびiPhoneを対象とするIPグループを<mark class="label primary">CA_Clinet_IPv4</mark>として登録していました。これに今回はVPNのネットワーク<mark class="label primary">VPN_Network_IPv4</mark>を追加登録します。</li>
-</ol>
-<p>ここまでの設定でIPSec-VPNの設定は一段落です。SSLインスペクションの設定および動作確認については、過去の記事を参照して下さい。</p>
+<p>ここまでの設定でIPSec-VPNの設定は一段落です。SSLインスペクションの設定および動作確認については、下記の記事を参照して下さい。</p>
 <ul>
 <li><a href="/new-technology/2020/03/20/ssl-inspection/" title="SSLインスペクションについて">SSLインスペクションについて</a></li>
 <li><a href="/new-technology/2020/03/20/ssl-inspection1/" title="XG Firewall v18のSSLインスペクションの設定">XG Firewall v18のSSLインスペクションの設定</a></li>

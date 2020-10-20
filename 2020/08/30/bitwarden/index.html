@@ -22,12 +22,12 @@
     var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","scheme":"Mist","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="パスワード管理はソフトウェアに任せる前回の記事、”安全快適にリモートワークを行う“で記載したように、リモートワークの活用機会が高まり、ますます各自のパスワード管理が重要になってきています。頭ではパスワードの使い回しは良く無いと理解していながら、結局は文字列＋数字で似たようなパスワードをいくつも作ってしまい、脆弱な状態にあるケースは多いように感じます。パスワード管理ソフトの導入はITリテラシが高">
+  <meta name="description" content="パスワード管理はソフトウェアに任せる「安全快適にリモートワークを行う」で記載したように、リモートワークの活用機会が高まり、ますます各自のパスワード管理が重要になってきています。頭ではパスワードの使い回しは良く無いと理解していながら、結局は文字列＋数字で似たようなパスワードをいくつも作ってしまい、脆弱な状態にあるケースは多いように感じます。パスワード管理ソフトの導入はITリテラシが高く無いとなか">
 <meta property="og:type" content="article">
 <meta property="og:title" content="パスワード管理ソフトのbitwardenを活用する">
 <meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/08/30/bitwarden/index.html">
 <meta property="og:site_name" content="New technologies in our life">
-<meta property="og:description" content="パスワード管理はソフトウェアに任せる前回の記事、”安全快適にリモートワークを行う“で記載したように、リモートワークの活用機会が高まり、ますます各自のパスワード管理が重要になってきています。頭ではパスワードの使い回しは良く無いと理解していながら、結局は文字列＋数字で似たようなパスワードをいくつも作ってしまい、脆弱な状態にあるケースは多いように感じます。パスワード管理ソフトの導入はITリテラシが高">
+<meta property="og:description" content="パスワード管理はソフトウェアに任せる「安全快適にリモートワークを行う」で記載したように、リモートワークの活用機会が高まり、ますます各自のパスワード管理が重要になってきています。頭ではパスワードの使い回しは良く無いと理解していながら、結局は文字列＋数字で似たようなパスワードをいくつも作ってしまい、脆弱な状態にあるケースは多いように感じます。パスワード管理ソフトの導入はITリテラシが高く無いとなか">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/08/30/bitwarden/password.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/08/30/bitwarden/bitwarden.png">
@@ -39,7 +39,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/08/30/bitwarden/duo3.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/08/30/bitwarden/bitwarden3.png">
 <meta property="article:published_time" content="2020-08-30T04:35:30.000Z">
-<meta property="article:modified_time" content="2020-10-18T13:10:37.952Z">
+<meta property="article:modified_time" content="2020-10-20T22:45:01.011Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="bitwarden">
 <meta name="twitter:card" content="summary">
@@ -348,7 +348,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">編集日</span>
-        <time title="修正日：2020-10-18 22:10:37" itemprop="dateModified" datetime="2020-10-18T22:10:37+09:00">2020-10-18</time>
+        <time title="修正日：2020-10-21 07:45:01" itemprop="dateModified" datetime="2020-10-21T07:45:01+09:00">2020-10-21</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -372,12 +372,22 @@
     <div class="post-body" itemprop="articleBody">
         <img src="/new-technology/2020/08/30/bitwarden/password.png" class="" title="alt">
 
-<h2 id="パスワード管理はソフトウェアに任せる"><a href="#パスワード管理はソフトウェアに任せる" class="headerlink" title="パスワード管理はソフトウェアに任せる"></a>パスワード管理はソフトウェアに任せる</h2><p>前回の記事、”<a href="/new-technology/2020/08/14/remote-work/" title="安全快適にリモートワークを行う">安全快適にリモートワークを行う</a>“で記載したように、リモートワークの活用機会が高まり、ますます各自のパスワード管理が重要になってきています。頭ではパスワードの使い回しは良く無いと理解していながら、結局は文字列＋数字で似たようなパスワードをいくつも作ってしまい、脆弱な状態にあるケースは多いように感じます。パスワード管理ソフトの導入はITリテラシが高く無いとなかなか取り組む機会はありませんが、個人のパスワードと会社のアカウントに利用しているパスワードが類似しているのは問題です。同僚とパスワードを共有してしまうという問題も多くあります。先日のニュースでは国内企業のVPNの脆弱性からパスワードが漏洩し、2要素認証を設定していた企業は救われたと記事になっていました。ここで紹介するパスワード管理ソフトですが、パスワードを管理する事と、ランダムな文字列でのパスワード生成機能の2つの機能を持ちます。また、このbitwardenは、パスワードが登録されたサイトに遷移すると顔認証等でパスワードが入力されます。当然ながら、URLが異なればパスワードを自動入力しないため、フィッシング対策にもなります。このプロダクトは無償、有償と選択が可能ですが、無償でも十分な機能を保持しています。</p>
+<h2 id="パスワード管理はソフトウェアに任せる"><a href="#パスワード管理はソフトウェアに任せる" class="headerlink" title="パスワード管理はソフトウェアに任せる"></a>パスワード管理はソフトウェアに任せる</h2><p>「<a href="/new-technology/2020/08/14/remote-work/" title="安全快適にリモートワークを行う">安全快適にリモートワークを行う</a>」で記載したように、リモートワークの活用機会が高まり、ますます各自のパスワード管理が重要になってきています。頭ではパスワードの使い回しは良く無いと理解していながら、結局は文字列＋数字で似たようなパスワードをいくつも作ってしまい、脆弱な状態にあるケースは多いように感じます。パスワード管理ソフトの導入はITリテラシが高く無いとなかなか取り組む機会はありませんが、個人のパスワードと会社のアカウントに利用しているパスワードが類似しているのは問題です。同僚とパスワードを共有してしまうという問題も多くあります。先日のニュースでは国内企業のVPNの脆弱性からパスワードが漏洩し、2要素認証を設定していた企業は救われたと記事になっていました。ここで紹介するパスワード管理ソフトですが、パスワードを管理する事と、ランダムな文字列でのパスワード生成機能の2つの機能を持ちます。また、このbitwardenは、パスワードが登録されたサイトに遷移すると顔認証等でパスワードが入力されます。当然ながら、URLが異なればパスワードを自動入力しないため、フィッシング対策にもなります。このプロダクトは無償、有償と選択が可能ですが、無償でも十分な機能を保持しています。</p>
 <a id="more"></a>
-<h2 id="bitwardenを用いたパスワード管理の目指す姿"><a href="#bitwardenを用いたパスワード管理の目指す姿" class="headerlink" title="bitwardenを用いたパスワード管理の目指す姿"></a>bitwardenを用いたパスワード管理の目指す姿</h2><ol>
+<h2 id="bitwardenを用いたパスワード管理の目指す姿"><a href="#bitwardenを用いたパスワード管理の目指す姿" class="headerlink" title="bitwardenを用いたパスワード管理の目指す姿"></a>bitwardenを用いたパスワード管理の目指す姿</h2><ul>
+<li>信頼できるソフトウェアを活用する（bitwarden社について）</li>
+<li>クロスプラットフォームで複数のチャネル、有名なブラウザーに対応し利便性が高いこと</li>
+<li>パスワード生成機能は所定の文字数で任意に数字や記号を含められること</li>
+<li>ネットに繋がらなくてもパスワード管理ソフトを利用できること</li>
+<li>可能な限り2要素認証を組み合わせること</li>
+<li>容易にバックアップが取得できること</li>
+<li>本当に重要なIDこそ自分で記憶する。金融に関わるパスワード管理</li>
+<li>クラウド管理かオンプレミス（ローカル環境）か</li>
+</ul>
+<ol>
 <li><p>信頼できるソフトウェアを活用する（bitwarden社について）<br>プロダクトを提供している企業のプライバシーポリシーがしっかり記載され、どの国に属するかが記載され、本人の同意なく情報を開示しないという基本事項がプライバシーポリシーに記載されている事は重要です。曖昧に記載している企業のソフトウェアはお勧めしません。最終的に企業が属する国の命令には逆らえませんが、明瞭である事は重要です。オープンソースである事などは、さらに企業のスタンスが明確です。</p>
 </li>
-<li><p>クロスプラットフォームで複数のチャネル、有名なブラウザーに対応し利便性が高いこと<br>クロスプラットフォームである事は利便性が高くなります。Windowsだけで使えても、スマホでは別管理というのではじきに使わなくなってしまいます。Windows、macOS、iOS、Androidに対応している事は必須条件でしょう。スマホやタブレットなどでは指紋認証や顔認証でスムーズにパスワードを利用できる事が前提です。</p>
+<li><p>クロスプラットフォームで複数のチャネル、有名なブラウザーに対応し利便性が高いこと<br>クロスプラットフォームで複数のチャネル、有名なブラウザーに対応し利便性が高いこと<br>クロスプラットフォームである事は利便性が高くなります。Windowsだけで使えても、スマホでは別管理というのではじきに使わなくなってしまいます。Windows、macOS、iOS、Androidに対応している事は必須条件でしょう。スマホやタブレットなどでは指紋認証や顔認証でスムーズにパスワードを利用できる事が前提です。</p>
 </li>
 <li><p>パスワード生成機能は所定の文字数で任意に数字や記号を含められること<br>サイトによっては文字列数の下限、上限が異なります。また記号の一部が含められないなどサイトによってルールは異なります。パスワード管理ソフトでは、サイトによって任意にルールを定めたうえで生成できる事が求められます。</p>
 </li>
@@ -392,7 +402,8 @@
 <li><p>クラウド管理かオンプレミス（ローカル環境）か<br>自宅のPCでパスワード管理する事とbitwardenのようにクラウドで管理する事のどちらが安全かと言われれば判断は難しいところです。ちなみに、bitwardenはオンプレミスで構築できます。実際に過去、ubuntu18.04LTSにdocker、docker composeを導入し、bitwardenをセットアップし利用していた事があります。ダイナミックDNSはno-ipを使い、SSLは無償のLet’s Encryptにbitwarden自身が登録すれば完了です。3カ月ごとにスクリプトを走らせればSSL証明書を自動更新し、dockerから最新イメージを自動ダウンロードしてシステムを最新に保ちます。Linux上でMS SQLServerが動作し、bitwardenはコンパクトながらとても技術の高さを感じました。しかし、個人でWAF導入やアクセスログのチェックなどセキュリティ対策を実施する事の難易度の高さも感じ、再びクラウド管理に戻しました。ビジネス目的にて、インターネットに接続されない企業内でbitwardenを活用するのは非常に良い方法です。個人のサイバーセキュリティ対策で実現可能な事は資金面やスキル面でも限界があります。隙を見せず、目立たず狙われにくい事が大切です。</p>
 </li>
 </ol>
-<h2 id="bitwardenの初期セットアップ"><a href="#bitwardenの初期セットアップ" class="headerlink" title="bitwardenの初期セットアップ"></a>bitwardenの初期セットアップ</h2><img src="/new-technology/2020/08/30/bitwarden/bitwarden.png" class="" title="alt">
+<h2 id="bitwardenの初期セットアップ"><a href="#bitwardenの初期セットアップ" class="headerlink" title="bitwardenの初期セットアップ"></a>bitwardenの初期セットアップ</h2><p><a href="www.bitwarden.com">bitwarden</a>のWebサイトで最初にアカウントを作成します。</p>
+<img src="/new-technology/2020/08/30/bitwarden/bitwarden.png" class="" title="alt">
 
 <p>アカウント作成の最初の画面こそ英語ですが、実際のアカウント作成画面は日本語となります。利用するアプリも日本語ですので扱いはとても簡単に感じます。</p>
 <img src="/new-technology/2020/08/30/bitwarden/account.png" class="" title="alt">

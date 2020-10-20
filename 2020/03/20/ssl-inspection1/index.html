@@ -22,12 +22,12 @@
     var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","scheme":"Mist","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="この記事で実現すること XG Firewall v18のSSL&#x2F;TLSインスペクションを使い、暗号化されたSSL通信を解読します。これにより、ウィルスやマルウェアなどの脅威を通信中に検出し、PCやiPhone等（Windows、macOS、iOS）が攻撃を受ける前に防御する事が出来るようになります。">
+  <meta name="description" content="この記事で実現すること XG Firewall v18のSSL&#x2F;TLSインスペクションを使い、暗号化されたSSL通信を解読します。これにより、ウィルスやマルウェアなどの脅威を通信中に検出し、PCやiPhone等（Windows、macOS、iOS）が攻撃を受ける前に防御できるようになります。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="XG Firewall v18のSSLインスペクションの設定">
 <meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/index.html">
 <meta property="og:site_name" content="New technologies in our life">
-<meta property="og:description" content="この記事で実現すること XG Firewall v18のSSL&#x2F;TLSインスペクションを使い、暗号化されたSSL通信を解読します。これにより、ウィルスやマルウェアなどの脅威を通信中に検出し、PCやiPhone等（Windows、macOS、iOS）が攻撃を受ける前に防御する事が出来るようになります。">
+<meta property="og:description" content="この記事で実現すること XG Firewall v18のSSL&#x2F;TLSインスペクションを使い、暗号化されたSSL通信を解読します。これにより、ウィルスやマルウェアなどの脅威を通信中に検出し、PCやiPhone等（Windows、macOS、iOS）が攻撃を受ける前に防御できるようになります。">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/host1.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/certificate1.png">
@@ -39,7 +39,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/mac_ca3.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection1/installed_cert1.png">
 <meta property="article:published_time" content="2020-03-20T12:32:29.000Z">
-<meta property="article:modified_time" content="2020-10-18T06:45:18.137Z">
+<meta property="article:modified_time" content="2020-10-20T23:14:13.727Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -235,7 +235,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#XG-Firewall-v18%E5%88%A9%E7%94%A8%E3%81%AE%E3%83%A1%E3%83%AA%E3%83%83%E3%83%88"><span class="nav-number">1.</span> <span class="nav-text">XG Firewall v18利用のメリット</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSL%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%9A%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%AE%E5%AF%BE%E8%B1%A1%E3%81%A8%E3%81%99%E3%82%8B%E3%83%9B%E3%82%B9%E3%83%88%E3%81%AE%E6%98%8E%E7%A2%BA%E5%8C%96"><span class="nav-number">2.</span> <span class="nav-text">SSLインスペクションの対象とするホストの明確化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSL%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%9A%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%AE%E5%AF%BE%E8%B1%A1%E3%82%92DHCP%E3%81%AB%E7%99%BB%E9%8C%B2%E3%81%99%E3%82%8B"><span class="nav-number">3.</span> <span class="nav-text">SSLインスペクションの対象をDHCPに登録する</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%95%E3%82%A1%E3%82%A4%E3%82%A2%E3%82%A6%E3%82%A9%E3%83%BC%E3%83%AB%E3%83%AB%E3%83%BC%E3%83%AB%E3%81%AE%E8%A8%AD%E5%AE%9A%EF%BC%88%E7%A2%BA%E8%AA%8D%EF%BC%89"><span class="nav-number">4.</span> <span class="nav-text">ファイアウォールルールの設定（確認）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSL-TLS%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%9A%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3%E3%83%AB%E3%83%BC%E3%83%AB%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">5.</span> <span class="nav-text">SSL&#x2F;TLSインスペクションルールの設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG%E3%81%AECA%E8%A8%BC%E6%98%8E%E6%9B%B8%E3%82%92%E3%82%AF%E3%83%A9%E3%82%A4%E3%82%A2%E3%83%B3%E3%83%88%E3%81%AB%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E3%81%99%E3%82%8B"><span class="nav-number">6.</span> <span class="nav-text">XGのCA証明書をクライアントにインストールする</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%AB%E3%83%BC%E3%83%88%E8%A8%BC%E6%98%8E%E6%9B%B8%E3%81%8C%E5%8F%96%E3%82%8A%E8%BE%BC%E3%81%BE%E3%82%8C%E3%81%9F%E4%BA%8B%E3%82%92%E7%A2%BA%E8%AA%8D%E3%81%99%E3%82%8B"><span class="nav-number">7.</span> <span class="nav-text">ルート証明書が取り込まれた事を確認する</span></a></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#XG-Firewall-v18%E5%88%A9%E7%94%A8%E3%81%AE%E3%83%A1%E3%83%AA%E3%83%83%E3%83%88"><span class="nav-number">1.</span> <span class="nav-text">XG Firewall v18利用のメリット</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSL%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%9A%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%AE%E5%AF%BE%E8%B1%A1%E3%81%A8%E3%81%99%E3%82%8B%E3%83%9B%E3%82%B9%E3%83%88%E3%81%AE%E6%98%8E%E7%A2%BA%E5%8C%96"><span class="nav-number">2.</span> <span class="nav-text">SSLインスペクションの対象とするホストの明確化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSL%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%9A%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%AE%E5%AF%BE%E8%B1%A1%E3%82%92DHCP%E3%81%AB%E7%99%BB%E9%8C%B2%E3%81%99%E3%82%8B"><span class="nav-number">3.</span> <span class="nav-text">SSLインスペクションの対象をDHCPに登録する</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%95%E3%82%A1%E3%82%A4%E3%82%A2%E3%82%A6%E3%82%A9%E3%83%BC%E3%83%AB%E3%83%AB%E3%83%BC%E3%83%AB%E3%81%AE%E8%A8%AD%E5%AE%9A%EF%BC%88%E7%A2%BA%E8%AA%8D%EF%BC%89"><span class="nav-number">4.</span> <span class="nav-text">ファイアウォールルールの設定（確認）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSL-TLS%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%9A%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3%E3%83%AB%E3%83%BC%E3%83%AB%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">5.</span> <span class="nav-text">SSL&#x2F;TLSインスペクションルールの設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG%E3%81%AECA%E8%A8%BC%E6%98%8E%E6%9B%B8%E3%82%92%E3%82%AF%E3%83%A9%E3%82%A4%E3%82%A2%E3%83%B3%E3%83%88%E3%81%AB%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E3%81%99%E3%82%8B"><span class="nav-number">6.</span> <span class="nav-text">XGのCA証明書をクライアントにインストールする</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Windows%E3%81%AB%E3%83%AB%E3%83%BC%E3%83%88%E8%A8%BC%E6%98%8E%E6%9B%B8%E3%82%92%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E3%81%99%E3%82%8B%E6%96%B9%E6%B3%95"><span class="nav-number">6.1.</span> <span class="nav-text">Windowsにルート証明書をインストールする方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#macOS%E3%81%AB%E3%83%AB%E3%83%BC%E3%83%88%E8%A8%BC%E6%98%8E%E6%9B%B8%E3%82%92%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E3%81%99%E3%82%8B%E6%96%B9%E6%B3%95"><span class="nav-number">6.2.</span> <span class="nav-text">macOSにルート証明書をインストールする方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#iOS%E3%81%AB%E3%83%AB%E3%83%BC%E3%83%88%E8%A8%BC%E6%98%8E%E6%9B%B8%E3%82%92%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E3%81%99%E3%82%8B%E6%96%B9%E6%B3%95"><span class="nav-number">6.3.</span> <span class="nav-text">iOSにルート証明書をインストールする方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%AB%E3%83%BC%E3%83%88%E8%A8%BC%E6%98%8E%E6%9B%B8%E3%81%8C%E5%8F%96%E3%82%8A%E8%BE%BC%E3%81%BE%E3%82%8C%E3%81%9F%E4%BA%8B%E3%82%92%E7%A2%BA%E8%AA%8D%E3%81%99%E3%82%8B"><span class="nav-number">7.</span> <span class="nav-text">ルート証明書が取り込まれた事を確認する</span></a></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -348,7 +348,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">編集日</span>
-        <time title="修正日：2020-10-18 15:45:18" itemprop="dateModified" datetime="2020-10-18T15:45:18+09:00">2020-10-18</time>
+        <time title="修正日：2020-10-21 08:14:13" itemprop="dateModified" datetime="2020-10-21T08:14:13+09:00">2020-10-21</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -371,11 +371,11 @@
     
     <div class="post-body" itemprop="articleBody">
         <p class="onepoint">この記事で実現すること</p>
-XG Firewall v18のSSL/TLSインスペクションを使い、暗号化されたSSL通信を解読します。これにより、ウィルスやマルウェアなどの脅威を通信中に検出し、PCやiPhone等（Windows、macOS、iOS）が攻撃を受ける前に防御する事が出来るようになります。
+XG Firewall v18のSSL/TLSインスペクションを使い、暗号化されたSSL通信を解読します。これにより、ウィルスやマルウェアなどの脅威を通信中に検出し、PCやiPhone等（Windows、macOS、iOS）が攻撃を受ける前に防御できるようになります。
 <a id="more"></a>
 
 <h2 id="XG-Firewall-v18利用のメリット"><a href="#XG-Firewall-v18利用のメリット" class="headerlink" title="XG Firewall v18利用のメリット"></a>XG Firewall v18利用のメリット</h2><p>XGでは暗号化された通信を高速に解読し、ウィルスやマルウェアのダウンロードをPCやスマホが受信する前に防ぐ事が可能となります。また、利用を認めていないアプリケーションのデータのやりとりを未然に防ぐ事も可能です。v18では、全く新しい<mark class="label primary">XStreamアーキテクチャ</mark>によって、この解読（SSLインスペクション）の速度が大幅に向上しました。</p>
-<h2 id="SSLインスペクションの対象とするホストの明確化"><a href="#SSLインスペクションの対象とするホストの明確化" class="headerlink" title="SSLインスペクションの対象とするホストの明確化"></a>SSLインスペクションの対象とするホストの明確化</h2><p>前回の記事”<a href="/new-technology/2020/03/20/ssl-inspection/" title="SSLインスペクションについて">SSLインスペクションについて</a>“に記載した通り、SSLインスペクションを行うためには、PC等のクライアントにXGのCA証明書をインストールする事が必須となります。従いSSLインスペクションの対象のグループ、家電やAndroidなどのSSLインスペクションを使えないグループとに分類します。この2つのグループはIPアドレスの範囲で分割するのが最も簡単な方法です。例えば、SSLインスペクショングループはスタティックでIPを割り当て、非SSLインスペクショングループはDHCPで動的なIPアドレスを配布する方法があります。<strong>XGのDHCPサーバーはMACアドレスを元に固定IPをスタティックに割り振る事が可能です</strong>。</p>
+<h2 id="SSLインスペクションの対象とするホストの明確化"><a href="#SSLインスペクションの対象とするホストの明確化" class="headerlink" title="SSLインスペクションの対象とするホストの明確化"></a>SSLインスペクションの対象とするホストの明確化</h2><p>「<a href="/new-technology/2020/03/20/ssl-inspection/" title="SSLインスペクションについて">SSLインスペクションについて</a>」に記載した通り、SSLインスペクションを行うためには、PC等のクライアントにXGのCA証明書をインストールする事が必須となります。従いSSLインスペクションの対象のグループ、家電やAndroidなどのSSLインスペクションを使えないグループとに分類します。この2つのグループはIPアドレスの範囲で分割するのが最も簡単な方法です。例えば、SSLインスペクショングループはスタティックでIPを割り当て、非SSLインスペクショングループはDHCPで動的なIPアドレスを配布する方法があります。<strong>XGのDHCPサーバーはMACアドレスを元に固定IPをスタティックに割り振る事が可能です</strong>。</p>
 <h2 id="SSLインスペクションの対象をDHCPに登録する"><a href="#SSLインスペクションの対象をDHCPに登録する" class="headerlink" title="SSLインスペクションの対象をDHCPに登録する"></a>SSLインスペクションの対象をDHCPに登録する</h2><p>左ペインのネットワークからDHCPのタブをクリックし、<mark class="label primary">Default DHCP Server</mark>をクリックします。そこには、”スタティックIP_MACマッピング”があるので、DHCPで自動リースをしている以外のIPアドレスをスタティックに割り振って登録してください。管理の一例としては以下の通りです。</p>
 <ul>
 <li>証明書を登録できないIoTなどをDHCPで<code>192.168.2.101</code>〜<code>192.168.2.128</code>を動的割り当て</li>
@@ -384,7 +384,7 @@ XG Firewall v18のSSL/TLSインスペクションを使い、暗号化されたS
 <p>ここはユーザーの「決め」ですが、上記で証明書がインストール出来るグループを”IPホスト”としてXGに登録しましょう。左ペインの<mark class="label primary">ホストとサービス</mark>から、IPホストのタブをクリックし追加ボタンをクリックします。以下の通り、ホストのIPの範囲を示す名前を入力し、IPの範囲を入力して保存ボタンをクリックします。ここでは、<mark class="label primary">CA_Client_IPv4</mark>として登録する事にします。</p>
 <img src="/new-technology/2020/03/20/ssl-inspection1/host1.png" class="" title="alt">
 
-<h2 id="ファイアウォールルールの設定（確認）"><a href="#ファイアウォールルールの設定（確認）" class="headerlink" title="ファイアウォールルールの設定（確認）"></a>ファイアウォールルールの設定（確認）</h2><p>左ペインのルールとポリシーからルールとポリシーを選択します。以前の記事”<a href="/new-technology/2020/03/14/rule-policy2/" title="XG Firewall v18のルールを作成する">XG Firewall v18のルールを作成する</a>“において、デフォルトのルール”To_Internet”を作成しました。<mark class="label primary">Traffic to WAN</mark>のグループ配下に”To_Internet”ルールがある事を確認してください。このファイアウォールルールはLANおよびVPNからWANへの接続を許可するシンプルなものですが、今回これは修正しません。XG v18では、SSLインスペクションとファイアウォールルールは互いに独立していて、別メニューで設定する事になります。</p>
+<h2 id="ファイアウォールルールの設定（確認）"><a href="#ファイアウォールルールの設定（確認）" class="headerlink" title="ファイアウォールルールの設定（確認）"></a>ファイアウォールルールの設定（確認）</h2><p>左ペインのルールとポリシーからルールとポリシーを選択します。「<a href="/new-technology/2020/03/14/rule-policy2/" title="XG Firewall v18のルールを作成する">XG Firewall v18のルールを作成する</a>」にて、デフォルトのルール”To_Internet”を作成しました。<mark class="label primary">Traffic to WAN</mark>のグループ配下に”To_Internet”ルールがある事を確認してください。このファイアウォールルールはLANおよびVPNからWANへの接続を許可するシンプルなものですが、今回これは修正しません。XG v18では、SSLインスペクションとファイアウォールルールは互いに独立していて、別メニューで設定する事になります。</p>
 <h2 id="SSL-TLSインスペクションルールの設定"><a href="#SSL-TLSインスペクションルールの設定" class="headerlink" title="SSL/TLSインスペクションルールの設定"></a>SSL/TLSインスペクションルールの設定</h2><p>ここで、SSLインスペクショングループと非SSLインスペクショングループとの明確化を行います。左ペインのルールとポリシーからSSL/TLSインスペクションルールをクリックします。</p>
 <ol>
 <li>画面右側の追加ボタンをクリックします</li>
@@ -397,15 +397,16 @@ XG Firewall v18のSSL/TLSインスペクションを使い、暗号化されたS
 <li>宛先とサービスの宛先ゾーンは、”WAN”を選択します</li>
 <li>最後に保存ボタンをクリックします</li>
 </ol>
-<p>暗号化のプロファイルの<mark class="label primary">Strict Compliance</mark>は一番厳しいものです。左ペインのプロファイルの”復号化のプロファイル”を見てもらうと分かりますが、TLS1.0と1.1を認めないという事です。主要なブラウザは2020年上半期にTLS1.0と1.1を無効化するので、この設定が主流になるとおもいます。そうはいっても色々不便であれば、他のプロファイルに変更するか、該当のサイトが安全と分かっている場合は除外する等の対応が可能となります。なお、TLSの無効化については、<a target="_blank" rel="noopener" href="https://www.cybertrust.co.jp/blog/ssl/regulations/disable-tls10.html">サイバートラスト社の記事</a>が参考になります。これでSSLの復号化の設定は完了です。</p>
+<p>暗号化のプロファイルの<mark class="label primary">Strict Compliance</mark>は一番厳しいものです。左ペインのプロファイルの”復号化のプロファイル”を見てもらうと分かりますが、TLS1.0と1.1を認めないという事です。主要なブラウザは2020年上半期にTLS1.0と1.1を無効化するので、この設定が主流になると予想されます。もちろん、該当のサイトが安全と分かっている場合は除外する等の対応が可能となります。なお、TLSの無効化については、サイバートラスト社の記事が参考になります。詳細は<a target="_blank" rel="noopener" href="https://www.cybertrust.co.jp/blog/ssl/regulations/disable-tls10.html">こちらの記事</a>を参照してください。</p>
 <h2 id="XGのCA証明書をクライアントにインストールする"><a href="#XGのCA証明書をクライアントにインストールする" class="headerlink" title="XGのCA証明書をクライアントにインストールする"></a>XGのCA証明書をクライアントにインストールする</h2><p>左ペインの一番下の証明書から、認証局（CA）をクリックします。この中に<mark class="label primary">Security Appliance_SSL_CA</mark>という名前の証明書があります。今回これをクライアントに配布していく事になります。右の下向きの矢印があるダウンロードを選択してクライアントにルート証明書をダウンロードします。<mark class="label primary">Security Appliance_SSL_CA.pem</mark>という名前になります。</p>
 <img src="/new-technology/2020/03/20/ssl-inspection1/certificate1.png" class="" title="alt">
 
-<p>ルート証明書をダウンロードした後、クライアントへのインストールについては、OS毎に以下の3種類の手順をそれぞれ確認し設定します。</p>
-<div class="tabs" id="one-unique-name"><ul class="nav-tabs"><li class="tab active"><a href="#one-unique-name-1">Windows</a></li><li class="tab"><a href="#one-unique-name-2"><i class="fab fa-apple"></i>macOS</a></li><li class="tab"><a href="#one-unique-name-3"><i class="fa fa-mobile-alt"></i>iOS</a></li></ul><div class="tab-content"><div class="tab-pane active" id="one-unique-name-1"><p><strong>Windowsにルート証明書をインストールする方法</strong></p>
-<ol>
+<p>ルート証明書をダウンロードした後、クライアントへのインストールについては、OS毎に手順をそれぞれ確認し設定します。</p>
+<h3 id="Windowsにルート証明書をインストールする方法"><a href="#Windowsにルート証明書をインストールする方法" class="headerlink" title="Windowsにルート証明書をインストールする方法"></a>Windowsにルート証明書をインストールする方法</h3><ol>
 <li><mark class="label primary">プログラムとファイル名の検索</mark>のボックスに<mark class="label primary">MMC</mark>と入力して<mark class="label primary">Microsoft Management Console</mark>を開きます。</li>
-<li><mark class="label primary">ファイル</mark>-<mark class="label primary">スナップインの追加と削除</mark>を選択して”スナップインの追加と削除”を開きます。</li>
+<li><mark class="label primary">ファイル</mark>-<mark class="label primary">スナップインの追加と削除</mark>を選択して"スナップインの追加と削除"を開きます。
+
+</li>
 </ol>
 <img src="/new-technology/2020/03/20/ssl-inspection1/win1.png" class="" title="alt">
 
@@ -425,16 +426,17 @@ XG Firewall v18のSSL/TLSインスペクションを使い、暗号化されたS
 
 <img src="/new-technology/2020/03/20/ssl-inspection1/win4.png" class="" title="alt">
 
-<p>9.<mark class="label primary">信頼されたルート証明機関</mark>としてXGの証明書を登録し完了です。</p></div><div class="tab-pane" id="one-unique-name-2"><p><strong>macOSにルート証明書をインストールする方法</strong></p>
-<ol>
+<p>9.<mark class="label primary">信頼されたルート証明機関</mark>としてXGの証明書を登録し完了です。</p>
+<h3 id="macOSにルート証明書をインストールする方法"><a href="#macOSにルート証明書をインストールする方法" class="headerlink" title="macOSにルート証明書をインストールする方法"></a>macOSにルート証明書をインストールする方法</h3><ol>
 <li>iCloud Driveに証明書を配置します</li>
 <li>ローカルドライブに証明書をコピーします</li>
 <li>証明書を開きます。キーチェーンアクセスが起動するので、以下のようにキーチェーンアクセスから証明書を”常に信頼する”設定を加えます</li>
 </ol>
 <img src="/new-technology/2020/03/20/ssl-inspection1/mac_ca2.png" class="" title="alt">
 
-<img src="/new-technology/2020/03/20/ssl-inspection1/mac_ca3.png" class="" title="alt"></div><div class="tab-pane" id="one-unique-name-3"><p><strong>iOSにルート証明書をインストールする方法</strong></p>
-<p>iOSで「ファイル」アプリを使います。</p>
+<img src="/new-technology/2020/03/20/ssl-inspection1/mac_ca3.png" class="" title="alt">
+
+<h3 id="iOSにルート証明書をインストールする方法"><a href="#iOSにルート証明書をインストールする方法" class="headerlink" title="iOSにルート証明書をインストールする方法"></a>iOSにルート証明書をインストールする方法</h3><p>iOSで「ファイル」アプリを使います。</p>
 <ol>
 <li>iCloud Driveに証明書を配置します</li>
 <li>“ファイル”アプリを起動します。iCloud Driveから証明書ファイルをタップしダウンロードします</li>
@@ -447,9 +449,10 @@ XG Firewall v18のSSL/TLSインスペクションを使い、暗号化されたS
 <li>右上のインストールを再度タップし、インストールを完了します</li>
 <li>“設定”→”一般”→”情報”と進みます</li>
 <li>画面の一番下の”証明書信頼設定”をタップします</li>
-<li><mark class="label primary">Sophos SSL CA_xxxx</mark>が表示されているので、スイッチを右側に移動させオン（緑色点灯）します</li>
-</ol></div></div></div>
+<li><mark class="label primary">Sophos SSL CA_xxxx</mark>が表示されているので、スイッチを右側に移動させオン（緑色点灯）します
 
+</li>
+</ol>
 <h2 id="ルート証明書が取り込まれた事を確認する"><a href="#ルート証明書が取り込まれた事を確認する" class="headerlink" title="ルート証明書が取り込まれた事を確認する"></a>ルート証明書が取り込まれた事を確認する</h2><p>ブラウザの鍵マークをクリックする事でXGの証明書によって再署名されている事が確認出来ます。XGのログイン後のコントロールセンターの左上にライセンスナンバーが記載されていますが、実際の証明書でもそのナンバーが確認出来ます。</p>
 <img src="/new-technology/2020/03/20/ssl-inspection1/installed_cert1.png" class="" title="alt">
 
@@ -458,12 +461,13 @@ XG Firewall v18のSSL/TLSインスペクションを使い、暗号化されたS
 </div>
 
 
-<p>（2020-09-30追記）<br>iOS14より、Wi-Fiの設定に<mark class="label primary">プライベートアドレス</mark>という項目が追加されています。これはWi-Fiネットワーク毎にMACアドレスを自動的に変更し、匿名性を保つ機能になります。このページでXGのSSL/TLSインスペクションを利用する際は、MACアドレスを元にDHCPでいつも同じIPアドレスが配布される仕組みを推奨しています。つまり、このMACアドレスが毎回変わるようだと固定IPを割り当て出来ません。対策としては、自宅のWi-Fiについては<mark class="label primary">プライベートアドレス</mark>をオフにする（推奨）、或いはiOSに最初からスタティックのIPアドレスを割り振る方法があります。Apple社からのプライベートアドレスに関する説明が<a target="_blank" rel="noopener" href="https://support.apple.com/ja-jp/HT211227">“iOS 14、iPadOS 14、watchOS 7 でプライベート Wi-Fi アドレスを使う”</a>で説明されています。記事の一部を引用するとこの機能の目的は以下のようです。</p>
+<p>（2020-09-30追記）<br>iOS14より、Wi-Fiの設定に<mark class="label primary">プライベートアドレス</mark>という項目が追加されています。これはWi-Fiネットワーク毎にMACアドレスを自動的に変更し、匿名性を保つ機能になります。このページでXGのSSL/TLSインスペクションを利用する際は、MACアドレスを元にDHCPでいつも同じIPアドレスが配布される仕組みを推奨しています。つまり、このMACアドレスが毎回変わるようだと固定IPを割り当て出来ません。対策としては、自宅のWi-Fiについては<mark class="label primary">プライベートアドレス</mark>をオフにする（推奨）、或いはiOSに最初からスタティックのIPアドレスを割り振る方法があります。Apple社からのプライベートアドレスに関する説明が「iOS 14、iPadOS 14、watchOS 7 でプライベート Wi-Fi アドレスを使う」で説明されています。この機能の目的は以下のようです。</p>
 <blockquote class="blockquote-center">
 <p>デバイスがすべてのネットワークで常に同じ Wi-Fi MAC アドレスを使っていると、時間の経過に伴い、ネットワークの事業者やその他のネットワーク観測者がそのアドレスをデバイスのネットワーク活動や位置情報に紐付けることがたやすくなります</p>
 
 </blockquote> 
 
+<p>詳細は<a target="_blank" rel="noopener" href="https://support.apple.com/ja-jp/HT211227">こちらの記事</a>を参照してください。</p>
 <p>自宅での利用の場合は見知らぬMACアドレスがあると、知らない端末からの接続があったのかとちょっとびっくりしますので、自宅では使用しない選択が良いでしょう。</p>
 
     </div>
