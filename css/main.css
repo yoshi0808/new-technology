@@ -2002,8 +2002,7 @@ pre code {
   list-style-type: none !important;
 }
 .post-body ul li:before {
-  font-family: "Font Awesome 5 Free";
-  content: "\f138"; /*アイコンの種類*/
+  content: "・"; /*アイコンの種類*/
   position: absolute;
   left: 1em;
 /*左端からのアイコンまでの距離*/
@@ -2845,7 +2844,7 @@ hr {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #ffffe7;
+  background: #ff4195;
   display: inline-block;
   margin-right: 3px;
   transform: translateY(-2px);
