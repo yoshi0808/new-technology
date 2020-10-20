@@ -8,7 +8,7 @@ categories:
 date: 2020-03-28 11:41:42
 ---
 <p class="onepoint">この記事で実現すること</p>
-外出先から、PC（Windows、macOS）を使い、宅内にあるXG FirewallのVPNへ接続できるようになります。それによりウィルスおよびマルウェア対策やWebフィルタなどを含んだ安全なネット閲覧や、宅内のLANリソースへリモートアクセス出来るようになります。
+外出先から、PC（Windows、macOS）を使い、宅内にあるXG FirewallのVPNへ接続できます。それによりウィルスおよびマルウェア対策やWebフィルタなどを含んだ安全なネット閲覧や、宅内のLANリソースへリモートアクセスができます。
 
 <!-- more -->
 
@@ -56,7 +56,7 @@ XGの左ペインメニューから{% label primary@VPN %}を選択、{% label p
 - XGのVPNの割り当てネットワークは、LANとは別のネットワークアドレスを入力します。例えばLANが`192.168.2.0/24`のネットワークならば、`192.168.20.1`〜`192.168.20.8`などと別のネットワークを入力します
 - DNSについては、XG自身のDNS（XGのLAN側のIPアドレス）を入力します
 - 詳細設定の{% label primary@トンネルがアイドルの時に切断 %}を有効にします
-- {% label primary@アイドルセッション時間の間隔 %}は600にします（特段のこだわりはありません）
+- {% label primary@アイドルセッション時間の間隔 %}は600にします（ご自身で希望の値を設定してください）
 
 {% asset_img vpn2.png alt %}
 
@@ -64,7 +64,7 @@ XGの左ペインメニューから{% label primary@VPN %}を選択、{% label p
 
 ## XG側のFirewallルールの確認
 
-上記で設定したVPNがFirewallのルールに登録されている事を確認します。SSLインスペクションが入ると難しくなるので、まずはこの記事ではVPNとWANの接続を優先に考え設定します。以前の記事{% post_link rule-policy2 %}で、デフォルトのルール「To_Internet」を作成しました。ルールについて、以下の図のように{% label primary@送信元ゾーン %}が、LANとVPNとなっている事を確認してください。
+上記で設定したVPNがFirewallのルールに登録されている事を確認します。VPNとWANの接続を優先に考え設定します。「{% post_link rule-policy2 %}」では、デフォルトのルール"To_Internet"を作成しました。ルールについて、以下の図のように{% label primary@送信元ゾーン %}が、LANとVPNとなっている事を確認してください。
 
 {% asset_img rule1.png alt %}
 
@@ -124,20 +124,16 @@ VPN経由でインターネットに接続し、ブラウザからアクセス�
 
 ここまでの設定でVPNの設定は終了ですが、VPNについてもSSLインスペクションが有効となるように設定します。一旦はVPNのネットワークからインターネットにアクセスする場合は、全てがSSLインスペクションの対象とし、ファイアウォールルールを修正します。
 
-1. 最初にVPNのネットワークアドレスを左ペインの{% label primary@ホストとサービス %}から{% label primary@IPホスト %}を登録します。
-
-{% asset_img vpn3.png alt %}
+1. 最初にVPNのネットワークアドレスを左ペインの{% label primary@ホストとサービス %}から{% label primary@IPホスト %}を登録します。{% asset_img vpn3.png alt %}
 
 2. 上記のようにネットワークにIPアドレス（この記事では192.168.20.0/24としています）を登録します。VPNのネットワークは、LANのネットワークとは別のネットワークアドレスとする必要があります。
 
 3. 次に、左ペインの{% label primary@ルールとポリシー %}から、{% label primary@SSL/TLSインスペクション %}を選択します。
-4. 事前に作成してある{% label primary@Catch SSL %}ルールを選択し、ここにVPNのネットワークがSSL/TLSインスペクションの対象である事を設定します。
-
-{% asset_img vpn4.png alt %}
+4. 事前に作成してある{% label primary@Catch SSL %}ルールを選択し、ここにVPNのネットワークがSSL/TLSインスペクションの対象である事を設定します。{% asset_img vpn4.png alt %}
 
 5. 上記の図では{% label primary@送信元ネットワークとデバイス %}に、CAがインストールされているPCおよびiPhoneを対象とするIPグループを{% label primary@CA_Clinet_IPv4 %}として登録していました。これに今回はVPNのネットワーク{% label primary@VPN_Network_IPv4 %}を追加登録します。
 
-ここまでの設定でIPSec-VPNの設定は一段落です。SSLインスペクションの設定および動作確認については、過去の記事を参照して下さい。
+ここまでの設定でIPSec-VPNの設定は一段落です。SSLインスペクションの設定および動作確認については、下記の記事を参照して下さい。
 
 - {% post_link ssl-inspection %}
 - {% post_link ssl-inspection1 %}

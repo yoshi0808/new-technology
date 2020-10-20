@@ -8,7 +8,7 @@ categories:
 date: 2020-04-18 21:16:31
 ---
 <p class="onepoint">この記事で実現すること</p>
-ホームユーザー向けのユニークなIPv6アドレスが必要となった場合、自分の持つ機器のMACアドレスを用いて、Unique Local Address（ULA）を生成します。プログラムの実行が必要なので、JDoodle(https://www.jdoodle.com/)サイト上でPython3のコードを実行してULAを求めます。
+プライベートなIPv6アドレスを利用するため、機器のMACアドレスを用いて、Unique Local Address（ULA）を生成します。
 
 <!-- more -->
 
@@ -22,7 +22,7 @@ ULAは、MACアドレスと時刻からおおよそ一意となるIPv6アドレ�
 
 ## IPv6 ULAの生成を行う
 
-JDoodleに配置したULAを算出するPythonプログラムを実行します。JDoodleは、教育用としてプログラムソースコードを登録すると、プログラムが実行できる機能を提供しています。このページでは、JDoodleサイトを埋め込んで表示しております。ここで入力されたデータはJDoodleに渡され、実行される事をご承知おきください。<sup>[[1]](#note1)</sup>
+[JDoodle](https://www.jdoodle.com)に配置したULAを算出するPythonプログラムを実行します。JDoodleは、教育用としてプログラムソースコードを登録すると、プログラムが実行できる機能を提供しています。このページでは、JDoodleサイトを埋め込んで表示しております。ここで入力されたデータはJDoodleに渡され、実行される事をご承知おきください。<sup><b>[[1]](#note1)</b></sup>
 
 最初にIPv6を割り振りたいホストのMACアドレスを調べておいてください。算出時にMACアドレスを入力するので、`XX:XX:XX:XX:XX:XX`または`XX-XX-XX-XX-XX-XX`と表示されているMACアドレスを予めコピーしてください。大文字小文字はどちらでも構いません。また、仮想環境でサーバーなどを構築されている場合は仮想MACアドレスではなく、物理MACアドレスを採用される事をお勧めします。
 
@@ -38,15 +38,11 @@ JDoodleに配置したULAを算出するPythonプログラムを実行します�
 
 - [ULA生成ツール（jdoodle.com）＞](https://jdoodle.com/a/20tR)
 
-{% label primary@Result %}に、以下の4つの項目が表示されます。MACアドレスが正しく入力されなかった場合は、"Bad MAC Adderss"と表示されます。
-
-{% asset_img jdoodle.png alt %}
-
-これで他とのIPv6アドレスの重複が極めて少ないULAの生成ができました。
+{% label primary@Result %}に、以下の4つの項目が表示されます。これらがプライベート環境で利用するユニークなIPv6アドレスです。MACアドレスが正しく入力されなかった場合は、"Bad MAC Adderss"と表示されます。{% asset_img jdoodle.png alt %}
 
 ## IPv6 ULAの生成ソースコードについて
 
-- ULA生成ツール(GitHub)は[こちら](https://github.com/yoshi0808/ula-generator)を参照してください
+- ULA生成ツール（GitHub)は[こちら](https://github.com/yoshi0808/ula-generator)を参照してください
 
 - RFC4193に基づき生成しています
 - MACアドレスから{% label primary@Modified EUI-64 %}を生成するにあたり、RFC4291に基づき生成しています

@@ -7,49 +7,51 @@ categories:
 date: 2020-06-24 18:46:11
 ---
 <p class="onepoint">この記事で実現すること</p>
-XG Firewall自身を防御するためのベストプラクティスがSophosより本日公開されたため、最低限の防御として推奨されている設定内容を紹介します。
+ホームユーザー向けにXG Firewall自身を防御する、ベストプラクティスとなる設定をします。
 <!-- more -->
 
 ## Best practices for securing your firewall
 
-2020-6-24にSophos Communityのお勧め記事に["Sophos XG Firewall: Best practices for securing your firewall"](https://community.sophos.com/products/xg-firewall/f/recommended-reads/121461/sophos-xg-firewall-best-practices-for-securing-your-firewall)というタイトルの文書が投稿されました。以下の記載があります。
+2020-6-24にSophos Communityのお勧め記事に「Sophos XG Firewall: Best practices for securing your firewall」というタイトルの文書が投稿されました。以下の記載があります。
 
 {% cq %}
 このドキュメントの焦点は、Sophos XG Firewallを最低限のレベルでセキュリティを確保するための基本的なガイダンスを提供することです。この文書では、内部ネットワークデバイスやリソースを保護する個々のファイアウォール機能についてのガイダンスは提供しません （詳細な Sophos XG Firewall ベストプラクティスガイドは後日公開される予定です）。
 
 {% endcq %}
 
-このブログの過去の記事”{% post_link best-practice %}”で記載した通り、ルールやポリシーについてのベストプラクティスを記載していますが、将来Sophosから詳細なベストプラクティスガイドが公開されるとの事です。今回公開されたものはルールやポリシーではなく、運用について記述されたものであり、どのようにしてFirewallを守るかに言及されています。IPSの設定については、過去記事をアップデートしています。
+「{% post_link best-practice %}」で記載した通り、ルールやポリシーについてのベストプラクティスを記載していますが、将来Sophosから詳細なベストプラクティスガイドが公開されるとの事です。今回公開されたものはルールやポリシーではなく、運用について記述されたものであり、どのようにしてFirewallを守るかに言及されています。IPSの設定については、過去記事をアップデートしています。
+
+- [Sophos XG Firewall: Best practices for securing your firewall ＞](https://community.sophos.com/products/xg-firewall/f/recommended-reads/121461/sophos-xg-firewall-best-practices-for-securing-your-firewall)
 
 ## Firewall自身のセキュリティ強化
 
 まずこのガイドの先頭には以下の説明があります。
 >管理者は、ファイアウォール自体の安全性を確保する前に、内部ネットワークやリソースを保護するために、ファイアウォールの機能や機能を設定することに集中してしまうことがよくあります。
 
-これはご指摘の通りで、確かにXG自身にログインするパスワードもLAN内からのアクセスだからという理由で単純なパスワードにしがちです。業務で利用するほど厳格では無いにせよ、ホームユーザーとしてもFirewall自身の管理をしっかりと行うべきです。具体的なドキュメントについては、上記のページから、["Best Practice Guide"](https://community.sophos.com/cfs-file/__key/communityserver-discussions-components-files/258/Securing-your-Sophos-XG-Firewall-_2D00_-Best-Practice-Guide.pdf)へのリンクがあります。まずは上記のPDFを参照いただくのが一番ベストですが、ここではホームユーザーにとって重要と思われるものを紹介します。
+これはご指摘の通りで、確かにXG自身にログインするパスワードもLAN内からのアクセスだからという理由で単純なパスワードにしがちです。業務で利用するほど厳格では無いにせよ、ホームユーザーとしてもFirewall自身の管理をしっかりと行うべきです。具体的なドキュメントについては、上記のページにあるPDFを参照いただくのが一番ベストですが、ここではホームユーザーにとって重要と思われるものを紹介します。
 
-## ローカルサービスACL
+### ローカルサービスACL
 
 XGの左ペインメニューの{% label primary@管理 %}の"デバイスのアクセス"でWANなど外部ゾーンからのすべてのサービスを削除します。使わないサービスはオフにするのが原則であり、SSHを利用しないのであればLANゾーンのSSHもオフにしてしまうのがお勧めです。
 {% asset_img acl.png alt %}
 
-このSophosのドキュメントではSSHのために、公開鍵認証を行う事を勧めています。もし、LANやVPNからSSHを使うのであればこの”デバイスのアクセス”の画面の下部に"管理者の公開鍵認証"の項目があるので、そこで公開鍵を追加できます。
+このSophosのドキュメントではSSHのために、公開鍵認証を行う事を勧めています。もし、LANやVPNからSSHを使うのであればこの{% label primary@デバイスのアクセス %}の画面の下部に{% label primary@管理者の公開鍵認証 %}の項目があるので、そこで公開鍵を追加できます。
 
-## DDoS防御
+### DDoS防御
 
 これまでも特にDDoS防御については説明してきていませんでした。ホームユーザーには不要と考えているためです。ping関連のDDoS防御の勧めが記述されていますので紹介します。しかしこの設定を行うとダウンロードのスループットが低下するので確認しながら利用の判断可否が必要です。XGの左ペインメニューの{% label primary@侵入防御 %}の"DoS／スプーフ防御"のタブにてICMP/ICMPv6フラッドの項目を以下の図のように設定します。
 {% asset_img ips.png alt %}
 
 このドキュメント上で"XG550"、"XG650"および"XG750"のハードウェア提供モデルのDDoS防御の設定が記載してありますが、XG Home（ソフトウェアバージョン）はこのDDoS防御の機能は持っていません。
 
-## 管理者ID
+### 管理者ID
 
 XGの左ペインメニューの{% label primary@管理 %}の"管理の設定"で以下のように管理者のログイン失敗時のブロック、パスワードの複雑性の登録を行います。新しい管理者アカウントを作成し、2要素認証の設定は可能ですが、デフォルト管理者のadminアカウントは無効に設定できません。業務上利用する場合は担当者が変わる場合など意味がありますが、ホームユーザーが利用する場合は定期的なパスワード変更も不要であり、2要素認証の設定は現時点ではあまり魅力はありません。adminアカウントの無効化対応を期待します。
 {% asset_img admin.png alt %}
 
-過去の記事の"{% post_link Notifications %}"で記載した通り、通知設定を行う事でログイン失敗の状況も迅速にキャッチする事が可能です。
+「{% post_link Notifications %}」で記載した通り、通知設定を行う事でログイン失敗の状況も迅速にキャッチが可能です。
 
-## HotFixの自動インストール
+### HotFixの自動インストール
 
 XGに脆弱性が見つかった場合に、過去の事例では極めて迅速にパッチが自動適用されます。具体的には下記の図のように、左ペインメニューの{% label primary@バックアップ＆ファームウェア %}の"ファームウェア"タブの画面にある、"ホットフィックスの自動インストールを許可する"にチェックが付いている事を確認してください。
 {% asset_img hotfix.png alt %}

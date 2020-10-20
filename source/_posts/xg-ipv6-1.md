@@ -8,7 +8,7 @@ categories:
 date: 2020-04-25 15:00:17
 ---
 <p class="onepoint">この記事で実現すること</p>
-XG FirewallからホームゲートウェイとをIPv6で接続し、IPv6ホストの名前解決が行えるか確認します。
+XG FirewallからホームゲートウェイとをIPv6で接続し、IPv6ホストの名前解決をテストします。
 
 <!-- more -->
 
@@ -29,20 +29,27 @@ HGWから配布されるIPアドレスは、従来のIPv4であればDHCPの機�
 1. DHCPv6
 2. Router Advertisement
 
-最近の機械だとHGWに設定する箇所もなく、IPv6の契約があれば、プロバイダからIPoEでIPv6の接続が可能になっている状況もあるようです。XGは、上記いずれの方法でもHGWからのパブリックIPアドレスを受け取れるようです。XGのPort2（WAN側）でIPv6の設定を行います。XGの左ペインメニューから、{% label primary@ネットワーク %}の{% label primary@インターフェース %}を選び、{% label primary@Port2 %}をクリックします。
+最近の機械だとHGWに設定する箇所もなく、IPv6の契約があれば、プロバイダからIPoEでIPv6の接続が可能になっている状況もあるようです。XGは、上記いずれの方法でもHGWからのパブリックIPアドレスを受け取れるようです。
+
+### XGのWANインタフェースでIPv6を設定する
+
+XGのPort2（WAN側）でIPv6の設定を行います。XGの左ペインメニューから、{% label primary@ネットワーク %}の{% label primary@インターフェース %}を選び、{% label primary@Port2 %}をクリックします。
 
 {% asset_img network.png alt %}
 
-1. {% label primary@IPv6設定 %}のチェックボックスをOnにします
-2. {% label primary@IPの割り当て %}はDHCPを選びます
-3. {% label primary@モード %}は{% label primary@手動 %}、{% label primary@ステートレス %}、{% label primary@DHCPから他の設定を承認 %}を選択します
-4. {% label primary@ゲートウェイ名 %}は{% label primary@IPv6_GW %}など、自由に命名してください
-5. {% label primary@保存 %}をクリックすると下記の確認画面が表示されます
- {% asset_img update.png alt %}
-6. {% label primary@インターフェースを更新 %}をクリックすると、以下の通り、パブリックIPv6アドレスがHGWより割り当てられます
+- {% label primary@IPv6設定 %}のチェックボックスをOnにします
+- {% label primary@IPの割り当て %}はDHCPを選びます
+- {% label primary@モード %}は{% label primary@手動 %}、{% label primary@ステートレス %}、{% label primary@DHCPから他の設定を承認 %}を選択します
+- {% label primary@ゲートウェイ名 %}は{% label primary@IPv6_GW %}など、自由に命名してください
+
+{% label primary@保存 %}をクリックすると下記の確認画面が表示されます{% asset_img update.png alt %}
+
+{% label primary@インターフェースを更新 %}をクリックすると、以下の通り、パブリックIPv6アドレスがHGWより割り当てられます
  {% asset_img update2.png alt %}
 
-続いてDNSの設定です。XGの左ペインメニューから{% label primary@ネットワーク %}を選び、{% label primary@DNS %}をクリックします。IPv6の項目があり、初期設定ではスタティックの設定となっています。HGWの{% label primary@fe80: %}からはじまるリンクローカルアドレス、またはホームゲートウェイのパブリックIPアドレスが指定されているはずです。HGWのDNS改ざん攻撃などもあるようですし、私はプロバイダのDNSのIPアドレスを調べ、それを手動でXGに設定しています。なお、IPv4DNSもプロバイダのDNSを指定される事をお勧めします。実運用としてプロバイダのDNSのIPアドレスは殆ど変更される事がありません。
+### DNSv6を設定する
+
+XGの左ペインメニューから{% label primary@ネットワーク %}を選び、{% label primary@DNS %}をクリックします。IPv6の項目があり、初期設定ではスタティックの設定となっています。HGWの{% label primary@fe80: %}からはじまるリンクローカルアドレス、またはホームゲートウェイのパブリックIPアドレスが指定されているはずです。HGWのDNS改ざん攻撃などもあるようですし、私はプロバイダのDNSのIPアドレスを調べ、それを手動でXGに設定しています。なお、DNSv4もプロバイダのDNSを指定される事をお勧めします。実運用としてプロバイダのDNSのIPアドレスは殆ど変更される事がありません。
 
 {% asset_img update3.png alt %}
 

@@ -7,13 +7,13 @@ categories:
 date: 2020-05-16 11:39:23
 ---
 <p class="onepoint">この記事で実現すること</p>
-自分で設定したDNS（多くはプロバイダDNS）に反し、行儀の悪いクライアントや悪意のあるプログラムはそれに従わず、別のDNSを参照する可能性があります。XG Firewall v18の機能を活用してDNSの安全性を確保します。
+ユーザーが指定したDNS（多くはプロバイダDNS）に反し、行儀の悪いクライアントや悪意のあるプログラムはそれに従わず、別のDNSを参照する可能性があります。XG Firewall v18の機能を活用してDNSの安全性を確保します。
 
 <!-- more -->
 
 ## DNSとプライバシー
 
-Sophos CommunityでもDNSの扱いについてはいろいろ議論されていますが、ベストプラクティスとしては[DNS Best Practices for XG](https://community.sophos.com/products/xg-firewall/f/network-and-routing/95100/dns-best-practices-for-xg)の記事にあります。
+Sophos CommunityでもDNSの扱いについてはいろいろ議論されていますが、ベストプラクティスとしては「[DNS Best Practices for XG](https://community.sophos.com/products/xg-firewall/f/network-and-routing/95100/dns-best-practices-for-xg)」の記事にいくつかのアドバイスがあります。
 
 {% cq %}
 
@@ -34,18 +34,18 @@ DNSとプライバシーは国によって扱いが変わるかも知れませ�
 
 ここではDNS情報はDHCPで配布されている前提とします。このブログでは、クライアントが参照するDNSは、全てXGのDNSを指定するように設定しています。この前提で、これを回避しようとするクライアントに対して以下の対策を取ります。
 
-1. DNS over TLS(DoT)は拒否
+- DNS over TLS(DoT)は拒否
  Port853の拒否
-2. DNS over HTTPS(DoH)は拒否
+- DNS over HTTPS(DoH)は拒否
  RFC8484に基づき、MIMEヘッダーの"application/dns-message"を見つけて、その通信を拒否
-3. Public DNSへのアクセス（Port53）は、強制的にXGのDNS経由で本来のDNSにアクセス
+- Public DNSへのアクセス（Port53）は、強制的にXGのDNS経由で本来のDNSにアクセス
  XGのDNATの機能を使い、WANインターフェースに対するPort53の通信だった場合、宛先IPをXGのLANのIPアドレスに変換
 
 {% asset_img xg-dns.png alt %}
 
-1および2ですが、アプリケーションは、DoTやDoHを止められると（一般的には）通常のDNS(Port53)にフォールバックします。そしてXGは強制的にDNSの向き先を変えますが、クライアントはパブリックDNSにアクセスしたと思い込んだまま、返されたIPに対しアクセスする事になります。
+アプリケーションは、DoTやDoHを止められると（一般的には）通常のDNS(Port53)にフォールバックします。そしてXGは強制的にDNSの向き先を変えますが、クライアントはパブリックDNSにアクセスしたと思い込んだまま、返されたIPに対しアクセスする事になります。
 
-## DoHの拒否
+### DoHの拒否
 
 DoHの定義についてサービスの登録を行います。
 
@@ -53,17 +53,16 @@ XGの左ペインメニュー{% label primary@Web %}の{% label primary@ファ�
 
 {% asset_img mimetype.png alt %}
 
-{% label primary@Web %}の{% label primary@ユーザーアクティビティ %}から"追加"ボタンをクリックし、先ほどDoHとして登録したカテゴリを加え、`DNS over HTTPS`と名前を付けて保存します。
-
+左ペインメニュー{% label primary@Web %}の{% label primary@ユーザーアクティビティ %}から"追加"ボタンをクリックし、DoHとして登録したカテゴリを加え、`DNS over HTTPS`と名前を付けて保存します。
 {% asset_img mimetype2.png alt %}
 
 続いて、具体的な拒否設定です。
 
-{% label primary@Web %}の{% label primary@ポリシー %}からご自身がFirewallルールで利用しているポリシー（ここでは"Home Policy"を仮定しています）に、上記で登録してきた"DNS over HTTPS"を拒否する設定を加えます。
+左ペインメニュー{% label primary@Web %}の{% label primary@ポリシー %}からご自身がFirewallルールで利用しているポリシー（ここでは"Home Policy"を仮定しています）に、上記で登録してきた"DNS over HTTPS"を拒否する設定を加えます。
 
 {% asset_img policy.png alt %}
 
-## DoTの拒否
+### DoTの拒否
 
 XGの左ペインメニュー{% label primary@ホストとサービス %}の{% label primary@サービス %}から、"追加"ボタンをクリックし、"送信元ポート"1〜65535、"宛先ポート"853を指定し、"DoT"と名前を付け保存します。
 
@@ -73,7 +72,7 @@ XGの左ペインメニュー{% label primary@ルールとポリシー %}から�
 
 {% asset_img rule1.png alt %}
 
-## DNSに関するDNATの登録
+### DNSに関するDNATの登録
 
 最初にDNATで必要なホストの定義を行います。LANで使っているネットワークアドレスの登録とXG自身のIPアドレスの登録が必要です。ネットワークアドレスについてIPv4は例えば、`192.168.1.0/24`、IPv6は例えば`fd00:beaf:cafe::/64`などの登録を行います。XG自身のIPアドレスも登録が必要です。
 
@@ -91,14 +90,14 @@ XGの左ペインメニュー{% label primary@ルールとポリシー %}から�
 
 上記はIPv4の例ですが、IPv6を利用されている方は、同様にIPv6のDNATも設定してください。
 
-上記DNATによるDNSのインターセプトが有効になると、{% label primary@ルールとポリシー %}の{% label primary@NATルール %}画面で実際の変換された数が確認できるので、これで挙動確認を行ってください。
+### 動作確認
+
+上記DNATによるDNSのインターセプトが有効になると、{% label primary@ルールとポリシー %}の{% label primary@NATルール %}画面で実際に変換された数が確認できるので、これで挙動を確認してください。
 
 {% asset_img rule3.png alt %}
 
- 以上がプライバシーと安全性を重視したv18ならではのDNSのベストプラクティスです。
+以上がプライバシーと安全性を重視したv18ならではのDNSのベストプラクティスです。
 
 ## DNSに関しての補足
 
-GoogleDNSのDoHはRFC8484に従っていない独自プロトコルを使えるという事実があります。世界中のパブリックDNSを全て把握するのは困難ですが、Sophosの以下の記事を参考にWebフィルタのURLグループにパブリックDNSのドメインを登録し、拒否する設定を加えても良いでしょう。
-
-[DNS over HTTPS (DoH) for web security](https://community.sophos.com/kb/en-us/134644)
+GoogleDNSのDoHはRFC8484に従っていない独自プロトコルを使えるという事実があります。世界中のパブリックDNSを全て把握するのは困難ですが、Sophosのコミュニティの記事を参考にWebフィルタのURLグループにパブリックDNSのドメインを登録し、拒否する設定を加えても良いでしょう。詳細は、[こちらの記事](https://community.sophos.com/kb/en-us/134644)を参照してください。

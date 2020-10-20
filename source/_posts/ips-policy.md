@@ -7,13 +7,13 @@ categories:
 date: 2020-05-04 09:00:00
 ---
 <p class="onepoint">この記事で実現すること</p>
-XG FirewallのIPS Policyは複数存在しますが、それぞれの内容について解説します。
+XG FirewallのIPSポリシーは複数存在しますが、それぞれの内容について説明します。
 
 <!-- more -->
 
 ## XGのIPSポリシーについて
 
-Intrusion Prevension System(IPS)は侵入防御を意味し、サイバー攻撃から内部のホストを防御します。このブログでのXGインストール時の記事"{% post_link rule-policy2 %}"では、IPS Policyの選択として、"lantowan_general"を設定しました。初期セットアップではあまり十分な説明をしていませんでしたので、改めて中身の解説をします。XGのIPSポリシーは、左ペインメニューの{% label primary@侵入防御 %}の{% label primary@IPSポリシー %}から確認できます。デフォルトで登録されているものには、以下の内容があります。
+Intrusion Prevension System(IPS)は侵入防御を意味し、サイバー攻撃から内部のホストを防御します。「{% post_link rule-policy2 %}」では、IPS Policyの選択として、"lantowan_general"を設定しました。初期セットアップではあまり十分な説明をしていませんでしたので、改めて中身を説明します。XGのIPSポリシーは、左ペインメニューの{% label primary@侵入防御 %}の{% label primary@IPSポリシー %}から確認できます。デフォルトで登録されているものには、以下の内容があります。
 
 - DMZ TO LAN
 - DMZ TO WAN
