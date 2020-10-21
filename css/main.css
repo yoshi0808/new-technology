@@ -1993,6 +1993,7 @@ pre code {
 .post-body ul {
   border: solid 2px #87ceeb;
   border-radius: 5px;
+  margin: 1.5em 0;
   padding: 0.5em 1em 0.5em 2.3em;
   position: relative;
 }
@@ -2002,7 +2003,10 @@ pre code {
   list-style-type: none !important;
 }
 .post-body ul li:before {
-  content: "・"; /*アイコンの種類*/
+  font-family: "Font Awesome 5 Free";
+  content: "\f138"; /*アイコンの種類*/
+  font-size: 0.95em;
+  font-weight: 900;
   position: absolute;
   left: 1em;
 /*左端からのアイコンまでの距離*/
@@ -2844,7 +2848,7 @@ hr {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #ff4195;
+  background: #c37a9c;
   display: inline-block;
   margin-right: 3px;
   transform: translateY(-2px);
@@ -2898,9 +2902,4 @@ hr {
   padding: 5px 7px 3px;
   line-height: 1;
   letter-spacing: 0.05em;
-}
-.minititle {
-  color: #6594e0; /*文字色*/
-/*線の種類（点線）2px 線色*/
-  border-bottom: dashed 2px #6594e0;
 }
