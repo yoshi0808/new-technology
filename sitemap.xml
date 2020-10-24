@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/10/11/esxi-backup/</loc>
+    <loc>https://yoshi0808.github.io/new-technology/2020/08/30/bitwarden/</loc>
     
     <lastmod>2020-10-24</lastmod>
     
@@ -11,26 +11,68 @@
   <url>
     <loc>https://yoshi0808.github.io/new-technology/2020/04/29/xg-ipv6-2/</loc>
     
-    <lastmod>2020-10-21</lastmod>
+    <lastmod>2020-10-24</lastmod>
     
   </url>
   
   <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/08/30/bitwarden/</loc>
+    <loc>https://yoshi0808.github.io/new-technology/2020/04/18/ipv6/</loc>
     
-    <lastmod>2020-10-21</lastmod>
+    <lastmod>2020-10-24</lastmod>
     
   </url>
   
   <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/02/23/XG-Firewall/</loc>
+    <loc>https://yoshi0808.github.io/new-technology/2020/03/26/SophosCommunity/</loc>
     
-    <lastmod>2020-10-21</lastmod>
+    <lastmod>2020-10-24</lastmod>
     
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/2020/03/14/rule-policy2/</loc>
+    
+    <lastmod>2020-10-24</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/2020/03/14/rule-policy1/</loc>
+    
+    <lastmod>2020-10-24</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/</loc>
+    
+    <lastmod>2020-10-24</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/2020/02/29/esxi/</loc>
+    
+    <lastmod>2020-10-24</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/2020/03/06/InstallXG/</loc>
+    
+    <lastmod>2020-10-24</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/2020/10/11/esxi-backup/</loc>
+    
+    <lastmod>2020-10-24</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/2020/02/23/XG-Firewall/</loc>
     
     <lastmod>2020-10-21</lastmod>
     
@@ -52,13 +94,6 @@
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/2020/03/21/ssl-inspection2/</loc>
-    
-    <lastmod>2020-10-21</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/03/26/SophosCommunity/</loc>
     
     <lastmod>2020-10-21</lastmod>
     
@@ -100,13 +135,6 @@
   </url>
   
   <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/04/18/ipv6/</loc>
-    
-    <lastmod>2020-10-21</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://yoshi0808.github.io/new-technology/2020/04/25/xg-ipv6-1/</loc>
     
     <lastmod>2020-10-21</lastmod>
@@ -142,13 +170,6 @@
   </url>
   
   <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/03/06/InstallXG/</loc>
-    
-    <lastmod>2020-10-21</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://yoshi0808.github.io/new-technology/2020/02/22/%E3%81%AF%E3%81%98%E3%82%81%E3%81%AB/</loc>
     
     <lastmod>2020-10-20</lastmod>
@@ -163,21 +184,7 @@
   </url>
   
   <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/</loc>
-    
-    <lastmod>2020-10-20</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://yoshi0808.github.io/new-technology/2020/03/08/XG-MainPage/</loc>
-    
-    <lastmod>2020-10-20</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/03/14/rule-policy1/</loc>
     
     <lastmod>2020-10-20</lastmod>
     
@@ -241,13 +248,6 @@
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/about/index.html</loc>
-    
-    <lastmod>2020-10-18</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/02/29/esxi/</loc>
     
     <lastmod>2020-10-18</lastmod>
     

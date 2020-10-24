@@ -38,7 +38,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/06/InstallXG/vm6.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/06/InstallXG/vm7.png">
 <meta property="article:published_time" content="2020-03-06T09:12:36.000Z">
-<meta property="article:modified_time" content="2020-10-21T09:25:13.856Z">
+<meta property="article:modified_time" content="2020-10-24T12:04:04.747Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -347,7 +347,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">編集日</span>
-        <time title="修正日：2020-10-21 18:25:13" itemprop="dateModified" datetime="2020-10-21T18:25:13+09:00">2020-10-21</time>
+        <time title="修正日：2020-10-24 21:04:04" itemprop="dateModified" datetime="2020-10-24T21:04:04+09:00">2020-10-24</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -373,9 +373,15 @@
 XG Firewall v18をESXi 6.7で稼働させるためのインストールイメージ（isoファイル）をダウンロードし、ESXi上で、XGのための仮想マシンを構築できるようになります。
 
 <a id="more"></a>
-<h2 id="XG-Firewallのダウンロード"><a href="#XG-Firewallのダウンロード" class="headerlink" title="XG Firewallのダウンロード"></a>XG Firewallのダウンロード</h2><p>Sophosのサイトの<a target="_blank" rel="noopener" href="https://www.sophos.com/ja-jp/products/free-tools.aspx">（無償ツール）</a>より、”Sophos XG Firewall Home Edition”モジュールをダウンロードします。氏名、勤務先メールアドレスとありますが、ホームユースなので、遠慮なくGmailなどのアドレスを登録します。あっさりとISOファイルのダウンロードボタンが表示されると共に、メール宛にライセンス番号が送られてきます。送られてきたメールの本文には、「利用条件としては、あくまで家庭での個人的な使用に限って無料です」と丁寧な日本語で記載されています。</p>
+<h2 id="XG-Firewallのダウンロード"><a href="#XG-Firewallのダウンロード" class="headerlink" title="XG Firewallのダウンロード"></a>XG Firewallのダウンロード</h2><p>Sophosのサイトより、”Sophos XG Firewall Home Edition”モジュールをダウンロードします。</p>
+<div class="link-grid"><div class="link-grid-container">
+<div class="link-grid-image" style="background-image: url(https://secure2.sophos.com/ja-jp/medialibrary/Images/Products/FreeTools/img-xg-firewall-home-full.ashx);"></div>
+<p>Sophos 無償ツール</p><p>お客様がご家庭でも常に安全に PC を利用できるようソフォスでは無償ツールを提供しています。セキュリティリスクのチェックや、マルウェアの駆除、ネットワークの保護にご活用いただけます。</p>
+<a target="_blank" rel="noopener" href="https://www.sophos.com/ja-jp/products/free-tools.aspx"></a>
+</div></div>
+
 <!-- more -->
-<p>ダウンロードはISOイメージです。2020年7月26日時点では、最新のバージョンは”SW-18.0.1_MR-1-Build396-396.iso”となっています。</p>
+<p>氏名、勤務先メールアドレスとありますが、ホームユースなので、遠慮なくGmailなどのアドレスを登録します。あっさりとISOファイルのダウンロードボタンが表示されると共に、メール宛にライセンス番号が送られてきます。送られてきたメールの本文には、「利用条件としては、あくまで家庭での個人的な使用に限って無料です」と丁寧な日本語で記載されています。<br>ダウンロードはISOイメージです。2020年10月23日時点では、最新のバージョンは”SW-18.0.1_MR-1-Build396-396.iso”となっています。</p>
 <p>クライアントPC（Windowsなど）から、ESXi管理画面にログインします。ESXiの管理画面の左ペインのストレージからデフォルトのストレージである、datastore1を選択し、データストアブラウザをクリックして下さい。次にアップロードボタンをクリックし、ダウンロードされた”SW-18.0.1_MR-1-Build396-396.iso”ファイルをアップロードして下さい。</p>
 <img src="/new-technology/2020/03/06/InstallXG/datastore.png" class="" title="alt">
 <p> 　</p>
@@ -418,7 +424,7 @@ XG Firewall v18をESXi 6.7で稼働させるためのインストールイメー
 <img src="/new-technology/2020/03/06/InstallXG/vm7.png" class="" title="alt">
 
 <p>いったんここまでで仮想マシンの作成は終了となります。なお、仮想マシンを選択した状態で「アクション」という歯車マークがあります。これをクリックして、コンソール→VMRCのダウンロードを選択し、”VMware Remote Console”をインストールして下さい。これがあるとブラウザから仮想マシンの画面がポップアップし、仮想マシンを操作出来るようになります。もし物理マシンに直接USBメモリ等でXGをインストールする場合は、対象マシンのBIOS設定でUEFIのチェックを外して下さい。</p>
-<div class="note warning no-icon"><p>ファイアウォールとしては、EUFIによるセキュアブートが期待されますが、現時点では対応していないようです（Sophosコミュニティでも明確な情報はありませんでした）</p>
+<div class="note warning no-icon"><p>ファイアウォールとしては、UEFIによるセキュアブートが期待されますが、現時点では対応していないようです（Sophosコミュニティでも明確な情報はありませんでした）</p>
 </div>
 
 <div class="note info no-icon"><p>Intelの10GbpsのNICをお使いの方は、速度の面で有利なVMXNET3ドライバを選択可能です。ただし、VMXNET3を使う場合は、MTUは1500のまま変更しないことをお勧めします。MTU9000でXGが再起動を繰り返す事象を確認しています</p>
