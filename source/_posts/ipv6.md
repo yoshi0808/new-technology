@@ -40,7 +40,7 @@ ULAは、MACアドレスと時刻からおおよそ一意となるIPv6アドレ�
 
 {% label primary@Result %}に、以下の4つの項目が表示されます。これらがプライベート環境で利用するユニークなIPv6アドレスです。MACアドレスが正しく入力されなかった場合は、"Bad MAC Adderss"と表示されます。{% asset_img jdoodle.png alt %}
 
-## IPv6 ULAの生成ソースコードについて
+## IPv6 ULAの生成ソースコード
 
 - ULA生成ツール（GitHub)は[こちら](https://github.com/yoshi0808/ula-generator)を参照してください
 

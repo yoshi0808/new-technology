@@ -15,7 +15,7 @@ date: 2020-10-11 11:45:41
 
 <!-- more -->
 
-## ghettoVCBで仮想マシンのバックアップを取得する
+## ghettoVCBでバックアップする
 
 このブログで紹介している{% label primary@XG Firewall %}は、ESXi上にセットアップする事をお勧めしています。その理由としては仮想マシンは比較的バックアップが取得しやすく、万が一のトラブル発生時に速やかに復元（レストア）しやすい事が理由でもあります。もちろん、XG Firewallには設定ファイルをバックアップする機能が存在しますが、バージョンアップやデバイスの入れ替え等何らかのきっかけでうまく稼働しなくなるリスクがあります。XG Firewall自体がOSとして起動するため、ハードウェア（ベアメタル）に直接インストールした場合はOS毎のバックアップが事実上不可能です。このghettoVCBはESXi上で動作させるコマンドラインのスクリプトですが、利用は難しくありません。
 
@@ -79,7 +79,7 @@ ESXi側からNFSでファイルをマウントするのは簡単です。ESXiの
 
 これで、ESXiでは、"/vmfs/volumes/NFSデータストア名"としてnfsサーバーのフォルダがマウントされます。nfsサーバーを"¥¥YourNAS"、ESXiのデータストア名を"your-nfs"とするならば、¥¥YourNAS¥backup¥の中身が/vmfs/volumes/your-nfs/に対応します。
 
-## ESXiでghettoVCBを稼働させるための事前準備
+## ESXiでの事前準備
 
 1. ESXiにSSHで接続する必要があるため、ESXiの左ペインメニューの{% label primary@ホスト→管理 %}から{% label primary@サービス %}タブをクリックし、{% label primary@TSM %}および{% label primary@TSM-SSH %}を起動します。
 2. ESXiのストレージ、nfsボリュームを選択し、データストアブラウザを開きます。アップロードボタンをクリックし、ダウンロード済みの{% label primary@ghettoVCB-master.zip %}をアップロードします。
@@ -108,8 +108,8 @@ Archive:  ghettoVCB-master.zip
 [root@esxi:/vmfs/volumes/your-nfs]
 ```
 
-## ghettoVCB.shでバックアップを行う
-
+## バックアップする
+### バックアップの設定
 バックアップを行う本体は、{% label primary@ghettoVCB.sh %}です。新しく作成されたghettoVCB-masterフォルダに移動し、ghettoVCB.shをviで開きます。このスクリプトで変更すべき箇所は最低1箇所で、15行目にバックアップを保存するパスを指定します。
 
 ```bash
@@ -146,7 +146,7 @@ XGFirewall
 Win10
 ```
 
-### ghettoVCB.shの実行
+### バックアップの実行
 
 ghettoVCB-masterフォルダから以下のコマンドでバックアップが取得できます。
 
@@ -169,7 +169,7 @@ Clone: 100% done.
 2020-10-10 13:31:00 -- info: Successfully completed backup for XGFirewall!
 ```
 
-### ghettoVCB.shの実行結果確認
+### バックアップ結果の確認
 
 実際にバックアップが作成されたフォルダを確認すると以下のようになっています。
 
@@ -197,13 +197,13 @@ drwxr-xr-x    5 root     root          4096 Oct 10 13:30 ..
 つまり、シンプロビジョニング（通称シンプロ）はこうやってディスク領域を節約する仕組みになっているわけです。
 
 私の環境ではNFSサーバーはQNAPのTVS473eというモデルでウェスタンデジタル社のHDDを4台RAID10で使っており、NICはAquantia AQC107です。ESXi側のNICはintel X550T2で、共に10GbpsのNICです。XGの仮想マシン（28ギガバイト）をバックアップするのに1分40秒ですのでまずまずの速度でしょうか。参考までに、殆どアプリの入っていないWin10だと、4分20秒程度でした。
-デフォルトでは3世代バックアップを取得するようになっていますが、その他カスタマイズする箇所については、[英語版の公式マニュアル](https://communities.vmware.com/docs/DOC-8760)を確認してください。
+デフォルトでは3世代バックアップを取得するようになっていますが、その他カスタマイズする箇所については、[英語版の公式マニュアル](https://communities.vmware.com/docs/DOC-8760)を参照してください。
 
-## ESXiのちょっと特殊な点について
+## ESXiのちょっと特殊な点
 
 このシェルを実行する時に、頭に`/bin/sh`を加えました。単体でghettoVCB.shを実行すると`-sh: ./ghettoVCB.sh: Operation not permitted`と実行できません。ghettoVCB.shには、実行権も最初から付与されています。スクリプトの先頭にShebang（#!/bin/sh）が無いのでそれが原因かと思い加えても動作しません。これは、ESXiがUEFIのセキュアブートだとこのような挙動になるようです。スクリプトでバックアップができるようになると、Cronに登録して定期的に実行したくなりますが、改ざん防止のためそれも不可能なようです。ESXiのセキュアブートをしないように変更すれば可能ですが、XGを載せたFirewallの役割から考えると非常に悩ましいところです。定期的にバックアップ可能なソフトウェアについて、今後紹介できればと考えています。
 
-## ghettoVCB-restore.shでレストアを行う
+## レストアする
 
 さて、バックアップから戻す場合です。ESXiのハードウェア毎故障してしまってもバックアップがあれば安全です。戻し方には2つあります。
 
@@ -212,7 +212,7 @@ drwxr-xr-x    5 root     root          4096 Oct 10 13:30 ..
 
 1の方法は元の仮想マシンを一旦ESXiメニューから削除してから同じフォルダを再作成して復旧するので比較的単純です。2の方法は重複して作成する事になるため、そのままだとネットワーク周りの環境が重複し、MACアドレスなど別の構成にしてレストアする事になります。より慎重な人は別の仮想マシンとして起動する事を確認してから元の仮想環境を削除する方法を選びたいのではないでしょうか。今回は少し手間が掛かりますが、上記でバックアップされたXGFirewallを新しい仮想マシンとして復元する方法について記載します。
 
-### レストアの事前設定
+### レストアの設定
 
 通常仮想マシンが稼働しているvmfsフォーマットのフォルダを確認します。通常は`/vmfs/volumes/datastore1`ですが、ここでは、｀/vmfs/volumes/your-datastore/`とします。
 
@@ -237,7 +237,7 @@ drwxr-xr-x    5 root     root          4096 Oct 10 13:30 ..
 "/vmfs/volumes/your-nfs/backups/XGFirewll/XGFirewall-2020-10-10_13-29-16;/vmfs/volumes/your-datastore/XGFW18;1;XGFW18"
 ```
 
-## ghettoVCB-restore.shでレストアの実行
+### レストアの実行
 
 ghettoVCB-masterフォルダから以下のコマンドでレストアを実行します。
 
@@ -245,7 +245,7 @@ ghettoVCB-masterフォルダから以下のコマンドでレストアを実行�
 [root@esxi:/vmfs/volumes/your-nfs/ghettoVCB-master] /bin/sh ./ghettoVCB-restore.sh -c ./vm_restore_list.txt
 ```
 
-### 実行結果
+### レストア結果の確認
 
 ```bash
 ################## Restoring VM: XGFW18  #####################

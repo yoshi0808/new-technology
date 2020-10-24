@@ -8,7 +8,7 @@ categories:
 date: 2020-03-26 18:27:32
 ---
 
-## Sophos Communityで情報を調べる
+## Sophos Communityを活用する
 
 XG Firewall Home EditionはSophosによるサポートがなく、ユーザコミュニティの相互サポートによって成り立っています。サポートサイトは英語が中心ですが、セキュリティに関するビジネスをしている方も積極的に参加しています。
 
