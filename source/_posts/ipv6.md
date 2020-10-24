@@ -36,13 +36,13 @@ ULAは、MACアドレスと時刻からおおよそ一意となるIPv6アドレ�
 
 上記の{% label primary@Stdin Inputs %}に直接入力が可能です。MACアドレスを貼り付け、{% label primary@▶︎Execute %}ボタンをクリックしてください。もしお使いのブラウザでエラー表示が出ている場合は、以下のリンクからULA生成ツールを開き実行してください。
 
-- [ULA生成ツール（jdoodle.com）＞](https://jdoodle.com/a/20tR)
+{% linkgrid %}
+ULA Generator | https://jdoodle.com/a/20tR | IPv6のULAを生成します。MACアドレスをあらかじめコピーしておき、このツールにペーストします | jdoodle-icon.png
+{% endlinkgrid %}
 
 {% label primary@Result %}に、以下の4つの項目が表示されます。これらがプライベート環境で利用するユニークなIPv6アドレスです。MACアドレスが正しく入力されなかった場合は、"Bad MAC Adderss"と表示されます。{% asset_img jdoodle.png alt %}
 
-## IPv6 ULAの生成ソースコード
-
-- ULA生成ツール（GitHub)は[こちら](https://github.com/yoshi0808/ula-generator)を参照してください
+### IPv6 ULAのプログラムについて
 
 - RFC4193に基づき生成しています
 - MACアドレスから{% label primary@Modified EUI-64 %}を生成するにあたり、RFC4291に基づき生成しています

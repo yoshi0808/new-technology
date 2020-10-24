@@ -52,7 +52,7 @@ categories:
 
 ## bitwardenの利用方法
 
-[bitwarden](www.bitwarden.com)のWebサイトで最初にアカウントを作成します。
+[bitwarden](https://bitwarden.com)のWebサイトで最初にアカウントを作成します。
 
 {% asset_img bitwarden.png alt %}
 
@@ -60,7 +60,7 @@ categories:
 
 {% asset_img account.png alt %}
 
-アカウントの作成が終了したらWebにログインし、もし現在利用されているパスワードマネージャがあるのであればそこからインポートが可能です。ChromeやFirefoxのパスワードをcsvに一旦出力し、そこからインポートする事も可能です。bitwardenではこのパスワードの集合体を保管庫と呼んでいます。
+アカウントの作成が終了したらWebにログインし、もし現在利用されているパスワードマネージャがあるのであればインポートできます。ChromeやFirefoxのパスワードをcsvに一旦出力し、インポートもできます。bitwardenではこのパスワードの集合体を保管庫と呼んでいます。
 
 {% asset_img bitwarden1.png alt %}
 
