@@ -31,7 +31,7 @@
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/02/23/XG-Firewall/xg.png">
 <meta property="article:published_time" content="2020-02-23T00:57:41.000Z">
-<meta property="article:modified_time" content="2020-10-21T11:18:01.406Z">
+<meta property="article:modified_time" content="2020-10-25T08:08:28.674Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -243,7 +243,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/new-technology/archives/">
         
-          <span class="site-state-item-count">32</span>
+          <span class="site-state-item-count">33</span>
           <span class="site-state-item-name">ポスト</span>
         </a>
       </div>
@@ -340,7 +340,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">編集日</span>
-        <time title="修正日：2020-10-21 20:18:01" itemprop="dateModified" datetime="2020-10-21T20:18:01+09:00">2020-10-21</time>
+        <time title="修正日：2020-10-25 17:08:28" itemprop="dateModified" datetime="2020-10-25T17:08:28+09:00">2020-10-25</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -362,12 +362,12 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2 id="導入の背景"><a href="#導入の背景" class="headerlink" title="導入の背景"></a>導入の背景</h2><p>元々、家庭用の無線ルータだけではセキュリティが不足していると考えていました。数年前よりランサムウェア等の脅威が出てきた事で、それなりの対策が必要と感じていました。街のWIFIからも自宅のリソースに安全に接続したり、家のサーバーを踏み台にしてネットに繋げたいというニーズもあり、VPNも必要でした。</p>
+        <img src="/new-technology/2020/02/23/XG-Firewall/xg.png" class="">
+
+<h2 id="導入の背景"><a href="#導入の背景" class="headerlink" title="導入の背景"></a>導入の背景</h2><p>元々、家庭用の無線ルータだけではセキュリティが不足していると考えていました。数年前よりランサムウェア等の脅威が出てきた事で、それなりの対策が必要と感じていました。街のWIFIからも自宅のリソースに安全に接続したり、家のサーバーを踏み台にしてネットに繋げたいというニーズもあり、VPNも必要でした。</p>
 <a id="more"></a>
 <p>そもそも、iCloudかOneDriveあたりにファイルを置いておけばいいんですが、漏洩よりも万が一のロストが不安です。クラウドの特徴として、提供サービスと費用が一方的に変更されやすい傾向にあるようです。オンプレミスの場合は盗難や火事というリスクもあり、人によって優先するものは異なりますが、利便性と安全性のバランスを取る事を目指すのでしょうか。個人のセキュリティは、ビジネスにおけるリスクを極限まで抑制するという考えではなく、最低限必要な対策をもれなく行うものと考えています。特に最近進歩が著しいIoT機器は追加の防御策が必要です。Sophos社が提供する<a target="_blank" rel="noopener" href="https://www.sophos.com/ja-jp/products/next-gen-firewall.aspx">Sophos XG Firewall</a>は、業務用ながらホームユーザーには無料という事もあって、最良のセキュリティ防御の手段と考えています。かれこれ1年半くらいでしょうか。ずっと使わせてもらってます。</p>
 <p>v18が発表されて、大幅に機能強化されたのは良かったのですが、高度化に伴い設定方法が難しくなってしまいました。こんなに高機能なものを無料で使わせて頂いてるのだから、何か貢献すべきと考え、設定内容等を公開していく事にしました。</p>
-<img src="/new-technology/2020/02/23/XG-Firewall/xg.png" class="">
-
 <h2 id="主な機能"><a href="#主な機能" class="headerlink" title="主な機能"></a>主な機能</h2><ul>
 <li>Firewall機能（IPフィルター、Portフィルター）</li>
 <li>IPS/WAF</li>
@@ -423,7 +423,8 @@
 <li><a href="/new-technology/2020/05/06/web-application-filter/" title="XG FirewallのWebとアプリケーションフィルタについて">XG FirewallのWebとアプリケーションフィルタについて</a></li>
 <li><a href="/new-technology/2020/05/09/best-practice/" title="XG Firewall v18の設定におけるベストプラクティス">XG Firewall v18の設定におけるベストプラクティス</a></li>
 <li><a href="/new-technology/2020/05/16/Intercept-DNS/" title="XG Firewall v18で正しいDNS利用を強制する">XG Firewall v18で正しいDNS利用を強制する</a></li>
-<li><a href="/new-technology/2020/06/24/protect-xg/" title="XG Firewall自身を防御する">XG Firewall自身を防御する</a>
+<li><a href="/new-technology/2020/06/24/protect-xg/" title="XG Firewall自身を防御する">XG Firewall自身を防御する</a></li>
+<li><a href="/new-technology/2020/10/25/xg-v18-mr3/" title="XG Firewall v18 MR3の更新">XG Firewall v18 MR3の更新</a>
 </li>
 </ul>
 
