@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/14/customize-policy/web2.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/14/customize-policy/web3.png">
 <meta property="article:published_time" content="2020-03-14T04:51:51.000Z">
-<meta property="article:modified_time" content="2020-10-20T23:15:48.467Z">
+<meta property="article:modified_time" content="2020-11-25T10:47:40.573Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -342,7 +342,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">編集日</span>
-        <time title="修正日：2020-10-21 08:15:48" itemprop="dateModified" datetime="2020-10-21T08:15:48+09:00">2020-10-21</time>
+        <time title="修正日：2020-11-25 19:47:40" itemprop="dateModified" datetime="2020-11-25T19:47:40+09:00">2020-11-25</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -373,7 +373,10 @@
 <img src="/new-technology/2020/03/14/customize-policy/web1.png" class="" title="alt">
 
 <p>”Default Policy”の内容がまず最初に表示されているはずです。初期値では、”Blocked URLs for Default Policy”と2番目の行に”Risky Downloads”および”Suspicious（※怪しいもの）”が選択されています。”Risky Downloads”、”Suspicious”が含まれていると、Google検索で”広告”という表示のあるページを正しく表示出来ない場合があります。レイヤ7Firewallルールのポリシーはこういった箇所のカスタマイズが重要となります。これらのポリシーは、Sophosの「<a target="_blank" rel="noopener" href="https://community.sophos.com/kb/ja-jp/134155">Sophos XG Firewall: Web カテゴリ</a>」の記事にも日本語の解説があります。この内容を見ながらWebポリシーのカスタマイズを行ってください。この部分は防御というよりは倫理の概念です。膨大なサイトの分類が既に登録されている事は素晴らしい事ですが、さらに自分で分類を追加する事も可能です。</p>
-<h2 id="外部データベースを取り込む"><a href="#外部データベースを取り込む" class="headerlink" title="外部データベースを取り込む"></a>外部データベースを取り込む</h2><p>XGは外部のデータベース（ドメインのリスト形式）を取り込む事が可能です。ここでは<a target="_blank" rel="noopener" href="https://280blocker.net/">280blocker | モバイル広告ブロッカー</a>のデータを取り込んでみます。名称の通り、スマホでの広告をカットするために利用されるデータベースです。利用については、<a target="_blank" rel="noopener" href="https://280blocker.net/download/">ダウンロードのページ</a>の注意事項の確認をいただき、ご自身で利用の判断をお願いします。</p>
+<h2 id="外部データベースを取り込む"><a href="#外部データベースを取り込む" class="headerlink" title="外部データベースを取り込む"></a>外部データベースを取り込む</h2><p>XGは外部のデータベース（ドメインのリスト形式）を取り込む事が可能です。ここでは<a target="_blank" rel="noopener" href="https://280blocker.net/">280blocker | モバイル広告ブロッカー</a>のデータ（ドメインテキスト形式）を取り込んでみます。名称の通り、スマホでの広告をカットするために利用されるデータベースです。利用については、<a target="_blank" rel="noopener" href="https://280blocker.net/download/">ダウンロードのページ</a>の注意事項の確認をいただき、ご自身で利用の判断をお願いします。</p>
+<div class="note warning no-icon"><p>　280blockerのページでは、ファイルのダウンロードLinkをクリックしてもダウンロードできません。”URL中の6桁のｘを現在の年・月の6桁の数字へ変更してください。”と記載されている通り、URLの修正が必要です。</p>
+</div>
+
 <ol>
 <li>ダウンロードするデータとして”広告ドメインリスト（リスト形式）”をダウンロードします</li>
 <li>XGの左ペインメニューの<mark class="label primary">Web</mark>を選択し、”カテゴリ”のタブをクリックします</li>
