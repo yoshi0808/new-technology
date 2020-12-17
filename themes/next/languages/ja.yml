@@ -36,7 +36,7 @@ post:
     link: 記事へのリンク
     post_author: Written by
     post_link: This article originally appeared on
-    license_title: 著作権表示
+    license_title: 著作権
     license_content: "このブログ内のすべての記事は、特別な記載がない限り %s の下のライセンスで保護されています。また、免責事項・プライバシーポリシーについては、メニューのディスクレーマーをご覧ください。"
 footer:
   powered: "Powered by %s"
