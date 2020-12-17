@@ -22,29 +22,24 @@
     var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","scheme":"Mist","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="この記事で実現すること XG Firewall v18をESXi 6.7上で稼働させるために、ホームゲートウェイの後ろに、XGを挟み込んだネットワーク構成を説明します。また、ESXi上で2枚のNICを利用し仮想スイッチの設定を行い、2枚のNICを持った仮想マシンを作成します。">
+  <meta name="description" content="XG Firewall v18 MR-4XG Firewall v18のMR-4が2020年12月15日に発表されました。MR3に続き、マイナーアップデートですが、変更点について記載します。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="VMware vSphere Hypervisor（ESXi）の設定">
-<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/index.html">
+<meta property="og:title" content="XG Firewall v18 MR4の更新">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/12/17/xg-v18-mr4/index.html">
 <meta property="og:site_name" content="New technologies in our life">
-<meta property="og:description" content="この記事で実現すること XG Firewall v18をESXi 6.7上で稼働させるために、ホームゲートウェイの後ろに、XGを挟み込んだネットワーク構成を説明します。また、ESXi上で2枚のNICを利用し仮想スイッチの設定を行い、2枚のNICを持った仮想マシンを作成します。">
+<meta property="og:description" content="XG Firewall v18 MR-4XG Firewall v18のMR-4が2020年12月15日に発表されました。MR3に続き、マイナーアップデートですが、変更点について記載します。">
 <meta property="og:locale" content="ja_JP">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/conf_esxi.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/vswitch.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/vswitch1.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/vswitch2.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/vswitch3.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/vswitch4.png">
-<meta property="article:published_time" content="2020-03-01T00:30:49.000Z">
-<meta property="article:modified_time" content="2020-10-24T12:55:13.377Z">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/12/17/xg-v18-mr4/XG.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/12/17/xg-v18-mr4/mysophos.png">
+<meta property="article:published_time" content="2020-12-17T01:41:04.000Z">
+<meta property="article:modified_time" content="2020-12-17T11:47:29.510Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
-<meta property="article:tag" content="ESXi">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/conf_esxi.png">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2020/12/17/xg-v18-mr4/XG.png">
 
 
-<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/">
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2020/12/17/xg-v18-mr4/">
 
 
 <script class="page-configurations">
@@ -57,7 +52,7 @@
   };
 </script>
 
-  <title>VMware vSphere Hypervisor（ESXi）の設定 | New technologies in our life</title>
+  <title>XG Firewall v18 MR4の更新 | New technologies in our life</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-159928165-1"></script>
     <script>
@@ -233,7 +228,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E3%81%AE%E7%A2%BA%E8%AA%8D"><span class="nav-number">1.</span> <span class="nav-text">ネットワークの確認</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%AE%E6%83%B3%E7%92%B0%E5%A2%83%E4%B8%8A%E3%81%AEFirewall%E5%90%91%E3%81%91%E6%A7%8B%E6%88%90"><span class="nav-number">2.</span> <span class="nav-text">仮想環境上のFirewall向け構成</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%82%BB%E3%83%83%E3%83%88%E3%82%A2%E3%83%83%E3%83%97%E7%8A%B6%E6%B3%81%E3%81%AE%E7%A2%BA%E8%AA%8D"><span class="nav-number">2.1.</span> <span class="nav-text">セットアップ状況の確認</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WAN%E3%81%AE%E4%BB%AE%E6%83%B3%E3%82%B9%E3%82%A4%E3%83%83%E3%83%81%E3%81%AE%E4%BD%9C%E6%88%90"><span class="nav-number">2.2.</span> <span class="nav-text">WANの仮想スイッチの作成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E3%83%9D%E3%83%BC%E3%83%88%E3%81%AE%E4%BD%9C%E6%88%90"><span class="nav-number">2.3.</span> <span class="nav-text">ネットワークポートの作成</span></a></li></ol></li></ol></div>
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#XG-Firewall-v18-MR-4"><span class="nav-number">1.</span> <span class="nav-text">XG Firewall v18 MR-4</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E3%81%AA%E3%82%A8%E3%83%B3%E3%83%8F%E3%83%B3%E3%82%B9%E3%81%AE%E5%86%85%E5%AE%B9"><span class="nav-number">2.</span> <span class="nav-text">主なエンハンスの内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Upgrade-as-soon-as-possible"><span class="nav-number">2.0.0.1.</span> <span class="nav-text">Upgrade as soon as possible</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#XG%E3%81%AE%E3%82%A2%E3%83%83%E3%83%97%E3%83%87%E3%83%BC%E3%83%88"><span class="nav-number">2.1.</span> <span class="nav-text">XGのアップデート</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MR-4%E3%81%A7%E6%B3%A8%E6%84%8F%E3%81%99%E3%82%8B%E7%82%B9"><span class="nav-number">2.2.</span> <span class="nav-text">MR-4で注意する点</span></a></li></ol></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -312,7 +307,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="ja">
-    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2020/12/17/xg-v18-mr4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/new-technology/images/yoshi.png">
@@ -328,7 +323,7 @@
     
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          VMware vSphere Hypervisor（ESXi）の設定
+          XG Firewall v18 MR4の更新
         </h1>
 
         <div class="post-meta-container">
@@ -338,23 +333,17 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">投稿日</span>
+      
 
-      <time title="作成日：2020-03-01 09:30:49" itemprop="dateCreated datePublished" datetime="2020-03-01T09:30:49+09:00">2020-03-01</time>
+      <time title="作成日：2020-12-17 10:41:04 / 修正日：20:47:29" itemprop="dateCreated datePublished" datetime="2020-12-17T10:41:04+09:00">2020-12-17</time>
     </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">編集日</span>
-        <time title="修正日：2020-10-24 21:55:13" itemprop="dateModified" datetime="2020-10-24T21:55:13+09:00">2020-10-24</time>
-      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
       </span>
       <span class="post-meta-item-text">カテゴリ</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/new-technology/categories/Software/" itemprop="url" rel="index"><span itemprop="name">Software</span></a>
+          <a href="/new-technology/categories/Security/" itemprop="url" rel="index"><span itemprop="name">Security</span></a>
         </span>
     </span>
 
@@ -368,53 +357,49 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p class="onepoint">この記事で実現すること</p>
-XG Firewall v18をESXi 6.7上で稼働させるために、ホームゲートウェイの後ろに、XGを挟み込んだネットワーク構成を説明します。また、ESXi上で2枚のNICを利用し仮想スイッチの設定を行い、2枚のNICを持った仮想マシンを作成します。
+        <img src="/new-technology/2020/12/17/xg-v18-mr4/XG.png" class="" title="alt">
 
+<h2 id="XG-Firewall-v18-MR-4"><a href="#XG-Firewall-v18-MR-4" class="headerlink" title="XG Firewall v18 MR-4"></a>XG Firewall v18 MR-4</h2><p>XG Firewall v18のMR-4が2020年12月15日に発表されました。MR3に続き、マイナーアップデートですが、変更点について記載します。</p>
 <a id="more"></a>
 
-<h2 id="ネットワークの確認"><a href="#ネットワークの確認" class="headerlink" title="ネットワークの確認"></a>ネットワークの確認</h2><p>ESXiのWeb管理画面にログイン後、左ペインの”ネットワーク”をクリックし、”物理NIC”のタブをクリックすると、ESXiに認識されているNICの一覧がリストされます。</p>
-<img src="/new-technology/2020/03/01/esxi-conf/conf_esxi.png" class="" title="alt">
-
-<p>1GbpsのNICであれば、ドライバーはne1000として認識されています。（環境にもより異なりますが）vmnic0、vmnic1という物理NICが2つ表示されている事を確認してください。</p>
- <div class="note danger"><p> 　物理NICが1つしかない場合は、XG Firewallのセットアップはできません。</p>
-</div>
-
-<h2 id="仮想環境上のFirewall向け構成"><a href="#仮想環境上のFirewall向け構成" class="headerlink" title="仮想環境上のFirewall向け構成"></a>仮想環境上のFirewall向け構成</h2><p>ESXiにおけるネットワークの構成は、物理NICと仮想スイッチとの関係が重要です。以下の図のように、ESXiにおける物理NICはケーブルとして見立て、実際に仮想マシンが複数台存在する事を鑑み、ESXiの中にスイッチングハブが存在していると考えてください。</p>
-<img src="/new-technology/2020/03/01/esxi-conf/vswitch.png" class="" title="alt">
-
-<p>※便宜上、一般的なホームユーザーの構成図としてLinuxの仮想マシンやWi-Fiアクセスポイント等を記載していますが、これまでのセットアップでは存在していません。また、XG Firewallのインストールに、LinuxやWi-Fiアクセスポイントは必要ありません。</p>
-<h3 id="セットアップ状況の確認"><a href="#セットアップ状況の確認" class="headerlink" title="セットアップ状況の確認"></a>セットアップ状況の確認</h3><p>ここまでのセットアップで、以下の構成になっています。</p>
-<ul>
-<li>物理NICであるvmnic0、vmnic1</li>
-<li>バーチャルスイッチのvSwitch0</li>
-<li>ネットワークポート（仮想IP）として、LAN側の管理用のManagement Networkおよびデフォルトで仮想マシンのために作成されているVM Network</li>
+<h2 id="主なエンハンスの内容"><a href="#主なエンハンスの内容" class="headerlink" title="主なエンハンスの内容"></a>主なエンハンスの内容</h2><ul>
+<li>セキュリティ強化</li>
+<li>IPSecリモートアクセス用の新しい高度なオプション（scadminの代用）。Sophos Connect VPNクライアントのダウンロードがユーザーポータルから可能に</li>
+<li>より強力なパスワードハッシュ - この重要な機能をフルに活用するため、アップグレードするときにパスワードを変更するように促されます</li>
+<li>ウェブフィルタリング - インターネット・ウォッチ・ファウンデーション(IWF)によって児童の性的虐待コンテンツを含むと特定されたウェブサイトは、ウェブフィルタリングが有効になっている場合、自動的にブロックされます。</li>
 </ul>
-<h3 id="WANの仮想スイッチの作成"><a href="#WANの仮想スイッチの作成" class="headerlink" title="WANの仮想スイッチの作成"></a>WANの仮想スイッチの作成</h3><img src="/new-technology/2020/03/01/esxi-conf/vswitch1.png" class="" title="alt">
+<p>v18 MR-4の詳細な説明はSophos Communityの<a target="_blank" rel="noopener" href="https://community.sophos.com/xg-firewall/b/blog/posts/xg-firewall-v18-mr4-is-now-available">こちらの記事</a>を参照してください。可能な限り迅速にアップグレードするように推奨されています。</p>
+<blockquote class="blockquote-center">
+<h5 id="Upgrade-as-soon-as-possible"><a href="#Upgrade-as-soon-as-possible" class="headerlink" title="Upgrade as soon as possible"></a>Upgrade as soon as possible</h5><p>While we always encourage you to keep your firewalls up to date with the latest firmware, over the next few months we are recommending you rapidly apply maintenance releases to ensure you have all the important security, performance, and feature enhancements applied as soon as possible.</p>
+<p>ファイアウォールを最新のファームウェアで最新の状態に保つことを常に推奨していますが、今後数ヶ月間は、重要なセキュリティ、パフォーマンス、機能強化のすべてを可能な限り早く適用できるように、メンテナンスリリースを迅速に適用することをお勧めします。</p>
 
-<p>XGのWAN側インタフェースを担う仮想スイッチを追加します（赤字の部分）。</p>
+</blockquote>
+
+<h3 id="XGのアップデート"><a href="#XGのアップデート" class="headerlink" title="XGのアップデート"></a>XGのアップデート</h3><p>XGのv17からのアップデートは、 v17.5 MR6以降から可能です。XGのv18であればMR-3へのアップデートは可能です。<br>XGの管理画面にログイン後、左ペインメニューの<mark class="label primary">バックアップ＆ファームウェア</mark>の<mark class="label primary">ファームウェアの確認</mark>ではただちに全てのユーザーにアップデートの案内が来るわけでは無いようなので、アップデートにはMySophosにログインし、バージョンアップの差分モジュールをダウンロードします。</p>
 <ol>
-<li>ESXiの管理画面の左ペイン、ネットワークをクリック、続いて仮想スイッチのタブをクリックします。</li>
-<li>標準仮想スイッチの追加をクリックします。</li>
-<li>WAN側の仮想スイッチを作成するため、ここでは、vSwitch1と命名します。MTUは1500のままで構いません。</li>
-<li>“アップリンク1”は物理NICとの関連付けです。vmnic1などWAN側に使う予定の物理NICを選択してください。</li>
+<li><a target="_blank" rel="noopener" href="https://www.sophos.com/ja-jp.aspx">Sophosのサイト</a>の右上のプルダウンメニューから、<mark class="label primary">ライセンスポータル</mark>をクリックします。</li>
+<li>Sophos IDをお持ちでなければIDを作成します。</li>
+<li>ログイン後、<mark class="label primary">Network Protection</mark>をクリックします。</li>
+<li><mark class="label primary">ファームウェアの更新</mark>をクリックします。</li>
+<li>「製品名/OSを使った検索」で”ファイアーウォール”を選択し、その後現れるプルダウンは”ソフトウェア”を選択します。</li>
+<li><mark class="label primary">選択可能なダウンロードを表示</mark>ボタンをクリックします。
+
+</li>
 </ol>
-<p>以下の通り、仮想スイッチの作成は完了です。</p>
-<img src="/new-technology/2020/03/01/esxi-conf/vswitch2.png" class="" title="alt">
+<img src="/new-technology/2020/12/17/xg-v18-mr4/mysophos.png" class="" width="640" title="alt">
 
-<h3 id="ネットワークポートの作成"><a href="#ネットワークポートの作成" class="headerlink" title="ネットワークポートの作成"></a>ネットワークポートの作成</h3><ol>
-<li>vSwitch1をクリックし、物理NICのWAN向けである、vmnic1と関連付けられている事を確認してください。</li>
-<li>XGのLANとWANのネットワークポートを作成します。左ペインのネットワークからポートグループのタブをクリックし、ポートグループの追加を選択します。</li>
-<li>新規ポートグループとして、LANはここではXG-LANと命名し作成します。LANなので、vSwitch0を関連づけます。</li>
-<li>続いてWANのために、XG-WANと命名し、vSwitch1と関連づけます。</li>
+<ol start="7">
+<li>上記画面で”SW-18.0.4_MR-4.SFW-506.sig”というアップデータが表示されますのでダウンロードします。</li>
+<li>MY Sophosはここで終了してXGの管理画面にログインし、左ペインメニューの<mark class="label primary">バックアップ＆ファームウェア</mark>の<mark class="label primary">ファームウェアのタブメニュー</mark>から以下の画面に赤丸で囲った矢印のアイコンをクリックし、ダウンロードしたモジュールをアップロードします。</li>
 </ol>
-<p>これらの設定が終わり、LAN側のネットワーク構成は以下の通りとなります。</p>
-<img src="/new-technology/2020/03/01/esxi-conf/vswitch3.png" class="" title="alt">
 
-<p>WAN側のネットワーク構成は以下の通りです。</p>
-<img src="/new-technology/2020/03/01/esxi-conf/vswitch4.png" class="" title="alt">
 
-<p>これで、ESXiのネットワーク設定は完了となります。一旦PCのネットワークをホームゲートウェイに接続し、XG Firewallのモジュールをダウンロードしてください。</p>
+<p>アップロード＆再起動ボタンをクリックし、MR-4へのアップグレードを完了させます。</p>
+<h3 id="MR-4で注意する点"><a href="#MR-4で注意する点" class="headerlink" title="MR-4で注意する点"></a>MR-4で注意する点</h3><p>XGv18のいつのバージョンからか気付きませんでしたが、IPSec VPNのiPhoneの構成ファイルのダウンロード（ユーザーポータル画面からダウンロード）ができなくなっていました。今回のバージョンではVPNについて、scadmin（IPSec構成ファイル作成ツール）を使わず構成ファイルが作成できるような感じでしたので早速検証したところ、「Install」ボタンをクリックすると再びユーザーポータルのログインページに飛ばされてしまいファイルをダウンロードする事すらできなくなっていました。</p>
+<p>幸いにも、iPhoneからIPSec VPNでXG Firewallに接続する方法は、代替策があるのでVPN構成ファイルをダウンロードせずとも対応は可能です。<br>「<a href="/new-technology/2020/03/31/vpn-iphone/" title="XG Firewall VPNにスマホから接続する">XG Firewall VPNにスマホから接続する</a>」の記事については代替策について追記しておきました。</p>
+<p>また、<a target="_blank" rel="noopener" href="https://community.sophos.com/xg-firewall/f/discussions/124771/xg-firewall-v18-mr-4-feedback-and-experiences/455768#455768">Sophos Community</a>に、この不具合について投稿したところ、5分後にSophosの方（いつも手厚いサポートのLuCar Toniさん）から既知の不具合（Bug ID: NC-64758）というレスポンスがありました。早い！</p>
+<div class="note info no-icon"><p>仮想環境（ESXi）上にXGをインストールされている方はアップグレードの前に、「<a href="/new-technology/2020/10/11/esxi-backup/" title="VMware ESXiの仮想マシンをバックアップする">VMware ESXiの仮想マシンをバックアップする</a>」を参考に、XGのバックアップを確保される事をお勧めします。</p>
+</div>
 
     </div>
 
@@ -432,7 +417,7 @@ XG Firewall v18をESXi 6.7上で稼働させるために、ホームゲートウ
   </li>
   <li class="post-copyright-link">
       <strong>記事へのリンク：</strong>
-      <a href="https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/" title="VMware vSphere Hypervisor（ESXi）の設定">https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/</a>
+      <a href="https://yoshi0808.github.io/new-technology/2020/12/17/xg-v18-mr4/" title="XG Firewall v18 MR4の更新">https://yoshi0808.github.io/new-technology/2020/12/17/xg-v18-mr4/</a>
   </li>
   <li class="post-copyright-license">
     <strong>著作権： </strong>このブログ内のすべての記事は、特別な記載がない限り <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> の下のライセンスで保護されています。また、免責事項・プライバシーポリシーについては、メニューのディスクレーマーをご覧ください。
@@ -442,21 +427,17 @@ XG Firewall v18をESXi 6.7上で稼働させるために、ホームゲートウ
 
           <div class="post-tags">
               <a href="/new-technology/tags/XG-Firewall/" rel="tag"><i class="fa fa-tag"></i> XG Firewall</a>
-              <a href="/new-technology/tags/ESXi/" rel="tag"><i class="fa fa-tag"></i> ESXi</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/new-technology/2020/02/29/esxi/" rel="prev" title="VMware vSphere Hypervisor（ESXi）のインストール">
-                  <i class="fa fa-chevron-left"></i> VMware vSphere Hypervisor（ESXi）のインストール
+                <a href="/new-technology/2020/11/28/miband5/" rel="prev" title="MIスマートバンド5を活用する">
+                  <i class="fa fa-chevron-left"></i> MIスマートバンド5を活用する
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/new-technology/2020/03/06/InstallXG/" rel="next" title="XG Firewall v18のインストール（事前準備）">
-                  XG Firewall v18のインストール（事前準備） <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
