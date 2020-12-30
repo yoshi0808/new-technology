@@ -12,11 +12,7 @@ XG Firewallなどの次世代Firewallで利用されているSSL/TLSインスペ
 
 ## SSLインスペクションとは
 
-https通信では、サーバーとクライアント間がSSLで暗号化されます。SSLというのは本来はTLS（Transport Layer Security）が正しい名称ですが、SSLという言葉が定着しているので、今日でも"SSL証明書"などSSLという言葉は一般的に使われます。この暗号化された通信をIPS（Intrusion Prevension System）は暗号を解読しながらコンテンツの中身の検査を行います。暗号通信の復号化方法として{% label primary@SSL/TLSインスペクション %}という方式が採用されています。このSSLインスペクションについては、解りやすい文献がありますので紹介します。セキュリティベンダーの（株）ラック社から提供されているドキュメントです。
-
-- 出典：株式会社ラック[【「常時SSL化」時代に向けたセキュリティ対策指南書】＞](https://www.lac.co.jp/library/pdf/ssl_guidebook.pdf)
-
-特にP13に記載されているSSLインペクションゾーンの仕事をしてくれるのが次世代Firewallの役割です。
+https通信では、サーバーとクライアント間がSSLで暗号化されます。SSLというのは本来はTLS（Transport Layer Security）が正しい名称ですが、SSLという言葉が過去より定着しているので、今日でも"SSL証明書"などSSLという言葉は一般的に使われます。この暗号化された通信をIPS（Intrusion Prevension System）は暗号を解読しながらコンテンツの中身の検査を行います。暗号通信の復号化方法として{% label primary@SSL/TLSインスペクション %}という方式が採用されています。ここではSSL/TLSインスペクションによりどのようにFirewallが暗号化された通信を「正当な方法で」解読するかをシーケンスで説明します。
 
 ## ブラウザとサーバーのSSL通信のシーケンス
 

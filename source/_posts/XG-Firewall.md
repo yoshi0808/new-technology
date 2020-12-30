@@ -79,3 +79,4 @@ v18が発表されて、大幅に機能強化されたのは良かったので�
 - {% post_link Intercept-DNS %}
 - {% post_link protect-xg %}
 - {% post_link xg-v18-mr3 %}
+- {% post_link xg-v18-mr4 %}

@@ -34,7 +34,7 @@ While we always encourage you to keep your firewalls up to date with the latest 
 
 ## XGのアップデート
 
-XGのv17からのアップデートは、 v17.5 MR6以降から可能です。XGのv18であればMR-3へのアップデートは可能です。
+XGのv17からのアップデートは、 v17.5 MR6以降から可能です。XGのv18であればMR-4へのアップデートは可能です。
 XGの管理画面にログイン後、左ペインメニューの{% label primary @バックアップ＆ファームウェア %}の{% label primary @ファームウェアの確認 %}ではただちに全てのユーザーにアップデートの案内が来るわけでは無いようなので、アップデートにはMySophosにログインし、バージョンアップの差分モジュールをダウンロードします。
 
 1. [Sophosのサイト](https://www.sophos.com/ja-jp.aspx)の右上のプルダウンメニューから、{% label primary @ライセンスポータル %}をクリックします。
