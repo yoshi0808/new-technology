@@ -5,6 +5,7 @@ tags:
  - miband5  
 categories:
  - SmartWatch
+comments: false
 ---
 {% asset_img Lark20200709-192509.jpg alt %}
 

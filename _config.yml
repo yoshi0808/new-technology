@@ -112,3 +112,8 @@ feed:
 sitemap:
   path: sitemap.xml
 
+emoji:
+  enable: true
+  className: github-emoji
+  styles:
+  customEmojis:
