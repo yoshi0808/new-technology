@@ -4,7 +4,9 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.2.0">
+<meta name="generator" content="Hexo 5.3.0">
+
+
   <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/favicon-16x16-next.png">
@@ -14,15 +16,14 @@
 
 
 
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
 
 <script class="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","scheme":"Mist","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+    var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","version":"8.1.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
-
-  <meta name="description" content="この記事で実現すること XG Firewall配下のクライアントにIPv6アドレスを配布し、IPv6インターネットに接続します。また、SSLインスペクションを設定します。">
+<meta name="description" content="この記事で実現すること XG Firewall配下のクライアントにIPv6アドレスを配布し、IPv6インターネットに接続します。また、SSLインスペクションを設定します。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="XG FirewallでIPv6の設定を行う（後半）">
 <meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/04/29/xg-ipv6-2/index.html">
@@ -61,8 +62,7 @@
     lang   : 'ja'
   };
 </script>
-
-  <title>XG FirewallでIPv6の設定を行う（後半） | New technologies in our life</title>
+<title>XG FirewallでIPv6の設定を行う（後半） | New technologies in our life</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-159928165-1"></script>
     <script>
@@ -73,8 +73,6 @@
         gtag('config', 'UA-159928165-1');
       }
     </script>
-
-
 
 
 
@@ -124,7 +122,7 @@
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
-    <div class="toggle" aria-label="ナビゲーションバーの切り替え">
+    <div class="toggle" aria-label="ナビゲーションバーの切り替え" role="button">
         <span class="toggle-line"></span>
         <span class="toggle-line"></span>
         <span class="toggle-line"></span>
@@ -152,36 +150,12 @@
 
 <nav class="site-nav">
   <ul class="main-menu menu">
-        <li class="menu-item menu-item-home">
-
-    <a href="/new-technology/" rel="section"><i class="fa fa-home fa-fw"></i>ホーム</a>
-
-  </li>
-        <li class="menu-item menu-item-about">
-
-    <a href="/new-technology/about/" rel="section"><i class="fa fa-user fa-fw"></i>プロフィール</a>
-
-  </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/new-technology/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>タグ</a>
-
-  </li>
-        <li class="menu-item menu-item-categories">
-
-    <a href="/new-technology/categories/" rel="section"><i class="fa fa-th fa-fw"></i>カテゴリ</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/new-technology/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>アーカイブ</a>
-
-  </li>
-        <li class="menu-item menu-item-disclaimer">
-
-    <a href="/new-technology/disclaimer/" rel="section"><i class="fa fa-check fa-fw"></i>ディスクレーマー</a>
-
-  </li>
+        <li class="menu-item menu-item-home"><a href="/new-technology/" rel="section"><i class="fa fa-home fa-fw"></i>ホーム</a></li>
+        <li class="menu-item menu-item-about"><a href="/new-technology/about/" rel="section"><i class="fa fa-user fa-fw"></i>プロフィール</a></li>
+        <li class="menu-item menu-item-tags"><a href="/new-technology/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>タグ</a></li>
+        <li class="menu-item menu-item-categories"><a href="/new-technology/categories/" rel="section"><i class="fa fa-th fa-fw"></i>カテゴリ</a></li>
+        <li class="menu-item menu-item-archives"><a href="/new-technology/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>アーカイブ</a></li>
+        <li class="menu-item menu-item-disclaimer"><a href="/new-technology/disclaimer/" rel="section"><i class="fa fa-check fa-fw"></i>ディスクレーマー</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
         </a>
@@ -192,8 +166,7 @@
 
 
   <div class="search-pop-overlay">
-    <div class="popup search-popup">
-        <div class="search-header">
+    <div class="popup search-popup"><div class="search-header">
   <span class="search-icon">
     <i class="fa fa-search"></i>
   </span>
@@ -202,7 +175,7 @@
            placeholder="検索…" spellcheck="false"
            type="search" class="search-input">
   </div>
-  <span class="popup-btn-close">
+  <span class="popup-btn-close" role="button">
     <i class="fa fa-times-circle"></i>
   </span>
 </div>
@@ -218,7 +191,7 @@
 </div>
         
   
-  <div class="toggle sidebar-toggle">
+  <div class="toggle sidebar-toggle" role="button">
     <span class="toggle-line"></span>
     <span class="toggle-line"></span>
     <span class="toggle-line"></span>
@@ -236,14 +209,15 @@
         </li>
       </ul>
 
-      <!--noindex-->
-      <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#XG%E3%81%AEIPv6"><span class="nav-number">1.</span> <span class="nav-text">XGのIPv6</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG%E3%81%AEIPv6%E3%82%92%E6%A7%8B%E6%88%90%E3%81%99%E3%82%8B%E3%81%BE%E3%81%A7"><span class="nav-number">2.</span> <span class="nav-text">XGのIPv6を構成するまで</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ULA%E3%82%92%E7%94%9F%E6%88%90%E3%81%99%E3%82%8B"><span class="nav-number">2.1.</span> <span class="nav-text">ULAを生成する</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LAN%E5%81%B4%E3%81%ABULA%E3%82%92%E8%A8%AD%E5%AE%9A"><span class="nav-number">2.2.</span> <span class="nav-text">LAN側にULAを設定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RA%E3%81%8A%E3%82%88%E3%81%B3DHCPv6%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">2.3.</span> <span class="nav-text">RAおよびDHCPv6の設定</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#DHCPv6%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">2.3.1.</span> <span class="nav-text">DHCPv6の設定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RA%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">2.3.2.</span> <span class="nav-text">RAの設定</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%95%E3%82%A1%E3%82%A4%E3%82%A2%E3%82%A6%E3%82%A9%E3%83%BC%E3%83%AB%E3%83%AB%E3%83%BC%E3%83%AB%E8%A8%AD%E5%AE%9A"><span class="nav-number">3.</span> <span class="nav-text">ファイアウォールルール設定</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%95%E3%82%A1%E3%82%A4%E3%82%A2%E3%82%A6%E3%82%A9%E3%83%BC%E3%83%AB%E3%83%AB%E3%83%BC%E3%83%AB%E3%81%AE%E8%BF%BD%E5%8A%A0"><span class="nav-number">3.1.</span> <span class="nav-text">ファイアウォールルールの追加</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NAT%E3%83%AB%E3%83%BC%E3%83%AB%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">3.2.</span> <span class="nav-text">NATルールの設定</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%BA%E5%AE%9AIP%E3%82%A2%E3%83%89%E3%83%AC%E3%82%B9%E3%81%AE%E7%99%BB%E9%8C%B2"><span class="nav-number">4.</span> <span class="nav-text">固定IPアドレスの登録</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSL%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%9A%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">5.</span> <span class="nav-text">SSLインスペクションの設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8B%95%E4%BD%9C%E7%A2%BA%E8%AA%8D"><span class="nav-number">6.</span> <span class="nav-text">動作確認</span></a></li></ol></div>
-      </section>
-      <!--/noindex-->
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#XG%E3%81%AEIPv6"><span class="nav-number">1.</span> <span class="nav-text">XGのIPv6</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG%E3%81%AEIPv6%E3%82%92%E6%A7%8B%E6%88%90%E3%81%99%E3%82%8B%E3%81%BE%E3%81%A7"><span class="nav-number">2.</span> <span class="nav-text">XGのIPv6を構成するまで</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ULA%E3%82%92%E7%94%9F%E6%88%90%E3%81%99%E3%82%8B"><span class="nav-number">2.1.</span> <span class="nav-text">ULAを生成する</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LAN%E5%81%B4%E3%81%ABULA%E3%82%92%E8%A8%AD%E5%AE%9A"><span class="nav-number">2.2.</span> <span class="nav-text">LAN側にULAを設定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RA%E3%81%8A%E3%82%88%E3%81%B3DHCPv6%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">2.3.</span> <span class="nav-text">RAおよびDHCPv6の設定</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#DHCPv6%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">2.3.1.</span> <span class="nav-text">DHCPv6の設定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RA%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">2.3.2.</span> <span class="nav-text">RAの設定</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%95%E3%82%A1%E3%82%A4%E3%82%A2%E3%82%A6%E3%82%A9%E3%83%BC%E3%83%AB%E3%83%AB%E3%83%BC%E3%83%AB%E8%A8%AD%E5%AE%9A"><span class="nav-number">3.</span> <span class="nav-text">ファイアウォールルール設定</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%95%E3%82%A1%E3%82%A4%E3%82%A2%E3%82%A6%E3%82%A9%E3%83%BC%E3%83%AB%E3%83%AB%E3%83%BC%E3%83%AB%E3%81%AE%E8%BF%BD%E5%8A%A0"><span class="nav-number">3.1.</span> <span class="nav-text">ファイアウォールルールの追加</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NAT%E3%83%AB%E3%83%BC%E3%83%AB%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">3.2.</span> <span class="nav-text">NATルールの設定</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%BA%E5%AE%9AIP%E3%82%A2%E3%83%89%E3%83%AC%E3%82%B9%E3%81%AE%E7%99%BB%E9%8C%B2"><span class="nav-number">4.</span> <span class="nav-text">固定IPアドレスの登録</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSL%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%9A%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">5.</span> <span class="nav-text">SSLインスペクションの設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8B%95%E4%BD%9C%E7%A2%BA%E8%AA%8D"><span class="nav-number">6.</span> <span class="nav-text">動作確認</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
 
-      <section class="site-overview-wrap sidebar-panel">
-        <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <img class="site-author-image" itemprop="image" alt="阿部　吉伸(Yoshinobu ABE)"
       src="/new-technology/images/yoshi.png">
   <p class="site-author-name" itemprop="name">阿部　吉伸(Yoshinobu ABE)</p>
@@ -284,12 +258,13 @@
       </span>
   </div>
   <div class="cc-license site-overview-item animated" itemprop="license">
-    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="/new-technology/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/new-technology/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
   </div>
 
 
 
-      </section>
+        </div>
+      </div>
     </div>
   </aside>
   <div class="sidebar-dimmer"></div>
@@ -298,10 +273,12 @@
     </header>
 
     
-  <div class="back-to-top">
+  <div class="back-to-top" role="button">
     <i class="fa fa-arrow-up"></i>
     <span>0%</span>
   </div>
+
+  <a href="https://github.com/yoshi0808" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
 
 <noscript>
   <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
@@ -309,14 +286,16 @@
 
 
     <div class="main-inner post posts-expand">
-      
 
-      
 
-    
+  
+
+
+<div class="post-block">
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="ja">
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="ja">
     <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2020/04/29/xg-ipv6-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -328,9 +307,6 @@
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="New technologies in our life">
     </span>
-
-    
-    
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           XG FirewallでIPv6の設定を行う（後半）
@@ -405,7 +381,6 @@ XG Firewall配下のクライアントにIPv6アドレスを配布し、IPv6イ�
 </ul>
 <p>結果として、以下のような情報が得られるので、First IPv6 Addressの<code>fd</code>から始まるULAを控えてください。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">First IPv6 Address-&gt; fd00:beaf:cafe::1/64</span><br></pre></td></tr></table></figure>
-
 <h3 id="LAN側にULAを設定"><a href="#LAN側にULAを設定" class="headerlink" title="LAN側にULAを設定"></a>LAN側にULAを設定</h3><p>XGの左ペインメニューの<mark class="label primary">ネットワーク</mark>の<mark class="label primary">インターフェース</mark>にある、<mark class="label primary">IPv6設定</mark>のチェックボックスをチェックします。次に、<mark class="label primary">IPv6　プレフィックス</mark>の項目に生成したULAを貼り付け、<code>/64</code>の部分を削除してください。画面を見てもらえると解りますが、IPv6のサブネット<mark class="label primary">/64</mark>は画面上で固定表示されています。</p>
 <img src="/new-technology/2020/04/29/xg-ipv6-2/ula1.png" class="" title="alt">
 
@@ -512,7 +487,7 @@ XG Firewall配下のクライアントにIPv6アドレスを配布し、IPv6イ�
       <a href="https://yoshi0808.github.io/new-technology/2020/04/29/xg-ipv6-2/" title="XG FirewallでIPv6の設定を行う（後半）">https://yoshi0808.github.io/new-technology/2020/04/29/xg-ipv6-2/</a>
   </li>
   <li class="post-copyright-license">
-    <strong>著作権： </strong>このブログ内のすべての記事は、特別な記載がない限り <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> の下のライセンスで保護されています。また、免責事項・プライバシーポリシーについては、メニューのディスクレーマーをご覧ください。
+    <strong>著作権： </strong>このブログ内のすべての記事は、特別な記載がない限り <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> の下のライセンスで保護されています。また、免責事項・プライバシーポリシーについては、メニューのディスクレーマーをご覧ください。
   </li>
 </ul>
 </div>
@@ -538,13 +513,14 @@ XG Firewall配下のクライアントにIPv6アドレスを配布し、IPv6イ�
           </div>
     </footer>
   </article>
-  
-  
-  
+</div>
 
 
 
-      
+
+
+
+    <div class="comments utterances-container"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -567,18 +543,14 @@ XG Firewall配下のクライアントにIPv6アドレスを配布し、IPv6イ�
     });
   }
 </script>
-
-    </div>
+</div>
   </main>
 
   <footer class="footer">
     <div class="footer-inner">
-      
 
-      
 
 <div class="copyright">
-  
   &copy; 
   <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
@@ -593,29 +565,19 @@ XG Firewall配下のクライアントにIPv6アドレスを配布し、IPv6イ�
   </footer>
 
   
-  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
 <script src="/new-technology/js/utils.js"></script><script src="/new-technology/js/motion.js"></script><script src="/new-technology/js/schemes/muse.js"></script><script src="/new-technology/js/next-boot.js"></script>
 
   
-
-
-
-
-  <script src="/new-technology/js/local-search.js"></script>
-
-
-
-
-
-
+<script src="/new-technology/js/local-search.js"></script>
 
 
 
 
 <script>
 if (document.querySelectorAll('.mermaid').length) {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8.7.0/dist/mermaid.min.js', () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8.8.4/dist/mermaid.min.js', () => {
     mermaid.init({
       theme    : 'forest',
       logLevel : 3,
@@ -628,21 +590,24 @@ if (document.querySelectorAll('.mermaid').length) {
 </script>
 
 
-
-
-
   
 
 
 
 
 
-
-
-
-  
-
-  
+<script>
+NexT.utils.loadComments('.utterances-container', () => {
+  const script = document.createElement('script');
+  script.src = 'https://utteranc.es/client.js';
+  script.setAttribute('repo', "yoshi0808/new-technology");
+  script.setAttribute('issue-term', "pathname");
+  script.setAttribute('theme', "github-light");
+  script.crossOrigin = 'anonymous';
+  script.async = true;
+  document.querySelector('.utterances-container').appendChild(script);
+});
+</script>
 
 </body>
 </html>

@@ -4,7 +4,9 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.2.0">
+<meta name="generator" content="Hexo 5.3.0">
+
+
   <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/favicon-16x16-next.png">
@@ -14,15 +16,14 @@
 
 
 
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
 
 <script class="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","scheme":"Mist","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+    var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","version":"8.1.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
-
-  <meta name="description" content="この記事で実現すること  無償版ESXi6.7（VMware vSphere Hypervisor6.7）にセットアップしたXG Firewallなどの仮想マシンをバックアップ、レストアします。">
+<meta name="description" content="この記事で実現すること  無償版ESXi6.7（VMware vSphere Hypervisor6.7）にセットアップしたXG Firewallなどの仮想マシンをバックアップ、レストアします。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="VMware ESXiの仮想マシンをバックアップする">
 <meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/10/11/esxi-backup/index.html">
@@ -59,8 +60,7 @@
     lang   : 'ja'
   };
 </script>
-
-  <title>VMware ESXiの仮想マシンをバックアップする | New technologies in our life</title>
+<title>VMware ESXiの仮想マシンをバックアップする | New technologies in our life</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-159928165-1"></script>
     <script>
@@ -71,8 +71,6 @@
         gtag('config', 'UA-159928165-1');
       }
     </script>
-
-
 
 
 
@@ -122,7 +120,7 @@
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
-    <div class="toggle" aria-label="ナビゲーションバーの切り替え">
+    <div class="toggle" aria-label="ナビゲーションバーの切り替え" role="button">
         <span class="toggle-line"></span>
         <span class="toggle-line"></span>
         <span class="toggle-line"></span>
@@ -150,36 +148,12 @@
 
 <nav class="site-nav">
   <ul class="main-menu menu">
-        <li class="menu-item menu-item-home">
-
-    <a href="/new-technology/" rel="section"><i class="fa fa-home fa-fw"></i>ホーム</a>
-
-  </li>
-        <li class="menu-item menu-item-about">
-
-    <a href="/new-technology/about/" rel="section"><i class="fa fa-user fa-fw"></i>プロフィール</a>
-
-  </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/new-technology/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>タグ</a>
-
-  </li>
-        <li class="menu-item menu-item-categories">
-
-    <a href="/new-technology/categories/" rel="section"><i class="fa fa-th fa-fw"></i>カテゴリ</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/new-technology/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>アーカイブ</a>
-
-  </li>
-        <li class="menu-item menu-item-disclaimer">
-
-    <a href="/new-technology/disclaimer/" rel="section"><i class="fa fa-check fa-fw"></i>ディスクレーマー</a>
-
-  </li>
+        <li class="menu-item menu-item-home"><a href="/new-technology/" rel="section"><i class="fa fa-home fa-fw"></i>ホーム</a></li>
+        <li class="menu-item menu-item-about"><a href="/new-technology/about/" rel="section"><i class="fa fa-user fa-fw"></i>プロフィール</a></li>
+        <li class="menu-item menu-item-tags"><a href="/new-technology/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>タグ</a></li>
+        <li class="menu-item menu-item-categories"><a href="/new-technology/categories/" rel="section"><i class="fa fa-th fa-fw"></i>カテゴリ</a></li>
+        <li class="menu-item menu-item-archives"><a href="/new-technology/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>アーカイブ</a></li>
+        <li class="menu-item menu-item-disclaimer"><a href="/new-technology/disclaimer/" rel="section"><i class="fa fa-check fa-fw"></i>ディスクレーマー</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
         </a>
@@ -190,8 +164,7 @@
 
 
   <div class="search-pop-overlay">
-    <div class="popup search-popup">
-        <div class="search-header">
+    <div class="popup search-popup"><div class="search-header">
   <span class="search-icon">
     <i class="fa fa-search"></i>
   </span>
@@ -200,7 +173,7 @@
            placeholder="検索…" spellcheck="false"
            type="search" class="search-input">
   </div>
-  <span class="popup-btn-close">
+  <span class="popup-btn-close" role="button">
     <i class="fa fa-times-circle"></i>
   </span>
 </div>
@@ -216,7 +189,7 @@
 </div>
         
   
-  <div class="toggle sidebar-toggle">
+  <div class="toggle sidebar-toggle" role="button">
     <span class="toggle-line"></span>
     <span class="toggle-line"></span>
     <span class="toggle-line"></span>
@@ -234,14 +207,15 @@
         </li>
       </ul>
 
-      <!--noindex-->
-      <section class="post-toc-wrap sidebar-panel">
-          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ghettoVCB%E3%81%A7%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E3%81%99%E3%82%8B"><span class="nav-number">1.</span> <span class="nav-text">ghettoVCBでバックアップする</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi%E3%81%AE%E3%82%B9%E3%83%8A%E3%83%83%E3%83%97%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88"><span class="nav-number">2.</span> <span class="nav-text">ESXiのスナップショット</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ghettoVCB%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span class="nav-number">3.</span> <span class="nav-text">ghettoVCBについて</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E5%85%88%E3%81%AE%E6%BA%96%E5%82%99"><span class="nav-number">4.</span> <span class="nav-text">バックアップ先の準備</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#NAS%E4%B8%8A%E3%81%A7%E3%81%AENFS%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">4.1.</span> <span class="nav-text">NAS上でのNFSの設定</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#NFSv3%E3%81%AE%E5%A0%B4%E5%90%88"><span class="nav-number">4.1.1.</span> <span class="nav-text">NFSv3の場合</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NFSv4%E3%81%AE%E5%A0%B4%E5%90%88"><span class="nav-number">4.1.2.</span> <span class="nav-text">NFSv4の場合</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi%E3%81%8B%E3%82%89NFS%E3%82%B5%E3%83%BC%E3%83%90%E3%83%BC%E3%81%AB%E6%8E%A5%E7%B6%9A%E3%81%99%E3%82%8B"><span class="nav-number">5.</span> <span class="nav-text">ESXiからNFSサーバーに接続する</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi%E3%81%A7%E3%81%AE%E4%BA%8B%E5%89%8D%E6%BA%96%E5%82%99"><span class="nav-number">6.</span> <span class="nav-text">ESXiでの事前準備</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ghettoVCB%E3%81%AE%E5%B1%95%E9%96%8B"><span class="nav-number">6.1.</span> <span class="nav-text">ghettoVCBの展開</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E3%81%99%E3%82%8B"><span class="nav-number">7.</span> <span class="nav-text">バックアップする</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">7.1.</span> <span class="nav-text">バックアップの設定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E3%81%AE%E5%AE%9F%E8%A1%8C"><span class="nav-number">7.2.</span> <span class="nav-text">バックアップの実行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E7%B5%90%E6%9E%9C%E3%81%AE%E7%A2%BA%E8%AA%8D"><span class="nav-number">7.3.</span> <span class="nav-text">バックアップ結果の確認</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi%E3%81%AE%E3%81%A1%E3%82%87%E3%81%A3%E3%81%A8%E7%89%B9%E6%AE%8A%E3%81%AA%E7%82%B9"><span class="nav-number">8.</span> <span class="nav-text">ESXiのちょっと特殊な点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%AC%E3%82%B9%E3%83%88%E3%82%A2%E3%81%99%E3%82%8B"><span class="nav-number">9.</span> <span class="nav-text">レストアする</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%AC%E3%82%B9%E3%83%88%E3%82%A2%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">9.1.</span> <span class="nav-text">レストアの設定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%AC%E3%82%B9%E3%83%88%E3%82%A2%E3%81%AE%E5%AE%9F%E8%A1%8C"><span class="nav-number">9.2.</span> <span class="nav-text">レストアの実行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%AC%E3%82%B9%E3%83%88%E3%82%A2%E7%B5%90%E6%9E%9C%E3%81%AE%E7%A2%BA%E8%AA%8D"><span class="nav-number">9.3.</span> <span class="nav-text">レストア結果の確認</span></a></li></ol></li></ol></div>
-      </section>
-      <!--/noindex-->
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ghettoVCB%E3%81%A7%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E3%81%99%E3%82%8B"><span class="nav-number">1.</span> <span class="nav-text">ghettoVCBでバックアップする</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi%E3%81%AE%E3%82%B9%E3%83%8A%E3%83%83%E3%83%97%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88"><span class="nav-number">2.</span> <span class="nav-text">ESXiのスナップショット</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ghettoVCB%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span class="nav-number">3.</span> <span class="nav-text">ghettoVCBについて</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E5%85%88%E3%81%AE%E6%BA%96%E5%82%99"><span class="nav-number">4.</span> <span class="nav-text">バックアップ先の準備</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#NAS%E4%B8%8A%E3%81%A7%E3%81%AENFS%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">4.1.</span> <span class="nav-text">NAS上でのNFSの設定</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#NFSv3%E3%81%AE%E5%A0%B4%E5%90%88"><span class="nav-number">4.1.1.</span> <span class="nav-text">NFSv3の場合</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NFSv4%E3%81%AE%E5%A0%B4%E5%90%88"><span class="nav-number">4.1.2.</span> <span class="nav-text">NFSv4の場合</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi%E3%81%8B%E3%82%89NFS%E3%82%B5%E3%83%BC%E3%83%90%E3%83%BC%E3%81%AB%E6%8E%A5%E7%B6%9A%E3%81%99%E3%82%8B"><span class="nav-number">5.</span> <span class="nav-text">ESXiからNFSサーバーに接続する</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi%E3%81%A7%E3%81%AE%E4%BA%8B%E5%89%8D%E6%BA%96%E5%82%99"><span class="nav-number">6.</span> <span class="nav-text">ESXiでの事前準備</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ghettoVCB%E3%81%AE%E5%B1%95%E9%96%8B"><span class="nav-number">6.1.</span> <span class="nav-text">ghettoVCBの展開</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E3%81%99%E3%82%8B"><span class="nav-number">7.</span> <span class="nav-text">バックアップする</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">7.1.</span> <span class="nav-text">バックアップの設定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E3%81%AE%E5%AE%9F%E8%A1%8C"><span class="nav-number">7.2.</span> <span class="nav-text">バックアップの実行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E7%B5%90%E6%9E%9C%E3%81%AE%E7%A2%BA%E8%AA%8D"><span class="nav-number">7.3.</span> <span class="nav-text">バックアップ結果の確認</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi%E3%81%AE%E3%81%A1%E3%82%87%E3%81%A3%E3%81%A8%E7%89%B9%E6%AE%8A%E3%81%AA%E7%82%B9"><span class="nav-number">8.</span> <span class="nav-text">ESXiのちょっと特殊な点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%AC%E3%82%B9%E3%83%88%E3%82%A2%E3%81%99%E3%82%8B"><span class="nav-number">9.</span> <span class="nav-text">レストアする</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%AC%E3%82%B9%E3%83%88%E3%82%A2%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">9.1.</span> <span class="nav-text">レストアの設定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%AC%E3%82%B9%E3%83%88%E3%82%A2%E3%81%AE%E5%AE%9F%E8%A1%8C"><span class="nav-number">9.2.</span> <span class="nav-text">レストアの実行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%AC%E3%82%B9%E3%83%88%E3%82%A2%E7%B5%90%E6%9E%9C%E3%81%AE%E7%A2%BA%E8%AA%8D"><span class="nav-number">9.3.</span> <span class="nav-text">レストア結果の確認</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
 
-      <section class="site-overview-wrap sidebar-panel">
-        <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <img class="site-author-image" itemprop="image" alt="阿部　吉伸(Yoshinobu ABE)"
       src="/new-technology/images/yoshi.png">
   <p class="site-author-name" itemprop="name">阿部　吉伸(Yoshinobu ABE)</p>
@@ -282,12 +256,13 @@
       </span>
   </div>
   <div class="cc-license site-overview-item animated" itemprop="license">
-    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="/new-technology/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/new-technology/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
   </div>
 
 
 
-      </section>
+        </div>
+      </div>
     </div>
   </aside>
   <div class="sidebar-dimmer"></div>
@@ -296,10 +271,12 @@
     </header>
 
     
-  <div class="back-to-top">
+  <div class="back-to-top" role="button">
     <i class="fa fa-arrow-up"></i>
     <span>0%</span>
   </div>
+
+  <a href="https://github.com/yoshi0808" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
 
 <noscript>
   <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
@@ -307,14 +284,16 @@
 
 
     <div class="main-inner post posts-expand">
-      
 
-      
 
-    
+  
+
+
+<div class="post-block">
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="ja">
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="ja">
     <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2020/10/11/esxi-backup/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -326,9 +305,6 @@
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="New technologies in our life">
     </span>
-
-    
-    
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           VMware ESXiの仮想マシンをバックアップする
@@ -431,29 +407,21 @@
 </ol>
 <h3 id="ghettoVCBの展開"><a href="#ghettoVCBの展開" class="headerlink" title="ghettoVCBの展開"></a>ghettoVCBの展開</h3><p>sshクライアントから、rootユーザーでESXiに接続し、ghettoVCBのzipを展開します。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">The ESXi Shell can be disabled by an administrative user. See the</span><br><span class="line">vSphere Security documentation <span class="keyword">for</span> more information.</span><br><span class="line">[root@esxi:~] <span class="built_in">cd</span> /vmfs/volumes/your-nfs/</span><br><span class="line">[root@esxi:/vmfs/volumes/your-nfs] ls</span><br><span class="line">ghettoVCB-master.zip</span><br><span class="line">[root@esxi:/vmfs/volumes/your-nfs] unzip ghettoVCB-master.zip</span><br><span class="line">Archive:  ghettoVCB-master.zip</span><br><span class="line">   creating: ghettoVCB-master/</span><br><span class="line">  inflating: ghettoVCB-master/README.md</span><br><span class="line">  inflating: ghettoVCB-master/ghettoVCB-restore.sh</span><br><span class="line">  inflating: ghettoVCB-master/ghettoVCB-restore_vm_restore_configuration_template</span><br><span class="line">  inflating: ghettoVCB-master/ghettoVCB-vm_backup_configuration_template</span><br><span class="line">  inflating: ghettoVCB-master/ghettoVCB.conf</span><br><span class="line">  inflating: ghettoVCB-master/ghettoVCB.sh</span><br><span class="line">  inflating: ghettoVCB-master/vghetto-ghettoVCB-offline-bundle.zip</span><br><span class="line">  inflating: ghettoVCB-master/vghetto-ghettoVCB.vib</span><br><span class="line">[root@esxi:/vmfs/volumes/your-nfs]</span><br></pre></td></tr></table></figure>
-
 <h2 id="バックアップする"><a href="#バックアップする" class="headerlink" title="バックアップする"></a>バックアップする</h2><h3 id="バックアップの設定"><a href="#バックアップの設定" class="headerlink" title="バックアップの設定"></a>バックアップの設定</h3><p>バックアップを行う本体は、<mark class="label primary">ghettoVCB.sh</mark>です。新しく作成されたghettoVCB-masterフォルダに移動し、ghettoVCB.shをviで開きます。このスクリプトで変更すべき箇所は最低1箇所で、15行目にバックアップを保存するパスを指定します。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Author: William Lam</span></span><br><span class="line"><span class="comment"># Created Date: 11/17/2008</span></span><br><span class="line"><span class="comment"># http://www.virtuallyghetto.com/</span></span><br><span class="line"><span class="comment"># https://github.com/lamw/ghettoVCB</span></span><br><span class="line"><span class="comment"># http://communities.vmware.com/docs/DOC-8760</span></span><br><span class="line"></span><br><span class="line"><span class="comment">##################################################################</span></span><br><span class="line"><span class="comment">#                   User Definable Parameters</span></span><br><span class="line"><span class="comment">##################################################################</span></span><br><span class="line"></span><br><span class="line">LAST_MODIFIED_DATE=2020_10_10</span><br><span class="line">VERSION=4</span><br><span class="line"></span><br><span class="line"><span class="comment"># directory that all VM backups should go (e.g. /vmfs/volumes/SAN_LUN1/mybackupdir)</span></span><br><span class="line">VM_BACKUP_VOLUME=/vmfs/volumes/your-nfs/backups</span><br></pre></td></tr></table></figure>
-
 <p>上記で指定した”backups”フォルダを作成します。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@esxi:/vmfs/volumes/your-nfs] mkdir backups</span><br><span class="line">[root@esxi:/vmfs/volumes/your-nfs]</span><br></pre></td></tr></table></figure>
-
 <p>さらに、バックアップ対象となるvmのListを作成します。1行1ホストとなります。XGFirewall、Win10という仮想マシンが2つ存在しそれをバックアップするのであれば、以下のようにghettoVCB-masterフォルダでvmlist.txtなどの名前で仮想マシンの一覧を作成します。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@esxi:/vmfs/volumes/your-nfs/ghettoVCB-master] vi vmlist.txt</span><br><span class="line"></span><br><span class="line">XGFirewall</span><br><span class="line">Win10</span><br></pre></td></tr></table></figure>
-
 <h3 id="バックアップの実行"><a href="#バックアップの実行" class="headerlink" title="バックアップの実行"></a>バックアップの実行</h3><p>ghettoVCB-masterフォルダから以下のコマンドでバックアップが取得できます。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@esxi:/vmfs/volumes/your-nfs/ghettoVCB-master] /bin/sh ./ghettoVCB.sh -f ./vmlist.txt</span><br></pre></td></tr></table></figure>
-
 <p>私の環境での実行結果（一部ホスト名などは書き換えています）は以下の通りです。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">2020-10-10 13:29:17 -- info: Initiate backup <span class="keyword">for</span> XGFirewall</span><br><span class="line">2020-10-10 13:29:17 -- info: Creating Snapshot <span class="string">&quot;ghettoVCB-snapshot-2020-10-10&quot;</span> <span class="keyword">for</span> XGFirewall</span><br><span class="line">Option --adaptertype is deprecated and hence will be ignored</span><br><span class="line">Destination disk format: VMFS thin-provisioned</span><br><span class="line">Cloning disk <span class="string">&#x27;/vmfs/volumes/datastore1/XGFirewall/XGFirewall/XGFirewall-0.vmdk&#x27;</span>...</span><br><span class="line">Clone: 100% <span class="keyword">done</span>.</span><br><span class="line">2020-10-10 13:30:59 -- info: Removing snapshot from XGFirewall ...</span><br><span class="line">2020-10-10 13:31:00 -- info: Slept 1 seconds to work around NFS I/O error</span><br><span class="line">2020-10-10 13:31:00 -- info: Backup Duration: 1.72 Minutes</span><br><span class="line">2020-10-10 13:31:00 -- info: Successfully completed backup <span class="keyword">for</span> XGFirewall!</span><br></pre></td></tr></table></figure>
-
 <h3 id="バックアップ結果の確認"><a href="#バックアップ結果の確認" class="headerlink" title="バックアップ結果の確認"></a>バックアップ結果の確認</h3><p>実際にバックアップが作成されたフォルダを確認すると以下のようになっています。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@esxi:/vmfs/volumes/your-nfs/backups/XGFirewall/XGFirewall-2020-10-10_13-29-16] ls -al</span><br><span class="line">total 29407336</span><br><span class="line">drwxr-xr-x    2 root     root          4096 Oct 10 13:30 .</span><br><span class="line">drwxr-xr-x    5 root     root          4096 Oct 10 13:30 ..</span><br><span class="line">-rw-r--r--    1 root     root            30 Oct 10 13:30 STATUS.ok</span><br><span class="line">-rw-------    1 root     root       2621952 Oct 10 13:30 XGFirewall-0-ctk.vmdk</span><br><span class="line">-rw-------    1 root     root     42949672960 Oct 10 13:30 XGFirewall-0-flat.vmdk</span><br><span class="line">-rw-------    1 root     root           612 Oct 10 13:30 XGFirewall-0.vmdk</span><br><span class="line">-rwxr-xr-x    1 root     root          3712 Oct 10 13:29 XGFirewall.vmx</span><br></pre></td></tr></table></figure>
-
 <p>環境によってファイル名は少し異なります。仮想マシンは、-flat.vmdkが本体です。私の場合は、別のバックアップソフトで差分バックアップを有効にしているため別にファイル名が”-ctk.vmdk”というものもあります。これはvSphereの機能であるCBT（Changed Block Tracking）を用いて更新のあったブロックのみを差分バックアップする機能で、これを使うとvmdkが2つ作成されます。このCBTはghettoVCBには無関係ですが混乱を避けるために参考までに記載しました。</p>
 <p>ファイルのサイズを確認すると、<code>XGFirewall-0-flat.vmdk</code>は40GByteとなっています。これはそもそもの仮想マシンを作成した時に設定したサイズが示されています。ghettoVCBはデフォルトのthinモードでバックアップするため、thickで構成された仮想マシンよりは実際の消費されているディスク量は小さく済みます。実際に消費されたディスクは以下の通り確認できます。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@esxi:/vmfs/volumes/your-nfs/backups/XGFirewall/XGFirewall-2020-10-10_13-29-16] du -h</span><br><span class="line">28.0G	.</span><br></pre></td></tr></table></figure>
-
 <p>つまり、シンプロビジョニング（通称シンプロ）はこうやってディスク領域を節約する仕組みになっているわけです。</p>
 <p>私の環境ではNFSサーバーはQNAPのTVS473eというモデルでウェスタンデジタル社のHDDを4台RAID10で使っており、NICはAquantia AQC107です。ESXi側のNICはintel X550T2で、共に10GbpsのNICです。XGの仮想マシン（28ギガバイト）をバックアップするのに1分40秒ですのでまずまずの速度でしょうか。参考までに、殆どアプリの入っていないWin10だと、4分20秒程度でした。<br>デフォルトでは3世代バックアップを取得するようになっていますが、その他カスタマイズする箇所については、<a target="_blank" rel="noopener" href="https://communities.vmware.com/docs/DOC-8760">英語版の公式マニュアル</a>を参照してください。</p>
 <h2 id="ESXiのちょっと特殊な点"><a href="#ESXiのちょっと特殊な点" class="headerlink" title="ESXiのちょっと特殊な点"></a>ESXiのちょっと特殊な点</h2><p>このシェルを実行する時に、頭に<code>/bin/sh</code>を加えました。単体でghettoVCB.shを実行すると<code>-sh: ./ghettoVCB.sh: Operation not permitted</code>と実行できません。ghettoVCB.shには、実行権も最初から付与されています。スクリプトの先頭にShebang（#!/bin/sh）が無いのでそれが原因かと思い加えても動作しません。これは、ESXiがUEFIのセキュアブートだとこのような挙動になるようです。スクリプトでバックアップができるようになると、Cronに登録して定期的に実行したくなりますが、改ざん防止のためそれも不可能なようです。ESXiのセキュアブートをしないように変更すれば可能ですが、XGを載せたFirewallの役割から考えると非常に悩ましいところです。定期的にバックアップ可能なソフトウェアについて、今後紹介できればと考えています。</p>
@@ -466,15 +434,11 @@
 <h3 id="レストアの設定"><a href="#レストアの設定" class="headerlink" title="レストアの設定"></a>レストアの設定</h3><p>通常仮想マシンが稼働しているvmfsフォーマットのフォルダを確認します。通常は<code>/vmfs/volumes/datastore1</code>ですが、ここでは、｀/vmfs/volumes/your-datastore/`とします。</p>
 <p>バックアップしたXGFirewallを新しい仮想マシンをレストアする場所として、datastore配下に”XGFW18”フォルダを作成します。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@esxi:/vmfs/volumes/your-datastore] mkdir XGFW18</span><br><span class="line">[root@esxi:/vmfs/volumes/your-datastore]</span><br></pre></td></tr></table></figure>
-
 <p>次に、ghettoVCBフォルダに移動し、レストア設定ファイルを新規作成します。以下の通り、バックアップしたファイル、戻し先と仮想マシンのディスクフォーマット（ここではデフォルトのzeroedthick”1”を指定）、仮想マシンの名称を記述します。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@esxi:/vmfs/volumes/your-nfs/ghettoVCB-master] vi vm_restore_list.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># DISK_FORMATS</span></span><br><span class="line"><span class="comment"># 1 = zeroedthick</span></span><br><span class="line"><span class="comment"># 2 = 2gbsparse</span></span><br><span class="line"><span class="comment"># 3 = thin</span></span><br><span class="line"><span class="comment"># 4 = eagerzeroedthick</span></span><br><span class="line"><span class="comment"># e.g.</span></span><br><span class="line"><span class="string">&quot;/vmfs/volumes/your-nfs/backups/XGFirewll/XGFirewall-2020-10-10_13-29-16;/vmfs/volumes/your-datastore/XGFW18;1;XGFW18&quot;</span></span><br></pre></td></tr></table></figure>
-
 <h3 id="レストアの実行"><a href="#レストアの実行" class="headerlink" title="レストアの実行"></a>レストアの実行</h3><p>ghettoVCB-masterフォルダから以下のコマンドでレストアを実行します。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@esxi:/vmfs/volumes/your-nfs/ghettoVCB-master] /bin/sh ./ghettoVCB-restore.sh -c ./vm_restore_list.txt</span><br></pre></td></tr></table></figure>
-
 <h3 id="レストア結果の確認"><a href="#レストア結果の確認" class="headerlink" title="レストア結果の確認"></a>レストア結果の確認</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">################## Restoring VM: XGFW18  #####################</span></span><br><span class="line">Start time: Sun Oct 11 04:14:58 UTC 2020</span><br><span class="line">Restoring VM from: <span class="string">&quot;/vmfs/volumes/your-nfs/backups/XGFirewall/XGFirewall-2020-10-10_13-29-16&quot;</span></span><br><span class="line">Restoring VM to Datastore: <span class="string">&quot;/vmfs/volumes/your-datastore/XGFW18&quot;</span> using Disk Format: <span class="string">&quot;zeroedthick&quot;</span></span><br><span class="line">Creating VM directory: <span class="string">&quot;/vmfs/volumes/your-datastore/XGFW18/XGFW18&quot;</span> ...</span><br><span class="line">Copying <span class="string">&quot;XGFW.vmx&quot;</span> file ...</span><br><span class="line">Restoring VM<span class="string">&#x27;s VMDK(s) ...</span></span><br><span class="line"><span class="string">Updating VMDK entry in &quot;XGFW18.vmx&quot; file ...</span></span><br><span class="line"><span class="string">Option --adaptertype is deprecated and hence will be ignored</span></span><br><span class="line"><span class="string">Destination disk format: VMFS zeroedthick</span></span><br><span class="line"><span class="string">Cloning disk &#x27;</span>/vmfs/volumes/your-nfs/backups/XGFirewall/XGFW-2020-10-10_13-29-16/XGFirewall-0.vmdk<span class="string">&#x27;...</span></span><br><span class="line"><span class="string">Clone: 100% done.</span></span><br><span class="line"><span class="string">Registering XGFW18 ...</span></span><br><span class="line"><span class="string">10</span></span><br><span class="line"><span class="string">End time: Sun Oct 11 04:26:17 UTC 2020</span></span><br><span class="line"><span class="string">################## Completed restore for XGFW18! #####################</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Start time: Sun Oct 11 04:14:58 UTC 2020</span></span><br><span class="line"><span class="string">End   time: Sun Oct 11 04:26:17 UTC 2020</span></span><br><span class="line"><span class="string">Duration  : 11.32 Minutes</span></span><br></pre></td></tr></table></figure>
-
 <p>これでESXiのメニューを確認すると既に左ペインの仮想マシンに新しくレストアした”XGFW18”がインベントリ登録まで完了し停止状態となっています。すぐに起動といきたいところですが、今稼働中のXGとIPアドレスなど全てが重複しますので、事前に修正する箇所があります。</p>
 <img src="/new-technology/2020/10/11/esxi-backup/esxi2.png" class="" title="alt">
 
@@ -511,7 +475,7 @@
       <a href="https://yoshi0808.github.io/new-technology/2020/10/11/esxi-backup/" title="VMware ESXiの仮想マシンをバックアップする">https://yoshi0808.github.io/new-technology/2020/10/11/esxi-backup/</a>
   </li>
   <li class="post-copyright-license">
-    <strong>著作権： </strong>このブログ内のすべての記事は、特別な記載がない限り <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> の下のライセンスで保護されています。また、免責事項・プライバシーポリシーについては、メニューのディスクレーマーをご覧ください。
+    <strong>著作権： </strong>このブログ内のすべての記事は、特別な記載がない限り <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> の下のライセンスで保護されています。また、免責事項・プライバシーポリシーについては、メニューのディスクレーマーをご覧ください。
   </li>
 </ul>
 </div>
@@ -537,13 +501,14 @@
           </div>
     </footer>
   </article>
-  
-  
-  
+</div>
 
 
 
-      
+
+
+
+    <div class="comments utterances-container"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -566,18 +531,14 @@
     });
   }
 </script>
-
-    </div>
+</div>
   </main>
 
   <footer class="footer">
     <div class="footer-inner">
-      
 
-      
 
 <div class="copyright">
-  
   &copy; 
   <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
@@ -592,29 +553,19 @@
   </footer>
 
   
-  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
 <script src="/new-technology/js/utils.js"></script><script src="/new-technology/js/motion.js"></script><script src="/new-technology/js/schemes/muse.js"></script><script src="/new-technology/js/next-boot.js"></script>
 
   
-
-
-
-
-  <script src="/new-technology/js/local-search.js"></script>
-
-
-
-
-
-
+<script src="/new-technology/js/local-search.js"></script>
 
 
 
 
 <script>
 if (document.querySelectorAll('.mermaid').length) {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8.7.0/dist/mermaid.min.js', () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8.8.4/dist/mermaid.min.js', () => {
     mermaid.init({
       theme    : 'forest',
       logLevel : 3,
@@ -627,21 +578,24 @@ if (document.querySelectorAll('.mermaid').length) {
 </script>
 
 
-
-
-
   
 
 
 
 
 
-
-
-
-  
-
-  
+<script>
+NexT.utils.loadComments('.utterances-container', () => {
+  const script = document.createElement('script');
+  script.src = 'https://utteranc.es/client.js';
+  script.setAttribute('repo', "yoshi0808/new-technology");
+  script.setAttribute('issue-term', "pathname");
+  script.setAttribute('theme', "github-light");
+  script.crossOrigin = 'anonymous';
+  script.async = true;
+  document.querySelector('.utterances-container').appendChild(script);
+});
+</script>
 
 </body>
 </html>
