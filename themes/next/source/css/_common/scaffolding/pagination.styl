@@ -1,6 +1,8 @@
 $page-number-basic {
+  // add 1 line
+  color: var(--text-color);
   display: inline-block;
-  margin: -1px 10px 0 10px;
+  margin: -1px 10px 0;
   padding: 0 10px;
 
   +mobile() {
@@ -15,7 +17,6 @@ $page-number-basic {
 
   .prev, .next, .page-number {
     @extend $page-number-basic;
-    border-bottom: 0;
     border-top: 1px solid $pagination-link-border;
     transition: border-color $transition-ease;
 

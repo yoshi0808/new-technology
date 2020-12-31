@@ -16,6 +16,20 @@ body {
   min-height: 100%;
   position: relative;
   transition: all $transition-ease;
+
+  a {
+  // border-bottom: 1px solid $link-decoration-color;
+  border-bottom: 1px solid white;
+  color: var(--link-color);
+  outline: 0;
+  text-decoration: none;
+  word-wrap();
+
+  &:hover {
+    border-bottom-color: var(--link-hover-color);
+    color: var(--link-hover-color);
+  }
+  }
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -24,7 +38,9 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: bold;
   line-height: 1.5;
   // margin: 20px 0 15px;
+  // margin: 20px 0 15px;
   margin: 50px 0 20px;
+
 }
 
 for $headline in (1 .. 6) {
@@ -34,31 +50,21 @@ for $headline in (1 .. 6) {
 }
 
 p {
-  margin: 0 0 20px 0;
+  margin: 0 0 20px;
 }
 
-a, span.exturl {
-  // border-bottom: 1px solid $link-decoration-color;
-  border-bottom: 1px solid white;
-  color: var(--text-color);
-  outline: 0;
-  text-decoration: none;
-  word-wrap();
-
-  &:hover {
-    border-bottom-color: var(--link-hover-color);
-    color: var(--link-hover-color);
-  }
-
-  // For spanned external links.
-  cursor: pointer;
-}
-
-//a[target="_blank"]::after {
-//  font-family: $font-icons;
-//  font-weight: bold;
-//  content: "\f35d";
-//  margin: 0 4px;
+//a {
+//  // border-bottom: 1px solid $link-decoration-color;
+//  border-bottom: 1px solid white;
+//  color: var(--link-color);
+//  outline: 0;
+//  text-decoration: none;
+//  word-wrap();
+//
+//  &:hover {
+//    border-bottom-color: var(--link-hover-color);
+//    color: var(--link-hover-color);
+//  }
 //}
 
 iframe, img, video, embed {

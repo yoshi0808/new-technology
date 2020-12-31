@@ -12,7 +12,7 @@
 
   if (hexo-config('post_edit.enable')) {
     .post-edit-link {
-      border-bottom: none;
+      border-bottom: 0;
       color: $grey;
       display: inline-block;
       float: right;
@@ -32,14 +32,14 @@
 }
 
 .posts-expand .post-title-link {
-  border-bottom: none;
+  border-bottom: 0;
   // color: var(--link-color);
   color: var(--text-color);
   display: inline-block;
   position: relative;
 
   &::before {
-    // background: var(--link-color);
+    //background: var(--link-color);
     background: var(--text-color);
     bottom: 0;
     content: '';
@@ -64,6 +64,8 @@
 
 .post-sticky-flag {
   display: inline-block;
+  // Fix issue #80 #140
+  margin-right: 8px;
   transform: rotate(30deg);
 }
 
@@ -101,7 +103,7 @@
 }
 
 .post-meta-item-text {
-  if (!hexo-config('post_meta.item_text')) {
+  if (not hexo-config('post_meta.item_text')) {
     display: none;
   }
 

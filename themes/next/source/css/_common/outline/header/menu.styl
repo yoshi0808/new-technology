@@ -20,13 +20,18 @@
     }
   }
 
-  a, span.exturl {
+  a {
+    // add 1 line
+    color: var(--text-color);
     border-bottom: 0;
     display: block;
     font-size: $font-size-smaller;
     transition: border-color $transition-ease;
 
     &:hover, &.menu-item-active {
+      // add 2 line
+      color: var(--text-color);
+      font-weight: bold;
       background: var(--menu-item-bg-color);
     }
   }
