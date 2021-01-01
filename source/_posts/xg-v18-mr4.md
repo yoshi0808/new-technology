@@ -24,7 +24,7 @@ XG Firewall v18のMR-4が2020年12月15日に発表されました。MR3に続�
 v18 MR-4の詳細な説明はSophos Communityの[こちらの記事](https://community.sophos.com/xg-firewall/b/blog/posts/xg-firewall-v18-mr4-is-now-available)を参照してください。可能な限り迅速にアップグレードするように推奨されています。
 
 {% cq %}
-##### Upgrade as soon as possible
+**Upgrade as soon as possible**
 
 While we always encourage you to keep your firewalls up to date with the latest firmware, over the next few months we are recommending you rapidly apply maintenance releases to ensure you have all the important security, performance, and feature enhancements applied as soon as possible.
 
