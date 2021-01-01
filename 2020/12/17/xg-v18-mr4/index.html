@@ -21,7 +21,7 @@
 
 <script class="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","version":"8.1.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+    var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","version":"8.2.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 <meta name="description" content="XG Firewall v18 MR-4XG Firewall v18のMR-4が2020年12月15日に発表されました。MR3に続き、マイナーアップデートですが、変更点について記載します。">
 <meta property="og:type" content="article">
@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/12/17/xg-v18-mr4/XG.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/12/17/xg-v18-mr4/mysophos.png">
 <meta property="article:published_time" content="2020-12-17T01:41:04.000Z">
-<meta property="article:modified_time" content="2021-01-01T02:57:40.136Z">
+<meta property="article:modified_time" content="2021-01-01T08:05:53.095Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -202,7 +202,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#XG-Firewall-v18-MR-4"><span class="nav-number">1.</span> <span class="nav-text">XG Firewall v18 MR-4</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E3%81%AA%E3%82%A8%E3%83%B3%E3%83%8F%E3%83%B3%E3%82%B9%E3%81%AE%E5%86%85%E5%AE%B9"><span class="nav-number">2.</span> <span class="nav-text">主なエンハンスの内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Upgrade-as-soon-as-possible"><span class="nav-number">2.0.0.1.</span> <span class="nav-text">Upgrade as soon as possible</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG%E3%81%AE%E3%82%A2%E3%83%83%E3%83%97%E3%83%87%E3%83%BC%E3%83%88"><span class="nav-number">3.</span> <span class="nav-text">XGのアップデート</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MR-4%E3%81%A7%E6%B3%A8%E6%84%8F%E3%81%99%E3%82%8B%E7%82%B9"><span class="nav-number">3.1.</span> <span class="nav-text">MR-4で注意する点</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#XG-Firewall-v18-MR-4"><span class="nav-number">1.</span> <span class="nav-text">XG Firewall v18 MR-4</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E3%81%AA%E3%82%A8%E3%83%B3%E3%83%8F%E3%83%B3%E3%82%B9%E3%81%AE%E5%86%85%E5%AE%B9"><span class="nav-number">2.</span> <span class="nav-text">主なエンハンスの内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG%E3%81%AE%E3%82%A2%E3%83%83%E3%83%97%E3%83%87%E3%83%BC%E3%83%88"><span class="nav-number">3.</span> <span class="nav-text">XGのアップデート</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MR-4%E3%81%A7%E6%B3%A8%E6%84%8F%E3%81%99%E3%82%8B%E7%82%B9"><span class="nav-number">3.1.</span> <span class="nav-text">MR-4で注意する点</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -317,7 +317,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">編集日</span>
-        <time title="修正日：2021-01-01 11:57:40" itemprop="dateModified" datetime="2021-01-01T11:57:40+09:00">2021-01-01</time>
+        <time title="修正日：2021-01-01 17:05:53" itemprop="dateModified" datetime="2021-01-01T17:05:53+09:00">2021-01-01</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -352,7 +352,8 @@
 </ul>
 <p>v18 MR-4の詳細な説明はSophos Communityの<a target="_blank" rel="noopener" href="https://community.sophos.com/xg-firewall/b/blog/posts/xg-firewall-v18-mr4-is-now-available">こちらの記事</a>を参照してください。可能な限り迅速にアップグレードするように推奨されています。</p>
 <blockquote class="blockquote-center">
-<h5 id="Upgrade-as-soon-as-possible"><a href="#Upgrade-as-soon-as-possible" class="headerlink" title="Upgrade as soon as possible"></a>Upgrade as soon as possible</h5><p>While we always encourage you to keep your firewalls up to date with the latest firmware, over the next few months we are recommending you rapidly apply maintenance releases to ensure you have all the important security, performance, and feature enhancements applied as soon as possible.</p>
+<p><strong>Upgrade as soon as possible</strong></p>
+<p>While we always encourage you to keep your firewalls up to date with the latest firmware, over the next few months we are recommending you rapidly apply maintenance releases to ensure you have all the important security, performance, and feature enhancements applied as soon as possible.</p>
 <p>ファイアウォールを最新のファームウェアで最新の状態に保つことを常に推奨していますが、今後数ヶ月間は、重要なセキュリティ、パフォーマンス、機能強化のすべてを可能な限り早く適用できるように、メンテナンスリリースを迅速に適用することをお勧めします。</p>
 
 </blockquote>
@@ -402,7 +403,7 @@
       <a href="https://yoshi0808.github.io/new-technology/2020/12/17/xg-v18-mr4/" title="XG Firewall v18 MR4の更新">https://yoshi0808.github.io/new-technology/2020/12/17/xg-v18-mr4/</a>
   </li>
   <li class="post-copyright-license">
-    <strong>著作権： </strong>このブログ内のすべての記事は、特別な記載がない限り <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> の下のライセンスで保護されています。また、免責事項・プライバシーポリシーについては、メニューのディスクレーマーをご覧ください。
+    <strong>著作権： </strong>このブログ内のすべての記事は、特別な記載がない限り <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> の下のライセンスで保護されています。また、免責事項・プライバシーポリシーについては、メニューのディスクレーマーを参照してください。
   </li>
 </ul>
 </div>

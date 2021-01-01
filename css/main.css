@@ -270,7 +270,7 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
   font-size: 0.875em;
-  margin: 0 0 20px 0;
+  margin: 0 0 20px;
   width: 100%;
 }
 tbody tr:nth-of-type(odd) {
@@ -1114,6 +1114,7 @@ pre code {
 .pagination .prev,
 .pagination .next,
 .pagination .page-number {
+  border-bottom: 0;
   border-top: 1px solid #eee;
   transition: border-color 0.2s ease-in-out;
 }
@@ -2092,28 +2093,6 @@ pre code {
   top: 0;
   width: 100%;
 }
-.post-body ul {
-  border: solid 2px #87ceeb;
-  border-radius: 5px;
-  margin: 1.5em 0;
-  padding: 0.5em 2em 0.5em 2.3em;
-  position: relative;
-}
-.post-body ul li {
-  line-height: 1.5;
-  padding: 0.5em 1.5em;
-  list-style-type: none !important;
-}
-.post-body ul li:before {
-  font-family: "Font Awesome 5 Free";
-  content: "\f138"; /*アイコンの種類*/
-  font-size: 0.95em;
-  font-weight: 900;
-  position: absolute;
-  left: 1em;
-/*左端からのアイコンまでの距離*/
-  color: #87ceeb; /*アイコン色*/
-}
 .post-gallery {
   display: flex;
   min-height: 200px;
@@ -2948,7 +2927,7 @@ hr {
   vertical-align: middle;
 }
 .links-of-author a::before {
-  background: #ff8140;
+  background: #52ffc4;
   display: inline-block;
   margin-right: 3px;
   transform: translateY(-2px);
