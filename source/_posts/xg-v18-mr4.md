@@ -19,7 +19,7 @@ XG Firewall v18のMR-4が2020年12月15日に発表されました。MR3に続�
 - セキュリティ強化
 - IPSecリモートアクセス用の新しい高度なオプション（scadminの代用）。Sophos Connect VPNクライアントのダウンロードがユーザーポータルから可能に
 - より強力なパスワードハッシュ - この重要な機能をフルに活用するため、アップグレードするときにパスワードを変更するように促されます
-- ウェブフィルタリング - インターネット・ウォッチ・ファウンデーション(IWF)によって児童の性的虐待コンテンツを含むと特定されたウェブサイトは、ウェブフィルタリングが有効になっている場合、自動的にブロックされます。
+- ウェブフィルタリング - インターネット・ウォッチ・ファウンデーション（IWF)によって児童の性的虐待コンテンツを含むと特定されたウェブサイトは、ウェブフィルタリングが有効になっている場合、自動的にブロックされます。
 
 v18 MR-4の詳細な説明はSophos Communityの[こちらの記事](https://community.sophos.com/xg-firewall/b/blog/posts/xg-firewall-v18-mr4-is-now-available)を参照してください。可能な限り迅速にアップグレードするように推奨されています。
 
@@ -60,8 +60,8 @@ XGv18のいつのバージョンからか気付きませんでしたが、IPSec 
 幸いにも、iOSからIPSec VPNでXG Firewallに接続する方法は、代替策があるのでVPN構成ファイルをダウンロードせずとも対応は可能です。
 「{% post_link vpn-iphone %}」の記事については代替策について追記しておきました。
 
-また[Sophos Community](https://community.sophos.com/xg-firewall/f/discussions/124771/xg-firewall-v18-mr-4-feedback-and-experiences/455768#455768)に、この不具合について投稿したところ、5分後にSophosの方（いつも手厚いサポートのLuCar Toniさん）から既知の不具合（Bug ID: NC-64758）というレスポンスがありました。早い:thumbsup:
+また[Sophos Community](https://community.sophos.com/xg-firewall/f/discussions/124771/xg-firewall-v18-mr-4-feedback-and-experiences/455768#455768)に、この不具合について投稿したところ、5分後にSophosの方（いつも手厚いサポートのLuCar Toniさん）から既知の不具合（Bug ID: NC-64758）というレスポンスがありました。早い：thumbsup:
 
-{% note info no-icon %}
+{% note info %}
 仮想環境（ESXi）上にXGをインストールされている方はアップグレードの前に、「{% post_link esxi-backup %}」を参考に、XGのバックアップを確保される事をお勧めします。
 {% endnote %}

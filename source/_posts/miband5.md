@@ -143,6 +143,6 @@ Runkeeperは、[Withingsの体重計](https://www.withings.com/jp/ja/scales)と�
 
 {% asset_img zones.png 480 alt %}
 
-{% note warning no-icon %}
+{% note warning %}
 音楽を聴きながらジョギングする場合は公園など安全な場所で行ってください。さらに外音を取り込む機能のあるイヤホンを利用される事をお勧めします。
 {% endnote %}

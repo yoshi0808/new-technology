@@ -69,7 +69,7 @@ XG Firewallの全く新しいXstreamアーキテクチャは、きわめて高�
 - ネットワークカード： intel X550-T2
 - クライアントPC： CeleronG3900という3年前の一般的なクライアントに5GbpsのNIC(Aquantia AQtion 5G Network Adapter)を組み込んだもの
 
-{% note warning no-icon %}
+{% note warning %}
 
 XG Home Editionは6Gbyteメモリ上限となる制約があります
 

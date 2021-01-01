@@ -42,7 +42,7 @@ XGは、Webフィルターやアプリケーションフィルターなどのポ
 XGで最初からSSLインスペクションの対象外となっているリストは、XGの左ペインメニュー{% label primary@web %}の”URLグループ"に{% label primary@Managed TLS exclusion list %}があり、ここに複数の有名なWebサイトのドメインが列挙されています。
 {% asset_img exclusion.png alt %}
 
-{% note warning no-icon %}
+{% note warning %}
 
 このリストは編集できません。ファームウェアの更新によって管理されます。
 

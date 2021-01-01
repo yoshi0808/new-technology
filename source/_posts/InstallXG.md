@@ -65,11 +65,10 @@ Sophos 無償ツール | https://www.sophos.com/ja-jp/products/free-tools.aspx |
 (2020-12-22 追記)
 2020-12-22時点での最新パッチはMR-4（Maintenance Release 4）となります。2020-10-12にはMR-3も提供されていましたが、現時点ではMR-3のダウンロードリンクは無くなっています。最新パッチについては、「{% post_link xg-v18-mr4 %}」を参照ください。MR-3で導入されたセキュア・ストレージ・マスターキーはMR-4でも引き続き設定が必要なものですので、「{% post_link xg-v18-mr3 %}」を参照ください。
 
-
-{% note warning no-icon %}
+{% note warning %}
 ファイアウォールとしては、UEFIによるセキュアブートが期待されますが、現時点では対応していないようです（Sophosコミュニティでも明確な情報はありませんでした）
 {% endnote %}
 
-{% note info no-icon %}
+{% note info %}
 Intelの10GbpsのNICをお使いの方は、速度の面で有利なVMXNET3ドライバを選択可能です。ただし、VMXNET3を使う場合は、MTUは1500のまま変更しないことをお勧めします。MTU9000でXGが再起動を繰り返す事象を確認しています
 {% endnote %}
