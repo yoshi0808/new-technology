@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/21/ssl-inspection2/inspection-rule4.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/21/ssl-inspection2/inspection-rule2.png">
 <meta property="article:published_time" content="2020-03-20T23:57:45.000Z">
-<meta property="article:modified_time" content="2020-10-25T00:43:06.621Z">
+<meta property="article:modified_time" content="2021-01-01T02:36:48.517Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -250,7 +250,7 @@
       </span>
   </div>
   <div class="cc-license site-overview-item animated" itemprop="license">
-    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/new-technology/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="/new-technology/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
   </div>
 
 
@@ -319,7 +319,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">編集日</span>
-        <time title="修正日：2020-10-25 09:43:06" itemprop="dateModified" datetime="2020-10-25T09:43:06+09:00">2020-10-25</time>
+        <time title="修正日：2021-01-01 11:36:48" itemprop="dateModified" datetime="2021-01-01T11:36:48+09:00">2021-01-01</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -371,7 +371,7 @@ XG FirewallのSSLインスペクションが有効に機能している事をテ
 <p>XGで最初からSSLインスペクションの対象外となっているリストは、XGの左ペインメニュー<mark class="label primary">web</mark>の”URLグループ”に<mark class="label primary">Managed TLS exclusion list</mark>があり、ここに複数の有名なWebサイトのドメインが列挙されています。</p>
 <img src="/new-technology/2020/03/21/ssl-inspection2/exclusion.png" class="" title="alt">
 
-<div class="note warning no-icon"><p>このリストは編集できません。ファームウェアの更新によって管理されます。</p>
+<div class="note warning"><p>このリストは編集できません。ファームウェアの更新によって管理されます。</p>
 </div>
 
 <h3 id="除外設定"><a href="#除外設定" class="headerlink" title="除外設定"></a>除外設定</h3><p>除外リスト<mark class="label primary">Managed TLS exclusion list</mark>にドメインが列挙されておらず、またポリシー上は利用できるはずのWebサイトに接続できない場合、XGの画面右上のログビューアからSSL/TLSインスペクションを選択しSSLインスペクションでエラーが発生していないか確認を行います。Web→URLグループの<mark class="label primary">Local TLS Exclusion List</mark>という個別にカスタマイズ可能なリストがあるので、そのリストにドメインを追加する事でSSLインスペクションの対象外とする事ができます。以下の通り、SSLインスペクションルール画面では、デフォルトの除外リストに<mark class="label primary">Managed TLS exclusion list</mark>および<mark class="label primary">Local TLS Exclusion List</mark>が存在します。<mark class="label primary">Local TLS Exclusion List</mark>の初期状態は何も登録されていません。</p>
@@ -436,7 +436,7 @@ XG FirewallのSSLインスペクションが有効に機能している事をテ
       <a href="https://yoshi0808.github.io/new-technology/2020/03/21/ssl-inspection2/" title="XG Firewall v18のSSLインスペクションの動作確認と調整">https://yoshi0808.github.io/new-technology/2020/03/21/ssl-inspection2/</a>
   </li>
   <li class="post-copyright-license">
-    <strong>著作権： </strong>このブログ内のすべての記事は、特別な記載がない限り <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> の下のライセンスで保護されています。また、免責事項・プライバシーポリシーについては、メニューのディスクレーマーをご覧ください。
+    <strong>著作権： </strong>このブログ内のすべての記事は、特別な記載がない限り <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> の下のライセンスで保護されています。また、免責事項・プライバシーポリシーについては、メニューのディスクレーマーをご覧ください。
   </li>
 </ul>
 </div>

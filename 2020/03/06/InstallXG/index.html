@@ -39,7 +39,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/06/InstallXG/vm6.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/06/InstallXG/vm7.png">
 <meta property="article:published_time" content="2020-03-06T09:12:36.000Z">
-<meta property="article:modified_time" content="2020-12-22T11:47:53.851Z">
+<meta property="article:modified_time" content="2021-01-01T02:29:55.066Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -254,7 +254,7 @@
       </span>
   </div>
   <div class="cc-license site-overview-item animated" itemprop="license">
-    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/new-technology/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="/new-technology/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
   </div>
 
 
@@ -323,7 +323,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">編集日</span>
-        <time title="修正日：2020-12-22 20:47:53" itemprop="dateModified" datetime="2020-12-22T20:47:53+09:00">2020-12-22</time>
+        <time title="修正日：2021-01-01 11:29:55" itemprop="dateModified" datetime="2021-01-01T11:29:55+09:00">2021-01-01</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -401,10 +401,10 @@ XG Firewall v18をESXi 6.7で稼働させるためのインストールイメー
 
 <p>いったんここまでで仮想マシンの作成は終了となります。なお、仮想マシンを選択した状態で「アクション」という歯車マークがあります。これをクリックして、コンソール→VMRCのダウンロードを選択し、”VMware Remote Console”をインストールして下さい。これがあるとブラウザから仮想マシンの画面がポップアップし、仮想マシンを操作出来るようになります。もし物理マシンに直接USBメモリ等でXGをインストールする場合は、対象マシンのBIOS設定でUEFIのチェックを外して下さい。</p>
 <p>(2020-12-22 追記)<br>2020-12-22時点での最新パッチはMR-4（Maintenance Release 4）となります。2020-10-12にはMR-3も提供されていましたが、現時点ではMR-3のダウンロードリンクは無くなっています。最新パッチについては、「<a href="/new-technology/2020/12/17/xg-v18-mr4/" title="XG Firewall v18 MR4の更新">XG Firewall v18 MR4の更新</a>」を参照ください。MR-3で導入されたセキュア・ストレージ・マスターキーはMR-4でも引き続き設定が必要なものですので、「<a href="/new-technology/2020/10/25/xg-v18-mr3/" title="XG Firewall v18 MR3の更新">XG Firewall v18 MR3の更新</a>」を参照ください。</p>
-<div class="note warning no-icon"><p>ファイアウォールとしては、UEFIによるセキュアブートが期待されますが、現時点では対応していないようです（Sophosコミュニティでも明確な情報はありませんでした）</p>
+<div class="note warning"><p>ファイアウォールとしては、UEFIによるセキュアブートが期待されますが、現時点では対応していないようです（Sophosコミュニティでも明確な情報はありませんでした）</p>
 </div>
 
-<div class="note info no-icon"><p>Intelの10GbpsのNICをお使いの方は、速度の面で有利なVMXNET3ドライバを選択可能です。ただし、VMXNET3を使う場合は、MTUは1500のまま変更しないことをお勧めします。MTU9000でXGが再起動を繰り返す事象を確認しています</p>
+<div class="note info"><p>Intelの10GbpsのNICをお使いの方は、速度の面で有利なVMXNET3ドライバを選択可能です。ただし、VMXNET3を使う場合は、MTUは1500のまま変更しないことをお勧めします。MTU9000でXGが再起動を繰り返す事象を確認しています</p>
 </div>
 
     </div>
@@ -426,7 +426,7 @@ XG Firewall v18をESXi 6.7で稼働させるためのインストールイメー
       <a href="https://yoshi0808.github.io/new-technology/2020/03/06/InstallXG/" title="XG Firewall v18のインストール（事前準備）">https://yoshi0808.github.io/new-technology/2020/03/06/InstallXG/</a>
   </li>
   <li class="post-copyright-license">
-    <strong>著作権： </strong>このブログ内のすべての記事は、特別な記載がない限り <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> の下のライセンスで保護されています。また、免責事項・プライバシーポリシーについては、メニューのディスクレーマーをご覧ください。
+    <strong>著作権： </strong>このブログ内のすべての記事は、特別な記載がない限り <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> の下のライセンスで保護されています。また、免責事項・プライバシーポリシーについては、メニューのディスクレーマーをご覧ください。
   </li>
 </ul>
 </div>

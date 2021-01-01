@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/12/17/xg-v18-mr4/XG.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/12/17/xg-v18-mr4/mysophos.png">
 <meta property="article:published_time" content="2020-12-17T01:41:04.000Z">
-<meta property="article:modified_time" content="2020-12-31T13:09:38.353Z">
+<meta property="article:modified_time" content="2021-01-01T02:57:40.136Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -248,7 +248,7 @@
       </span>
   </div>
   <div class="cc-license site-overview-item animated" itemprop="license">
-    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/new-technology/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="/new-technology/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
   </div>
 
 
@@ -317,7 +317,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">編集日</span>
-        <time title="修正日：2020-12-31 22:09:38" itemprop="dateModified" datetime="2020-12-31T22:09:38+09:00">2020-12-31</time>
+        <time title="修正日：2021-01-01 11:57:40" itemprop="dateModified" datetime="2021-01-01T11:57:40+09:00">2021-01-01</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -348,7 +348,7 @@
 <li>セキュリティ強化</li>
 <li>IPSecリモートアクセス用の新しい高度なオプション（scadminの代用）。Sophos Connect VPNクライアントのダウンロードがユーザーポータルから可能に</li>
 <li>より強力なパスワードハッシュ - この重要な機能をフルに活用するため、アップグレードするときにパスワードを変更するように促されます</li>
-<li>ウェブフィルタリング - インターネット・ウォッチ・ファウンデーション(IWF)によって児童の性的虐待コンテンツを含むと特定されたウェブサイトは、ウェブフィルタリングが有効になっている場合、自動的にブロックされます。</li>
+<li>ウェブフィルタリング - インターネット・ウォッチ・ファウンデーション（IWF)によって児童の性的虐待コンテンツを含むと特定されたウェブサイトは、ウェブフィルタリングが有効になっている場合、自動的にブロックされます。</li>
 </ul>
 <p>v18 MR-4の詳細な説明はSophos Communityの<a target="_blank" rel="noopener" href="https://community.sophos.com/xg-firewall/b/blog/posts/xg-firewall-v18-mr4-is-now-available">こちらの記事</a>を参照してください。可能な限り迅速にアップグレードするように推奨されています。</p>
 <blockquote class="blockquote-center">
@@ -379,8 +379,8 @@
 <p>アップロード＆再起動ボタンをクリックし、MR-4へのアップグレードを完了させます。</p>
 <h3 id="MR-4で注意する点"><a href="#MR-4で注意する点" class="headerlink" title="MR-4で注意する点"></a>MR-4で注意する点</h3><p>XGv18のいつのバージョンからか気付きませんでしたが、IPSec VPNのiOSの構成ファイルのダウンロード（ユーザーポータル画面からダウンロード）ができなくなっていました。今回のバージョンではVPNについて、scadmin（IPSec構成ファイル作成ツール）を使わず構成ファイルが作成できるような感じでしたので早速検証したところ、「Install」ボタンをクリックすると再びユーザーポータルのログインページに飛ばされてしまいファイルをダウンロードする事すらできなくなっていました。</p>
 <p>幸いにも、iOSからIPSec VPNでXG Firewallに接続する方法は、代替策があるのでVPN構成ファイルをダウンロードせずとも対応は可能です。<br>「<a href="/new-technology/2020/03/31/vpn-iphone/" title="XG Firewall VPNにスマホから接続する">XG Firewall VPNにスマホから接続する</a>」の記事については代替策について追記しておきました。</p>
-<p>また<a target="_blank" rel="noopener" href="https://community.sophos.com/xg-firewall/f/discussions/124771/xg-firewall-v18-mr-4-feedback-and-experiences/455768#455768">Sophos Community</a>に、この不具合について投稿したところ、5分後にSophosの方（いつも手厚いサポートのLuCar Toniさん）から既知の不具合（Bug ID: NC-64758）というレスポンスがありました。早い<span class="github-emoji" alias="thumbsup" style="" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f44d.png?v8">&#x1f44d;</span></p>
-<div class="note info no-icon"><p>仮想環境（ESXi）上にXGをインストールされている方はアップグレードの前に、「<a href="/new-technology/2020/10/11/esxi-backup/" title="VMware ESXiの仮想マシンをバックアップする">VMware ESXiの仮想マシンをバックアップする</a>」を参考に、XGのバックアップを確保される事をお勧めします。</p>
+<p>また<a target="_blank" rel="noopener" href="https://community.sophos.com/xg-firewall/f/discussions/124771/xg-firewall-v18-mr-4-feedback-and-experiences/455768#455768">Sophos Community</a>に、この不具合について投稿したところ、5分後にSophosの方（いつも手厚いサポートのLuCar Toniさん）から既知の不具合（Bug ID: NC-64758）というレスポンスがありました。早い：thumbsup:</p>
+<div class="note info"><p>仮想環境（ESXi）上にXGをインストールされている方はアップグレードの前に、「<a href="/new-technology/2020/10/11/esxi-backup/" title="VMware ESXiの仮想マシンをバックアップする">VMware ESXiの仮想マシンをバックアップする</a>」を参考に、XGのバックアップを確保される事をお勧めします。</p>
 </div>
 
     </div>
@@ -402,7 +402,7 @@
       <a href="https://yoshi0808.github.io/new-technology/2020/12/17/xg-v18-mr4/" title="XG Firewall v18 MR4の更新">https://yoshi0808.github.io/new-technology/2020/12/17/xg-v18-mr4/</a>
   </li>
   <li class="post-copyright-license">
-    <strong>著作権： </strong>このブログ内のすべての記事は、特別な記載がない限り <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> の下のライセンスで保護されています。また、免責事項・プライバシーポリシーについては、メニューのディスクレーマーをご覧ください。
+    <strong>著作権： </strong>このブログ内のすべての記事は、特別な記載がない限り <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> の下のライセンスで保護されています。また、免責事項・プライバシーポリシーについては、メニューのディスクレーマーをご覧ください。
   </li>
 </ul>
 </div>
