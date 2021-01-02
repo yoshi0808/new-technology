@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/12/17/xg-v18-mr4/XG.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/12/17/xg-v18-mr4/mysophos.png">
 <meta property="article:published_time" content="2020-12-17T01:41:04.000Z">
-<meta property="article:modified_time" content="2021-01-01T11:25:57.980Z">
+<meta property="article:modified_time" content="2021-01-02T11:32:52.507Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -317,7 +317,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">編集日</span>
-        <time title="修正日：2021-01-01 20:25:57" itemprop="dateModified" datetime="2021-01-01T20:25:57+09:00">2021-01-01</time>
+        <time title="修正日：2021-01-02 20:32:52" itemprop="dateModified" datetime="2021-01-02T20:32:52+09:00">2021-01-02</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -381,6 +381,7 @@
 <h3 id="MR-4で注意する点"><a href="#MR-4で注意する点" class="headerlink" title="MR-4で注意する点"></a>MR-4で注意する点</h3><p>XGv18のいつのバージョンからか気付きませんでしたが、IPSec VPNのiOSの構成ファイルのダウンロード（ユーザーポータル画面からダウンロード）ができなくなっていました。今回のバージョンではVPNについて、scadmin（IPSec構成ファイル作成ツール）を使わず構成ファイルが作成できるような感じでしたので早速検証したところ、「Install」ボタンをクリックすると再びユーザーポータルのログインページに飛ばされてしまいファイルをダウンロードする事すらできなくなっていました。</p>
 <p>幸いにも、iOSからIPSec VPNでXG Firewallに接続する方法は、代替策があるのでVPN構成ファイルをダウンロードせずとも対応は可能です。<br>「<a href="/new-technology/2020/03/31/vpn-iphone/" title="XG Firewall VPNにスマホから接続する">XG Firewall VPNにスマホから接続する</a>」の記事については代替策について追記しておきました。</p>
 <p>また<a target="_blank" rel="noopener" href="https://community.sophos.com/xg-firewall/f/discussions/124771/xg-firewall-v18-mr-4-feedback-and-experiences/455768#455768">Sophos Community</a>に、この不具合について投稿したところ、5分後にSophosの方（いつも手厚いサポートのLuCar Toniさん）から既知の不具合（Bug ID: NC-64758）というレスポンスがありました。早い<span class="github-emoji" alias="thumbsup" style="" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f44d.png?v8">&#x1f44d;</span></p>
+<p>（2021-1-2追記）v18 MR4にアップデートしてからXGのアラート通知が来ていない事に気がつきました。MR4では、左ペインメニューの<mark class="label primary">管理</mark>の<mark class="label primary">通知の設定</mark>画面で「証明書」という項目が追加されており、プルダウンから証明書を選択するようになっています。gmailのような外部メールを利用して通知するケースでは、証明書に”Application Certificate”を選択してください。「<a href="/new-technology/2020/04/03/Notifications/" title="XG Firewallの通知設定を行う">XG Firewallの通知設定を行う</a>」にも追記しています。</p>
 <div class="note info"><p>仮想環境（ESXi）上にXGをインストールされている方はアップグレードの前に、「<a href="/new-technology/2020/10/11/esxi-backup/" title="VMware ESXiの仮想マシンをバックアップする">VMware ESXiの仮想マシンをバックアップする</a>」を参考に、XGのバックアップを確保される事をお勧めします。</p>
 </div>
 
