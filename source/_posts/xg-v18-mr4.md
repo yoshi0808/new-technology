@@ -60,7 +60,9 @@ XGv18のいつのバージョンからか気付きませんでしたが、IPSec 
 幸いにも、iOSからIPSec VPNでXG Firewallに接続する方法は、代替策があるのでVPN構成ファイルをダウンロードせずとも対応は可能です。
 「{% post_link vpn-iphone %}」の記事については代替策について追記しておきました。
 
-また[Sophos Community](https://community.sophos.com/xg-firewall/f/discussions/124771/xg-firewall-v18-mr-4-feedback-and-experiences/455768#455768)に、この不具合について投稿したところ、5分後にSophosの方（いつも手厚いサポートのLuCar Toniさん）から既知の不具合（Bug ID: NC-64758）というレスポンスがありました。早い：thumbsup:
+また[Sophos Community](https://community.sophos.com/xg-firewall/f/discussions/124771/xg-firewall-v18-mr-4-feedback-and-experiences/455768#455768)に、この不具合について投稿したところ、5分後にSophosの方（いつも手厚いサポートのLuCar Toniさん）から既知の不具合（Bug ID: NC-64758）というレスポンスがありました。早い{% emoji thumbsup %}
+
+（2021-1-2追記）v18 MR4にアップデートしてからXGのアラート通知が来ていない事に気がつきました。MR4では、左ペインメニューの{% label primary @管理 %}の{% label primary @通知の設定 %}画面で「証明書」という項目が追加されており、プルダウンから証明書を選択するようになっています。gmailのような外部メールを利用して通知するケースでは、証明書に"Application Certificate"を選択してください。「{% post_link Notifications %}」にも追記しています。
 
 {% note info %}
 仮想環境（ESXi）上にXGをインストールされている方はアップグレードの前に、「{% post_link esxi-backup %}」を参考に、XGのバックアップを確保される事をお勧めします。
