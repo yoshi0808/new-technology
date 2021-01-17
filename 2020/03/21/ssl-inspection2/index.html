@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/21/ssl-inspection2/inspection-rule4.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/21/ssl-inspection2/inspection-rule2.png">
 <meta property="article:published_time" content="2020-03-20T23:57:45.000Z">
-<meta property="article:modified_time" content="2021-01-01T02:36:48.517Z">
+<meta property="article:modified_time" content="2021-01-17T03:07:17.362Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -319,7 +319,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">編集日</span>
-        <time title="修正日：2021-01-01 11:36:48" itemprop="dateModified" datetime="2021-01-01T11:36:48+09:00">2021-01-01</time>
+        <time title="修正日：2021-01-17 12:07:17" itemprop="dateModified" datetime="2021-01-17T12:07:17+09:00">2021-01-17</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -383,7 +383,7 @@ XG FirewallのSSLインスペクションが有効に機能している事をテ
 
 <p>もう1つの接続できない理由は、アプリケーション自体が、OSにインストールされた証明書などを認めていないケースです。こちらはアプリケーションの内部に証明書を保持しており、その証明書の正当性を確認しているケースです。以下の例ではpython関連のモジュールをアップグレードするケースで以下のエラーが発生します。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;pip3 install --upgrade pip</span><br><span class="line"></span><br><span class="line">WARNING: Retrying (Retry(total=4, connect=None, <span class="built_in">read</span>=None, redirect=None, status=None))</span><br><span class="line">after connection broken by <span class="string">&#x27;SSLError(SSLCertVerificationError(1,  </span></span><br><span class="line"><span class="string">&#x27;</span>[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get <span class="built_in">local</span> issuer certificate (_ssl.c:1076)<span class="string">&#x27;))&#x27;</span>: /simple/pip/</span><br></pre></td></tr></table></figure>
-<p>上記のように、この場合は当該ドメインのSSLインスペクションを外す事になりますが、XGの画面右上にある”ログビューア”から”SSL/TLSインスペクション”を選択し、どのURLのSSLインスペクションが行われているのかを確認できます。下記はあくまで一例ですが除外しておいた方が良いドメインを列挙します。これらは上述した”Local TLS Exclusion List”にサブドメインを登録する事になります。</p>
+<p>XGの画面右上にある”ログビューア”から”SSL/TLSインスペクション”を選択し、どのURLのSSLインスペクションが行われているのかを確認できます。また、エラーがある場合は、そこで除外を指定する事で自動的に<mark class="label primary">Local TLS Exclusion List</mark>にドメインが追加されます。下記はあくまで一例ですが除外しておいた方が良いドメインを列挙します。追加した証明書を参照しないプロダクトはアプリケーションの挙動とこのログを見ながら手作業で<mark class="label primary">Local TLS Exclusion List</mark>に除外するドメインを追加する作業を行います。</p>
 <table>
 <thead>
 <tr>
@@ -402,6 +402,14 @@ XG FirewallのSSLインスペクションが有効に機能している事をテ
 <tr>
 <td>github.com</td>
 <td>GitHub</td>
+</tr>
+<tr>
+<td>ubuntu.com,snapcraft.io</td>
+<td>ubuntu関連</td>
+</tr>
+<tr>
+<td>livepatch.canonical.com</td>
+<td>ubuntu関連</td>
 </tr>
 <tr>
 <td>auone.jp, paypay.ne.jp, merpay.com</td>
