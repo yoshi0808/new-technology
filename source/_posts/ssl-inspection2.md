@@ -70,13 +70,15 @@ after connection broken by 'SSLError(SSLCertVerificationError(1,
 '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1076)'))': /simple/pip/
 ```
 
-上記のように、この場合は当該ドメインのSSLインスペクションを外す事になりますが、XGの画面右上にある"ログビューア"から"SSL/TLSインスペクション"を選択し、どのURLのSSLインスペクションが行われているのかを確認できます。下記はあくまで一例ですが除外しておいた方が良いドメインを列挙します。これらは上述した"Local TLS Exclusion List"にサブドメインを登録する事になります。
+XGの画面右上にある"ログビューア"から"SSL/TLSインスペクション"を選択し、どのURLのSSLインスペクションが行われているのかを確認できます。また、エラーがある場合は、そこで除外を指定する事で自動的に{% label primary@Local TLS Exclusion List %}にドメインが追加されます。下記はあくまで一例ですが除外しておいた方が良いドメインを列挙します。追加した証明書を参照しないプロダクトはアプリケーションの挙動とこのログを見ながら手作業で{% label primary@Local TLS Exclusion List %}に除外するドメインを追加する作業を行います。
 
 | ドメイン                           | 内容                 |
 | ---------------------------------- | -------------------- |
 | pypi.org, pythonhosted.org         | Python関連           |
 | npmjs.org                          | Node.js関連          |
 | github.com                         | GitHub               |
+| ubuntu.com,snapcraft.io            | ubuntu関連           |
+| livepatch.canonical.com            | ubuntu関連           |
 | auone.jp, paypay.ne.jp, merpay.com | 〜pay関連            |
 | norton.com                         | Norton AntiVirus関連 |
 | d.line-scdn.net                    | LINE動画             |

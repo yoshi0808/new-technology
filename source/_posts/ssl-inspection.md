@@ -7,7 +7,7 @@ categories:
 date: 2020-03-20 14:23:53
 ---
 <p class="onepoint">この記事で実現すること</p>
-XG Firewallなどの次世代Firewallで利用されているSSL/TLSインスペクションについて、PCやiPhone等（Windows/macOS/iOS）を防御する仕組み、および必要となる対応を説明します。
+XG Firewallなどの次世代Firewallで利用されているSSL/TLSインスペクションについて、PCやiPhone等（Windows/macOS/Linux/iOS）を防御する仕組み、および必要となる対応を説明します。
 <!-- more -->
 
 ## SSLインスペクションとは
@@ -84,7 +84,7 @@ SSLインスペクションを行うためには、FirewallのCA証明書を端�
 - macOS
 - iOS
   
-なお、Linuxでも可能なようですが、私の方で検証は出来ていません。またAndroidには証明書はインストール出来ますが、Chrome以外のアプリで証明書を信頼する事が出来ず、実質SSLインスペクションは使えません。他の家電TVなども難しいと考えてください。
+なお、Androidには証明書はインストール出来ますが、Chrome以外のアプリで証明書を信頼する事が出来ず、実質SSLインスペクションは使えません。他の家電TVなども難しいと考えてください。
 
 SSLインスペクションを設定後、ブラウザのURLの鍵マークにカーソルを合わせるとそのサイトで利用している本来の認証局ではなく、以下のようにFirewall（この実例ではSophos XG Firewall）の認証局が有効となっている事が分かります。
 

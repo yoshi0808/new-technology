@@ -7,7 +7,7 @@ categories:
 date: 2020-03-20 21:32:29
 ---
 <p class="onepoint">この記事で実現すること</p>
-XG Firewall v18のSSL/TLSインスペクションを使い、暗号化されたSSL通信を解読します。これにより、ウィルスやマルウェアなどの脅威を通信中に検出し、PCやiPhone等（Windows、macOS、iOS）が攻撃を受ける前に防御できるようになります。
+XG Firewall v18のSSL/TLSインスペクションを使い、暗号化されたSSL通信を解読します。これにより、ウィルスやマルウェアなどの脅威を通信中に検出し、PCやiPhone等（Windows、macOS、Linux、iOS）が攻撃を受ける前に防御できるようになります。
 <!-- more -->
 
 ## XG Firewall v18のメリット
@@ -90,6 +90,29 @@ XGでは暗号化された通信を高速に解読し、ウィルスやマルウ
 
 {% asset_img mac_ca3.png alt %}
 
+### Linuxにルート証明書をインストール
+
+1. Linux側にsshで接続できる事が前提です。PCなどからscpで証明書をLinuxにコピーします
+
+  ```bash
+  $ scp ./SecurityAppliance_SSL_CA.pem linux-host:/tmp/ca.crt
+  ```
+
+2. Linux上で証明書をインストールします。
+
+ ubuntu、Debianの場合
+
+  ```bash
+  $ sudo cp /tmp/ca.crt /usr/local/share/ca-certificates/
+  $ sudo update-ca-certificates
+  ```
+ CentOS、Fedora、またはRedHatベースのシステムの場合
+  ```bash
+  $ sudo cp /tmp/ca.crt /etc/pki/ca-trust/source/anchors/
+  $ sudo update-ca-trust
+  ```
+※ubuntu20.04で動作確認をしています。
+
 ### iOSにルート証明書をインストール
 
 iOSで「ファイル」アプリを使います。
@@ -106,6 +129,13 @@ iOSで「ファイル」アプリを使います。
  10. "設定"→"一般"→"情報"と進みます
  11. 画面の一番下の"証明書信頼設定"をタップします
  12. {% label primary@Sophos SSL CA_xxxx %}が表示されているので、スイッチを右側に移動させオン（緑色点灯）します
+
+
+## Firefoxへの証明書インストール
+
+FirefoxはOSの証明書ストアを参照しないため、ブラウザ自身に証明書を取り込む必要があります。ブラウザの設定から以下の通り証明書を取り込みます（ubuntuの例）。
+
+{% asset_img firefox.png 800 alt %}
 
 ## 動作確認
 
