@@ -26,24 +26,24 @@
 <meta name="description" content="この記事で実現すること  VMwareから、”vSphereのセキュリティ”として、ESXi6.7版、ESXi7版のドキュメンテーションがあります。それぞれ284ページ、350ページと膨大な量になります。この情報のうち大半はビジネスで利用するvCenter Serverを中心としたセキュリティ維持のための記載になりますが、個人向けESXiにポイントを絞り、どのようにセキュリティを高めるか確認し">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ESXi(無償版)のセキュリティを高める">
-<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2021/01/21/esxi-security/index.html">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2021/01/23/esxi-security/index.html">
 <meta property="og:site_name" content="New technologies in our life">
 <meta property="og:description" content="この記事で実現すること  VMwareから、”vSphereのセキュリティ”として、ESXi6.7版、ESXi7版のドキュメンテーションがあります。それぞれ284ページ、350ページと膨大な量になります。この情報のうち大半はビジネスで利用するvCenter Serverを中心としたセキュリティ維持のための記載になりますが、個人向けESXiにポイントを絞り、どのようにセキュリティを高めるか確認し">
 <meta property="og:locale" content="ja_JP">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/01/21/esxi-security/vmware.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/01/21/esxi-security/esxi1.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/01/21/esxi-security/esxi2.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/01/21/esxi-security/esxi3.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/01/21/esxi-security/esxi4.png">
-<meta property="article:published_time" content="2021-01-21T12:13:34.817Z">
-<meta property="article:modified_time" content="2021-01-23T13:00:54.130Z">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/01/23/esxi-security/vmware.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/01/23/esxi-security/esxi1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/01/23/esxi-security/esxi2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/01/23/esxi-security/esxi3.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/01/23/esxi-security/esxi4.png">
+<meta property="article:published_time" content="2021-01-23T13:00:00.000Z">
+<meta property="article:modified_time" content="2021-01-23T13:08:22.739Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="ESXi">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2021/01/21/esxi-security/vmware.png">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2021/01/23/esxi-security/vmware.png">
 
 
-<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2021/01/21/esxi-security/">
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2021/01/23/esxi-security/">
 
 
 <script class="page-configurations">
@@ -289,7 +289,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="ja">
-    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2021/01/21/esxi-security/">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2021/01/23/esxi-security/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/new-technology/images/yoshi.png">
@@ -312,16 +312,10 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">投稿日</span>
+      
 
-      <time title="作成日：2021-01-21 21:13:34" itemprop="dateCreated datePublished" datetime="2021-01-21T21:13:34+09:00">2021-01-21</time>
+      <time title="作成日：2021-01-23 22:00:00 / 修正日：22:08:22" itemprop="dateCreated datePublished" datetime="2021-01-23T22:00:00+09:00">2021-01-23</time>
     </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">編集日</span>
-        <time title="修正日：2021-01-23 22:00:54" itemprop="dateModified" datetime="2021-01-23T22:00:54+09:00">2021-01-23</time>
-      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -342,7 +336,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <img src="/new-technology/2021/01/21/esxi-security/vmware.png" class="" title="alt">
+        <img src="/new-technology/2021/01/23/esxi-security/vmware.png" class="" title="alt">
 
 <p class="onepoint">この記事で実現すること</p>
 
@@ -379,7 +373,7 @@
 <li>ESXiシステムでUEFIセキュア ブートを使用することを検討します。「ESXiホストのUEFIセキュア ブート」を参照してください。</li>
 </ul>
 <h3 id="ESXiに接続可能なIPを絞る"><a href="#ESXiに接続可能なIPを絞る" class="headerlink" title="ESXiに接続可能なIPを絞る"></a>ESXiに接続可能なIPを絞る</h3><p>この機能はESXiではFirewallと呼ばれ、Linuxのiptablesやufwと同様にシンプルなものです。ホームユーザーはシンプルなLANで閉じられたアクセスですが、安全のために設定を検討すべきです。<br>P72に「ESXiファイアウォール設定の管理」があります。”「構成」をクリックし”と解説がありますが、いきなり見つけられません。実際にはWeb管理画面の左ペインメニューの <mark class="label primary">ネットワーク</mark>を選択し、<mark class="label primary">ファイアウォール</mark>タブをクリックして見つける事ができます。デフォルトではESXiの管理インタフェースにアクセス可能であれば一切の制約なく接続可能になっていますので、ここではSSHとWeb Clientに接続可能なIPを絞る事にしましょう。ご自身が使われているプライベートネットワークアドレスや固有のホストのIPでも構いませんが設定した方がセキュアです。以下の図のように説明もありますので設定は容易です。</p>
-<img src="/new-technology/2021/01/21/esxi-security/esxi1.png" class="" title="alt">
+<img src="/new-technology/2021/01/23/esxi-security/esxi1.png" class="" title="alt">
 
 <p>SSHで接続してバックアップを取得する場合の「SSHサーバ」、Web管理画面の「vSphere Web Client」について接続IPアドレスまたはネットワークアドレスを指定します。</p>
 <h3 id="SSHの起動、停止"><a href="#SSHの起動、停止" class="headerlink" title="SSHの起動、停止"></a>SSHの起動、停止</h3><p>これは、管理メニューの左ペイン<mark class="label primary">ホスト</mark>ー<mark class="label primary">管理</mark>から<mark class="label primary">TSM</mark>および<mark class="label primary">TSM-SSH</mark>の起動・停止を行います。SSHは起動したままの状況は推奨されておらず、このドキュメントでも必要な時のみ起動するように記載されています。心配な方はSSHは起動したままにしないのが無難です。利便性のためにSSHは普段から起動したまま運用するならば接続IPを絞るなど何らかの工夫は加えたいところです。ここは個人の考え方で大きく運用は異なりますから、ベストプラクティスを定めるのは難しいのが実態です。</p>
@@ -389,7 +383,7 @@
 <p>vSphere Client または esxcli system syslog vCLI コマンドを使用して syslog サービスを構成できます</p>
 </blockquote>
 <p>これも難しい記載になってますが、Web管理画面から設定できます。以下のように管理メニューの左ペイン<mark class="label primary">ホスト</mark>ー<mark class="label primary">管理</mark>から<mark class="label primary">システム</mark>、<mark class="label primary">詳細設定</mark>と進み、右上のフィルタリストに”Syslog.global.logHost”と入力すると設定対象の項目が表示されます。</p>
-<img src="/new-technology/2021/01/21/esxi-security/esxi2.png" class="" title="alt">
+<img src="/new-technology/2021/01/23/esxi-security/esxi2.png" class="" title="alt">
 
 <p>Syslog.global.logHostの行でマウスを右クリックし、<mark class="label primary">オプションの編集</mark>を選択します。ここではプロトコル、対象ホスト、ポート番号を指定します。一般的なUDPのsyslogサーバですとUDPのポート514ですから、udp://192.168.x.xxx:514のように指定します、</p>
 <p>syslogではひたすらログが流れてきます。SSHにおけるログイン失敗については、ファシリティ＝auth、重要度=Errorの扱いです。また、Web Clientについては、重大度はInfoで”Invalid Login”というログが書かれるようですので、これらだけをフィルタしても良いでしょう。</p>
@@ -412,10 +406,10 @@
 <p>ローカル環境のSSHで公開鍵認証の必要性は一般的にはあまり高くありません。パスワードによる認証が煩わしいのであれば使う程度でしょうか。これについては後述します。</p>
 <h2 id="ESXiに別の管理者ユーザーを作成する"><a href="#ESXiに別の管理者ユーザーを作成する" class="headerlink" title="ESXiに別の管理者ユーザーを作成する"></a>ESXiに別の管理者ユーザーを作成する</h2><p>”vSphereのセキュリティ”についてはこれまで説明したものが全てですが、root以外のユーザーを作成し、rootはできるだけ使わない事をお勧めします。これは一般論でありrootがよく知られたユーザー名だからです。「<a href="/new-technology/2020/10/11/esxi-backup/" title="VMware ESXiの仮想マシンをバックアップする">VMware ESXiの仮想マシンをバックアップする</a>」で説明したバックアップスクリプトのghettoVCBはrootユーザーを必須としているので、運用上、どうしてもrootユーザーでのログインは必要になってきます。しかし仮想マシンなどの操作がメインとなるWebクライアントについては別の管理者アカウントで操作すべきで、可能な限りrootユーザーの情報が漏洩しないようにrootを使う機会を減らすべきです。以下の手順で管理者アカウントを作成します。</p>
 <ol>
-<li>管理メニューの左ペイン<mark class="label primary">ホスト</mark>ー<mark class="label primary">管理</mark>から<mark class="label primary">セキュリティとユーザー</mark>に進み、<mark class="label primary">ユーザー</mark>から<mark class="label primary">ユーザーの追加</mark>をクリックします。<img src="/new-technology/2021/01/21/esxi-security/esxi3.png" class="" width="800" title="alt"></li>
+<li>管理メニューの左ペイン<mark class="label primary">ホスト</mark>ー<mark class="label primary">管理</mark>から<mark class="label primary">セキュリティとユーザー</mark>に進み、<mark class="label primary">ユーザー</mark>から<mark class="label primary">ユーザーの追加</mark>をクリックします。<img src="/new-technology/2021/01/23/esxi-security/esxi3.png" class="" width="800" title="alt"></li>
 <li>ユーザー名とパスワードを登録してユーザーの作成を終えます。</li>
 <li>管理メニューの左ペイン<mark class="label primary">ホスト</mark>から<mark class="label primary">アクション</mark>を選択し、プルダウンの<mark class="label primary">権限</mark>をクリックします。</li>
-<li>さらに<mark class="label primary">ユーザーの追加</mark>を選択します。実際には上記で作成したユーザーと同一名のユーザー名を入力します。ロールについては”システム管理者”を選択します。<img src="/new-technology/2021/01/21/esxi-security/esxi4.png" class="" width="800" title="alt">
+<li>さらに<mark class="label primary">ユーザーの追加</mark>を選択します。実際には上記で作成したユーザーと同一名のユーザー名を入力します。ロールについては”システム管理者”を選択します。<img src="/new-technology/2021/01/23/esxi-security/esxi4.png" class="" width="800" title="alt">
 
 </li>
 </ol>
@@ -445,7 +439,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>記事へのリンク：</strong>
-      <a href="https://yoshi0808.github.io/new-technology/2021/01/21/esxi-security/" title="ESXi(無償版)のセキュリティを高める">https://yoshi0808.github.io/new-technology/2021/01/21/esxi-security/</a>
+      <a href="https://yoshi0808.github.io/new-technology/2021/01/23/esxi-security/" title="ESXi(無償版)のセキュリティを高める">https://yoshi0808.github.io/new-technology/2021/01/23/esxi-security/</a>
   </li>
   <li class="post-copyright-license">
     <strong>著作権： </strong>このブログ内のすべての記事は、特別な記載がない限り <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> の下のライセンスで保護されています。また、免責事項・プライバシーポリシーについては、メニューのディスクレーマーを参照してください。
