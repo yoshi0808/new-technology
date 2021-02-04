@@ -94,7 +94,7 @@ P48から公開鍵認証について記載があります。これも記載が�
 また、このVMwareのKBによれば、以下の通りsshd_configを修正せよとあります。
 > To disable password login, ensure that the ChallengeResponseAuthentication and PasswordAuthentication are set to no.
 
-いったいどちらを信用すべきなんだろうと悩んでしまいますが、やるなと言われている事は敢えてやらずにsshd_configの書き換えはしない方向で進めます。無難に一般的な方法でクライアントで秘密鍵、公開鍵のペアを作成し、ESXiの`/etc/ssh`配下に`keys-root`フォルダを作り、`authorized_keys`に公開鍵をコピーします。
+いったいどちらを信用すべきなんだろうと悩んでしまいますが、やるなと言われている事は敢えてやらずにsshd_configの書き換えはしない方向で進めます。一般的な方法でクライアントで秘密鍵、公開鍵のペアを作成し、ESXiの`/etc/ssh`配下に`keys-root`フォルダを作り、`authorized_keys`に公開鍵をコピーします。
 1. PCからESXi(192.168.x.x)の/tmpに公開鍵をコピーします。ここではsshする前提なのでscpを使います。もちろん他の方法でも構いません。
 `scp id_rsa.pub root@192.168.x.x:/tmp`
 1. ESXiにて/tmpからAuthorized_keysに鍵をコピー（追記）します。
