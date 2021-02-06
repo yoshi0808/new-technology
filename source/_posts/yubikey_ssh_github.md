@@ -29,7 +29,7 @@ macOSでは、GitHubへの2要素認証はTouch IDによるWebAuthnが使えま�
 
 まずネットでYubiKeyを購入すると小さなパッケージが送られてきて、説明書などは全くありません。
 
-"Get statted yubico.com/start"
+"Get started yubico.com/start"
 
 と清々しいシンプルな記載があります。そして、このURLにアクセスすると、使えるWebサイト、サービスの一覧が表示されます。そして、そのサイトでの使い方が説明されているだけです。Google、Facebook、GitHubなどのサイトで"Touch to Sign"の2要素認証を楽しんでみてください。一度認証してしまえば、Cookieに認証情報を保存してしまうため、次からは認証不要で使うという方が大半でしょうから、楽しいのは最初だけかもしれません{% emoji sweat_smile %}
 
