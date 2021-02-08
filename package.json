@@ -30,7 +30,7 @@
     "hexo-renderer-marked": "^3.3.0",
     "hexo-renderer-stylus": "^2.0.1",
     "hexo-server": "^2.0.0",
-    "hexo-theme-next": "^8.2.0",
+    "hexo-theme-next": "^8.2.1",
     "highlight.js": "^10.5.0",
     "lodash": "^4.17.20",
     "minimist": "^1.2.5",
