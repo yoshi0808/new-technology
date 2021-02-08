@@ -6,12 +6,13 @@ tags:
 categories:
  - Security
 ---
+
+{% asset_img title.png 800 alt %}
 <p class="onepoint">この記事で実現すること</p>
 
 YubiKeyと関係するソフトウェアの概要説明、そして公開鍵認証でリモートホストにSSHを行えるようにします。またGitHubにコマンドラインからSSH接続できるようにします。
 
 <!-- more -->
-
 ## Yubico社のYubiKey
 
 Yubico社のYubiKeyはなんとなくご存知の方も多いかもしれません。指紋認証ではなく、秘密鍵をこの小さなハードウェアに埋め込み、公開鍵認証、Yubico独自のワンタイムパスワード、FIDO2、そしてGitHubやGoogleなどはWebAuthn（ウェブオースン）でYubiKeyにタッチするだけで簡単に2要素認証が可能になります。6桁のワンタイムパスワードをいちいち入力しなくて済むのは魅力的です。ただ法人向けの要素が強く、実際の使い方については情報が少ないのが現状です。しかし、Amazonなどの商品の評価では非常にユーザー満足度が高いのが見て取れます。
@@ -23,21 +24,27 @@ Yubico社のYubiKeyはなんとなくご存知の方も多いかもしれませ�
 macOSでは、GitHubへの2要素認証はTouch IDによるWebAuthnが使えます。このブログを書いている時点でSafariは対応していませんが、Chrome、Edgeは対応しています。以下の通り、組み込みセンサーという表示がTouchIDに相当します。
 {% asset_img touch.png 480 alt %}
 
-少なくともWebAuthnに関していえば、macOSではYubiKeyが必須というわけではありません。買う必要が無かった！とならないために、念のため申し添えます。
+細かいことを言えば、WebAuthnはパスワードを必要としない認証のはずで、GitHubのような2要素認証は定義からすると少し違うような気がします。Microsoftアカウントは、YubiKeyを事前登録する事で、アカウントやパスワードを一切入力せず、YubiKeyのタッチだけでログインできます。公開鍵認証のお手本ですね。
 
-## YubiKeyを使ってみる
+Yubikeyの小さいパッケージには"Get started yubico.com/start"と清々しいシンプルな記載があります。そして、このURLにアクセスすると、使えるWebサイト、サービスの一覧が表示されます。そして、そのサイトでの使い方が説明されているだけです。
 
-まずネットでYubiKeyを購入すると小さなパッケージが送られてきて、説明書などは全くありません。
-
-"Get started yubico.com/start"
-
-と清々しいシンプルな記載があります。そして、このURLにアクセスすると、使えるWebサイト、サービスの一覧が表示されます。そして、そのサイトでの使い方が説明されているだけです。Google、Facebook、GitHubなどのサイトで"Touch to Sign"の2要素認証を楽しんでみてください。一度認証してしまえば、Cookieに認証情報を保存してしまうため、次からは認証不要で使うという方が大半でしょうから、楽しいのは最初だけかもしれません{% emoji sweat_smile %}
+Google、Facebookなどのサイトで"Touch to Sign"の2要素認証を楽しんでみてください。一度認証してしまえば、Cookieに認証情報を保存してしまうため、次からは認証不要で使うという方が大半でしょうから、楽しいのは最初だけかもしれません{% emoji sweat_smile %}
 
 また、YubiKeyが本物かどうかのテストができます。
 https://www.yubico.com/genuine/
 
-## YubiKeyで必要なソフトウェア
-私が使っているmacOSを例にして説明しますが、あまり固有OSに偏らない形で説明していきます。YubiKeyの使い方について、私なりの解釈で難易度として3段階あります。
+## Yubikey Authenticator
+
+PCのアプリケーションを使っている時には、ワンタイムパスワード（OTP）の入力のためにスマホを取り出すのが少々面倒に感じます。PCにYubico Authenticatorをインストールすればいつもの6桁の数字をコピペで入力できるようになります。当然ですが、YubiKeyが接続されている事が前提（NFCモデルはタッチが前提）になります。スキャナ機能があってデスクトップ上に表示しているOTPのバーコードを読み取る機能もありこれも便利です。
+
+（YubiKey未接続）
+{% asset_img otp1.png 480 alt %}
+
+（YubiKey接続済）
+{% asset_img otp2.png 480 alt %}
+
+## YubiKeyの少し高度な使い方
+これまで説明してきただけでもYubiKeyは便利で満足度は高く感じるところですが、せっかくなのでもう少し高度な使い方について見ていきましょう。私が使っているmacOSを例にして説明しますが、あまり固有OSに偏らない形で説明していきます。YubiKeyの使い方について、私なりの解釈で難易度として3段階あります。
 
 | 段階 | 難易度 | 実現可能になるもの                                       |
 | ---- | ------ | -------------------------------------------------------- |
@@ -65,7 +72,7 @@ https://developers.yubico.com/yubikey-piv-manager/Releases/
 
 ## YubiKey ManagerとYubiKeyの機能
 
-これはYubiKeyの全体管理に使うソフトウェアです。セットアップは全く難しくありません。
+YubiKey Manager(GUI)はYubiKeyの全体管理に使うソフトウェアです。セットアップは全く難しくありません。
 
 {% asset_img yubi1.png 480 alt %}
 
@@ -177,8 +184,6 @@ Hi yoshi0808! You've successfully authenticated, but GitHub does not provide she
 
 HTTPS接続に戻す場合は、「[リモートの URL の変更](https://docs.github.com/ja/github/using-git/changing-a-remotes-url)」を参照してください。
 
-
-
 ### SSH接続の制限事項
 
 コマンドライン中心にgitを使われている方は問題ありませんが、YubiKeyのPIVによるPIN入力はTerminalにおける標準入出力を使用しています。従って、GUIアプリケーションを利用した時に標準入出力を使えませんから、SSH認証が失敗します。例えば、GitHub Desktopなどは以下のエラーが発生します。
@@ -187,7 +192,7 @@ HTTPS接続に戻す場合は、「[リモートの URL の変更](https://docs.
 
 これが困るという事であれば一旦GUIはHTTPS接続とし、パーソナルアクセストークンを必要としたアプリケーション専用にSSH接続とする使い分けが必要となります。
 
-## macOSにおけるyubico-piv-toolでの証明書生成ログ
+## macOSにおけるyubico-piv-toolでの秘密鍵作成ログ
 私が過去に実行した作業ログです。コマンド投入ミスやYubicoの手順書とは異なる場合で何度か試行錯誤したものをあとで整形しています。
 
 ``` bash
@@ -215,4 +220,4 @@ Enter PIN for 'YubiKey PIV #XXXXXXXX':
 上記では公開鍵id_rsa.pubをサーバー側に配置している手順は省略しています。
 
 ## YubikeyでSSH設定してみた感想
-以上のように、YubiKeyを使ったSSHは、やっている事はとてもシンプルなんですが、プロダクトが新旧あり混乱しやすいのは事実です。一番便利だなと感じているのはbitwardenへのローカルのログインで使うスタティックパスワードだったりします。さらにGnuPGを使ったGitHubへのコミット時の署名をYubiKeyで行う事もできますが、こちらはさらに複雑です。XG Firewallのようにノウハウになり得るものは積極的に書こうと思いますが、今回のような単純な手順はスキルでもなく単にYubico社の情報開示やプロダクトの整理が不十分なのを補足しているだけに過ぎず、なかなかモチベーションが湧きません。ただ、私はGnuPGの献身的なエンジニアに対して尊敬しており、後半戦（YubiKey+GnuPGを使ったSSHとGPG署名）も頑張ってまいります。
+WebAuthnや2要素認証以上にYubiKeyを使いこなそうとすると、プロダクトが新旧あり混乱しやすく難易度も上がります。一番便利だなと感じているのはbitwardenへのローカルのログインで使うスタティックパスワードだったりします。さらにGnuPGを使ったGitHubへのコミット時の署名をYubiKeyで行う事もできますが、GnuPGの理解も必要となり、もっと複雑です。今回制約となったGitHub DesktopなどのSSH認証時の課題はGnuPGを使う事で完全に解決します。
