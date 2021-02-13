@@ -282,7 +282,7 @@ XG Firewallで重要なエラーが発生した場合、VPNの接続通知、バ
 </tr>
 <tr>
 <td>ユーザ名</td>
-<td><a href="mailto:&#x79;&#111;&#x75;&#x72;&#x5f;&#97;&#x63;&#99;&#x6f;&#x75;&#x6e;&#116;&#64;&#103;&#x6d;&#x61;&#x69;&#108;&#46;&#99;&#x6f;&#109;">&#x79;&#111;&#x75;&#x72;&#x5f;&#97;&#x63;&#99;&#x6f;&#x75;&#x6e;&#116;&#64;&#103;&#x6d;&#x61;&#x69;&#108;&#46;&#99;&#x6f;&#109;</a></td>
+<td><a href="mailto:&#x79;&#111;&#x75;&#114;&#x5f;&#x61;&#99;&#99;&#x6f;&#117;&#x6e;&#x74;&#x40;&#x67;&#x6d;&#x61;&#105;&#x6c;&#x2e;&#x63;&#x6f;&#109;">&#x79;&#111;&#x75;&#114;&#x5f;&#x61;&#99;&#99;&#x6f;&#117;&#x6e;&#x74;&#x40;&#x67;&#x6d;&#x61;&#105;&#x6c;&#x2e;&#x63;&#x6f;&#109;</a></td>
 </tr>
 <tr>
 <td>パスワード</td>
@@ -294,7 +294,7 @@ XG Firewallで重要なエラーが発生した場合、VPNの接続通知、バ
 </tr>
 <tr>
 <td>送信元メールアドレス</td>
-<td><a href="mailto:&#x79;&#x6f;&#117;&#114;&#95;&#x61;&#99;&#x63;&#x6f;&#x75;&#110;&#x74;&#64;&#103;&#x6d;&#x61;&#105;&#x6c;&#46;&#x63;&#111;&#109;">&#x79;&#x6f;&#117;&#114;&#95;&#x61;&#99;&#x63;&#x6f;&#x75;&#110;&#x74;&#64;&#103;&#x6d;&#x61;&#105;&#x6c;&#46;&#x63;&#111;&#109;</a></td>
+<td><a href="mailto:&#121;&#x6f;&#x75;&#x72;&#95;&#x61;&#x63;&#99;&#111;&#x75;&#110;&#x74;&#x40;&#103;&#109;&#97;&#x69;&#x6c;&#x2e;&#99;&#111;&#x6d;">&#121;&#x6f;&#x75;&#x72;&#95;&#x61;&#x63;&#99;&#111;&#x75;&#110;&#x74;&#x40;&#103;&#109;&#97;&#x69;&#x6c;&#x2e;&#99;&#111;&#x6d;</a></td>
 </tr>
 <tr>
 <td>メールアドレスに通知を送信</td>
@@ -324,6 +324,42 @@ XG Firewallで重要なエラーが発生した場合、VPNの接続通知、バ
       </categories>
       <tags>
         <tag>XG Firewall</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>XG Firewall Sophos Communityについて</title>
+    <url>/new-technology/2020/03/26/SophosCommunity/</url>
+    <content><![CDATA[<h2 id="Sophos-Communityを活用する"><a href="#Sophos-Communityを活用する" class="headerlink" title="Sophos Communityを活用する"></a>Sophos Communityを活用する</h2><p>XG Firewall Home EditionはSophosによるサポートがなく、ユーザコミュニティの相互サポートによって成り立っています。サポートサイトは英語が中心ですが、セキュリティに関するビジネスをしている方も積極的に参加しています。</p>
+<a id="more"></a>
+
+<div class="link-grid"><div class="link-grid-container">
+<div class="link-grid-image" style="background-image: url(xg.png);"></div>
+<p>Sophos Community</p><p>Welcome to the Sophos Community! The Sophos Community is a platform for users to connect and engage on everything Sophos-related.</p>
+<a href="https://community.sophos.com/xg-firewall"></a>
+</div></div>
+
+<p>さて、直接XGの話ではありませんが、ここ数日話題になっているドイツ製翻訳ソフトの<mark class="label primary">DeepL</mark>が素晴らしいです。私はGoogle翻訳をずっと使っていましたが、こちらも使い勝手が良く便利です。<br>Windows、macOSのアプリケーションとしてインストールする事が出来ます。利用は無償（高機能な有償のpro版もあります）で、例えばブラウザで翻訳箇所を選択しCtrl+c(macはcommand+c)を2回押下するとDeepLが起動し、英訳と日本語が併記されます。</p>
+<div class="link-grid"><div class="link-grid-container">
+<div class="link-grid-image" style="background-image: url(deepl.png);"></div>
+<p>DeepL翻訳</p><p>AIの力を言語に<p> DeepL（ディープエル）では、テキストをより深く理解し翻訳できる人工知能を開発しています。</p>
+<a href="https://www.deepl.com/app"></a>
+</div></div>
+
+<p>これまで私がブログで書いてきたv18のSSL/TLSインスペクションですが、情報がたくさんあります。このブログで全てを説明するのは到底無理があります。Communityの素晴らしい知見を活用すべく、活用してみてください。</p>
+<ul>
+<li><a href="https://community.sophos.com/products/xg-firewall/f/recommended-reads/118753/sophos-xg-firewall-v18-troubleshooting-problems-with-the-dpi-engine">Sophos XG Firewall v18: DPI エンジンのトラブルシューティング ＞</a></li>
+</ul>
+<p>アプリでCtrl+cを2回押下して先頭部分の抜粋を抜粋します。</p>
+<img src="/new-technology/2020/03/26/SophosCommunity/community.png" class="" title="alt">
+
+<p>ぜひ、翻訳ソフトのDeepLを活用しながら、XGやSSLインスペクションの理解を深めてください。</p>
+]]></content>
+      <categories>
+        <category>Security</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+        <tag>DeepL</tag>
       </tags>
   </entry>
   <entry>
@@ -401,42 +437,6 @@ XG Firewallで重要なエラーが発生した場合、VPNの接続通知、バ
       </categories>
       <tags>
         <tag>XG Firewall</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>XG Firewall Sophos Communityについて</title>
-    <url>/new-technology/2020/03/26/SophosCommunity/</url>
-    <content><![CDATA[<h2 id="Sophos-Communityを活用する"><a href="#Sophos-Communityを活用する" class="headerlink" title="Sophos Communityを活用する"></a>Sophos Communityを活用する</h2><p>XG Firewall Home EditionはSophosによるサポートがなく、ユーザコミュニティの相互サポートによって成り立っています。サポートサイトは英語が中心ですが、セキュリティに関するビジネスをしている方も積極的に参加しています。</p>
-<a id="more"></a>
-
-<div class="link-grid"><div class="link-grid-container">
-<div class="link-grid-image" style="background-image: url(xg.png);"></div>
-<p>Sophos Community</p><p>Welcome to the Sophos Community! The Sophos Community is a platform for users to connect and engage on everything Sophos-related.</p>
-<a href="https://community.sophos.com/xg-firewall"></a>
-</div></div>
-
-<p>さて、直接XGの話ではありませんが、ここ数日話題になっているドイツ製翻訳ソフトの<mark class="label primary">DeepL</mark>が素晴らしいです。私はGoogle翻訳をずっと使っていましたが、こちらも使い勝手が良く便利です。<br>Windows、macOSのアプリケーションとしてインストールする事が出来ます。利用は無償（高機能な有償のpro版もあります）で、例えばブラウザで翻訳箇所を選択しCtrl+c(macはcommand+c)を2回押下するとDeepLが起動し、英訳と日本語が併記されます。</p>
-<div class="link-grid"><div class="link-grid-container">
-<div class="link-grid-image" style="background-image: url(deepl.png);"></div>
-<p>DeepL翻訳</p><p>AIの力を言語に<p> DeepL（ディープエル）では、テキストをより深く理解し翻訳できる人工知能を開発しています。</p>
-<a href="https://www.deepl.com/app"></a>
-</div></div>
-
-<p>これまで私がブログで書いてきたv18のSSL/TLSインスペクションですが、情報がたくさんあります。このブログで全てを説明するのは到底無理があります。Communityの素晴らしい知見を活用すべく、活用してみてください。</p>
-<ul>
-<li><a href="https://community.sophos.com/products/xg-firewall/f/recommended-reads/118753/sophos-xg-firewall-v18-troubleshooting-problems-with-the-dpi-engine">Sophos XG Firewall v18: DPI エンジンのトラブルシューティング ＞</a></li>
-</ul>
-<p>アプリでCtrl+cを2回押下して先頭部分の抜粋を抜粋します。</p>
-<img src="/new-technology/2020/03/26/SophosCommunity/community.png" class="" title="alt">
-
-<p>ぜひ、翻訳ソフトのDeepLを活用しながら、XGやSSLインスペクションの理解を深めてください。</p>
-]]></content>
-      <categories>
-        <category>Security</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-        <tag>DeepL</tag>
       </tags>
   </entry>
   <entry>
@@ -1550,121 +1550,6 @@ XG FirewallのSSLインスペクションが有効に機能している事をテ
       </tags>
   </entry>
   <entry>
-    <title>XG Firewall VPNにスマホから接続する</title>
-    <url>/new-technology/2020/03/31/vpn-iphone/</url>
-    <content><![CDATA[<p class="onepoint">この記事で実現すること</p>
-スマホ（iPhone、Android）からXG FirewallのVPNに接続できます。2要素認証の設定も可能です。
-
-<a id="more"></a>
-
-<h2 id="事前準備"><a href="#事前準備" class="headerlink" title="事前準備"></a>事前準備</h2><p>前回の記事でPC（WindowsおよびmacOS）からXGの<mark class="label primary">VPN（Sophos Connect）</mark>に2要素認証で安全に接続できるようになりました。ここでは、スマホからVPNへ接続できるように設定していきます。この記事では、XG側に一通りVPNの設定が終わっている事を前提としています。以下の記事を参考にしてください。</p>
-<ul>
-<li><a href="/new-technology/2020/03/28/vpn/" title="XG Firewall VPNについて">XG Firewall VPNについて</a></li>
-<li><a href="/new-technology/2020/03/28/vpnotp/" title="XG Firewall VPNに2要素認証を設定する">XG Firewall VPNに2要素認証を設定する</a>
-
-</li>
-</ul>
-<p>前提条件は以下の通りです。なお、この記事では、ワンタイムパスワードを必ず必須とはしていません。PCとは異なり、移動しながら使うスマホは毎回ワンタイムパスワードを入力するのでは利便性に欠けます。ここは利便性とセキュリティの安全面を比較し判断という事になります。</p>
-<ul>
-<li>XGにVPN(Sophos Connect)の設定を終えている</li>
-<li>XGの外側（インターネット側）にホームゲートウェイがあり、ホームゲートウェイからXGに対し必要なVPNのパケットを転送出来ている</li>
-</ul>
-<h2 id="iOS-iPhone-、AndroidのVPN設定"><a href="#iOS-iPhone-、AndroidのVPN設定" class="headerlink" title="iOS(iPhone)、AndroidのVPN設定"></a>iOS(iPhone)、AndroidのVPN設定</h2><h3 id="iOSの設定"><a href="#iOSの設定" class="headerlink" title="iOSの設定"></a>iOSの設定</h3><p>LAN環境にて、XGのユーザーポータル<code>https://XGのIPアドレス/</code>に接続します。ユーザーポータルには、前回までに作成したVPNユーザーでログインします。ポータルのログイン後には、以下の画面のように、iPhone（iOS）のIPSec VPNに必要な設定ファイルをダウンロードできるようになっています。</p>
-<img src="/new-technology/2020/03/31/vpn-iphone/iphone.png" class="" title="alt">
-
-<div class="note warning"><p>ダウンロードした設定ファイルは一部修正が必要ですので、PCでダウンロードしファイルを修正の後、iOSにインストールする事をお勧めします。</p>
-</div>
-
-<p>ファイルをダウンロードしたらメモ帳やテキストエディットなどで設定ファイルを開きます。以下はファイルの先頭からの抜粋ですが、11行目にXGのWAN側のIPアドレスが記載されている行があります。内容は以下の通りです。</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plist</span> <span class="attr">version</span>=<span class="string">&quot;1.0&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">key</span>&gt;</span>PayloadContent<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">key</span>&gt;</span>IPSec<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">key</span>&gt;</span>AuthenticationMethod<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">string</span>&gt;</span>SharedSecret<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">key</span>&gt;</span>RemoteAddress<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">string</span>&gt;</span>192.168.x.x<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>上記のIPアドレスをXGで設定してあるダイナミックDNSのホスト名に書き換えます（Sophos社が提供しているダイナミックDNSであれば、xxxx.myfirewall.coです）。その後、ファイルを保存し、iCloudまたはメールなどでiPhoneに転送し、iPhoneから設定ファイルをインストールします。macOSだとFinderからファイルを選んでAirDropでiPhoneに送信すると簡単ですね。iPhoneではプロファイルのインストール時には、最初にiPhoneのパスワードを求められますのでiPhoneのパスワードを入力します。次にXGの接続ユーザーのパスワードを求められますが、ここはワンタイムパスワードの有無で設定が異なります。前回の記事ではワンタイムパスワードが必要なユーザーを作成しましたが、ワンタイムパスワードが不要であれば、ワンタイムパスワードを使わないユーザーを改めて作成してください。</p>
-<p>以下の場合は、XGの接続ユーザーのパスワードを入力します。</p>
-<ul>
-<li>ワンタイムパスワードは利用しない</li>
-<li>iPhoneにパスワードを記憶させたい</li>
-</ul>
-<p>以下の場合は、パスワードを入力せずプロファイルのインストールを完了させます。</p>
-<ul>
-<li>ワンタイムパスワードを利用する</li>
-<li>iPhoneにパスワードを記憶させたくない</li>
-</ul>
-<h4 id="（2020-12-17追記）v18-MR-4での不具合確認について"><a href="#（2020-12-17追記）v18-MR-4での不具合確認について" class="headerlink" title="（2020-12-17追記）v18 MR-4での不具合確認について"></a>（2020-12-17追記）v18 MR-4での不具合確認について</h4><p>v18 MR-4の検証をしていて、上記設定ファイルがダウンロードできない事を発見しました。v18当初は確かにダウンロードできていたのですが。このケースに遭遇した場合はVPNのプロファイルを使わずに手動設定します。</p>
-<ol>
-<li>iOSの設定から<mark class="label primary">VPN</mark>を選択します</li>
-<li><mark class="label primary">VPN構成を追加...</mark>をタップします</li>
-<li>以下のパラメータを入力し、完了をタップします。</li>
-</ol>
-<table>
-<thead>
-<tr>
-<th>説明</th>
-<th>内容</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>タイプ</td>
-<td><mark class="label primary">IPSec</mark>を選択します</td>
-</tr>
-<tr>
-<td>サーバー</td>
-<td>xxx.myfirewall.coなどのダイナミックDNSのホスト名を入力します</td>
-</tr>
-<tr>
-<td>アカウント</td>
-<td>VPNで接続するユーザーIDを入力します</td>
-</tr>
-<tr>
-<td>シークレット</td>
-<td>XGで設定した共有鍵を入力します</td>
-</tr>
-</tbody></table>
-<h3 id="iOS-iPhone-からVPNに接続"><a href="#iOS-iPhone-からVPNに接続" class="headerlink" title="iOS(iPhone)からVPNに接続"></a>iOS(iPhone)からVPNに接続</h3><p>iPhoneの設定アプリからVPNを選択、XGの接続先が選択されている状態で<mark class="label primary">状況</mark>のトグルスイッチをオンにします。パスワードが設定済みの方は短い時間でXGへの接続が完了します。ワンタイムパスワードを設定している方、或いはパスワードを記憶させていない方は、パスワード入力のポップアップが表示されます。ワンタイムパスワードは、パスワードのあと続けてワンタイムパスワードの6つの数字を続けて入力します。一旦ポップアップが表示されると他のアプリに切り替えられないので一旦キャンセルします。ワンタイムパスワードアプリで6桁の数字を記憶するかコピーするなどし、最大30秒以内で設定アプリに再度切り替え、VPNのパスワードを完成させ接続する事になります。</p>
-<h3 id="Androidの設定"><a href="#Androidの設定" class="headerlink" title="Androidの設定"></a>Androidの設定</h3><p>AndroidからVPNに接続する場合は、以下の設定を行います。今回の実例はAndroidのバージョン9のタブレットで説明します。機種によって操作は異なるかとおもいますが、ご容赦ください。無線とネットワーク→VPN→<mark class="label primary">VPNネットワークの追加</mark>をタップします。</p>
-<table>
-<thead>
-<tr>
-<th>説明</th>
-<th>内容</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>名前</td>
-<td>接続名を入力します</td>
-</tr>
-<tr>
-<td>タイプ</td>
-<td><mark class="label primary">IPSec Xauth PSK</mark>を選択します</td>
-</tr>
-<tr>
-<td>サーバー</td>
-<td>xxx.myfirewall.coなどのダイナミックDNSのホスト名を入力します</td>
-</tr>
-<tr>
-<td>IPSec ID</td>
-<td>空白のままで構いません</td>
-</tr>
-<tr>
-<td>IPSec事前共有鍵</td>
-<td>XGで設定した共有鍵を入力します</td>
-</tr>
-</tbody></table>
-<img src="/new-technology/2020/03/31/vpn-iphone/android.png" class="" title="alt">
-
-<h3 id="AndroidからVPNに接続"><a href="#AndroidからVPNに接続" class="headerlink" title="AndroidからVPNに接続"></a>AndroidからVPNに接続</h3><mark class="label primary">設定</mark>から<mark class="label primary">無線とネットワーク</mark>に進みVPNを選択し、ユーザーIDとパスワードを入力し接続します。ワンタイムパスワードを利用する場合は、パスワードの後ろにワンタイムパスワード（6桁の数字）を続けて入力します。
-
-<p>Androidに関しては1点、注意点があります。Androidは、SSLインスペクションについて、Chromeブラウザ以外のアプリからは使えない前提があります。そこで、Android専用のVPNユーザーを作成しSSLインスペクションの対象からAndroidユーザーを除外するなどの設定が必要となります。</p>
-<h2 id="2要素認証の有無による使い分け"><a href="#2要素認証の有無による使い分け" class="headerlink" title="2要素認証の有無による使い分け"></a>2要素認証の有無による使い分け</h2><p>私はVPN接続ユーザーを2つ有効にしています。2要素認証が必要なユーザーはLANへのアクセスを許可するもの、2要素認証を不要としているユーザーはLANおよびHGWのセグメントへのアクセスを不許可とするルールを作成しています。またVPNからXGの管理画面には接続できないようにもしています。</p>
-]]></content>
-      <categories>
-        <category>Security</category>
-        <category>VPN</category>
-        <category>ワンタイムパスワード</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>XG Firewall VPNについて</title>
     <url>/new-technology/2020/03/28/vpn/</url>
     <content><![CDATA[<p class="onepoint">この記事で実現すること</p>
@@ -1775,6 +1660,121 @@ XG FirewallのSSLインスペクションが有効に機能している事をテ
       <categories>
         <category>Security</category>
         <category>VPN</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>XG Firewall VPNにスマホから接続する</title>
+    <url>/new-technology/2020/03/31/vpn-iphone/</url>
+    <content><![CDATA[<p class="onepoint">この記事で実現すること</p>
+スマホ（iPhone、Android）からXG FirewallのVPNに接続できます。2要素認証の設定も可能です。
+
+<a id="more"></a>
+
+<h2 id="事前準備"><a href="#事前準備" class="headerlink" title="事前準備"></a>事前準備</h2><p>前回の記事でPC（WindowsおよびmacOS）からXGの<mark class="label primary">VPN（Sophos Connect）</mark>に2要素認証で安全に接続できるようになりました。ここでは、スマホからVPNへ接続できるように設定していきます。この記事では、XG側に一通りVPNの設定が終わっている事を前提としています。以下の記事を参考にしてください。</p>
+<ul>
+<li><a href="/new-technology/2020/03/28/vpn/" title="XG Firewall VPNについて">XG Firewall VPNについて</a></li>
+<li><a href="/new-technology/2020/03/28/vpnotp/" title="XG Firewall VPNに2要素認証を設定する">XG Firewall VPNに2要素認証を設定する</a>
+
+</li>
+</ul>
+<p>前提条件は以下の通りです。なお、この記事では、ワンタイムパスワードを必ず必須とはしていません。PCとは異なり、移動しながら使うスマホは毎回ワンタイムパスワードを入力するのでは利便性に欠けます。ここは利便性とセキュリティの安全面を比較し判断という事になります。</p>
+<ul>
+<li>XGにVPN(Sophos Connect)の設定を終えている</li>
+<li>XGの外側（インターネット側）にホームゲートウェイがあり、ホームゲートウェイからXGに対し必要なVPNのパケットを転送出来ている</li>
+</ul>
+<h2 id="iOS-iPhone-、AndroidのVPN設定"><a href="#iOS-iPhone-、AndroidのVPN設定" class="headerlink" title="iOS(iPhone)、AndroidのVPN設定"></a>iOS(iPhone)、AndroidのVPN設定</h2><h3 id="iOSの設定"><a href="#iOSの設定" class="headerlink" title="iOSの設定"></a>iOSの設定</h3><p>LAN環境にて、XGのユーザーポータル<code>https://XGのIPアドレス/</code>に接続します。ユーザーポータルには、前回までに作成したVPNユーザーでログインします。ポータルのログイン後には、以下の画面のように、iPhone（iOS）のIPSec VPNに必要な設定ファイルをダウンロードできるようになっています。</p>
+<img src="/new-technology/2020/03/31/vpn-iphone/iphone.png" class="" title="alt">
+
+<div class="note warning"><p>ダウンロードした設定ファイルは一部修正が必要ですので、PCでダウンロードしファイルを修正の後、iOSにインストールする事をお勧めします。</p>
+</div>
+
+<p>ファイルをダウンロードしたらメモ帳やテキストエディットなどで設定ファイルを開きます。以下はファイルの先頭からの抜粋ですが、11行目にXGのWAN側のIPアドレスが記載されている行があります。内容は以下の通りです。</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plist</span> <span class="attr">version</span>=<span class="string">&quot;1.0&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">key</span>&gt;</span>PayloadContent<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">key</span>&gt;</span>IPSec<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">key</span>&gt;</span>AuthenticationMethod<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">string</span>&gt;</span>SharedSecret<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">key</span>&gt;</span>RemoteAddress<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">string</span>&gt;</span>192.168.x.x<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>上記のIPアドレスをXGで設定してあるダイナミックDNSのホスト名に書き換えます（Sophos社が提供しているダイナミックDNSであれば、xxxx.myfirewall.coです）。その後、ファイルを保存し、iCloudまたはメールなどでiPhoneに転送し、iPhoneから設定ファイルをインストールします。macOSだとFinderからファイルを選んでAirDropでiPhoneに送信すると簡単ですね。iPhoneではプロファイルのインストール時には、最初にiPhoneのパスワードを求められますのでiPhoneのパスワードを入力します。次にXGの接続ユーザーのパスワードを求められますが、ここはワンタイムパスワードの有無で設定が異なります。前回の記事ではワンタイムパスワードが必要なユーザーを作成しましたが、ワンタイムパスワードが不要であれば、ワンタイムパスワードを使わないユーザーを改めて作成してください。</p>
+<p>以下の場合は、XGの接続ユーザーのパスワードを入力します。</p>
+<ul>
+<li>ワンタイムパスワードは利用しない</li>
+<li>iPhoneにパスワードを記憶させたい</li>
+</ul>
+<p>以下の場合は、パスワードを入力せずプロファイルのインストールを完了させます。</p>
+<ul>
+<li>ワンタイムパスワードを利用する</li>
+<li>iPhoneにパスワードを記憶させたくない</li>
+</ul>
+<h4 id="（2020-12-17追記）v18-MR-4での不具合確認について"><a href="#（2020-12-17追記）v18-MR-4での不具合確認について" class="headerlink" title="（2020-12-17追記）v18 MR-4での不具合確認について"></a>（2020-12-17追記）v18 MR-4での不具合確認について</h4><p>v18 MR-4の検証をしていて、上記設定ファイルがダウンロードできない事を発見しました。v18当初は確かにダウンロードできていたのですが。このケースに遭遇した場合はVPNのプロファイルを使わずに手動設定します。</p>
+<ol>
+<li>iOSの設定から<mark class="label primary">VPN</mark>を選択します</li>
+<li><mark class="label primary">VPN構成を追加...</mark>をタップします</li>
+<li>以下のパラメータを入力し、完了をタップします。</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>説明</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>タイプ</td>
+<td><mark class="label primary">IPSec</mark>を選択します</td>
+</tr>
+<tr>
+<td>サーバー</td>
+<td>xxx.myfirewall.coなどのダイナミックDNSのホスト名を入力します</td>
+</tr>
+<tr>
+<td>アカウント</td>
+<td>VPNで接続するユーザーIDを入力します</td>
+</tr>
+<tr>
+<td>シークレット</td>
+<td>XGで設定した共有鍵を入力します</td>
+</tr>
+</tbody></table>
+<h3 id="iOS-iPhone-からVPNに接続"><a href="#iOS-iPhone-からVPNに接続" class="headerlink" title="iOS(iPhone)からVPNに接続"></a>iOS(iPhone)からVPNに接続</h3><p>iPhoneの設定アプリからVPNを選択、XGの接続先が選択されている状態で<mark class="label primary">状況</mark>のトグルスイッチをオンにします。パスワードが設定済みの方は短い時間でXGへの接続が完了します。ワンタイムパスワードを設定している方、或いはパスワードを記憶させていない方は、パスワード入力のポップアップが表示されます。ワンタイムパスワードは、パスワードのあと続けてワンタイムパスワードの6つの数字を続けて入力します。一旦ポップアップが表示されると他のアプリに切り替えられないので一旦キャンセルします。ワンタイムパスワードアプリで6桁の数字を記憶するかコピーするなどし、最大30秒以内で設定アプリに再度切り替え、VPNのパスワードを完成させ接続する事になります。</p>
+<h3 id="Androidの設定"><a href="#Androidの設定" class="headerlink" title="Androidの設定"></a>Androidの設定</h3><p>AndroidからVPNに接続する場合は、以下の設定を行います。今回の実例はAndroidのバージョン9のタブレットで説明します。機種によって操作は異なるかとおもいますが、ご容赦ください。無線とネットワーク→VPN→<mark class="label primary">VPNネットワークの追加</mark>をタップします。</p>
+<table>
+<thead>
+<tr>
+<th>説明</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>名前</td>
+<td>接続名を入力します</td>
+</tr>
+<tr>
+<td>タイプ</td>
+<td><mark class="label primary">IPSec Xauth PSK</mark>を選択します</td>
+</tr>
+<tr>
+<td>サーバー</td>
+<td>xxx.myfirewall.coなどのダイナミックDNSのホスト名を入力します</td>
+</tr>
+<tr>
+<td>IPSec ID</td>
+<td>空白のままで構いません</td>
+</tr>
+<tr>
+<td>IPSec事前共有鍵</td>
+<td>XGで設定した共有鍵を入力します</td>
+</tr>
+</tbody></table>
+<img src="/new-technology/2020/03/31/vpn-iphone/android.png" class="" title="alt">
+
+<h3 id="AndroidからVPNに接続"><a href="#AndroidからVPNに接続" class="headerlink" title="AndroidからVPNに接続"></a>AndroidからVPNに接続</h3><mark class="label primary">設定</mark>から<mark class="label primary">無線とネットワーク</mark>に進みVPNを選択し、ユーザーIDとパスワードを入力し接続します。ワンタイムパスワードを利用する場合は、パスワードの後ろにワンタイムパスワード（6桁の数字）を続けて入力します。
+
+<p>Androidに関しては1点、注意点があります。Androidは、SSLインスペクションについて、Chromeブラウザ以外のアプリからは使えない前提があります。そこで、Android専用のVPNユーザーを作成しSSLインスペクションの対象からAndroidユーザーを除外するなどの設定が必要となります。</p>
+<h2 id="2要素認証の有無による使い分け"><a href="#2要素認証の有無による使い分け" class="headerlink" title="2要素認証の有無による使い分け"></a>2要素認証の有無による使い分け</h2><p>私はVPN接続ユーザーを2つ有効にしています。2要素認証が必要なユーザーはLANへのアクセスを許可するもの、2要素認証を不要としているユーザーはLANおよびHGWのセグメントへのアクセスを不許可とするルールを作成しています。またVPNからXGの管理画面には接続できないようにもしています。</p>
+]]></content>
+      <categories>
+        <category>Security</category>
+        <category>VPN</category>
+        <category>ワンタイムパスワード</category>
       </categories>
       <tags>
         <tag>XG Firewall</tag>
@@ -1915,6 +1915,58 @@ XG FirewallのWebフィルタ・アプリケーションフィルタについて
       </tags>
   </entry>
   <entry>
+    <title>XG FirewallでIPv6の設定を行う（前半）</title>
+    <url>/new-technology/2020/04/25/xg-ipv6-1/</url>
+    <content><![CDATA[<p class="onepoint">この記事で実現すること</p>
+XG FirewallからホームゲートウェイとをIPv6で接続し、IPv6ホストの名前解決をテストします。
+
+<a id="more"></a>
+
+<h2 id="IPv6を取り巻く環境"><a href="#IPv6を取り巻く環境" class="headerlink" title="IPv6を取り巻く環境"></a>IPv6を取り巻く環境</h2><p>いつかは枯渇すると言われているIPv4アドレスですが、欧州を管轄するRIPE NCCから、2019年11月25日に欧州のIPv4アドレスが枯渇したと発表されました。インターネットにいきなり大きく影響が出てくる事はありませんが、これからは徐々にIPv4だけでは接続出来ないサイトが出てくるものと思われます。IPv6の接続方式は、PPPoEの接続方法とIPoEの2通りの接続方法があります。プロトコル自体に優劣はさほどありません。いろいろな記事ではPPPoEが劣っているという書き振りを見かける事が多いのですが、これは大手回線業者の固有事情によるものです。実態としては単にIPv6のユーザーが少なく、途中のネットワークが空いている事が多いだけで、プロトコルとして高速なわけではありません。ただ現状の環境からすると、IPv6ネットワークはまだ将来を見据えて余裕がある状態である事は間違いなく、混雑しづらい状況にあります。</p>
+<p>IPv6は実質無限といっていいほどのアドレス空間を持ちます。IPアドレスは例を挙げると、<mark class="label primary">2001:0db8:0000:0000:3456:0000:0000:0001</mark>のように表記が長く、管理する側もIPv4に比べて大変です。ホームユーザーとしては、宅内のIPアドレス管理の主体はIPv4としつつ、IPv6のサイトへのアクセスも可能というくらいに考えておく事が必要です。インターネットの接続業者によってはネット契約とは別にIPv6を改めて申し込む必要があります。大半の接続業者ではIPv6の利用は無料です。</p>
+<h2 id="IPv6の設定にあたって"><a href="#IPv6の設定にあたって" class="headerlink" title="IPv6の設定にあたって"></a>IPv6の設定にあたって</h2><p>XG FirewallはIPv6に対応しています。回線業者およびプロバイダがIPv6のサポートをしている前提で、ホームゲートウェイ（HGW）に接続する形態を想定しています。XGからHGWには普通にIPv6としてのネットワーク通信を行います。そういう意味ではIPoEとも言えます。貸与されているHGWとXGとのIPv6接続が正しく行えるかが最初のハードルとなります。この記事では、ホームゲートウェイからXGにてIPv6アドレスを割り当てられ、XGからIPv6でインターネットへのアクセスが可能か確認します。また、制約としてAndoroidはXGの構成によってはIPv6を使えない可能性があります。</p>
+<h2 id="HGWからIPv6の配布を受ける"><a href="#HGWからIPv6の配布を受ける" class="headerlink" title="HGWからIPv6の配布を受ける"></a>HGWからIPv6の配布を受ける</h2><p>ホームゲートウェイから配布されるIPアドレスは、従来のIPv4であればDHCPの機能となりますが、IPv6の場合は以下の2通りがあります。</p>
+<ol>
+<li>DHCPv6</li>
+<li>Router Advertisement</li>
+</ol>
+<p>最近の機械だとHGWに設定する箇所もなく、IPv6の契約があれば、プロバイダからIPoEでIPv6の接続が可能になっている状況もあるようです。XGは、上記いずれの方法でもHGWからのパブリックIPアドレスを受け取れるようです。</p>
+<h3 id="WANインタフェースでIPv6を構成する"><a href="#WANインタフェースでIPv6を構成する" class="headerlink" title="WANインタフェースでIPv6を構成する"></a>WANインタフェースでIPv6を構成する</h3><p>XGのPort2（WAN側）でIPv6の設定を行います。XGの左ペインメニューから、<mark class="label primary">ネットワーク</mark>の<mark class="label primary">インターフェース</mark>を選び、<mark class="label primary">Port2</mark>をクリックします。</p>
+<img src="/new-technology/2020/04/25/xg-ipv6-1/network.png" class="" title="alt">
+
+<ul>
+<li><mark class="label primary">IPv6設定</mark>のチェックボックスをOnにします</li>
+<li><mark class="label primary">IPの割り当て</mark>はDHCPを選びます</li>
+<li><mark class="label primary">モード</mark>は<mark class="label primary">手動</mark>、<mark class="label primary">ステートレス</mark>、<mark class="label primary">DHCPから他の設定を承認</mark>を選択します</li>
+<li><mark class="label primary">ゲートウェイ名</mark>は<mark class="label primary">IPv6_GW</mark>など、自由に命名してください
+
+</li>
+</ul>
+<mark class="label primary">保存</mark>をクリックすると下記の確認画面が表示されます<img src="/new-technology/2020/04/25/xg-ipv6-1/update.png" class="" title="alt">
+
+<mark class="label primary">インターフェースを更新</mark>をクリックすると、以下の通り、パブリックIPv6アドレスがHGWより割り当てられます
+ <img src="/new-technology/2020/04/25/xg-ipv6-1/update2.png" class="" title="alt">
+
+<h3 id="DNSv6を設定する"><a href="#DNSv6を設定する" class="headerlink" title="DNSv6を設定する"></a>DNSv6を設定する</h3><p>XGの左ペインメニューから<mark class="label primary">ネットワーク</mark>を選び、<mark class="label primary">DNS</mark>をクリックします。IPv6の項目があり、初期設定ではスタティックの設定となっています。HGWの<mark class="label primary">fe80:</mark>からはじまるリンクローカルアドレス、またはホームゲートウェイのパブリックIPアドレスが指定されているはずです。HGWのDNS改ざん攻撃などもあるようですし、私はプロバイダのDNSのIPアドレスを調べ、それを手動でXGに設定しています。なお、DNSv4もプロバイダのDNSを指定される事をお勧めします。実運用としてプロバイダのDNSのIPアドレスは殆ど変更される事がありません。</p>
+<img src="/new-technology/2020/04/25/xg-ipv6-1/update3.png" class="" title="alt">
+
+<p>設定が環境と合っているか診断を行います。XGの左ペインメニューから<mark class="label primary">診断</mark>を選んでください。<mark class="label primary">名前参照</mark>から、<mark class="label primary">DNSサーバーIP</mark>を<mark class="label primary">すべての設定済みサーバーを使用して参照</mark>を選択し、<mark class="label primary">名前参照</mark>をクリックしてください。</p>
+ <img src="/new-technology/2020/04/25/xg-ipv6-1/diag.png" class="" title="alt">
+
+<p>正常な場合は以下の通り、設定したIPv4とIPv6のDNSでipv6.google.comの名前解決をした結果と計測時間を表示します。</p>
+ <img src="/new-technology/2020/04/25/xg-ipv6-1/diag2.png" class="" title="alt">
+
+<p>診断結果がうまくいかない場合は、先のDNS設定と、HGWからのIP配布方法などの設定をいくつか試してみてください。</p>
+]]></content>
+      <categories>
+        <category>Security</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+        <tag>IPv6</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>XG Firewall v18 MR3の更新</title>
     <url>/new-technology/2020/10/25/xg-v18-mr3/</url>
     <content><![CDATA[<img src="/new-technology/2020/10/25/xg-v18-mr3/XG.png" class="" title="alt">
@@ -1968,58 +2020,6 @@ XG FirewallのWebフィルタ・アプリケーションフィルタについて
       </categories>
       <tags>
         <tag>XG Firewall</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>XG FirewallでIPv6の設定を行う（前半）</title>
-    <url>/new-technology/2020/04/25/xg-ipv6-1/</url>
-    <content><![CDATA[<p class="onepoint">この記事で実現すること</p>
-XG FirewallからホームゲートウェイとをIPv6で接続し、IPv6ホストの名前解決をテストします。
-
-<a id="more"></a>
-
-<h2 id="IPv6を取り巻く環境"><a href="#IPv6を取り巻く環境" class="headerlink" title="IPv6を取り巻く環境"></a>IPv6を取り巻く環境</h2><p>いつかは枯渇すると言われているIPv4アドレスですが、欧州を管轄するRIPE NCCから、2019年11月25日に欧州のIPv4アドレスが枯渇したと発表されました。インターネットにいきなり大きく影響が出てくる事はありませんが、これからは徐々にIPv4だけでは接続出来ないサイトが出てくるものと思われます。IPv6の接続方式は、PPPoEの接続方法とIPoEの2通りの接続方法があります。プロトコル自体に優劣はさほどありません。いろいろな記事ではPPPoEが劣っているという書き振りを見かける事が多いのですが、これは大手回線業者の固有事情によるものです。実態としては単にIPv6のユーザーが少なく、途中のネットワークが空いている事が多いだけで、プロトコルとして高速なわけではありません。ただ現状の環境からすると、IPv6ネットワークはまだ将来を見据えて余裕がある状態である事は間違いなく、混雑しづらい状況にあります。</p>
-<p>IPv6は実質無限といっていいほどのアドレス空間を持ちます。IPアドレスは例を挙げると、<mark class="label primary">2001:0db8:0000:0000:3456:0000:0000:0001</mark>のように表記が長く、管理する側もIPv4に比べて大変です。ホームユーザーとしては、宅内のIPアドレス管理の主体はIPv4としつつ、IPv6のサイトへのアクセスも可能というくらいに考えておく事が必要です。インターネットの接続業者によってはネット契約とは別にIPv6を改めて申し込む必要があります。大半の接続業者ではIPv6の利用は無料です。</p>
-<h2 id="IPv6の設定にあたって"><a href="#IPv6の設定にあたって" class="headerlink" title="IPv6の設定にあたって"></a>IPv6の設定にあたって</h2><p>XG FirewallはIPv6に対応しています。回線業者およびプロバイダがIPv6のサポートをしている前提で、ホームゲートウェイ（HGW）に接続する形態を想定しています。XGからHGWには普通にIPv6としてのネットワーク通信を行います。そういう意味ではIPoEとも言えます。貸与されているHGWとXGとのIPv6接続が正しく行えるかが最初のハードルとなります。この記事では、ホームゲートウェイからXGにてIPv6アドレスを割り当てられ、XGからIPv6でインターネットへのアクセスが可能か確認します。また、制約としてAndoroidはXGの構成によってはIPv6を使えない可能性があります。</p>
-<h2 id="HGWからIPv6の配布を受ける"><a href="#HGWからIPv6の配布を受ける" class="headerlink" title="HGWからIPv6の配布を受ける"></a>HGWからIPv6の配布を受ける</h2><p>ホームゲートウェイから配布されるIPアドレスは、従来のIPv4であればDHCPの機能となりますが、IPv6の場合は以下の2通りがあります。</p>
-<ol>
-<li>DHCPv6</li>
-<li>Router Advertisement</li>
-</ol>
-<p>最近の機械だとHGWに設定する箇所もなく、IPv6の契約があれば、プロバイダからIPoEでIPv6の接続が可能になっている状況もあるようです。XGは、上記いずれの方法でもHGWからのパブリックIPアドレスを受け取れるようです。</p>
-<h3 id="WANインタフェースでIPv6を構成する"><a href="#WANインタフェースでIPv6を構成する" class="headerlink" title="WANインタフェースでIPv6を構成する"></a>WANインタフェースでIPv6を構成する</h3><p>XGのPort2（WAN側）でIPv6の設定を行います。XGの左ペインメニューから、<mark class="label primary">ネットワーク</mark>の<mark class="label primary">インターフェース</mark>を選び、<mark class="label primary">Port2</mark>をクリックします。</p>
-<img src="/new-technology/2020/04/25/xg-ipv6-1/network.png" class="" title="alt">
-
-<ul>
-<li><mark class="label primary">IPv6設定</mark>のチェックボックスをOnにします</li>
-<li><mark class="label primary">IPの割り当て</mark>はDHCPを選びます</li>
-<li><mark class="label primary">モード</mark>は<mark class="label primary">手動</mark>、<mark class="label primary">ステートレス</mark>、<mark class="label primary">DHCPから他の設定を承認</mark>を選択します</li>
-<li><mark class="label primary">ゲートウェイ名</mark>は<mark class="label primary">IPv6_GW</mark>など、自由に命名してください
-
-</li>
-</ul>
-<mark class="label primary">保存</mark>をクリックすると下記の確認画面が表示されます<img src="/new-technology/2020/04/25/xg-ipv6-1/update.png" class="" title="alt">
-
-<mark class="label primary">インターフェースを更新</mark>をクリックすると、以下の通り、パブリックIPv6アドレスがHGWより割り当てられます
- <img src="/new-technology/2020/04/25/xg-ipv6-1/update2.png" class="" title="alt">
-
-<h3 id="DNSv6を設定する"><a href="#DNSv6を設定する" class="headerlink" title="DNSv6を設定する"></a>DNSv6を設定する</h3><p>XGの左ペインメニューから<mark class="label primary">ネットワーク</mark>を選び、<mark class="label primary">DNS</mark>をクリックします。IPv6の項目があり、初期設定ではスタティックの設定となっています。HGWの<mark class="label primary">fe80:</mark>からはじまるリンクローカルアドレス、またはホームゲートウェイのパブリックIPアドレスが指定されているはずです。HGWのDNS改ざん攻撃などもあるようですし、私はプロバイダのDNSのIPアドレスを調べ、それを手動でXGに設定しています。なお、DNSv4もプロバイダのDNSを指定される事をお勧めします。実運用としてプロバイダのDNSのIPアドレスは殆ど変更される事がありません。</p>
-<img src="/new-technology/2020/04/25/xg-ipv6-1/update3.png" class="" title="alt">
-
-<p>設定が環境と合っているか診断を行います。XGの左ペインメニューから<mark class="label primary">診断</mark>を選んでください。<mark class="label primary">名前参照</mark>から、<mark class="label primary">DNSサーバーIP</mark>を<mark class="label primary">すべての設定済みサーバーを使用して参照</mark>を選択し、<mark class="label primary">名前参照</mark>をクリックしてください。</p>
- <img src="/new-technology/2020/04/25/xg-ipv6-1/diag.png" class="" title="alt">
-
-<p>正常な場合は以下の通り、設定したIPv4とIPv6のDNSでipv6.google.comの名前解決をした結果と計測時間を表示します。</p>
- <img src="/new-technology/2020/04/25/xg-ipv6-1/diag2.png" class="" title="alt">
-
-<p>診断結果がうまくいかない場合は、先のDNS設定と、HGWからのIP配布方法などの設定をいくつか試してみてください。</p>
-]]></content>
-      <categories>
-        <category>Security</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-        <tag>IPv6</tag>
       </tags>
   </entry>
   <entry>
