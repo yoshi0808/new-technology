@@ -2,7 +2,7 @@
   --body-bg-color: #fff;
   --content-bg-color: #f5f5f5;
   --card-bg-color: #f5f5f5;
-  --text-color: #444;
+  --text-color: #555;
   --blockquote-color: #666;
   --link-color: #06c;
   --link-hover-color: #06c;
@@ -182,22 +182,11 @@ body {
   background: var(--body-bg-color);
   color: var(--text-color);
   font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "BIZ UDPGothic", Meiryo, sans-serif;
-  font-size: 0.95em;
+  font-size: 1em;
   line-height: 1.75;
   min-height: 100%;
   position: relative;
   transition: all 0.2s ease-in-out;
-}
-body a {
-  border-bottom: 1px solid #fff;
-  color: var(--link-color);
-  outline: 0;
-  text-decoration: none;
-  overflow-wrap: break-word;
-}
-body a:hover {
-  border-bottom-color: var(--link-hover-color);
-  color: var(--link-hover-color);
 }
 h1,
 h2,
@@ -205,10 +194,10 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Font Awesome 5 Free", "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "BIZ UDPGothic", Meiryo, sans-serif;
+  font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "BIZ UDPGothic", Meiryo, sans-serif;
   font-weight: bold;
   line-height: 1.5;
-  margin: 50px 0 20px;
+  margin: 20px 0 15px;
 }
 h1 {
   font-size: 1.5em;
@@ -230,6 +219,18 @@ h6 {
 }
 p {
   margin: 0 0 20px;
+}
+a {
+  border-bottom: 1px solid #ccc;
+  color: var(--link-color);
+  cursor: pointer;
+  outline: 0;
+  text-decoration: none;
+  overflow-wrap: break-word;
+}
+a:hover {
+  border-bottom-color: var(--link-hover-color);
+  color: var(--link-hover-color);
 }
 iframe,
 img,
@@ -292,7 +293,6 @@ td {
 th {
   font-weight: 700;
   padding-bottom: 10px;
-  background: #f1f8ff;
 }
 td {
   border-bottom-width: 1px;
@@ -359,265 +359,102 @@ td {
   top: -5px;
   transform: rotate(-45deg);
 }
-/**
- * prism.js Coy theme for JavaScript, CoffeeScript, CSS and HTML
- * Based on https://github.com/tshedor/workshop-wp-theme (Example: http://workshop.kansan.com/category/sessions/basics or http://workshop.timshedor.com/category/sessions/basics);
- * @author Tim  Shedor
- */
+/*
 
-code[class*="language-"],
-pre[class*="language-"] {
-	color: black;
-	background: none;
-	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-	font-size: 1em;
-	text-align: left;
-	white-space: pre;
-	word-spacing: normal;
-	word-break: normal;
-	word-wrap: normal;
-	line-height: 1.5;
+Atom One Light by Daniel Gamage
+Original One Light Syntax theme from https://github.com/atom/one-light-syntax
 
-	-moz-tab-size: 4;
-	-o-tab-size: 4;
-	tab-size: 4;
+base:    #fafafa
+mono-1:  #383a42
+mono-2:  #686b77
+mono-3:  #a0a1a7
+hue-1:   #0184bb
+hue-2:   #4078f2
+hue-3:   #a626a4
+hue-4:   #50a14f
+hue-5:   #e45649
+hue-5-2: #c91243
+hue-6:   #986801
+hue-6-2: #c18401
 
-	-webkit-hyphens: none;
-	-moz-hyphens: none;
-	-ms-hyphens: none;
-	hyphens: none;
+*/
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 0.5em;
+  color: #383a42;
+  background: #fafafa;
 }
 
-/* Code blocks */
-pre[class*="language-"] {
-	position: relative;
-	margin: .5em 0;
-	overflow: visible;
-	padding: 0;
-}
-pre[class*="language-"]>code {
-	position: relative;
-	border-left: 10px solid #358ccb;
-	box-shadow: -1px 0px 0px 0px #358ccb, 0px 0px 0px 1px #dfdfdf;
-	background-color: #fdfdfd;
-	background-image: linear-gradient(transparent 50%, rgba(69, 142, 209, 0.04) 50%);
-	background-size: 3em 3em;
-	background-origin: content-box;
-	background-attachment: local;
+.hljs-comment,
+.hljs-quote {
+  color: #a0a1a7;
+  font-style: italic;
 }
 
-code[class*="language-"] {
-	max-height: inherit;
-	height: inherit;
-	padding: 0 1em;
-	display: block;
-	overflow: auto;
+.hljs-doctag,
+.hljs-keyword,
+.hljs-formula {
+  color: #a626a4;
 }
 
-/* Margin bottom to accommodate shadow */
-:not(pre) > code[class*="language-"],
-pre[class*="language-"] {
-	background-color: #fdfdfd;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-	margin-bottom: 1em;
+.hljs-section,
+.hljs-name,
+.hljs-selector-tag,
+.hljs-deletion,
+.hljs-subst {
+  color: #e45649;
 }
 
-/* Inline code */
-:not(pre) > code[class*="language-"] {
-	position: relative;
-	padding: .2em;
-	border-radius: 0.3em;
-	color: #c92c2c;
-	border: 1px solid rgba(0, 0, 0, 0.1);
-	display: inline;
-	white-space: normal;
+.hljs-literal {
+  color: #0184bb;
 }
 
-pre[class*="language-"]:before,
-pre[class*="language-"]:after {
-	content: '';
-	z-index: -2;
-	display: block;
-	position: absolute;
-	bottom: 0.75em;
-	left: 0.18em;
-	width: 40%;
-	height: 20%;
-	max-height: 13em;
-	box-shadow: 0px 13px 8px #979797;
-	-webkit-transform: rotate(-2deg);
-	-moz-transform: rotate(-2deg);
-	-ms-transform: rotate(-2deg);
-	-o-transform: rotate(-2deg);
-	transform: rotate(-2deg);
+.hljs-string,
+.hljs-regexp,
+.hljs-addition,
+.hljs-attribute,
+.hljs-meta-string {
+  color: #50a14f;
 }
 
-pre[class*="language-"]:after {
-	right: 0.75em;
-	left: auto;
-	-webkit-transform: rotate(2deg);
-	-moz-transform: rotate(2deg);
-	-ms-transform: rotate(2deg);
-	-o-transform: rotate(2deg);
-	transform: rotate(2deg);
+.hljs-built_in,
+.hljs-class .hljs-title {
+  color: #c18401;
 }
 
-.token.comment,
-.token.block-comment,
-.token.prolog,
-.token.doctype,
-.token.cdata {
-	color: #7D8B99;
+.hljs-attr,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-type,
+.hljs-selector-class,
+.hljs-selector-attr,
+.hljs-selector-pseudo,
+.hljs-number {
+  color: #986801;
 }
 
-.token.punctuation {
-	color: #5F6364;
+.hljs-symbol,
+.hljs-bullet,
+.hljs-link,
+.hljs-meta,
+.hljs-selector-id,
+.hljs-title {
+  color: #4078f2;
 }
 
-.token.property,
-.token.tag,
-.token.boolean,
-.token.number,
-.token.function-name,
-.token.constant,
-.token.symbol,
-.token.deleted {
-	color: #c92c2c;
+.hljs-emphasis {
+  font-style: italic;
 }
 
-.token.selector,
-.token.attr-name,
-.token.string,
-.token.char,
-.token.function,
-.token.builtin,
-.token.inserted {
-	color: #2f9c0a;
+.hljs-strong {
+  font-weight: bold;
 }
 
-.token.operator,
-.token.entity,
-.token.url,
-.token.variable {
-	color: #a67f59;
-	background: rgba(255, 255, 255, 0.5);
+.hljs-link {
+  text-decoration: underline;
 }
-
-.token.atrule,
-.token.attr-value,
-.token.keyword,
-.token.class-name {
-	color: #1990b8;
-}
-
-.token.regex,
-.token.important {
-	color: #e90;
-}
-
-.language-css .token.string,
-.style .token.string {
-	color: #a67f59;
-	background: rgba(255, 255, 255, 0.5);
-}
-
-.token.important {
-	font-weight: normal;
-}
-
-.token.bold {
-	font-weight: bold;
-}
-.token.italic {
-	font-style: italic;
-}
-
-.token.entity {
-	cursor: help;
-}
-
-.token.namespace {
-	opacity: .7;
-}
-
-@media screen and (max-width: 767px) {
-	pre[class*="language-"]:before,
-	pre[class*="language-"]:after {
-		bottom: 14px;
-		box-shadow: none;
-	}
-
-}
-
-/* Plugin styles: Line Numbers */
-pre[class*="language-"].line-numbers.line-numbers {
-	padding-left: 0;
-}
-
-pre[class*="language-"].line-numbers.line-numbers code {
-	padding-left: 3.8em;
-}
-
-pre[class*="language-"].line-numbers.line-numbers .line-numbers-rows {
-	left: 0;
-}
-
-/* Plugin styles: Line Highlight */
-pre[class*="language-"][data-line] {
-	padding-top: 0;
-	padding-bottom: 0;
-	padding-left: 0;
-}
-pre[data-line] code {
-	position: relative;
-	padding-left: 4em;
-}
-pre .line-highlight {
-	margin-top: 0;
-}
-
-pre[class*="language-"].line-numbers {
-	position: relative;
-	padding-left: 3.8em;
-	counter-reset: linenumber;
-}
-
-pre[class*="language-"].line-numbers > code {
-	position: relative;
-	white-space: inherit;
-}
-
-.line-numbers .line-numbers-rows {
-	position: absolute;
-	pointer-events: none;
-	top: 0;
-	font-size: 100%;
-	left: -3.8em;
-	width: 3em; /* works for line-numbers below 1000 lines */
-	letter-spacing: -1px;
-	border-right: 1px solid #999;
-
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-
-}
-
-	.line-numbers-rows > span {
-		display: block;
-		counter-increment: linenumber;
-	}
-
-		.line-numbers-rows > span:before {
-			content: counter(linenumber);
-			color: #999;
-			display: block;
-			padding-right: 0.8em;
-			text-align: right;
-		}
 
 code,
 kbd,
@@ -633,7 +470,7 @@ pre {
 }
 pre,
 code {
-  font-family: Menlo, Consolas, monospace, "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "BIZ UDPGothic", Meiryo, sans-serif;
+  font-family: consolas, Menlo, monospace, 'PingFang SC', 'Microsoft YaHei';
 }
 code {
   border-radius: 3px;
@@ -777,26 +614,26 @@ pre code {
   width: 100%;
 }
 .post-body .label {
-  color: #444;
+  color: #555;
   padding: 0 2px;
 }
 .post-body .label.default {
-  background: linear-gradient(transparent 60%, #f9f 60%);
+  background: #f0f0f0;
 }
 .post-body .label.primary {
-  background: linear-gradient(transparent 60%, #f9f 60%);
+  background: #efe6f7;
 }
 .post-body .label.info {
-  background: linear-gradient(transparent 60%, #f9f 60%);
+  background: #e5f2f8;
 }
 .post-body .label.success {
-  background: linear-gradient(transparent 60%, #f9f 60%);
+  background: #e7f4e9;
 }
 .post-body .label.warning {
-  background: linear-gradient(transparent 60%, #f9f 60%);
+  background: #fcf6e1;
 }
 .post-body .label.danger {
-  background: linear-gradient(transparent 60%, #f9f 60%);
+  background: #fae8eb;
 }
 .post-body .link-grid {
   display: grid;
@@ -1613,7 +1450,7 @@ pre code {
 }
 .site-description {
   color: #999;
-  font-size: 0.95em;
+  font-size: 1em;
   margin-top: 5px;
 }
 .links-of-author a {
@@ -1845,7 +1682,7 @@ pre code {
 }
 .site-state-item-count {
   display: block;
-  font-size: 1.18em;
+  font-size: 1.25em;
   font-weight: 600;
 }
 .site-state-item-name {
@@ -1853,6 +1690,7 @@ pre code {
   font-size: 0.875em;
 }
 .footer {
+  color: #999;
   font-size: 0.875em;
   padding: 20px 0;
 }
@@ -2169,55 +2007,76 @@ pre code {
     text-align: justify;
   }
 }
-.post-body h2 {
-  position: relative;
-  background: #f1f8ff;
-  padding: 0.5em 0.5em;
-  border-left: solid 2em #5c9ee7;
+.post-body h1,
+.post-body h2,
+.post-body h3,
+.post-body h4,
+.post-body h5,
+.post-body h6 {
+  padding-top: 10px;
 }
-.post-body h2:before {
-  position: absolute;
-  content: "\f303";
-  padding: 0em;
-  color: #fff;
+.post-body h1 .header-anchor,
+.post-body h2 .header-anchor,
+.post-body h3 .header-anchor,
+.post-body h4 .header-anchor,
+.post-body h5 .header-anchor,
+.post-body h6 .header-anchor,
+.post-body h1 .headerlink,
+.post-body h2 .headerlink,
+.post-body h3 .headerlink,
+.post-body h4 .headerlink,
+.post-body h5 .headerlink,
+.post-body h6 .headerlink {
+  border-bottom-style: none;
+  color: inherit;
+  float: right;
+  font-size: 0.875em;
+  margin-left: 10px;
+  opacity: 0;
+}
+.post-body h1 .header-anchor::before,
+.post-body h2 .header-anchor::before,
+.post-body h3 .header-anchor::before,
+.post-body h4 .header-anchor::before,
+.post-body h5 .header-anchor::before,
+.post-body h6 .header-anchor::before,
+.post-body h1 .headerlink::before,
+.post-body h2 .headerlink::before,
+.post-body h3 .headerlink::before,
+.post-body h4 .headerlink::before,
+.post-body h5 .headerlink::before,
+.post-body h6 .headerlink::before {
+  content: '\f0c1';
+  font-family: 'Font Awesome 5 Free';
   font-weight: 900;
-  left: -1.35em;
-  top: 50%;
-  -webkit-transform: translateY(-50%);
-  transform: translateY(-50%);
 }
-.post-body h3 {
-  position: relative;
-  padding: 0.5em 0.5em;
-  color: #39a38d; /* フォント色 */
+.post-body h1:hover .header-anchor,
+.post-body h2:hover .header-anchor,
+.post-body h3:hover .header-anchor,
+.post-body h4:hover .header-anchor,
+.post-body h5:hover .header-anchor,
+.post-body h6:hover .header-anchor,
+.post-body h1:hover .headerlink,
+.post-body h2:hover .headerlink,
+.post-body h3:hover .headerlink,
+.post-body h4:hover .headerlink,
+.post-body h5:hover .headerlink,
+.post-body h6:hover .headerlink {
+  opacity: 0.5;
 }
-.post-body h3:before {
-  position: absolute;
-  content: "";
-  display: block;
-  width: 100%;
-  height: 4px;
-  background: repeating-linear-gradient(90deg, #3eaf36 0%, #369fad 20%, #ab6150 50%, #a0ad36 100%);
-  bottom: 0;
-  left: 0;
-  z-index: 0;
-}
-.post-body h4 {
-  position: relative;
-  margin: 2em 0em 0.5em 0.5em;
-  padding: 0em 0.5em;
-  padding-left: 1.4em;
-  line-height: 1.4;
-  color: #17b7b1;
-/*フォント色*/
-}
-.post-body h4:before {
-  position: absolute;
-  content: "\f00c";
-  font-weight: 900;
-  font-size: 1em;
-  left: 0;
-  color: #17b7b1;
+.post-body h1:hover .header-anchor:hover,
+.post-body h2:hover .header-anchor:hover,
+.post-body h3:hover .header-anchor:hover,
+.post-body h4:hover .header-anchor:hover,
+.post-body h5:hover .header-anchor:hover,
+.post-body h6:hover .header-anchor:hover,
+.post-body h1:hover .headerlink:hover,
+.post-body h2:hover .headerlink:hover,
+.post-body h3:hover .headerlink:hover,
+.post-body h4:hover .headerlink:hover,
+.post-body h5:hover .headerlink:hover,
+.post-body h6:hover .headerlink:hover {
+  opacity: 1;
 }
 .post-body .exturl .fa {
   font-size: 0.875em;
@@ -2255,28 +2114,6 @@ pre code {
   position: absolute;
   top: 0;
   width: 100%;
-}
-.post-body ul {
-  border: solid 2px #87ceeb;
-  border-radius: 5px;
-  margin: 1.5em 0;
-  padding: 0.5em 1em 0.5em 2.3em;
-  position: relative;
-}
-.post-body ul li {
-  line-height: 1.5;
-  padding: 0.5em 0;
-  list-style-type: none !important;
-}
-.post-body ul li:before {
-  font-family: "Font Awesome 5 Free";
-  content: "\f138"; /*アイコンの種類*/
-  font-size: 0.95em;
-  font-weight: 900;
-  position: absolute;
-  left: 1em;
-/*左端からのアイコンまでの距離*/
-  color: #87ceeb; /*アイコン色*/
 }
 .post-gallery {
   display: flex;
@@ -2317,12 +2154,12 @@ pre code {
 }
 .posts-expand .post-title-link {
   border-bottom: 0;
-  color: var(--text-color);
+  color: var(--link-color);
   display: inline-block;
   position: relative;
 }
 .posts-expand .post-title-link::before {
-  background: var(--text-color);
+  background: var(--link-color);
   bottom: 0;
   content: '';
   height: 2px;
@@ -3112,7 +2949,7 @@ hr {
   vertical-align: middle;
 }
 .links-of-author a::before {
-  background: #ccff63;
+  background: #b3da2e;
   display: inline-block;
   margin-right: 3px;
   transform: translateY(-2px);
@@ -3137,6 +2974,149 @@ hr {
 }
 .sub-menu .menu-item {
   display: inline-block;
+}
+.post-body {
+  font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "BIZ UDPGothic", Meiryo, sans-serif;
+  overflow-wrap: break-word;
+}
+@media (min-width: 1200px) {
+  .post-body {
+    font-size: 1.068em;
+  }
+}
+@media (min-width: 992px) {
+  .post-body {
+    text-align: justify;
+  }
+}
+@media (max-width: 991px) {
+  .post-body {
+    text-align: justify;
+  }
+}
+.post-body h2 {
+  position: relative;
+  background: #f1f8ff;
+  padding: 0.5em 0.5em;
+  border-left: solid 2em #5c9ee7;
+}
+.post-body h2:before {
+  font-family: "Font Awesome 5 Free";
+  position: absolute;
+  content: "\f303";
+  padding: 0em;
+  color: #fff;
+  font-weight: 900;
+  left: -1.35em;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+.post-body h3 {
+  position: relative;
+  padding: 0.5em 0.5em;
+  color: #39a38d; /* フォント色 */
+}
+.post-body h3:before {
+  position: absolute;
+  content: "";
+  display: block;
+  width: 100%;
+  height: 4px;
+  background: repeating-linear-gradient(90deg, #3eaf36 0%, #369fad 20%, #ab6150 50%, #a0ad36 100%);
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+}
+.post-body h4 {
+  position: relative;
+  margin: 2em 0em 0.5em 0.5em;
+  padding: 0em 0.5em;
+  padding-left: 1.4em;
+  line-height: 1.4;
+  color: #17b7b1;
+/*フォント色*/
+}
+.post-body h4:before {
+  font-family: "Font Awesome 5 Free";
+  position: absolute;
+  content: "\f00c";
+  font-weight: 900;
+  font-size: 1em;
+  left: 0;
+  color: #17b7b1;
+}
+.post-body .exturl .fa {
+  font-size: 0.875em;
+  margin-left: 4px;
+}
+.post-body .image-caption,
+.post-body .figure .caption {
+  color: #999;
+  font-size: 0.875em;
+  font-weight: bold;
+  line-height: 1;
+  margin: -20px auto 15px;
+  text-align: center;
+}
+.post-body iframe,
+.post-body img,
+.post-body video,
+.post-body embed {
+  margin-bottom: 20px;
+}
+.post-body .video-container {
+  height: 0;
+  margin-bottom: 20px;
+  overflow: hidden;
+  padding-top: 75%;
+  position: relative;
+  width: 100%;
+}
+.post-body .video-container iframe,
+.post-body .video-container object,
+.post-body .video-container embed {
+  height: 100%;
+  left: 0;
+  margin: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+.post-body ul {
+  border: solid 2px #87ceeb;
+  border-radius: 5px;
+  margin: 1.5em 0;
+  padding: 0.5em 1em 0.5em 2.3em;
+  position: relative;
+}
+.post-body ul li {
+  line-height: 1.5;
+  padding: 0.5em 1.2em;
+  list-style-type: none !important;
+}
+.post-body ul li:before {
+  font-family: "Font Awesome 5 Free";
+  content: "\f138"; /*アイコンの種類*/
+  font-size: 0.95em;
+  font-weight: 900;
+  position: absolute;
+  left: 0.8em;
+/*左端からのアイコンまでの距離*/
+  color: #87ceeb; /*アイコン色*/
+}
+th,
+td {
+  border: 1px solid #ddd;
+  border-bottom: 3px solid #ddd;
+}
+th {
+  font-weight: 700;
+  padding-bottom: 10px;
+  background: #f1f8ff;
+}
+td {
+  border-bottom-width: 1px;
 }
 .onepoint {
   position: relative;
@@ -3165,4 +3145,82 @@ hr {
   padding: 5px 7px 3px;
   line-height: 1;
   letter-spacing: 0.05em;
+}
+body {
+  background: var(--body-bg-color);
+  color: var(--text-color);
+  font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "BIZ UDPGothic", Meiryo, sans-serif;
+  font-size: 1em;
+  line-height: 1.75;
+  min-height: 100%;
+  position: relative;
+  transition: all 0.2s ease-in-out;
+}
+body a {
+  border-bottom: 1px solid #fff;
+  color: var(--link-color);
+  outline: 0;
+  text-decoration: none;
+  overflow-wrap: break-word;
+}
+body a:hover {
+  border-bottom-color: var(--link-hover-color);
+  color: var(--link-hover-color);
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Font Awesome 5 Free", "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "BIZ UDPGothic", Meiryo, sans-serif;
+  font-weight: bold;
+  line-height: 1.5;
+  margin: 50px 0 20px;
+}
+.posts-expand .post-title-link {
+  border-bottom: 0;
+  color: var(--text-color);
+  display: inline-block;
+  position: relative;
+}
+.posts-expand .post-title-link::before {
+  background: var(--text-color);
+  bottom: 0;
+  content: '';
+  height: 2px;
+  left: 0;
+  position: absolute;
+  transform: scaleX(0);
+  transition: transform 0.2s ease-in-out;
+  width: 100%;
+}
+.posts-expand .post-title-link:hover::before {
+  transform: scaleX(1);
+}
+.posts-expand .post-title-link .fa-external-link-alt {
+  font-size: 0.875em;
+  margin-left: 5px;
+}
+.post-body .label {
+  color: #555;
+  padding: 0 2px;
+}
+.post-body .label.default {
+  background: linear-gradient(transparent 80%, #f9f 80%);
+}
+.post-body .label.primary {
+  background: linear-gradient(transparent 80%, #f9f 80%);
+}
+.post-body .label.info {
+  background: linear-gradient(transparent 80%, #f9f 80%);
+}
+.post-body .label.success {
+  background: linear-gradient(transparent 80%, #f9f 80%);
+}
+.post-body .label.warning {
+  background: linear-gradient(transparent 80%, #f9f 80%);
+}
+.post-body .label.danger {
+  background: linear-gradient(transparent 80%, #f9f 80%);
 }
