@@ -16,12 +16,12 @@
 
 
 
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
 
 <script class="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","version":"8.2.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+    var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","version":"8.2.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 <meta name="description" content="IT">
 <meta property="og:type" content="website">
@@ -139,7 +139,7 @@
         <li class="menu-item menu-item-tags"><a href="/new-technology/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>タグ</a></li>
         <li class="menu-item menu-item-categories"><a href="/new-technology/categories/" rel="section"><i class="fa fa-th fa-fw"></i>カテゴリ</a></li>
         <li class="menu-item menu-item-archives"><a href="/new-technology/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>アーカイブ</a></li>
-        <li class="menu-item menu-item-disclaimer"><a href="/new-technology/disclaimer/" rel="section"><i class="fa fa-check fa-fw"></i>ディスクレーマー</a></li>
+        <li class="menu-item menu-item-disclaimer"><a href="/new-technology/disclaimer/" rel="section"><i class="fa fa-check fa-fw"></i>disclaimer</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
         </a>
@@ -540,8 +540,8 @@
   </footer>
 
   
-  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
 <script src="/new-technology/js/utils.js"></script><script src="/new-technology/js/motion.js"></script><script src="/new-technology/js/schemes/muse.js"></script><script src="/new-technology/js/next-boot.js"></script>
 
   
@@ -549,29 +549,10 @@
 
 
 
-<script>
-if (document.querySelectorAll('.pdf-container').length) {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/pdfobject@2.2.4/pdfobject.min.js', () => {
-    document.querySelectorAll('.pdf-container').forEach(element => {
-      PDFObject.embed(element.dataset.target, element, {
-        pdfOpenParams: {
-          navpanes : 0,
-          toolbar  : 0,
-          statusbar: 0,
-          pagemode : 'thumbs',
-          view     : 'FitH'
-        },
-        PDFJS_URL: '/new-technology/lib/pdf/web/viewer.html',
-        height   : element.dataset.height
-      });
-    });
-  }, window.PDFObject);
-}
-</script>
 
 <script>
 if (document.querySelectorAll('.mermaid').length) {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8.8.4/dist/mermaid.min.js', () => {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/mermaid@8.9.0/dist/mermaid.min.js', () => {
     mermaid.init({
       theme    : 'forest',
       logLevel : 3,

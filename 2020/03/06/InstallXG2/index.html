@@ -16,12 +16,12 @@
 
 
 
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
 
 <script class="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","version":"8.2.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+    var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","version":"8.2.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 <meta name="description" content="この記事で実現すること ESXi 6.7に環境構築済みの仮想マシンに対し、XG Firewall v18のインストールを行います。ESXiを使わない場合、PC（物理マシン）にフラッシュメモリを接続し直接インストールする事になりますが、この場合も手順自体はほとんど変わりません。">
 <meta property="og:type" content="article">
@@ -150,7 +150,7 @@
         <li class="menu-item menu-item-tags"><a href="/new-technology/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>タグ</a></li>
         <li class="menu-item menu-item-categories"><a href="/new-technology/categories/" rel="section"><i class="fa fa-th fa-fw"></i>カテゴリ</a></li>
         <li class="menu-item menu-item-archives"><a href="/new-technology/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>アーカイブ</a></li>
-        <li class="menu-item menu-item-disclaimer"><a href="/new-technology/disclaimer/" rel="section"><i class="fa fa-check fa-fw"></i>ディスクレーマー</a></li>
+        <li class="menu-item menu-item-disclaimer"><a href="/new-technology/disclaimer/" rel="section"><i class="fa fa-check fa-fw"></i>disclaimer</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
         </a>
@@ -378,12 +378,16 @@ XGFirewall-- &quot;192.168.0.0&#x2F;24&quot; ---HGW
 
 <p>1.”Network Configuration”を選び、次の画面で、”1.Interface Configuration”を選びます。以下の表示がEnterを押下する毎に変わります。</p>
 <ul>
-<li>LAN側のIP</li>
-<li>WAN側のIP（ホームゲートウェイからのプライベートIPが割り当てられています）。</li>
-<li>“Set IPv4 Address(y/n)”と出るので、変更する場合は、y＋Enterします。</li>
-<li>IPv6は後で設定するので空Enterで構いません。</li>
-</ul>
+<li><p>LAN側のIP</p>
+</li>
+<li><p>WAN側のIP（ホームゲートウェイからのプライベートIPが割り当てられています）。</p>
+</li>
+<li><p>“Set IPv4 Address(y/n)”と出るので、変更する場合は、y＋Enterします。</p>
+</li>
+<li><p>IPv6は後で設定するので空Enterで構いません。</p>
 <p>この状態で一旦IPの設定を終えたら、クライアントPCのブラウザからXGに対して接続し、セットアップを続けていきます。ここではXGのIPアドレスを<code>192.168.1.2</code>にしたと仮定して進めます。</p>
+</li>
+</ul>
 <div class="note warning"><p>WANのIPが割り振られていない場合は、後続のセットアップでライセンスの確認ができません。事後にもライセンス登録は可能ですが、初期のうちに課題を解決しておきましょう。</p>
 </div>
 
@@ -405,11 +409,12 @@ XGFirewall-- &quot;192.168.0.0&#x2F;24&quot; ---HGW
 <img src="/new-technology/2020/03/06/InstallXG2/setup3.png" class="" title="alt">
 
 <ul>
-<li>ネットワークプロテクションは<strong>SandStormを除き</strong>選択します。仮に選択してもホームユースでは解除されます。</li>
-</ul>
+<li><p>ネットワークプロテクションは<strong>SandStormを除き</strong>選択します。仮に選択してもホームユースでは解除されます。</p>
 <img src="/new-technology/2020/03/06/InstallXG2/setup4.png" class="" title="alt">
 
 <p>続いての画面のメールセットアップですが、登録しないと先に進めないので、一旦メールアドレスを登録します。Gmailをお持ちであれば、Gmailをメールの送信者にしておくと比較的簡単に送信できます。メールの受信者は、色々なイベント通知が発生した時に確認するアドレスですので、携帯などのアドレスが候補に挙げられます。</p>
+</li>
+</ul>
 <img src="/new-technology/2020/03/06/InstallXG2/setup5.png" class="" title="alt">
 
 <p> セットアップも最後の仕上げです。5分程度と言いつつもう少し掛かる場合がありますので、ブラウザのリロードをせずそのまま待ちます。その後管理画面のリロードが入りますが、XGの管理サイトは自己証明書のためにブラウザのワーニングが出た画面で止まっている場合があります。</p>
@@ -436,7 +441,7 @@ XGFirewall-- &quot;192.168.0.0&#x2F;24&quot; ---HGW
       <a href="https://yoshi0808.github.io/new-technology/2020/03/06/InstallXG2/" title="XG Firewall v18をESXi仮想マシンにインストールする">https://yoshi0808.github.io/new-technology/2020/03/06/InstallXG2/</a>
   </li>
   <li class="post-copyright-license">
-    <strong>著作権： </strong>このブログ内のすべての記事は、特別な記載がない限り <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> の下のライセンスで保護されています。また、免責事項・プライバシーポリシーについては、メニューのディスクレーマーを参照してください。
+    <strong>著作権表示： </strong>このブログ内のすべての記事は、特別な記載がない限り <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> の下のライセンスで保護されています。
   </li>
 </ul>
 </div>
@@ -513,8 +518,8 @@ XGFirewall-- &quot;192.168.0.0&#x2F;24&quot; ---HGW
   </footer>
 
   
-  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
 <script src="/new-technology/js/utils.js"></script><script src="/new-technology/js/motion.js"></script><script src="/new-technology/js/schemes/muse.js"></script><script src="/new-technology/js/next-boot.js"></script>
 
   
@@ -522,29 +527,10 @@ XGFirewall-- &quot;192.168.0.0&#x2F;24&quot; ---HGW
 
 
 
-<script>
-if (document.querySelectorAll('.pdf-container').length) {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/pdfobject@2.2.4/pdfobject.min.js', () => {
-    document.querySelectorAll('.pdf-container').forEach(element => {
-      PDFObject.embed(element.dataset.target, element, {
-        pdfOpenParams: {
-          navpanes : 0,
-          toolbar  : 0,
-          statusbar: 0,
-          pagemode : 'thumbs',
-          view     : 'FitH'
-        },
-        PDFJS_URL: '/new-technology/lib/pdf/web/viewer.html',
-        height   : element.dataset.height
-      });
-    });
-  }, window.PDFObject);
-}
-</script>
 
 <script>
 if (document.querySelectorAll('.mermaid').length) {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8.8.4/dist/mermaid.min.js', () => {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/mermaid@8.9.0/dist/mermaid.min.js', () => {
     mermaid.init({
       theme    : 'forest',
       logLevel : 3,
