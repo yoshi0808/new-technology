@@ -360,13 +360,13 @@ codeblock:
     light: atom-one-light
     dark: tomorrow-night
   prism:
-    light: prism
+    light: prism-coy
     dark: prism-dark
   # Add copy button on codeblock
   copy_button:
     enable: false
     # Available values: default | flat | mac
-    style:
+    style: default
 
 back2top:
   enable: true
