@@ -11,7 +11,6 @@ menu:
   categories: カテゴリ
   tags: タグ
   about: プロフィール
-  disclaimer: ディスクレーマー
   search: 検索
   schedule: スケジュール
   sitemap: サイトマップ
@@ -36,8 +35,8 @@ post:
     link: 記事へのリンク
     post_author: 作者
     post_link: 元の記事
-    license_title: 著作権
-    license_content: "このブログ内のすべての記事は、特別な記載がない限り %s の下のライセンスで保護されています。また、免責事項・プライバシーポリシーについては、メニューのディスクレーマーを参照してください。"
+    license_title: 著作権表示
+    license_content: "このブログ内のすべての記事は、特別な記載がない限り %s の下のライセンスで保護されています。"
 footer:
   powered: "Powered by %s"
   total_views: 閲覧合計数
