@@ -385,9 +385,22 @@
 <p>アップロードボタンをクリックし、ダウンロードしたパッチファイルをアップロードします。</p>
 </li>
 <li><p>SSHでESXiにログイン<br>ログイン後、パッチをアップロードしたフォルダ（<em>Datastore/DirectoryName</em>）に移動しアップロードしたパッチファイルが存在するか<code>ls</code>で確認します</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">The time and date of this login have been sent to the system logs.</span><br><span class="line"></span><br><span class="line">WARNING:</span><br><span class="line">  All commands run on the ESXi shell are logged and may be included <span class="keyword">in</span></span><br><span class="line">  support bundles. Do not provide passwords directly on the <span class="built_in">command</span> line.</span><br><span class="line">  Most tools can prompt <span class="keyword">for</span> secrets or accept them from standard input.</span><br><span class="line"></span><br><span class="line">VMware offers supported, powerful system administration tools.  Please</span><br><span class="line">see www.vmware.com/go/sysadmintools <span class="keyword">for</span> details.</span><br><span class="line"></span><br><span class="line">The ESXi Shell can be disabled by an administrative user. See the</span><br><span class="line">vSphere Security documentation <span class="keyword">for</span> more information.</span><br><span class="line">[root@esxi:~] <span class="built_in">cd</span> /vmfs/volumes/Datastore/DirectoryName</span><br><span class="line">[root@esxi:~] ls</span><br></pre></td></tr></table></figure></li>
+<pre class="language-bash" data-language="bash"><code class="language-bash">The <span class="token function">time</span> and <span class="token function">date</span> of this login have been sent to the system logs.
+
+WARNING:
+  All commands run on the ESXi shell are logged and may be included <span class="token keyword">in</span>
+  support bundles. Do not provide passwords directly on the <span class="token builtin class-name">command</span> line.
+  Most tools can prompt <span class="token keyword">for</span> secrets or accept them from standard input.
+
+VMware offers supported, powerful system administration tools.  Please
+see www.vmware.com/go/sysadmintools <span class="token keyword">for</span> details.
+
+The ESXi Shell can be disabled by an administrative user. See the
+vSphere Security documentation <span class="token keyword">for</span> <span class="token function">more</span> information.
+<span class="token punctuation">[</span>root@esxi:~<span class="token punctuation">]</span> <span class="token builtin class-name">cd</span> /vmfs/volumes/Datastore/DirectoryName
+<span class="token punctuation">[</span>root@esxi:~<span class="token punctuation">]</span> <span class="token function">ls</span></code></pre></li>
 <li><p>パッチ適用コマンドを入力します<br>コマンドは、esxcli software vib update -d “/vmfs/volumes/<em>Datastore/DirectoryName</em>/<em>patchName</em>.zip”となります。パッチファイルはフルパスで指定する事になります。従い、以下のコマンドを入力します。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@esxi:~] esxcli software vib update -d <span class="string">&quot;/vmfs/volumes/Datastore/DirectoryName/ESXi670-202006001.zip&quot;</span></span><br></pre></td></tr></table></figure>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@esxi:~<span class="token punctuation">]</span> esxcli software vib update -d <span class="token string">"/vmfs/volumes/Datastore/DirectoryName/ESXi670-202006001.zip"</span></code></pre>
 <p>実行後しばらくしてから、たくさんの更新結果としての文字の羅列が一気に表示され、再びコマンドプロンプトになるので、<code># reboot</code>としてESXiを再起動します</p>
 </li>
 <li><p>再起動完了後、ESXiにログインします。左ペインメニューの”ホスト”をクリックし、バージョンの表記に今回パッチを当てたビルド番号が表示されている事を確認してください</p>

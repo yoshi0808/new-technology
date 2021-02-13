@@ -415,12 +415,14 @@ XG Firewall v18のSSL/TLSインスペクションを使い、暗号化されたS
 
 <h3 id="Linuxにルート証明書をインストール"><a href="#Linuxにルート証明書をインストール" class="headerlink" title="Linuxにルート証明書をインストール"></a>Linuxにルート証明書をインストール</h3><ol>
 <li><p>Linux側にsshで接続できる事が前提です。PCなどからscpで証明書をLinuxにコピーします</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ scp ./SecurityAppliance_SSL_CA.pem linux-host:/tmp/ca.crt</span><br></pre></td></tr></table></figure></li>
+<pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">scp</span> ./SecurityAppliance_SSL_CA.pem linux-host:/tmp/ca.crt</code></pre></li>
 <li><p>Linux上で証明書をインストールします。</p>
 <p>ubuntu、Debianの場合</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo cp /tmp/ca.crt /usr/<span class="built_in">local</span>/share/ca-certificates/</span><br><span class="line">$ sudo update-ca-certificates</span><br></pre></td></tr></table></figure>
+<pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">sudo</span> <span class="token function">cp</span> /tmp/ca.crt /usr/local/share/ca-certificates/
+$ <span class="token function">sudo</span> update-ca-certificates</code></pre>
 <p>CentOS、Fedora、またはRedHatベースのシステムの場合</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo cp /tmp/ca.crt /etc/pki/ca-trust/<span class="built_in">source</span>/anchors/</span><br><span class="line">$ sudo update-ca-trust</span><br></pre></td></tr></table></figure>
+<pre class="language-bash" data-language="bash"><code class="language-bash">$ <span class="token function">sudo</span> <span class="token function">cp</span> /tmp/ca.crt /etc/pki/ca-trust/source/anchors/
+$ <span class="token function">sudo</span> update-ca-trust</code></pre>
 <p>※ubuntu20.04で動作確認をしています。</p>
 </li>
 </ol>
