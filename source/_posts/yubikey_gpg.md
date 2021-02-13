@@ -68,7 +68,15 @@ YubiKeyを使うGPGでは主鍵となる認定鍵（第三者の公開鍵を署�
      D["副鍵・認証"]-->D1["YubiKey認証"]
 {% endmermaid %}
 
-主鍵は万が一YubiKeyをなくした場合などの鍵の抹消や新しい副鍵を作る以外は使いません。USBなどに複写し安全な場所で保管する事になります。主鍵が無いと友達の輪を広げられない（相手の公開鍵に署名できない）のですが、YubiKeyを使ったGPGの使い方としては、そこに重きを置いていません。YubiKeyとGPGのセットアップはお手本となる説明があるので[このガイド](https://github.com/drduh/YubiKey-Guide)を参考にします。ただし、このガイドは悪意のあるプログラムが入り込む余地がないクリーンなLinux上で作業し、暗号化USBを作りセットアップするという超優等生な手順になっています。この記事では可能な限りシンプルな手順の作成を目的とし一部の手順を割愛しています。
+主鍵は万が一YubiKeyをなくした場合などの鍵の抹消や新しい副鍵を作る以外は使いません。USBなどに複写し安全な場所で保管する事になります。主鍵が無いと友達の輪を広げられない（相手の公開鍵に署名できない）のですが、YubiKeyを使ったGPGの使い方としては、そこに重きを置いていません。YubiKeyとGPGのセットアップはお手本となる説明があります。
+
+{% linkgrid %}
+drduh/YubiKey-Guide | https://github.com/drduh/YubiKey-Guide |This is a guide to using YubiKey as a SmartCard for storing GPG encryption, signing and authentication keys, which can also be used for SSH.  | https://avatars.githubusercontent.com/u/12475110?s=400&u=07d0880794ce657ea3c16413b8bab37b65b191fa&v=4
+{% endlinkgrid %}
+
+
+
+ただし、このガイドは悪意のあるプログラムが入り込む余地がないクリーンなLinux上で作業し、暗号化USBを作りセットアップするという超優等生な手順になっています。この記事では可能な限りシンプルな手順の作成を目的とし一部の手順を割愛しています。
 
 ## GPGをセットアップするための手順
 

@@ -16,31 +16,13 @@ body {
   min-height: 100%;
   position: relative;
   transition: all $transition-ease;
-
-  a {
-  // border-bottom: 1px solid $link-decoration-color;
-  border-bottom: 1px solid white;
-  color: var(--link-color);
-  outline: 0;
-  text-decoration: none;
-  word-wrap();
-
-  &:hover {
-    border-bottom-color: var(--link-hover-color);
-    color: var(--link-hover-color);
-  }
-  }
 }
 
 h1, h2, h3, h4, h5, h6 {
-  // font-family: $font-family-headings;
-  font-family: "Font Awesome 5 Free",$font-family-headings;
+  font-family: $font-family-headings;
   font-weight: bold;
   line-height: 1.5;
-  // margin: 20px 0 15px;
-  // margin: 20px 0 15px;
-  margin: 50px 0 20px;
-
+  margin: 20px 0 15px;
 }
 
 for $headline in (1 .. 6) {
@@ -53,19 +35,20 @@ p {
   margin: 0 0 20px;
 }
 
-//a {
-//  // border-bottom: 1px solid $link-decoration-color;
-//  border-bottom: 1px solid white;
-//  color: var(--link-color);
-//  outline: 0;
-//  text-decoration: none;
-//  word-wrap();
-//
-//  &:hover {
-//    border-bottom-color: var(--link-hover-color);
-//    color: var(--link-hover-color);
-//  }
-//}
+a {
+  border-bottom: 1px solid $link-decoration-color;
+  color: var(--link-color);
+  // For a:not(:any-link)
+  cursor: pointer;
+  outline: 0;
+  text-decoration: none;
+  word-wrap();
+
+  &:hover {
+    border-bottom-color: var(--link-hover-color);
+    color: var(--link-hover-color);
+  }
+}
 
 iframe, img, video, embed {
   display: block;
