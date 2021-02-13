@@ -214,7 +214,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/new-technology/archives/">
         
-          <span class="site-state-item-count">37</span>
+          <span class="site-state-item-count">38</span>
           <span class="site-state-item-name">ポスト</span>
         </a>
       </div>
@@ -296,7 +296,7 @@
     全 7 タグ
   </div>
   <div class="tag-cloud-tags">
-    <a href="/new-technology/tags/DeepL/" style="font-size: 12px;" class="tag-cloud-0">DeepL</a> <a href="/new-technology/tags/ESXi/" style="font-size: 24px;" class="tag-cloud-7">ESXi</a> <a href="/new-technology/tags/IPv6/" style="font-size: 18px;" class="tag-cloud-3">IPv6</a> <a href="/new-technology/tags/XG-Firewall/" style="font-size: 30px;" class="tag-cloud-10">XG Firewall</a> <a href="/new-technology/tags/bitwarden/" style="font-size: 12px;" class="tag-cloud-0">bitwarden</a> <a href="/new-technology/tags/miband5/" style="font-size: 12px;" class="tag-cloud-0">miband5</a> <a href="/new-technology/tags/yubikey/" style="font-size: 12px;" class="tag-cloud-0">yubikey</a>
+    <a href="/new-technology/tags/DeepL/" style="font-size: 12px;" class="tag-cloud-0">DeepL</a> <a href="/new-technology/tags/ESXi/" style="font-size: 25.5px;" class="tag-cloud-8">ESXi</a> <a href="/new-technology/tags/IPv6/" style="font-size: 21px;" class="tag-cloud-5">IPv6</a> <a href="/new-technology/tags/XG-Firewall/" style="font-size: 30px;" class="tag-cloud-10">XG Firewall</a> <a href="/new-technology/tags/bitwarden/" style="font-size: 12px;" class="tag-cloud-0">bitwarden</a> <a href="/new-technology/tags/miband5/" style="font-size: 12px;" class="tag-cloud-0">miband5</a> <a href="/new-technology/tags/yubikey/" style="font-size: 16.5px;" class="tag-cloud-3">yubikey</a>
   </div>
 </div>
 
@@ -363,6 +363,25 @@
 
 
 
+<script>
+if (document.querySelectorAll('.pdf-container').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/pdfobject@2.2.4/pdfobject.min.js', () => {
+    document.querySelectorAll('.pdf-container').forEach(element => {
+      PDFObject.embed(element.dataset.target, element, {
+        pdfOpenParams: {
+          navpanes : 0,
+          toolbar  : 0,
+          statusbar: 0,
+          pagemode : 'thumbs',
+          view     : 'FitH'
+        },
+        PDFJS_URL: '/new-technology/lib/pdf/web/viewer.html',
+        height   : element.dataset.height
+      });
+    });
+  }, window.PDFObject);
+}
+</script>
 
 <script>
 if (document.querySelectorAll('.mermaid').length) {

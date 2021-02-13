@@ -211,7 +211,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/new-technology/archives/">
         
-          <span class="site-state-item-count">37</span>
+          <span class="site-state-item-count">38</span>
           <span class="site-state-item-name">ポスト</span>
         </a>
       </div>
@@ -286,6 +286,26 @@
     <div class="collection-year">
       <span class="collection-header">2020</span>
     </div>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <div class="post-meta-container">
+        <time itemprop="dateCreated"
+              datetime="2020-02-25T19:33:05+09:00"
+              content="2020-02-25">
+          02-25
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/new-technology/2020/02/25/provision/" itemprop="url">
+            <span itemprop="name">PC（ハードウェア）の準備</span>
+          </a>
+      </div>
+
+      
+    </header>
+  </article>
 
   <article itemscope itemtype="http://schema.org/Article">
     <header class="post-header">
@@ -369,6 +389,25 @@
 
 
 
+<script>
+if (document.querySelectorAll('.pdf-container').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/pdfobject@2.2.4/pdfobject.min.js', () => {
+    document.querySelectorAll('.pdf-container').forEach(element => {
+      PDFObject.embed(element.dataset.target, element, {
+        pdfOpenParams: {
+          navpanes : 0,
+          toolbar  : 0,
+          statusbar: 0,
+          pagemode : 'thumbs',
+          view     : 'FitH'
+        },
+        PDFJS_URL: '/new-technology/lib/pdf/web/viewer.html',
+        height   : element.dataset.height
+      });
+    });
+  }, window.PDFObject);
+}
+</script>
 
 <script>
 if (document.querySelectorAll('.mermaid').length) {
