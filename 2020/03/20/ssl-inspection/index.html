@@ -32,7 +32,7 @@
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/20/ssl-inspection/ssl-inspection.png">
 <meta property="article:published_time" content="2020-03-20T05:23:53.000Z">
-<meta property="article:modified_time" content="2021-02-14T09:15:19.245Z">
+<meta property="article:modified_time" content="2021-02-14T09:21:06.184Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -316,7 +316,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">編集日</span>
-        <time title="修正日：2021-02-14 18:15:19" itemprop="dateModified" datetime="2021-02-14T18:15:19+09:00">2021-02-14</time>
+        <time title="修正日：2021-02-14 18:21:06" itemprop="dateModified" datetime="2021-02-14T18:21:06+09:00">2021-02-14</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -345,40 +345,46 @@ XG Firewallなどの次世代Firewallで利用されているSSL/TLSインスペ
 <h2 id="SSLインスペクションとは"><a href="#SSLインスペクションとは" class="headerlink" title="SSLインスペクションとは"></a>SSLインスペクションとは</h2><p>https通信では、サーバーとクライアント間がSSLで暗号化されます。SSLというのは本来はTLS（Transport Layer Security）が正しい名称ですが、SSLという言葉が過去より定着しているので、今日でも”SSL証明書”などSSLという言葉は一般的に使われます。この暗号化された通信をIPS（Intrusion Prevension System）は暗号を解読しながらコンテンツの中身の検査を行います。暗号通信の復号化方法として<mark class="label primary">SSL/TLSインスペクション</mark>という方式が採用されています。ここではSSL/TLSインスペクションによりどのようにFirewallが暗号化された通信を「正当な方法で」解読するかをシーケンスで説明します。</p>
 <h2 id="ブラウザとサーバーのSSL通信のシーケンス"><a href="#ブラウザとサーバーのSSL通信のシーケンス" class="headerlink" title="ブラウザとサーバーのSSL通信のシーケンス"></a>ブラウザとサーバーのSSL通信のシーケンス</h2><div class="mermaid">
 sequenceDiagram
-participant cl asクライアント&lt;br&gt;（ブラウザ）
+
+participant cl as クライアント&lt;br&gt;（ブラウザ）
 participant sv as Webサーバー
+
 cl -&gt;&gt;+ sv : 1.Webサーバーへの接続
-sv --&gt;&gt;- cl : 2。サーバー証明書と&lt;br&gt;公開鍵を送付
-Note over cl: 3。ルート証明機関でサーバーの証明書の正当性を検証
-Note over cl: 4。一時的な共通鍵を作成し、サーバーの公開鍵で暗号化
-cl -&gt;&gt;+ sv : 5。暗号化された共通鍵を送信
-sv --&gt;&gt;- cl : 6。共通鍵で暗号化されたデータの送信
-Note over cl: 7。共通鍵で復号
+sv --&gt;&gt;- cl : 2.サーバー証明書と&lt;br&gt;公開鍵を送付
+Note over cl: 3.ルート証明機関でサーバーの証明書の正当性を検証
+Note over cl: 4.一時的な共通鍵を作成し、サーバーの公開鍵で暗号化
+cl -&gt;&gt;+ sv : 5.暗号化された共通鍵を送信
+sv --&gt;&gt;- cl : 6.共通鍵で暗号化されたデータの送信
+Note over cl: 7.共通鍵で復号
+
 </div>
 
 <p>上記のようにサーバーは公開鍵をクライアントに渡し、ブラウザ（クライアント）は保持しているルート証明書（ルート証明機関）への照合によってサーバーが正しいURLのものかを判別します。クライアントが生成した共通鍵はサーバーの公開鍵で暗号化されているため、サーバー自身が持つ秘密鍵でなければ解読できません。よって、クライアントとサーバーの間に第三者が割り込んでも電文の中身を解読できません。</p>
 <h2 id="Firewallを経由するSSL通信のシーケンス"><a href="#Firewallを経由するSSL通信のシーケンス" class="headerlink" title="Firewallを経由するSSL通信のシーケンス"></a>Firewallを経由するSSL通信のシーケンス</h2><p>正当な方法として、FirewallのCA証明書を予めクライアントに承認させることで、電文の検査を行う事ができます。実際にhttpsの通信を開始するシーケンスは以下の通りです。FirewallはクライアントとWebサーバーとの間に入り、SSLの解読を行います。クライアントはFirewallが暗号化した電文を解読する事になります。</p>
 <div class="mermaid">
 sequenceDiagram
-participant cl asクライアント&lt;br&gt;（ブラウザ）
+
+participant cl as クライアント&lt;br&gt;（ブラウザ）
 participant xg as Firewall
 participant sv as Webサーバー
+
 cl -&gt;&gt;+ xg : 1.Webサーバーへの接続
 xg -&gt;&gt;+ sv : 2.Webサーバーへの接続
-sv --&gt;&gt;- xg : 3。サーバー証明書と&lt;br&gt;公開鍵を送付
-Note over xg: 4。サーバー証明書に紐づくルート証明書でサーバー証明書の正当性を検証
+sv --&gt;&gt;- xg : 3.サーバー証明書と&lt;br&gt;公開鍵を送付
+Note over xg: 4.サーバー証明書に紐づくルート証明書でサーバー証明書の正当性を検証
 xg --&gt;&gt;- cl : 5.FWのサーバー証明書と公開鍵を送付
 Note over cl: 6.FWのルート証明書でFWの証明書の正当性を検証
-Note over cl: 7。一時的な共通鍵を作成し、FWの公開鍵で暗号化
-cl -&gt;&gt;+ xg : 8。暗号化された共通鍵を送信
+Note over cl: 7.一時的な共通鍵を作成し、FWの公開鍵で暗号化
+cl -&gt;&gt;+ xg : 8.暗号化された共通鍵を送信
 Note over xg: 9.FWの秘密鍵で復号化、共通鍵を取得
-Note over xg : 10。共通鍵をWebサーバーの公開鍵で暗号化
-xg -&gt;&gt;+ sv : 11。暗号化された共通鍵を送信
-sv --&gt;&gt;- xg : 12。共通鍵で暗号化されたデータの送信
-Note over xg: 13。共通鍵で復号
-Note over xg: 14。コンテンツの中身の検証
-xg --&gt;&gt;- cl : 15。共通鍵で暗号化されたデータの送信
-Note over cl: 16。共通鍵で復号
+Note over xg : 10.共通鍵をWebサーバーの公開鍵で暗号化
+xg -&gt;&gt;+ sv : 11.暗号化された共通鍵を送信
+sv --&gt;&gt;- xg : 12.共通鍵で暗号化されたデータの送信
+Note over xg: 13.共通鍵で復号
+Note over xg: 14.コンテンツの中身の検証
+xg --&gt;&gt;- cl : 15.共通鍵で暗号化されたデータの送信
+Note over cl: 16.共通鍵で復号
+
 </div>
 
 <h3 id="このシーケンスのポイント"><a href="#このシーケンスのポイント" class="headerlink" title="このシーケンスのポイント"></a>このシーケンスのポイント</h3><p>Firewallが間に入らない通常のシーケンスにおいては、<strong>間にFirewallが割り込んで共通鍵を取得しようとしてもWebサーバーの秘密鍵を持っていないため、解読できません</strong>。従い、共通鍵を取得するためにFiewallが自分自身の公開鍵をクライアントへ渡しますが、このままでは独自証明書がルート証明機関の検証で不正と扱われます。このために、<strong>クライアントにはFirewallのCA証明書を事前に”ルート証明機関”としてインストールしておく必要があります</strong>。クライアントに、FirewallのCA証明書が登録されていない状態でSSLインスペクションを行うと、ブラウザは「信頼されないサイト」として警告を発します。このような仕組みでSSL通信は悪意を持った第三者攻撃を防ぎつつ、ユーザがFirewallのCA証明書を許可する事でSSL検査を可能にしています。</p>
