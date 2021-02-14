@@ -1310,14 +1310,12 @@ Note over cl: 16.共通鍵で復号
 <h3 id="コンテンツの中身の検証"><a href="#コンテンツの中身の検証" class="headerlink" title="コンテンツの中身の検証"></a>コンテンツの中身の検証</h3><p>上記シーケンスの14番目がFirewallの大きな役割です。暗号化されたhttpsのデータを解読し、流れるデータの中にさまざまな脅威が無いか検証を行います。</p>
 <h2 id="CA証明書のインストール"><a href="#CA証明書のインストール" class="headerlink" title="CA証明書のインストール"></a>CA証明書のインストール</h2><p>上述した通り、SSLインスペクションを行うためには、FirewallのCA証明書をクライアントにインストールしなくてはなりません。復号化については、以下の端末で検証をしています。</p>
 <ul>
-<li><p>Windows</p>
-</li>
-<li><p>macOS</p>
-</li>
-<li><p>iOS</p>
-<p>なお、Androidには証明書はインストール出来ますが、Chrome以外のアプリで証明書を信頼する事が出来ず、実質SSLインスペクションは使えません。他の家電TVなども難しいと考えてください。</p>
-</li>
+<li>Windows</li>
+<li>macOS</li>
+<li>iOS</li>
+<li>Linux(ubuntu)</li>
 </ul>
+<p>なお、Androidには証明書はインストール出来ますが、Chrome以外のアプリで証明書を信頼する事が出来ず、実質SSLインスペクションは使えません。他の家電TVなども難しいと考えてください。</p>
 <p>SSLインスペクションを設定後、ブラウザのURLの鍵マークにカーソルを合わせるとそのサイトで利用している本来の認証局ではなく、以下のようにFirewall（この実例ではSophos XG Firewall）の認証局が有効となっている事が分かります。</p>
 <img src="/new-technology/2020/03/20/ssl-inspection/ssl-inspection.png" class="" title="alt">
 
