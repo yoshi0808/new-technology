@@ -50,8 +50,8 @@ darkmode: false
 # ---------------------------------------------------------------
 
 favicon:
-  small: /images/favicon-16x16.png
-  medium: /images/favicon-32x32.png
+  small: /images/icon-16x16.png
+  medium: /images/icon-32x32.png
   apple_touch_icon: /images/apple-touch-icon.png
   safari_pinned_tab: /images/logo.svg
   #android_manifest: /manifest.json
@@ -357,7 +357,7 @@ codeblock:
   # Code Highlight theme
   # All available themes: https://theme-next.js.org/highlight/
   theme:
-    light: atom-one-light
+    light: github
     dark: tomorrow-night
   prism:
     light: prism-coy

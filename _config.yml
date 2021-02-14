@@ -48,8 +48,8 @@ relative_link: false
 future: true
 highlight:
   enable: true
-  line_number: false
-  auto_detect: false
+  line_number: true
+  auto_detect: true
   tab_replace: ''
   wrap: true
   hljs: false
@@ -57,7 +57,7 @@ highlight:
 prismjs:
   enable: false
   preprocess: true
-  line_number: false
+  line_number: true
   tab_replace: ''
 
 # Home page setting
@@ -126,8 +126,8 @@ emoji:
   customEmojis:
 
 favicon:
-  small: /images/favicon-16x16.png
-  medium: /images/favicon-32x32.png
-  apple_touch_icon: /images/apple-touch-icon-next.png
+  small: /images/icon-16x16.png
+  medium: /images/icon-32x32.png
+  apple_touch_icon: /images/apple-touch-icon.png
   safari_pinned_tab: /images/logo.svg
-  android_manifest: /images/manifest.json
+  # android_manifest: /images/manifest.json
