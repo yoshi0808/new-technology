@@ -8,8 +8,8 @@
 
 
   <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/icon-16x16.png">
   <link rel="mask-icon" href="/new-technology/images/logo.svg" color="#222">
 
 <link rel="stylesheet" href="/new-technology/css/main.css">
@@ -415,12 +415,12 @@ XG Firewall v18のSSL/TLSインスペクションを使い、暗号化されたS
 
 <h3 id="Linuxにルート証明書をインストール"><a href="#Linuxにルート証明書をインストール" class="headerlink" title="Linuxにルート証明書をインストール"></a>Linuxにルート証明書をインストール</h3><ol>
 <li><p>Linux側にsshで接続できる事が前提です。PCなどからscpで証明書をLinuxにコピーします</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ scp ./SecurityAppliance_SSL_CA.pem linux-host:/tmp/ca.crt</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ scp ./SecurityAppliance_SSL_CA.pem linux-host:/tmp/ca.crt</span><br></pre></td></tr></table></figure></li>
 <li><p>Linux上で証明書をインストールします。</p>
 <p>ubuntu、Debianの場合</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo cp /tmp/ca.crt /usr/<span class="built_in">local</span>/share/ca-certificates/</span><br><span class="line">$ sudo update-ca-certificates</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo cp /tmp/ca.crt /usr/<span class="built_in">local</span>/share/ca-certificates/</span><br><span class="line">$ sudo update-ca-certificates</span><br></pre></td></tr></table></figure>
 <p>CentOS、Fedora、またはRedHatベースのシステムの場合</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo cp /tmp/ca.crt /etc/pki/ca-trust/<span class="built_in">source</span>/anchors/</span><br><span class="line">$ sudo update-ca-trust</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo cp /tmp/ca.crt /etc/pki/ca-trust/<span class="built_in">source</span>/anchors/</span><br><span class="line">$ sudo update-ca-trust</span><br></pre></td></tr></table></figure>
 <p>※ubuntu20.04で動作確認をしています。</p>
 </li>
 </ol>
