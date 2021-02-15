@@ -35,9 +35,9 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/02/13/yubikey_gpg/verify.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/02/13/yubikey_gpg/mail.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/02/13/yubikey_gpg/ssh.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/02/13/yubikey_gpg/automator.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/02/13/yubikey_gpg/automator1.png">
 <meta property="article:published_time" content="2021-02-12T15:58:00.000Z">
-<meta property="article:modified_time" content="2021-02-15T11:57:03.476Z">
+<meta property="article:modified_time" content="2021-02-15T12:22:29.139Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="yubikey">
 <meta name="twitter:card" content="summary">
@@ -321,7 +321,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">編集日</span>
-        <time title="修正日：2021-02-15 20:57:03" itemprop="dateModified" datetime="2021-02-15T20:57:03+09:00">2021-02-15</time>
+        <time title="修正日：2021-02-15 21:22:29" itemprop="dateModified" datetime="2021-02-15T21:22:29+09:00">2021-02-15</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -461,7 +461,7 @@ D[&quot;副鍵・認証&quot;]--&gt;D1[&quot;YubiKey認証&quot;]
 <h2 id="（任意）YubiKeyタッチ認証"><a href="#（任意）YubiKeyタッチ認証" class="headerlink" title="（任意）YubiKeyタッチ認証"></a>（任意）YubiKeyタッチ認証</h2><p>GPGで認証、署名、暗号化を行おうとしている時に、YubiKeyへのタッチを必要とさせる設定ができます。GPGのPIN入力はキャッシュしている時間がありますが、これを設定すると、GPGのアクションの前には必ずYubiKeyにタッチする必要があります。より慎重さを求める方に向いています。デフォルトではOffになっていますが、これをOnにする場合は以下のコマンドを投入します。YubiKeyがタッチを待っている間はランプが点滅します（12秒程度応答しないとギブアップします）。これはNeoなどYubiKeyの種類によっては設定できません。<br>認証　<code>$ ykman openpgp set-touch aut on</code><br>署名　<code>$ ykman openpgp set-touch sig on</code><br>暗号化　<code>$ ykman openpgp set-touch enc on</code><br>Offにする場合は以下のコマンドになります。<br>認証　<code>$ ykman openpgp set-touch aut off</code><br>署名　<code>$ ykman openpgp set-touch sig off</code><br>暗号化　<code>$ ykman openpgp set-touch enc off</code></p>
 <p>Onの代わりに15秒キャッシュする”CACHED”という項目も設定できます。詳しくは<code>ykman openpgp set-touch -h</code>を参照します。</p>
 <h2 id="GPGとPIVとの切り替え"><a href="#GPGとPIVとの切り替え" class="headerlink" title="GPGとPIVとの切り替え"></a>GPGとPIVとの切り替え</h2><p>前回の記事「<a href="/new-technology/2021/02/06/yubikey_ssh_github/" title="YubiKeyとSSHとGitHub">YubiKeyとSSHとGitHub</a>」ではPIVカードとしての扱いについて説明しました。Yubico Authenticatorもその仲間なんですが、GPGは排他でカードを占有してしまう仕様のため、GPGを使っている時はAuthenticatorは動きません。コマンド<code>$ ykaman piv info</code>を実行する事でGPGから切り離されPIVのインタフェースが使えるようになります。<a target="_blank" rel="noopener" href="https://gpgtools.tenderapp.com/discussions/nightly/110-gpgmail-fails-to-sign-after-switch-from-smime">GPG Toolsサポートでの議論</a>もありましたが、明確な解決が難しいまま今に至っています。実運用としては、macOS純正アプリのAutomatorを使ってPIVに切り替えてからYubico Authenticatorを起動する方法が簡単でしょうか。</p>
-<img src="/new-technology/2021/02/13/yubikey_gpg/automator.png" class="" width="800" title="alt">
+<img src="/new-technology/2021/02/13/yubikey_gpg/automator1.png" class="" width="800" title="alt">
 
 <h2 id="（補足）libgcryptの脆弱性"><a href="#（補足）libgcryptの脆弱性" class="headerlink" title="（補足）libgcryptの脆弱性"></a>（補足）libgcryptの脆弱性</h2><p>先日（1月末）に、gpgのライブラリであるlibgcryptに脆弱性があるとの速報<a target="_blank" rel="noopener" href="https://nvd.nist.gov/vuln/detail/CVE-2021-3345">CVE-2021-3345</a>が流れました。対象バージョンは1.9.0ですが、今回GPG Toolsから導入しているlibgcryptのバージョンは1.8.7となっており、この脆弱性の影響は受けません。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ gpg --version</span><br><span class="line">gpg (GnuPG/MacGPG2) 2.2.27</span><br><span class="line">libgcrypt 1.8.7</span><br></pre></td></tr></table></figure>
