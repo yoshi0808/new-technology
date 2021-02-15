@@ -17,50 +17,46 @@ https通信では、サーバーとクライアント間がSSLで暗号化され
 ## ブラウザとサーバーのSSL通信のシーケンス
 
 {% mermaid sequenceDiagram %}
+  participant cl as クライアント<br>（ブラウザ）
+  participant sv as Webサーバー
 
-      participant cl as クライアント<br>（ブラウザ）
-      participant sv as Webサーバー
-
-      cl ->>+ sv : 1.Webサーバーへの接続
-      sv -->>- cl : 2.サーバー証明書と<br>公開鍵を送付
-      Note over cl: 3.ルート証明機関でサーバーの証明書の正当性を検証
-      Note over cl: 4.一時的な共通鍵を作成し、サーバーの公開鍵で暗号化
-      cl ->>+ sv : 5.暗号化された共通鍵を送信
-      sv -->>- cl : 6.共通鍵で暗号化されたデータの送信
-      Note over cl: 7.共通鍵で復号
-
+  cl ->>+ sv : 1.Webサーバーへの接続
+  sv -->>- cl : 2.サーバー証明書と<br>公開鍵を送付
+  Note over cl: 3.ルート証明機関でサーバーの証明書の正当性を検証
+  Note over cl: 4.一時的な共通鍵を作成し、サーバーの公開鍵で暗号化
+  cl ->>+ sv : 5.暗号化された共通鍵を送信
+  sv -->>- cl : 6.共通鍵で暗号化されたデータの送信
+  Note over cl: 7.共通鍵で復号
 {% endmermaid %}
 
 上記のようにサーバーは公開鍵をクライアントに渡し、ブラウザ（クライアント）は保持しているルート証明書（ルート証明機関）への照合によってサーバーが正しいURLのものかを判別します。クライアントが生成した共通鍵はサーバーの公開鍵で暗号化されているため、サーバー自身が持つ秘密鍵でなければ解読できません。よって、クライアントとサーバーの間に第三者が割り込んでも電文の中身を解読できません。
 
 ## Firewallを経由するSSL通信のシーケンス
 
-正当な方法として、FirewallのCA証明書を予めクライアントに承認させることで、電文の検査を行う事ができます。実際にhttpsの通信を開始するシーケンスは以下の通りです。FirewallはクライアントとWebサーバーとの間に入り、SSLの解読を行います。クライアントはFirewallが暗号化した電文を解読する事になります。
-
+正当な方法として、FirewallのCA証明書を予めクライアントに承認させることで、電文の検査を行う事ができます。実際にhttpsの通信を開始するシーケンスは以下の通りです。
 {% mermaid sequenceDiagram %}
+  participant cl as クライアント<br>（ブラウザ）
+  participant xg as Firewall
+  participant sv as Webサーバー
 
-      participant cl as クライアント<br>（ブラウザ）
-      participant xg as Firewall
-      participant sv as Webサーバー
-
-      cl ->>+ xg : 1.Webサーバーへの接続
-      xg ->>+ sv : 2.Webサーバーへの接続
-      sv -->>- xg : 3.サーバー証明書と<br>公開鍵を送付
-      Note over xg: 4.サーバー証明書に紐づくルート証明書でサーバー証明書の正当性を検証
-      xg -->>- cl : 5.FWのサーバー証明書と公開鍵を送付
-      Note over cl: 6.FWのルート証明書でFWの証明書の正当性を検証
-      Note over cl: 7.一時的な共通鍵を作成し、FWの公開鍵で暗号化
-      cl ->>+ xg : 8.暗号化された共通鍵を送信
-      Note over xg: 9.FWの秘密鍵で復号化、共通鍵を取得
-      Note over xg : 10.共通鍵をWebサーバーの公開鍵で暗号化
-      xg ->>+ sv : 11.暗号化された共通鍵を送信
-      sv -->>- xg : 12.共通鍵で暗号化されたデータの送信
-      Note over xg: 13.共通鍵で復号
-      Note over xg: 14.コンテンツの中身の検証
-      xg -->>- cl : 15.共通鍵で暗号化されたデータの送信
-      Note over cl: 16.共通鍵で復号
-
+  cl ->>+ xg : 1.Webサーバーへの接続
+  xg ->>+ sv : 2.Webサーバーへの接続
+  sv -->>- xg : 3.サーバー証明書と<br>公開鍵を送付
+  Note over xg: 4.サーバー証明書に紐づくルート証明書でサーバー証明書の正当性を検証
+  xg -->>- cl : 5.FWのサーバー証明書と公開鍵を送付
+  Note over cl: 6.FWのルート証明書でFWの証明書の正当性を検証
+  Note over cl: 7.一時的な共通鍵を作成し、FWの公開鍵で暗号化
+  cl ->>+ xg : 8.暗号化された共通鍵を送信
+  Note over xg: 9.FWの秘密鍵で復号化、共通鍵を取得
+  Note over xg : 10.共通鍵をWebサーバーの公開鍵で暗号化
+  xg ->>+ sv : 11.暗号化された共通鍵を送信
+  sv -->>- xg : 12.共通鍵で暗号化されたデータの送信
+  Note over xg: 13.共通鍵で復号
+  Note over xg: 14.コンテンツの中身の検証
+  xg -->>- cl : 15.共通鍵で暗号化されたデータの送信
+  Note over cl: 16.共通鍵で復号
 {% endmermaid %}
+FirewallはクライアントとWebサーバーとの間に入り、SSLの解読を行います。クライアントはFirewallが暗号化した電文を解読する事になります。
 
 ### このシーケンスのポイント
 
