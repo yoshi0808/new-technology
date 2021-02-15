@@ -821,7 +821,7 @@ Onの代わりに15秒キャッシュする"CACHED"という項目も設定で�
 
 前回の記事「{% post_link yubikey_ssh_github %}」ではPIVカードとしての扱いについて説明しました。Yubico Authenticatorもその仲間なんですが、GPGは排他でカードを占有してしまう仕様のため、GPGを使っている時はAuthenticatorは動きません。コマンド`$ ykaman piv info`を実行する事でGPGから切り離されPIVのインタフェースが使えるようになります。[GPG Toolsサポートでの議論](https://gpgtools.tenderapp.com/discussions/nightly/110-gpgmail-fails-to-sign-after-switch-from-smime)もありましたが、明確な解決が難しいまま今に至っています。実運用としては、macOS純正アプリのAutomatorを使ってPIVに切り替えてからYubico Authenticatorを起動する方法が簡単でしょうか。
 
-{% asset_img automator.png 800 alt %}
+{% asset_img automator1.png 800 alt %}
 
 ## （補足）libgcryptの脆弱性
 
