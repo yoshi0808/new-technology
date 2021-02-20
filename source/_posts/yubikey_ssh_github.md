@@ -209,12 +209,12 @@ $ yubico-piv-tool -a import-certificate -s 9a -i cert.pem -k
 Enter management key:
 Successfully imported a new certificate.
 
-ssh-keygen -D /usr/local/lib/libykcs11.dylib -e > id_rsa.pub
+$ ssh-keygen -D /usr/local/lib/libykcs11.dylib -e > id_rsa.pub
 
-ssh -I /usr/local/lib/libykcs11.dylib usr1@192.168.x.x
+$ ssh -I /usr/local/lib/libykcs11.dylib usr1@192.168.x.x
 Enter PIN for 'YubiKey PIV #XXXXXXXX':
 ```
 上記では公開鍵id_rsa.pubをサーバー側に配置している手順は省略しています。
 
 ## YubikeyでSSH設定してみた感想
-WebAuthnや2要素認証以上にYubiKeyを使いこなそうとすると、プロダクトが新旧あり混乱しやすく難易度も上がります。一番便利だなと感じているのはbitwardenへのローカルのログインで使うスタティックパスワードだったりします。さらにGnuPGを使ったGitHubへのコミット時の署名をYubiKeyで行う事もできますが、GnuPGの理解も必要となり、もっと複雑です。今回制約となったGitHub DesktopなどのSSH認証時の課題はGnuPGを使う事で完全に解決します。
+WebAuthnや2要素認証以上にYubiKeyを使いこなそうとすると、プロダクトが新旧あり混乱しやすく難易度も上がります。一番便利だなと感じているのはbitwardenへのローカルのログインで使うスタティックパスワードだったりします。さらにGnuPGを使ったGitHubへのコミット時の署名をYubiKeyで行う事もできますが、GnuPGの理解も必要となりもっと複雑です。今回制約となったGitHub DesktopなどのSSH認証時の課題はGnuPGを使う事で完全に解決します。続きは「{% post_link yubikey_gpg %}」にその方法を記載しています。

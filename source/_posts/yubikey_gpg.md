@@ -21,7 +21,7 @@ GPGは昔からあるオープンソースの暗号・署名の主要なコン�
 
 GPGは基本的にはコマンドラインベースのプロダクトですが、macOSユーザーであれば、GPG Tools(GPG Suite)をお勧めします。GUIで暗号化・復号化できるのは便利です。但し、Appleメールの拡張機能でGPGを使う場合は部分は3,000円程度の有償となります。Homebrewであれば、gpg-suite、gpg-suite-no-mail(有償のメール機能が無いもの）が該当します。[GPG Suite](https://gpgtools.org/)を直接ダウンロードする方法もあります。しかし、このブログを書いている2月10日時点ではYubikeyを使うようなカードインタフェースがうまく動作しません。これは不具合としてGPG Toolsサポートに[報告](https://gpgtools.tenderapp.com/discussions/feedback/16266-signing-with-a-yubikey-fails-until-i-run-gpg-card-status)があります。という事で現時点ではナイトリービルド（[GPG Suite 2020.2 (2989n)](https://releases.gpgtools.org/nightlies/)）を使う事になります。
 
-これ以外には、YubicoのykmanというYubiKey Managerのコマンドインタフェースツールが必要です。これはHomebrewでインストールするか、[Yubicoのサイト](https://www.yubico.com/products/services-software/download/yubikey-manager/)からダウンロードし、インストールしてください。私はmacOSのCatalina(10.15.7)を使っており、シェルはデフォルトのZshとして設定内容を記載していきます。
+これ以外には、YubicoのykmanというYubiKey Managerのコマンドインタフェースツールが必要です。これはHomebrewでインストールするか、[Yubicoのサイト](https://www.yubico.com/products/services-software/download/yubikey-manager/)からダウンロードし、インストールしてください。
 
 ## GPG Tools(GPG Suite)の主な使い方
 
@@ -74,8 +74,6 @@ YubiKeyを使うGPGでは主鍵となる認定鍵（第三者の公開鍵を署�
 drduh/YubiKey-Guide | https://github.com/drduh/YubiKey-Guide |This is a guide to using YubiKey as a SmartCard for storing GPG encryption, signing and authentication keys, which can also be used for SSH.  | https://avatars.githubusercontent.com/u/12475110?s=400&u=07d0880794ce657ea3c16413b8bab37b65b191fa&v=4
 {% endlinkgrid %}
 
-
-
 ただし、このガイドは悪意のあるプログラムが入り込む余地がないクリーンなLinux上で作業し、暗号化USBを作りセットアップするという超優等生な手順になっています。この記事では可能な限りシンプルな手順の作成を目的とし一部の手順を割愛しています。
 
 ## GPGをセットアップするための手順
@@ -93,6 +91,8 @@ drduh/YubiKey-Guide | https://github.com/drduh/YubiKey-Guide |This is a guide to
 #### 前提
 
 必要なソフトウェア（GPG Suite、ykman）がインストールされ、macOSで認識可能となるようフォーマット済みのUSBが用意できている必要があります。鍵の生成は出来るだけ安全な環境下で実施するために、ネットワークから切り離し、ウィルス対策ソフト以外のソフトウェアを可能な限り終了させてから作業します。また鍵の作成時にはYubiKeyの接続は必要ありません。
+
+私はmacOSのCatalina(10.15.7)、シェルはデフォルトのZshを利用しています。また、コマンドラインエディタはvim(vi)を利用していますが、他のエディタでも構いません。
 
 #### 初期設定
 
