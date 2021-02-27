@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.3.0">
+<meta name="generator" content="Hexo 5.4.0">
 
 
   <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
@@ -342,7 +342,7 @@
         <p class="onepoint">この記事で実現すること</p>
 XG FirewallのWebフィルタ・アプリケーションフィルタについて、活用方法を説明します。
 
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Webフィルタについて"><a href="#Webフィルタについて" class="headerlink" title="Webフィルタについて"></a>Webフィルタについて</h2><p>XGの左ペインメニューでは、<mark class="label primary">Web</mark>、<mark class="label primary">アプリケーション</mark>とそれぞれ分かれています。<mark class="label primary">Web</mark>ではサイトのカテゴリが分かれていて、そのサイトのカテゴリによっては閲覧を制限する事が一般的な使い方です。これらのポリシーは、「Sophos XG Firewall: Web カテゴリ」の記事にも日本語の解説があります。サイトのカテゴリについては、ビジネス、ギャンブル、ゲーム、アダルト、ファイナンス等多岐に渡ります。ホームユーザーとしてはいわゆる怪しいサイトや過度な広告をフィルタする事が主目的になります。しかし、上記サイトのポリシーを眺めていると疑問に感じるところがあります。”ActiveX”、”Applets”、”SpamURLs”です。ActiveXやAppletは単純にサーバー名とも関係ありません。サイトのカテゴリに加え、URLまでを対象としているようです。Web カテゴリについては、<a target="_blank" rel="noopener" href="https://community.sophos.com/kb/ja-jp/134155">こちらの記事</a>を参照してください。</p>
 <p>上記のWebカテゴリには記載がないものの、XGの左ペインメニューの<mark class="label primary">Web</mark>の<mark class="label primary">ファイルタイプ</mark>の内容には、ファイル拡張子やMIMEヘッダーの情報が並びます。そしてここにはZIPファイルなどの”Compressed Files”、Windowsの実行ファイルである”Executable File”などの項目が並んでいます。</p>

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.3.0">
+<meta name="generator" content="Hexo 5.4.0">
 
 
   <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
@@ -349,7 +349,7 @@
     <div class="post-body" itemprop="articleBody">
         <p class="onepoint">この記事で実現すること</p>
 XG Firewall v18のSSL/TLSインスペクションを使い、暗号化されたSSL通信を解読します。これにより、ウィルスやマルウェアなどの脅威を通信中に検出し、PCやiPhone等（Windows、macOS、Linux、iOS）が攻撃を受ける前に防御できるようになります。
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="XG-Firewall-v18のメリット"><a href="#XG-Firewall-v18のメリット" class="headerlink" title="XG Firewall v18のメリット"></a>XG Firewall v18のメリット</h2><p>XGでは暗号化された通信を高速に解読し、ウィルスやマルウェアのダウンロードをPCやスマホが受信する前に防ぐ事が可能となります。また、利用を認めていないアプリケーションのデータのやりとりを未然に防ぐ事も可能です。v18では、全く新しい<mark class="label primary">XStreamアーキテクチャ</mark>によって、この解読（SSLインスペクション）の速度が大幅に向上しました。</p>
 <h2 id="SSLインスペクションの対象ホストを決める"><a href="#SSLインスペクションの対象ホストを決める" class="headerlink" title="SSLインスペクションの対象ホストを決める"></a>SSLインスペクションの対象ホストを決める</h2><p>「<a href="/new-technology/2020/03/20/ssl-inspection/" title="SSLインスペクションについて">SSLインスペクションについて</a>」に記載した通り、SSLインスペクションを行うためには、PC等のクライアントにXGのCA証明書をインストールする事が必須となります。従いSSLインスペクションの対象のグループ、家電やAndroidなどのSSLインスペクションを使えないグループとに分類します。この2つのグループはIPアドレスの範囲で分割するのが最も簡単な方法です。例えば、SSLインスペクショングループはスタティックでIPを割り当て、非SSLインスペクショングループはDHCPで動的なIPアドレスを配布する方法があります。<strong>XGのDHCPサーバーはMACアドレスを元に固定IPをスタティックに割り振る事が可能です</strong>。</p>
@@ -415,7 +415,8 @@ XG Firewall v18のSSL/TLSインスペクションを使い、暗号化されたS
 
 <h3 id="Linuxにルート証明書をインストール"><a href="#Linuxにルート証明書をインストール" class="headerlink" title="Linuxにルート証明書をインストール"></a>Linuxにルート証明書をインストール</h3><ol>
 <li><p>Linux側にsshで接続できる事が前提です。PCなどからscpで証明書をLinuxにコピーします</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ scp ./SecurityAppliance_SSL_CA.pem linux-host:/tmp/ca.crt</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ scp ./SecurityAppliance_SSL_CA.pem linux-host:/tmp/ca.crt</span><br></pre></td></tr></table></figure>
+</li>
 <li><p>Linux上で証明書をインストールします。</p>
 <p>ubuntu、Debianの場合</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo cp /tmp/ca.crt /usr/<span class="built_in">local</span>/share/ca-certificates/</span><br><span class="line">$ sudo update-ca-certificates</span><br></pre></td></tr></table></figure>

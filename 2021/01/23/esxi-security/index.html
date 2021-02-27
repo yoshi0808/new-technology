@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.3.0">
+<meta name="generator" content="Hexo 5.4.0">
 
 
   <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
@@ -347,7 +347,7 @@
 <p class="onepoint">この記事で実現すること</p>
 
 <p>VMwareから、”vSphereのセキュリティ”として、<a target="_blank" rel="noopener" href="https://docs.vmware.com/jp/VMware-vSphere/6.7/vsphere-esxi-vcenter-server-672-security-guide.pdf">ESXi6.7版</a>、<a target="_blank" rel="noopener" href="https://docs.vmware.com/jp/VMware-vSphere/7.0/vsphere-esxi-vcenter-server-70-security-guide.pdf">ESXi7版</a>のドキュメンテーションがあります。それぞれ284ページ、350ページと膨大な量になります。この情報のうち大半はビジネスで利用するvCenter Serverを中心としたセキュリティ維持のための記載になりますが、個人向けESXiにポイントを絞り、どのようにセキュリティを高めるか確認していきます。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="ホームユーザーとしての無償版ESXiのセキュリティ"><a href="#ホームユーザーとしての無償版ESXiのセキュリティ" class="headerlink" title="ホームユーザーとしての無償版ESXiのセキュリティ"></a>ホームユーザーとしての無償版ESXiのセキュリティ</h2><p>まずは情報セキュリティのポイントである機密性、完全性、可用性について確認していきます。可用性についてはバックアップとして「<a href="/new-technology/2020/10/11/esxi-backup/" title="VMware ESXiの仮想マシンをバックアップする">VMware ESXiの仮想マシンをバックアップする</a>」の記事を紹介しています。完全性として不具合に対応するパッチの適用については「<a href="/new-technology/2020/06/14/esxi67-patch/" title="VMware ESXi6.7にパッチを適用する">VMware ESXi6.7にパッチを適用する</a>」で記載しています。残るは機密性です。物理的セキュリティ（つまり盗難対策など）はここでは割愛し、ESXiにおける機密性の設定内容について記載します。</p>
 <p>前述したドキュメントを眺めると正直ビジネス向けプロダクトと個人向けとの説明が混在していて理解が難しいです。個人向けESXiでは以下は使えません。</p>

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.3.0">
+<meta name="generator" content="Hexo 5.4.0">
 
 
   <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
@@ -342,7 +342,7 @@
         <p class="onepoint">この記事で実現すること</p>
 
 <p>XG Firewall v18を仮想環境で稼働させるために、VMware ESXi 6.7をインストールします。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="ESXiについて"><a href="#ESXiについて" class="headerlink" title="ESXiについて"></a>ESXiについて</h2><p> 無償版の仮想環境ESXiは<mark class="label primary">vSphere Hypervisor</mark>という名前が付けられています。XG Firewallの導入に必須ではありませんが、XG自体をバックアップすることやバージョンアップの際にその状態を一時保存するスナップショットなどとても便利なので、仮想環境を構築しその上に仮想ホストとしてXGをインストールします。vSphereという製品群、その中の1つの無償版バージョンとして、”vSphere Hypervisor”があります。ESXiは製品名というよりは直接ハードウェアを制御するVMWareの仮想化ソフトウェア、これに対する一般用語としては”ハイパーバイザー”です。そして、ESXi（ハイパーバイザー）上で稼働する実際のOSをVirtual Machine（VM:仮想マシン）と呼びます。</p>
 <p>（2020-10-24追記）<br>ESXiの最新Versionは7.0となっています。このブログのXGに関する一連の説明はESXi6.7を前提に説明しています。ESXi6.7は今年に入ってからも5回のパッチが提供されています。十分な稼働実績があり、ネットにも多くの情報があり安定しているプロダクトです。</p>

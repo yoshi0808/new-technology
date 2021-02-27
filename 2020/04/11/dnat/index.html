@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.3.0">
+<meta name="generator" content="Hexo 5.4.0">
 
 
   <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
@@ -354,7 +354,7 @@
         <p class="onepoint">この記事で実現すること</p>
 XG Firewall v18において、LAN内のホストをインターネットへ公開できます。また日本国内からのアクセスに限るなど、防御を高めます。
 
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="今回の説明の環境について"><a href="#今回の説明の環境について" class="headerlink" title="今回の説明の環境について"></a>今回の説明の環境について</h2><p>インターネットから宅内の環境に対し、VPNを使わず直接アクセスするケースを説明します。ネットワークストレージ（NAS）へのアクセスやWebサーバーのコンテンツ公開を対象としています。このブログではインターネット側にホームゲートウェイ、その内側にXG Firewallがあり、さらに内側にLANがある事を前提に説明します。XG Firewallでは、一般的なルーターと同じように内部のホストをインターネットに公開するためには設定が必要となります。一般的な用語でもありますが、Sophosでは、このような外から内へのパブリックIPとプライベートIPとの変換を伴う接続形態をDNAT（Destination NAT）と呼んでいます。</p>
 <img src="/new-technology/2020/04/11/dnat/network.png" class="" title="alt">

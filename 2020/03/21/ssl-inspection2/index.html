@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.3.0">
+<meta name="generator" content="Hexo 5.4.0">
 
 
   <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
@@ -343,7 +343,7 @@
     <div class="post-body" itemprop="articleBody">
         <p class="onepoint">この記事で実現すること</p>
 XG FirewallのSSLインスペクションが有効に機能している事をテストマルウェアを使い検証します。また、SSLインスペクションによって接続出来なくなる場合は除外設定を行います。
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="SSLインスペクションの動作確認"><a href="#SSLインスペクションの動作確認" class="headerlink" title="SSLインスペクションの動作確認"></a>SSLインスペクションの動作確認</h2><p>前回までの記事でXGのSSLインスペクションの設定が完了している事を前提にしています。SSLインスペクションに関する記事は以下を参照してください。</p>
 <ul>
@@ -383,6 +383,7 @@ XG FirewallのSSLインスペクションが有効に機能している事をテ
 
 <p>もう1つの接続できない理由は、アプリケーション自体が、OSにインストールされた証明書などを認めていないケースです。こちらはアプリケーションの内部に証明書を保持しており、その証明書の正当性を確認しているケースです。以下の例ではpython関連のモジュールをアップグレードするケースで以下のエラーが発生します。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;pip3 install --upgrade pip</span><br><span class="line"></span><br><span class="line">WARNING: Retrying (Retry(total=4, connect=None, <span class="built_in">read</span>=None, redirect=None, status=None))</span><br><span class="line">after connection broken by <span class="string">&#x27;SSLError(SSLCertVerificationError(1,  </span></span><br><span class="line"><span class="string">&#x27;</span>[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get <span class="built_in">local</span> issuer certificate (_ssl.c:1076)<span class="string">&#x27;))&#x27;</span>: /simple/pip/</span><br></pre></td></tr></table></figure>
+
 <p>XGの画面右上にある”ログビューア”から”SSL/TLSインスペクション”を選択し、どのURLのSSLインスペクションが行われているのかを確認できます。また、エラーがある場合は、そこで除外を指定する事で自動的に<mark class="label primary">Local TLS Exclusion List</mark>にドメインが追加されます。下記はあくまで一例ですが除外しておいた方が良いドメインを列挙します。追加した証明書を参照しないプロダクトはアプリケーションの挙動とこのログを見ながら手作業で<mark class="label primary">Local TLS Exclusion List</mark>に除外するドメインを追加する作業を行います。</p>
 <table>
 <thead>

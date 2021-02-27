@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.3.0">
+<meta name="generator" content="Hexo 5.4.0">
 
 
   <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
@@ -341,7 +341,7 @@
     <div class="post-body" itemprop="articleBody">
         <p class="onepoint">この記事で実現すること</p>
 XG Firewall v18を使ったインターネットアクセスのための、デフォルトのルールを作成します。この際にリスクの大きい通信を止めたり、Webのポリシー（閲覧が好ましくないサイト）の設定ができるようになります。また、v18のNATについて説明します。
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Traffic-to-Wanルールの作成"><a href="#Traffic-to-Wanルールの作成" class="headerlink" title="Traffic to Wanルールの作成"></a>Traffic to Wanルールの作成</h2><p>いよいよ、実際の基本的なルールを作成します。ルールとポリシーのメニューから、<mark class="label primary">ファイアウォールルールの追加</mark>ボタンを押し、”新しいファイアウォールルール”を選択します。ルール名にはここでは”To_Internet”とします。ルールグループは”自動”のままで構いません。アクションは”許可する”のままです。ファイアウォールのログは出力するようにチェックしておきます。現時点で”選択した条件に一致しないため、ルールを既存のグループに追加できません”との表示がありますが、その下のルール設定に進みます。</p>
 <img src="/new-technology/2020/03/14/rule-policy2/rule1.png" class="" title="alt">

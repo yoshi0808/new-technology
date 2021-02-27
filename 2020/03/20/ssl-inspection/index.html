@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.3.0">
+<meta name="generator" content="Hexo 5.4.0">
 
 
   <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
@@ -340,7 +340,7 @@
     <div class="post-body" itemprop="articleBody">
         <p class="onepoint">この記事で実現すること</p>
 XG Firewallなどの次世代Firewallで利用されているSSL/TLSインスペクションについて、PCやiPhone等（Windows/macOS/Linux/iOS）を防御する仕組み、および必要となる対応を説明します。
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="SSLインスペクションとは"><a href="#SSLインスペクションとは" class="headerlink" title="SSLインスペクションとは"></a>SSLインスペクションとは</h2><p>https通信では、サーバーとクライアント間がSSLで暗号化されます。SSLというのは本来はTLS（Transport Layer Security）が正しい名称ですが、SSLという言葉が過去より定着しているので、今日でも”SSL証明書”などSSLという言葉は一般的に使われます。この暗号化された通信をIPS（Intrusion Prevension System）は暗号を解読しながらコンテンツの中身の検査を行います。暗号通信の復号化方法として<mark class="label primary">SSL/TLSインスペクション</mark>という方式が採用されています。ここではSSL/TLSインスペクションによりどのようにFirewallが暗号化された通信を「正当な方法で」解読するかをシーケンスで説明します。</p>
 <h2 id="ブラウザとサーバーのSSL通信のシーケンス"><a href="#ブラウザとサーバーのSSL通信のシーケンス" class="headerlink" title="ブラウザとサーバーのSSL通信のシーケンス"></a>ブラウザとサーバーのSSL通信のシーケンス</h2><div class="mermaid">
