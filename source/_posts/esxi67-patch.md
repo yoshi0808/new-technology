@@ -25,9 +25,9 @@ ESXi6.7のパッチ情報は[こちら](https://docs.vmware.com/jp/VMware-vSpher
 
 ESXiのセットアップ時にMy VMwareへの登録を行い、個人向けvSphere Hypervisorのライセンス（無償）を入手されている事を前提にしています。
 
-[My VMware](https://my.vmware.com/jp/web/vmware/login?)にサインインし、{% label primary@製品 %}メニューから、"製品パッチ"を選択します。
+[My VMware](https://my.vmware.com/jp/group/vmware/home)にサインインし、{% label primary@製品とエンタイトルメント　アカウント %}メニューから、"製品パッチ"を選択します。
 
-{% asset_img myvm1.png alt %}
+{% asset_img myvm3.png alt %}
 
 さらに、"ESXi"とバージョンの"6.7"を選択し"検索"ボタンをクリックすると、パッチの一覧が表示されます。
 
