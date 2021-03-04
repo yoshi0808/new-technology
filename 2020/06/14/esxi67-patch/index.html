@@ -21,7 +21,7 @@
 
 <script class="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","version":"8.2.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+    var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images%0AUtterances","scheme":"Mist","version":"8.2.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 <meta name="description" content="この記事で実現すること  無償版ESXi6.7（VMware vSphere Hypervisor6.7）について、VMwareのサイトから製品パッチに関する情報を入手し、ESXi上でパッチを適用します。">
 <meta property="og:type" content="article">
@@ -30,18 +30,18 @@
 <meta property="og:site_name" content="New technologies in our life">
 <meta property="og:description" content="この記事で実現すること  無償版ESXi6.7（VMware vSphere Hypervisor6.7）について、VMwareのサイトから製品パッチに関する情報を入手し、ESXi上でパッチを適用します。">
 <meta property="og:locale" content="ja_JP">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/myvm1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/myvm3.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/myvm2.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/esxi1.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/esxi2.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/esxi3.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/esxi4.png">
 <meta property="article:published_time" content="2020-06-14T13:19:20.000Z">
-<meta property="article:modified_time" content="2020-11-26T05:47:37.042Z">
+<meta property="article:modified_time" content="2021-03-04T12:31:41.619Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="ESXi">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/myvm1.png">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/myvm3.png">
 
 
 <link rel="canonical" href="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/">
@@ -251,9 +251,6 @@
         <a href="https://twitter.com/yoshi0808_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yoshi0808_" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
       </span>
   </div>
-  <div class="cc-license site-overview-item animated" itemprop="license">
-    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="/new-technology/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
-  </div>
 
 
 
@@ -321,7 +318,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">編集日</span>
-        <time title="修正日：2020-11-26 14:47:37" itemprop="dateModified" datetime="2020-11-26T14:47:37+09:00">2020-11-26</time>
+        <time title="修正日：2021-03-04 21:31:41" itemprop="dateModified" datetime="2021-03-04T21:31:41+09:00">2021-03-04</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -351,8 +348,8 @@
 <h2 id="パッチ適用に必要なもの"><a href="#パッチ適用に必要なもの" class="headerlink" title="パッチ適用に必要なもの"></a>パッチ適用に必要なもの</h2><p>SSHでESXiに接続し、コマンドラインでパッチを適用します。クライアントPCからSSH接続が行えるクライアントアプリケーションを用意してください。Windowsでは昔から有名なのはTera Termですが、その他にも無償で利用可能な<a target="_blank" rel="noopener" href="https://www.termius.com/">Termius</a>などがあります。</p>
 <h2 id="VMwareのパッチ情報"><a href="#VMwareのパッチ情報" class="headerlink" title="VMwareのパッチ情報"></a>VMwareのパッチ情報</h2><p>ESXi6.7のパッチ情報は<a target="_blank" rel="noopener" href="https://docs.vmware.com/jp/VMware-vSphere/6.7/rn/esxi670-202006001.html">こちら</a>を参照してください。このリンクは本記事執筆現時点で最も新しいパッチ（2020年6月9日）のリンクとなっていますが、当該ページの左ペインメニューには最新パッチの情報が掲載されていますので、最新のパッチ情報を辿ってください。また、過去のパッチの情報も提供されています。</p>
 <h2 id="製品パッチの情報を入手する"><a href="#製品パッチの情報を入手する" class="headerlink" title="製品パッチの情報を入手する"></a>製品パッチの情報を入手する</h2><p>ESXiのセットアップ時にMy VMwareへの登録を行い、個人向けvSphere Hypervisorのライセンス（無償）を入手されている事を前提にしています。</p>
-<p><a target="_blank" rel="noopener" href="https://my.vmware.com/jp/web/vmware/login">My VMware</a>にサインインし、<mark class="label primary">製品</mark>メニューから、”製品パッチ”を選択します。</p>
-<img src="/new-technology/2020/06/14/esxi67-patch/myvm1.png" class="" title="alt">
+<p><a target="_blank" rel="noopener" href="https://my.vmware.com/jp/group/vmware/home">My VMware</a>にサインインし、<mark class="label primary">製品とエンタイトルメント　アカウント</mark>メニューから、”製品パッチ”を選択します。</p>
+<img src="/new-technology/2020/06/14/esxi67-patch/myvm3.png" class="" title="alt">
 
 <p>さらに、”ESXi”とバージョンの”6.7”を選択し”検索”ボタンをクリックすると、パッチの一覧が表示されます。</p>
 <img src="/new-technology/2020/06/14/esxi67-patch/myvm2.png" class="" title="alt">
@@ -426,7 +423,7 @@
 </div>
 
           <div class="post-tags">
-              <a href="/new-technology/tags/ESXi/" rel="tag"><i class="fa fa-tag"></i> ESXi</a>
+              <a href="/new-technology/tags/ESXi/" rel="tag"># ESXi</a>
           </div>
 
         
@@ -483,7 +480,7 @@
 
 
 <div class="copyright">
-  &copy; 2020 – 
+  &copy; 
   <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
@@ -509,7 +506,7 @@
 
 <script>
 if (document.querySelectorAll('.mermaid').length) {
-  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/mermaid@8.9.0/dist/mermaid.min.js', () => {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/mermaid@8.9.1/dist/mermaid.min.js', () => {
     mermaid.init({
       theme    : 'forest',
       logLevel : 3,
