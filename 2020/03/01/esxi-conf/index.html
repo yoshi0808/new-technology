@@ -31,13 +31,13 @@
 <meta property="og:description" content="この記事で実現すること XG Firewall v18をESXi 6.7上で稼働させるために、ホームゲートウェイの後ろに、XGを挟み込んだネットワーク構成を説明します。また、ESXi上で2枚のNICを利用し仮想スイッチの設定を行い、2枚のNICを持った仮想マシンを作成します。">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/conf_esxi.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/vswitch.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/vswitch1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/vswitch.drawio.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/vswitch1.drawio.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/vswitch2.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/vswitch3.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/01/esxi-conf/vswitch4.png">
 <meta property="article:published_time" content="2020-03-01T00:30:49.000Z">
-<meta property="article:modified_time" content="2020-10-24T12:55:13.377Z">
+<meta property="article:modified_time" content="2021-03-05T13:06:16.662Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta property="article:tag" content="ESXi">
@@ -319,7 +319,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">編集日</span>
-        <time title="修正日：2020-10-24 21:55:13" itemprop="dateModified" datetime="2020-10-24T21:55:13+09:00">2020-10-24</time>
+        <time title="修正日：2021-03-05 22:06:16" itemprop="dateModified" datetime="2021-03-05T22:06:16+09:00">2021-03-05</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -354,7 +354,7 @@ XG Firewall v18をESXi 6.7上で稼働させるために、ホームゲートウ
 </div>
 
 <h2 id="仮想環境上のFirewall向け構成"><a href="#仮想環境上のFirewall向け構成" class="headerlink" title="仮想環境上のFirewall向け構成"></a>仮想環境上のFirewall向け構成</h2><p>ESXiにおけるネットワークの構成は、物理NICと仮想スイッチとの関係が重要です。以下の図のように、ESXiにおける物理NICはケーブルとして見立て、実際に仮想マシンが複数台存在する事を鑑み、ESXiの中にスイッチングハブが存在していると考えてください。</p>
-<img src="/new-technology/2020/03/01/esxi-conf/vswitch.png" class="" title="alt">
+<img src="/new-technology/2020/03/01/esxi-conf/vswitch.drawio.png" class="" title="alt">
 
 <p>※便宜上、一般的なホームユーザーの構成図としてLinuxの仮想マシンやWi-Fiアクセスポイント等を記載していますが、これまでのセットアップでは存在していません。また、XG Firewallのインストールに、LinuxやWi-Fiアクセスポイントは必要ありません。</p>
 <h3 id="セットアップ状況の確認"><a href="#セットアップ状況の確認" class="headerlink" title="セットアップ状況の確認"></a>セットアップ状況の確認</h3><p>ここまでのセットアップで、以下の構成になっています。</p>
@@ -363,7 +363,7 @@ XG Firewall v18をESXi 6.7上で稼働させるために、ホームゲートウ
 <li>バーチャルスイッチのvSwitch0</li>
 <li>ネットワークポート（仮想IP）として、LAN側の管理用のManagement Networkおよびデフォルトで仮想マシンのために作成されているVM Network</li>
 </ul>
-<h3 id="WANの仮想スイッチの作成"><a href="#WANの仮想スイッチの作成" class="headerlink" title="WANの仮想スイッチの作成"></a>WANの仮想スイッチの作成</h3><img src="/new-technology/2020/03/01/esxi-conf/vswitch1.png" class="" title="alt">
+<h3 id="WANの仮想スイッチの作成"><a href="#WANの仮想スイッチの作成" class="headerlink" title="WANの仮想スイッチの作成"></a>WANの仮想スイッチの作成</h3><img src="/new-technology/2020/03/01/esxi-conf/vswitch1.drawio.png" class="" title="alt">
 
 <p>XGのWAN側インタフェースを担う仮想スイッチを追加します（赤字の部分）。</p>
 <ol>

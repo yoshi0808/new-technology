@@ -23,23 +23,23 @@
     var NexT = window.NexT || {};
     var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images%0AUtterances","scheme":"Mist","version":"8.2.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
-<meta name="description" content="ネットワーク構成XG Firewall(以下、XG)を導入した場合のネットワーク構成は以下の図のようになります。一般的にはプロバイダーから貸与されるホームゲートウェイ（外側の光モデム等は省略）に直接PCを繋ぐか、ホームゲートウェイの無線機能でPCやスマホを接続する事になります。XGを導入する場合は、ホームゲートウェイとPCの間にXGを挟み込む形になります。XGは無線機能を持っていないので、HUBを">
+<meta name="description" content="ネットワーク構成XG Firewall(以下、XG)を導入した場合のネットワーク構成は以下の図のようになります。一般的にはプロバイダーから貸与されるホームゲートウェイ（外側の光モデム等は省略）に直接PCを繋ぐか、ホームゲートウェイの無線機能でPCやスマホを接続する事になります。XGを導入する場合は、ホームゲートウェイとPCの間にXGを挟み込む形になります。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="PC（ハードウェア）の準備">
 <meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/02/25/provision/index.html">
 <meta property="og:site_name" content="New technologies in our life">
-<meta property="og:description" content="ネットワーク構成XG Firewall(以下、XG)を導入した場合のネットワーク構成は以下の図のようになります。一般的にはプロバイダーから貸与されるホームゲートウェイ（外側の光モデム等は省略）に直接PCを繋ぐか、ホームゲートウェイの無線機能でPCやスマホを接続する事になります。XGを導入する場合は、ホームゲートウェイとPCの間にXGを挟み込む形になります。XGは無線機能を持っていないので、HUBを">
+<meta property="og:description" content="ネットワーク構成XG Firewall(以下、XG)を導入した場合のネットワーク構成は以下の図のようになります。一般的にはプロバイダーから貸与されるホームゲートウェイ（外側の光モデム等は省略）に直接PCを繋ぐか、ホームゲートウェイの無線機能でPCやスマホを接続する事になります。XGを導入する場合は、ホームゲートウェイとPCの間にXGを挟み込む形になります。">
 <meta property="og:locale" content="ja_JP">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/02/25/provision/network.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/02/25/provision/network.drawio.png">
 <meta property="og:image" content="https://images-fe.ssl-images-amazon.com/images/I/31N8VAJQceL._SL160_.jpg">
 <meta property="og:image" content="https://images-fe.ssl-images-amazon.com/images/I/41GIXbi1guL._SL160_.jpg">
 <meta property="og:image" content="https://images-fe.ssl-images-amazon.com/images/I/41O4MQkV5VL._SL160_.jpg">
 <meta property="article:published_time" content="2020-02-25T10:33:05.000Z">
-<meta property="article:modified_time" content="2020-10-20T23:20:17.938Z">
+<meta property="article:modified_time" content="2021-03-05T13:39:51.861Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2020/02/25/provision/network.png">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2020/02/25/provision/network.drawio.png">
 
 
 <link rel="canonical" href="https://yoshi0808.github.io/new-technology/2020/02/25/provision/">
@@ -316,7 +316,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">編集日</span>
-        <time title="修正日：2020-10-21 08:20:17" itemprop="dateModified" datetime="2020-10-21T08:20:17+09:00">2020-10-21</time>
+        <time title="修正日：2021-03-05 22:39:51" itemprop="dateModified" datetime="2021-03-05T22:39:51+09:00">2021-03-05</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -338,9 +338,9 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2 id="ネットワーク構成"><a href="#ネットワーク構成" class="headerlink" title="ネットワーク構成"></a>ネットワーク構成</h2><p>XG Firewall(以下、XG)を導入した場合のネットワーク構成は以下の図のようになります。一般的にはプロバイダーから貸与されるホームゲートウェイ（外側の光モデム等は省略）に直接PCを繋ぐか、ホームゲートウェイの無線機能でPCやスマホを接続する事になります。XGを導入する場合は、ホームゲートウェイとPCの間にXGを挟み込む形になります。XGは無線機能を持っていないので、HUBを用意しPCをつなぐか、無線LANからアクセスします。</p>
+        <h2 id="ネットワーク構成"><a href="#ネットワーク構成" class="headerlink" title="ネットワーク構成"></a>ネットワーク構成</h2><p>XG Firewall(以下、XG)を導入した場合のネットワーク構成は以下の図のようになります。一般的にはプロバイダーから貸与されるホームゲートウェイ（外側の光モデム等は省略）に直接PCを繋ぐか、ホームゲートウェイの無線機能でPCやスマホを接続する事になります。XGを導入する場合は、ホームゲートウェイとPCの間にXGを挟み込む形になります。</p>
 <span id="more"></span>
- <img src="/new-technology/2020/02/25/provision/network.png" class="" title="alt">  
+ <img src="/new-technology/2020/02/25/provision/network.drawio.png" class="" title="alt">
 
 <p>この構成はXGのWAN側とXGのLAN側と2つのネットワークを持つ事になり、XGには2枚のネットワークカード（以下、NIC）あるいは、2つ以上のPortを持っているNICを1枚用意する事になります。XGのWAN側のインタフェースは、ホームゲートウェイからDHCPでプライベートIPアドレスやDNSを割り当てられます。そして、LAN側のPCやスマホのために、XGはあらかじめユーザが決めたプライベートネットワークアドレスを割り当てます。XGはこのIP割り当てのためのDHCP機能やDNS機能を持っています。また、スマホのネット接続のために無線ルータを別途用意する必要があり、この場合は無線ルータをブリッジモードでセットアップする事になります。</p>
 <h2 id="ハードウェア構成の検討"><a href="#ハードウェア構成の検討" class="headerlink" title="ハードウェア構成の検討"></a>ハードウェア構成の検討</h2><p>上記の構成のために、2つのネットワークPortを持ったPCが1台必要になります。XGの制約としては、6Gbyteのメモリ上限とCPUが4coreまでとなります。物理サーバにそのままXGをインストールしても良いし、ESXi等の仮想ソフトの上にVMを構築しても良いです。ESXiの場合は、ネットワークカード（NIC）の種類を選ぶようで、intel製が比較的認識しやすいという傾向があります。一般的には、以下のものが安全策で好まれるようで、私も昔はこのNICを2枚差してXGを使っていました。</p>
