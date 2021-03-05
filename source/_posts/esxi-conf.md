@@ -29,7 +29,7 @@ ESXiのWeb管理画面にログイン後、左ペインの"ネットワーク"�
 
 ESXiにおけるネットワークの構成は、物理NICと仮想スイッチとの関係が重要です。以下の図のように、ESXiにおける物理NICはケーブルとして見立て、実際に仮想マシンが複数台存在する事を鑑み、ESXiの中にスイッチングハブが存在していると考えてください。
 
-{% asset_img vswitch.png alt %}
+{% asset_img vswitch.drawio.png alt %}
 
 ※便宜上、一般的なホームユーザーの構成図としてLinuxの仮想マシンやWi-Fiアクセスポイント等を記載していますが、これまでのセットアップでは存在していません。また、XG Firewallのインストールに、LinuxやWi-Fiアクセスポイントは必要ありません。
 
@@ -43,7 +43,7 @@ ESXiにおけるネットワークの構成は、物理NICと仮想スイッチ�
 
 ### WANの仮想スイッチの作成
 
-{% asset_img vswitch1.png alt %}
+{% asset_img vswitch1.drawio.png alt %}
 
 XGのWAN側インタフェースを担う仮想スイッチを追加します（赤字の部分）。
 
