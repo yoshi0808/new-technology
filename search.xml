@@ -3360,36 +3360,26 @@ D[&quot;副鍵・認証&quot;]--&gt;D1[&quot;YubiKey認証&quot;]
 
 <p>差分バックアップについてはESXiの機能であるCBT(Changed Block Tracking)の機能を使えます。バックアップのストレージと時間の圧縮効果があるので設定をお勧めします。これは次の章で説明します。</p>
 <p>Nakivo Backupのユーザーマニュアルの詳細は<a href="https://helpcenter.nakivo.com/display/NH/User+Guide">こちら</a>を参照してください。</p>
-<h2 id="ESXiのChanged-Block-Tracking"><a href="#ESXiのChanged-Block-Tracking" class="headerlink" title="ESXiのChanged Block Tracking"></a>ESXiのChanged Block Tracking</h2><p>ESXiの機能であるChanged Block Trackingは仮想マシンが稼働していて前回バックアップしたものから未更新のディスクアリアをスキップして差分のみバックアップする機能です。途中で別のバックアップ製品によるバックアップ、例えばghettoVCBなどでバックアップされると、次回のNakivo BackupによるCBTはフルバックアップを行います。</p>
-<p>手順についてはVMWareの<a href="https://kb.vmware.com/s/article/1031873?lang=ja&queryTerm=changed+block+tracking">ガイド</a>を参照してください。</p>
-<p>最初に仮想マシンがインストールされているディスクを調べ、そのSCSI-IDを確認します。<br>ESXiの仮想マシンを選択し右クリックして<mark class="label primary">設定の編集</mark>をクリックします。</p>
+<h2 id="ESXiのChanged-Block-Tracking"><a href="#ESXiのChanged-Block-Tracking" class="headerlink" title="ESXiのChanged Block Tracking"></a>ESXiのChanged Block Tracking</h2><p>ESXiの機能であるChanged Block Trackingは仮想マシンが稼働していて前回バックアップしたものから未更新のディスクブロックをスキップして差分のみバックアップする機能です。途中で別のバックアップ製品によるバックアップ、例えばghettoVCBなどでバックアップされると、次回のNakivo BackupによるCBTはフルバックアップを行います。</p>
+<p>最初に仮想マシンがインストールされているディスクを調べ、そのSCSI-IDを確認します。<br>ESXi管理画面の仮想マシンを選択し右クリックして<mark class="label primary">設定の編集</mark>をクリックします。</p>
 <img src="/new-technology/2021/03/06/esxi-nakivo/esxi.png" class="" width="640" title="alt">
 
 
 <mark class="label primary">ハードディスク</mark>の詳細を開き、<mark class="label primary">コントローラの場所</mark>でSCSI-IDを確認します（SCSI(0:0)など）。
 
-<p>以下はVMWareのガイドからの引用です。</p>
-<blockquote>
 <ol>
-<li>仮想マシンをパワーオフします。</li>
-<li>仮想マシンを右クリックして、[設定の編集] をクリックします。</li>
-<li>[オプション] タブをクリックします。</li>
-<li>[詳細] セクションで [全般] をクリックして、[構成パラメータ] をクリックします。[構成パラメータ] ダイアログが開きます。</li>
-<li>[行の追加] をクリックします。</li>
+<li>仮想マシンを停止します。</li>
+<li>ESXi管理画面の仮想マシンを右クリックして、<mark class="label primary">設定の編集</mark>をクリックします。</li>
+<li><mark class="label primary">仮想マシンオプション</mark>タブをクリックします。</li>
+<li><mark class="label primary">詳細</mark>セクションを開き <mark class="label primary">設定パラメータ</mark>の<mark class="label primary">設定の編集</mark>をクリックします。<mark class="label primary">設定パラメータ</mark>ダイアログが開きます。</li>
+<li><mark class="label primary">パラメータの追加</mark>をクリックします。</li>
 <li>ctkEnabled パラメータを追加して、その値を true に設定します。</li>
-<li>[行の追加] をクリックし、scsi0:0.ctkEnabled を追加して、その値を true に設定します。</li>
+<li><mark class="label primary">パラメータの追加</mark>をクリックし、scsi0:0.ctkEnabled を追加して、その値を true に設定します（環境に合わせてscsi0:0の内容は変更してください）。</li>
+<li>OKボタンをクリックし設定を完了させます。</li>
+<li>仮想マシンを起動します。</li>
+<li>SSHでESXiに入り、仮想マシンが配置されているディレクトリで、<code>&quot;vm-name&quot;-ctk.vmdk</code>ファイルがあることを確認します。</li>
 </ol>
-</blockquote>
-<blockquote>
-<p>注：scsi0:0.ctkEnabled の scsi0:0 は、仮想マシンに追加されているハード ディスクに割り当てられた SCSI デバイスを示しています。仮想マシンに追加されるどのハード ディスクにも、scsi0:0、scsi0:1、または scsi 1:1 などのように表示される SCSI デバイスが指定されます。CBT は、各ディスクで個別に有効（または無効）にします。</p>
-</blockquote>
-<blockquote>
-<ol start="8">
-<li>仮想マシンをパワーオンします。</li>
-<li>仮想マシンのホーム ディレクトリで、CBT が有効になっている各ディスクに vmname-ctk.vmdk ファイルもあることを確認します。</li>
-</ol>
-</blockquote>
-<p>CBTを無効にする場合はこの逆の手順、ctkEnagleの値をfalseに設定します。</p>
+<p>CBTを無効にする場合はこの逆の手順、ctkEnagleの値をfalseに設定します。<br>手順の詳細についてはVMWareの<a href="https://kb.vmware.com/s/article/1031873?lang=ja&queryTerm=changed+block+tracking">ガイド</a>を参照してください。</p>
 <h2 id="定期的なバックアップをお勧めします"><a href="#定期的なバックアップをお勧めします" class="headerlink" title="定期的なバックアップをお勧めします"></a>定期的なバックアップをお勧めします</h2><p>この製品もghettoVCBと同様にスナップショットをとってからバックアップに入りますので、制約はほとんど感じる事がありません。せいぜい数ヶ月に1度のESXiパッチ適用の前に手動でバックアップを取る事くらいでしょうか。不慮の事故に備えて定期的なバックアップを取得される事をお勧めします。最近はOSもIoTもパッチの自動更新機能が充実してきました。多少意識する事としてはパッチ適用による自動リブートなどと、このバックアップとの時間帯が重ならないように留意する事くらいでしょうか。それでもジョブ通知があるのでバックアップ失敗が放置される懸念もありません。</p>
 <p><small id="note1"><strong>[1]</strong><br>営業担当曰く、「気に入ったら買って欲しい」との事でした。こちらはそこまでパワーユーザーじゃないからというやりとりのあと、こちらから「目的から外れるのならソフトウェアを削除するけど、そうした方が良い？」という質問には明確な回答がありませんでした。もちろん、ソフトウェアで収益を上げている事はビジネスとして当然の行為で、良いソフトウェアには適切な値段があるべきですが、できればそのあたりをWebサイトに明記されると良いのになと感じたところです。しかしホームユーザーとして悩む絶妙な価格設定<span class="github-emoji" alias="sweat_smile" style="" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f605.png?v8">&#x1f605;</span><br></small></p>
 ]]></content>
