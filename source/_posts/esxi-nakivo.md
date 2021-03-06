@@ -109,33 +109,28 @@ Nakivo Backupのユーザーマニュアルの詳細は[こちら](https://helpc
 
 ## ESXiのChanged Block Tracking
 
-ESXiの機能であるChanged Block Trackingは仮想マシンが稼働していて前回バックアップしたものから未更新のディスクアリアをスキップして差分のみバックアップする機能です。途中で別のバックアップ製品によるバックアップ、例えばghettoVCBなどでバックアップされると、次回のNakivo BackupによるCBTはフルバックアップを行います。
-
-手順についてはVMWareの[ガイド](https://kb.vmware.com/s/article/1031873?lang=ja&queryTerm=changed+block+tracking)を参照してください。
+ESXiの機能であるChanged Block Trackingは仮想マシンが稼働していて前回バックアップしたものから未更新のディスクブロックをスキップして差分のみバックアップする機能です。途中で別のバックアップ製品によるバックアップ、例えばghettoVCBなどでバックアップされると、次回のNakivo BackupによるCBTはフルバックアップを行います。
 
 最初に仮想マシンがインストールされているディスクを調べ、そのSCSI-IDを確認します。
-ESXiの仮想マシンを選択し右クリックして{% label primary @設定の編集 %}をクリックします。
+ESXi管理画面の仮想マシンを選択し右クリックして{% label primary @設定の編集 %}をクリックします。
 {% asset_img esxi.png 640 alt %}
 
 
 {% label primary @ハードディスク %}の詳細を開き、{% label primary @コントローラの場所 %}でSCSI-IDを確認します（SCSI(0:0)など）。
 
-以下はVMWareのガイドからの引用です。
-
->1. 仮想マシンをパワーオフします。
->2. 仮想マシンを右クリックして、[設定の編集] をクリックします。
->3. [オプション] タブをクリックします。
->4. [詳細] セクションで [全般] をクリックして、[構成パラメータ] をクリックします。[構成パラメータ] ダイアログが開きます。
->5. [行の追加] をクリックします。
->6. ctkEnabled パラメータを追加して、その値を true に設定します。
->7. [行の追加] をクリックし、scsi0:0.ctkEnabled を追加して、その値を true に設定します。
-
-> 注：scsi0:0.ctkEnabled の scsi0:0 は、仮想マシンに追加されているハード ディスクに割り当てられた SCSI デバイスを示しています。仮想マシンに追加されるどのハード ディスクにも、scsi0:0、scsi0:1、または scsi 1:1 などのように表示される SCSI デバイスが指定されます。CBT は、各ディスクで個別に有効（または無効）にします。
-
->8. 仮想マシンをパワーオンします。
->9. 仮想マシンのホーム ディレクトリで、CBT が有効になっている各ディスクに vmname-ctk.vmdk ファイルもあることを確認します。
+1. 仮想マシンを停止します。
+2. ESXi管理画面の仮想マシンを右クリックして、{% label primary @設定の編集 %}をクリックします。
+3. {% label primary @仮想マシンオプション %}タブをクリックします。
+4. {% label primary @詳細 %}セクションを開き {% label primary @設定パラメータ %}の{% label primary @設定の編集 %}をクリックします。{% label primary @設定パラメータ %}ダイアログが開きます。
+5. {% label primary @パラメータの追加 %}をクリックします。
+6. ctkEnabled パラメータを追加して、その値を true に設定します。
+7. {% label primary @パラメータの追加 %}をクリックし、scsi0:0.ctkEnabled を追加して、その値を true に設定します（環境に合わせてscsi0:0の内容は変更してください）。
+8. OKボタンをクリックし設定を完了させます。
+9. 仮想マシンを起動します。
+10. SSHでESXiに入り、仮想マシンが配置されているディレクトリで、`"vm-name"-ctk.vmdk`ファイルがあることを確認します。
 
 CBTを無効にする場合はこの逆の手順、ctkEnagleの値をfalseに設定します。
+手順の詳細についてはVMWareの[ガイド](https://kb.vmware.com/s/article/1031873?lang=ja&queryTerm=changed+block+tracking)を参照してください。
 
 ## 定期的なバックアップをお勧めします
 
