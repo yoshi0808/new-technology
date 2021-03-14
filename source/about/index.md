@@ -3,7 +3,7 @@ title: プロフィール
 type: "about"
 comments: false
 ---
-
+<img src="./undraw_profile_pic_ic5t.png" width="300" >
 
 ## 著者について
 

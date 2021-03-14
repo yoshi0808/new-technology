@@ -3,6 +3,7 @@ title: ディスクレーマー
 type: "disclaimer"
 comments: false
 ---
+<img src="./undraw_Resume_folder_re_e0bi.png" width="400" >
 
 ## 画像の著作権について
 
