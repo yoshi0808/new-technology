@@ -31,7 +31,7 @@
     "hexo-renderer-stylus": "^2.0.1",
     "hexo-server": "^2.0.0",
     "hexo-util": "^2.4.0",
-    "highlight.js": "^10.6.0"
+    "highlight.js": "^10.7.1"
   },
   "devDependencies": {
     "textlint": "^11.8.2",
