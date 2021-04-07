@@ -23,31 +23,25 @@
     var NexT = window.NexT || {};
     var CONFIG = {"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images%0AUtterances","scheme":"Mist","version":"8.2.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
-<meta name="description" content="この記事で実現すること ユーザーが指定したDNS（多くはプロバイダDNS）に反し、行儀の悪いクライアントや悪意のあるプログラムはそれに従わず、別のDNSを参照する可能性があります。XG Firewall v18の機能を活用してDNSの安全性を確保します。">
+<meta name="description" content="XG Firewall v18 MR-5XG Firewall v18のMR-5が2021年4月5日に発表されました。MR4に続き、ホームユーザーにとってはマイナーアップデートですが、関係ありそうな変更点について記載します。やはりほぼ法人向けとしての機能強化が目立ちます。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="XG Firewall v18で正しいDNS利用を強制する">
-<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/05/16/Intercept-DNS/index.html">
+<meta property="og:title" content="XG Firewall v18 MR5の更新">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2021/04/07/xg-v18-mr5/index.html">
 <meta property="og:site_name" content="New technologies in our life">
-<meta property="og:description" content="この記事で実現すること ユーザーが指定したDNS（多くはプロバイダDNS）に反し、行儀の悪いクライアントや悪意のあるプログラムはそれに従わず、別のDNSを参照する可能性があります。XG Firewall v18の機能を活用してDNSの安全性を確保します。">
+<meta property="og:description" content="XG Firewall v18 MR-5XG Firewall v18のMR-5が2021年4月5日に発表されました。MR4に続き、ホームユーザーにとってはマイナーアップデートですが、関係ありそうな変更点について記載します。やはりほぼ法人向けとしての機能強化が目立ちます。">
 <meta property="og:locale" content="ja_JP">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/16/Intercept-DNS/xg-dns.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/16/Intercept-DNS/mimetype.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/16/Intercept-DNS/mimetype2.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/16/Intercept-DNS/policy.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/16/Intercept-DNS/service.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/16/Intercept-DNS/rule1.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/16/Intercept-DNS/host.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/16/Intercept-DNS/rule2.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/16/Intercept-DNS/rule3.png">
-<meta property="article:published_time" content="2020-05-16T02:39:23.000Z">
-<meta property="article:modified_time" content="2020-10-21T09:37:59.033Z">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/04/07/xg-v18-mr5/XG.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/04/07/xg-v18-mr5/mysophos.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/04/07/xg-v18-mr5/verup.png">
+<meta property="article:published_time" content="2021-04-07T01:00:00.000Z">
+<meta property="article:modified_time" content="2021-04-07T10:01:37.070Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2020/05/16/Intercept-DNS/xg-dns.png">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2021/04/07/xg-v18-mr5/XG.png">
 
 
-<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2020/05/16/Intercept-DNS/">
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2021/04/07/xg-v18-mr5/">
 
 
 <script class="page-configurations">
@@ -59,7 +53,7 @@
     lang   : 'ja'
   };
 </script>
-<title>XG Firewall v18で正しいDNS利用を強制する | New technologies in our life</title>
+<title>XG Firewall v18 MR5の更新 | New technologies in our life</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-159928165-1"></script>
     <script>
@@ -209,7 +203,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#DNS%E3%81%A8%E3%83%97%E3%83%A9%E3%82%A4%E3%83%90%E3%82%B7%E3%83%BC"><span class="nav-number">1.</span> <span class="nav-text">DNSとプライバシー</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG-v18%E3%81%A7%E6%8C%87%E5%AE%9ADNS%E3%82%92%E5%BC%B7%E5%88%B6%E3%81%99%E3%82%8B"><span class="nav-number">2.</span> <span class="nav-text">XG v18で指定DNSを強制する</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DoH%E3%81%AE%E6%8B%92%E5%90%A6"><span class="nav-number">2.1.</span> <span class="nav-text">DoHの拒否</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DoT%E3%81%AE%E6%8B%92%E5%90%A6"><span class="nav-number">2.2.</span> <span class="nav-text">DoTの拒否</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DNS%E3%81%AB%E9%96%A2%E3%81%99%E3%82%8BDNAT"><span class="nav-number">2.3.</span> <span class="nav-text">DNSに関するDNAT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8B%95%E4%BD%9C%E7%A2%BA%E8%AA%8D"><span class="nav-number">2.4.</span> <span class="nav-text">動作確認</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DNS%E3%81%AB%E9%96%A2%E3%81%97%E3%81%A6%E3%81%AE%E8%A3%9C%E8%B6%B3"><span class="nav-number">3.</span> <span class="nav-text">DNSに関しての補足</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#XG-Firewall-v18-MR-5"><span class="nav-number">1.</span> <span class="nav-text">XG Firewall v18 MR-5</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E3%81%AA%E3%82%A8%E3%83%B3%E3%83%8F%E3%83%B3%E3%82%B9%E3%81%AE%E5%86%85%E5%AE%B9"><span class="nav-number">2.</span> <span class="nav-text">主なエンハンスの内容</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#VPN%E3%81%AE%E6%96%B0%E6%A9%9F%E8%83%BD"><span class="nav-number">2.1.</span> <span class="nav-text">VPNの新機能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A8%BC%E6%98%8E%E6%9B%B8%E3%81%AE%E7%AE%A1%E7%90%86%E3%81%A8%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3"><span class="nav-number">2.2.</span> <span class="nav-text">証明書の管理とセキュリティ</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG%E3%81%AE%E3%82%A2%E3%83%83%E3%83%97%E3%83%87%E3%83%BC%E3%83%88"><span class="nav-number">3.</span> <span class="nav-text">XGのアップデート</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IPSec-VPN%E3%81%AEiOS%E3%81%AE%E6%A7%8B%E6%88%90%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB"><span class="nav-number">4.</span> <span class="nav-text">IPSec VPNのiOSの構成ファイル</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -290,7 +284,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="ja">
-    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2020/05/16/Intercept-DNS/">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2021/04/07/xg-v18-mr5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/new-technology/images/yoshi.png">
@@ -303,7 +297,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          XG Firewall v18で正しいDNS利用を強制する
+          XG Firewall v18 MR5の更新
         </h1>
 
         <div class="post-meta-container">
@@ -313,16 +307,10 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">投稿日</span>
+      
 
-      <time title="作成日：2020-05-16 11:39:23" itemprop="dateCreated datePublished" datetime="2020-05-16T11:39:23+09:00">2020-05-16</time>
+      <time title="作成日：2021-04-07 10:00:00 / 修正日：19:01:37" itemprop="dateCreated datePublished" datetime="2021-04-07T10:00:00+09:00">2021-04-07</time>
     </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">編集日</span>
-        <time title="修正日：2020-10-21 18:37:59" itemprop="dateModified" datetime="2020-10-21T18:37:59+09:00">2020-10-21</time>
-      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -343,66 +331,52 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p class="onepoint">この記事で実現すること</p>
-ユーザーが指定したDNS（多くはプロバイダDNS）に反し、行儀の悪いクライアントや悪意のあるプログラムはそれに従わず、別のDNSを参照する可能性があります。XG Firewall v18の機能を活用してDNSの安全性を確保します。
+        <img src="/new-technology/2021/04/07/xg-v18-mr5/XG.png" class="" title="alt">
 
+<h2 id="XG-Firewall-v18-MR-5"><a href="#XG-Firewall-v18-MR-5" class="headerlink" title="XG Firewall v18 MR-5"></a>XG Firewall v18 MR-5</h2><p>XG Firewall v18のMR-5が2021年4月5日に発表されました。MR4に続き、ホームユーザーにとってはマイナーアップデートですが、関係ありそうな変更点について記載します。やはりほぼ法人向けとしての機能強化が目立ちます。</p>
 <span id="more"></span>
 
-<h2 id="DNSとプライバシー"><a href="#DNSとプライバシー" class="headerlink" title="DNSとプライバシー"></a>DNSとプライバシー</h2><p>Sophos CommunityでもDNSの扱いについてはいろいろ議論されていますが、ベストプラクティスとしては「<a target="_blank" rel="noopener" href="https://community.sophos.com/products/xg-firewall/f/network-and-routing/95100/dns-best-practices-for-xg">DNS Best Practices for XG</a>」の記事にいくつかのアドバイスがあります。</p>
+<h2 id="主なエンハンスの内容"><a href="#主なエンハンスの内容" class="headerlink" title="主なエンハンスの内容"></a>主なエンハンスの内容</h2><h3 id="VPNの新機能"><a href="#VPNの新機能" class="headerlink" title="VPNの新機能"></a>VPNの新機能</h3><ul>
+<li>同時IPSecVPNトンネル容量の大幅な50%の増加</li>
+<li>ソフォス接続v2.1経由のリモートアクセスのためのIPSecプロビジョニングファイルのサポート（Windows）</li>
+</ul>
+<h3 id="証明書の管理とセキュリティ"><a href="#証明書の管理とセキュリティ" class="headerlink" title="証明書の管理とセキュリティ"></a>証明書の管理とセキュリティ</h3><ul>
+<li>秘密キーのセキュリティ強化</li>
+<li>PEM形式証明書のアップロード/ダウンロードのサポート</li>
+</ul>
+<p>その他、Sophos Central Firewallレポーティングの強化、50項目以上の不具合修正があります。</p>
+<p>v18 MR-5の詳細な説明はSophos Communityの<a target="_blank" rel="noopener" href="https://community.sophos.com/sophos-xg-firewall/b/blog/posts/xg-firewall-v18-mr5-is-now-available">こちらの記事</a>を参照してください。可能な限り迅速にアップグレードするように推奨されています。</p>
 <blockquote class="blockquote-center">
-<p>The best protection is to use XG as dns server, configure dns request routing and nothing else. Avoid to open udp port 53.<br>最良の防御策はXGをDNSサーバとして使用し、DNSリクエストのルーティングを設定すること。それ以外は何も行わないことです。udpポート53を開かないようにしてください。</p>
+<p><strong>Upgrade as soon as possible</strong></p>
+<p>While we always encourage you to keep your firewalls up to date with the latest firmware, over the next few months we are recommending you rapidly apply maintenance releases to ensure you have all the important security, performance, and feature enhancements applied as soon as possible.</p>
+<p>ファイアウォールを最新のファームウェアで最新の状態に保つことを常に推奨していますが、今後数ヶ月間は、重要なセキュリティ、パフォーマンス、機能強化のすべてを可能な限り早く適用できるように、メンテナンスリリースを迅速に適用することをお勧めします。</p>
 
 </blockquote>
 
-<p>この一言で既にDNSの使い方については答えが出てしまいましたが、記事が2017年とやや古い事もあり、v18の機能を生かしたDNSの設定例を書きます。</p>
-<p>DNSとプライバシーは国によって扱いが変わるかも知れません。国が人々のネットのアクセス状況を把握している事が問題とされている場所では、パブリックDNSが好まれます。また海外ではプロバイダーがDNSを改ざんするといったニュースも見かけます。日本国内においては、プロバイダのDNSの応答速度が遅い事から利用されるケースが増えてきているようです。</p>
-<p>ブラウザのFireFoxでは、プライバシー保護を目的として、DNSについてHTTPSを利用したDNS over HTTPSに対応しています。この機能は日本ではデフォルトでオフになっていますが、HTTPSで暗号化されているため管理者側からは一般的なネットブラウジングと区別がつかず、トラフィックが見えづらくなります。</p>
-<p>私個人としてはDNSを含めたプライバシーの情報を無闇に拡散させない事が重要と考えています。また、Communityで言及されている通り、防御のためにDNSのPortは空けない事が重要と考えます。パブリックDNSの利用はユーザーそれぞれにとっては考え方は異なるかとおもいますので、これ以降は悪意をもったクライアントが本来のDNS設定を迂回する事の対策として読んでいただければとおもいます。</p>
-<h2 id="XG-v18で指定DNSを強制する"><a href="#XG-v18で指定DNSを強制する" class="headerlink" title="XG v18で指定DNSを強制する"></a>XG v18で指定DNSを強制する</h2><p>ここではDNS情報はDHCPで配布されている前提とします。このブログでは、クライアントが参照するDNSは、全てXGのDNSを指定するように設定しています。この前提で、これを回避しようとするクライアントに対して以下の対策を取ります。</p>
-<ul>
-<li>DNS over TLS(DoT)は拒否<br>Port853の拒否</li>
-<li>DNS over HTTPS(DoH)は拒否<br>RFC8484に基づき、MIMEヘッダーの”application/dns-message”を見つけて、その通信を拒否</li>
-<li>Public DNSへのアクセス（Port53）は、強制的にXGのDNS経由で本来のDNSにアクセス<br>XGのDNATの機能を使い、WANインターフェースに対するPort53の通信だった場合、宛先IPをXGのLANのIPアドレスに変換</li>
-</ul>
-<img src="/new-technology/2020/05/16/Intercept-DNS/xg-dns.png" class="" title="alt">
-
-<p>アプリケーションは、DoTやDoHを止められると（一般的には）通常のDNS(Port53)にフォールバックします。そしてXGは強制的にDNSの向き先を変えますが、クライアントはパブリックDNSにアクセスしたと思い込んだまま、返されたIPに対しアクセスする事になります。</p>
-<h3 id="DoHの拒否"><a href="#DoHの拒否" class="headerlink" title="DoHの拒否"></a>DoHの拒否</h3><p>DoHの定義についてサービスの登録を行います。</p>
-<p>XGの左ペインメニュー<mark class="label primary">Web</mark>の<mark class="label primary">ファイルタイプ</mark>から追加ボタンをクリックします。<mark class="label primary">名前</mark>は”DoH”、<mark class="label primary">テンプレート</mark>を空白とし、<mark class="label primary">MIMEヘッダー</mark>に<code>application/dns-message</code>と入力し、保存します。</p>
-<img src="/new-technology/2020/05/16/Intercept-DNS/mimetype.png" class="" title="alt">
-
-<p>左ペインメニュー<mark class="label primary">Web</mark>の<mark class="label primary">ユーザーアクティビティ</mark>から”追加”ボタンをクリックし、DoHとして登録したカテゴリを加え、<code>DNS over HTTPS</code>と名前を付けて保存します。</p>
-<img src="/new-technology/2020/05/16/Intercept-DNS/mimetype2.png" class="" title="alt">
-
-<p>続いて、具体的な拒否設定です。</p>
-<p>左ペインメニュー<mark class="label primary">Web</mark>の<mark class="label primary">ポリシー</mark>からご自身がFirewallルールで利用しているポリシー（ここでは”Home Policy”を仮定しています）に、上記で登録してきた”DNS over HTTPS”を拒否する設定を加えます。</p>
-<img src="/new-technology/2020/05/16/Intercept-DNS/policy.png" class="" title="alt">
-
-<h3 id="DoTの拒否"><a href="#DoTの拒否" class="headerlink" title="DoTの拒否"></a>DoTの拒否</h3><p>XGの左ペインメニュー<mark class="label primary">ホストとサービス</mark>の<mark class="label primary">サービス</mark>から、”追加”ボタンをクリックし、”送信元ポート”1〜65535、”宛先ポート”853を指定し、”DoT”と名前を付け保存します。</p>
-<img src="/new-technology/2020/05/16/Intercept-DNS/service.png" class="" title="alt">
-
-<p>XGの左ペインメニュー<mark class="label primary">ルールとポリシー</mark>から新しいファイアウォールルールを追加し、以下のようにDoTを”拒否”するルールを作成します。</p>
-<img src="/new-technology/2020/05/16/Intercept-DNS/rule1.png" class="" title="alt">
-
-<h3 id="DNSに関するDNAT"><a href="#DNSに関するDNAT" class="headerlink" title="DNSに関するDNAT"></a>DNSに関するDNAT</h3><p>最初にDNATで必要なホストの定義を行います。LANで使っているネットワークアドレスの登録とXG自身のIPアドレスの登録が必要です。ネットワークアドレスについてIPv4は例えば、<code>192.168.1.0/24</code>、IPv6は例えば<code>fd00:beaf:cafe::/64</code>などの登録を行います。XG自身のIPアドレスも登録が必要です。</p>
-<img src="/new-technology/2020/05/16/Intercept-DNS/host.png" class="" title="alt">
-
-<p>XGの左ペインメニュー<mark class="label primary">ルールとポリシー</mark>から、<mark class="label primary">NATルール</mark>を選択、”NATルールの追加”ボタンをクリックし、DNATを設定します。</p>
+<h2 id="XGのアップデート"><a href="#XGのアップデート" class="headerlink" title="XGのアップデート"></a>XGのアップデート</h2><p>XGのv17からのアップデートは、 v17.5 MR6以降から可能です。XGのv18であればMR-5へのアップデートは可能です。<br>XGの管理画面にログイン後、左ペインメニューの<mark class="label primary">バックアップ＆ファームウェア</mark>の<mark class="label primary">ファームウェアの確認</mark>ではただちに全てのユーザーにアップデートの案内が来るわけでは無いようなので、アップデートにはMySophosにログインし、バージョンアップの差分モジュールをダウンロードします。</p>
 <ol>
-<li>“変換前の送信元”は、使っているネットワークのオブジェクトを登録します</li>
-<li>“変換前のサービス”は、”DNS”を選択します</li>
-<li>“返還後の宛先（DNAT）”は、XG自身のIPを指定します</li>
-<li>“アウトバウンドインターフェース”には、WANである、”Port2”を選択します</li>
-<li>最後に追加ボタンをクリックして登録を完了します</li>
+<li><a target="_blank" rel="noopener" href="https://www.sophos.com/ja-jp.aspx">Sophosのサイト</a>の右上のプルダウンメニューから、<mark class="label primary">ライセンスポータル</mark>をクリックします。</li>
+<li>Sophos IDをお持ちでなければIDを作成します。</li>
+<li>ログイン後、<mark class="label primary">Network Protection</mark>をクリックします。</li>
+<li><mark class="label primary">ファームウェアの更新</mark>をクリックします。</li>
+<li>「製品名/OSを使った検索」で”ファイアーウォール”を選択し、その後現れるプルダウンは”ソフトウェア”を選択します。</li>
+<li><mark class="label primary">選択可能なダウンロードを表示</mark>ボタンをクリックします。
+
+</li>
 </ol>
-<img src="/new-technology/2020/05/16/Intercept-DNS/rule2.png" class="" title="alt">
+<img src="/new-technology/2021/04/07/xg-v18-mr5/mysophos.png" class="" width="640" title="alt">
 
-<p>上記はIPv4の例ですが、IPv6を利用されている方は、同様にIPv6のDNATも設定してください。</p>
-<h3 id="動作確認"><a href="#動作確認" class="headerlink" title="動作確認"></a>動作確認</h3><p>上記DNATによるDNSのインターセプトが有効になると、<mark class="label primary">ルールとポリシー</mark>の<mark class="label primary">NATルール</mark>画面で実際に変換された数が確認できるので、これで挙動を確認してください。</p>
-<img src="/new-technology/2020/05/16/Intercept-DNS/rule3.png" class="" title="alt">
+<ol start="7">
+<li>上記画面で”SW-18.0.5_MR-5.SFW-574.sig”というアップデータが表示されますのでダウンロードします。</li>
+<li>MY Sophosはここで終了してXGの管理画面にログインし、左ペインメニューの<mark class="label primary">バックアップ＆ファームウェア</mark>の<mark class="label primary">ファームウェアのタブメニュー</mark>から以下の画面に赤丸で囲った矢印のアイコンをクリックし、ダウンロードしたモジュールをアップロードします。</li>
+</ol>
+<img src="/new-technology/2021/04/07/xg-v18-mr5/verup.png" class="" title="alt">
 
-<p>以上がプライバシーと安全性を重視したv18ならではのDNSのベストプラクティスです。</p>
-<h2 id="DNSに関しての補足"><a href="#DNSに関しての補足" class="headerlink" title="DNSに関しての補足"></a>DNSに関しての補足</h2><p>GoogleDNSのDoHはRFC8484に従っていない独自プロトコルを使えるという事実があります。世界中のパブリックDNSを全て把握するのは困難ですが、Sophosのコミュニティの記事を参考にWebフィルタのURLグループにパブリックDNSのドメインを登録し、拒否する設定を加えても良いでしょう。詳細は、<a target="_blank" rel="noopener" href="https://community.sophos.com/kb/en-us/134644">こちらの記事</a>を参照してください。</p>
+<p>アップロード＆再起動ボタンをクリックし、MR-5へのアップグレードを完了させます。</p>
+<div class="note info"><p>仮想環境（ESXi）上にXGをインストールされている方はアップグレードの前に、「<a href="/new-technology/2020/10/11/esxi-backup/" title="VMware ESXiの仮想マシンをバックアップする">VMware ESXiの仮想マシンをバックアップする</a>」を参考に、XGのバックアップを確保される事をお勧めします。</p>
+</div>
+
+<h2 id="IPSec-VPNのiOSの構成ファイル"><a href="#IPSec-VPNのiOSの構成ファイル" class="headerlink" title="IPSec VPNのiOSの構成ファイル"></a>IPSec VPNのiOSの構成ファイル</h2><p>Gv18のMR4で気づいた、IPSec VPNのiOSの構成ファイルのダウンロード（ユーザーポータル画面からダウンロード）ができなくなっていた件は、今回のバージョンで修正された事を確認しました。サポートから連絡のあった、NC-64758という不具合番号も今回の解消リストに含まれています。<br>修正されたissueは<a target="_blank" rel="noopener" href="https://docs.sophos.com/releasenotes/index.html?productGroupID=nsg&productID=xg&versionID=18.0">こちら</a>を参照してください。<br>また、MR-5における既知の問題として、HA構成における不具合などの情報がリストアップされています。リストは<a target="_blank" rel="noopener" href="https://docs.sophos.com/releasenotes/index.html?productGroupID=nsg&productID=xg&versionID=18.0">こちら</a>を参照してください。</p>
 
     </div>
 
@@ -420,7 +394,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>記事へのリンク：</strong>
-      <a href="https://yoshi0808.github.io/new-technology/2020/05/16/Intercept-DNS/" title="XG Firewall v18で正しいDNS利用を強制する">https://yoshi0808.github.io/new-technology/2020/05/16/Intercept-DNS/</a>
+      <a href="https://yoshi0808.github.io/new-technology/2021/04/07/xg-v18-mr5/" title="XG Firewall v18 MR5の更新">https://yoshi0808.github.io/new-technology/2021/04/07/xg-v18-mr5/</a>
   </li>
   <li class="post-copyright-license">
     <strong>著作権表示： </strong>このブログ内のすべての記事は、特別な記載がない限り <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> の下のライセンスで保護されています。また、免責事項・プライバシーポリシーについては、メニューのディスクレーマーをご覧ください。
@@ -436,14 +410,11 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/new-technology/2020/05/09/best-practice/" rel="prev" title="XG Firewall v18の設定におけるベストプラクティス">
-                  <i class="fa fa-chevron-left"></i> XG Firewall v18の設定におけるベストプラクティス
+                <a href="/new-technology/2021/03/06/esxi-nakivo/" rel="prev" title="無償版ESXiの高度なバックアップ">
+                  <i class="fa fa-chevron-left"></i> 無償版ESXiの高度なバックアップ
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/new-technology/2020/06/14/esxi67-patch/" rel="next" title="VMware ESXi6.7にパッチを適用する">
-                  VMware ESXi6.7にパッチを適用する <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
