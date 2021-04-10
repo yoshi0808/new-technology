@@ -2225,13 +2225,6 @@ pre code {
 .post-block:last-of-type .post-eof {
   display: none;
 }
-.post-copyright ul {
-  list-style: none;
-  padding: 0.5em 1em;
-  background: var(--card-bg-color);
-  border-left: 3px solid #ff2a2a;
-  margin: 1em 0 0;
-}
 .post-tags {
   margin-top: 40px;
   text-align: center;
@@ -2916,7 +2909,7 @@ hr {
   vertical-align: middle;
 }
 .links-of-author a::before {
-  background: #26eeeb;
+  background: #be32e2;
   display: inline-block;
   margin-right: 3px;
   transform: translateY(-2px);
@@ -3297,4 +3290,15 @@ a:hover {
   padding: 5px 7px 3px;
   line-height: 1;
   letter-spacing: 0.05em;
+}
+.disclaimer1 {
+  padding: 0.5em 1em;
+  margin: 1em 0;
+  background: #f4f4f4;
+  border-left: solid 6px #5bb7ae;
+  box-shadow: 0px 2px 3px rgba(0,0,0,0.33);
+}
+.disclaimer1 p {
+  margin: 0;
+  padding: 0;
 }
