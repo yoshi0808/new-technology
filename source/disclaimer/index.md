@@ -42,6 +42,11 @@ comments: false
 
 2020年12月31日よりGitHubのissueを利用したコメントシステムであるUtterancesを試験的に運用開始しました。こちらにはGitHubのユーザーのみ利用可能です。あくまで試験的なものであるため、予告なく利用を中止する場合があります。またこちらへの書き込みは個人を特定するような情報や誹謗中傷する書き込みについてはお控えください。
 
+### SNSシェアボタンについて
+
+2021年4月11日よりIlya Birman氏の[Likely](https://ilyabirman.net/projects/likely/)のSNSシェアボタン機能をつけました。
+このブログでのライブラリは、"theme-next/hexo-next-share"を利用しています。hexo-next-shareのリポジトリについては、[GitHub:hexo-next-share](https://github.com/theme-next/hexo-next-share)を参照してください。また、Likelyのリポジトリについては、[GitHub:NikolayRys/Likely](https://github.com/NikolayRys/Likely)を参照してください。
+
 ### プライバシーポリシーの変更について
 
 当ブログは、個人情報に関して適用される日本の法令を遵守するとともに、本ポリシーの内容を適宜見直しその改善に努めます。修正された最新のプライバシーポリシーは常に本ページにて開示されます。
@@ -60,3 +65,4 @@ comments: false
 - 2020年9月21日　アフェリエイトリンクは未使用である旨の記載を追加
 - 2020年12月31日　コメントシステムの試験運用について記載
 - 2021年4月10日　記事毎の著作権表記を削除し、本ページに記載
+- 2021年4月11日　シェアボタンの設置について記載
