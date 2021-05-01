@@ -19,7 +19,7 @@ GPGは昔からあるオープンソースの暗号・署名の主要なコン�
 
 ## ソフトウェア構成
 
-GPGは基本的にはコマンドラインベースのプロダクトですが、macOSユーザーであれば、GPG Tools(GPG Suite)をお勧めします。GUIで暗号化・復号化できるのは便利です。但し、Appleメールの拡張機能でGPGを使う場合は部分は3,000円程度の有償となります。Homebrewであれば、gpg-suite、gpg-suite-no-mail(有償のメール機能が無いもの）が該当します。[GPG Suite](https://gpgtools.org/)を直接ダウンロードする方法もあります。しかし、このブログを書いている2月10日時点ではYubikeyを使うようなカードインタフェースがうまく動作しません。これは不具合としてGPG Toolsサポートに[報告](https://gpgtools.tenderapp.com/discussions/feedback/16266-signing-with-a-yubikey-fails-until-i-run-gpg-card-status)があります。という事で現時点ではナイトリービルド（[GPG Suite 2020.2 (2989n)](https://releases.gpgtools.org/nightlies/)）を使う事になります。
+GPGは基本的にはコマンドラインベースのプロダクトですが、macOSユーザーであれば、GPG Tools(GPG Suite)をお勧めします。GUIで暗号化・復号化できるのは便利です。但し、Appleメールの拡張機能でGPGを使う場合、3,000円程度の有償となります。Homebrewであれば、gpg-suite、gpg-suite-no-mail（有償のメール機能が無いもの）が該当します。[GPG Suite](https://gpgtools.org/)を直接ダウンロードする方法もあります。しかし、このブログを書いている2月10日時点ではYubikeyを使うようなカードインタフェースがうまく動作しません。これは不具合としてGPG Toolsサポートに[報告](https://gpgtools.tenderapp.com/discussions/feedback/16266-signing-with-a-yubikey-fails-until-i-run-gpg-card-status)があります。という事で現時点ではナイトリービルド（[GPG Suite 2020.2 (2989n)](https://releases.gpgtools.org/nightlies/)）を使う事になります。
 
 これ以外には、YubicoのykmanというYubiKey Managerのコマンドインタフェースツールが必要です。これはHomebrewでインストールするか、[Yubicoのサイト](https://www.yubico.com/products/services-software/download/yubikey-manager/)からダウンロードし、インストールしてください。
 
@@ -49,7 +49,6 @@ GitHubでコミット時に本人が署名すると、以下の"Verified"マー�
 メールの受取側がGPGを持っており、相手の公開鍵を自分のGPGに取り込んであれば、暗号化と署名を付けてメールを送れます。
 {% asset_img mail.png 640 alt %}
 
-
 ### GPGを使ったSSH
 
 YubiKeyで設定したPINを入力して公開鍵認証でSSH接続します。
@@ -63,7 +62,7 @@ YubiKeyを使うGPGでは主鍵となる認定鍵（第三者の公開鍵を署�
      A["主鍵・認定"]-->B["副鍵・署名"]
      A["主鍵・認定"]-->C["副鍵・暗号"]
      A["主鍵・認定"]-->D["副鍵・認証"]
-　　　B["副鍵・署名"]-->B1["YubiKey署名"]
+     B["副鍵・署名"]-->B1["YubiKey署名"]
      C["副鍵・暗号"]-->C1["YubiKey暗号"]
      D["副鍵・認証"]-->D1["YubiKey認証"]
 {% endmermaid %}
@@ -74,7 +73,7 @@ YubiKeyを使うGPGでは主鍵となる認定鍵（第三者の公開鍵を署�
 drduh/YubiKey-Guide | https://github.com/drduh/YubiKey-Guide |This is a guide to using YubiKey as a SmartCard for storing GPG encryption, signing and authentication keys, which can also be used for SSH.  | https://avatars.githubusercontent.com/u/12475110?s=400&u=07d0880794ce657ea3c16413b8bab37b65b191fa&v=4
 {% endlinkgrid %}
 
-ただし、このガイドは悪意のあるプログラムが入り込む余地がないクリーンなLinux上で作業し、暗号化USBを作りセットアップするという超優等生な手順になっています。この記事では可能な限りシンプルな手順の作成を目的とし一部の手順を割愛しています。
+ただし、このガイドは秘密鍵を漏洩させないためにクリーンなLinux上で作業し、暗号化USBを作りセットアップするという超優等生な手順になっています。この記事では可能な限りシンプルな手順の作成を目的とし一部の手順を割愛しています。
 
 ## GPGをセットアップするための手順
 
@@ -90,13 +89,19 @@ drduh/YubiKey-Guide | https://github.com/drduh/YubiKey-Guide |This is a guide to
 
 #### 前提
 
-必要なソフトウェア（GPG Suite、ykman）がインストールされ、macOSで認識可能となるようフォーマット済みのUSBが用意できている必要があります。鍵の生成は出来るだけ安全な環境下で実施するために、ネットワークから切り離し、ウィルス対策ソフト以外のソフトウェアを可能な限り終了させてから作業します。また鍵の作成時にはYubiKeyの接続は必要ありません。
+必要なソフトウェア（GPG Suite・ykman）がインストールされている事、秘密鍵のバックアップのため、macOSで認識可能となるようフォーマット済みのUSBが用意できている前提としています。鍵の生成は出来るだけ安全な環境下で実施するために、ネットワークから切り離し、ウィルス対策ソフト以外のソフトウェアを可能な限り終了させてから作業します。また鍵の作成時にはYubiKeyの接続は必要ありません。
 
-私はmacOSのCatalina(10.15.7)、シェルはデフォルトのZshを利用しています。また、コマンドラインエディタはvim(vi)を利用していますが、他のエディタでも構いません。
+私はmacOSのCatalina(10.15.7)、シェルはデフォルトのZshを利用しています。また、コマンドラインエディタはvim(vi)を利用していますが、他のエディタでも構いません。GPGのコマンドインタフェースがかなり特殊な事もあって、まずはアドリブ無しにこの手順をなぞっていただく事をお勧めします。変更可能な部分は主鍵および副鍵の有効期限および鍵の種類です。鍵の種類としては特に拘りがなければRSAをお勧めします。
+
+{% note info  %}
+
+以下の手順では、＃から始まるコメント部分に要点を記載しています。
+
+{% endnote %}
 
 #### 初期設定
 
-ターミナルを起動します。認定（Certify)鍵を無期限で作成します。
+ターミナルを起動します。認定（Certify）鍵を無期限で作成します。
 
 ``` bash
 # 一時フォルダを作成し、そこに鍵をセットアップしていきます
@@ -126,6 +131,7 @@ There is NO WARRANTY, to the extent permitted by law.
   (14) カードに存在する鍵
 あなたの選択は? 8
 
+# 機能毎にフラグという概念を持ちます。これの有効、無効の切り替えに反転という表現が使われています
 鍵RSAに認められた操作: Sign Certify Encrypt Authenticate
 現在の認められた操作: Sign Certify Encrypt
 
@@ -188,6 +194,7 @@ gpg: 失効証明書を '/tmp/xxx/openpgp-revocs.d/XXXXED7DE0C6BC105798E304D4B75
 公開鍵と秘密鍵を作成し、署名しました。
 
 # 上記の「鍵1234567890123456を究極的に信用するよう記録しました」のKEY番号をを環境変数KEYIDに登録します
+# セットアップの間、KEYIDを何度も使うためです
 $ export KEYID=1234567890123456
 
 $ gpg --expert --edit-key $KEYID
@@ -402,7 +409,7 @@ ssb  rsa4096/C234567890123456 2021-01-31 [A] [有効期限: 2026-01-30]
 #### 秘密鍵のエクスポート
 
 ``` bash
-#バックアップ用途に秘密鍵をエクスポートします 
+#バックアップ用途に秘密鍵をエクスポートします
 $ gpg --armor --export-secret-keys $KEYID > $GNUPGHOME/mastersub.key
 $ gpg --armor --export-secret-subkeys $KEYID > $GNUPGHOME/sub.key
 ```
@@ -425,13 +432,13 @@ USBはアンマウントします（しばらく使わないので保存）
 #### 公開鍵をホームディクレトリのpublic_key.pgpとしてエクスポート
 
 ``` bash
-$ gpg --armor --output ~/public_key.pgp --export $KEYID 
+$ gpg --armor --output ~/public_key.pgp --export $KEYID
 
 ```
 
 #### YubiKeyの確認
 
-YubiKeyを接続します
+YubiKeyを接続します。
 
 ``` bash
 $ gpg --card-edit
@@ -460,7 +467,8 @@ General key info..: [未設定]
 ```
 
 #### PINの変更
-これは、YubiKey ManagerでみたPIVのPIN、PUKとは異なります。GPG向けには別のPIN（デフォルト123456）、AdminPIN（デフォルト12345678）を設定するので注意してください。
+
+これは、前回の記事「{% post_link yubikey_ssh_github %}」のYubiKey ManagerでみたPIVのPIN、PUKとは異なります。YubikeyはGPG向けに別のPIN（デフォルト123456）、AdminPIN（デフォルト12345678）があるので、紛失時のためにも設定変更される事をお勧めします。
 
 ``` bash
 gpg/card> admin
@@ -496,6 +504,8 @@ Q - quit
 
 #### 3つの副鍵をYubiKeyに転送
 
+YubiKeyに転送された秘密鍵は端末からは全て中身が抹消され、YubiKeyに情報がある事を示すポインタにしかなりません。もし、やりなおしが必要になった場合は、秘密鍵をバックアップから復活させてから行う必要があります。
+
 ``` bash
 $ gpg --edit-key $KEYID
 
@@ -514,6 +524,7 @@ ssb  rsa4096/C234567890123456 2021-01-31 [A] [有効期限: 2026-01-30]
 #### 署名鍵の転送
 
 ``` bash
+# 3つのキー毎にYubikeyに転送します。
 # key 1 と入力する事で最初の副鍵が選択され、＊マークが付きます
 gpg> key 1
 
@@ -525,7 +536,7 @@ ssb*  rsa4096/A234567890123456 2021-01-31 [S] [有効期限: 2026-01-30]
 ssb  rsa4096/B234567890123456 2021-01-31 [E] [有効期限: 2026-01-30]
 ssb  rsa4096/C234567890123456 2021-01-31 [A] [有効期限: 2026-01-30]
 
-# ssb＊と＊マークは選択されている事を示します
+# ssb＊の"＊"マークは選択されている事を示します
 
 gpg> keytocard
 鍵を保管する場所を選択してください:
@@ -536,7 +547,6 @@ gpg> keytocard
 ```
 
 #### 暗号化鍵の転送
-
 
 ``` bash
 # 署名の選択を"key 1"を入力して外し、"key 2"を入力して暗号化を選択します
@@ -582,8 +592,6 @@ gpg> save
 ```
 
 #### YubiKeyへの移動を確認
-
-YubiKeyに転送された秘密鍵は端末からは全て中身が抹消され、YubiKeyに情報がある事を示すポインタにしかなりません。もし、やりなおしが必要になった場合は、秘密鍵をバックアップから復活させてから行う必要があります。
 
 ``` bash
 $ gpg -K
@@ -671,7 +679,7 @@ gpg> quit
 
 #### gpg-agent.confの設定
 
-`gpg-agent.conf`に以下の内容から不足があれば追加します
+`gpg-agent.conf`に以下の内容から不足があれば追加します。3-4行目のキャッシュ時間は環境に応じて自由に変更してください。
 
 ``` bash
 $ vi ~/.gnupg/gpg-agent.conf
@@ -753,16 +761,20 @@ $ launchctl list | grep gpg
 511	0	org.gpgtools.Libmacgpg.xpc
 ```
 
+ここまでの作業で一旦はGPGの基本機能が使える状態になりました。文字列を選択してファイルの右クリックメニューから暗号化したりメモの文字列を署名、暗号、復号機能を確認します。
+
 ### SSH公開鍵のエクスポート
 
-`ssh-add -L` で公開鍵を取得します
+ここからはYubikey+GPGのSSH接続設定です。
+
+`ssh-add -L` で公開鍵を取得します。
 
 ``` bash
 $ ssh-add -L
 ssh-rsa AAAAB4NzaC1yc2EAAAADAQABAAACAz[...]zreOKM+HwpkHzcy9DQcVG2Nw== cardno:000612345678
 ```
 
-行の末尾にカード番号の記載があるのがYubiKeyのものです。SSH公開鍵を接続先のサーバーのauthorized_keysに登録します。また、macOS側の`~/.ssh/config`は設定不要です。
+Yubikeyの公開鍵の末尾にはカード番号の記載があります。SSH公開鍵を接続先のサーバーのauthorized_keysに登録します。また、macOS側の`~/.ssh/config`は設定不要です。
 
 ターミナルから接続テストしてみましょう。PinEntryダイアログが表示され、PIN入力後、公開鍵認証で接続されます。
 
@@ -798,11 +810,12 @@ $ git config --global user.signingkey 1234567890123456
 
 デフォルトですべてのコミットに署名するには、以下を実行します。
 
-`$ git config --global commit.gpgsign true` 
+`$ git config --global commit.gpgsign true`
 
 Visual Studio Codeをお使いの方であれば、`"git.enableCommitSigning": true`を確認します。
 
-これまでの設定でGPG Toolsを使ったSSH接続と署名の対応は完了です{% emoji thumbsup %}
+これまでの設定でGPG Toolsを使ったSSH接続と署名の対応は完了です{% emoji thumbsup %}。
+PIV方式とは異なりGUI方式によりPINの入力も行える事、また一定時間PINはキャッシュしますので、セキュアである事と利便性を両立させています。
 
 ## （任意）YubiKeyタッチ認証
 
@@ -817,9 +830,15 @@ Offにする場合は以下のコマンドになります。
 
 Onの代わりに15秒キャッシュする"CACHED"という項目も設定できます。詳しくは`ykman openpgp set-touch -h`を参照します。
 
+{% note info  %}
+
+継続的インテグレーション(CI)など、署名、デプロイと連続動作させる時にこのCACHED設定は便利です。
+
+{% endnote %}
+
 ## GPGとPIVとの切り替え
 
-前回の記事「{% post_link yubikey_ssh_github %}」ではPIVカードとしての扱いについて説明しました。Yubico Authenticatorもその仲間なんですが、GPGは排他でカードを占有してしまう仕様のため、GPGを使っている時はAuthenticatorは動きません。コマンド`$ ykaman piv info`を実行する事でGPGから切り離されPIVのインタフェースが使えるようになります。[GPG Toolsサポートでの議論](https://gpgtools.tenderapp.com/discussions/nightly/110-gpgmail-fails-to-sign-after-switch-from-smime)もありましたが、明確な解決が難しいまま今に至っています。実運用としては、macOS純正アプリのAutomatorを使ってPIVに切り替えてからYubico Authenticatorを起動する方法が簡単でしょうか。
+前回の記事「{% post_link yubikey_ssh_github %}」ではPIVカードとしての扱いについて説明しました。GPGは排他でカードを占有してしまう仕様のため、GPGを使っている時はPIVを使うYubico-Authenticatorは動きません。コマンド`$ ykaman piv info`を実行する事でGPGから切り離されPIVのインタフェースが使えるようになります。[GPG Toolsサポートでの議論](https://gpgtools.tenderapp.com/discussions/nightly/110-gpgmail-fails-to-sign-after-switch-from-smime)もありましたが、明確な解決が難しいまま今に至っています。実運用としては、macOS純正アプリのAutomatorを使ってPIVに切り替えてからYubico Authenticatorを起動する方法が簡単でしょうか。以下に画面キャプチャを記載しておきます。
 
 {% asset_img automator1.png 800 alt %}
 
