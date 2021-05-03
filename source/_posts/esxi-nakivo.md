@@ -129,7 +129,7 @@ ESXi管理画面の仮想マシンを選択し右クリックして{% label prim
 9. 仮想マシンを起動します。
 10. SSHでESXiに入り、仮想マシンが配置されているディレクトリで、`"vm-name"-ctk.vmdk`ファイルがあることを確認します。
 
-CBTを無効にする場合はこの逆の手順、ctkEnagleの値をfalseに設定します。
+CBTを無効にする場合はこの逆の手順、ctkEnabledの値をfalseに設定します。
 手順の詳細についてはVMWareの[ガイド](https://kb.vmware.com/s/article/1031873?lang=ja&queryTerm=changed+block+tracking)を参照してください。
 
 ## 定期的なバックアップをお勧めします
