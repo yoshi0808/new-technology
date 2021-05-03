@@ -1,2 +1,34 @@
+<script src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+<script>
+  toastr.options = {
+    "closeButton": false,
+    "debug": false,
+    "newestOnTop": false,
+    "progressBar": false,
+    "positionClass": "toast-bottom-full-width",
+    "preventDuplicates": true,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "6000",
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+  }
+  //  toastr.options.onHidden = function() { $.cookie('PRVCY', 'AGREE', { expires: 7, path: '/'}); }
+
+  if ($.cookie('PRVCY') != 'AGREE') {
+    Command: toastr["info"]("本Webサイトでは、訪問や活動に関するデータがクッキーによって収集されます。閲覧を継続される場合、\
+    本サイトでクッキーを利用することに同意いただけるものとします。詳細はディスクレーマーを確認ください")
+  }
+
+  $.cookie('PRVCY', 'AGREE', { expires: 7, path: '/'});
+</script>
+
 <div class="disclaimer1">
-<a href="https://yoshi0808.github.io/new-technology/disclaimer/">免責事項・プライバシーポリシー・著作権</a></div>
+<a href="https://yoshi0808.github.io/new-technology/disclaimer/">ディスクレーマー・プライバシーポリシー・著作権</a></div>
