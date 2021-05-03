@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://yoshi0808.github.io/new-technology/2021/03/06/esxi-nakivo/</loc>
+    
+    <lastmod>2021-05-03</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://yoshi0808.github.io/new-technology/2021/04/26/scanwatch/</loc>
     
     <lastmod>2021-05-01</lastmod>
@@ -89,13 +96,6 @@
     <loc>https://yoshi0808.github.io/new-technology/2020/10/11/esxi-backup/</loc>
     
     <lastmod>2021-03-12</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://yoshi0808.github.io/new-technology/2021/03/06/esxi-nakivo/</loc>
-    
-    <lastmod>2021-03-06</lastmod>
     
   </url>
   
