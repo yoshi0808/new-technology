@@ -161,101 +161,6 @@ XGFirewall-- &quot;192.168.0.0&#x2F;24&quot; ---HGW
       </tags>
   </entry>
   <entry>
-    <title>XG Firewallの通知設定を行う</title>
-    <url>/new-technology/2020/04/03/Notifications/</url>
-    <content><![CDATA[<p class="onepoint">この記事で実現すること</p>
-XG Firewallで重要なエラーが発生した場合、VPNの接続通知、バージョンアップの通知をメールで受けとれます。
-
-<span id="more"></span>
-<h2 id="Gmailからメールを通知する設定"><a href="#Gmailからメールを通知する設定" class="headerlink" title="Gmailからメールを通知する設定"></a>Gmailからメールを通知する設定</h2><p>XG Firewallのセットアップ時に通知用のメールアドレスを設定しても、メール通知がされません。プロバイダをはじめどこのサービスでも、SPAM対策がなされており、簡単にメールを送信する事は出来なくなっています。これは、<mark class="label primary">Outbound Port 25 Blocking</mark>と呼ばれています。この回避策として、Googleアカウントを使う事で、メール通知が可能となります。</p>
-<ol>
-<li>Googleアカウントをお持ちでない方はアカウントを作成し、あらかじめ2段階認証の設定を行ってください。次に<a href="https://myaccount.google.com/?tab=kk">Googleアカウントのページ</a>に行き、左ペインの<mark class="label primary">セキュリティ</mark>をクリックしてください。</li>
-<li>アプリパスワードをクリックします。</li>
-</ol>
-<img src="/new-technology/2020/04/03/Notifications/googleacount.png" class="" title="alt">
-
-<ol start="3">
-<li>Googleアカウントのパスワードで認証します</li>
-<li><mark class="label primary">アプリ パスワードを生成するアプリとデバイスを選択してください。</mark>という説明があるので、そこでXG用のパスワードと分かるように以下を入力してください</li>
-<li>アプリを選択　→　メールを選択します</li>
-<li>デバイスを選択　→　その他（名前を選択）を選択します</li>
-</ol>
-<img src="/new-technology/2020/04/03/Notifications/googleacount1.png" class="" title="alt">
-
-<ol start="7">
-<li>名前をXG Firewallのものと分かるように入力します</li>
-<li>生成ボタンをクリックします</li>
-<li>生成されたアプリパスワードが表示されます</li>
-<li>パスワードを控えておきます</li>
-<li>完了ボタンをクリックし、Googleでの設定を終了します</li>
-</ol>
-<img src="/new-technology/2020/04/03/Notifications/googleacount2.png" class="" title="alt">
-
-<p>続いて、XG側の設定となります。左ペインの<mark class="label primary">管理</mark>から、<mark class="label primary">通知の設定</mark>をクリックします。以下の通り、<mark class="label primary">外部メールサーバー</mark>を選択し、先ほどのGmailアカウントに関する情報を入力していきます。</p>
-<img src="/new-technology/2020/04/03/Notifications/googleacount3.png" class="" title="alt">
-
-<table>
-<thead>
-<tr>
-<th>説明</th>
-<th>内容</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>メールサーバーアドレス</td>
-<td>smtp.gmail.com</td>
-</tr>
-<tr>
-<td>ポート</td>
-<td>587</td>
-</tr>
-<tr>
-<td>ユーザ名</td>
-<td><a href="mailto:&#121;&#x6f;&#x75;&#x72;&#95;&#97;&#99;&#x63;&#x6f;&#x75;&#x6e;&#116;&#x40;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#x6d;">&#121;&#x6f;&#x75;&#x72;&#95;&#97;&#99;&#x63;&#x6f;&#x75;&#x6e;&#116;&#x40;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#x6d;</a></td>
-</tr>
-<tr>
-<td>パスワード</td>
-<td>Googleで取得した16桁のアプリパスワード</td>
-</tr>
-<tr>
-<td>接続のセキュリティ</td>
-<td>STARTTLS</td>
-</tr>
-<tr>
-<td>送信元メールアドレス</td>
-<td><a href="mailto:&#121;&#x6f;&#117;&#114;&#95;&#97;&#x63;&#99;&#111;&#117;&#x6e;&#x74;&#x40;&#x67;&#109;&#97;&#105;&#108;&#x2e;&#x63;&#x6f;&#x6d;">&#121;&#x6f;&#117;&#114;&#95;&#97;&#x63;&#99;&#111;&#117;&#x6e;&#x74;&#x40;&#x67;&#109;&#97;&#105;&#108;&#x2e;&#x63;&#x6f;&#x6d;</a></td>
-</tr>
-<tr>
-<td>メールアドレスに通知を送信</td>
-<td>通知を受け取りたいメールアドレス</td>
-</tr>
-<tr>
-<td>管理インターフェースのIPアドレス</td>
-<td>WANのIPアドレスを選択</td>
-</tr>
-</tbody></table>
-<p>最後に適用をクリックします。その後通知ボタンをクリックしテスト通知で正しく受信できる事を確認してください。それなりに重要度が高いものを対象とし、スマホで通知を受けると良いでしょう。</p>
-<h3 id="v18-MR4での追加事項"><a href="#v18-MR4での追加事項" class="headerlink" title="v18-MR4での追加事項"></a>v18-MR4での追加事項</h3><p>（2021-1-2追記）v18 MR4にアップデートしてから通知が来ていない事に気がつきました。MR4では、上記の画面に「証明書」という項目が追加されており、プルダウンから証明書を選択するようになっています。今回のように外部メールを利用するケースでは、”Application Certificate”を選択してください。</p>
-<h2 id="メール通知するイベントを選択"><a href="#メール通知するイベントを選択" class="headerlink" title="メール通知するイベントを選択"></a>メール通知するイベントを選択</h2><p>XGの左ペインから<mark class="label primary">システムサービス</mark>→<mark class="label primary">通知リスト</mark>と進みます。以下の通り、イベント毎に通知が設定可能となっているので、<mark class="label primary">メール通知</mark>のトグルスイッチをオンにして、好みの通知について選択してください。</p>
-<img src="/new-technology/2020/04/03/Notifications/notify.png" class="" title="alt">
-
-<p>リスク観点で考えると、以下の内容をオンにしておくのがお勧めです。</p>
-<ul>
-<li>ユーザーのサインイン失敗</li>
-<li>新しいファームウェアの通知</li>
-<li>システム関連（起動、CPU高、シグネチャ更新失敗）</li>
-<li>VPNの接続</li>
-<li>IPSの攻撃検知（サーバー公開している場合）</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Security</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>XG Firewall v18で正しいDNS利用を強制する</title>
     <url>/new-technology/2020/05/16/Intercept-DNS/</url>
     <content><![CDATA[<p class="onepoint">この記事で実現すること</p>
@@ -318,6 +223,101 @@ XG Firewallで重要なエラーが発生した場合、VPNの接続通知、バ
 
 <p>以上がプライバシーと安全性を重視したv18ならではのDNSのベストプラクティスです。</p>
 <h2 id="DNSに関しての補足"><a href="#DNSに関しての補足" class="headerlink" title="DNSに関しての補足"></a>DNSに関しての補足</h2><p>GoogleDNSのDoHはRFC8484に従っていない独自プロトコルを使えるという事実があります。世界中のパブリックDNSを全て把握するのは困難ですが、Sophosのコミュニティの記事を参考にWebフィルタのURLグループにパブリックDNSのドメインを登録し、拒否する設定を加えても良いでしょう。詳細は、<a href="https://community.sophos.com/kb/en-us/134644">こちらの記事</a>を参照してください。</p>
+]]></content>
+      <categories>
+        <category>Security</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>XG Firewallの通知設定を行う</title>
+    <url>/new-technology/2020/04/03/Notifications/</url>
+    <content><![CDATA[<p class="onepoint">この記事で実現すること</p>
+XG Firewallで重要なエラーが発生した場合、VPNの接続通知、バージョンアップの通知をメールで受けとれます。
+
+<span id="more"></span>
+<h2 id="Gmailからメールを通知する設定"><a href="#Gmailからメールを通知する設定" class="headerlink" title="Gmailからメールを通知する設定"></a>Gmailからメールを通知する設定</h2><p>XG Firewallのセットアップ時に通知用のメールアドレスを設定しても、メール通知がされません。プロバイダをはじめどこのサービスでも、SPAM対策がなされており、簡単にメールを送信する事は出来なくなっています。これは、<mark class="label primary">Outbound Port 25 Blocking</mark>と呼ばれています。この回避策として、Googleアカウントを使う事で、メール通知が可能となります。</p>
+<ol>
+<li>Googleアカウントをお持ちでない方はアカウントを作成し、あらかじめ2段階認証の設定を行ってください。次に<a href="https://myaccount.google.com/?tab=kk">Googleアカウントのページ</a>に行き、左ペインの<mark class="label primary">セキュリティ</mark>をクリックしてください。</li>
+<li>アプリパスワードをクリックします。</li>
+</ol>
+<img src="/new-technology/2020/04/03/Notifications/googleacount.png" class="" title="alt">
+
+<ol start="3">
+<li>Googleアカウントのパスワードで認証します</li>
+<li><mark class="label primary">アプリ パスワードを生成するアプリとデバイスを選択してください。</mark>という説明があるので、そこでXG用のパスワードと分かるように以下を入力してください</li>
+<li>アプリを選択　→　メールを選択します</li>
+<li>デバイスを選択　→　その他（名前を選択）を選択します</li>
+</ol>
+<img src="/new-technology/2020/04/03/Notifications/googleacount1.png" class="" title="alt">
+
+<ol start="7">
+<li>名前をXG Firewallのものと分かるように入力します</li>
+<li>生成ボタンをクリックします</li>
+<li>生成されたアプリパスワードが表示されます</li>
+<li>パスワードを控えておきます</li>
+<li>完了ボタンをクリックし、Googleでの設定を終了します</li>
+</ol>
+<img src="/new-technology/2020/04/03/Notifications/googleacount2.png" class="" title="alt">
+
+<p>続いて、XG側の設定となります。左ペインの<mark class="label primary">管理</mark>から、<mark class="label primary">通知の設定</mark>をクリックします。以下の通り、<mark class="label primary">外部メールサーバー</mark>を選択し、先ほどのGmailアカウントに関する情報を入力していきます。</p>
+<img src="/new-technology/2020/04/03/Notifications/googleacount3.png" class="" title="alt">
+
+<table>
+<thead>
+<tr>
+<th>説明</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>メールサーバーアドレス</td>
+<td>smtp.gmail.com</td>
+</tr>
+<tr>
+<td>ポート</td>
+<td>587</td>
+</tr>
+<tr>
+<td>ユーザ名</td>
+<td><a href="mailto:&#121;&#111;&#117;&#x72;&#95;&#97;&#99;&#x63;&#x6f;&#117;&#110;&#116;&#64;&#x67;&#x6d;&#97;&#x69;&#108;&#46;&#99;&#x6f;&#109;">&#121;&#111;&#117;&#x72;&#95;&#97;&#99;&#x63;&#x6f;&#117;&#110;&#116;&#64;&#x67;&#x6d;&#97;&#x69;&#108;&#46;&#99;&#x6f;&#109;</a></td>
+</tr>
+<tr>
+<td>パスワード</td>
+<td>Googleで取得した16桁のアプリパスワード</td>
+</tr>
+<tr>
+<td>接続のセキュリティ</td>
+<td>STARTTLS</td>
+</tr>
+<tr>
+<td>送信元メールアドレス</td>
+<td><a href="mailto:&#121;&#x6f;&#x75;&#114;&#95;&#x61;&#x63;&#x63;&#x6f;&#x75;&#110;&#116;&#x40;&#x67;&#x6d;&#x61;&#105;&#x6c;&#x2e;&#x63;&#x6f;&#x6d;">&#121;&#x6f;&#x75;&#114;&#95;&#x61;&#x63;&#x63;&#x6f;&#x75;&#110;&#116;&#x40;&#x67;&#x6d;&#x61;&#105;&#x6c;&#x2e;&#x63;&#x6f;&#x6d;</a></td>
+</tr>
+<tr>
+<td>メールアドレスに通知を送信</td>
+<td>通知を受け取りたいメールアドレス</td>
+</tr>
+<tr>
+<td>管理インターフェースのIPアドレス</td>
+<td>WANのIPアドレスを選択</td>
+</tr>
+</tbody></table>
+<p>最後に適用をクリックします。その後通知ボタンをクリックしテスト通知で正しく受信できる事を確認してください。それなりに重要度が高いものを対象とし、スマホで通知を受けると良いでしょう。</p>
+<h3 id="v18-MR4での追加事項"><a href="#v18-MR4での追加事項" class="headerlink" title="v18-MR4での追加事項"></a>v18-MR4での追加事項</h3><p>（2021-1-2追記）v18 MR4にアップデートしてから通知が来ていない事に気がつきました。MR4では、上記の画面に「証明書」という項目が追加されており、プルダウンから証明書を選択するようになっています。今回のように外部メールを利用するケースでは、”Application Certificate”を選択してください。</p>
+<h2 id="メール通知するイベントを選択"><a href="#メール通知するイベントを選択" class="headerlink" title="メール通知するイベントを選択"></a>メール通知するイベントを選択</h2><p>XGの左ペインから<mark class="label primary">システムサービス</mark>→<mark class="label primary">通知リスト</mark>と進みます。以下の通り、イベント毎に通知が設定可能となっているので、<mark class="label primary">メール通知</mark>のトグルスイッチをオンにして、好みの通知について選択してください。</p>
+<img src="/new-technology/2020/04/03/Notifications/notify.png" class="" title="alt">
+
+<p>リスク観点で考えると、以下の内容をオンにしておくのがお勧めです。</p>
+<ul>
+<li>ユーザーのサインイン失敗</li>
+<li>新しいファームウェアの通知</li>
+<li>システム関連（起動、CPU高、シグネチャ更新失敗）</li>
+<li>VPNの接続</li>
+<li>IPSの攻撃検知（サーバー公開している場合）</li>
+</ul>
 ]]></content>
       <categories>
         <category>Security</category>
@@ -1659,101 +1659,6 @@ XG Firewall v18のSSL/TLSインスペクションを使い、暗号化されたS
       </tags>
   </entry>
   <entry>
-    <title>XG Firewall v18のSSLインスペクションの動作確認と調整</title>
-    <url>/new-technology/2020/03/21/ssl-inspection2/</url>
-    <content><![CDATA[<p class="onepoint">この記事で実現すること</p>
-XG FirewallのSSLインスペクションが有効に機能している事をテストマルウェアを使い検証します。また、SSLインスペクションによって接続出来なくなる場合は除外設定を行います。
-<span id="more"></span>
-
-<h2 id="SSLインスペクションの動作確認"><a href="#SSLインスペクションの動作確認" class="headerlink" title="SSLインスペクションの動作確認"></a>SSLインスペクションの動作確認</h2><p>前回までの記事でXGのSSLインスペクションの設定が完了している事を前提にしています。SSLインスペクションに関する記事は以下を参照してください。</p>
-<ul>
-<li><a href="/new-technology/2020/03/20/ssl-inspection/" title="SSLインスペクションについて">SSLインスペクションについて</a></li>
-<li><a href="/new-technology/2020/03/20/ssl-inspection1/" title="XG Firewall v18のSSLインスペクションの設定">XG Firewall v18のSSLインスペクションの設定</a>
-
-</li>
-</ul>
-<p>IPS（Intrusion Prevension System）によるSSLインスペクションでの動作確認のため、テストマルウェアの検知について行います。有名どころでは、eicarのテストマルウェアが挙げられます。早速、ダウンロードページにまいりましょう。<a href="https://www.eicar.org/?page_id=3950">eicarのダウンロードページ</a>に行くと、<mark class="label primary">Download area using the secure, SSL enabled protocol HTTPS</mark>という項目があり、httpsの4つのダウンロードリンクがあります。</p>
-<ul>
-<li>実行ファイル</li>
-<li>実行ファイルをtxtに拡張子を変えたもの</li>
-<li>zipに圧縮したもの</li>
-<li>zipの二重圧縮</li>
-</ul>
-<p>実行ファイルについては、マルウェアを検知する前にXGのポリシーによって、実行ファイルをダウンロードできないという表示になる可能性があります。その際はWebのポリシーで修正するか、ルールとポリシーを修正し実行ファイルを一時的に許可し、確認してみて下さい。前回までの記事で記載してきた通り、SSLインスペクションが行えるクライアントと行えないクライアントで挙動は変わります。</p>
-<p>SSLインスペクションが行えるクライアントは、この4つを全て検出し、ブラウザにはXGによるマルウェア検知のエラー画面が表示されます。PCに入っているウィルス対策ソフトが検知する以前にダウンロードは行わない挙動となります。また、SSLインスペクション対象外のクライアントからのアクセスについてはhttpsのダウンロードはマルウェアを検出できず、ダウンロードしてしまいます。</p>
-<p>IPSは速度と検出能力という相反する事を同時に成り立たせなくてはいけません。上記のようにマルウェアの検出は可能ですが、あくまで通信で怪しいものをカットする程度に考え、クライアントにはウィルス対策ソフト（Windows Defenderを含む）やマルウェア対策ソフトの導入をお勧めします。Sophosはホームユーザー向けに無償のウィルス対策ソフトを提供していますが、個人的には異なる会社のソフトを組み合わせて使う事をお勧めします。</p>
-<h2 id="SSLインスペクションの除外"><a href="#SSLインスペクションの除外" class="headerlink" title="SSLインスペクションの除外"></a>SSLインスペクションの除外</h2><p>XGは、Webフィルターやアプリケーションフィルターなどのポリシーで接続の可否を判断しますが、実はSSLインスペクションが理由で接続できないという問題も発生します。これは以下の通りです。</p>
-<ol>
-<li>TLSが正当ではないと判断される</li>
-<li>XGの証明書がアプリケーションに認められない</li>
-</ol>
-<p>接続できない理由は後述しますが、XGは、XG自身で最初からSSLインスペクションの対象外とするドメインリストを既に保持しています。そのリストになく、自身で利用するサイトやアプリケーションがSSLインスペクションによって動作しない場合は個別に当該ドメインをSSLインスペクションの対象外と指定します。</p>
-<p>XGで最初からSSLインスペクションの対象外となっているリストは、XGの左ペインメニュー<mark class="label primary">web</mark>の”URLグループ”に<mark class="label primary">Managed TLS exclusion list</mark>があり、ここに複数の有名なWebサイトのドメインが列挙されています。</p>
-<img src="/new-technology/2020/03/21/ssl-inspection2/exclusion.png" class="" title="alt">
-
-<div class="note warning"><p>このリストは編集できません。ファームウェアの更新によって管理されます。</p>
-</div>
-
-<h3 id="除外設定"><a href="#除外設定" class="headerlink" title="除外設定"></a>除外設定</h3><p>除外リスト<mark class="label primary">Managed TLS exclusion list</mark>にドメインが列挙されておらず、またポリシー上は利用できるはずのWebサイトに接続できない場合、XGの画面右上のログビューアからSSL/TLSインスペクションを選択しSSLインスペクションでエラーが発生していないか確認を行います。Web→URLグループの<mark class="label primary">Local TLS Exclusion List</mark>という個別にカスタマイズ可能なリストがあるので、そのリストにドメインを追加する事でSSLインスペクションの対象外とする事ができます。以下の通り、SSLインスペクションルール画面では、デフォルトの除外リストに<mark class="label primary">Managed TLS exclusion list</mark>および<mark class="label primary">Local TLS Exclusion List</mark>が存在します。<mark class="label primary">Local TLS Exclusion List</mark>の初期状態は何も登録されていません。</p>
-<img src="/new-technology/2020/03/21/ssl-inspection2/inspection-rule3.png" class="" title="alt">
-<img src="/new-technology/2020/03/21/ssl-inspection2/inspection-rule4.png" class="" title="alt">
-
-<h3 id="SSLインスペクションによって接続できない理由"><a href="#SSLインスペクションによって接続できない理由" class="headerlink" title="SSLインスペクションによって接続できない理由"></a>SSLインスペクションによって接続できない理由</h3><p>SSLインスペクションで接続できない理由の1つ目は、SSL/TLS証明書の正当性を厳しくチェックしすぎる場合が該当します。過渡期ではありますが、まだまだ古いバージョンのTLSが利用されていサイトもあります。これを緩める場合は、XGの左ペインメニュー<mark class="label primary">ルールとポリシー</mark>の”SSL/TLSインスペクションルール”画面で、SSLインスペクションを行っているプロファイルのルールを緩めるか、”SSL/TLSインスペクションの設定”をカスタマイズします。</p>
-<img src="/new-technology/2020/03/21/ssl-inspection2/inspection-rule2.png" class="" title="alt">
-
-<p>もう1つの接続できない理由は、アプリケーション自体が、OSにインストールされた証明書などを認めていないケースです。こちらはアプリケーションの内部に証明書を保持しており、その証明書の正当性を確認しているケースです。以下の例ではpython関連のモジュールをアップグレードするケースで以下のエラーが発生します。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt;pip3 install --upgrade pip</span><br><span class="line"></span><br><span class="line">WARNING: Retrying (Retry(total=4, connect=None, <span class="built_in">read</span>=None, redirect=None, status=None))</span><br><span class="line">after connection broken by <span class="string">&#x27;SSLError(SSLCertVerificationError(1,  </span></span><br><span class="line"><span class="string">&#x27;</span>[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get <span class="built_in">local</span> issuer certificate (_ssl.c:1076)<span class="string">&#x27;))&#x27;</span>: /simple/pip/</span><br></pre></td></tr></table></figure>
-
-<p>XGの画面右上にある”ログビューア”から”SSL/TLSインスペクション”を選択し、どのURLのSSLインスペクションが行われているのかを確認できます。また、エラーがある場合は、そこで除外を指定する事で自動的に<mark class="label primary">Local TLS Exclusion List</mark>にドメインが追加されます。下記はあくまで一例ですが除外しておいた方が良いドメインを列挙します。追加した証明書を参照しないプロダクトはアプリケーションの挙動とこのログを見ながら手作業で<mark class="label primary">Local TLS Exclusion List</mark>に除外するドメインを追加する作業を行います。</p>
-<table>
-<thead>
-<tr>
-<th>ドメイン</th>
-<th>内容</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>pypi.org, pythonhosted.org</td>
-<td>Python関連</td>
-</tr>
-<tr>
-<td>npmjs.org</td>
-<td>Node.js関連</td>
-</tr>
-<tr>
-<td>github.com</td>
-<td>GitHub</td>
-</tr>
-<tr>
-<td>ubuntu.com,snapcraft.io</td>
-<td>ubuntu関連</td>
-</tr>
-<tr>
-<td>livepatch.canonical.com</td>
-<td>ubuntu関連</td>
-</tr>
-<tr>
-<td>auone.jp, paypay.ne.jp, merpay.com</td>
-<td>〜pay関連</td>
-</tr>
-<tr>
-<td>norton.com</td>
-<td>Norton AntiVirus関連</td>
-</tr>
-<tr>
-<td>d.line-scdn.net</td>
-<td>LINE動画</td>
-</tr>
-</tbody></table>
-]]></content>
-      <categories>
-        <category>Security</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>XG Firewall VPNにスマホから接続する</title>
     <url>/new-technology/2020/03/31/vpn-iphone/</url>
     <content><![CDATA[<p class="onepoint">この記事で実現すること</p>
@@ -1864,6 +1769,101 @@ XG FirewallのSSLインスペクションが有効に機能している事をテ
         <category>Security</category>
         <category>VPN</category>
         <category>ワンタイムパスワード</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>XG Firewall v18のSSLインスペクションの動作確認と調整</title>
+    <url>/new-technology/2020/03/21/ssl-inspection2/</url>
+    <content><![CDATA[<p class="onepoint">この記事で実現すること</p>
+XG FirewallのSSLインスペクションが有効に機能している事をテストマルウェアを使い検証します。また、SSLインスペクションによって接続出来なくなる場合は除外設定を行います。
+<span id="more"></span>
+
+<h2 id="SSLインスペクションの動作確認"><a href="#SSLインスペクションの動作確認" class="headerlink" title="SSLインスペクションの動作確認"></a>SSLインスペクションの動作確認</h2><p>前回までの記事でXGのSSLインスペクションの設定が完了している事を前提にしています。SSLインスペクションに関する記事は以下を参照してください。</p>
+<ul>
+<li><a href="/new-technology/2020/03/20/ssl-inspection/" title="SSLインスペクションについて">SSLインスペクションについて</a></li>
+<li><a href="/new-technology/2020/03/20/ssl-inspection1/" title="XG Firewall v18のSSLインスペクションの設定">XG Firewall v18のSSLインスペクションの設定</a>
+
+</li>
+</ul>
+<p>IPS（Intrusion Prevension System）によるSSLインスペクションでの動作確認のため、テストマルウェアの検知について行います。有名どころでは、eicarのテストマルウェアが挙げられます。早速、ダウンロードページにまいりましょう。<a href="https://www.eicar.org/?page_id=3950">eicarのダウンロードページ</a>に行くと、<mark class="label primary">Download area using the secure, SSL enabled protocol HTTPS</mark>という項目があり、httpsの4つのダウンロードリンクがあります。</p>
+<ul>
+<li>実行ファイル</li>
+<li>実行ファイルをtxtに拡張子を変えたもの</li>
+<li>zipに圧縮したもの</li>
+<li>zipの二重圧縮</li>
+</ul>
+<p>実行ファイルについては、マルウェアを検知する前にXGのポリシーによって、実行ファイルをダウンロードできないという表示になる可能性があります。その際はWebのポリシーで修正するか、ルールとポリシーを修正し実行ファイルを一時的に許可し、確認してみて下さい。前回までの記事で記載してきた通り、SSLインスペクションが行えるクライアントと行えないクライアントで挙動は変わります。</p>
+<p>SSLインスペクションが行えるクライアントは、この4つを全て検出し、ブラウザにはXGによるマルウェア検知のエラー画面が表示されます。PCに入っているウィルス対策ソフトが検知する以前にダウンロードは行わない挙動となります。また、SSLインスペクション対象外のクライアントからのアクセスについてはhttpsのダウンロードはマルウェアを検出できず、ダウンロードしてしまいます。</p>
+<p>IPSは速度と検出能力という相反する事を同時に成り立たせなくてはいけません。上記のようにマルウェアの検出は可能ですが、あくまで通信で怪しいものをカットする程度に考え、クライアントにはウィルス対策ソフト（Windows Defenderを含む）やマルウェア対策ソフトの導入をお勧めします。Sophosはホームユーザー向けに無償のウィルス対策ソフトを提供していますが、個人的には異なる会社のソフトを組み合わせて使う事をお勧めします。</p>
+<h2 id="SSLインスペクションの除外"><a href="#SSLインスペクションの除外" class="headerlink" title="SSLインスペクションの除外"></a>SSLインスペクションの除外</h2><p>XGは、Webフィルターやアプリケーションフィルターなどのポリシーで接続の可否を判断しますが、実はSSLインスペクションが理由で接続できないという問題も発生します。これは以下の通りです。</p>
+<ol>
+<li>TLSが正当ではないと判断される</li>
+<li>XGの証明書がアプリケーションに認められない</li>
+</ol>
+<p>接続できない理由は後述しますが、XGは、XG自身で最初からSSLインスペクションの対象外とするドメインリストを既に保持しています。そのリストになく、自身で利用するサイトやアプリケーションがSSLインスペクションによって動作しない場合は個別に当該ドメインをSSLインスペクションの対象外と指定します。</p>
+<p>XGで最初からSSLインスペクションの対象外となっているリストは、XGの左ペインメニュー<mark class="label primary">web</mark>の”URLグループ”に<mark class="label primary">Managed TLS exclusion list</mark>があり、ここに複数の有名なWebサイトのドメインが列挙されています。</p>
+<img src="/new-technology/2020/03/21/ssl-inspection2/exclusion.png" class="" title="alt">
+
+<div class="note warning"><p>このリストは編集できません。ファームウェアの更新によって管理されます。</p>
+</div>
+
+<h3 id="除外設定"><a href="#除外設定" class="headerlink" title="除外設定"></a>除外設定</h3><p>除外リスト<mark class="label primary">Managed TLS exclusion list</mark>にドメインが列挙されておらず、またポリシー上は利用できるはずのWebサイトに接続できない場合、XGの画面右上のログビューアからSSL/TLSインスペクションを選択しSSLインスペクションでエラーが発生していないか確認を行います。Web→URLグループの<mark class="label primary">Local TLS Exclusion List</mark>という個別にカスタマイズ可能なリストがあるので、そのリストにドメインを追加する事でSSLインスペクションの対象外とする事ができます。以下の通り、SSLインスペクションルール画面では、デフォルトの除外リストに<mark class="label primary">Managed TLS exclusion list</mark>および<mark class="label primary">Local TLS Exclusion List</mark>が存在します。<mark class="label primary">Local TLS Exclusion List</mark>の初期状態は何も登録されていません。</p>
+<img src="/new-technology/2020/03/21/ssl-inspection2/inspection-rule3.png" class="" title="alt">
+<img src="/new-technology/2020/03/21/ssl-inspection2/inspection-rule4.png" class="" title="alt">
+
+<h3 id="SSLインスペクションによって接続できない理由"><a href="#SSLインスペクションによって接続できない理由" class="headerlink" title="SSLインスペクションによって接続できない理由"></a>SSLインスペクションによって接続できない理由</h3><p>SSLインスペクションで接続できない理由の1つ目は、SSL/TLS証明書の正当性を厳しくチェックしすぎる場合が該当します。過渡期ではありますが、まだまだ古いバージョンのTLSが利用されていサイトもあります。これを緩める場合は、XGの左ペインメニュー<mark class="label primary">ルールとポリシー</mark>の”SSL/TLSインスペクションルール”画面で、SSLインスペクションを行っているプロファイルのルールを緩めるか、”SSL/TLSインスペクションの設定”をカスタマイズします。</p>
+<img src="/new-technology/2020/03/21/ssl-inspection2/inspection-rule2.png" class="" title="alt">
+
+<p>もう1つの接続できない理由は、アプリケーション自体が、OSにインストールされた証明書などを認めていないケースです。こちらはアプリケーションの内部に証明書を保持しており、その証明書の正当性を確認しているケースです。以下の例ではpython関連のモジュールをアップグレードするケースで以下のエラーが発生します。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt;pip3 install --upgrade pip</span><br><span class="line"></span><br><span class="line">WARNING: Retrying (Retry(total=4, connect=None, <span class="built_in">read</span>=None, redirect=None, status=None))</span><br><span class="line">after connection broken by <span class="string">&#x27;SSLError(SSLCertVerificationError(1,  </span></span><br><span class="line"><span class="string">&#x27;</span>[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get <span class="built_in">local</span> issuer certificate (_ssl.c:1076)<span class="string">&#x27;))&#x27;</span>: /simple/pip/</span><br></pre></td></tr></table></figure>
+
+<p>XGの画面右上にある”ログビューア”から”SSL/TLSインスペクション”を選択し、どのURLのSSLインスペクションが行われているのかを確認できます。また、エラーがある場合は、そこで除外を指定する事で自動的に<mark class="label primary">Local TLS Exclusion List</mark>にドメインが追加されます。下記はあくまで一例ですが除外しておいた方が良いドメインを列挙します。追加した証明書を参照しないプロダクトはアプリケーションの挙動とこのログを見ながら手作業で<mark class="label primary">Local TLS Exclusion List</mark>に除外するドメインを追加する作業を行います。</p>
+<table>
+<thead>
+<tr>
+<th>ドメイン</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>pypi.org, pythonhosted.org</td>
+<td>Python関連</td>
+</tr>
+<tr>
+<td>npmjs.org</td>
+<td>Node.js関連</td>
+</tr>
+<tr>
+<td>github.com</td>
+<td>GitHub</td>
+</tr>
+<tr>
+<td>ubuntu.com,snapcraft.io</td>
+<td>ubuntu関連</td>
+</tr>
+<tr>
+<td>livepatch.canonical.com</td>
+<td>ubuntu関連</td>
+</tr>
+<tr>
+<td>auone.jp, paypay.ne.jp, merpay.com</td>
+<td>〜pay関連</td>
+</tr>
+<tr>
+<td>norton.com</td>
+<td>Norton AntiVirus関連</td>
+</tr>
+<tr>
+<td>d.line-scdn.net</td>
+<td>LINE動画</td>
+</tr>
+</tbody></table>
+]]></content>
+      <categories>
+        <category>Security</category>
       </categories>
       <tags>
         <tag>XG Firewall</tag>

@@ -548,7 +548,8 @@ D[&quot;副鍵・認証&quot;]--&gt;D1[&quot;YubiKey認証&quot;]
   //  toastr.options.onHidden = function() { $.cookie('PRVCY', 'AGREE', { expires: 7, path: '/'}); }
 
   if ($.cookie('PRVCY') != 'AGREE') {
-    Command: toastr["info"]("本Webサイトでは、訪問や活動に関するデータがクッキーによって収集されます。閲覧を継続される場合、本サイトでクッキーを利用することに同意いただけるものとします。詳細はディスクレーマーを確認ください")
+    Command: toastr["info"]("本Webサイトでは、訪問や活動に関するデータがクッキーによって収集されます。閲覧を継続される場合、\
+    本サイトでクッキーを利用することに同意いただけるものとします。詳細はディスクレーマーを確認ください")
   }
 
   $.cookie('PRVCY', 'AGREE', { expires: 7, path: '/'});
