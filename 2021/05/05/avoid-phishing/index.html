@@ -29,7 +29,7 @@
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/05/05/avoid-phishing/phishing.png">
 <meta property="article:published_time" content="2021-05-04T16:04:05.000Z">
-<meta property="article:modified_time" content="2021-05-05T10:46:41.602Z">
+<meta property="article:modified_time" content="2021-05-05T10:58:19.042Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2021/05/05/avoid-phishing/phishing.png">
@@ -264,7 +264,7 @@
       <span class="post-meta-item-text">投稿日</span>
       
 
-      <time title="作成日：2021-05-05 01:04:05 / 修正日：19:46:41" itemprop="dateCreated datePublished" datetime="2021-05-05T01:04:05+09:00">2021-05-05</time>
+      <time title="作成日：2021-05-05 01:04:05 / 修正日：19:58:19" itemprop="dateCreated datePublished" datetime="2021-05-05T01:04:05+09:00">2021-05-05</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -305,16 +305,16 @@
 <h3 id="対象ソフトウェア"><a href="#対象ソフトウェア" class="headerlink" title="対象ソフトウェア"></a>対象ソフトウェア</h3><p>Googleはセーフブラウジングという機能を持っています。ChromeやFireFoxではこの機能が採用されています。これと同じ仕組みでMicrosoftのEdgeは”Smart Screen”という機能が提供されています。双方ともブラウザ画面いっぱいに赤色で警告を表示しますのでかなり驚きます。いずれもユーザーが報告を行える仕組みをとっています。</p>
 <p>ウィルス対策ソフトは海外製品がどこまで日本の事情を理解できているかがポイントになるでしょうか。ある意味日本語という言葉の壁がフィッシングから身を守っていると言っても過言ではありません。従い、日本国内のサービスを対象とするフィッシング詐欺は日本の事に精通している必要があります。対策ソフトを作る側も同じ事が求められます。<br>ウィルス対策ソフトについては、Norton360、Bitdefender、トレンドマイクロ（ウィルスバスター）を選定してみました。XG Firewallについても検証対象に加えてみます。</p>
 <h3 id="検証方法"><a href="#検証方法" class="headerlink" title="検証方法"></a>検証方法</h3><p>PC、モバイルにおいて、セーフブラウジング、Smart Screenの実力を検証します。また、ウィルス対策ソフトを提供するベンダーは、簡易VPNとしてデバイス上で宛先（ドメインまたはURL）チェックを行う機能を持っていますので、これでフィッシングが認識できるか検証します。</p>
-<h2 id="検証結果"><a href="#検証結果" class="headerlink" title="検証結果"></a>検証結果</h2><p>まずは検証結果の一覧です。</p>
+<h2 id="検証結果"><a href="#検証結果" class="headerlink" title="検証結果"></a>検証結果</h2><p>まずは検証結果の一覧です。URLの一部は伏せてあります。</p>
 <table>
 <thead>
 <tr>
 <th></th>
-<th>三井住友銀行　direct5-xxxx[.]xxx</th>
-<th>佐川急便znwjwvfgna[.]xxxxxxx[.]xxx</th>
+<th>三井住友銀行 direct5-xxxx[.]xxx</th>
+<th>佐川急便znwjwvfgna[.]xx[.]xx</th>
 <th>アマゾン1 www[.]xxx-amazon[.]xxx/[.]</th>
-<th>エポスカードxxx[.]epos-card[.]xxx/</th>
-<th>アマゾン2 amazon[.]co[.]jp[.]xxxxx[.]xx</th>
+<th>エポスカード xxx[.]epos-card[.]xxx/</th>
+<th>アマゾン2 amazon[.]co[.]jp[.]xxx[.]xx</th>
 </tr>
 </thead>
 <tbody><tr>
@@ -376,7 +376,7 @@
 <tr>
 <td>PC Edge</td>
 <td>○</td>
-<td>△（NOT FOUND)</td>
+<td>✖️</td>
 <td>○</td>
 <td>○</td>
 <td>○</td>
@@ -384,7 +384,7 @@
 <tr>
 <td>PC Firefox</td>
 <td>○</td>
-<td>△（NOT FOUND)</td>
+<td>✖️</td>
 <td>○</td>
 <td>○</td>
 <td>○</td>
@@ -392,7 +392,7 @@
 <tr>
 <td>Mac Safari</td>
 <td>○</td>
-<td>△（NOT FOUND)</td>
+<td>✖️</td>
 <td>○</td>
 <td>✖️</td>
 <td>✖️</td>
@@ -400,7 +400,7 @@
 <tr>
 <td>Mac Edge</td>
 <td>○</td>
-<td>△（NOT FOUND)</td>
+<td>✖️</td>
 <td>✖️</td>
 <td>✖️</td>
 <td>○</td>
@@ -408,7 +408,7 @@
 <tr>
 <td>Mac Firefox</td>
 <td>○</td>
-<td>△（NOT FOUND)</td>
+<td>✖️</td>
 <td>○</td>
 <td>○</td>
 <td>○</td>
@@ -416,7 +416,7 @@
 <tr>
 <td>Linux(ubuntu) Firefox</td>
 <td>○</td>
-<td>△（NOT FOUND)</td>
+<td>✖️</td>
 <td>○</td>
 <td>○</td>
 <td>○</td>
@@ -454,6 +454,7 @@
 <td>○</td>
 </tr>
 </tbody></table>
+<p>（※上記の表は閲覧するデバイスによって見切れる場合がありますが、←→のスワイプで確認できます）</p>
 <h3 id="Windows、Linux"><a href="#Windows、Linux" class="headerlink" title="Windows、Linux"></a>Windows、Linux</h3><h4 id="Chrome、Firefox"><a href="#Chrome、Firefox" class="headerlink" title="Chrome、Firefox"></a>Chrome、Firefox</h4><p>これはGoogleセーフブラウジングを使う事になりますが、良い結果です。かなりの精度でフィッシングサイトを認識できています。✖️は1つですが、フィッシングサイトは次から次へと作られますからある意味いたちごっこではあります。ユーザーからの報告を受け、防御していくPDCAがうまく活用できているのでしょうね。</p>
 <h4 id="Edge（Windowsのみ）"><a href="#Edge（Windowsのみ）" class="headerlink" title="Edge（Windowsのみ）"></a>Edge（Windowsのみ）</h4><p>MicrosoftのSmart Screenも良い結果でした。✖️は1つです。</p>
 <h3 id="macOS"><a href="#macOS" class="headerlink" title="macOS"></a>macOS</h3><h4 id="Safari"><a href="#Safari" class="headerlink" title="Safari"></a>Safari</h4><p>SafariはGoogleセーフブラウジングの情報を活用しています。しかしWindowsとバージョンが異なるのか、不芳で✖️は3つです。</p>
