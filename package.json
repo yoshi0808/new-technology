@@ -31,12 +31,12 @@
     "hexo-renderer-marked": "^4.0.0",
     "hexo-renderer-stylus": "^2.0.1",
     "hexo-server": "^2.0.0",
-    "hexo-util": "^2.4.0",
+    "hexo-util": "^2.5.0",
     "highlight.js": "^10.7.2"
   },
   "devDependencies": {
     "textlint": "^11.9.0",
-    "textlint-rule-preset-ja-spacing": "^2.0.2",
+    "textlint-rule-preset-ja-spacing": "^2.1.1",
     "textlint-rule-preset-ja-technical-writing": "^6.0.0",
     "textlint-rule-preset-jtf-style": "^2.3.8",
     "textlint-rule-spellcheck-tech-word": "^5.0.0"
