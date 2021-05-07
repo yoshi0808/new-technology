@@ -132,6 +132,12 @@ favicon:
   safari_pinned_tab: /images/logo.svg
   # android_manifest: /images/manifest.json
 
+search:
+  path: search.xml
+  field: post
+  content: true
+  format: html
+
 # Likely Share
 # See: https://ilyabirman.net/projects/likely/, https://github.com/ilyabirman/Likely
 # Likely supports four looks, nine social networks, any button text.
