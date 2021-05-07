@@ -433,7 +433,7 @@
 <p>GitHubのSSH接続に関するリソースを掲載します。以下でGitHubにログインし、公開鍵を登録します。</p>
 <p><a target="_blank" rel="noopener" href="https://docs.github.com/ja/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account">GitHub アカウントへの新しい SSH キーの追加</a></p>
 <p>これでPIN入力とともに、GitHubにはSSHで接続できるようになりました。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ ssh -T git@github.com</span><br><span class="line">Enter PIN for &#39;YubiKey PIV #XXXXXXXX&#39;:</span><br><span class="line">Hi yoshi0808! You&#39;ve successfully authenticated, but GitHub does not provide shell access.</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ ssh -T git@github.com</span><br><span class="line">Enter PIN for &#x27;YubiKey PIV #XXXXXXXX&#x27;:</span><br><span class="line">Hi yoshi0808! You&#x27;ve successfully authenticated, but GitHub does not provide shell access.</span><br></pre></td></tr></table></figure>
 
 <p>また、gitコマンドでSSH接続を有効にするには以下のコマンドを実行します。<br><code>$ git remote set-url origin git@github.com:[ユーザID]/[リポジトリ].git</code></p>
 <p>設定確認は以下の通りです<br><code>$ git remote -v</code></p>
