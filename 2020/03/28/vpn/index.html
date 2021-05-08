@@ -321,20 +321,16 @@
 <h2 id="Sophos-Connectについて"><a href="#Sophos-Connectについて" class="headerlink" title="Sophos Connectについて"></a>Sophos Connectについて</h2><p>Sophos Connectの設定にあたり、インターネットに接続されているホームゲートウェイから、VPNのパケットについては内部のXGのWANインターフェースに転送しなくてはなりません。一般的に市販されているルーターにも装備されていますが、この方法には2通りあります。</p>
 <ol>
 <li><p>全ての宅内へのトラフィックは全てXGに転送する<br>ルーターやホームゲートウェイの製品によって呼び方は異なりますが、DMZホスト機能などと呼ばれます。この場合はインターネットから入ってくるデータは全てXGに送られますので、宅内にサーバーを立てる場合、ホームゲートウェイからはXG以外の端末は接続出来なくなります。ただし、設定は単純というメリットがあります。</p>
-<img src="/new-technology/2020/03/28/vpn/dmz.png" class="" title="alt">
-</li>
+<img src="/new-technology/2020/03/28/vpn/dmz.png" class="" title="alt"></li>
 <li><p>SophosConnectに必要なプロトコルおよび通信PortのみXGに転送する<br>こちらは一般的にポートマッピングと呼ばれます。内→外、外→内の方向について細かく設定を行う事になります。SophosConnectに必要なプロトコルとPortは外→内で以下の通信になります。</p>
 </li>
 </ol>
 <ul>
-<li><p>ESPプロトコル（プロトコル番号：50）</p>
-</li>
-<li><p>UDP 500,UDP 4500</p>
-<img src="/new-technology/2020/03/28/vpn/portmapping.png" class="" title="alt">
-
-<p>上記の2つのどちらか対応できれば、XGに対するVPN接続が行えます。この画面はホームゲートウェイの画面であり、契約しているインターネット回線業者により、提供される機器は異なりますのであくまで設定例は参考となります。</p>
-</li>
+<li>ESPプロトコル（プロトコル番号：50）</li>
+<li>UDP 500,UDP 4500</li>
 </ul>
+ <img src="/new-technology/2020/03/28/vpn/portmapping.png" class="" title="alt">
+<p>上記の2つのどちらか対応できれば、XGに対するVPN接続が行えます。この画面はホームゲートウェイの画面であり、契約しているインターネット回線業者により、提供される機器は異なりますのであくまで設定例は参考となります。</p>
 <h2 id="XG側のVPNユーザー作成"><a href="#XG側のVPNユーザー作成" class="headerlink" title="XG側のVPNユーザー作成"></a>XG側のVPNユーザー作成</h2><p>最初にユーザーの作成が必要です。VPNの最終接続形態としては、2要素認証対応のセキュアなものを目指します。ただし、いきなり全ての事を実施すると切り分けが難しいのでまずは2要素認証無しでの接続をし、次に2要素認証有りの接続に取り組みます。XGの左ペインメニューから<mark class="label primary">認証</mark>を選択、<mark class="label primary">ユーザー</mark>のタブから、追加ボタンをクリックします。そして以下のようにユーザー名、パスワードとメールアドレスを入力します。</p>
 <img src="/new-technology/2020/03/28/vpn/user1.png" class="" title="alt">
 <img src="/new-technology/2020/03/28/vpn/user2.png" class="" title="alt">
@@ -345,9 +341,7 @@
 <li><mark class="label primary">インターフェース</mark>はPort2(WAN)を選択します</li>
 <li><mark class="label primary">認証タイプ</mark>は事前共有鍵を選択します</li>
 <li><mark class="label primary">事前共有鍵</mark>は文字列を入力、また繰り返し同じ鍵を入力します</li>
-<li><mark class="label primary">許可されたユーザー</mark>には、上記で作成したユーザーを選択します
-
-</li>
+<li><mark class="label primary">許可されたユーザー</mark>には、上記で作成したユーザーを選択します</li>
 </ul>
 <img src="/new-technology/2020/03/28/vpn/vpn1.png" class="" title="alt">
 
@@ -356,9 +350,7 @@
 <li>XGのVPNの割り当てネットワークは、LANとは別のネットワークアドレスを入力します。例えばLANが<code>192.168.2.0/24</code>のネットワークならば、<code>192.168.20.1</code>〜<code>192.168.20.8</code>などと別のネットワークを入力します</li>
 <li>DNSについては、XG自身のDNS（XGのLAN側のIPアドレス）を入力します</li>
 <li>詳細設定の<mark class="label primary">トンネルがアイドルの時に切断</mark>を有効にします</li>
-<li><mark class="label primary">アイドルセッション時間の間隔</mark>は600にします（ご自身で希望の値を設定してください）
-
-</li>
+<li><mark class="label primary">アイドルセッション時間の間隔</mark>は600にします（ご自身で希望の値を設定してください）</li>
 </ul>
 <img src="/new-technology/2020/03/28/vpn/vpn2.png" class="" title="alt">
 
@@ -413,8 +405,7 @@
 <ul>
 <li><a href="/new-technology/2020/03/20/ssl-inspection/" title="SSLインスペクションについて">SSLインスペクションについて</a></li>
 <li><a href="/new-technology/2020/03/20/ssl-inspection1/" title="XG Firewall v18のSSLインスペクションの設定">XG Firewall v18のSSLインスペクションの設定</a></li>
-<li><a href="/new-technology/2020/03/21/ssl-inspection2/" title="XG Firewall v18のSSLインスペクションの動作確認と調整">XG Firewall v18のSSLインスペクションの動作確認と調整</a>
-</li>
+<li><a href="/new-technology/2020/03/21/ssl-inspection2/" title="XG Firewall v18のSSLインスペクションの動作確認と調整">XG Firewall v18のSSLインスペクションの動作確認と調整</a></li>
 </ul>
 
     </div>

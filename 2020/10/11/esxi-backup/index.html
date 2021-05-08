@@ -325,30 +325,21 @@
 <p>ここではQNAPを実例に設定を記載します。</p>
 <ol>
 <li><mark class="label primary">コントロールパネル</mark>から、<mark class="label primary">ネットワークサービスとファイルサービス</mark>を選択し、NFSv3またはNFSv4を有効にします。
-<img src="/new-technology/2020/10/11/esxi-backup/qnap1.png" class="" title="alt">
-
-</li>
+<img src="/new-technology/2020/10/11/esxi-backup/qnap1.png" class="" title="alt"></li>
 </ol>
 <h4 id="NFSv3の場合"><a href="#NFSv3の場合" class="headerlink" title="NFSv3の場合"></a>NFSv3の場合</h4><ol>
 <li>バックアップを取得する共有フォルダを作成します。<mark class="label primary">コントロールパネル</mark>の、<mark class="label primary">権限設定</mark>でバックアップを取得する共有フォルダを選択し、共有フォルダの権限画面を設定します<img src="/new-technology/2020/10/11/esxi-backup/qnap2.png" class="" title="alt"></li>
-<li>NFSについて設定します。ユーザーはguest扱いで接続します。<img src="/new-technology/2020/10/11/esxi-backup/qnap3.png" class="" title="alt">
-
-</li>
+<li>NFSについて設定します。ユーザーはguest扱いで接続します。<img src="/new-technology/2020/10/11/esxi-backup/qnap3.png" class="" title="alt"></li>
 </ol>
 <h4 id="NFSv4の場合"><a href="#NFSv4の場合" class="headerlink" title="NFSv4の場合"></a>NFSv4の場合</h4><ol>
-<li><p>認証するバックアップ専用のユーザー（一般ユーザー）を作成します。</p>
-</li>
-<li><p>バックアップを取得する共有フォルダを作成し、管理者とバックアップ専用ユーザーにアクセス権を付与します。<mark class="label primary">コントロールパネル</mark>の、<mark class="label primary">権限設定</mark>でバックアップを取得する共有フォルダを選択し、共有フォルダの権限を設定します。</p>
-<img src="/new-technology/2020/10/11/esxi-backup/qnap2.png" class="" title="alt">
-
-<p>ここでは、bkupという一般ユーザーでbackupという共有フォルダのアクセス権を設定しています。bkupユーザーはこのbackupフォルダのみにアクセス権を与えており、他のフォルダにはアクセスしない設定にします。</p>
-</li>
-<li><p>NFSv4ではESXiのrootで接続された場合を含め、権限を一般ユーザーに格下げする、Squashオプションに”ALL_SQUASH”を設定します。</p>
-<img src="/new-technology/2020/10/11/esxi-backup/qnap4.png" class="" title="alt">
-
-<p>QNAP以外のNASでも若干設定内容は異なりますが、大きく違いはありません。</p>
-</li>
+<li>認証するバックアップ専用のユーザー（一般ユーザー）を作成します。</li>
+<li>バックアップを取得する共有フォルダを作成し、管理者とバックアップ専用ユーザーにアクセス権を付与します。<mark class="label primary">コントロールパネル</mark>の、<mark class="label primary">権限設定</mark>でバックアップを取得する共有フォルダを選択し、共有フォルダの権限を設定します。<img src="/new-technology/2020/10/11/esxi-backup/qnap2.png" class="" title="alt"></li>
 </ol>
+<p> ここでは、bkupという一般ユーザーでbackupという共有フォルダのアクセス権を設定しています。bkupユーザーはこのbackupフォルダのみにアクセス権を与えており、他のフォルダにはアクセスしない設定にします。</p>
+<ol start="3">
+<li>NFSv4ではESXiのrootで接続された場合を含め、権限を一般ユーザーに格下げする、Squashオプションに”ALL_SQUASH”を設定します。<img src="/new-technology/2020/10/11/esxi-backup/qnap4.png" class="" title="alt"></li>
+</ol>
+<p> QNAP以外のNASでも若干設定内容は異なりますが、大きく違いはありません。</p>
 <div class="note info"><p>NASのセキュリティ強化のため、NFSv4で新規作成したユーザーに対し、NFS以外のNASアクセス権の解除およびWebサービスのログイン時に2要素認証を必須（通常Webサービスにログインしないので実質無効化）とする設定をお勧めします。</p>
 </div>
 

@@ -327,31 +327,33 @@
 </ul>
 <ol>
 <li><p>SSHを有効にする<br>ESXiの左ペインの<mark class="label primary">ホストー管理</mark>から、”サービス”のタブをクリックし、”TSM-SSH”を選択し”起動”ボタンをクリックし、SSHを有効にします。</p>
-<img src="/new-technology/2020/06/14/esxi67-patch/esxi1.png" class="" title="alt">
-</li>
+<img src="/new-technology/2020/06/14/esxi67-patch/esxi1.png" class="" title="alt"></li>
 <li><p>仮想マシンを全てシャットダウンします</p>
 </li>
 <li><p>ESXiをメンテナンスモードに切り替えます</p>
-<img src="/new-technology/2020/06/14/esxi67-patch/esxi2.png" class="" title="alt">
-</li>
+<img src="/new-technology/2020/06/14/esxi67-patch/esxi2.png" class="" title="alt"></li>
 <li><p>パッチファイルのESXiへのアップロード<br>ESXiの左ペインメニューの”ストレージ”を選択、メインのストレージ（一般的にはdatastore1）を選択し、”データストアブラウザ”をクリックします</p>
-<img src="/new-technology/2020/06/14/esxi67-patch/esxi3.png" class="" title="alt">
+<img src="/new-technology/2020/06/14/esxi67-patch/esxi3.png" class="" title="alt"></li>
+</ol>
+<p> アップロードボタンをクリックし、ダウンロードしたパッチファイルをアップロードします。</p>
+<ol start="5">
+<li>SSHでESXiにログイン<br>ログイン後、パッチをアップロードしたフォルダ（<em>Datastore/DirectoryName</em>）に移動しアップロードしたパッチファイルが存在するか<code>ls</code>で確認します</li>
+</ol>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">The time and date of this login have been sent to the system logs.</span><br><span class="line"></span><br><span class="line">WARNING:</span><br><span class="line">  All commands run on the ESXi shell are logged and may be included <span class="keyword">in</span></span><br><span class="line">  support bundles. Do not provide passwords directly on the <span class="built_in">command</span> line.</span><br><span class="line">  Most tools can prompt <span class="keyword">for</span> secrets or accept them from standard input.</span><br><span class="line"></span><br><span class="line">VMware offers supported, powerful system administration tools.  Please</span><br><span class="line">see www.vmware.com/go/sysadmintools <span class="keyword">for</span> details.</span><br><span class="line"></span><br><span class="line">The ESXi Shell can be disabled by an administrative user. See the</span><br><span class="line">vSphere Security documentation <span class="keyword">for</span> more information.</span><br><span class="line">[root@esxi:~] <span class="built_in">cd</span> /vmfs/volumes/Datastore/DirectoryName</span><br><span class="line">[root@esxi:~] ls</span><br></pre></td></tr></table></figure>
 
-<p>アップロードボタンをクリックし、ダウンロードしたパッチファイルをアップロードします。</p>
-</li>
-<li><p>SSHでESXiにログイン<br>ログイン後、パッチをアップロードしたフォルダ（<em>Datastore/DirectoryName</em>）に移動しアップロードしたパッチファイルが存在するか<code>ls</code>で確認します</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">The time and date of this login have been sent to the system logs.</span><br><span class="line"></span><br><span class="line">WARNING:</span><br><span class="line">  All commands run on the ESXi shell are logged and may be included <span class="keyword">in</span></span><br><span class="line">  support bundles. Do not provide passwords directly on the <span class="built_in">command</span> line.</span><br><span class="line">  Most tools can prompt <span class="keyword">for</span> secrets or accept them from standard input.</span><br><span class="line"></span><br><span class="line">VMware offers supported, powerful system administration tools.  Please</span><br><span class="line">see www.vmware.com/go/sysadmintools <span class="keyword">for</span> details.</span><br><span class="line"></span><br><span class="line">The ESXi Shell can be disabled by an administrative user. See the</span><br><span class="line">vSphere Security documentation <span class="keyword">for</span> more information.</span><br><span class="line">[root@esxi:~] <span class="built_in">cd</span> /vmfs/volumes/Datastore/DirectoryName</span><br><span class="line">[root@esxi:~] ls</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>パッチ適用コマンドを入力します<br>コマンドは、esxcli software vib update -d “/vmfs/volumes/<em>Datastore/DirectoryName</em>/<em>patchName</em>.zip”となります。パッチファイルはフルパスで指定する事になります。従い、以下のコマンドを入力します。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@esxi:~] esxcli software vib update -d <span class="string">&quot;/vmfs/volumes/Datastore/DirectoryName/ESXi670-202006001.zip&quot;</span></span><br></pre></td></tr></table></figure>
+<ol start="6">
+<li>パッチ適用コマンドを入力します<br>コマンドは、esxcli software vib update -d “/vmfs/volumes/<em>Datastore/DirectoryName</em>/<em>patchName</em>.zip”となります。パッチファイルはフルパスで指定する事になります。従い、以下のコマンドを入力します。</li>
+</ol>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@esxi:~] esxcli software vib update -d <span class="string">&quot;/vmfs/volumes/Datastore/DirectoryName/ESXi670-202006001.zip&quot;</span></span><br></pre></td></tr></table></figure>
 
-<p>実行後しばらくしてから、たくさんの更新結果としての文字の羅列が一気に表示され、再びコマンドプロンプトになるので、<code># reboot</code>としてESXiを再起動します</p>
-</li>
-<li><p>再起動完了後、ESXiにログインします。左ペインメニューの”ホスト”をクリックし、バージョンの表記に今回パッチを当てたビルド番号が表示されている事を確認してください</p>
-<img src="/new-technology/2020/06/14/esxi67-patch/esxi4.png" class="" title="alt">
-</li>
-<li><p>最後にこれまで実施してきたメンテナンス準備とは反対の作業をします。メンテナンスモードの終了・SSHの無効化・仮想マシンの起動と続けます。</p>
-</li>
+<p> 実行後しばらくしてから、たくさんの更新結果としての文字の羅列が一気に表示され、再びコマンドプロンプトになるので、<code># reboot</code>としてESXiを再起動します</p>
+<ol start="7">
+<li>再起動完了後、ESXiにログインします。左ペインメニューの”ホスト”をクリックし、バージョンの表記に今回パッチを当てたビルド番号が表示されている事を確認してください</li>
+</ol>
+ <img src="/new-technology/2020/06/14/esxi67-patch/esxi4.png" class="" title="alt">
+
+<ol start="8">
+<li>最後にこれまで実施してきたメンテナンス準備とは反対の作業をします。メンテナンスモードの終了・SSHの無効化・仮想マシンの起動と続けます。</li>
 </ol>
 <p>以上で、ESXiに対するパッチ適用の作業は完了です。</p>
 <h2 id="My-VMwareの通知設定"><a href="#My-VMwareの通知設定" class="headerlink" title="My VMwareの通知設定"></a>My VMwareの通知設定</h2><p>パッチが提供された場合に通知を受けられるようにMyVMwareの通知設定を行っておく事をお勧めします。</p>
