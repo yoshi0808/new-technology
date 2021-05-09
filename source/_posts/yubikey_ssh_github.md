@@ -21,7 +21,7 @@ Yubico社のYubiKeyはなんとなくご存知の方も多いかもしれませ�
 
 私はUSB-Cの最も小さい”YubiKey 5C Nano”をmacOSで使っています。2要素認証が必要な時にこの小さいデバイスに"Touch to Sign"で認証できます。
 
-macOSでは、GitHubへの2要素認証はTouch IDによるWebAuthnが使えます。このブログを書いている時点でSafariは対応していませんが、Chrome、Edgeは対応しています。以下の通り、組み込みセンサーという表示がTouchIDに相当します。
+macOSでは、GitHubへの2要素認証はTouch IDによるWebAuthnが使えます。このブログを書いている時点でChrome、Edgeは対応しています。以下の通り、組み込みセンサーという表示がTouchIDに相当します。Safariのタッチ認証はYubikeyが必要です。
 {% asset_img touch.png 480 alt %}
 
 細かいことを言えば、WebAuthnはパスワードを必要としない認証のはずで、GitHubのような2要素認証は定義からすると少し違うような気がします。Microsoftアカウントは、YubiKeyを事前登録する事で、アカウントやパスワードを一切入力せず、YubiKeyのタッチだけでログインできます。公開鍵認証のお手本ですね。
