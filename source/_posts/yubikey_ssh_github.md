@@ -25,10 +25,15 @@ macOSでは、GitHubへの2要素認証はTouch IDによるWebAuthnが使えま�
 {% asset_img touch.png 480 alt %}
 
 細かいことを言えば、WebAuthnはパスワードを必要としない認証のはずで、GitHubのような2要素認証は定義からすると少し違うような気がします。Microsoftアカウントは、YubiKeyを事前登録する事で、アカウントやパスワードを一切入力せず、YubiKeyのタッチだけでログインできます。公開鍵認証のお手本ですね。
+他には、パスワード管理ソフトのbitwardenのプレミアムアカウント（年$10と格安です）では、2要素目の認証にWebAuthnを使えます。
+
+{% asset_img bitwarden.png 480 alt %}
+
+bitwardenに関する詳細は、「{% post_link bitwarden %}」の記事を参照してください。
 
 Yubikeyの小さいパッケージには"Get started yubico.com/start"と清々しいシンプルな記載があります。そして、このURLにアクセスすると、使えるWebサイト、サービスの一覧が表示されます。そして、そのサイトでの使い方が説明されているだけです。
 
-Google、Facebookなどのサイトで"Touch to Sign"の2要素認証を楽しんでみてください。一度認証してしまえば、Cookieに認証情報を保存してしまうため、次からは認証不要で使うという方が大半でしょうから、楽しいのは最初だけかもしれません{% emoji sweat_smile %}
+Google、Facebookなどのサイトで"Touch to Sign"の2要素認証を楽しんでみてください。一度認証してしまえば、Cookieに認証情報を保存してしまうため、次からは認証不要で使うという方が大半でしょうから、楽しいのは最初だけかもしれません{% emoji grin %}
 
 また、YubiKeyが本物かどうかのテストができます。
 https://www.yubico.com/genuine/

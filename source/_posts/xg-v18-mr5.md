@@ -12,7 +12,7 @@ categories:
 
 ## XG Firewall v18 MR-5
 
-XG Firewall v18のMR-5が2021年4月5日に発表されました。MR4に続き、ホームユーザーにとってはマイナーアップデートですが、関係ありそうな変更点について記載します。やはりほぼ法人向けとしての機能強化が目立ちます。
+XG Firewall v18のMR-5が2021年4月5日に発表されました。MR4に続き、ホームユーザーにとってはマイナーアップデートですが、関係ありそうな変更点について記載します。やはりほぼ法人向けとしての機能強化が目立ちます。なお、2021年4月28日に、MR5のbuild586が発表されています。
 <!-- more -->
 
 ## 主なエンハンスの内容
@@ -27,9 +27,9 @@ XG Firewall v18のMR-5が2021年4月5日に発表されました。MR4に続き�
 - 秘密キーのセキュリティ強化
 - PEM形式証明書のアップロード/ダウンロードのサポート
 
-その他、Sophos Central Firewallレポーティングの強化、50項目以上の不具合修正があります。
+その他、Sophos Central Firewallレポーティングの強化、50項目以上の不具合修正があります。また、build586では、SNMPとIPSecVPNに関する細かな不具合が修正されています。
 
-v18 MR-5の詳細な説明はSophos Communityの[こちらの記事](https://community.sophos.com/sophos-xg-firewall/b/blog/posts/xg-firewall-v18-mr5-is-now-available)を参照してください。可能な限り迅速にアップグレードするように推奨されています。
+v18 MR-5の詳細な説明はSophos Communityの[こちらの記事](https://community.sophos.com/sophos-xg-firewall/b/blog/posts/sophos-xg-firewall-v18-mr5--build-586-is-now-available)を参照してください。可能な限り迅速にアップグレードするように推奨されています。
 
 {% cq %}
 **Upgrade as soon as possible**
@@ -54,7 +54,7 @@ XGの管理画面にログイン後、左ペインメニューの{% label primar
 
 {% asset_img mysophos.png 640 alt %}
 
-7. 上記画面で"SW-18.0.5_MR-5.SFW-574.sig"というアップデータが表示されますのでダウンロードします。
+7. 上記画面で"SW-18.0.5_MR-5.SFW-586.sig"というアップデータが表示されますのでダウンロードします。
 8. MY Sophosはここで終了してXGの管理画面にログインし、左ペインメニューの{% label primary @バックアップ＆ファームウェア %}の{% label primary @ファームウェアのタブメニュー %}から以下の画面に赤丸で囲った矢印のアイコンをクリックし、ダウンロードしたモジュールをアップロードします。
 
 {% asset_img verup.png alt %}
