@@ -29,6 +29,7 @@
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/02/06/yubikey_ssh_github/title.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/02/06/yubikey_ssh_github/touch.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/02/06/yubikey_ssh_github/bitwarden.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/02/06/yubikey_ssh_github/otp3.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/02/06/yubikey_ssh_github/yubi1.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/02/06/yubikey_ssh_github/yubi2.png">
@@ -36,7 +37,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/02/06/yubikey_ssh_github/yubi4.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/02/06/yubikey_ssh_github/gh-desktop.png">
 <meta property="article:published_time" content="2021-02-05T16:18:54.000Z">
-<meta property="article:modified_time" content="2021-05-09T02:46:28.871Z">
+<meta property="article:modified_time" content="2021-05-17T12:14:46.890Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="yubikey">
 <meta name="twitter:card" content="summary">
@@ -278,7 +279,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">編集日</span>
-        <time title="修正日：2021-05-09 11:46:28" itemprop="dateModified" datetime="2021-05-09T11:46:28+09:00">2021-05-09</time>
+        <time title="修正日：2021-05-17 21:14:46" itemprop="dateModified" datetime="2021-05-17T21:14:46+09:00">2021-05-17</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -312,9 +313,12 @@
 <p>macOSでは、GitHubへの2要素認証はTouch IDによるWebAuthnが使えます。このブログを書いている時点でChrome、Edgeは対応しています。以下の通り、組み込みセンサーという表示がTouchIDに相当します。Safariのタッチ認証はYubikeyが必要です。</p>
 <img src="/new-technology/2021/02/06/yubikey_ssh_github/touch.png" class="" width="480" title="alt">
 
-<p>細かいことを言えば、WebAuthnはパスワードを必要としない認証のはずで、GitHubのような2要素認証は定義からすると少し違うような気がします。Microsoftアカウントは、YubiKeyを事前登録する事で、アカウントやパスワードを一切入力せず、YubiKeyのタッチだけでログインできます。公開鍵認証のお手本ですね。</p>
+<p>細かいことを言えば、WebAuthnはパスワードを必要としない認証のはずで、GitHubのような2要素認証は定義からすると少し違うような気がします。Microsoftアカウントは、YubiKeyを事前登録する事で、アカウントやパスワードを一切入力せず、YubiKeyのタッチだけでログインできます。公開鍵認証のお手本ですね。<br>他には、パスワード管理ソフトのbitwardenのプレミアムアカウント（年$10と格安です）では、2要素目の認証にWebAuthnを使えます。</p>
+<img src="/new-technology/2021/02/06/yubikey_ssh_github/bitwarden.png" class="" width="480" title="alt">
+
+<p>bitwardenに関する詳細は、「<a href="/new-technology/2020/08/30/bitwarden/" title="パスワード管理ソフトのbitwardenを活用する">パスワード管理ソフトのbitwardenを活用する</a>」の記事を参照してください。</p>
 <p>Yubikeyの小さいパッケージには”Get started yubico.com/start”と清々しいシンプルな記載があります。そして、このURLにアクセスすると、使えるWebサイト、サービスの一覧が表示されます。そして、そのサイトでの使い方が説明されているだけです。</p>
-<p>Google、Facebookなどのサイトで”Touch to Sign”の2要素認証を楽しんでみてください。一度認証してしまえば、Cookieに認証情報を保存してしまうため、次からは認証不要で使うという方が大半でしょうから、楽しいのは最初だけかもしれません<span class="github-emoji" alias="sweat_smile" style="" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f605.png?v8">&#x1f605;</span></p>
+<p>Google、Facebookなどのサイトで”Touch to Sign”の2要素認証を楽しんでみてください。一度認証してしまえば、Cookieに認証情報を保存してしまうため、次からは認証不要で使うという方が大半でしょうから、楽しいのは最初だけかもしれません<span class="github-emoji" alias="grin" style="" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f601.png?v8">&#x1f601;</span></p>
 <p>また、YubiKeyが本物かどうかのテストができます。<br><a target="_blank" rel="noopener" href="https://www.yubico.com/genuine/">https://www.yubico.com/genuine/</a></p>
 <h2 id="Yubikey-Authenticator"><a href="#Yubikey-Authenticator" class="headerlink" title="Yubikey Authenticator"></a>Yubikey Authenticator</h2><p>PCのアプリケーションを使っている時には、ワンタイムパスワード（OTP）の入力のためにスマホを取り出すのが少々面倒に感じます。PCにYubico Authenticatorをインストールすればいつもの6桁の数字をコピペで入力できるようになります。当然ですが、YubiKeyが接続されている事が前提（NFCモデルはタッチが前提）になります。スキャナ機能があってデスクトップ上に表示しているOTPのバーコードを読み取る機能もありこれも便利です。</p>
 <p>（左：YubiKey未接続、右：YubiKey接続済）</p>

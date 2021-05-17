@@ -29,7 +29,7 @@
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/08/14/remote-work/title.png">
 <meta property="article:published_time" content="2020-08-14T11:19:00.000Z">
-<meta property="article:modified_time" content="2021-05-16T06:54:02.974Z">
+<meta property="article:modified_time" content="2021-05-17T11:55:50.568Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2020/08/14/remote-work/title.png">
@@ -270,7 +270,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">編集日</span>
-        <time title="修正日：2021-05-16 15:54:02" itemprop="dateModified" datetime="2021-05-16T15:54:02+09:00">2021-05-16</time>
+        <time title="修正日：2021-05-17 20:55:50" itemprop="dateModified" datetime="2021-05-17T20:55:50+09:00">2021-05-17</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -361,7 +361,7 @@
 <li>バッファロー：<a target="_blank" rel="noopener" href="https://www.buffalo.jp/support/faq/detail/15923.html">Wi-Fiルーター/中継機を最新のファームウェアに更新する方法（ファームウェア自動更新機能を利用）＞</a></li>
 </ul>
 <h3 id="パソコンの共有設定を確認する"><a href="#パソコンの共有設定を確認する" class="headerlink" title="パソコンの共有設定を確認する"></a>パソコンの共有設定を確認する</h3><p>会社から貸与されたPCを使う上でのポイントを記載します。会社が貸与するPCは流石にセキュリティ対策もしっかりしたものが行われていると考えられますが、完全にそれを信頼するわけにはいきません。逆もまた然りで、個人の利用するPCが会社の貸与PCに対しての脅威となる可能性があります。パソコンの共有設定を制限する代わりに、<strong>ゲスト用の無線APに接続する事で対策が可能</strong>となります。バッファローでは”ゲストポート”、NECプラットフォームズでは”ネットワーク分離機能”と呼ばれます。有線接続を含めた個人の機器へ一切アクセスさせずにインターネットの接続が可能となります。</p>
-<h3 id="無線ルーターのチェックポイント"><a href="#無線ルーターのチェックポイント" class="headerlink" title="無線ルーターのチェックポイント"></a>無線ルーターのチェックポイント</h3><p>価格。COMの無線LANルーター(Wi-Fiルーター) 人気売れ筋ランキング2021年5月によれば、人気のある無線ルーターは、バッファロー、NECプラットフォームズ（Aterm）の製品が上位10位までに9つがランクインしています。私見ですが、少しでも安定稼働、安全に利用するためのポイントを記載します。</p>
+<h3 id="無線ルーターのチェックポイント"><a href="#無線ルーターのチェックポイント" class="headerlink" title="無線ルーターのチェックポイント"></a>無線ルーターのチェックポイント</h3><p>価格．COMの無線LANルーター(Wi-Fiルーター) 人気売れ筋ランキング2021年5月によれば、人気のある無線ルーターは、バッファロー、NECプラットフォームズ（Aterm）の製品が上位10位までに9つがランクインしています。私見ですが、少しでも安定稼働、安全に利用するためのポイントを記載します。</p>
 <ol>
 <li><p>無線LANのAPモードにでは、固定IPを振る<br>無線LANをAPモードにする場合は親機やプロバイダ貸与のHGWからのDHCPによってIPを割り当てられますが、固定IPとする方が瞬断などの不具合の可能性を下げられます。</p>
 </li>
@@ -371,10 +371,10 @@
 </li>
 <li><p>マルチキャストの速度設定<br>上述したDLNAはオンデマンドTVなどで利用されます。このDLNAに利用されるマルチキャストは、バッファローであればマルチキャストレート、Atermであればマルチキャスト伝送速度という名前で記載されています。例えばAtermですと初期値が6Mbpsで、これだと十分に番組を伝送出来ない可能性があります。従いその値を増やす事でTV映像は安定します。しかし、マルチキャストは1対多で指定した帯域を確保し伝送するわけですから、無線機に接続された仕事用の端末はマルチキャストパケットの帯域確保が優先されてしまう事で仕事上のTV会議などが思わず影響を受けてしまう事になります。従いマルチキャストレートは上げすぎても良くないという事になります。また、Wi-Fiで映像を配信するポータブルTV（例：<a target="_blank" rel="noopener" href="https://panasonic.jp/privateviera/">Panasonicのプライベートビエラ</a>）などはネットワーク機器でモニタしてみたところ、帯域として15Mbps程度消費していました。</p>
 </li>
-<li><p>UPnpの停止<br>Universal plug and playの機能でホームゲートウェイなど光回線に接続する機器には装備されている機能です。インターネットからLAN内の機器に接続する場合に利用される仕組みです。これは過去からずっと脆弱性攻撃に利用されているものですので明確に必要としていない場合はこの機能を停止する事をお勧めします。</p>
+<li><p>UPnpの停止<br>Universal plug and playの機能でホームゲートウェイなど光回線に接続する機器には装備されている機能です。インターネットからLAN内の機器に接続する仕組みです。これは過去から脆弱性攻撃に利用されやすいものですので明確に必要としていない場合はこの機能を停止する事をお勧めします。</p>
 </li>
 </ol>
-<p>「価格。COM無線LANルーター(Wi-Fiルーター) 人気売れ筋ランキング」については、<a target="_blank" rel="noopener" href="https://kakaku.com/pc/wireless-router/ranking_0077/">こちらの記事</a>を参照してください。</p>
+<p>「価格．COM無線LANルーター(Wi-Fiルーター) 人気売れ筋ランキング」については、<a target="_blank" rel="noopener" href="https://kakaku.com/pc/wireless-router/ranking_0077/">こちらの記事</a>を参照してください。</p>
 <h2 id="（2）パスワード管理ソフトの導入"><a href="#（2）パスワード管理ソフトの導入" class="headerlink" title="（2）パスワード管理ソフトの導入"></a>（2）パスワード管理ソフトの導入</h2><p>無線ルーターの設定では、機器にログインするためのIDとSSIDに対するパスワード（暗号キー）を必ず変更して下さい。Wi-Fiに入られない限り安全だろうという理由で、無線ルーターのパスワードが短かったり単純なものは危険です。悪意のあるスマホアプリからWi-Fiを経由し、簡単に無線ルーターの乗っ取りが可能です。個人的にはパスワード管理ソフトとして、米国の<a target="_blank" rel="noopener" href="https://bitwarden.com/">bitwarden</a>がお勧めです。以下がお勧めポイントです。</p>
 <ul>
 <li>パスワードの自動生成が可能</li>
