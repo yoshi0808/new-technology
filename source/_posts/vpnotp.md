@@ -1,11 +1,11 @@
 ---
 title: XG Firewall VPNに2要素認証を設定する
 tags:
-  - XG Firewall
+- XG Firewall
 categories:
-  - Security
-  - VPN
-  - ワンタイムパスワード
+- Security
+- VPN
+- ワンタイムパスワード
 date: 2020-03-28 18:22:30
 ---
 <p class="onepoint">この記事で実現すること</p>

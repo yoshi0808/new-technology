@@ -111,30 +111,49 @@
       width: 100%;
     }
   }
+//  ul {
+//      border: solid 2px skyblue;
+//      border-radius: 5px;
+//      margin 1.5em 0;
+//      padding: 0.5em 1em 0.5em 2.3em;
+//      position: relative;
+//  }
+
+//  ul li {
+//    line-height: 1.5;
+//    padding: 0.5em 1.2em;
+//    list-style-type: none!important;
+//  }
+
+//  ul li:before {
+//    font-family: $font-icons;
+//    content: "\f138";/*アイコンの種類*/
+//    font-size: $font-size-medium;
+//    font-weight: 900;
+//    position: absolute;
+//    left : 0.8em;/*左端からのアイコンまでの距離*/
+//    color: skyblue;/*アイコン色*/
+//  }
   ul {
-      border: solid 2px skyblue;
-      border-radius: 5px;
-      margin 1.5em 0;
-      padding: 0.5em 1em 0.5em 2.3em;
-      position: relative;
+    padding:0.5em;
+    list-style-type:none;
   }
-
   ul li {
-    line-height: 1.5;
-    padding: 0.5em 1.2em;
-    list-style-type: none!important;
+    position:relative;
+    padding: 0em 0.3em 0.3em 1.3em;
   }
-
-  ul li:before {
-    font-family: $font-icons;
-    content: "\f138";/*アイコンの種類*/
-    font-size: $font-size-medium;
-    font-weight: 900;
+  ul li::before {
     position: absolute;
-    left : 0.8em;/*左端からのアイコンまでの距離*/
-    color: skyblue;/*アイコン色*/
+    content: '';
+    display: block;
+    top: 0.5em;
+    left: 0;
+    width: 6px;
+    height: 6px;
+    border-right: 3px solid #00BCD4;
+    border-bottom: 3px solid #00BCD4;
+    transform: rotate(-45deg);
   }
-
 }
 
 // from source/css/_common/scaffolding/tables.styl
