@@ -19,7 +19,10 @@ GPGは昔からあるオープンソースの暗号・署名の主要なコン�
 
 ## ソフトウェア構成
 
-GPGは基本的にはコマンドラインベースのプロダクトですが、macOSユーザーであれば、GPG Tools(GPG Suite)をお勧めします。GUIで暗号化・復号化できるのは便利です。但し、Appleメールの拡張機能でGPGを使う場合、3,000円程度の有償となります。Homebrewであれば、gpg-suite、gpg-suite-no-mail（有償のメール機能が無いもの）が該当します。[GPG Suite](https://gpgtools.org/)を直接ダウンロードする方法もあります。しかし、このブログを書いている2月10日時点ではYubikeyを使うようなカードインタフェースがうまく動作しません。これは不具合としてGPG Toolsサポートに[報告](https://gpgtools.tenderapp.com/discussions/feedback/16266-signing-with-a-yubikey-fails-until-i-run-gpg-card-status)があります。という事で現時点ではナイトリービルド（[GPG Suite 2020.2 (2989n)](https://releases.gpgtools.org/nightlies/)）を使う事になります。
+GPGは基本的にはコマンドラインベースのプロダクトですが、macOSユーザーであれば、GPG Tools(GPG Suite)をお勧めします。GUIで暗号化・復号化できるのは便利です。但し、Appleメールの拡張機能でGPGを使う場合、3,000円程度の有償となります。Homebrewであれば、gpg-suite、gpg-suite-no-mail（有償のメール機能が無いもの）が該当します。[GPG Suite](https://gpgtools.org/)を直接ダウンロードする方法もあります。~~しかし、このブログを書いている2月10日時点ではYubikeyを使うようなカードインタフェースがうまく動作しません。これは不具合としてGPG Toolsサポートに[報告](https://gpgtools.tenderapp.com/discussions/feedback/16266-signing-with-a-yubikey-fails-until-i-run-gpg-card-status)があります。という事で現時点ではナイトリービルド（[GPG Suite 2020.2 (2989n)](https://releases.gpgtools.org/nightlies/)）を使う事になります。~~
+
+（2021-5-23　追記）
+2021-5-21発表のGPG Suite 2021.1で上記の不具合は解消しています。GPG Suiteのトップページ[GPG Suite](https://gpgtools.org/)からダウンロードできます。
 
 これ以外には、YubicoのykmanというYubiKey Managerのコマンドインタフェースツールが必要です。これはHomebrewでインストールするか、[Yubicoのサイト](https://www.yubico.com/products/services-software/download/yubikey-manager/)からダウンロードし、インストールしてください。
 
@@ -843,6 +846,9 @@ Onの代わりに15秒キャッシュする"CACHED"という項目も設定で�
 {% asset_img automator1.png 800 alt %}
 
 ## （補足）libgcryptの脆弱性
+
+（2021-05-23　追記）
+本件は、2021-5-21発表のGPG Suite 2021.1において、下記の脆弱性については影響ありません。
 
 先日（1月末）に、gpgのライブラリであるlibgcryptに脆弱性があるとの速報[CVE-2021-3345](https://nvd.nist.gov/vuln/detail/CVE-2021-3345)が流れました。対象バージョンは1.9.0ですが、今回GPG Toolsから導入しているlibgcryptのバージョンは1.8.7となっており、この脆弱性の影響は受けません。
 
