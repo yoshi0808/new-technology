@@ -11,7 +11,7 @@ categories:
 {% asset_img title.png alt %}
 <p class="onepoint">この記事で実現すること</p>
 
-XG FirewallのSSL-VPNを構成し、実家や友人宅または、ホテル滞在時など公衆Wi-FiをはじめとしたさまざまなWi-Fi環境下においてIPSec-VPNよりも接続可能性を高める事を目的にします。SSL-VPNのTCP、UDPの待ち受けポートを設定し、自宅がv6プラスの環境でも接続可能となる期待があります。公衆Wi-Fiに見られるIPv4アドレスのみ払い出しされる環境においても、IPv4 VPNトンネルの中でIPv4/IPv6デュアルスタックによるインターネットアクセス、および自宅LANリソースにアクセスできます。
+XG FirewallのSSL-VPNを構成し、実家や友人宅または、ホテル滞在時など公衆Wi-FiをはじめとしたさまざまなWi-Fi環境下においてIPSec-VPNよりも接続可能性を高める事を目的にします。SSL-VPNのTCP、UDPの待ち受けポートを設定し、自宅がv6プラスの環境でも接続可能となる期待があります。公衆Wi-Fiによく見られるIPv4アドレスのみ払い出しされる環境においても、IPv4 VPNトンネルの中でIPv4/IPv6デュアルスタックによるインターネットアクセス、および自宅LANリソースにアクセスできます。
 
 <!-- more -->
 
@@ -27,9 +27,9 @@ IPSec-VPNは一般的に安全性が高く安定しているため、それが�
 
 ## SSL VPNについて
 
-Sophosは昨年（2020年10月）に[Sophos ConnectクライアントのVer2を発表](https://partnernews.sophos.com/ja-jp/2020/10/products/sophos-connect-v2-remote-access-vpn/)し、SSL VPNで接続できるようになりました。またv18 MR3より、SSL-VPNのパフォーマンスが向上しているとの事です。UDPのSSL-VPNであれば、IPSec-VPNに遜色ない速度が出ます。一方、TCPでは1/3程度にスピードダウンするようです。
+Sophosは昨年（2020年10月）に[Sophos ConnectクライアントのVer2を発表](https://partnernews.sophos.com/ja-jp/2020/10/products/sophos-connect-v2-remote-access-vpn/)し、SSL VPNで接続できるようになりました。またv18 MR3より、SSL-VPNのパフォーマンスが向上しているとの事です。
 
-XGのIPSec-VPNの速度と安定性は大変満足していますが、IPv6インターネットに対応しません<sup>**[[1]](#note1)**</sup>。デュアルスタック環境のWi-Fiに接続した場合、VPNを張ってもIPv4のみがVPNを経由し、IPv6は素のままInternetに出ていきます。また大部分のUDPポートが止められているケースを想定し、IPSec-VPNとは別にSSL-VPNもセットアップしておこうと考えました。前述したSophosのドキュメントでは、"macOSサポートが間も無く予定されていますが"との事ですが、なかなか発表される様子がありません。Big Sur対応で苦労されているんでしょうか。現時点において、IPSec-VPNを補完するSSL-VPN構成を考えてみます。
+XGのIPSec-VPNの速度と安定性は大変満足していますが、IPv6インターネットに対応しません<sup>**[[1]](#note1)**</sup>。デュアルスタック環境のWi-Fiに接続した場合、VPNを張ってもIPv4のみがVPNを経由し、IPv6は素のままInternetに出ていきます。また大部分のUDPポートが止められているケースを想定し、IPSec-VPNとは別にSSL-VPNもセットアップしておこうと考えました。前述したSophosのドキュメントでは、"macOSサポートが間も無く予定されていますが"との事ですが、なかなか発表される様子がありません。Big Sur対応で苦労されているんでしょうか。現時点において、IPSec-VPNを補完する**HTTPS接続によるSSL-VPN構成**を考えてみます。
 
 ## SSL VPNの構成
 
@@ -65,7 +65,7 @@ XGのIPSec-VPNの速度と安定性は大変満足していますが、IPv6イ�
 3. DDNSのホスト名を決定する
 4. VPNセッションのためのIPv6 ULAを決める
 
-XGのSSL-VPNはUDPがTCPの3倍ほど高速ですが、公衆Wi-Fiを使う場合、確実に接続するとなるとTCP、しかもHTTPSポートの443を使う事が手堅いです。公衆Wi-Fiを使わない場合はUDPで良いでしょう。自宅がv6プラスの方はプロバイダーから自宅まで通す事のできるポートの範囲を選定する事になります。
+XGのSSL-VPNはUDPがTCPの3倍ほど高速ですが、公衆Wi-Fiを使う場合、**安全・安心・確実に接続するとなるとTCP、しかもHTTPSポートの443を使う事が手堅いです**。自宅がv6プラスの方はプロバイダーから自宅まで通す事のできるポートの範囲を選定する事になります。
 
 DDNSについては、「{% post_link vpn %}」の記事を参照してください。
 
@@ -81,7 +81,7 @@ XGの管理画面の左ペイン{% label primary @VPN %}を選択すると、右
 
 前の章で事前に決めた設定内容を加えていきます。
 
-- 赤枠で囲ったTCP/UDPの別、ポート番号、そして、{% label primary @ホスト名の上書き %}というところはmyfirewall.coなどのダイナミックDNSホスト名を入力します。
+- 赤枠で囲ったTCP/UDPの別はTCPとポート番号、そして、{% label primary @ホスト名の上書き %}というところはmyfirewall.coなどのダイナミックDNSホスト名を入力します。
 - IPv4のVPNネットワークの範囲は、LANやその他競合しないと思われるプライベートIP群から設定します。デフォルトの10.xでも構いませんが、あまり使われない、`192.168.200.x/24`近辺を使ってはいかがでしょうか。
 - VPNクライアントが参照するDNSはXGのDNSですので、XGのLAN側IPアドレスを入力します。
 - IPv6は利用しているULAの別のサブネットを設定します。`fd00:beaf:cafe:2::/64`をLANで使っているとすれば、`fd00:beaf:cafe:12::/64`という具合です。
@@ -93,7 +93,7 @@ XGの管理画面の左ペイン{% label primary @VPN %}を選択すると、右
 
 {% note warning  %}
 
-{% label primary @ホスト名の上書き %}にDDNSホストを登録しないとVPN設定ファイルにXGのLANとWANのプライベートIPアドレスが含まれてしまい、VPN接続に大幅に時間が掛かりますので必ず設定してください。
+{% label primary @ホスト名の上書き %}にDDNSホストを登録しないとVPN設定ファイルにXGのWANのプライベートIPアドレスが含まれてしまい、VPN接続に大幅に時間が掛かりますので必ず設定してください。XGにパブリックIPアドレスが割り振られている環境の方は設定は不要です。
 
 {% endnote %}
 
@@ -131,9 +131,11 @@ XGをデフォルトゲートウェイとする事で、DNSを含めた全ての
 
 ### デバイスのアクセス
 
-左ペインメニューの{% label primary @管理 %}から{% label primary @デバイスのアクセス %}に進み、{% label primary @ローカルサービスACL %}でWANにSSL VPNの権限を付与します。
+左ペインメニューの{% label primary @管理 %}から{% label primary @デバイスのアクセス %}に進み、{% label primary @ローカルサービスACL %}でWANにSSL VPNの権限を付与します。また、VPNからXGのDNSが参照できるように設定します。
 
 {% asset_img acl.png 1024 alt %}
+
+LANからVPNを張る事が無ければ、LANのSSLVPNのチェックは外した方が良いでしょう。
 
 ### ファイアウォールルール
 
