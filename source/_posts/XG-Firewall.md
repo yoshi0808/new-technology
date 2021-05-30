@@ -67,6 +67,7 @@ v18が発表されて、大幅に機能強化されたのは良かったので�
 - {% post_link SophosCommunity %}
 - {% post_link vpn %}
 - {% post_link vpnotp %}
+- {% post_link ssl-vpn %}
 - {% post_link vpn-iphone %}
 - {% post_link Notifications %}
 - {% post_link dnat %}
