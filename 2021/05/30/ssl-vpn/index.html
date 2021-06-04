@@ -19,13 +19,13 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;yoshi0808.github.io&quot;,&quot;root&quot;:&quot;&#x2F;new-technology&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;new-technology&#x2F;images&quot;,&quot;scheme&quot;:&quot;Mist&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:true,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;検索…&quot;,&quot;empty&quot;:&quot;検索結果が見つかりませんでした: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} の結果が ${time} ms で見つかりました&quot;,&quot;hits&quot;:&quot;${hits} 件の結果が見つかりました&quot;},&quot;path&quot;:&quot;&#x2F;new-technology&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:1,&quot;unescape&quot;:false,&quot;preload&quot;:false}}</script>
-<meta name="description" content="この記事で実現すること  XG FirewallのSSL-VPNを構成し、実家や友人宅または、ホテル滞在時など公衆Wi-FiをはじめとしたさまざまなWi-Fi環境下においてIPSec-VPNよりも接続可能性を高める事を目的にします。SSL-VPNのTCP、UDPの待ち受けポートを設定し、自宅がv6プラスの環境でも接続可能となる期待があります。公衆Wi-Fiによく見られるIPv4アドレスのみ払い出">
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;yoshi0808.github.io&quot;,&quot;root&quot;:&quot;&#x2F;new-technology&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;new-technology&#x2F;images&quot;,&quot;scheme&quot;:&quot;Mist&quot;,&quot;version&quot;:&quot;8.5.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:true,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;検索…&quot;,&quot;empty&quot;:&quot;検索結果が見つかりませんでした: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} の結果が ${time} ms で見つかりました&quot;,&quot;hits&quot;:&quot;${hits} 件の結果が見つかりました&quot;},&quot;path&quot;:&quot;&#x2F;new-technology&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:1,&quot;unescape&quot;:false,&quot;preload&quot;:false}}</script><script src="/new-technology/js/config.js"></script>
+<meta name="description" content="この記事で実現すること  XG FirewallのSSL-VPNを構成し、実家や友人宅または、ホテル滞在時など公衆Wi-FiをはじめとしたさまざまなWi-Fi環境下においてIPSec-VPNよりも接続可能性を高める事を目的にします。SSL-VPNのTCPの待ち受けポートを設定し、自宅がv6プラスの環境でも接続可能となる期待があります。公衆Wi-Fiによく見られるIPv4アドレスのみ払い出しされる">
 <meta property="og:type" content="article">
 <meta property="og:title" content="XG Firewall SSL-VPN">
 <meta property="og:url" content="https://yoshi0808.github.io/new-technology/2021/05/30/ssl-vpn/index.html">
 <meta property="og:site_name" content="New technologies in our life">
-<meta property="og:description" content="この記事で実現すること  XG FirewallのSSL-VPNを構成し、実家や友人宅または、ホテル滞在時など公衆Wi-FiをはじめとしたさまざまなWi-Fi環境下においてIPSec-VPNよりも接続可能性を高める事を目的にします。SSL-VPNのTCP、UDPの待ち受けポートを設定し、自宅がv6プラスの環境でも接続可能となる期待があります。公衆Wi-Fiによく見られるIPv4アドレスのみ払い出">
+<meta property="og:description" content="この記事で実現すること  XG FirewallのSSL-VPNを構成し、実家や友人宅または、ホテル滞在時など公衆Wi-FiをはじめとしたさまざまなWi-Fi環境下においてIPSec-VPNよりも接続可能性を高める事を目的にします。SSL-VPNのTCPの待ち受けポートを設定し、自宅がv6プラスの環境でも接続可能となる期待があります。公衆Wi-Fiによく見られるIPv4アドレスのみ払い出しされる">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/05/30/ssl-vpn/title.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/05/30/ssl-vpn/sslvpn2.drawio.png">
@@ -47,7 +47,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/05/30/ssl-vpn/openvpn.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/05/30/ssl-vpn/tunnelblick.png">
 <meta property="article:published_time" content="2021-05-30T00:10:00.000Z">
-<meta property="article:modified_time" content="2021-05-30T06:21:35.450Z">
+<meta property="article:modified_time" content="2021-06-04T13:34:17.977Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -61,7 +61,7 @@
 <script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;ja&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;yoshi0808.github.io&#x2F;new-technology&#x2F;2021&#x2F;05&#x2F;30&#x2F;ssl-vpn&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;05&#x2F;30&#x2F;ssl-vpn&#x2F;&quot;,&quot;title&quot;:&quot;XG Firewall SSL-VPN&quot;}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
-<title>XG Firewall SSL-VPN | New technologies in our life</title><script src="/new-technology/js/config.js"></script><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.min.css">
+<title>XG Firewall SSL-VPN | New technologies in our life</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-159928165-1"></script>
   <script class="next-config" data-name="google_analytics" type="application/json">{&quot;tracking_id&quot;:&quot;UA-159928165-1&quot;,&quot;only_pageview&quot;:false}</script>
@@ -69,7 +69,7 @@
 
 
 
-
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.min.css">
   <noscript>
     <link rel="stylesheet" href="/new-technology/css/noscript.css">
   </noscript>
@@ -219,7 +219,7 @@
       </span>
   </div>
   <div class="cc-license site-overview-item animated" itemprop="license">
-    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="/new-technology/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/big/by_nc_sa.svg" alt="Creative Commons"></a>
   </div>
 
 
@@ -281,10 +281,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">投稿日</span>
-      
 
-      <time title="作成日：2021-05-30 09:10:00 / 修正日：15:21:35" itemprop="dateCreated datePublished" datetime="2021-05-30T09:10:00+09:00">2021-05-30</time>
+      <time title="作成日：2021-05-30 09:10:00" itemprop="dateCreated datePublished" datetime="2021-05-30T09:10:00+09:00">2021-05-30</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">編集日</span>
+        <time title="修正日：2021-06-04 22:34:17" itemprop="dateModified" datetime="2021-06-04T22:34:17+09:00">2021-06-04</time>
+      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -312,7 +318,7 @@
         <img src="/new-technology/2021/05/30/ssl-vpn/title.png" class="" title="alt">
 <p class="onepoint">この記事で実現すること</p>
 
-<p>XG FirewallのSSL-VPNを構成し、実家や友人宅または、ホテル滞在時など公衆Wi-FiをはじめとしたさまざまなWi-Fi環境下においてIPSec-VPNよりも接続可能性を高める事を目的にします。SSL-VPNのTCP、UDPの待ち受けポートを設定し、自宅がv6プラスの環境でも接続可能となる期待があります。公衆Wi-Fiによく見られるIPv4アドレスのみ払い出しされる環境においても、IPv4 VPNトンネルの中でIPv4/IPv6デュアルスタックによるインターネットアクセス、および自宅LANリソースにアクセスできます。</p>
+<p>XG FirewallのSSL-VPNを構成し、実家や友人宅または、ホテル滞在時など公衆Wi-FiをはじめとしたさまざまなWi-Fi環境下においてIPSec-VPNよりも接続可能性を高める事を目的にします。SSL-VPNのTCPの待ち受けポートを設定し、自宅がv6プラスの環境でも接続可能となる期待があります。公衆Wi-Fiによく見られるIPv4アドレスのみ払い出しされる環境においても、IPv4 VPNトンネルの中でIPv4/IPv6デュアルスタックによるインターネットアクセス、および自宅LANリソースにアクセスできます。</p>
 <span id="more"></span>
 
 <h2 id="XG-FirewallのIPSec-VPN"><a href="#XG-FirewallのIPSec-VPN" class="headerlink" title="XG FirewallのIPSec-VPN"></a>XG FirewallのIPSec-VPN</h2><p>IPSec-VPNは一般的に安全性が高く安定しているため、それが使える場合はまずは最優先候補に挙げられますが、制約があります。</p>
@@ -321,10 +327,10 @@
 <li>公衆Wi-Fiの一部では最低必要なUDPを除き、UDP全般を止めているところがあります（VPNを禁止していないところでも）。</li>
 <li>公衆WIFIではIPv4のみ提供している場所が多いです。</li>
 </ol>
-<p>外出先でPCを使う場合、スマホのテザリングができれば公衆Wi-Fiは不要です。私も滅多に公衆Wi-Fiは使いませんが、何かの時に役に立つかもしれません。新幹線、ホテル滞在など、最近ではすっかり機会は減ってしまいましたが <span class="github-emoji" alias="worried" style="" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f61f.png?v8">&#x1f61f;</span></p>
+<p>外出先でPCを使う場合、スマホのテザリングができれば公衆Wi-Fiは不要です。私は滅多に公衆Wi-Fiは使いませんが、何かの時に役に立つ事もあるでしょう。新幹線、ホテル滞在など、最近ではすっかり機会は減ってしまいましたが <span class="github-emoji" alias="worried" style="" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f61f.png?v8">&#x1f61f;</span></p>
 <h2 id="SSL-VPNについて"><a href="#SSL-VPNについて" class="headerlink" title="SSL VPNについて"></a>SSL VPNについて</h2><p>Sophosは昨年（2020年10月）に<a target="_blank" rel="noopener" href="https://partnernews.sophos.com/ja-jp/2020/10/products/sophos-connect-v2-remote-access-vpn/">Sophos ConnectクライアントのVer2を発表</a>し、SSL VPNで接続できるようになりました。またv18 MR3より、SSL-VPNのパフォーマンスが向上しているとの事です。</p>
 <p>XGのIPSec-VPNの速度と安定性は大変満足していますが、IPv6インターネットに対応しません<sup><strong><a href="#note1">[1]</a></strong></sup>。デュアルスタック環境のWi-Fiに接続した場合、VPNを張ってもIPv4のみがVPNを経由し、IPv6は素のままInternetに出ていきます。また大部分のUDPポートが止められているケースを想定し、IPSec-VPNとは別にSSL-VPNもセットアップしておこうと考えました。前述したSophosのドキュメントでは、”macOSサポートが間も無く予定されていますが”との事ですが、なかなか発表される様子がありません。Big Sur対応で苦労されているんでしょうか。現時点において、IPSec-VPNを補完する<strong>HTTPS接続によるSSL-VPN構成</strong>を考えてみます。</p>
-<h2 id="SSL-VPNの構成"><a href="#SSL-VPNの構成" class="headerlink" title="SSL VPNの構成"></a>SSL VPNの構成</h2><p>ここでは、一般例としてXGとインターネットとの間にホームゲートウェイ（HGW）が配置されている想定をしています。もちろん、IPv4のみのネットワーク環境でもVPNは構築できます。自宅のパブリックIPアドレスに接続するためにダイナミックDNS(DDNS)としてSophosが提供している<code>myfirewall.co</code>を使います。</p>
+<h2 id="SSL-VPNの構成"><a href="#SSL-VPNの構成" class="headerlink" title="SSL VPNの構成"></a>SSL VPNの構成</h2><p>ここでは、一般例としてXGとインターネットとの間にホームゲートウェイ（HGW）が配置されている前提です。もちろん、IPv4のみのネットワーク環境でもVPNは構築できます。自宅のパブリックIPアドレスに接続するためにダイナミックDNS(DDNS)としてSophosが提供している<code>myfirewall.co</code>を使います。</p>
  <img src="/new-technology/2021/05/30/ssl-vpn/sslvpn2.drawio.png" class="" title="alt">
 
 <table>
@@ -369,21 +375,21 @@
 </tr>
 <tr>
 <td>IPv6 VPN Segment⑦</td>
-<td>VPNトンネルの中で作成される仮想IPv6ネットワーク。これはLANとは異なるULAです。す。</td>
+<td>VPNトンネルの中で作成される仮想IPv6ネットワーク。これはLANとは異なるULAです。</td>
 </tr>
 </tbody></table>
-<p>仮想のVPNセグメントは、LANとネットワークアドレスを重複させてはいけません。あくまで別のセグメントです。また可能性は低いですが、公衆Wi-FiなどプライベートIPを使う場所でVPNセグメントのプライベートIPと重複する場合は、VPNセッションが張れない可能性があります。<br>私が知る限り、公衆Wi-Fiでは10.x.x.xのネットワークが多く使われるようです。<br>⑤のトンネルが張られると、クライアントでは仮想ネットワークインタフェース<mark class="label primary">Sophos TAP Adapter</mark>がActiveになります。<br> <img src="/new-technology/2021/05/30/ssl-vpn/TAP-Driver.png" class="" width="480" title="alt"></p>
+<p>仮想のVPNセグメントは、LANとネットワークアドレスを重複させてはいけません。あくまで別のセグメントです。また可能性は低いですが、公衆Wi-FiなどプライベートIPを使う場所でVPNセグメントのプライベートIPと重複し、VPNセッションを張れない可能性があります。<br>私が知る限り、公衆Wi-Fiでは10.x.x.xのネットワークが多く使われるようです。<br>⑤のトンネルが張られると、クライアントでは仮想ネットワークインタフェース<mark class="label primary">Sophos TAP Adapter</mark>がActiveになります。<br> <img src="/new-technology/2021/05/30/ssl-vpn/TAP-Driver.png" class="" width="480" title="alt"></p>
 <h2 id="SSL-VPNの事前準備"><a href="#SSL-VPNの事前準備" class="headerlink" title="SSL VPNの事前準備"></a>SSL VPNの事前準備</h2><ol>
 <li>VPNセッションのためのIPv4ネットワークアドレス（IPの範囲でも可能）を決める</li>
 <li>XGのSSL待ち受けポートを決める</li>
 <li>DDNSのホスト名を決定する</li>
 <li>VPNセッションのためのIPv6 ULAを決める</li>
 </ol>
-<p>XGのSSL-VPNはUDPがTCPの3倍ほど高速ですが、公衆Wi-Fiを使う場合、<strong>安全・安心・確実に接続するとなるとTCP、しかもHTTPSポートの443を使う事が手堅いです</strong>。自宅がv6プラスの方はプロバイダーから自宅まで通す事のできるポートの範囲を選定する事になります。</p>
+<p>XGのSSL-VPNはUDPがTCPの3倍ほど高速ですが、公衆Wi-Fiを使う場合、<strong>安全・安心・確実に接続するにはHTTPS(443/TCP)を使う事が手堅いです</strong>。自宅がv6プラスの方はプロバイダーから自宅まで通す事のできるポートの範囲を選定する事になります。</p>
 <p>DDNSについては、「<a href="/new-technology/2020/03/28/vpn/" title="XG Firewall VPNについて">XG Firewall VPNについて</a>」の記事を参照してください。</p>
 <p>LANのIPv6は、「<a href="/new-technology/2020/04/29/xg-ipv6-2/" title="XG FirewallでIPv6の設定を行う（後半）">XG FirewallでIPv6の設定を行う（後半）</a>」の記事で設定したように、ULAの48ビットPrefixにサブネットの16ビットを加えて64ビットPrefixを決定しました。今回のVPNはサブネットの16ビットの値を変える事で別のセグメントを割り当てます。</p>
 <h2 id="サーバー（XG）側の設定"><a href="#サーバー（XG）側の設定" class="headerlink" title="サーバー（XG）側の設定"></a>サーバー（XG）側の設定</h2><h3 id="SSL-VPNの設定"><a href="#SSL-VPNの設定" class="headerlink" title="SSL VPNの設定"></a>SSL VPNの設定</h3><p>XGの管理画面の左ペイン<mark class="label primary">VPN</mark>を選択すると、右上に<mark class="label primary">VPN設定を表示</mark>という項目があるのでこれをクリックします。さらに<mark class="label primary">SSL VPN</mark>と<mark class="label primary">L2TP</mark>のタブがありますので、SSLVPNを選択します。</p>
- <img src="/new-technology/2021/05/30/ssl-vpn/vpn-conf.png" class="" width="1024" title="alt">
+<img src="/new-technology/2021/05/30/ssl-vpn/vpn-conf.png" class="" width="1024" title="alt">
 
 <p>前の章で事前に決めた設定内容を加えていきます。</p>
 <ul>
@@ -398,7 +404,7 @@
 <div class="note warning"><p><mark class="label primary">ホスト名の上書き</mark>にDDNSホストを登録しないとVPN設定ファイルにXGのWANのプライベートIPアドレスが含まれてしまい、VPN接続に大幅に時間が掛かりますので必ず設定してください。XGにパブリックIPアドレスが割り振られている環境の方は設定は不要です。</p>
 </div>
 
-<h3 id="利用セグメントのIPホストへの登録"><a href="#利用セグメントのIPホストへの登録" class="headerlink" title="利用セグメントのIPホストへの登録"></a>利用セグメントのIPホストへの登録</h3><p>XGでは、セグメント間の通信には必ずそのネットワークの名前を登録し、その名前でアクセス許可を行うため、ネットワークやホストの命名を行う必要があります。左ペインメニューの<mark class="label primary">ホストとサービス</mark>→<mark class="label primary">IPホスト</mark>でVPNとLANの相互アクセスのために、LANで利用しているIPv4のネットワークアドレスとIPv6のネットワークアドレスを登録します。</p>
+<h3 id="利用セグメントのIPホストへの登録"><a href="#利用セグメントのIPホストへの登録" class="headerlink" title="利用セグメントのIPホストへの登録"></a>利用セグメントのIPホストへの登録</h3><p>XGでは、セグメント間の通信には必ずそのネットワークの名前を登録し、その名前でアクセス許可を行うため、ネットワークやホストの名前を付ける必要があります。左ペインメニューの<mark class="label primary">ホストとサービス</mark>→<mark class="label primary">IPホスト</mark>でVPNとLANの相互アクセスのために、LANで利用しているIPv4のネットワークアドレスとIPv6のネットワークアドレスを登録します。</p>
 <p>また、SSLインスペクションをVPNでも使う方は、VPNで割り当てる上記のIPv4の範囲とIPv6のネットワークアドレスを登録します。</p>
 <p>以下のように、VPNのネットワーク、いつも利用しているLANの合計4つ（IPv4のみであれば2つ）を名前をつけて登録します。</p>
 <img src="/new-technology/2021/05/30/ssl-vpn/ipv4host.png" class="" width="800" title="alt">
@@ -424,7 +430,7 @@
 <img src="/new-technology/2021/05/30/ssl-vpn/acl.png" class="" width="1024" title="alt">
 
 <p>LANからVPNを張る事が無ければ、LANのSSLVPNのチェックは外した方が良いでしょう。</p>
-<h3 id="ファイアウォールルール"><a href="#ファイアウォールルール" class="headerlink" title="ファイアウォールルール"></a>ファイアウォールルール</h3><p>ファイアウォールルールでは、VPNからInternetおよびLANへのアクセスを許可します。送信元ゾーンがLANおよびVPNになっている事を確認します。</p>
+<h3 id="ファイアウォールルール"><a href="#ファイアウォールルール" class="headerlink" title="ファイアウォールルール"></a>ファイアウォールルール</h3><p>ファイアウォールルールでは、VPNからInternetとLANへのアクセスを許可します。送信元ゾーンがLANとVPNになっている事を確認します。</p>
 <img src="/new-technology/2021/05/30/ssl-vpn/rule1.png" class="" width="1024" title="alt">
 
 <p>また、LANとVPNとが相互に許可されている事を確認します。</p>
@@ -437,11 +443,10 @@
 <h2 id="ホームゲートウェイの設定"><a href="#ホームゲートウェイの設定" class="headerlink" title="ホームゲートウェイの設定"></a>ホームゲートウェイの設定</h2><p>HGWはユーザーの環境によって異なりますが、IPsec VPNで設定したように、HGWでIPv4のSSL VPNに関するパケットをXGに着信させる設定を加えます。</p>
 <img src="/new-technology/2021/05/30/ssl-vpn/hgw.png" class="" width="800" title="alt">
 
-
 <h2 id="VPNクライアント（Windows）"><a href="#VPNクライアント（Windows）" class="headerlink" title="VPNクライアント（Windows）"></a>VPNクライアント（Windows）</h2><p>Windowsでは、Sophos提供のSophos Connectを利用します。クライアントとVPN設定ファイルのダウンロードのために、ユーザーポータル<code>https://xgのIPアドレス:443/</code>にログインします。ユーザーポータルの待ち受けポートを変更された方は443を適切な値に変更してアクセスしてください。</p>
 <img src="/new-technology/2021/05/30/ssl-vpn/portal.png" class="" width="480" title="alt">
 
-<p>赤枠で囲った”Download client for Windows”のリンクをクリックします。Windowsクライアントのセットアップは難しくはありません、順に進めていけば完了します。セットアップが完了するとプロセスがタスクバーに常駐します。<br>続いて、”その他のOS向け設定のダウンロード”を行います。ここでは拡張子ovpnのファイルがダウンロードされます。ダウンロードしたファイルをダブルクリックして開くと、VPN設定ファイルがSophos Connectに取り込まれます。</p>
+<p>赤枠で囲った”Download client for Windows”のリンクをクリックします。Windowsクライアントのセットアップは難しくありません、順に進めていけば完了します。セットアップが完了するとプロセスがタスクバーに常駐します。<br>続いて、”その他のOS向け設定のダウンロード”を行います。ここでは拡張子ovpnのファイルがダウンロードされます。ダウンロードしたファイルをダブルクリックすると、VPN設定ファイルがSophos Connectに取り込まれます。</p>
 <img src="/new-technology/2021/05/30/ssl-vpn/sc1.png" class="" width="480" title="alt">
 
 <p>少し判りづらいですが、Homeの項目がIPSec-VPNでmyfirewall.coのものがSSL-VPNです。</p>
@@ -463,7 +468,7 @@
 <p>これら2つのクライアントは、Homebrewからもインストール可能です。<br><code>brew install openvpn-connect --cask</code><br><code>brew install tunnelblick --cask</code></p>
 <p>Tunnelblickは前述した接続キャンセル時の応答性も機敏です（RST送信と即座のUI応答）。</p>
 <h2 id="VPNクライアント（その他）"><a href="#VPNクライアント（その他）" class="headerlink" title="VPNクライアント（その他）"></a>VPNクライアント（その他）</h2><p>スマホ、Linux向けにも、OPENVPN Connectがあります。設定ファイルの取り込みは、クラウド経由やメールの添付などの方法でアプリに渡します。</p>
-<h2 id="ワンタイムパスワード"><a href="#ワンタイムパスワード" class="headerlink" title="ワンタイムパスワード"></a>ワンタイムパスワード</h2><p>XGではSSL-VPNにおいても2要素認証の設定が可能ですので設定される事をお勧めします。「<a href="/new-technology/2020/03/28/vpnotp/" title="XG Firewall VPNに2要素認証を設定する">XG Firewall VPNに2要素認証を設定する</a>」の記事を参照してください。</p>
+<h2 id="ワンタイムパスワード"><a href="#ワンタイムパスワード" class="headerlink" title="ワンタイムパスワード"></a>ワンタイムパスワード</h2><p>XGではSSL-VPNにおいても2要素認証の設定が可能ですので設定される事をお勧めします。「<a href="/new-technology/2020/03/28/vpnotp/" title="XG Firewall VPNに2要素認証を設定する">XG Firewall VPNに2要素認証を設定する</a>」の記事を参照してください。XGにおけるVPN-SSLのワンタイムパスワードはパスワードの文字列に続けてOTPの数字6文字を入力する事で2要素認証を行います。パスワードが”abcdef”でOTPが”123456”ならば、パスワードに”abcdef123456”を入力します。</p>
 <p> <small id="note1"><strong>[1]</strong><br>IPSecによるサイト間接続VPNはIPv6に対応しています。クライアントからのリモートアクセスとしてのIPSecはIPv6未対応です。<br></small></p>
 
     </div>
@@ -510,7 +515,7 @@
 
 
 
-    <div class="comments utterances-container"></div><script src="/new-technology/js/comments.js"></script>
+    <div class="comments utterances-container"></div>
 </div>
   </main>
 
@@ -569,7 +574,7 @@
   
   <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js" integrity="sha256-EdPgYcPk/IIrw7FYeuJQexva49pVRZNmt3LculEr7zM=" crossorigin="anonymous"></script>
-<script src="/new-technology/js/utils.js"></script><script src="/new-technology/js/motion.js"></script><script src="/new-technology/js/schemes/muse.js"></script><script src="/new-technology/js/next-boot.js"></script>
+<script src="/new-technology/js/comments.js"></script><script src="/new-technology/js/utils.js"></script><script src="/new-technology/js/motion.js"></script><script src="/new-technology/js/schemes/muse.js"></script><script src="/new-technology/js/next-boot.js"></script>
 
   
 <script src="/new-technology/js/third-party/search/local-search.js"></script>
