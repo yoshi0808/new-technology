@@ -4,7 +4,7 @@ tags:
   - IPv6
   - XG Firewall
 categories:
-  - Code
+  - Network
 date: 2020-04-18 21:16:31
 ---
 <p class="onepoint">この記事で実現すること</p>
