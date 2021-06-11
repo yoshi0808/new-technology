@@ -4,7 +4,35 @@
   <url>
     <loc>https://yoshi0808.github.io/new-technology/2021/05/30/ssl-vpn/</loc>
     
-    <lastmod>2021-06-04</lastmod>
+    <lastmod>2021-06-11</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/2020/04/29/xg-ipv6-2/</loc>
+    
+    <lastmod>2021-06-11</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/2020/05/16/Intercept-DNS/</loc>
+    
+    <lastmod>2021-06-11</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/2020/03/28/vpn/</loc>
+    
+    <lastmod>2021-06-11</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/2020/04/18/ipv6/</loc>
+    
+    <lastmod>2021-06-11</lastmod>
     
   </url>
   
@@ -19,13 +47,6 @@
     <loc>https://yoshi0808.github.io/new-technology/2020/02/23/XG-Firewall/</loc>
     
     <lastmod>2021-05-30</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/03/28/vpn/</loc>
-    
-    <lastmod>2021-05-29</lastmod>
     
   </url>
   
@@ -198,13 +219,6 @@
   </url>
   
   <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/04/29/xg-ipv6-2/</loc>
-    
-    <lastmod>2021-01-20</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://yoshi0808.github.io/new-technology/2020/03/21/ssl-inspection2/</loc>
     
     <lastmod>2021-01-17</lastmod>
@@ -261,13 +275,6 @@
   </url>
   
   <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/04/18/ipv6/</loc>
-    
-    <lastmod>2020-10-24</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://yoshi0808.github.io/new-technology/2020/03/14/rule-policy2/</loc>
     
     <lastmod>2020-10-24</lastmod>
@@ -290,13 +297,6 @@
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/2020/05/04/ips-policy/</loc>
-    
-    <lastmod>2020-10-21</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/05/16/Intercept-DNS/</loc>
     
     <lastmod>2020-10-21</lastmod>
     
@@ -340,7 +340,7 @@
 
   <url>
     <loc>https://yoshi0808.github.io/new-technology</loc>
-    <lastmod>2021-06-04</lastmod>
+    <lastmod>2021-06-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -348,56 +348,56 @@
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/tags/XG-Firewall/</loc>
-    <lastmod>2021-06-04</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://yoshi0808.github.io/new-technology/tags/DeepL/</loc>
-    <lastmod>2021-06-04</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://yoshi0808.github.io/new-technology/tags/ESXi/</loc>
-    <lastmod>2021-06-04</lastmod>
+    <lastmod>2021-06-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/tags/IPv6/</loc>
-    <lastmod>2021-06-04</lastmod>
+    <lastmod>2021-06-11</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/tags/DeepL/</loc>
+    <lastmod>2021-06-11</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/tags/ESXi/</loc>
+    <lastmod>2021-06-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/tags/scanwatch/</loc>
-    <lastmod>2021-06-04</lastmod>
+    <lastmod>2021-06-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/tags/bitwarden/</loc>
-    <lastmod>2021-06-04</lastmod>
+    <lastmod>2021-06-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/tags/miband5/</loc>
-    <lastmod>2021-06-04</lastmod>
+    <lastmod>2021-06-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/tags/yubikey/</loc>
-    <lastmod>2021-06-04</lastmod>
+    <lastmod>2021-06-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
@@ -406,49 +406,49 @@
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/categories/Security/</loc>
-    <lastmod>2021-06-04</lastmod>
+    <lastmod>2021-06-11</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/categories/Network/</loc>
+    <lastmod>2021-06-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/categories/Security/%E3%83%9B%E3%82%B9%E3%83%88%E5%85%AC%E9%96%8B/</loc>
-    <lastmod>2021-06-04</lastmod>
+    <lastmod>2021-06-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/categories/Software/</loc>
-    <lastmod>2021-06-04</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://yoshi0808.github.io/new-technology/categories/Code/</loc>
-    <lastmod>2021-06-04</lastmod>
+    <lastmod>2021-06-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/categories/SmartWatch/</loc>
-    <lastmod>2021-06-04</lastmod>
+    <lastmod>2021-06-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/categories/Security/VPN/</loc>
-    <lastmod>2021-06-04</lastmod>
+    <lastmod>2021-06-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/categories/Security/VPN/%E3%83%AF%E3%83%B3%E3%82%BF%E3%82%A4%E3%83%A0%E3%83%91%E3%82%B9%E3%83%AF%E3%83%BC%E3%83%89/</loc>
-    <lastmod>2021-06-04</lastmod>
+    <lastmod>2021-06-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
