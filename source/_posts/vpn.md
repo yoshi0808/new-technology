@@ -20,7 +20,7 @@ XGのVPNはプロトコルが何種類かあります。一般的なSSL-VPN,L2TP
 
 XGにおけるIPSec-VPNはIPv4のみ対応しています。
 プロバイダとの接続形態がDS-Liteおよびv6プラスの場合、NATまたは利用ポート制限のため、IPSecによるVPNは利用できません。
-v6プラスの場合、SSL-VPNを利用する事で利用できる見込みがあります。XGにおけるSSL-VPNについては、「{% post_link ssl-inspection %}」を参照してください。
+v6プラスの場合、SSL-VPNを利用する事で利用できる見込みがあります。XGにおけるSSL-VPNについては、「{% post_link ssl-vpn %}」を参照してください。
 
 {% endnote %}
 
