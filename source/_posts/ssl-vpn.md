@@ -23,8 +23,6 @@ IPSec-VPNは一般的に安全性が高く安定しているため、それが�
 2. 公衆Wi-Fiの一部では最低必要なUDPを除き、UDP全般を止めているところがあります（VPNを禁止していないところでも）。
 3. 公衆WIFIではIPv4のみ提供している場所が多いです。
 
-外出先でPCを使う場合、スマホのテザリングができれば公衆Wi-Fiは不要です。私は滅多に公衆Wi-Fiは使いませんが、何かの時に役に立つ事もあるでしょう。新幹線、ホテル滞在など、最近ではすっかり機会は減ってしまいましたが {% emoji worried %}
-
 ## SSL VPNについて
 
 Sophosは昨年（2020年10月）に[Sophos ConnectクライアントのVer2を発表](https://partnernews.sophos.com/ja-jp/2020/10/products/sophos-connect-v2-remote-access-vpn/)し、SSL VPNで接続できるようになりました。またv18 MR3より、SSL-VPNのパフォーマンスが向上しているとの事です。
