@@ -226,6 +226,42 @@ XGFirewall-- &quot;192.168.0.0&#x2F;24&quot; ---HGW
       </tags>
   </entry>
   <entry>
+    <title>XG Firewall Sophos Communityについて</title>
+    <url>/new-technology/2020/03/26/SophosCommunity/</url>
+    <content><![CDATA[<h2 id="Sophos-Communityを活用する"><a href="#Sophos-Communityを活用する" class="headerlink" title="Sophos Communityを活用する"></a>Sophos Communityを活用する</h2><p>XG Firewall Home EditionはSophosによるサポートがなく、ユーザコミュニティの相互サポートによって成り立っています。サポートサイトは英語が中心ですが、セキュリティに関するビジネスをしている方も積極的に参加しています。</p>
+<span id="more"></span>
+
+<div class="link-grid"><div class="link-grid-container">
+<object class="link-grid-image" data="xg.png"></object>
+<p>Sophos Community</p><p>Welcome to the Sophos Community! The Sophos Community is a platform for users to connect and engage on everything Sophos-related.</p>
+<a href="https://community.sophos.com/xg-firewall"></a>
+</div></div>
+
+<p>さて、直接XGの話ではありませんが、ここ数日話題になっているドイツ製翻訳ソフトの<mark class="label primary">DeepL</mark>が素晴らしいです。私はGoogle翻訳をずっと使っていましたが、こちらも使い勝手が良く便利です。<br>Windows、macOSのアプリケーションとしてインストールする事が出来ます。利用は無償（高機能な有償のpro版もあります）で、例えばブラウザで翻訳箇所を選択しCtrl+c(macはcommand+c)を2回押下するとDeepLが起動し、英訳と日本語が併記されます。</p>
+<div class="link-grid"><div class="link-grid-container">
+<object class="link-grid-image" data="deepl.png"></object>
+<p>DeepL翻訳</p><p>AIの力を言語に<p> DeepL（ディープエル）では、テキストをより深く理解し翻訳できる人工知能を開発しています。</p>
+<a href="https://www.deepl.com/app"></a>
+</div></div>
+
+<p>これまで私がブログで書いてきたv18のSSL/TLSインスペクションですが、情報がたくさんあります。このブログで全てを説明するのは到底無理があります。Communityの素晴らしい知見を活用すべく、活用してみてください。</p>
+<ul>
+<li><a href="https://community.sophos.com/products/xg-firewall/f/recommended-reads/118753/sophos-xg-firewall-v18-troubleshooting-problems-with-the-dpi-engine">Sophos XG Firewall v18: DPI エンジンのトラブルシューティング ＞</a></li>
+</ul>
+<p>アプリでCtrl+cを2回押下して先頭部分の抜粋を抜粋します。</p>
+<img src="/new-technology/2020/03/26/SophosCommunity/community.png" class="" title="alt">
+
+<p>ぜひ、翻訳ソフトのDeepLを活用しながら、XGやSSLインスペクションの理解を深めてください。</p>
+]]></content>
+      <categories>
+        <category>Security</category>
+      </categories>
+      <tags>
+        <tag>XG Firewall</tag>
+        <tag>DeepL</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>XG Firewallの通知設定を行う</title>
     <url>/new-technology/2020/04/03/Notifications/</url>
     <content><![CDATA[<p class="onepoint">この記事で実現すること</p>
@@ -276,7 +312,7 @@ XG Firewallで重要なエラーが発生した場合、VPNの接続通知、バ
 </tr>
 <tr>
 <td>ユーザ名</td>
-<td><a href="mailto:&#x79;&#x6f;&#117;&#114;&#95;&#97;&#99;&#99;&#x6f;&#117;&#x6e;&#x74;&#x40;&#x67;&#x6d;&#97;&#x69;&#108;&#x2e;&#x63;&#111;&#109;">&#x79;&#x6f;&#117;&#114;&#95;&#97;&#99;&#99;&#x6f;&#117;&#x6e;&#x74;&#x40;&#x67;&#x6d;&#97;&#x69;&#108;&#x2e;&#x63;&#111;&#109;</a></td>
+<td><a href="mailto:&#x79;&#111;&#117;&#x72;&#x5f;&#97;&#99;&#x63;&#111;&#x75;&#110;&#x74;&#64;&#103;&#x6d;&#x61;&#105;&#108;&#x2e;&#99;&#111;&#109;">&#x79;&#111;&#117;&#x72;&#x5f;&#97;&#99;&#x63;&#111;&#x75;&#110;&#x74;&#64;&#103;&#x6d;&#x61;&#105;&#108;&#x2e;&#99;&#111;&#109;</a></td>
 </tr>
 <tr>
 <td>パスワード</td>
@@ -288,7 +324,7 @@ XG Firewallで重要なエラーが発生した場合、VPNの接続通知、バ
 </tr>
 <tr>
 <td>送信元メールアドレス</td>
-<td><a href="mailto:&#121;&#x6f;&#117;&#114;&#x5f;&#x61;&#99;&#99;&#x6f;&#x75;&#x6e;&#116;&#64;&#x67;&#109;&#x61;&#105;&#x6c;&#46;&#99;&#111;&#x6d;">&#121;&#x6f;&#117;&#114;&#x5f;&#x61;&#99;&#99;&#x6f;&#x75;&#x6e;&#116;&#64;&#x67;&#109;&#x61;&#105;&#x6c;&#46;&#99;&#111;&#x6d;</a></td>
+<td><a href="mailto:&#121;&#x6f;&#117;&#114;&#x5f;&#97;&#x63;&#x63;&#111;&#x75;&#110;&#x74;&#64;&#x67;&#109;&#x61;&#105;&#x6c;&#46;&#99;&#x6f;&#109;">&#121;&#x6f;&#117;&#114;&#x5f;&#97;&#x63;&#x63;&#111;&#x75;&#110;&#x74;&#64;&#x67;&#109;&#x61;&#105;&#x6c;&#46;&#99;&#x6f;&#109;</a></td>
 </tr>
 <tr>
 <td>メールアドレスに通知を送信</td>
@@ -318,42 +354,6 @@ XG Firewallで重要なエラーが発生した場合、VPNの接続通知、バ
       </categories>
       <tags>
         <tag>XG Firewall</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>XG Firewall Sophos Communityについて</title>
-    <url>/new-technology/2020/03/26/SophosCommunity/</url>
-    <content><![CDATA[<h2 id="Sophos-Communityを活用する"><a href="#Sophos-Communityを活用する" class="headerlink" title="Sophos Communityを活用する"></a>Sophos Communityを活用する</h2><p>XG Firewall Home EditionはSophosによるサポートがなく、ユーザコミュニティの相互サポートによって成り立っています。サポートサイトは英語が中心ですが、セキュリティに関するビジネスをしている方も積極的に参加しています。</p>
-<span id="more"></span>
-
-<div class="link-grid"><div class="link-grid-container">
-<object class="link-grid-image" data="xg.png"></object>
-<p>Sophos Community</p><p>Welcome to the Sophos Community! The Sophos Community is a platform for users to connect and engage on everything Sophos-related.</p>
-<a href="https://community.sophos.com/xg-firewall"></a>
-</div></div>
-
-<p>さて、直接XGの話ではありませんが、ここ数日話題になっているドイツ製翻訳ソフトの<mark class="label primary">DeepL</mark>が素晴らしいです。私はGoogle翻訳をずっと使っていましたが、こちらも使い勝手が良く便利です。<br>Windows、macOSのアプリケーションとしてインストールする事が出来ます。利用は無償（高機能な有償のpro版もあります）で、例えばブラウザで翻訳箇所を選択しCtrl+c(macはcommand+c)を2回押下するとDeepLが起動し、英訳と日本語が併記されます。</p>
-<div class="link-grid"><div class="link-grid-container">
-<object class="link-grid-image" data="deepl.png"></object>
-<p>DeepL翻訳</p><p>AIの力を言語に<p> DeepL（ディープエル）では、テキストをより深く理解し翻訳できる人工知能を開発しています。</p>
-<a href="https://www.deepl.com/app"></a>
-</div></div>
-
-<p>これまで私がブログで書いてきたv18のSSL/TLSインスペクションですが、情報がたくさんあります。このブログで全てを説明するのは到底無理があります。Communityの素晴らしい知見を活用すべく、活用してみてください。</p>
-<ul>
-<li><a href="https://community.sophos.com/products/xg-firewall/f/recommended-reads/118753/sophos-xg-firewall-v18-troubleshooting-problems-with-the-dpi-engine">Sophos XG Firewall v18: DPI エンジンのトラブルシューティング ＞</a></li>
-</ul>
-<p>アプリでCtrl+cを2回押下して先頭部分の抜粋を抜粋します。</p>
-<img src="/new-technology/2020/03/26/SophosCommunity/community.png" class="" title="alt">
-
-<p>ぜひ、翻訳ソフトのDeepLを活用しながら、XGやSSLインスペクションの理解を深めてください。</p>
-]]></content>
-      <categories>
-        <category>Security</category>
-      </categories>
-      <tags>
-        <tag>XG Firewall</tag>
-        <tag>DeepL</tag>
       </tags>
   </entry>
   <entry>
