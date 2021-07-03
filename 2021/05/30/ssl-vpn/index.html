@@ -47,7 +47,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/05/30/ssl-vpn/openvpn.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/05/30/ssl-vpn/tunnelblick.png">
 <meta property="article:published_time" content="2021-05-30T00:10:00.000Z">
-<meta property="article:modified_time" content="2021-06-11T21:58:58.135Z">
+<meta property="article:modified_time" content="2021-07-03T03:48:48.821Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -291,7 +291,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">編集日</span>
-        <time title="修正日：2021-06-12 06:58:58" itemprop="dateModified" datetime="2021-06-12T06:58:58+09:00">2021-06-12</time>
+        <time title="修正日：2021-07-03 12:48:48" itemprop="dateModified" datetime="2021-07-03T12:48:48+09:00">2021-07-03</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -329,7 +329,6 @@
 <li>公衆Wi-Fiの一部では最低必要なUDPを除き、UDP全般を止めているところがあります（VPNを禁止していないところでも）。</li>
 <li>公衆WIFIではIPv4のみ提供している場所が多いです。</li>
 </ol>
-<p>外出先でPCを使う場合、スマホのテザリングができれば公衆Wi-Fiは不要です。私は滅多に公衆Wi-Fiは使いませんが、何かの時に役に立つ事もあるでしょう。新幹線、ホテル滞在など、最近ではすっかり機会は減ってしまいましたが <span class="github-emoji" alias="worried" style="" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f61f.png?v8">&#x1f61f;</span></p>
 <h2 id="SSL-VPNについて"><a href="#SSL-VPNについて" class="headerlink" title="SSL VPNについて"></a>SSL VPNについて</h2><p>Sophosは昨年（2020年10月）に<a target="_blank" rel="noopener" href="https://partnernews.sophos.com/ja-jp/2020/10/products/sophos-connect-v2-remote-access-vpn/">Sophos ConnectクライアントのVer2を発表</a>し、SSL VPNで接続できるようになりました。またv18 MR3より、SSL-VPNのパフォーマンスが向上しているとの事です。</p>
 <p>XGのIPSec-VPNの速度と安定性は大変満足していますが、IPv6インターネットに対応しません<sup><strong><a href="#note1">[1]</a></strong></sup>。デュアルスタック環境のWi-Fiに接続した場合、VPNを張ってもIPv4のみがVPNを経由し、IPv6は素のままInternetに出ていきます。また大部分のUDPポートが止められているケースを想定し、IPSec-VPNとは別にSSL-VPNもセットアップしておこうと考えました。前述したSophosのドキュメントでは、”macOSサポートが間も無く予定されていますが”との事ですが、なかなか発表される様子がありません。Big Sur対応で苦労されているんでしょうか。現時点において、IPSec-VPNを補完する<strong>HTTPS接続によるSSL-VPN構成</strong>を考えてみます。</p>
 <h2 id="SSL-VPNの構成"><a href="#SSL-VPNの構成" class="headerlink" title="SSL VPNの構成"></a>SSL VPNの構成</h2><p>ここでは、一般例としてXGとインターネットとの間にホームゲートウェイ（HGW）が配置されている前提です。もちろん、IPv4のみのネットワーク環境でもVPNは構築できます。自宅のパブリックIPアドレスに接続するためにダイナミックDNS(DDNS)としてSophosが提供している<code>myfirewall.co</code>を使います。</p>
