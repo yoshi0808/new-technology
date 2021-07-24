@@ -42,11 +42,6 @@ comments: false
 
 2020年12月31日よりGitHubのissueを利用したコメントシステムであるUtterancesを試験的に運用開始しました。こちらにはGitHubのユーザーのみ利用可能です。あくまで試験的なものであるため、予告なく利用を中止する場合があります。またこちらへの書き込みは個人を特定するような情報や誹謗中傷する書き込みについてはお控えください。
 
-### SNSシェアボタンについて
-
-2021年4月11日よりIlya Birman氏の[Likely](https://ilyabirman.net/projects/likely/)のSNSシェアボタン機能をつけました。
-このブログでのライブラリは、"theme-next/hexo-next-share"を利用しています。hexo-next-shareのリポジトリについては、[GitHub:hexo-next-share](https://github.com/theme-next/hexo-next-share)を参照してください。また、Likelyのリポジトリについては、[GitHub:NikolayRys/Likely](https://github.com/NikolayRys/Likely)を参照してください。
-
 ### プライバシーポリシーの変更について
 
 当ブログは、個人情報に関して適用される日本の法令を遵守するとともに、本ポリシーの内容を適宜見直しその改善に努めます。修正された最新のプライバシーポリシーは常に本ページにて開示されます。
@@ -54,7 +49,7 @@ comments: false
 ## 各社商標について
 
 - 「Amazon」、「Amazon.co.jp」および「Amazon.co.jp」ロゴは、Amazon.com, Inc. またはその関連会社の商標または登録商標です
-- Android、Androidロゴ、Chromecast、Gmail、Google、Googleロゴ、Googleアシスタント、Google Chrome、Google Cloud Platform （GCP） 、Google Home、Google Homeロゴ、Google Home Mini、Google Home Miniロゴ、Googleマップ、Google Nest Mini、Google Nest Miniロゴ、Google Play、Google Playロゴ、Google Play Music、Google Play Musicロゴ、YouTube、YouTubeロゴは、Google LLCの商標です。Androidロボットは、Googleが作成および提供している作品から複製または変更したものであり、クリエイティブ・コモンズ表示3.0ライセンスに記載された条件に従って使用しています
+- Android、Androidロゴ、Chromecast、Gmail、Google、Googleロゴ、Googleアシスタント、Google Chrome、Google Cloud Platform（GCP）、Google Home、Google Homeロゴ、Google Home Mini、Google Home Miniロゴ、Googleマップ、Google Nest Mini、Google Nest Miniロゴ、Google Play、Google Playロゴ、Google Play Music、Google Play Musicロゴ、YouTube、YouTubeロゴは、Google LLCの商標です。Androidロボットは、Googleが作成および提供している作品から複製または変更したものであり、クリエイティブ・コモンズ表示3.0ライセンスに記載された条件に従って使用しています
 - Apple、Appleロゴ、AirDrop、AirPlay、AirPods、AirMac、AirMac Time Capsule、AirPrint、Apple Music、Apple Pay、Apple TV、Apple Watch、Face ID、FaceTime、Finder、FireWire、Flyover、GarageBand、Handoff、iMovie、iPad、iPod、iPod touch、iTunes、iTunes U、Keynote、Launchpad、Lightning、Mac、Mac Pro、macOS、Magic Mouse、Magic Trackpad、Mission Control、Numbers、Pages、Retina、Safari、Siri、Spaces、Spotlight、Time Machine、Touch ID、およびwatchOSは、米国その他の国で登録されたApple Inc。の商標です。IOSは米国その他の国におけるCiscoの商標または登録商標であり、Apple Inc。がライセンス許諾を受けて使用されています。
 - Microsoft、MS、Windows、Windows10、OneDriveおよびExcelは、米国Microsoft Corporationの米国およびその他の国における登録商標です。Windowsの正式名称は、Microsoft Windows Operating Systemです
 
@@ -66,3 +61,4 @@ comments: false
 - 2020年12月31日　コメントシステムの試験運用について記載
 - 2021年4月10日　記事毎の著作権表記を削除し、本ページに記載
 - 2021年4月11日　シェアボタンの設置について記載
+- 2021年7月24日　シェアボタンを撤去

@@ -2,7 +2,7 @@
 title: MIスマートバンド5を活用する
 date: 2020-11-28T9:00:00+09:00
 tags:
- - miband5  
+ - miband
 categories:
  - SmartWatch
 comments: false
