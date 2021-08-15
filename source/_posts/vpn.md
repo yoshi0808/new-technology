@@ -90,7 +90,22 @@ XGの左ペインメニューから{% label primary@VPN %}を選択、{% label p
 
 ## XG側のDynamic DNSの設定
 
-素晴らしい事に、XGでは無償のダイナミックDNSを用意してくれています。VPNで接続する際には、グローバルIPアドレスが必要ですが、XG用のmyfirewall.coドメインが利用できます。他に使われていない一意のホスト名を設定する事になります。{% label primary@IPv4アドレス %}の箇所は、{% label primary@NATされたパブリックIP %}を選んでください。その他のNo-IPなどの有名どころのダイナミックDNSを選ぶ事も可能です。
+自宅のXGに接続するためには自宅に割り当てられたIPアドレスをあらかじめ知る必要がありますので、ここでダイナミックDNS（DDNS）が必要となります。
+
+(2021-8-15更新）
+Sophosが提供するDDNSであるmyfirewall.coについては2022年1月末をもってサービス提供終了となります。またXG v18.5では既にmyfirewall.coを選択できなくなっています。XGが対応しているDDNSは以下の通りです。もちろん、このDDNSでなくとも、NASをお持ちの方であればNASが提供しているDDNSを利用できます。
+
+- DynDNS
+- ZoneEdit
+- EasyDNS
+- DynAccess
+- No-IP
+- DNS-O-Matic
+- Google DNS
+- Namecheap
+- FreeDNS
+
+{% label primary@IPv4アドレス %}の箇所は、{% label primary@NATされたパブリックIP %}を選んでください。
 
 {% asset_img ddns.png alt %}
 
@@ -131,7 +146,21 @@ XG v18 MR-4以降はIPSecの接続に関する詳細設定がXG本体で行え�
 
 ## クライアントのセットアップ
 
-クライアントへのセットアップは、Windowsの場合は、SophosConnect.msiをインストールします。macOSの場合は、SophosConnect.pkgをインストールします。プログラム実行後、右上のメニューから、{% label primary@Import Connection %}をクリックし、先ほどダウンロードした接続設定ファイル（拡張子scxまたはtgb）を読み込んでください。
+クライアントへのセットアップは、Windowsの場合は、SophosConnect.msiをインストールします。macOSの場合は、SophosConnect.pkgをインストールします。プログラム実行後、右上のメニューから、{% label primary@Import Connection %}をクリックし、先ほどダウンロードした接続設定ファイル（拡張子scx）を読み込んでください。
+
+もし、DDNSを上記のDDNS提供業者ではなく、別のものを用意するものに変更するのであれば、scxファイルのddns名の箇所を任意のホスト名に修正できます。
+以下のように、"gateway"で始まる行にホスト名またはIPアドレスが記述されているので、この行を目的のホスト名に変更します。
+私の場合、QNAPのNASのDDNSがありますので、この例だと以下のように書き換えます。
+
+```
+  "gateway" : "xxxx.myfirewall.co",
+```
+
+→
+
+```
+  "gateway" : "xxxx.myqnapcloud.com",
+```
 
 {% asset_img install.png alt %}
 
