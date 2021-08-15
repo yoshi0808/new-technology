@@ -19,6 +19,8 @@ XG Firewall v18.5 MR1が2021年8月9日に発表されました。主としてTL
 - DPI モードでの TLS トラフィックのネットワーク パフォーマンスの向上など、v18.5 GA に含まれるパフォーマンスの向上の恩恵を受けることができます。
 - ソフォス DDNS (myfirewall.com) は廃止され、新しい登録はサポートされなくなります。2022年1月31日から予定されています。詳細については、[KBA-41764](https://support.sophos.com/support/s/article/KB-000041764?language=en_US&c__displayLanguage=ja)を参照してください。
 
+なお、XGのメニューには {% label primary @ゼロデイ対策 %}という項目が加えられていますが、個別のサブスクリプションライセンスが必要です。
+
 v18.5 MR-1の詳細な説明はSophos Communityの[こちらの記事](https://community.sophos.com/sophos-xg-firewall/b/blog/posts/sophos-firewall-v18-5-mr1-is-now-available)を参照してください。可能な限り迅速にアップグレードするように推奨されています。
 
 {% cq %}
@@ -83,7 +85,7 @@ No-IPの無償ユーザーで確認してみましたが定期的にDNSの更新
 
 {% asset_img pc-speedtest.png 480 alt %}
 
-- iPhone11(iOS14.7.1)、Wi-Fi:11ax
+- iPhone11(iOS14.7.1)、Wi-Fi6(11ax)
 
 {% asset_img ios-speedtest.png 480 alt %}
 
