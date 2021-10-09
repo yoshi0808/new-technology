@@ -15,7 +15,7 @@ XG Firewall v18をESXi 6.7で稼働させるためのインストールイメー
 
 Sophosのサイトより、"Sophos XG Firewall Home Edition"モジュールをダウンロードします。
 {% linkgrid %}
-Sophos 無償ツール | https://www.sophos.com/ja-jp/products/free-tools.aspx | お客様がご家庭でも常に安全に PC を利用できるようソフォスでは無償ツールを提供しています。セキュリティリスクのチェックや、マルウェアの駆除、ネットワークの保護にご活用いただけます。 | https://secure2.sophos.com/ja-jp/medialibrary/Images/Products/FreeTools/img-xg-firewall-home-full.ashx
+Sophos 無償ツール | https://www.sophos.com/ja-jp/products/free-tools.aspx | お客様がご家庭でも常に安全に PC を利用できるようソフォスでは無償ツールを提供しています。セキュリティリスクのチェックや、マルウェアの駆除、ネットワークの保護にご活用いただけます。 | https://www.sophos.com/ja-jp/medialibrary/SophosNext/Images/Navigation/Main/product-firewall.png
 {% endlinkgrid %}
 
 <!-- more -->
