@@ -19,12 +19,16 @@ GPGは昔からあるオープンソースの暗号・署名の主要なコン�
 
 ## ソフトウェア構成
 
-GPGは基本的にはコマンドラインベースのプロダクトですが、macOSユーザーであれば、GPG Tools(GPG Suite)をお勧めします。GUIで暗号化・復号化できるのは便利です。但し、Appleメールの拡張機能でGPGを使う場合、3,000円程度の有償となります。Homebrewであれば、gpg-suite、gpg-suite-no-mail（有償のメール機能が無いもの）が該当します。[GPG Suite](https://gpgtools.org/)を直接ダウンロードする方法もあります。~~しかし、このブログを書いている2月10日時点ではYubikeyを使うようなカードインタフェースがうまく動作しません。これは不具合としてGPG Toolsサポートに[報告](https://gpgtools.tenderapp.com/discussions/feedback/16266-signing-with-a-yubikey-fails-until-i-run-gpg-card-status)があります。という事で現時点ではナイトリービルド（[GPG Suite 2020.2 (2989n)](https://releases.gpgtools.org/nightlies/)）を使う事になります。~~
+GPGは基本的にはコマンドラインベースのプロダクトですが、macOSユーザーであれば、GPG Tools(GPG Suite)をお勧めします。GUIで暗号化・復号化できるのは便利です。但し、Appleメールの拡張機能でGPGを使う場合、3,000円程度の有償となります。Homebrewであれば、gpg-suite、gpg-suite-no-mail（有償のメール機能が無いもの）が該当します。**GPG Suite**を直接ダウンロードする方法もあります。~~しかし、このブログを書いている2月10日時点ではYubikeyを使うようなカードインタフェースがうまく動作しません。これは不具合としてGPG Toolsサポートに報告<https://gpgtools.tenderapp.com/discussions/feedback/16266-signing-with-a-yubikey-fails-until-i-run-gpg-card-status>があります。という事で現時点ではナイトリービルドGPG Suite 2020.2 (2989n)<https://releases.gpgtools.org/nightlies/>を使う事になります。~~
 
 （2021-5-23　追記）
-2021-5-21発表のGPG Suite 2021.1で上記の不具合は解消しています。GPG Suiteのトップページ[GPG Suite](https://gpgtools.org/)からダウンロードできます。
+2021-5-21発表のGPG Suite 2021.1で上記の不具合は解消しています。
+> GPG Suite
+ <https://gpgtools.org/>
 
-これ以外には、YubicoのykmanというYubiKey Managerのコマンドインタフェースツールが必要です。これはHomebrewでインストールするか、[Yubicoのサイト](https://www.yubico.com/products/services-software/download/yubikey-manager/)からダウンロードし、インストールしてください。
+これ以外には、YubicoのykmanというYubiKey Managerのコマンドインタフェースツールが必要です。これはHomebrewで**ykman**をインストールするか、Yubicoのサイトからダウンロードし、インストールしてください。
+> Yubico ykman CLI
+ <https://developers.yubico.com/yubikey-manager/>
 
 ## GPG Tools(GPG Suite)の主な使い方
 
@@ -59,7 +63,10 @@ YubiKeyで設定したPINを入力して公開鍵認証でSSH接続します。
 
 ## YubiKeyを使ったGPGの鍵管理
 
-YubiKeyを使うGPGでは主鍵となる認定鍵（第三者の公開鍵を署名する、自身の鍵を生成、削除したりする）に加え、署名、暗号、認証という機能（副鍵）を持たせます。YubiKeyの構成上、ひとつの機能にひとつの副鍵を割り当てる事が大前提です。そしてYubiKeyを紛失した場合を考慮し、主鍵はYubiKeyには置きません。主鍵は変えず、副鍵は任意に削除、追加する事を想定しています。Yubicoでは、この副鍵を端末側で生成し、それをYubiKeyに取り込む形を推奨しています。RSA暗号2048ビットのPIVとは異なり、GPGにおけるYubiKey 4/5はRSA暗号4096ビットまで対応できます。RSA暗号は2048ビットあれば十分と考えていますが、[GitHubの推奨](https://docs.github.com/ja/github/authenticating-to-github/generating-a-new-gpg-key)としては「キーは少なくとも4096ビットである必要があります」との事。GitHubさん、そこまで必要ですか{% emoji persevere %}
+YubiKeyを使うGPGでは主鍵となる認定鍵（第三者の公開鍵を署名する、自身の鍵を生成、削除したりする）に加え、署名、暗号、認証という機能（副鍵）を持たせます。YubiKeyの構成上、ひとつの機能にひとつの副鍵を割り当てる事が大前提です。そしてYubiKeyを紛失した場合を考慮し、主鍵はYubiKeyには置きません。主鍵は変えず、副鍵は任意に削除、追加する事を想定しています。Yubicoでは、この副鍵を端末側で生成し、それをYubiKeyに取り込む形を推奨しています。RSA暗号2048ビットのPIVとは異なり、GPGにおけるYubiKey 4/5はRSA暗号4096ビットまで対応できます。RSA暗号は2048ビットあれば十分と考えていますが、**GitHubの推奨**としては「キーは少なくとも4096ビットである必要があります」との事。GitHubさん、そこまで必要ですか{% emoji persevere %}
+
+> GitHub -新しいGPGキーを生成する-
+ <https://docs.github.com/ja/github/authenticating-to-github/generating-a-new-gpg-key>
 
 {% mermaid graph TD %}
      A["主鍵・認定"]-->B["副鍵・署名"]
@@ -73,8 +80,9 @@ YubiKeyを使うGPGでは主鍵となる認定鍵（第三者の公開鍵を署�
 主鍵は万が一YubiKeyをなくした場合などの鍵の抹消や新しい副鍵を作る以外は使いません。USBなどに複写し安全な場所で保管する事になります。主鍵が無いと友達の輪を広げられない（相手の公開鍵に署名できない）のですが、YubiKeyを使ったGPGの使い方としては、そこに重きを置いていません。YubiKeyとGPGのセットアップはお手本となる説明があります。
 
 {% linkgrid %}
-drduh/YubiKey-Guide | https://github.com/drduh/YubiKey-Guide |This is a guide to using YubiKey as a SmartCard for storing GPG encryption, signing and authentication keys, which can also be used for SSH.  | https://avatars.githubusercontent.com/u/12475110?s=400&u=07d0880794ce657ea3c16413b8bab37b65b191fa&v=4
+drduh/YubiKey-Guide | https://github.com/drduh/YubiKey-Guide |(https://github.com/drduh/YubiKey-Guide) This is a guide to using YubiKey as a SmartCard for storing GPG encryption, signing and authentication keys, which can also be used for SSH.  | https://avatars.githubusercontent.com/u/12475110?s=400&u=07d0880794ce657ea3c16413b8bab37b65b191fa&v=4
 {% endlinkgrid %}
+> <https://github.com/drduh/YubiKey-Guide>
 
 ただし、このガイドは秘密鍵を漏洩させないためにクリーンなLinux上で作業し、暗号化USBを作りセットアップするという超優等生な手順になっています。この記事では可能な限りシンプルな手順の作成を目的とし一部の手順を割愛しています。
 
@@ -802,7 +810,9 @@ gitコマンドでSSH接続を有効にするには以下を実行します
 設定確認は以下の通りです
 `$ git remote -v`
 
-HTTPS接続に戻す場合は、「[リモートの URL の変更](https://docs.github.com/ja/github/using-git/changing-a-remotes-url)」を参照してください。
+HTTPS接続に戻す場合は、**リモートの URL の変更**を参照してください。
+> GitHub -リモートの URL の変更-
+ <https://docs.github.com/ja/github/using-git/changing-a-remotes-url>
 
 #### git署名の設定
 
@@ -841,16 +851,19 @@ Onの代わりに15秒キャッシュする"CACHED"という項目も設定で�
 
 ## GPGとPIVとの切り替え
 
-前回の記事「{% post_link yubikey_ssh_github %}」ではPIVカードとしての扱いについて説明しました。GPGは排他でカードを占有してしまう仕様のため、GPGを使っている時はPIVを使うYubico-Authenticatorは動きません。コマンド`$ ykaman piv info`を実行する事でGPGから切り離されPIVのインタフェースが使えるようになります。[GPG Toolsサポートでの議論](https://gpgtools.tenderapp.com/discussions/nightly/110-gpgmail-fails-to-sign-after-switch-from-smime)もありましたが、明確な解決が難しいまま今に至っています。実運用としては、macOS純正アプリのAutomatorを使ってPIVに切り替えてからYubico Authenticatorを起動する方法が簡単でしょうか。以下に画面キャプチャを記載しておきます。
+前回の記事「{% post_link yubikey_ssh_github %}」ではPIVカードとしての扱いについて説明しました。GPGは排他でカードを占有してしまう仕様のため、GPGを使っている時はPIVを使うYubico-Authenticatorは動きません。コマンド`$ ykaman piv info`を実行する事でGPGから切り離されPIVのインタフェースが使えるようになります。**GPG Toolsサポートでの議論**もありましたが、明確な解決が難しいまま今に至っています。実運用としては、macOS純正アプリのAutomatorを使ってPIVに切り替えてからYubico Authenticatorを起動する方法が簡単でしょうか。以下に画面キャプチャを記載しておきます。
 
 {% asset_img automator1.png 800 alt %}
+
+> [GPG Tools -GPGMail: Fails to sign after switch from S/MIME-
+ <https://gpgtools.tenderapp.com/discussions/nightly/110-gpgmail-fails-to-sign-after-switch-from-smime>
 
 ## （補足）libgcryptの脆弱性
 
 （2021-05-23　追記）
 本件は、2021-5-21発表のGPG Suite 2021.1において、下記の脆弱性については影響ありません。
 
-先日（1月末）に、gpgのライブラリであるlibgcryptに脆弱性があるとの速報[CVE-2021-3345](https://nvd.nist.gov/vuln/detail/CVE-2021-3345)が流れました。対象バージョンは1.9.0ですが、今回GPG Toolsから導入しているlibgcryptのバージョンは1.8.7となっており、この脆弱性の影響は受けません。
+先日（1月末）に、gpgのライブラリであるlibgcryptに脆弱性があるとの速報**CVE-2021-3345**が流れました。対象バージョンは1.9.0ですが、今回GPG Toolsから導入しているlibgcryptのバージョンは1.8.7となっており、この脆弱性の影響は受けません。
 
 ``` bash
 $ gpg --version
@@ -858,7 +871,13 @@ gpg (GnuPG/MacGPG2) 2.2.27
 libgcrypt 1.8.7
 ```
 
-長年gpgを開発されているヴェルナー・コッホさんからの不具合に関する説明は[こちら](https://lists.gnupg.org/pipermail/gnupg-announce/2021q1/000456.html)です。内容を一部抜粋すると、”1.8LTSブランチを使用している場合は影響を受けません。1.8.5以上であることを確認してください。”との事です。
+長年gpgを開発されているヴェルナー・コッホさんからの不具合に関する説明は以下の通りです。内容を一部抜粋すると、”1.8LTSブランチを使用している場合は影響を受けません。1.8.5以上であることを確認してください。”との事です。
+
+> CVE-2021-3345
+ <https://nvd.nist.gov/vuln/detail/CVE-2021-3345>
+>  [Security fix] Libgcrypt 1.9.1 relased
+ <https://lists.gnupg.org/pipermail/gnupg-announce/2021q1/000456.html>
+
 
 <small id="note1">**[1]**
 もし暗号化USBを導入するのであれば、Finderで暗号化する方法、VeraCryptを使う方法があります

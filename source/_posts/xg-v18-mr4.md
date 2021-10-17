@@ -11,7 +11,7 @@ categories:
 
 ## XG Firewall v18 MR-4
 
-XG Firewall v18のMR-4が2020年12月15日に発表されました。MR3に続き、マイナーアップデートですが、変更点について記載します。
+XG Firewall v18のMR-4が2020年12月15日に発表されました。すでにv18.5のユーザーはこのパッチの適用は不要です。
 <!-- more -->
 
 ## 主なエンハンスの内容
@@ -20,8 +20,6 @@ XG Firewall v18のMR-4が2020年12月15日に発表されました。MR3に続�
 - IPSecリモートアクセス用の新しい高度なオプション（scadminの代用）。Sophos Connect VPNクライアントのダウンロードがユーザーポータルから可能に
 - より強力なパスワードハッシュ - この重要な機能をフルに活用するため、アップグレードするときにパスワードを変更するように促されます
 - ウェブフィルタリング - インターネット・ウォッチ・ファウンデーション（IWF)によって児童の性的虐待コンテンツを含むと特定されたウェブサイトは、ウェブフィルタリングが有効になっている場合、自動的にブロックされます。
-
-v18 MR-4の詳細な説明はSophos Communityの[こちらの記事](https://community.sophos.com/xg-firewall/b/blog/posts/xg-firewall-v18-mr4-is-now-available)を参照してください。可能な限り迅速にアップグレードするように推奨されています。
 
 {% cq %}
 **Upgrade as soon as possible**
@@ -37,7 +35,7 @@ While we always encourage you to keep your firewalls up to date with the latest 
 XGのv17からのアップデートは、 v17.5 MR6以降から可能です。XGのv18であればMR-4へのアップデートは可能です。
 XGの管理画面にログイン後、左ペインメニューの{% label primary @バックアップ＆ファームウェア %}の{% label primary @ファームウェアの確認 %}ではただちに全てのユーザーにアップデートの案内が来るわけでは無いようなので、アップデートにはMySophosにログインし、バージョンアップの差分モジュールをダウンロードします。
 
-1. [Sophosのサイト](https://www.sophos.com/ja-jp.aspx)の右上のプルダウンメニューから、{% label primary @ライセンスポータル %}をクリックします。
+1. Sophosのサイトの右上のプルダウンメニューから、{% label primary @ライセンスポータル %}をクリックします。
 2. Sophos IDをお持ちでなければIDを作成します。
 3. ログイン後、{% label primary @Network Protection %}をクリックします。
 4. {% label primary @ファームウェアの更新 %}をクリックします。
@@ -59,8 +57,6 @@ XGv18のいつのバージョンからか気付きませんでしたが、IPSec 
 
 幸いにも、iOSからIPSec VPNでXG Firewallに接続する方法は、代替策があるのでVPN構成ファイルをダウンロードせずとも対応は可能です。
 「{% post_link vpn-iphone %}」の記事については代替策について追記しておきました。
-
-また[Sophos Community](https://community.sophos.com/xg-firewall/f/discussions/124771/xg-firewall-v18-mr-4-feedback-and-experiences/455768#455768)に、この不具合について投稿したところ、5分後にSophosの方（いつも手厚いサポートのLuCar Toniさん）から既知の不具合（Bug ID: NC-64758）というレスポンスがありました。早い{% emoji thumbsup %}
 
 （2021-1-2追記）v18 MR4にアップデートしてからXGのアラート通知が来ていない事に気がつきました。MR4では、左ペインメニューの{% label primary @管理 %}の{% label primary @通知の設定 %}画面で「証明書」という項目が追加されており、プルダウンから証明書を選択するようになっています。gmailのような外部メールを利用して通知するケースでは、証明書に"Application Certificate"を選択してください。「{% post_link Notifications %}」にも追記しています。
 

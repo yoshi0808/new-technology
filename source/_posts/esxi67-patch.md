@@ -15,17 +15,23 @@ date: 2020-06-14 22:19:20
 
 ## パッチ適用に必要なもの
 
-SSHでESXiに接続し、コマンドラインでパッチを適用します。クライアントPCからSSH接続が行えるクライアントアプリケーションを用意してください。Windowsでは昔から有名なのはTera Termですが、その他にも無償で利用可能な[Termius](https://www.termius.com)などがあります。
+SSHでESXiに接続し、コマンドラインでパッチを適用します。クライアントPCからSSH接続が行えるクライアントアプリケーションを用意してください。Windowsでは昔から有名なのはTera Termですが、その他にも無償で利用可能な**Termius**などがあります。
+> Termius
+ <https://www.termius.com>
 
 ## VMwareのパッチ情報
 
-ESXi6.7のパッチ情報は[こちら](https://docs.vmware.com/jp/VMware-vSphere/6.7/rn/esxi670-202006001.html)を参照してください。このリンクは本記事執筆現時点で最も新しいパッチ（2020年6月9日）のリンクとなっていますが、当該ページの左ペインメニューには最新パッチの情報が掲載されていますので、最新のパッチ情報を辿ってください。また、過去のパッチの情報も提供されています。
+ESXi6.7のパッチ情報は以下を参照してください。当該ページの左ペインメニューには最新パッチの情報が掲載されていますので、最新のパッチ情報を辿ってください。また、過去のパッチの情報も提供されています。
+> VMware ESXi 6.7、パッチ リリース ESXi670-202103001
+ <https://docs.vmware.com/jp/VMware-vSphere/6.7/rn/esxi670-202103001.html>
 
 ## 製品パッチの情報を入手する
 
 ESXiのセットアップ時にMy VMwareへの登録を行い、個人向けvSphere Hypervisorのライセンス（無償）を入手されている事を前提にしています。
 
-[My VMware](https://my.vmware.com/jp/group/vmware/home)にサインインし、{% label primary@製品とエンタイトルメント　アカウント %}メニューから、"製品パッチ"を選択します。
+**My VMware**にサインインし、{% label primary@製品とエンタイトルメント　アカウント %}メニューから、"製品パッチ"を選択します。
+> My VMware
+ <https://my.vmware.com/jp/group/vmware/home>
 
 {% asset_img myvm3.png alt %}
 

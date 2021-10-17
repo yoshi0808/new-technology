@@ -25,7 +25,9 @@ IPSec-VPNは一般的に安全性が高く安定しているため、それが�
 
 ## SSL VPNについて
 
-Sophosは昨年（2020年10月）に[Sophos ConnectクライアントのVer2を発表](https://partnernews.sophos.com/ja-jp/2020/10/products/sophos-connect-v2-remote-access-vpn/)し、SSL VPNで接続できるようになりました。またv18 MR3より、SSL-VPNのパフォーマンスが向上しているとの事です。
+Sophosは昨年（2020年10月）に**Sophos Connectクライアント Ver2**を発表し、SSL VPNで接続できるようになりました。またv18 MR3より、SSL-VPNのパフォーマンスが向上しているとの事です。
+> Sophos Connectクライアント Ver2
+ <https://partnernews.sophos.com/ja-jp/2020/10/products/sophos-connect-v2-remote-access-vpn/>
 
 XGのIPSec-VPNの速度と安定性は大変満足していますが、IPv6インターネットに対応しません<sup>**[[1]](#note1)**</sup>。デュアルスタック環境のWi-Fiに接続した場合、VPNを張ってもIPv4のみがVPNを経由し、IPv6は素のままInternetに出ていきます。また大部分のUDPポートが止められているケースを想定し、IPSec-VPNとは別にSSL-VPNもセットアップしておこうと考えました。前述したSophosのドキュメントでは、"macOSサポートが間も無く予定されていますが"との事ですが、なかなか発表される様子がありません。Big Sur対応で苦労されているんでしょうか。現時点において、IPSec-VPNを補完する**HTTPS接続によるSSL-VPN構成**を考えてみます。
 
@@ -170,13 +172,21 @@ Windowsでは、Sophos提供のSophos Connectを利用します。クライア�
 
 {% asset_img sc2.png 480 alt %}
 
-このSophosConnectはアプリケーションの作りが洗練されていません。一旦接続しにいくと、キャンセルをクリックしようとしてもボタンが押せず、タイムアウトが発生するまで、十数秒〜数十秒くらい待たされてしまいます。Sophos Connectの[紹介記事](https://partnernews.sophos.com/ja-jp/2020/10/products/sophos-connect-v2-remote-access-vpn/)ではmacOS向けに[OPENVPN Connect](https://openvpn.net/vpn-client/)を勧めていますが、OPENVPN Connectは、Windows版もあります。OPENVPN ConnectではVPNの接続ネゴシエーション中にキャンセルすると即座にVPNサーバーに対しRSTを送信すると共に、瞬時にUIもキャンセル応答します。このあたりは流石デファクトスタンダードというところでしょうか。もちろん、正しくセションを終了した時は行儀良くFINを送信し接続終了しています。IPSec-VPNとSSL-VPNとで2つのクライアントを持つのが嫌でなければ、操作性でシンプルなOPENVPN Connectのほうが使い勝手が良いでしょう。設定もovpnファイルを取り込むだけでそれ以外の設定はありません。
+このSophosConnectはアプリケーションの作りが洗練されていません。一旦接続しにいくと、キャンセルをクリックしようとしてもボタンが押せず、タイムアウトが発生するまで、十数秒〜数十秒くらい待たされてしまいます。Sophos Connectの**紹介記事**ではmacOS向けに**OPENVPN Connect**を勧めていますが、OPENVPN Connectは、Windows版もあります。OPENVPN ConnectではVPNの接続ネゴシエーション中にキャンセルすると即座にVPNサーバーに対しRSTを送信すると共に、瞬時にUIもキャンセル応答します。このあたりは流石デファクトスタンダードというところでしょうか。もちろん、正しくセションを終了した時は行儀良くFINを送信し接続終了しています。IPSec-VPNとSSL-VPNとで2つのクライアントを持つのが嫌でなければ、操作性でシンプルなOPENVPN Connectのほうが使い勝手が良いでしょう。設定もovpnファイルを取り込むだけでそれ以外の設定はありません。
+
+> Sophos Connect
+ <https://partnernews.sophos.com/ja-jp/2020/10/products/sophos-connect-v2-remote-access-vpn/>
+> OPENVPN Connect
+ <https://openvpn.net/vpn-client/>
 
 {% asset_img openvpn.png 480 alt %}
 
 ## VPNクライアント（macOS）
 
-macOSはOPENVPN Connectがお勧めされているわけですが、もしmacOS Catalinaをお使いの方であれば、[Tunnelblick](https://tunnelblick.net/)をお勧めします。こちらはオープンソースでGNU GPLv2です。UIが少し古いかなという印象はありますが、日本語に翻訳されており細かい設定が可能で詳細なログも分かり易いのでエンジニア向けです。設定は2箇所あります。
+macOSはOPENVPN Connectがお勧めされているわけですが、私は**Tunnelblick**をお勧めします。こちらはオープンソースでGNU GPLv2です。UIが少し古いかなという印象はありますが、日本語に翻訳されており細かい設定が可能で詳細なログも分かり易いのでエンジニア向けです。設定は2箇所あります。
+> Tunnelblick
+ <https://tunnelblick.net/>
+
 {% asset_img tunnelblick.png 1024 alt %}
 
 - IPv6無効のチェックを外しIPv6を有効にする
@@ -184,7 +194,9 @@ macOSはOPENVPN Connectがお勧めされているわけですが、もしmacOS 
 
 この2つの設定を加えます。後者はいつの間にかVPNセションが切れていてVPNを通さず公衆Wi-Fiを使っていた、という事が無くなり、ピタリとアクセスが止まります。安全措置として良い機能です。
 
-macOS Big Surではインストールに少し手間が掛かるようです。詳細は[こちら](https://tunnelblick.net/cKextsInstallation.html)を参照してください。
+macOS Big Surではインストールに少し手間が掛かるようです。詳細は以下の記事を参照してください。
+> Installing System Extensions
+ <https://tunnelblick.net/cKextsInstallation.html>
 
 これら2つのクライアントは、Homebrewからもインストール可能です。
 `brew install openvpn-connect --cask`

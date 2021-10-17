@@ -36,7 +36,7 @@ Yubikeyの小さいパッケージには"Get started yubico.com/start"と清々�
 Google、Facebookなどのサイトで"Touch to Sign"の2要素認証を楽しんでみてください。一度認証してしまえば、Cookieに認証情報を保存してしまうため、次からは認証不要で使うという方が大半でしょうから、楽しいのは最初だけかもしれません{% emoji grin %}
 
 また、YubiKeyが本物かどうかのテストができます。
-https://www.yubico.com/genuine/
+> <https://www.yubico.com/genuine/>
 
 ## Yubikey Authenticator
 
@@ -64,9 +64,8 @@ GitHub開発者でなくとも、YubiKeyを使いこなすために、2段階目
 | Yubico PIV Tool     | SSHを行う際にPIVカード認証（公開鍵認証）方式で接続する（CLI） |
 | Yubikey PIV Manager | SSHを行う際にPIVカード認証（公開鍵認証）方式で接続する（GUI） |
 
-https://www.yubico.com/products/services-software/download/smart-card-drivers-tools/
-
-https://developers.yubico.com/yubikey-piv-manager/Releases/
+> <https://www.yubico.com/products/services-software/download/smart-card-drivers-tools/>
+> <https://developers.yubico.com/yubikey-piv-manager/Releases/>
 
 上記以外には、PKCS#11と呼ばれるスマートカードやUSBトークンを対象とした認証ライブラリが存在しますのでそれをダウンロードする必要があります（後述します）。
 
@@ -105,22 +104,26 @@ SSHでは、Slot9aのAuthenticationを使うことになります。
 {% asset_img yubi4.png 480 alt %}
 
 そして、このSlot9aを用いて接続する際は、PINの認証が必要です。まず最初にPINの設定を変更しましょう。PINは日本のマイナンバーカードとほぼ扱いは同じで多少緊張感が必要です。3回入力ミスするとPUK（PIN Unlock Key）によるリセットが必要になります。PINの初期設定は"123456"となります。
-Yubikeyを取り扱う会社のサイトにも説明があるので参考にしてみてください。[ペンティオ株式会社-サポート](https://www.pentio.com/yubikey/support/smartcard/)
 
 ## SSH（PIV Authentication）の設定
 
 さて、実際のSSHの設定ですが、実は以前に自分が設定したものよりもわかりやすい方法が掲載されていたのでそちらをまず紹介させていただきます。
 
-[ペンティオ Engineer's Blog](https://techblog.pentio.com/entry/ssh-using-yubikey)
+> ペンティオ Engineer's Blog
+ <https://techblog.pentio.com/entry/ssh-using-yubikey>
 
-このページで紹介している方法はWindowsもmacOSも考慮されているので多くの方の参考になるかとおもいます。
+このページで紹介している方法はWindowsもmacOSも考慮されているので多くの方の参考になるでしょう。
 
-ここではYubikey ManagerとYubikey PIV Managerを用いてGUIで構成されています。また、PKCS#11のために、OpenSCライブラリをダウンロードし構成する方法が紹介されています。実際のダウンロードリンクは[こちら](https://www.pentio.com/yubikey/support/smartcard/)を参照してください。
+ここではYubikey ManagerとYubikey PIV Managerを用いてGUIで構成されています。また、PKCS#11のために、OpenSCライブラリをダウンロードし構成する方法が紹介されています。実際のダウンロードリンクは以下を参照してください。
+> <https://www.pentio.com/yubikey/support/smartcard/>
 
 ### macOS向け
-私は色々なライブラリがさまざまな場所にインストールされ、またバージョン管理が煩雑になるのを好まないため、[Homebrew](https://brew.sh/index_ja)を使っています。Macユーザーにとっては一般的なものですが、こちらを使ったインストールをお勧めします。私はYubiKey Managerは単独でインストールし、残りのYubikey関連は`brew install opensc yubico-piv-tool`としてインストールしました。openscは大型ライブラリのため、依存関係で様々なパッケージが自動インストールされます。私はopenscのインストールが終わった後に気づいたのですが、yubico-piv-toolのなかに、SSHに必要なライブラリがあるようです。私のセットアップ（macOS）は、Yubicoのサイトを参考にコマンドラインベースで行いました。
+私は色々なライブラリがさまざまな場所にインストールされ、またバージョン管理が煩雑になるのを好まないため、**Homebrew**を使っています。Macユーザーにとっては一般的なものですが、こちらを使ったインストールをお勧めします。私はYubiKey Managerは単独でインストールし、残りのYubikey関連は`brew install opensc yubico-piv-tool`としてインストールしました。openscは大型ライブラリのため、依存関係で様々なパッケージが自動インストールされます。私はopenscのインストールが終わった後に気づいたのですが、yubico-piv-toolのなかに、SSHに必要なライブラリがあるようです。私のセットアップ（macOS）は、Yubicoのサイトを参考にコマンドラインベースで行いました。
 
-[Using PIV for SSH through PKCS #11](https://developers.yubico.com/PIV/Guides/SSH_with_PIV_and_PKCS11.html)
+> Homebrew
+ <https://brew.sh/index_ja>
+> Yubico -Using PIV for SSH through PKCS #11-
+ <https://developers.yubico.com/PIV/Guides/SSH_with_PIV_and_PKCS11.html>
 
 上記の説明のなかに"Find out where ykcs11 has been installed. For a Debian-based system, the ykcs11 module ends up in /usr/local/lib/libykcs11. On MacOS, it is in /usr/local/lib/libykcs11.dylib."と説明があります。実際に`/usr/local/lib`を確認しましたが、`libykcs11.dylib -> ../Cellar/yubico-piv-tool/2.2.0/lib/libykcs11.dylib`とインストール済みのyubico-piv-toolのライブラリにシンボリックリンクが張られていました。
 
@@ -169,7 +172,8 @@ Host github.com
 
 GitHubのSSH接続に関するリソースを掲載します。以下でGitHubにログインし、公開鍵を登録します。
 
-[GitHub アカウントへの新しい SSH キーの追加](https://docs.github.com/ja/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account)
+> GitHub アカウントへの新しい SSH キーの追加
+ <https://docs.github.com/ja/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account>
 
 これでPIN入力とともに、GitHubにはSSHで接続できるようになりました。
 ```
@@ -184,7 +188,8 @@ Hi yoshi0808! You've successfully authenticated, but GitHub does not provide she
 設定確認は以下の通りです
 `$ git remote -v`
 
-HTTPS接続に戻す場合は、「[リモートの URL の変更](https://docs.github.com/ja/github/using-git/changing-a-remotes-url)」を参照してください。
+HTTPS接続に戻す場合は、**リモートの URL の変更**を参照してください。
+> <https://docs.github.com/ja/github/using-git/changing-a-remotes-url>
 
 ### SSH接続の制限事項
 
@@ -195,7 +200,8 @@ HTTPS接続に戻す場合は、「[リモートの URL の変更](https://docs.
 これが困るという事であれば一旦GUIはHTTPS接続とし、パーソナルアクセストークンを必要としたアプリケーション専用にSSH接続とする使い分けが必要となります。
 
 ## macOSにおけるyubico-piv-toolでの秘密鍵作成ログ
-私が過去に実行した作業ログです。コマンド投入ミスやYubicoの手順書とは異なる場合で何度か試行錯誤したものをあとで整形しています。
+
+以下は私が過去に実行したSSHの秘密鍵作成からSSHの実行までの作業ログです。openscはYubico提供のライブラリを利用しています。
 
 ``` bash
 [xxxx@MB-Air:~]
@@ -219,7 +225,9 @@ $ ssh-keygen -D /usr/local/lib/libykcs11.dylib -e > id_rsa.pub
 $ ssh -I /usr/local/lib/libykcs11.dylib usr1@192.168.x.x
 Enter PIN for 'YubiKey PIV #XXXXXXXX':
 ```
+
 上記では公開鍵id_rsa.pubをサーバー側に配置している手順は省略しています。
 
 ## YubikeyでSSH設定してみた感想
+
 WebAuthnや2要素認証以上にYubiKeyを使いこなそうとすると、プロダクトが新旧あり混乱しやすく難易度も上がります。一番便利だなと感じているのはbitwardenへのローカルのログインで使うスタティックパスワードだったりします。さらにGnuPGを使ったGitHubへのコミット時の署名をYubiKeyで行う事もできますが、GnuPGの理解も必要となりもっと複雑です。今回制約となったGitHub DesktopなどのSSH認証時の課題はGnuPGを使う事で完全に解決します。続きは「{% post_link yubikey_gpg %}」にその方法を記載しています。

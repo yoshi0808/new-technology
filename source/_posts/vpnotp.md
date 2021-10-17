@@ -21,10 +21,14 @@ XGのVPNにおいて、SSL-VPNとIPSecはワンタイムパスワードが設定
 
 ワンタイムパスワードについては、定番のGoogleのオーセンティケーターが有名です。GoogleのオーセンティケーターはXGが表示するワンタイムパスワードのQRコードが読み込めません。Sophosからは、以下のスマホアプリが提供されています。
 
-- [Sophos Intercept X for Mobile(iOS)](https://apps.apple.com/jp/app/sophos-intercept-x-for-mobile/id1086924662)
-- [Sophos Intercept X for Mobile(Android)](https://play.google.com/store/apps/details?id=com.sophos.smsec)
+> Sophos Intercept X for Mobile(iOS)
+ <https://apps.apple.com/jp/app/sophos-intercept-x-for-mobile/id1086924662>
+> Sophos Intercept X for Mobile(Android)
+ <https://play.google.com/store/apps/details?id=com.sophos.smsec>
 
-なお、私は複数の端末でワンタイムパスワードの同期ができる[Authy](https://apps.apple.com/jp/app/authy/id494168017)を利用しています。
+なお、私は複数の端末でワンタイムパスワードの同期ができる**Authy**を利用しています。
+> Authy
+ <https://apps.apple.com/jp/app/authy/id494168017>
 
 ## ワンタイムパスワードの基本設定
 

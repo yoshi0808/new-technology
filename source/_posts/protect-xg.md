@@ -21,7 +21,8 @@ date: 2020-06-24 18:46:11
 
 「{% post_link best-practice %}」で記載した通り、ルールやポリシーについてのベストプラクティスを記載していますが、将来Sophosから詳細なベストプラクティスガイドが公開されるとの事です。今回公開されたものはルールやポリシーではなく、運用について記述されたものであり、どのようにしてFirewallを守るかに言及されています。IPSの設定については、過去記事をアップデートしています。
 
-- [Sophos XG Firewall: Best practices for securing your firewall ＞](https://community.sophos.com/products/xg-firewall/f/recommended-reads/121461/sophos-xg-firewall-best-practices-for-securing-your-firewall)
+> Sophos XG Firewall: Best practices for securing your firewall
+ <https://community.sophos.com/products/xg-firewall/f/recommended-reads/121461/sophos-xg-firewall-best-practices-for-securing-your-firewall>
 
 ## Firewall自身のセキュリティ強化
 

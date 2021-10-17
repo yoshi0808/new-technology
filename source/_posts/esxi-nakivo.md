@@ -21,9 +21,13 @@ date: 2021-03-06T09:26:19+09:00
 
 ## Nakivo Backupの無償の意味
 
-Nakivo backup Free Editionは無償のオープンシステムではなく、あくまでビジネス向けに収益をあげるモデルです。無償ライセンスは1年単位となっています。10以下の仮想マシンのバックアップなど制約はありますが、個人向けには十分な内容です。しかし、あくまで無償版はお試しという位置付けであり実際は個人向けでも正式なライセンスを購入してほしいようです。製品をダウンロードすると、米国の営業担当から電話がかかってきました{% emoji frowning %}。私はメールでやりとりし、とりあえず1年間はこの無償版を使いますよという事になりましたが<sup>[**[1]**](#note1)</sup>、次回は有償版のライセンスにて更新するかどうするかは少し値段の面で悩んでいるところです。ライセンス費用も公開されていますが、[マザーボードに物理接続されたCPUあたり＄99/年](https://www.acronis.com/ja-jp/support/backup/vmware/)という事です。ビジネス用途であれば極めて安価ですが、個人向けとしては悩みどころの価格帯です。また、ghettoVCBで事足りているというのもあります。
+**Nakivo backup Free Edition**は無償のオープンシステムではなく、あくまでビジネス向けに収益をあげるモデルです。無償ライセンスは1年単位となっています。10以下の仮想マシンのバックアップなど制約はありますが、個人向けには十分な内容です。しかし、あくまで無償版はお試しという位置付けであり実際は個人向けでも正式なライセンスを購入してほしいようです。製品をダウンロードすると、米国の営業担当から電話がかかってきました{% emoji frowning %}。私はメールでやりとりし、とりあえず1年間はこの無償版を使いますよという事になりましたが<sup>[**[1]**](#note1)</sup>、次回は有償版のライセンスにて更新するかどうするかは少し値段の面で悩んでいるところです。ライセンス費用も公開されていますが、マザーボードに物理接続されたCPUあたり＄99/年という事です。ビジネス用途であれば極めて安価ですが、個人向けとしては悩みどころの価格帯です。また、ghettoVCBで事足りているというのもあります。
 
-他の無償製品に目を向けてみると、[Unitrends Free](https://www.unitrends.com/landing/free-backup-vmware-hyper-v-software)で無償版ESXiの仮想マシンがバックアップ可能ですが、これはエージェントモデルで、仮想マシンそのものにエージェントをインストールし、エージェントが自分自身のOSのバックアップを取得する事になります。これはLinuxやWindowsの仮想マシンには使えますが、XG Firewallなど他のモジュールインストールを認めていない仮想マシンはバックアップする事はできません。
+他の無償製品に目を向けてみると、**Unitrends Free**で無償版ESXiの仮想マシンがバックアップ可能ですが、これはエージェントモデルで、仮想マシンそのものにエージェントをインストールし、エージェントが自分自身のOSのバックアップを取得する事になります。これはLinuxやWindowsの仮想マシンには使えますが、XG Firewallなど他のモジュールインストールを認めていない仮想マシンはバックアップする事はできません。
+> Nakivo backup Free Edition
+ <https://www.nakivo.com/resources/download/free-edition/>
+> Unitrends Free
+ <https://www.unitrends.com/landing/free-backup-vmware-hyper-v-software>
 
 ## Nakivo Backupの必要環境
 
@@ -38,13 +42,14 @@ ESXiの仮想マシンをバックアップするにあたり、スケジュー�
 
 ## ダウンロードおよびインストール
 
-[ESXi版ダウンロードサイト](https://www.nakivo.com/resources/download/free-edition/)から以下の赤枠で囲ったダウンロードボタンからダウンロードしてください。
+上記のNakivoサイトからダウンロードしてください。
 
 {% asset_img nakivo1.png alt %}
 ダウンロードにはビジネスで利用しているメールアドレスが必要になります。昔はgmailやicloudメールが使えましたが、現在は認められないようで会社勤めの方であれば会社のメールアカウントを入力必要です。私は会社のメアドを登録するのは躊躇して登録していませんが、エンジニアの方であれば、一般的には自己啓発という名目もあり構わないと考えられるでしょうか。
 インストール自体は難しいものではありません。以下のURLから各環境に応じた手順でセットアップを行います。
 
-[Nakivo User Guide](https://helpcenter.nakivo.com/display/NH/Installing+NAKIVO+Backup+and+Replication)
+> Nakivo User Guide
+ <https://helpcenter.nakivo.com/display/NH/Installing+NAKIVO+Backup+and+Replication>
 
 ポイントは以下の2点です。
 
@@ -123,8 +128,8 @@ ESXi管理画面の仮想マシンを選択し右クリックして{% label prim
 3. {% label primary @仮想マシンオプション %}タブをクリックします。
 4. {% label primary @詳細 %}セクションを開き {% label primary @設定パラメータ %}の{% label primary @設定の編集 %}をクリックします。{% label primary @設定パラメータ %}ダイアログが開きます。
 5. {% label primary @パラメータの追加 %}をクリックします。
-6. ctkEnabled パラメータを追加して、その値を true に設定します。
-7. {% label primary @パラメータの追加 %}をクリックし、scsi0:0.ctkEnabled を追加して、その値を true に設定します（環境に合わせてscsi0:0の内容は変更してください）。
+6. ctkEnabledパラメータを追加して、その値をtrueに設定します。
+7. {% label primary @パラメータの追加 %}をクリックし、scsi0:0.ctkEnabledを追加して、その値をtrueに設定します（環境に合わせてscsi0:0の内容は変更してください）。
 8. OKボタンをクリックし設定を完了させます。
 9. 仮想マシンを起動します。
 10. SSHでESXiに入り、仮想マシンが配置されているディレクトリで、`"vm-name"-ctk.vmdk`ファイルがあることを確認します。

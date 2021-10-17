@@ -14,8 +14,11 @@ XG Firewallで重要なエラーが発生した場合、VPNの接続通知、バ
 
 XG Firewallのセットアップ時に通知用のメールアドレスを設定しても、メール通知がされません。プロバイダをはじめどこのサービスでも、SPAM対策がなされており、簡単にメールを送信する事は出来なくなっています。これは、{% label primary@Outbound Port 25 Blocking %}と呼ばれています。この回避策として、Googleアカウントを使う事で、メール通知が可能となります。
 
-1. Googleアカウントをお持ちでない方はアカウントを作成し、あらかじめ2段階認証の設定を行ってください。次に[Googleアカウントのページ](https://myaccount.google.com/?tab=kk)に行き、左ペインの{% label primary@セキュリティ %}をクリックしてください。
-2. アプリパスワードをクリックします。
+1. Googleアカウントをお持ちでない方はアカウントを作成し、あらかじめ2段階認証の設定を行ってください。次に**Googleアカウント**のページに行き、左ペインの{% label primary@セキュリティ %}をクリックしてください。
+> Googleアカウントのページ
+ <https://myaccount.google.com/?tab=kk>
+
+1. アプリパスワードをクリックします。
 
 {% asset_img googleacount.png alt %}
 
@@ -40,12 +43,12 @@ XG Firewallのセットアップ時に通知用のメールアドレスを設定
 
 | 説明                             | 内容                                   |
 | -------------------------------- | -------------------------------------- |
-| メールサーバーアドレス           | smtp.gmail.com                         |
+| メールサーバーアドレス           | `smtp.gmail.com`                       |
 | ポート                           | 587                                    |
-| ユーザ名                         | your_account@gmail.com                 |
+| ユーザ名                         | `your_account@gmail.com`               |
 | パスワード                       | Googleで取得した16桁のアプリパスワード |
 | 接続のセキュリティ               | STARTTLS                               |
-| 送信元メールアドレス             | your_account@gmail.com                 |
+| 送信元メールアドレス             | `your_account@gmail.com`               |
 | メールアドレスに通知を送信       | 通知を受け取りたいメールアドレス       |
 | 管理インターフェースのIPアドレス | WANのIPアドレスを選択                  |
 

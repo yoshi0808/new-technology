@@ -106,10 +106,6 @@ VPNの導入の記事でも書きましたが、まずはインターネット�
 
 公開するホストが国内からのアクセス用途に限定できるならば、少しFirewallらしい設定を加えてみましょう。ウィザードの4画面目で、任意とした外部の送信元ネットワークを活用します。もし、このWebサーバに対して日本国内からのアクセスに限れば、海外からの攻撃を防ぐ事ができます。この場合は、作成済みのDNATルールの{% label primary@送信元ネットワークとデバイス %}の{% label primary@任意 %}を外し、{% label primary@Japan %}を加えてください。
 
-## DNATに関するSophosCommunityでの投稿
-
-「[Server Access Assistant (DNAT) Request](https://community.sophos.com/products/xg-firewall/sfos-eap/sfos-v18-early-access-program/f/feedback-and-issues/118045/server-access-assistant-dnat-request)」の記事を参照してください。DNATの設定方法について、色々な議論がなされています。
-
 ## ご注意（2021-4-29追記）
 
 2021年4月22日より、NASのQNAPを対象としたランサムウェアによる被害が大きくなっています。アプリケーションの脆弱性を突かれ、ファイルがパスワード付き7z圧縮処理をされてしまい、暗号化解除にはbitcoinを要求されるというものです。特にNASはランサムウェアのターゲットになりやすい事、脆弱性を狙うため、2要素認証やFirewallなど一般的な管理策がいくらしっかりとしていても、それら管理策が回避されて被害を受けます。

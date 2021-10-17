@@ -19,7 +19,10 @@ Firewallなどルーターの内側（LAN）がユニークローカルアドレ
 
 ## IPv4を優先するULA
 
-現時点でIPv6/IPv4の優先度を確認する方法の1つは、[http://www.kame.net](http://www.kame.net)にブラウザでアクセスし、亀が踊っていればIPv6接続、動かなければIPv4接続という事になります。プロバイダのWebサイトの右上に「IPv6（IPv4）で接続しています」との記載も見かけます。
+現時点でIPv6/IPv4の優先度を確認する方法の1つは、**The KAME project**にブラウザでアクセスし、亀が踊っていればIPv6接続、動かなければIPv4接続という事になります。プロバイダのWebサイトの右上に「IPv6（IPv4）で接続しています」との記載も見かけます。
+
+> The KAME project
+ <http://www.kame.net>
 
 ブラウザやOSがIPv6優先であっても、ULAそのものはインターネットにルーティングしないという大前提があります。IPv6において、NATは一般的に推奨されない構成でもあります。
 
@@ -179,7 +182,8 @@ hosts:          files mdns_minimal [NOTFOUND=return] dns
 
 ## getaddrinfo()
 
-送信元IPアドレスと送信先アドレスでPolicyによってどのネットワークを使うかは、[RFC6724](https://datatracker.ietf.org/doc/html/rfc6724)で詳細が記載されています。
+送信元IPアドレスと送信先アドレスでPolicyによってどのネットワークを使うかは、**RFC6724**で詳細が記載されています。
+> https://datatracker.ietf.org/doc/html/rfc6724
 
 多くのアプリケーションは、getaddrinfo()という関数を使い、URLから名前解決されるとともに、プレフィックスポリシーを踏まえてIPv4またはIPv6の優先度が決定されます。
 nslookupで`google.com`を見てみます。
@@ -211,7 +215,7 @@ macOSでは0番目の要素にIPv4アドレスを返します。
 >>> socket.getaddrinfo("google.com", 80, proto=socket.IPPROTO_TCP)
 [(<AddressFamily.AF_INET: 2>, <SocketKind.SOCK_STREAM: 1>, 6, '', ('172.217.xxx.238', 80)), (<AddressFamily.AF_INET6: 30>, <SocketKind.SOCK_STREAM: 1>, 6, '', ('2404:6800:4004:XXXX::200e', 80, 0, 0))]
 ```
-[RFC6724](https://datatracker.ietf.org/doc/html/rfc6724)を読んでいると色々な設定が見られます。例えば以下のようにIPv6のリンクローカルアドレスの優先度をグローバルよりも下げてしまうなどです。
+**RFC6724**を読んでいると色々な設定が見られます。例えば以下のようにIPv6のリンクローカルアドレスの優先度をグローバルよりも下げてしまうなどです。
 
 >10.4.  Configuring Preference for Link-Local Addresses
 >The destination address selection rules give preference to destinations of smaller scope.For example,a link-local destination will be sorted before a global scope destination when the two are otherwise equally suitable.An administrator can change the policy table to reverse this preference and sort global destinations before link-local destinations:
@@ -239,10 +243,16 @@ macOSでは0番目の要素にIPv4アドレスを返します。
 
 ## Happy Eyeballs
 
-Happy Eyeballsは、ブラウザに実装されている機能で、IPv6を優先しつつも、IPv4と応答の早い結果を採用するという合理的な仕組みです。Happy Eyeballsは[RFC6555](https://datatracker.ietf.org/doc/html/rfc6555)、Happy Eyeballs ver2については、[RFC8305](https://datatracker.ietf.org/doc/html/rfc8305)で定義されています。Eyeballsというのはユーザーを意味します。ユーザーにとってハッピーな仕組みという事でしょうか。用語解説は[こちら](https://dictionary.cambridge.org/dictionary/english/eyeballs)を参照してください。
+Happy Eyeballsは、ブラウザに実装されている機能で、IPv6を優先しつつも、IPv4と応答の早い結果を採用するという合理的な仕組みです。Happy Eyeballsは**RFC6555**、Happy Eyeballs ver2については、**RFC8305**で定義されています。Eyeballsというのはユーザーを意味します。ユーザーにとってハッピーな仕組みという事でしょうか。
+> RFC6555
+ <https://datatracker.ietf.org/doc/html/rfc6555>
+> RFC8305
+ <https://datatracker.ietf.org/doc/html/rfc8305>
+>用語解説
+ <https://dictionary.cambridge.org/dictionary/english/eyeballs>
 
-LANから挙動を見る限り、IPv6を優先としたOSでの挙動はブラウザからもIPv6が優先されているように見えます。macOSやiPhoneで見る限りは応答の早い方に接続するようです。["Test your Happy Eyeballs(http://he.test-ipv6.com)"](http://he.test-ipv6.com)では、その挙動を確認できます。
-
+LANから挙動を見る限り、IPv6を優先としたOSでの挙動はブラウザからもIPv6が優先されているように見えます。macOSやiPhoneで見る限りは応答の早い方に接続するようです。**Test your Happy Eyeballs**では、その挙動を確認できます。
+> <http://he.test-ipv6.com>
 {% asset_img he.png 800 alt %}
 
 私の環境ではmacOSが6:4、iOSが7:3でそれぞれIPv4が多く選択されました。このサイトではランダムなホスト名を生成し、そこに毎秒接続確認をする手法を取っているようです。ただし、このサイトに限らずULA環境におけるmacOSでは一度接続した情報がOS上のキャッシュに残ると次からはIPv4に接続します。ネットワークのキャプチャを見ると、名前解決ではAAAAレコードとAレコードとを同時にクエリ要求しますが、キャッシュされた接続先がある場合はIPv6には接続せずIPv4のみ接続開始しています。OS内部ではLinux同様にPrefix管理テーブルがあるものと考えられます。

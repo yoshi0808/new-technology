@@ -10,7 +10,7 @@ categories:
 
 ## XG Firewall v18 MR-3
 
-XG Firewall v18のMR-3が2020年10月12日に発表されました。マイナーアップデートですが、変更点について記載します。
+XG Firewall v18のMR-3が2020年10月12日に発表されました。変更点について記載します。すでにv18.5のユーザーはこのパッチの適用は不要です。
 
 <!-- more -->
 
@@ -21,9 +21,6 @@ XG Firewall v18のMR-3が2020年10月12日に発表されました。マイナ�
 - SSL VPNの強化。トラフィック転送量が増加し、WindowsクライアントにSSL VPNが対応しました。
 - その他の不具合の修正
 
-私はMR-3の発表された日に早速バージョンアップし、本日まで約10日ほど経過しましたが、特段何かの変化は感じず安定して利用できています。
-v18 MR-3の詳細な説明はSophos Communityの[こちらの記事](https://community.sophos.com/xg-firewall/b/blog/posts/xg-firewall-v18-mr3)を参照してください。
-
 ### XGのアップデート
 
 XGのv17からのアップデートは、 v17.5 MR13/ MR14/ MR14-1が対象となっています。XGのv18であればMR-3へのアップデートは可能です。
@@ -32,7 +29,7 @@ XGの管理画面にログイン後、左ペインメニューの{% label primar
 (2020-12-22 追記)
 XG v18 MR-3はMR-4の発表によりダウンロードできなくなりました。最新パッチについては、「{% post_link xg-v18-mr4 %}」を参照してください。MR-3で導入されたセキュア・ストレージ・マスターキーはMR-4でも引き続き設定が必要なものですので、この記事については残しておきます。
 
-1. [Sophosのサイト](https://www.sophos.com/ja-jp.aspx)の右上のメニューから、{% label primary @マイアカウント %}をクリックします。
+1. Sophosのサイトの右上のメニューから、{% label primary @マイアカウント %}をクリックします。
 2. Sophos IDをお持ちでなければIDを作成します。
 3. ログイン後、{% label primary @My Sophos %}のリンクをクリックし、さらに画面左側の{% label primary @Network Protection %}をクリックします。
 4. {% label primary @ファームウェアの更新 %}をクリックします。

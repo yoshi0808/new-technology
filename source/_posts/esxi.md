@@ -21,20 +21,23 @@ XG Firewall v18を仮想環境で稼働させるために、VMware ESXi 6.7を�
 （2020-10-24追記）
 ESXiの最新Versionは7.0となっています。このブログのXGに関する一連の説明はESXi6.7を前提に説明しています。ESXi6.7は今年に入ってからも5回のパッチが提供されています。十分な稼働実績があり、ネットにも多くの情報があり安定しているプロダクトです。
 
- このホームユーザー向け（無償版）ESXi（vSphere Hypervisor）に関するドキュメントは、[VMWareのサイト](https://www.vmware.com/jp/products/vsphere-hypervisor.html)を参照してください。
+このホームユーザー向け（無償版）ESXi（vSphere Hypervisor）に関するドキュメントは、**VMWareのサイト**を参照してください。
+> VMware vSphere Hypervisor
+<https://www.vmware.com/jp/products/vsphere-hypervisor.html>
 
 ## インストールメディアの準備
 
 1. ESXiをインストールする予定の2つのNICを持ったPC1台と、ISOファイルをインストールするためのUSBメディアを用意してください。
 2. ESXiのダウンロードにはVMwareのアカウント（無償）が必要です。VMWareのサイトでアカウント作成、製品（vSphere Hypervisor v6.7）をダウンロードします。
-
+> vSphere Hypervisor 6.7
+ <https://my.vmware.com/jp/web/vmware/evalcenter?p=free-esxi6>
 {% linkgrid %}
-vSphere Hypervisor 6.7 | https://my.vmware.com/jp/web/vmware/evalcenter?p=free-esxi6 | このダウンロード センターには、技術資料、インストール デモ、および vSphere Hypervisor のトレーニングが用意されています。 | vSphere-Client.png
+vSphere Hypervisor 6.7 | https://my.vmware.com/jp/web/vmware/evalcenter?p=free-esxi6 | (https://my.vmware.com/jp/web/vmware/evalcenter?p=free-esxi6)このダウンロード センターには、技術資料、インストール デモ、および vSphere Hypervisor のトレーニングが用意されています。 | vSphere-Client.png
 {% endlinkgrid %}
 
-3. 以下の動画を参考にメディアを作成します。
-
-{% youtube 7gYnyIaQH9A %}
+3. 以下のYouTube動画を参考にメディアを作成します。
+> <https://www.youtube.com/watch?v=7gYnyIaQH9A>
+ {% asset_img rufus.png 1024 alt %}
 
 ## ESXiのインストール
 
@@ -48,12 +51,12 @@ vSphere Hypervisor 6.7 | https://my.vmware.com/jp/web/vmware/evalcenter?p=free-e
 
 ### USBメディアからインストール
 
-以下の動画を参考にUSBメディアからブートしインストールしてください。インストール対象のハードウェアがUEFIブート可能である場合は、UEFIブートとしてESXiをセットアップされる事をお勧めします。改ざん防止としてESXiにおける制限が加わります。
-
-{% youtube eiZn54GPfzI %}
+インストールについては、以下のYouTube動画を参考にUSBメディアからブートしてください。インストール対象のハードウェアがUEFIブート可能である場合は、UEFIブートとしてESXiをセットアップされる事をお勧めします。改ざん防止としてESXiにおける制限が加わります。
+> <https://www.youtube.com/watch?v=eiZn54GPfzI>
+{% asset_img install.png 1024 alt %}
 
 - vCenterはホームユーザー向けには使いませんので無視してください。
-- NICが2枚ある事を前提にすると、Esxiの管理画面はLAN側のNICを対象とするように設定してください。今の時点では、WANは使いません。新しく振ったIP（`192.168.1.1/24`）をESXiの管理用IPとして、セットアップします。
+- NICが2枚ある事を前提にすると、ESXiの管理画面はLAN側のNICを対象とするように設定してください。今の時点では、WANは使いません。新しく振ったIP（`192.168.1.1/24`）をESXiの管理用IPとして、セットアップします。
 - 上記のビデオ（2:35前後の説明）では「冗長性のためにnicを2枚以上選択することが推奨されます」と説明がありますが、今回は冗長化を使いません。先頭のvmnic0をLAN側のNIC（管理用）としてセットアップしてください。また、ここではVLANも使いません。
 - ESXi6.7では、vSphere Clientは使いません。インストールしたESXiのLAN側のIPアドレスに対してブラウザで接続し、ESXiのWeb管理画面を利用します。
 

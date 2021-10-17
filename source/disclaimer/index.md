@@ -32,7 +32,7 @@ comments: false
 
 ### アクセス解析ツールについて
 
-当ブログでは、Googleによるアクセス解析ツール「Googleアナリティクス」を利用しています。このGoogleアナリティクスはトラフィックデータの収集のためにCookieを使用しています。このトラフィックデータは匿名で収集されており、個人を特定するものではありません。この機能はCookieを無効にすることで収集を拒否できますので、お使いのブラウザの設定をご確認ください。「ユーザーがGoogleパートナーのサイトやアプリを使用する際のGoogleによるデータ使用」に関して確認したい場合は[ここをクリック](https://policies.google.com/technologies/partner-sites?hl=ja)してください。
+当ブログでは、Googleによるアクセス解析ツール「Googleアナリティクス」およびCloudflareのWeb Analyticsを利用しています。Googleアナリティクスはトラフィックデータの収集のためにCookieを使用しています。また、このトラフィックデータは匿名で収集されており、個人を特定するものではありません。この機能はCookieを無効にすることで収集を拒否できますので、お使いのブラウザの設定をご確認ください。「ユーザーがGoogleパートナーのサイトやアプリを使用する際のGoogleによるデータ使用」に関して確認したい場合は[こちら](https://policies.google.com/technologies/partner-sites?hl=ja)を参照してください。CloudflareのアナリティクスはCookieは使用しないと表明されています。CloudflareのWebAnalyticsについては[こちら](https://www.cloudflare.com/ja-jp/web-analytics/)を参照してください。
 
 ### ブログの設置場所について
 
@@ -66,3 +66,4 @@ comments: false
 - 2021年4月10日　記事毎の著作権表記を削除し、本ページに記載
 - 2021年4月11日　シェアボタンの設置について記載
 - 2021年7月24日　シェアボタンを削除
+- 2021年10月16日　CloudflareのWebアナリティクスの利用開始を記載

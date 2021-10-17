@@ -17,11 +17,13 @@ XG Firewall v18.5 MR1が2021年8月9日に発表されました。主としてTL
 ## 主なエンハンスの内容
 
 - DPI モードでの TLS トラフィックのネットワーク パフォーマンスの向上など、v18.5 GA に含まれるパフォーマンスの向上の恩恵を受けることができます。
-- ソフォス DDNS (myfirewall.com) は廃止され、新しい登録はサポートされなくなります。2022年1月31日から予定されています。詳細については、[KBA-41764](https://support.sophos.com/support/s/article/KB-000041764?language=en_US&c__displayLanguage=ja)を参照してください。
+- ソフォス DDNS (myfirewall.com) は廃止され、新しい登録はサポートされなくなります。2022年1月31日から予定されています。詳細については、**KBA-41764**を参照してください。
+> https://support.sophos.com/support/s/article/KB-000041764?language=en_US&c__displayLanguage=ja
 
 なお、XGのメニューには {% label primary @ゼロデイ対策 %}という項目が加えられていますが、個別のサブスクリプションライセンスが必要です。
 
-v18.5 MR-1の詳細な説明はSophos Communityの[こちらの記事](https://community.sophos.com/sophos-xg-firewall/b/blog/posts/sophos-firewall-v18-5-mr1-is-now-available)を参照してください。可能な限り迅速にアップグレードするように推奨されています。
+v18.5 MR-1の詳細な説明はSophos Communityを参照してください。可能な限り迅速にアップグレードするように推奨されています。
+> https://community.sophos.com/sophos-xg-firewall/b/blog/posts/sophos-firewall-v18-5-mr1-is-now-available
 
 {% cq %}
 **Upgrade as soon as possible**
@@ -37,7 +39,8 @@ While we always encourage you to keep your firewalls up to date with the latest 
 XGのv17からのアップデートは、 v17.5 MR14以降から可能です。XGv18はMR-3以降から可能です。
 XGの管理画面にログイン後、左ペインメニューの{% label primary @バックアップ＆ファームウェア %}の{% label primary @ファームウェアの確認 %}ではただちに全てのユーザーにアップデートの案内が来るわけでは無いようなので、アップデートにはMySophosにログインし、バージョンアップの差分モジュールをダウンロードします。
 
-1. [Sophosのサイト](https://www.sophos.com/ja-jp.aspx)の右上のプルダウンメニューから、{% label primary @ライセンスポータル %}をクリックします。
+1. Sophosのサイトの右上のプルダウンメニューから、{% label primary @ライセンスとアカウント %}をクリックします。
+ > https://www.sophos.com/ja-jp.aspx
 2. Sophos IDをお持ちでなければIDを作成します。
 3. ログイン後、{% label primary @Network Protection %}をクリックします。
 4. {% label primary @ファームウェアの更新 %}をクリックします。
@@ -83,11 +86,11 @@ No-IPの無償ユーザーで確認してみましたが定期的にDNSの更新
 - ネットワークカード： intel X550-T2
 - クライアントPC： CeleronG3900という5年前の一般的なクライアントに5GbpsのNIC(Aquantia AQtion 5G Network Adapter)を組み込んだもの
 
-{% asset_img pc-speedtest.png 480 alt %}
+{% asset_img pc-speedtest.png 360 alt %}
 
 - iPhone11(iOS14.7.1)、Wi-Fi6(11ax)
 
-{% asset_img ios-speedtest.png 480 alt %}
+{% asset_img ios-speedtest.png 360 alt %}
 
 
 {% note info %}

@@ -22,25 +22,23 @@ ULAは、MACアドレスと時刻からおおよそ一意となるIPv6アドレ�
 
 ## IPv6 ULAの生成を行う
 
-[JDoodle](https://www.jdoodle.com)に配置したULAを算出するPythonプログラムを実行します。JDoodleは、教育用としてプログラムソースコードを登録すると、プログラムが実行できる機能を提供しています。このページでは、JDoodleサイトを埋め込んで表示しております。ここで入力されたデータはJDoodleに渡され、実行される事をご承知おきください。<sup><b>[[1]](#note1)</b></sup>
+ULAを求めるPythonプログラムを私の方で用意し、**JDoodle**に配置しています。JDoodleでPythonプログラムを実行できます。JDoodleは、教育用としてプログラムソースコードを登録すると、プログラムが実行できる機能を提供しています。<sup><b>[[1]](#note1)</b></sup>
 
 最初にIPv6を割り振りたいホストのMACアドレスを調べておいてください。算出時にMACアドレスを入力するので、`XX:XX:XX:XX:XX:XX`または`XX-XX-XX-XX-XX-XX`と表示されているMACアドレスを予めコピーしてください。大文字小文字はどちらでも構いません。また、仮想環境でサーバーなどを構築されている場合は仮想MACアドレスではなく、物理MACアドレスを採用される事をお勧めします。
 
-以下にPython3のソースコードとその下に3つの項目があります。
+> JDoodle -ULA Generator-
+ <https://www.jdoodle.com/a/20tR>
+
+{% asset_img jdoodle1.png 800 alt %}
 
 1. 入力エリア　{% label primary@Stdin Inputs %}
 2. 実行ボタン　{% label primary@▶︎Execute %}
 3. 実行結果　{% label primary@Result %}
 
-<div data-pym-src="https://www.jdoodle.com/embed/v0/20tR?stdin=1&arg=0"></div>
+{% asset_img jdoodle.png 800 alt %}
+{% label primary@Stdin Inputs %}に入力します。MACアドレスを貼り付け、{% label primary@▶︎Execute %}ボタンをクリックしてください。
 
-上記の{% label primary@Stdin Inputs %}に直接入力が可能です。MACアドレスを貼り付け、{% label primary@▶︎Execute %}ボタンをクリックしてください。もしお使いのブラウザでエラー表示が出ている場合は、以下のリンクからULA生成ツールを開き実行してください。
-
-{% linkgrid %}
-ULA Generator | https://jdoodle.com/a/20tR | IPv6のULAを生成します。MACアドレスをあらかじめコピーしておき、このツールにペーストします | jdoodle-icon.png
-{% endlinkgrid %}
-
-{% label primary@Result %}に、以下の4つの項目が表示されます。これらがプライベート環境で利用するユニークなIPv6アドレスです。MACアドレスが正しく入力されなかった場合は、"Bad MAC Adderss"と表示されます。{% asset_img jdoodle.png alt %}
+{% label primary@Result %}に、以下の4つの項目が表示されます。これらがプライベート環境で利用するユニークなIPv6アドレスです。MACアドレスが正しく入力されなかった場合は、"Bad MAC Adderss"と表示されます。
 
 ### IPv6 ULAのプログラムについて
 
@@ -48,9 +46,10 @@ ULA Generator | https://jdoodle.com/a/20tR | IPv6のULAを生成します。MAC�
 - MACアドレスから{% label primary@Modified EUI-64 %}を生成するにあたり、RFC4291に基づき生成しています
 - 本来はNTPを利用してハッシュキーの一部に利用しますが、通信は行わずホストの時間を取得し、NTP時刻に変換しています
 - NTPは64ビットのデータ型となっており、2036年にオーバーフローします。しかし、RFC4330で定義されているように再び0から開始し、正しく動く処理をしています
+- JDoodleサイトは2021年10月17日時点でCookieを求められます。
+- ソースコードはGitHubのリポジトリにあります。
+ <https://github.com/yoshi0808/ula-generator>
 
 <small id="note1">**[1]**
 JDoodleの利用規約などを探してみましたが見つかりませんでした。学生向けに教育用としての利用を想定されているようです。このブログの目的から鑑み、利用目的が逸脱している事は無いと考え、利用させていただいております。
 </small>
-
-<script src="https://www.jdoodle.com/assets/jdoodle-pym.min.js" type="text/javascript"></script>

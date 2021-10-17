@@ -5,7 +5,7 @@ tags:
  - bitwarden
 categories:
  - Security
-  
+
 ---
 
 {% asset_img password.png alt %}
@@ -52,7 +52,8 @@ categories:
 
 ## bitwardenの利用方法
 
-[bitwarden](https://bitwarden.com)のWebサイトで最初にアカウントを作成します。
+**bitwarden**のWebサイトで最初にアカウントを作成します。
+> <https://bitwarden.com>
 
 {% asset_img bitwarden.png alt %}
 
@@ -72,7 +73,9 @@ categories:
 
 {% asset_img duo1.png 400 alt %}
 
-[Duo Security](https://duo.com)は2018年にCisco社が買収しています。CiscoのAnyConnectを使う場合の2要素認証に使われるもので、どちらかといえば法人がターゲットです。最近だとMicrosoft365でも使えるようになりました。個人利用は無償です。
+**Duo Security**は2018年にCisco社が買収しています。CiscoのAnyConnectを使う場合の2要素認証に使われるもので、どちらかといえば法人がターゲットです。最近だとMicrosoft365でも使えるようになりました。個人利用は無償です。
+> Duo Security
+ <https://duo.com>
 
 {% asset_img duo2.png alt %}
 "Free Trial"と言われると基本は有償サービスのように感じますが、”Free Trial”からアカウントを作成し、速やかに無料アカウント（Duo Free）に切り替え可能です。
@@ -103,25 +106,39 @@ iOS14から、クリップボードを読み取ったアプリケーションに
 
 {% video add-account.mp4 %}
 
-実例として価格。comのサイトへのアカウント作成の挙動です。価格。comは半角英数の8〜12文字という制約があります。記号は使えません。パスワードの規則に添うようにパスワードを生成します。
+実例として価格comのサイトへのアカウント作成の挙動です。価格comは半角英数の8〜12文字という制約があります。記号は使えません。パスワードの規則に添うようにパスワードを生成します。
 
 一度登録してしまえば、ブラウザからのログインはとても簡単です。
 
 {% video login.mp4 %}
 
-サイトによって挙動は異なるのですが、価格。comの場合、ログインボタンをクリックするだけで、あとは勝手にbitwardenがIDとパスワードをセットしてくれます。
+サイトによって挙動は異なるのですが、価格comの場合、ログインボタンをクリックするだけで、あとは勝手にbitwardenがIDとパスワードをセットしてくれます。
 
 これで、たくさんのパスワードに悩まされる事なく、パスワードの使い回しによる、"利用者の過失"というリスクから解放されます。私は、個人向けのセキュリティ対策はまず最初に認証管理が重要と考えています。なかなか興味が向かない分野ですが、参考にしていただければ幸いです。
 
 ## （補足）bitwardenの脆弱性について
 
-bitwardenはオープンソースであるが故に、いろいろな脆弱性を見つけられ、指摘を受ける可能性があります。実際に[JPCERT/CC](https://www.jpcert.or.jp)と[IPA](https://www.ipa.go.jp)との共同で提供されている、脆弱性対策情報データベースである、[JVN IPedia](https://jvndb.jvn.jp/index.html)から、bitwardenの脆弱性を検索できます。
+bitwardenはオープンソースであるが故に、いろいろな脆弱性を見つけられ、指摘を受ける可能性があります。実際に**JPCERT/CC**と**IPA**との共同で提供されている、脆弱性対策情報データベースである**JVN IPedia**から、bitwardenの脆弱性を検索できます。
+> JPCERT/CC
+ <https://www.jpcert.or.jp>
+> IPA
+ <https://www.ipa.go.jp>
+> JVN IPedia
+ <https://jvndb.jvn.jp/index.html>
+
 
 JPN IPediaでbitwardenについて検索すると、2件該当し、直近では2020年7月18日に公開された「JVNDB-2020-008246 Bitwarden Server におけるサーバサイドのリクエストフォージェリの脆弱性」が見つかります。セキュリティの専門家は、このサーバーサイドリクエストフォージェリはかなりリスクが高い内容と認識しています。端的に言えば、bitwarden Serverを踏み台にし、そこからネットワーク内の別のサーバーの情報を抜き取る事が可能（かもしれない）という脆弱性です。またCVSSv3の値が7.5と定量的にもリスクが高い事を示しています。JVN IPediaは速やかに情報共有を行うのが目的であって、ユーザーがどう対応するか、または修正が完全であるかどうかの評価を行いません。
-この修正に関しては、JPN IPediaから辿ると、[bitwardenのGitHub上のプルリクエスト](https://github.com/bitwarden/server/pull/827)が行われており、内容は[hackerOne](https://www.hackerone.com)から7月16日に指摘されたものでIPv6が混在した場合の脆弱性とわかります。このやりとりを見れば7月18日には修正が行われマージコミットされています。そして7月29日にはVersion1.36.0の提供が行われ、対応完了という流れになります。Version1.36.0について、GitHub上の情報は[こちら](https://github.com/bitwarden/server/releases/tag/v1.36.0)を参照してください。
+この修正に関しては、JPN IPediaから辿ると、bitwardenのGitHub上の**プルリクエスト**が行われており、内容は**hackerOne**から7月16日に指摘されたものでIPv6が混在した場合の脆弱性とわかります。このやりとりを見れば7月18日には修正が行われマージコミットされています。そして7月29日にはVersion1.36.0の提供が行われ、対応完了という流れになります。Version1.36.0については以下を参照してください。
+> bitwardenのGitHub上のプルリクエスト
+ <https://github.com/bitwarden/server/pull/827>
+> hackerOne
+ <https://www.hackerone.com>
+> Version 1.36.0(GitHub)
+ <https://github.com/bitwarden/server/releases/tag/v1.36.0>
+
 
 実際に、クラウド上でbitwarden社がどのように運用しているかまでは公開されていません。一般的には多重化されたサイバーセキュリティ製品で守られており、そう簡単に攻撃が成功するケースは無いものと考えられますが、ユーザーがオンプレミスで運用している場合で、インターネットにbitwarden Serverを公開している場合は高いリスクといえます。そのような理由で私も一時はインターネット接続を認めない形でLAN内のみでオンプレでbitwarden Serverを運用していたものの、こういった情報を頻繁に追っていくのがあまりに大変であるため、再びクラウドの利用に切り替えたという次第です。
 
-hackeroneに対しては、あくまで企業の意思で登録するもので、bitwarden社はhackeroneへの登録を行っています。hackeroneに登録されたハッカーは脆弱性を見つけた場合には報奨金を得る仕組みとなっています。ハッカーの中には報奨金を寄付に回す人達もいます。bitwarden社のモデルはかなり勇気のある行動で自分たちの技術力に自信が無いとなかなかこういった行動は取れないでしょう。bitwarden社の監査に関する取り組みは[こちら（英語）](https://bitwarden.com/help/article/is-bitwarden-audited/)を参照してください。
+hackeroneに対しては、あくまで企業の意思で登録するもので、bitwarden社はhackeroneへの登録を行っています。hackeroneに登録されたハッカーは脆弱性を見つけた場合には報奨金を得る仕組みとなっています。ハッカーの中には報奨金を寄付に回す人達もいます。bitwarden社のモデルはかなり勇気のある行動で自分たちの技術力に自信が無いとなかなかこういった行動は取れないでしょう。
 
 サーバーセキュリティ製品なのでサーバーサイドからクライアントに対し緊急パッチを当てる機能は必須です。しかし、「開発者がOSの特権を用いてやりたい放題の脆弱性」だと指摘されるケースもあります。それが脆弱性だとしたらアプリケーションを何もインストールできなくなってしまいます。そういったケースも含めてオープンに説明責任を果たし、ユーザーに考える機会を与える事、信頼を蓄積していく事がプロの仕事でありプロダクトの信頼性に繋がると私は考えています。
