@@ -63,7 +63,7 @@ YubiKeyで設定したPINを入力して公開鍵認証でSSH接続します。
 
 ## YubiKeyを使ったGPGの鍵管理
 
-YubiKeyを使うGPGでは主鍵(MainKey)となる認定鍵(Certify)に加え、署名(Sign)、暗号(Encrypt)、認証(Authenticate)という副鍵(Sub-Key)を持たせます。YubiKeyの構成上、ひとつの機能にひとつの副鍵を割り当てる事が大前提です。そしてYubiKeyを紛失した場合を考慮し、主鍵はYubiKeyには置きません。主鍵は変えず、副鍵は任意に削除、追加する事を想定しています。Yubicoでは、この副鍵を端末側で生成し、それをYubiKeyに取り込む形を推奨しています。RSA暗号2048ビットのPIVとは異なり、GPGにおけるYubiKey 4/5はRSA暗号4096ビットまで対応できます。RSA暗号は2048ビットあれば十分と考えていますが、**GitHubの推奨**としては「キーは少なくとも4096ビットである必要があります」との事。GitHubさん、そこまで必要ですか{% emoji persevere %}
+YubiKeyを使うGPGでは主鍵(MainKey)となる認定鍵(Certify)に加え、署名(Sign)、暗号(Encrypt)、認証(Authenticate)という副鍵(SubKey)を持たせます。YubiKeyの構成上、ひとつの機能にひとつの副鍵を割り当てる事が大前提です。そしてYubiKeyを紛失した場合を考慮し、主鍵はYubiKeyには置きません。主鍵は変えず、副鍵は任意に削除、追加する事を想定しています。Yubicoでは、この副鍵を端末側で生成し、それをYubiKeyに取り込む形を推奨しています。RSA暗号2048ビットのPIVとは異なり、GPGにおけるYubiKey 4/5はRSA暗号4096ビットまで対応できます。RSA暗号は2048ビットあれば十分と考えていますが、**GitHubの推奨**としては「キーは少なくとも4096ビットである必要があります」との事。GitHubさん、そこまで必要ですか{% emoji persevere %}
 
 > GitHub -新しいGPGキーを生成する-
  <https://docs.github.com/ja/github/authenticating-to-github/generating-a-new-gpg-key>
