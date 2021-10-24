@@ -25,14 +25,11 @@ XG Firewall v18.5 MR1が2021年8月9日に発表されました。主としてTL
 v18.5 MR-1の詳細な説明はSophos Communityを参照してください。可能な限り迅速にアップグレードするように推奨されています。
 > https://community.sophos.com/sophos-xg-firewall/b/blog/posts/sophos-firewall-v18-5-mr1-is-now-available
 
-{% cq %}
-**Upgrade as soon as possible**
+>**Upgrade as soon as possible**
 
-While we always encourage you to keep your firewalls up to date with the latest firmware, over the next few months we are recommending you rapidly apply maintenance releases to ensure you have all the important security, performance, and feature enhancements applied as soon as possible.
+>While we always encourage you to keep your firewalls up to date with the latest firmware, over the next few months we are recommending you rapidly apply maintenance releases to ensure you have all the important security, performance, and feature enhancements applied as soon as possible.
 
-ファイアウォールを最新のファームウェアで最新の状態に保つことを常に推奨していますが、今後数ヶ月間は、重要なセキュリティ、パフォーマンス、機能強化のすべてを可能な限り早く適用できるように、メンテナンスリリースを迅速に適用することをお勧めします。
-
-{% endcq %}
+>ファイアウォールを最新のファームウェアで最新の状態に保つことを常に推奨していますが、今後数ヶ月間は、重要なセキュリティ、パフォーマンス、機能強化のすべてを可能な限り早く適用できるように、メンテナンスリリースを迅速に適用することをお勧めします。
 
 ## XGのアップデート
 

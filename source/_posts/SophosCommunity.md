@@ -14,7 +14,7 @@ XG Firewall Home EditionはSophosによるサポートがなく、ユーザコ�
 <!-- more -->
 
 > Sophos community
- https://community.sophos.com/xg-firewall
+ <https://community.sophos.com/xg-firewall>
 
 さて、直接XGの話ではありませんが、ここ数日話題になっているドイツ製翻訳ソフトの**DeepL**が素晴らしいです。私はGoogle翻訳をずっと使っていましたが、こちらも使い勝手が良く便利です。
 Windows、macOSのアプリケーションとしてインストールする事が出来ます。利用は無償（高機能な有償のpro版もあります）で、例えばブラウザで翻訳箇所を選択しCtrl+c(macはcommand+c)を2回押下するとDeepLが起動し、英訳と日本語が併記されます。

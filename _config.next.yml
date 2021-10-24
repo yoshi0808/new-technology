@@ -20,10 +20,10 @@ minify: false
 # Create your custom files in site directory `source/_data` and uncomment needed files below.
 custom_file_path:
   #head: source/_data/head.njk
-  #header: source/_data/header.njk
+  header: source/_data/header.njk
   #sidebar: source/_data/sidebar.njk
   #postMeta: source/_data/post-meta.njk
-  #postBodyEnd: source/_data/post-body-end.njk
+  postBodyEnd: source/_data/post-body-end.njk
   footer: source/_data/footer.njk
   #bodyEnd: source/_data/body-end.njk
   variable: source/_data/variables.styl
@@ -87,7 +87,8 @@ menu:
   tags: /tags/ || fa fa-tags
   categories: /categories/ || fa fa-th
   archives: /archives/ || fa fa-archive
-  disclaimer: disclaimer/ || fa fa-check
+  #privacy: /privacypolicy/ || fa fa-check
+  disclaimer: /disclaimer/ || fa fa-check
   #schedule: /schedule/ || fa fa-calendar
   #sitemap: /sitemap.xml || fa fa-sitemap
   #commonweal: /404/ || fa fa-heartbeat
@@ -359,8 +360,8 @@ codeblock:
   # Code Highlight theme
   # All available themes: https://theme-next.js.org/highlight/
   theme:
-    light: default
-    dark: default
+    light: github
+    dark: a11y-dark
   prism:
     light: prism-vs
     dark: prism-dark
@@ -629,7 +630,7 @@ gitalk:
 # Utterances
 # For more information: https://utteranc.es
 utterances:
-  enable: true
+  enable: false
   repo: yoshi0808/new-technology
   # Available values: pathname | url | title | og:title
   issue_term: pathname
@@ -666,7 +667,8 @@ add_this_id:
 # Google Analytics
 # See: https://analytics.google.com
 google_analytics:
-  tracking_id: UA-159928165-1
+#  tracking_id: UA-159928165-1
+  tracking_id:
   # By default, NexT will load an external gtag.js script on your site.
   # If you only need the pageview feature, set the following option to true to get a better performance.
   only_pageview: false
@@ -681,7 +683,8 @@ growingio_analytics: # <project_id>
 
 # Cloudflare Web Analytics
 # See: https://www.cloudflare.com/web-analytics/
-cloudflare_analytics: 0148b4d0442e42b483ddce684030bd2f
+# cloudflare_analytics: 0148b4d0442e42b483ddce684030bd2f
+cloudflare_analytics:
 
 # Show number of visitors of each article.
 # You can visit https://www.leancloud.cn to get AppID and AppKey.

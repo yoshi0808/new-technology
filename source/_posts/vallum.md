@@ -163,7 +163,7 @@ Inboundルールは、Outboundに比べると多少設定はやや難しいの�
   IPv6のicmpはIPv4とは異なり、通信に必須のものなので止める事はできません。
 
 > JPNIC -ポート番号とは-
- https://www.nic.ad.jp/ja/basics/terms/port-number.html
+ <https://www.nic.ad.jp/ja/basics/terms/port-number.html>
 
 なお、IPv6でDHCPv6を使っていらっしゃる方は、UDP/546も手動で加える必要があります。
 

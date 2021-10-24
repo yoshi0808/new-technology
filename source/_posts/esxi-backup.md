@@ -28,7 +28,7 @@ ESXiはスナップショットという機能を持っており、その時点�
 このghettoVCBはWilliam Lam氏が作成したMITライセンス（フリーソフト）のソフトウェアで、VMWareの正式な製品ではありません。但し、フリーのESXi向けにはデファクトスタンダードとも言えるスクリプトです。ソフトウェアはGitHub上にあります。以下のGitHubから{% label primary@Codeボタン %}→{% label primary@Download ZIP %}と進み、{% label primary@ghettoVCB-master.zip %}をダウンロードしてください。私はESXi6.7の環境で動作検証していますが、このブログを記載している途中の2020-10-10に"Adding support for ESXi 7.0 update 1"と更新が入りましたので、新しいESXiのバージョンにも積極的に対応されているようです。
 
 {% linkgrid %}
-ghettoVCB | https://github.com/lamw/ghettoVCB | (https://github.com/lamw/ghettoVCB )The ghettoVCB script performs backups of virtual machines residing on ESX(i) 3.x, 4.x, 5.x & 6.x servers   | https://avatars2.githubusercontent.com/u/602199?s=460&u=4f1ad87802c6b2fc5e9e2be1638656504af12f5b&v=4
+ghettoVCB | https://github.com/lamw/ghettoVCB | (https://github.com/lamw/ghettoVCB )The ghettoVCB script performs backups of virtual machines residing on ESX(i) 3.x, 4.x, 5.x & 6.x servers   | 602199.jpeg
 {% endlinkgrid %}
 
 > <https://github.com/lamw/ghettoVCB>

@@ -23,7 +23,7 @@ ESXiの最新Versionは7.0となっています。このブログのXGに関す�
 
 このホームユーザー向け（無償版）ESXi（vSphere Hypervisor）に関するドキュメントは、**VMWareのサイト**を参照してください。
 > VMware vSphere Hypervisor
-<https://www.vmware.com/jp/products/vsphere-hypervisor.html>
+ <https://www.vmware.com/jp/products/vsphere-hypervisor.html>
 
 ## インストールメディアの準備
 

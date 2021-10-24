@@ -24,3 +24,4 @@ comments: false
 IT以外の趣味はゴルフ、ドライブ、音楽、映画です。
 
 - [情報処理安全確保支援士](https://www.ipa.go.jp/siensi/whatsriss/index.html)　006333号
+

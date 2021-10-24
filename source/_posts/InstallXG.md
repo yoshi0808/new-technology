@@ -17,7 +17,7 @@ Sophosのサイトより、"Sophos XG Firewall Home Edition"モジュールを�
 
 https://www.sophos.com/ja-jp/products/free-tools.aspx
 {% linkgrid %}
-Sophos 無償ツール | https://www.sophos.com/ja-jp/products/free-tools.aspx | (https://www.sophos.com/ja-jp/products/free-tools.aspx)お客様がご家庭でも常に安全に PC を利用できるようソフォスでは無償ツールを提供しています。 | https://www.sophos.com/ja-jp/medialibrary/SophosNext/Images/Navigation/Main/product-firewall.png
+Sophos 無償ツール | https://www.sophos.com/ja-jp/products/free-tools.aspx | (https://www.sophos.com/ja-jp/products/free-tools.aspx)お客様がご家庭でも常に安全に PC を利用できるようソフォスでは無償ツールを提供しています。 | product-firewall.png
 {% endlinkgrid %}
 
 <!-- more -->

@@ -93,7 +93,7 @@ P48から公開鍵認証について記載があります。これも記載が�
 
 つまり、rootユーザーですと、`/etc/ssh`配下に`keys-root`フォルダを作り、`authorized_keys`に公開鍵を記述せよという事です。
 
-> vmware -Allowing SSH access to ESXi/ESX hosts with public/private key authentication (`1002866`)-
+>vmware -Allowing SSH access to ESXi/ESX hosts with public/private key authentication (`1002866`)-
  <https://kb.vmware.com/s/article/1002866>
 
 ちなみに、ESXi側でもssh-keygenを実行すると、`/etc/ssh`の配下に、公開鍵`ssh_host_rsa_key.pub`と秘密鍵`ssh_host_rsa_key`が作成されます。それと同時に`/etc/ssh/sshd_config`にも公開鍵認証である、`HostKey /etc/ssh/ssh_host_rsa_key`が挿入されるようです。これがあるとrootユーザーは公開鍵認証が必須という事になりますから、秘密鍵をダウンロードせずにそのままsshを閉じるとパスワードで接続できなくなるため注意が必要です。

@@ -63,24 +63,22 @@ YubiKeyで設定したPINを入力して公開鍵認証でSSH接続します。
 
 ## YubiKeyを使ったGPGの鍵管理
 
-YubiKeyを使うGPGでは主鍵となる認定鍵（第三者の公開鍵を署名する、自身の鍵を生成、削除したりする）に加え、署名、暗号、認証という機能（副鍵）を持たせます。YubiKeyの構成上、ひとつの機能にひとつの副鍵を割り当てる事が大前提です。そしてYubiKeyを紛失した場合を考慮し、主鍵はYubiKeyには置きません。主鍵は変えず、副鍵は任意に削除、追加する事を想定しています。Yubicoでは、この副鍵を端末側で生成し、それをYubiKeyに取り込む形を推奨しています。RSA暗号2048ビットのPIVとは異なり、GPGにおけるYubiKey 4/5はRSA暗号4096ビットまで対応できます。RSA暗号は2048ビットあれば十分と考えていますが、**GitHubの推奨**としては「キーは少なくとも4096ビットである必要があります」との事。GitHubさん、そこまで必要ですか{% emoji persevere %}
+YubiKeyを使うGPGでは主鍵(MainKey)となる認定鍵(Certify)に加え、署名(Sign)、暗号(Encrypt)、認証(Authenticate)という副鍵(Sub-Key)を持たせます。YubiKeyの構成上、ひとつの機能にひとつの副鍵を割り当てる事が大前提です。そしてYubiKeyを紛失した場合を考慮し、主鍵はYubiKeyには置きません。主鍵は変えず、副鍵は任意に削除、追加する事を想定しています。Yubicoでは、この副鍵を端末側で生成し、それをYubiKeyに取り込む形を推奨しています。RSA暗号2048ビットのPIVとは異なり、GPGにおけるYubiKey 4/5はRSA暗号4096ビットまで対応できます。RSA暗号は2048ビットあれば十分と考えていますが、**GitHubの推奨**としては「キーは少なくとも4096ビットである必要があります」との事。GitHubさん、そこまで必要ですか{% emoji persevere %}
 
 > GitHub -新しいGPGキーを生成する-
  <https://docs.github.com/ja/github/authenticating-to-github/generating-a-new-gpg-key>
 
 {% mermaid graph TD %}
-     A["主鍵・認定"]-->B["副鍵・署名"]
-     A["主鍵・認定"]-->C["副鍵・暗号"]
-     A["主鍵・認定"]-->D["副鍵・認証"]
-     B["副鍵・署名"]-->B1["YubiKey署名"]
-     C["副鍵・暗号"]-->C1["YubiKey暗号"]
-     D["副鍵・認証"]-->D1["YubiKey認証"]
+ B[MainKey-Certify] --> C{SubKey}
+ C -->D[Sign]
+ C -->E[Encrypt]
+ C -->F[Authenticate]
 {% endmermaid %}
 
 主鍵は万が一YubiKeyをなくした場合などの鍵の抹消や新しい副鍵を作る以外は使いません。USBなどに複写し安全な場所で保管する事になります。主鍵が無いと友達の輪を広げられない（相手の公開鍵に署名できない）のですが、YubiKeyを使ったGPGの使い方としては、そこに重きを置いていません。YubiKeyとGPGのセットアップはお手本となる説明があります。
 
 {% linkgrid %}
-drduh/YubiKey-Guide | https://github.com/drduh/YubiKey-Guide |(https://github.com/drduh/YubiKey-Guide) This is a guide to using YubiKey as a SmartCard for storing GPG encryption, signing and authentication keys, which can also be used for SSH.  | https://avatars.githubusercontent.com/u/12475110?s=400&u=07d0880794ce657ea3c16413b8bab37b65b191fa&v=4
+drduh/YubiKey-Guide | https://github.com/drduh/YubiKey-Guide |(https://github.com/drduh/YubiKey-Guide) This is a guide to using YubiKey as a SmartCard for storing GPG encryption, signing and authentication keys, which can also be used for SSH.  | 12475110.png
 {% endlinkgrid %}
 > <https://github.com/drduh/YubiKey-Guide>
 
@@ -845,7 +843,7 @@ Onの代わりに15秒キャッシュする"CACHED"という項目も設定で�
 
 {% note info  %}
 
-継続的インテグレーション(CI)など、署名、デプロイと連続動作させる時にこのCACHED設定は便利です。
+継続的インテグレーション（CI)など、署名、デプロイと連続動作させる時にこのCACHED設定は便利です。
 
 {% endnote %}
 
@@ -877,7 +875,6 @@ libgcrypt 1.8.7
  <https://nvd.nist.gov/vuln/detail/CVE-2021-3345>
 >  [Security fix] Libgcrypt 1.9.1 relased
  <https://lists.gnupg.org/pipermail/gnupg-announce/2021q1/000456.html>
-
 
 <small id="note1">**[1]**
 もし暗号化USBを導入するのであれば、Finderで暗号化する方法、VeraCryptを使う方法があります

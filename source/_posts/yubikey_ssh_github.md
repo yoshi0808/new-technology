@@ -17,7 +17,7 @@ YubiKeyと関係するソフトウェアの概要説明、そして公開鍵認�
 
 Yubico社のYubiKeyはなんとなくご存知の方も多いかもしれません。指紋認証ではなく、秘密鍵をこの小さなハードウェアに埋め込み、公開鍵認証、Yubico独自のワンタイムパスワード、FIDO2、そしてGitHubやGoogleなどはWebAuthn（ウェブオースン）でYubiKeyにタッチするだけで簡単に2要素認証が可能になります。6桁のワンタイムパスワードをいちいち入力しなくて済むのは魅力的です。ただ法人向けの要素が強く、実際の使い方については情報が少ないのが現状です。しかし、Amazonなどの商品の評価では非常にユーザー満足度が高いのが見て取れます。
 
-{% asset_img https://www.yubico.com/wp-content/uploads/2019/10/yubikey_5_family_web_op.png 640 alt %}
+{% asset_img 5C.png 320 alt %}
 
 私はUSB-Cの最も小さい”YubiKey 5C Nano”をmacOSで使っています。2要素認証が必要な時にこの小さいデバイスに"Touch to Sign"で認証できます。
 

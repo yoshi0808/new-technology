@@ -110,7 +110,9 @@ Nakivo BackupからFree版のESXiに接続するにはESXiのHTTPS(Port443)、SS
 
 差分バックアップについてはESXiの機能であるCBT(Changed Block Tracking)の機能を使えます。バックアップのストレージと時間の圧縮効果があるので設定をお勧めします。これは次の章で説明します。
 
-Nakivo Backupのユーザーマニュアルの詳細は[こちら](https://helpcenter.nakivo.com/display/NH/User+Guide)を参照してください。
+Nakivo Backupのユーザーマニュアルの詳細は以下を参照してください。
+>NAKIVO Backup & Replication USER GUIDE
+ <https://helpcenter.nakivo.com/display/NH/User+Guide>
 
 ## ESXiのChanged Block Tracking
 
@@ -135,7 +137,9 @@ ESXi管理画面の仮想マシンを選択し右クリックして{% label prim
 10. SSHでESXiに入り、仮想マシンが配置されているディレクトリで、`"vm-name"-ctk.vmdk`ファイルがあることを確認します。
 
 CBTを無効にする場合はこの逆の手順、ctkEnabledの値をfalseに設定します。
-手順の詳細についてはVMWareの[ガイド](https://kb.vmware.com/s/article/1031873?lang=ja&queryTerm=changed+block+tracking)を参照してください。
+手順の詳細についてはVMWareのガイドを参照してください。
+>VMware 仮想マシン上の変更ブロックのトラッキング（CBT） (1020128)
+ <https://kb.vmware.com/s/article/1031873?lang=ja&queryTerm=changed+block+tracking>
 
 ## 定期的なバックアップをお勧めします
 
