@@ -1,0 +1,31 @@
+<script src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+
+
+<script src="https://unpkg.com/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+<script src="https://unpkg.com/simple-gdpr@^1.1.5/dist/simplegdpr.umd.js"></script>
+
+<link href="https://unpkg.com/simple-gdpr@^1.1.5/dist/simplegdpr.min.css" rel="stylesheet">
+
+<script>
+if (Cookies.get('PRVCY') != 'AGREE') {
+  const notice = new SimpleGDPR({
+    title: 'Accept Cookies & Privacy Policy?',
+    message: '本Webサイトでは、訪問や活動に関するデータがクッキー等によって収集されます。閲覧を継続される場合、\
+    プライバシーポリシーをご覧いただき同意(Agree)をお願いします',
+    link: null,
+    icons: true,
+    theme: 'light',
+    animation: 'fade',
+    float: 'bottom-right',
+      callback: () => {
+      notice.close();
+      Cookies.set('PRVCY', 'AGREE', { expires: 7, path: '/'});
+      notice.destroy();
+    },
+  });
+}
+</script>
+
+<div class="disclaimer1">
+<a href= "/new-technology/privacypolicy/">プライバシーポリシー</a></div>
+

@@ -20,10 +20,10 @@ minify: false
 # Create your custom files in site directory `source/_data` and uncomment needed files below.
 custom_file_path:
   #head: source/_data/head.njk
-  header: source/_data/header.njk
+  #header: source/_data/header.njk
   #sidebar: source/_data/sidebar.njk
   #postMeta: source/_data/post-meta.njk
-  postBodyEnd: source/_data/post-body-end.njk
+  #postBodyEnd: source/_data/post-body-end.njk
   footer: source/_data/footer.njk
   #bodyEnd: source/_data/body-end.njk
   variable: source/_data/variables.styl
@@ -198,6 +198,7 @@ footer:
   # Icon between year and copyright info.
   icon:
     # Icon name in Font Awesome. See: https://fontawesome.com/icons
+    #name: fa fa-heart
     name: fa fa-heart
     # If you want to animate the icon, set it to true.
     animated: false
@@ -569,7 +570,7 @@ comments:
   # Available values: disqus | disqusjs | changyan | livere | gitalk | utterances
   active:
   # Setting `true` means remembering the comment system selected by the visitor.
-  storage: true
+  storage: false
   # Lazyload all comment systems.
   lazyload: false
   # Modify texts or order for any naves, here are some examples.
@@ -683,8 +684,7 @@ growingio_analytics: # <project_id>
 
 # Cloudflare Web Analytics
 # See: https://www.cloudflare.com/web-analytics/
-# cloudflare_analytics: 0148b4d0442e42b483ddce684030bd2f
-cloudflare_analytics:
+cloudflare_analytics: 0148b4d0442e42b483ddce684030bd2f
 
 # Show number of visitors of each article.
 # You can visit https://www.leancloud.cn to get AppID and AppKey.
@@ -831,7 +831,7 @@ mermaid:
 # Use Animate.css to animate everything.
 # For more information: https://animate.style
 motion:
-  enable: true
+  enable: false
   async: false
   transition:
     # All available transition variants: https://theme-next.js.org/animate/
@@ -876,7 +876,7 @@ vendors:
   # The default CDN provider of third-party plugins.
   # Available values: local | jsdelivr | unpkg | cdnjs
   # Dependencies for `plugins: local`: https://github.com/next-theme/plugins
-  plugins: jsdelivr
+  plugins: local
 
 # Assets
 # Accelerate delivery of static files using a CDN

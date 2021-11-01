@@ -3,7 +3,7 @@ title: ディスクレーマー
 type: "privacy"
 comments: false
 ---
-<img src="./undraw_Resume_folder_re_e0bi.png" width="400" >
+<img src="/new-technology/disclaimer/undraw_Resume_folder_re_e0bi.png" width="400" >
 
 
 ## ディスクレーマー

@@ -3,7 +3,7 @@ title: プロフィール
 type: "about"
 comments: false
 ---
-<img src="./undraw_profile_pic_ic5t.png" width="300" >
+<img src="/new-technology/about/undraw_profile_pic_ic5t.png" width="300" >
 
 ## 著者について
 
@@ -23,5 +23,5 @@ comments: false
 
 IT以外の趣味はゴルフ、ドライブ、音楽、映画です。
 
-- [情報処理安全確保支援士](https://www.ipa.go.jp/siensi/whatsriss/index.html)　006333号
-
+> 情報処理安全確保支援士 006333号
+ <https://www.ipa.go.jp/siensi/whatsriss/index.html>
