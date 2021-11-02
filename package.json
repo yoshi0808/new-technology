@@ -12,7 +12,7 @@
     "version": "5.4.0"
   },
   "dependencies": {
-    "@next-theme/plugins": "^8.8.0",
+    "@next-theme/plugins": "^8.8.1",
     "hexo": "^5.4.0",
     "hexo-deployer-git": "^3.0.0",
     "hexo-filter-emoji": "^2.2.2",
@@ -28,7 +28,7 @@
     "hexo-renderer-marked": "^4.1.0",
     "hexo-renderer-stylus": "^2.0.1",
     "hexo-server": "^2.0.0",
-    "hexo-theme-next": "^8.8.0",
+    "hexo-theme-next": "^8.8.1",
     "hexo-util": "^2.5.0",
     "prism-themes": "^1.9.0"
   },

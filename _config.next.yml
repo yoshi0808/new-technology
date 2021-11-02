@@ -198,7 +198,6 @@ footer:
   # Icon between year and copyright info.
   icon:
     # Icon name in Font Awesome. See: https://fontawesome.com/icons
-    #name: fa fa-heart
     name: fa fa-heart
     # If you want to animate the icon, set it to true.
     animated: false
@@ -802,6 +801,8 @@ note:
 
 # Tabs tag
 tabs:
+  # Make the nav bar of tabs with long content stick to the top.
+  sticky: false
   transition:
     tabs: false
     labels: true
