@@ -1,5 +1,5 @@
 ---
-title: XG Firewall v18のインストール（事前準備）
+title: Sophos Firewall のインストール（事前準備）
 date: 2020-03-06 18:12:36
 tags:
   - XG Firewall
@@ -8,12 +8,12 @@ categories:
 #comments: false
 ---
 <p class="onepoint">この記事で実現すること</p>
-XG Firewall v18をESXi 6.7で稼働させるためのインストールイメージ（isoファイル）をダウンロードし、ESXi上で、XGのための仮想マシンを構築できるようになります。
+Sophos FirewallをESXi 6.7で稼働させるためのインストールイメージ（isoファイル）をダウンロードし、ESXi上で、Sophos Firewallのための仮想マシンを構築できるようになります。
 
 <!-- more -->
-## XG Firewallのダウンロード
+## Sophos Firewallのダウンロード
 
-Sophosのサイトより、"Sophos XG Firewall Home Edition"モジュールをダウンロードします。
+Sophosのサイトより、"Sophos Firewall Home Edition"モジュールをダウンロードします。
 
 https://www.sophos.com/ja-jp/products/free-tools.aspx
 {% linkgrid %}
@@ -21,15 +21,17 @@ Sophos 無償ツール | https://www.sophos.com/ja-jp/products/free-tools.aspx |
 {% endlinkgrid %}
 
 <!-- more -->
-氏名、勤務先メールアドレスとありますが、ホームユースなので、遠慮なくGmailなどのアドレスを登録します。あっさりとISOファイルのダウンロードボタンが表示されると共に、メール宛にライセンス番号が送られてきます。利用条件としては、あくまで家庭での個人的な使用に限って無料です。
+Sophos Firewallは、V18まではXG Firewallと呼ばれていました。v18.5よりSophos Firewallに名前が変更になっています。
+
+ダウンロードサイトでは氏名、勤務先メールアドレスとありますが、ホームユースなので、遠慮なくGmailなどのアドレスを登録します。あっさりとISOファイルのダウンロードボタンが表示されると共に、メール宛にライセンス番号が送られてきます。利用条件としては、あくまで家庭での個人的な使用に限って無料です。
 ダウンロードはISOイメージです。2021年10月16日時点では、最新のバージョンは"SW-18.5.1_MR-1-326.iso"となっています。
 
 クライアントPC（Windowsなど）から、ESXi管理画面にログインします。ESXiの管理画面の左ペインのストレージからデフォルトのストレージである、datastore1を選択し、データストアブラウザをクリックして下さい。次にアップロードボタンをクリックし、ダウンロードされた"SW-18.5.1_MR-1-326.iso"ファイルをアップロードして下さい。
 
 {% asset_img datastore.png alt %}
- 　
+
 ## 仮想マシンの作成
- 　
+
 ここから仮想マシンの初期設定です。
 
 1. ESXiの管理画面の仮想マシンから新規仮想マシンを選択します。
@@ -46,7 +48,7 @@ Sophos 無償ツール | https://www.sophos.com/ja-jp/products/free-tools.aspx |
 
 {% asset_img vm4.png alt %}
 
-3. また、仮想CD-ROMにXG Firewallのインストールイメージ（isoファイル）をマウントします。
+3. また、仮想CD-ROMにFirewallのインストールイメージ（isoファイル）をマウントします。
 
 {% asset_img vm4-1.png alt %}
 
