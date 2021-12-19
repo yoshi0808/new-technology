@@ -5,33 +5,30 @@
 
 - Node.js
 - HEXO
-- Theme next
+- Theme NEXT
 
 ### Utilities
 
 - flowchart... mermaid
 - codebloc... highlight.js
 - network diaglam(editable png)... draw.io
-(See "package.json" for other utilities)
+(See "package.json" for the other utilities)
 
-#### JavaScript
+#### The another Utilities
 
-jquery
- "https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"
+JavaScrit
+js-cookie
+https://github.com/js-cookie/js-cookie
 
-jquery.cookie.js
- "https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"
+SimpleGDPR
+https://github.com/borisrch/simple-gdpr
 
-toastr.js
- "https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"
- "https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"
-
-### about folder
+### folder
 
 Source
 _data...css and other customization
 _posts... articles (markdown files)
-_about... HEXO's fixed folder (about me)
-Categories... HEXO's fixed folders (categories)
-Disclaimer.... .HEXO's fixed folders (Disclaimers)
+_about... Site Policy
+Categories
+PrivacyPolicy
 Images... icons, logos
