@@ -11,7 +11,6 @@ comments: false
   Cookies.remove('PRVCY202112', { path: '/' })
 </script>
 
-
 プライバシーポリシーの同意を解除しました。クッキーへの書き込みおよびGoogle Analyticsの利用を停止しました。
 
-<a href= "/new-technology/">トップページへ :arrow_up:</a></div>
+<a href= "/new-technology/">トップページへ :arrow_up:</a>
