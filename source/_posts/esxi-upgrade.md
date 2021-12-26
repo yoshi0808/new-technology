@@ -43,7 +43,14 @@ VMware互換性ガイドは個人向けのハードウェアが殆ど列挙さ�
 
 また、上記マニュアルには注意点としての記載がありませんが、スナップショットを取得していない状態でアップグレードされる事をお勧めします。
 
-この記事はESXi6.7からESXi7.0にアップグレードする例を記載しています。
+この記事はESXi6.7からESXi7.0にアップグレードする例を記載しています。厳密なアップグレードパスについては以下を確認してください。
+{% asset_img upgradepath.png 1024 alt %}
+
+> VMware Product Interoperability Matrix
+ <https://interopmatrix.vmware.com/Upgrade?productId=1>
+
+※ESXi7.0U3は2021/12/25時点現在は提供中止となっています。
+
 
 ## 仮想マシンのバックアップ（任意）
 

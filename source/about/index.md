@@ -34,14 +34,15 @@ JavaScript
 
 このサイトはオープンシステムや無償サービスを活用して運用しています。原則として、GitHubに登録されているオープンシステムでメンテナンスが短期間に行われている（放置されていない）プロダクトを選定しています。
 
-| 項目                 | 設定内容                                                                     |
-| -------------------- | ---------------------------------------------------------------------------- |
-| 1.GitHub Pages       | GitHub社が提供するWebサイトのホスティングサービス <https://pages.github.com> |
-| 2.TLS/SSL            | 暗号化通信するための仕組みで、GitHub Pagesにて提供されます                   |
-| 3.Google Analytics 4 | Google社が提供するアクセス解析システムです  <https://analytics.google.com>   |
-| 4.Hexo               | JavaScriptによる静的サイトジェネレータ <https://hexo.io/>                    |
-| 5.Theme NEXT         | Hexo向けのサイトデザインテーマ <https://theme-next.js.org>                   |
-| 6.NPM                | ソフトウェア（パッケージ）管理システム <https://www.npmjs.com>               |
+| 項目                       | 設定内容                                                                                          |
+| -------------------------- | ------------------------------------------------------------------------------------------------- |
+| 1.GitHub Pages             | GitHub社が提供するWebサイトのホスティングサービス <https://pages.github.com>                      |
+| 2.TLS/SSL                  | 暗号化通信するための仕組みで、GitHub Pagesにて提供されます                                        |
+| 3.Google Analytics 4       | Google社が提供するアクセス解析システムです  <https://analytics.google.com>                        |
+| 4.Cloudflare Web Analytics | Cloudflare社が提供するアクセス解析システムです  <https://www.cloudflare.com/ja-jp/web-analytics/> |
+| 5.Hexo                     | JavaScriptによる静的サイトジェネレータ <https://hexo.io/>                                         |
+| 6.Theme NEXT               | Hexo向けのサイトデザインテーマ <https://theme-next.js.org>                                        |
+| 7.NPM                      | ソフトウェア（パッケージ）管理システム <https://www.npmjs.com>                                    |
 
 このサイトはGitHubのパブリックリポジトリにてソースコードを公開しています。Hexo内で利用しているJavaScriptは、リポジトリのpackage.jsonで管理されています。
 <https://github.com/yoshi0808/new-technology/>
@@ -56,7 +57,7 @@ HexoやTheme NEXTに装備されていないJavaScriptはGoogleおよびCDNか�
 > SimpleGDPR
 <https://github.com/borisrch/simple-gdpr>
 
-CDNはjsDelivrを利用しています。詳細は[プライバシーポリシー](/new-technology/privacypolicy/)を参照してください。
+CDNはjsDelivrを利用しています。また、Web分析におけるGoogle Analytics、Cloudflare Web Analyticsそれぞれの詳細は[プライバシーポリシー](/new-technology/privacypolicy/)を参照してください。
 
 ## 収益化を目的としていません
 
