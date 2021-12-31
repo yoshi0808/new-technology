@@ -65,7 +65,10 @@ VMware互換性ガイドは個人向けのハードウェアが殆ど列挙さ�
 > ESXi ホストの構成のバックアップ方法 (2042141)
  <https://kb.vmware.com/s/article/2042141?lang=ja>
 
-1. SSHでESXiに接続します。
+1. SSHを有効にする
+ ESXiの左ペインの{% label primary@ホストー管理 %}から、"サービス"のタブをクリックし、"TSM-SSH"を選択し"起動"ボタンをクリックし、SSHを有効にします。
+ {% asset_img esxi1.png alt %}
+2. SSHクライアントでESXiに接続します（Windows10では{% label primary@オプション機能を追加する %})からOpenSSH クライアントをインストールできます）
 2. ストレージの確実な同期のためのコマンド`vim-cmd hostsvc/firmware/sync_config`を実行します。
 3. バックアップコマンド`vim-cmd hostsvc/firmware/backup_config`を実行します。
 4. 画面にダウンロードパスが表示されるのでそのURLにブラウザから接続し構成情報をダウンロードします。
@@ -86,6 +89,7 @@ Bundle can be downloaded at : http://*/downloads/52ce000f-cad4-20c0-078d-a111fa1
  <https://customerconnect.vmware.com/jp/web/vmware/evalcenter?p=free-esxi7>
 
 ## ESXi6.7のダウングレード（任意）
+
 ESXi6.7で運用されている方は最新パッチの適用がなされているかと思います。ESXi6.7の最新パッチはESXi670-202111001でリリース日は2021年11月23日です。一方、ESXi7.0Update2aのリリース日は2021年4月29日です。
 
 結論から書きますが、この日付が逆転していることでESXi6.7からESXi7.0へのアップグレードが行えません。
@@ -217,7 +221,7 @@ VMware Toolsを最新にした後、仮想マシンハードウェアをアッ�
 {% asset_img upgrade-vm.png 800 alt %}
 
 ## 補足
-今回はこのブログで紹介している各プロダクトについてESXi7.0の動作確認のためアップグレードの記事を書きましたがESXi6.7は非常に安定しています。
+今回はこのブログで紹介している各プロダクトについてESXi7.0の動作確認のためアップグレードの記事を書きましたがESXi6.7は非常に安定しており、個人向け用途であれば無理に7.0にアップグレードする理由は見当たりません。
 
 ## Apache Log4jの脆弱性について
 昨今話題になっているApacheのLog4jの脆弱性について、VMware製品でもいくつか対象となるプロダクトがありますが、**vSphere ESXiは脆弱性の影響を受けません**。
