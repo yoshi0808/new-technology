@@ -15,16 +15,16 @@ date: 2020-06-14 22:19:20
 
 ## パッチ適用に必要なもの
 
-SSHでESXiに接続し、コマンドラインでパッチを適用します。昔から有名なのはTera Termですが、Windows10ではOpenSSHがサポートされていますので、{% label primary@オプション機能を追加する %}から{% label primary@OpenSSH クライアント %}を有効にし、コマンドラインから`ssh  root@ESXiのIPアドレス`で接続可能です。
+SSHでESXiに接続し、コマンドラインでパッチを適用します。昔から有名なのはTera Termですが、Windows10ではOpenSSHがサポートされていますので、{% label primary@オプション機能を追加する %}から{% label primary@OpenSSHクライアント %}を有効にし、コマンドラインから`ssh  root@ESXiのIPアドレス`で接続可能です。
 
 ## VMwareのパッチ情報
 
 ESXiのパッチ情報は以下を参照してください。当該ページの左ペインメニューには最新パッチの情報が掲載されていますので、最新のパッチ情報を辿ってください。また、過去のパッチの情報も提供されています。
-> VMware ESXi 6.7、パッチ リリース ESXi670-202111001
- <https://docs.vmware.com/jp/VMware-vSphere/6.7/rn/esxi670-202111001.html>
+> VMware ESXi 6.7、パッチ リリース ESXi670-202201001
+ <https://docs.vmware.com/jp/VMware-vSphere/6.7/rn/esxi670-202201001.html>
 
-> VMware ESXi 7.0 Update 2d
- <https://docs.vmware.com/jp/VMware-vSphere/7.0/rn/vsphere-esxi-70u2d-release-notes.html>
+> VMware ESXi 7.0 Update 3c
+ <https://docs.vmware.com/en/VMware-vSphere/7.0/rn/vsphere-esxi-70u3c-release-notes.html>
 
 ## 製品パッチの情報を入手する
 
@@ -40,7 +40,7 @@ ESXiのセットアップ時にCustomer Connectへの登録を行い、個人向
 
 {% asset_img myvm2.png alt %}
 
-基本的にESXiは6.7のバージョンのまま修正パッチを適用する場合はこの6.7という2桁の数字は変わりません。この数字が変わる更新をアップグレードと呼びます。それ以外の小さい更新をパッチまたはアップデートと呼びます。VMwareのパッチは累積パッチとなるため、最新のパッチを適用するだけでよく、古いパッチの適用は必要ありません。ここでは最新版のパッチをダウンロードします。また作業確認後、パッチが適用された確認のためパッチのビルド番号を利用するので、ビルド番号（今回は"16316930"）を控えておいてください。
+基本的にESXiは7.0のバージョンのまま修正パッチを適用する場合はこの7.0という2桁の数字は変わりません。この数字が変わる更新をアップグレードと呼びます。それ以外の小さい更新をパッチまたはアップデートと呼びます。VMwareのパッチは累積パッチとなるため、最新のパッチを適用するだけでよく、古いパッチの適用は必要ありません。ここでは最新版のパッチをダウンロードします。
 
 ## パッチ適用作業
 
@@ -89,14 +89,36 @@ ESXiにログインし、以下の作業を行います。
  ```
 
 6. パッチ適用コマンドを入力します
- コマンドは、esxcli software vib update -d "/vmfs/volumes/*Datastore/DirectoryName*/*patchName*.zip"となります。パッチファイルはフルパスで指定する事になります。従い、以下のコマンドを入力します。
+ パッチのコマンドは2種類あります。パッチだけであればvib updateで可能ですが、新しいドライバなども含めたprofileとして整合性が取れたvibのアップデートはprofile updateを実行します。丁寧にprofileを指定する方法が一般的です。ここでは、2022年1月27日に発表されたESXi7.0Update3cにアップデートすることを例にします。
+ - esxcle software profile update（推奨）
+ 現在の実行中のprofileを確認します。`esxcli software profile get`
  ``` bash
- 　[root@esxi:~] esxcli software vib update -d "/vmfs/volumes/Datastore/DirectoryName/ESXi670-202006001.zip"
+[root@esxi:~] esxcli software profile get
+(Updated) ESXi-7.0U2a-17867351-standard
+ ```
+ 一般的にはバージョンの最後に"-standard"の文字が付いています。standard版がインストールされている事を示します。
+ 次に、パッチファイルに登録されているprofileを確認します。
+ ``` bash
+ [root@esxi] esxcli software sources profile list -d /vmfs/volumes/*Datastore/DirectoryName*/VMware-ESXi-7.0U3c-19193900-depot.zip
+Name                           Vendor        Acceptance Level  Creation Time        Modification Time
+-----------------------------  ------------  ----------------  -------------------  -----------------
+ESXi-7.0U3c-19193900-standard  VMware, Inc.  PartnerSupported  2022-01-18T00:00:00  2022-01-18T00:00:00
+ESXi-7.0U3c-19193900-no-tools  VMware, Inc.  PartnerSupported  2022-01-18T00:00:00  2022-01-12T00:03:42
+ ```
+ 以下のようにパッチファイルのzipをフルパスで指定し、VMwareのパッチ情報にあるプロファイル名を指定しパッチを適用します。
+ ``` bash
+  [root@esxi:~] esxcli software profile update -d /vmfs/volumes/*Datastore/DirectoryName*/VMware-ESXi-7.0U3c-19193900-depot.zip -p ESXi-7.0U3c-19193900-standard
  ```
 
-   実行後しばらくしてから、たくさんの更新結果としての文字の羅列が一気に表示され、再びコマンドプロンプトになるので、`# reboot`としてESXiを再起動します。
+ - esxcli software vib update（ご参考）
+ インストール済みのvibのパッチであればこちらでも実施可能です。
+ ``` bash
+ [root@esxi:~] esxcli software vib update -d "/vmfs/volumes/Datastore/DirectoryName/ESXi670-202006001.zip"
+ ```
 
-7. 再起動完了後、ESXiにログインします。左ペインメニューの"ホスト"をクリックし、バージョンの表記に今回パッチを当てたビルド番号が表示されている事を確認してください
+7. 実行後しばらくしてから、たくさんの更新結果としての文字の羅列が一気に表示され、再びコマンドプロンプトになるので、`# reboot`としてESXiを再起動します。
+
+8. 再起動完了後、ESXiにログインします。左ペインメニューの"ホスト"をクリックし、バージョンの表記に今回パッチを当てたビルド番号が表示されている事を確認してください
  {% asset_img esxi4.png alt %}
 
    ESXi7.0は上記画面ではビルド番号までは判明しません。sshでESXiに接続し、`esxcli system version get`を実行し確認します。
@@ -104,11 +126,10 @@ ESXiにログインし、以下の作業を行います。
    ``` bash
    [root@esxi:~] esxcli system version get
    Product: VMware ESXi
-   Version: 7.0.2
-   Build: Releasebuild-18538813
-   Update: 2
-   Patch: 25
-   [root@esxi:~]
+   Version: 7.0.3
+   Build: Releasebuild-19193900
+   Update: 3
+   Patch: 20
    ```
 
 8. 最後にこれまで実施してきたメンテナンス準備とは反対の作業をします。メンテナンスモードの終了・SSHの無効化・仮想マシンの起動と続けます。

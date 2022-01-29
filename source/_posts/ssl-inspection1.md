@@ -1,5 +1,5 @@
 ---
-title: XG Firewall v18のSSL/TLSンスペクションの設定
+title: XG Firewall v18のSSL/TLSインスペクションの設定
 tags:
   - XG Firewall
 categories:
