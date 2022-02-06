@@ -83,12 +83,14 @@ Bundle can be downloaded at : http://*/downloads/52ce000f-cad4-20c0-078d-a111fa1
 
 ## アップグレード対象のESXi7.0を確認する
 
-実際にESXiのISOインストーラをダウンロードしようとすると、12月25日時点ではESXi7.0 Update2aが対象になっています。
+ESXiのISOインストーラをダウンロードは、2022年2月6日時点ではESXi7.0 Update3cとなっています。
 
->VMware vSphere Hypervisor 7.0 Update2a ダウンロード センター(※VMware Customer Connectへログインが必要です)
+>VMware vSphere Hypervisor 7.0 Update3c ダウンロード センター(※VMware Customer Connectへログインが必要です)
  <https://customerconnect.vmware.com/jp/web/vmware/evalcenter?p=free-esxi7>
 
-## ESXi6.7のダウングレード（任意）
+## ESXi6.7のダウングレード（ご参考）
+
+（この章は、ESXi6.7からESXi7.0Update2aへのアップグレード時にエラーが発生するケースがあり記載しています）
 
 ESXi6.7で運用されている方は最新パッチの適用がなされているかと思います。ESXi6.7の最新パッチはESXi670-202111001でリリース日は2021年11月23日です。一方、ESXi7.0Update2aのリリース日は2021年4月29日です。
 
