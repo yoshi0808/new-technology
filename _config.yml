@@ -137,23 +137,3 @@ search:
   field: post
   content: true
   format: html
-
-# Markdown-it config
-## Docs: https://github.com/celsomiranda/hexo-renderer-markdown-it/wiki
-markdown:
-  render:
-    html: true # Doesn't escape HTML content so the tags will appear as html.
-    xhtmlOut: false # Parser will not produce XHTML compliant code.
-    breaks: true # Parser produces `<br>` tags every time there is a line break in the source document.
-    linkify: false # Returns text links as text.
-    typographer: true # Substitution of common typographical elements will take place.
-    quotes: '“”‘’' # "double" will be turned into “single”
-                   # 'single' will be turned into ‘single’
-  plugins:
-
-  anchors:
-    level: 2 # Minimum level for ID creation. (Ex. h2 to h6)
-    collisionSuffix: 'v' # A suffix that is prepended to the number given if the ID is repeated.
-    permalink: true # If true, creates an anchor tag with a permalink besides the heading.
-    permalinkClass: header-anchor # Class used for the permalink anchor tag.
-    permalinkSymbol: ¶ # The symbol used to make the permalink.
