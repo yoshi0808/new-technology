@@ -23,7 +23,7 @@ XG Firewall(以下、XG)を導入した場合のネットワーク構成は以�
 
 ネットワークカードを検索する場合は、検索カテゴリに{% label primary @I/Oデバイス %}、I/Oデバイスタイプに{% label primary @Network %}を選択します。お目当ての製品がある場合は製品名を入力し検索すると良いでしょう。
 
-ただし、法人向けの要素が強く個人が利用するデバイスがあまりリストされていません。CPUおよびネットワークカードはintel製が比較的認識しやすいという傾向があります。一般的には、以下のものが安全策で好まれるようで、私も昔はこのNICを2枚差してXGを使っていました。また、ストレージについてはESXi6.7からはsataのSSDで認識しないというのは少ないようですが、M2.NVMeはintel以外認識しないケースがあるようです。私はsataについては、Transcend、CrucialをESXiで使っています。
+ただし、法人向けの要素が強く個人が利用するデバイスがあまりリストされていません。CPUおよびネットワークカードはintel製が比較的認識しやすいという傾向があります。一般的には、以下のものが安全策で好まれるようで、私も昔はこのNICを2枚差してXGを使っていました。また、ストレージについてはESXi6.7からはsataのSSDで認識しないというのは少ないようですが、M2.NVMeは対象が絞られます。
 
 > インテル® ギガビット CT デスクトップ・アダプター
  <https://www.intel.co.jp/content/www/jp/ja/products/details/ethernet/gigabit-network-adapters/gigabit-ct-desktop-adapters.html>
@@ -36,3 +36,7 @@ XG Firewall(以下、XG)を導入した場合のネットワーク構成は以�
  {% asset_img x550.png 800 alt %}
 
 このNICだと、1つのPCI Expressバスにこのカード1枚を刺し、WanとLanのインタフェースを用意できます。
+
+（2022-3-25更新）
+最近、Ryzenでマシンを一新しました。NVMeも動作させており、参考までにこちらの記事も参照して下さい。
+{% post_link building-setup-esxi7 %}

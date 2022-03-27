@@ -10,7 +10,7 @@ date: 2020-02-29 13:23:22
 
 <p class="onepoint">この記事で実現すること</p>
 
-Sophos Firewall（旧名称はXG Firewall）を仮想環境で稼働させるために、VMware ESXiをインストールします。バージョンは6.7、または7.0を対象としています。
+Sophos Firewall（旧名称はXG Firewall）を仮想環境で稼働させるために、VMware ESXiをインストールします。
 
 <!-- more -->
 
@@ -39,13 +39,7 @@ CPUとネットワークカードはintel製を選択されることをお勧め
 
 1. ESXiをインストールする予定の2つのNICを持ったPC1台と、ISOファイルをインストールするための最低8GB、推奨32GB以上のUSBメディアを用意してください。
 2. ESXiのダウンロードにはVMwareのアカウント（無償）が必要です。VMWareのサイトでアカウント作成、製品（vSphere Hypervisor）をダウンロードします。
-> vSphere Hypervisor 6.7
- <https://my.vmware.com/jp/web/vmware/evalcenter?p=free-esxi6>
-{% linkgrid %}
 
-vSphere Hypervisor 6.7 | https://my.vmware.com/jp/web/vmware/evalcenter?p=free-esxi6 | (https://my.vmware.com/jp/web/vmware/evalcenter?p=free-esxi6)このダウンロード センターには、技術資料、インストール デモ、および vSphere Hypervisor のトレーニングが用意されています。 | vSphere-Client.png
-
-{% endlinkgrid %}
 > vSphere Hypervisor 7.0
   <https://my.vmware.com/jp/web/vmware/evalcenter?p=free-esxi7>
 {% linkgrid %}
@@ -54,7 +48,7 @@ vSphere Hypervisor 7.0 | https://my.vmware.com/jp/web/vmware/evalcenter?p=free-e
 
 {% endlinkgrid %}
 
-3. 以下のYouTube動画を参考にメディアを作成します。USBメディア作成に用いるRufusは64bit版のWindows OSが必要です。
+1. 以下のYouTube動画を参考にメディアを作成します。USBメディア作成に用いるRufusは64bit版のWindows OSが必要です。
  > <https://www.youtube.com/watch?v=7gYnyIaQH9A>
  {% asset_img rufus.png 800 alt %}
 
