@@ -24,15 +24,15 @@ categories: Hardware
 
 以下のハードウェア構成となりました。
 
-| パーツ       | 製品名                                         |
-| ------------ | ---------------------------------------------- |
-| CPU          | Ryzen7 5700G 3.8GHz(Radeon Graphics)           |
-| マザーボード | GIGABYTE B550M S2H Micro-ATX                   |
-| メモリ       | SanMax DDR4-3200 1.2Volt Skhynix(88H) 32GB x 2 |
-| NVMe         | Samsung 970EVO Plus PCIE x Gen3 x 4 1TB        |
-| SSD          | WesternDigital Blue 500GB                      |
-| NIC          | ipolex OEM (intel X710 chipset) 10GbE 4Port    |
-| 電源         | スリムタイプ 300W電源                          |
+| パーツ       | 製品名                                            |
+| ------------ | ------------------------------------------------- |
+| CPU          | Ryzen7 5700G 3.8GHz(Radeon Graphics)              |
+| マザーボード | GIGABYTE B550M S2H Micro-ATX                      |
+| メモリ       | SanMax DDR4-3200 1.2Volt Skhynix(88H) 32GB x 2    |
+| NVMe         | Samsung 970EVO Plus PCIE x Gen3 x 4 1TB           |
+| SSD          | WesternDigital Blue 500GB                         |
+| NIC          | ipolex OEM (intel X710 chipset) 10GbE SFP＋ 4Port |
+| 電源         | スリムタイプ 300W電源                             |
 
 キーボード・マウス・NICを除き163,480円でした。NICはダイレクトアタッチケーブル2本を含め$531でした（送料と関税入れると＄580程度）。
 
@@ -59,7 +59,7 @@ VMware Commmunityで970EVO Plusが動作するという情報が数件あった�
 
 ### NIC
 
-それなりの数のvmを動作させるとなると必然的に NICは10Gbpsを用意したくなります。過去からintel X550-T2を使ってきてそのまま使い続けるのでも良かったのですが、私の場合、クローゼットに光回線とモデム、CD管が集約されてしまっていることから、そこにあまり熱の出すハードウェアを置けません。次回はSFP/SFP+にしようと決めていました。が、NICについては昨今の半導体不足で、欲しいカードは殆ど品切れの状態です。それでAmazon.comでipolexというSFPメーカーがOEM提供しているintel X710のチップが乗った4Portの10GbEカードを購入しました。intel純正のX710のSFP+4Portはフルハイトのカードですが、このipolex社のNICはロープロファイルでしたので私にとっては都合が良いものでした。Mellanoxも良かったのですが主力製品は40Gの世界に移行しており、企業向けのイメージが強くあまり選定に前向きになれませんでした。Connect X-4が対象になります。
+それなりの数のvmを動作させるとなると必然的にNICは10Gbpsを用意したくなります。過去からintel X550-T2を使ってきてそのまま使い続けるのでも良かったのですが、私の場合、クローゼットに光回線とモデム、CD管が集約されてしまっていることから、そこにあまり熱の出すハードウェアを置けません。次回はSFP/SFP+にしようと決めていました。が、NICについては昨今の半導体不足で、欲しいカードは殆ど品切れの状態です。それでAmazon.comでipolexというSFPメーカーがOEM提供しているintel X710のチップが乗った4Portの10GbEカードを購入しました。intel純正のX710のSFP+4Portはフルハイトのカードですが、このipolex社のNICはロープロファイルでしたので私にとっては都合が良いものでした。Mellanoxも良かったのですが主力製品は40Gの世界に移行しており、企業向けのイメージが強くあまり選定に前向きになれませんでした。Connect X-4が対象になります。
 
 {% asset_img ipolex.png 640 alt %}
 
@@ -123,46 +123,56 @@ vmのWindows10で実行したCrystal Disk Markの結果です。
 
 ## ネットワークのパフォーマンス
 
-こちらは10GbEのNASに対するiperf3の結果ですが、Windows10では5並列実行で及第点となる速度が出ています。シングルスレッドだと6Gbps程度が限界のようです。元々、Windows版のiperf3はUNIXからの移植のためのヘルパー機能であるランタイムライブラリ「Cygwin1.dll」を使っておりパフォーマンスが出づらい状況にあります。さらに対向する端末の能力が高くないとこのような結果になりやすいです。
+こちらはWindows10Proのvmから10GbEのNASに対するiperf3の結果です。シングルスレッドだと7Gbps程度が限界のようです。元々、Windows版のiperf3はUNIXからの移植のためのヘルパー機能であるランタイムライブラリ「Cygwin1.dll」を使っておりパフォーマンスが出づらい状況にあります。さらに対向する端末の能力が高くないとこのような結果になりやすいです。10並列でようやく期待値となりました。
+
+- シングルスレッド
 
 ```
-C:\Users\yoshi>iperf3 -c 192.168.x.x -P5
+C:\Users>iperf3 -c 192.168.x.x
+[ ID] Interval           Transfer     Bandwidth
+[  4]   0.00-10.00  sec  8.48 GBytes  7.29 Gbits/sec                  sender
+[  4]   0.00-10.00  sec  8.48 GBytes  7.29 Gbits/sec                  receiver
+```
+
+- 10スレッド
+
+```
+C:\Users>iperf3 -c 192.168.x.x -P10
 [ ID] Interval           Transfer     Bandwidth
 (省略)
-[SUM]   0.00-10.00  sec  9.82 GBytes  8.43 Gbits/sec                  sender
-[SUM]   0.00-10.00  sec  9.77 GBytes  8.39 Gbits/sec                  receiver
+[SUM]   0.00-10.00  sec  10.9 GBytes  9.33 Gbits/sec                  sender
+[SUM]   0.00-10.00  sec  10.8 GBytes  9.28 Gbits/sec                  receiver
 ```
 
-ubuntu20は問題なしです。計測機器の間にはスイッチが2台入り、スイッチ間は10GBase-Tで接続されているのでこの程度だと思います。
+ubuntu20は問題なしです。
 
 ```
 
-user1@ubuntu1:~$ iperf3 -c 192.168.x.x
+user@ubuntu1:~$ iperf3 -c 192.168.x.x
+
 Connecting to host 192.168.x.x, port 5201
-[  5] local 192.168.x.x port 37044 connected to 192.168.x.x port 5201
+[  5] local 192.168.x.x port 55808 connected to 192.168.x.x port 5201
 [ ID] Interval           Transfer     Bitrate         Retr  Cwnd
-[  5]   0.00-1.00   sec  1.09 GBytes  9.39 Gbits/sec   13   1.25 MBytes
-[  5]   1.00-2.00   sec  1.10 GBytes  9.42 Gbits/sec    0   1.34 MBytes
-[  5]   2.00-3.00   sec  1.09 GBytes  9.38 Gbits/sec    0   1.42 MBytes
-[  5]   3.00-4.00   sec  1.09 GBytes  9.40 Gbits/sec  588   1.33 MBytes
-[  5]   4.00-5.00   sec  1.09 GBytes  9.37 Gbits/sec    0   1.46 MBytes
-[  5]   5.00-6.00   sec  1.09 GBytes  9.41 Gbits/sec    0   1.49 MBytes
-[  5]   6.00-7.00   sec  1.09 GBytes  9.34 Gbits/sec   41   1.15 MBytes
-[  5]   7.00-8.00   sec  1.06 GBytes  9.13 Gbits/sec    0   1.34 MBytes
-[  5]   8.00-9.00   sec  1.09 GBytes  9.37 Gbits/sec    0   1.34 MBytes
-[  5]   9.00-10.00  sec  1.06 GBytes  9.10 Gbits/sec    0   1.39 MBytes
+[  5]   0.00-1.00   sec  1.09 GBytes  9.39 Gbits/sec    0   1.69 MBytes
+[  5]   1.00-2.00   sec  1.07 GBytes  9.20 Gbits/sec    0   1.69 MBytes
+[  5]   2.00-3.00   sec  1.10 GBytes  9.42 Gbits/sec    0   1.69 MBytes
+[  5]   3.00-4.00   sec  1.09 GBytes  9.40 Gbits/sec    0   2.10 MBytes
+[  5]   4.00-5.00   sec  1.10 GBytes  9.42 Gbits/sec    0   2.21 MBytes
+[  5]   5.00-6.00   sec  1.09 GBytes  9.40 Gbits/sec  696   1.75 MBytes
+[  5]   6.00-7.00   sec  1.09 GBytes  9.41 Gbits/sec    0   1.75 MBytes
+[  5]   7.00-8.00   sec  1.10 GBytes  9.42 Gbits/sec    0   1.75 MBytes
+[  5]   8.00-9.00   sec  1.10 GBytes  9.42 Gbits/sec    0   1.75 MBytes
+[  5]   9.00-10.00  sec  1.06 GBytes  9.10 Gbits/sec    0   2.22 MBytes
 - - - - - - - - - - - - - - - - - - - - - - - - -
 [ ID] Interval           Transfer     Bitrate         Retr
-[  5]   0.00-10.00  sec  10.9 GBytes  9.33 Gbits/sec  642             sender
-[  5]   0.00-10.00  sec  10.9 GBytes  9.33 Gbits/sec                  receiver
+[  5]   0.00-10.00  sec  10.9 GBytes  9.36 Gbits/sec  696             sender
+[  5]   0.00-10.00  sec  10.9 GBytes  9.34 Gbits/sec                  receiver
 
 iperf Done.
 
 ```
 
-速度としては問題ありませんが、ubuntu側にRetrの数字が出ているので、対向側端末の能力不足で送信側のTCPの再送が入っているようです。
-
-余談ですが、こういったシステム間の速度差がある事で、意図せずプアなマシンに過負荷を与えシステム全体のボトルネックが生まれる場合があります。
+速度としては問題ありませんが、ubuntu側にRetrの数字が出ており、対向側端末の能力不足で送信側のTCPの再送が稀に入っています。
 
 ## 電力チェック
 
@@ -176,23 +186,32 @@ iperf Done.
 
 CPU使用率は綺麗に分散していますしまだ半分ほど余力があります。Sophos FirewallのIPSは4つのスレッドで動作すると聞いていたことがあったので、1つのスレッド（vCPU）に偏るか最大4つのスレッドに偏るかと思いましたが、良い意味で予想は外れました。電力については、何もしていない時で35W、速度テスト実施中でも100Wに到達しない程度です。
 
-ちなみに、数分速度テストを実施した後のSFP+モジュールは冷たく感じる程度で熱を持っていませんでした。
+ちなみに、数分速度テストを実施した後のダイレクトアタッチケーブルのSFP+モジュール部分は冷たく感じる程度で全く熱を持っていませんでした。
 
 ## SFP+について
 
-今回、SFP+の4PortのNICを選択しましたが、インターネット接続側のホームゲートウェイ(HGW)は従来のRJ-45の端子であることが殆どです。この場合は以下の選択があります。
-1. 拡張性のあるマザーボードを選定し、2つのPCIeスロットに2枚のネットワークカードを挿す（一つはRJ45、一つはSFP＋）
-2. RJ45ポートとSFP＋ポートを持つスイッチングハブを経由し、ESXiからハブにはSFP＋で接続、ハブからHGWにはRJ45で接続する。この場合はLAN側、WAN側とVLANでネットワークセグメントを分離する必要があります（私はこの方法を選択）。
-3. SFP＋からRJ45への変換専用の小さなハブを用意する(CRS305-1G-4S+IN)。但し、この場合もRJ45変換のSFP＋トランシーバーは必要です。
+今回、SFP+の4PortのNICを選択しましたが、インターネット接続側のホームゲートウェイ（HGW)は従来のRJ-45の端子であることが殆どです。この場合は以下の選択肢があります。
+1. 拡張性のあるマザーボードを選定し、2つのPCIeスロットに2枚のネットワークカードを挿す（1つはRJ45、1つはSFP＋）
+2. RJ45ポートとSFP＋ポートを持つスイッチングハブを経由し、ESXiからスイッチにはSFP＋で接続、スイッチからHGWにはRJ45で接続する。この場合はスイッチにおけるLAN側、WAN側とをVLANでネットワークセグメントを分離する必要があります（私はこの方法を選択）。
+3. SFP＋からRJ45への変換専用の小さなスイッチを用意する（CRS305-1G-4S+IN)。但し、この場合もRJ45変換のSFP＋トランシーバーは必要です。HGWが2.5GbpsのRJ45タイプであればQNAPの小さいスイッチも合うでしょうか。
+ - MikroTik
  <https://mikrotik.com/product/crs305_1g_4s_in>
+ - QNAP
+ <https://www.qnap.com/ja-jp/product/qsw-2104-2s>
 
-絶対的にお勧めしないのは、NICのSFP＋ポートにRJ45変換のためのトランシーバーを接続することです。10GbpsのRJ45変換トランシーバーは電力消費が大きく、発熱も大きいため、NICに対し大きな負担となります。消費電力の関係でケーブルも30mまでという制約がありますし、触れなくなるほど高熱になるRJ45トランシーバーをNICに接続するのはNIC破損の危険が高いです。「やってはいけない」という記事が見つからないのが不思議なくらいです。テストのために少しの時間接続するといった事は可能です。MicroTikでも10GbpsのRJ45は隣接するポートを使わないなどの推奨があるようです。
+お勧めしないのは、NICのSFP＋ポートにRJ45変換のための10Gトランシーバーを接続することです。10GのRJ45トランシーバーは3W程度の消費電力ではありますが、触れなくなるほど高熱（70℃以上）になり、NICに接続するのはNIC破損の危険が高いです。
+スイッチに10Gトランシーバーを接続する場合であっても、MicroTikでは以下のガイダンスを提示しています。
+
+> MikroTik S+RJ10 general guidance
+ 前述の通り、S+RJ10(10Gbps RJ45トランシーバー)は通常のトランシーバーよりも発熱が大きく、特にリニアSFPケージを4つ持つデバイスでは、並べて置くとオーバーヒートにつながる可能性があります。S+RJ10は2個おきに配置し、その間に光トランシーバーか空きポートを確保することをお勧めします。
+
+ <https://wiki.mikrotik.com/wiki/S%2BRJ10_general_guidance>
 
 ## 補足
 
 省電力化と発熱対策の目標は達成しましたが、NICの価格は高止まりしていて、買うタイミングとしては躊躇してしまうところです。3年半前と1年半前にそれぞれ3万円程度で購入したX550-T2が今は5万円以上しています。Ryzen5700Gが45,000円でStarTech.comのOEM版X550-T2相当が45,800円で値段が同程度になっているのは驚きです。（共にAmazon価格）
 
-Mellanoxの現行モデルはやはり在庫を殆ど見かけない状況ですが、古いMellanoxのConnect X-3(MCX311A-XCAT)は安価で手に入ります（ebayなどでは6,000円程度です）。実際に私はMellanoxのConnect X-3(PCIe3 x 4)を持っており、Windows10とQNAPのNAS（TVS-473e）で動作しています。Connect X-3は2019年10月に既に販売終了しています。5年後のサービス終了までは保守されるようですが、最近のドライバなどは見かけません。また新しいOSでは対応が見送られる可能性があります。ただ、半導体不足の今の時期のつなぎとして割り切る考え方もありだと思います。Nvidia（Mellanox）のサイトではESXi7.0のドライバはConnect X-4を対象にしているようですが、セキュアブートのESXi 7.0U3cではインストール時にドライバ追加無しでNICのリンクアップ、疎通確認はできています。動作確認についてはESXiにログインしたまでで、仮想マシンを作成して動作まではさせていません。あくまでご参考です。
+Mellanoxの現行モデルはやはり在庫を殆ど見かけない状況ですが、古いMellanoxのConnect X-3(MCX311A-XCAT)は安価で手に入ります（ebayなどでは5,000円程度です）。私はMellanoxのConnect X-3(PCIe3 x 4)を保有しており、Windows10とQNAPのNAS（TVS-473e）で動いています。Connect X-3は2019年10月に既に販売終了しています。5年後のサービス終了までは保守されるようですが、最近のドライバなどは見かけません。また新しいOSでは対応が見送られる可能性があります。ただ、半導体不足の今の時期のつなぎとして割り切る考え方もありだと思います。Nvidia（Mellanox）のサイトではESXi7.0のドライバはConnect X-4を対象にしているようですが、セキュアブートのESXi 7.0U3cではインストール時にドライバ追加無しでNICのリンクアップ、疎通確認はできています。動作確認についてはESXiにログインしたまでで、仮想マシンを作成して動作まではさせていません。あくまでご参考です。
 
 {% asset_img mellanox.png 1024 alt %}
 
