@@ -49,9 +49,6 @@ VMware互換性ガイドは個人向けのハードウェアが殆ど列挙さ�
 > VMware Product Interoperability Matrix
  <https://interopmatrix.vmware.com/Upgrade?productId=1>
 
-※ESXi7.0U3は2021/12/25時点現在は提供中止となっています。
-
-
 ## 仮想マシンのバックアップ（任意）
 
 バージョンアップの前には仮想マシンのバックアップを別の筐体またはメディアに取得される事をお勧めします。「{% post_link esxi-backup %}」の記事を参照してください。ghettoVCBを使ったバックアップでは、ESXiにsshした上で、次のコマンドで全ての仮想マシンのバックアップ取得が可能です。`/bin/sh ./ghettoVCB.sh -a`
@@ -83,9 +80,9 @@ Bundle can be downloaded at : http://*/downloads/52ce000f-cad4-20c0-078d-a111fa1
 
 ## アップグレード対象のESXi7.0を確認する
 
-ESXiのISOインストーラをダウンロードは、2022年2月6日時点ではESXi7.0 Update3cとなっています。
+ESXiのISOインストーラをダウンロードは、2022年4月2日時点ではESXi7.0 Update3dとなっています。
 
->VMware vSphere Hypervisor 7.0 Update3c ダウンロード センター(※VMware Customer Connectへログインが必要です)
+>VMware vSphere Hypervisor 7.0 Update3d ダウンロード センター(※VMware Customer Connectへログインが必要です)
  <https://customerconnect.vmware.com/jp/web/vmware/evalcenter?p=free-esxi7>
 
 ## ESXi6.7のダウングレード（ご参考）
@@ -140,10 +137,10 @@ ESXi6.7で運用されている方は最新パッチの適用がなされてい�
  > Rufus
  <https://rufus.ie/ja/>
 
- Rufusの最新バージョンは3.17です。以下のオプションでUSBメディアにESXi7.0のインストーラーを書き込みます。
+ 以下のオプションでUSBメディアにESXi7.0のインストーラーを書き込みます。
 
  {% asset_img rufus1.png 480 alt %}
- UEFIのセキュアブートに対応させるためにGPTとUEFIを選択してください。
+ UEFIのセキュアブートに対応させるためにはGPTとUEFIを選択してください。
 
 ## ESXi7.0のテストインストール
 
@@ -221,6 +218,3 @@ VMware Toolsを最新にした後、仮想マシンハードウェアをアッ�
 この操作は以下の通りWebUIで左ペインの{% label primary@仮想マシン %}で対象仮想マシンを選択し、{% label primary@アクション %}メニューから{% label primary@仮想マシンの互換性のアップグレード %}を実行します。
 
 {% asset_img upgrade-vm.png 800 alt %}
-
-## 補足
-今回はこのブログで紹介している各プロダクトについてESXi7.0の動作確認のためアップグレードの記事を書きましたがESXi6.7は非常に安定しており、個人向け用途であれば無理に7.0にアップグレードする理由は見当たりません。

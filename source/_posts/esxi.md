@@ -33,7 +33,7 @@ ESXiの最新Versionは7.0となっています。この記事を書いた当時
  <https://www.vmware.com/resources/compatibility/search.php>
 
 CPU、ネットワークカード、ストレージに至るまでintel製の互換性が高いというより他はなく、明確な機器をリストアップすることが困難です。
-CPUとネットワークカードはintel製を選択されることをお勧めします。ストレージに関しては、SATAのSSDであれば大半のメーカーのものは認識するようですが、NVMeについては過渡期で多くのトラブルの声がブログや掲示板等で確認できます。現時点ではSATAのSSDをメインに考えられる事をお勧めします。
+CPUとネットワークカードはintel製を選択されるのが無難です。ストレージに関しては、SATAのSSDであれば大半のメーカーのものは認識するようですが、NVMeについては過渡期で多くのトラブルの声がブログや掲示板等で確認できます。
 
 ## インストールメディアの準備
 
@@ -54,8 +54,6 @@ vSphere Hypervisor 7.0 | https://my.vmware.com/jp/web/vmware/evalcenter?p=free-e
 
  > Rufus
  <https://rufus.ie/ja/>
-
- 2021/12/25時点のRufusの最新バージョンは3.17です。
 
  {% asset_img rufus1.png 480 alt %}
  ESXiのインストール対象マシンがUEFIのセキュアブートに対応しているのであればこのようにGPTとUEFIを選択してください。
