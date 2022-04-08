@@ -37,7 +37,7 @@ ESXiのバージョン体系は、"x"."y" update "z" ビルド番号 という�
 注意点は以下の通りです。
 > esxcliコマンドを使用してアップグレードすると、古いバージョンのESXiは新しいVIBのインストールを実行するため、署名が保存されずセキュアブートは実行できません。ISOを使用してアップグレードすると、新しいVIBは署名を保存できます。（P80）
 
-上記の注意点の通り、UEFIのセキュアブートで稼働しているESXiのバージョンアップにはISOを使用してアップグレードすべきと読めます。一方、セキュアブートでなければ、`esxcli software profile update --depot=<depot_location> --profile=<profile_name> `のコマンドでアップグレード可能です。（パッチ適用のように`esxcli software vib update`ではありません。）
+上記の注意点の通り、UEFIのセキュアブートで稼働しているESXiのバージョンアップにはISOを使用してアップグレードすべきと読めます。一方、セキュアブートでなければ、`esxcli software profile update --depot=<depot_location> --profile=<profile_name> `のコマンドでアップグレード可能です。詳細は、「{% post_link esxi67-patch %}」の記事を参照してください。但し、ESXi7.0におけるハードウェア互換性が維持できるか慎重に確認するためには、ISOでのアップグレードを検討してください。
 
 VMware互換性ガイドは個人向けのハードウェアが殆ど列挙されておらずチェックが困難なのが実態です。ハードウェアが準拠しているかどうかのチェックについては後述します。
 
@@ -52,35 +52,10 @@ VMware互換性ガイドは個人向けのハードウェアが殆ど列挙さ�
 ## 仮想マシンのバックアップ（任意）
 
 バージョンアップの前には仮想マシンのバックアップを別の筐体またはメディアに取得される事をお勧めします。「{% post_link esxi-backup %}」の記事を参照してください。ghettoVCBを使ったバックアップでは、ESXiにsshした上で、次のコマンドで全ての仮想マシンのバックアップ取得が可能です。`/bin/sh ./ghettoVCB.sh -a`
-
-## ESXi6.7の構成情報のバックアップ（任意）
-
-アップグレードで何かトラブルがあった場合、既存のESXi6.7に戻すことになります。構成が単純であれば再インストール後手動で再設定することになりますが、迅速に構成を再現するため、システム構成をバックアップすることをお勧めします。構成情報はESXiの前2桁のバージョンとビルド番号が一致していなければ戻すことはできません。
-
-参考にするドキュメントはこちらです。
-
-> ESXi ホストの構成のバックアップ方法 (2042141)
- <https://kb.vmware.com/s/article/2042141?lang=ja>
-
-1. SSHを有効にする
- ESXiの左ペインの{% label primary@ホストー管理 %}から、"サービス"のタブをクリックし、"TSM-SSH"を選択し"起動"ボタンをクリックし、SSHを有効にします。
- {% asset_img esxi1.png alt %}
-2. SSHクライアントでESXiに接続します（Windows10では{% label primary@オプション機能を追加する %})からOpenSSH クライアントをインストールできます）
-2. ストレージの確実な同期のためのコマンド`vim-cmd hostsvc/firmware/sync_config`を実行します。
-3. バックアップコマンド`vim-cmd hostsvc/firmware/backup_config`を実行します。
-4. 画面にダウンロードパスが表示されるのでそのURLにブラウザから接続し構成情報をダウンロードします。
-
-``` bash
-[root@esxi:~] vim-cmd hostsvc/firmware/sync_config
-[root@esxi:~] vim-cmd hostsvc/firmware/backup_config
-Bundle can be downloaded at : http://*/downloads/52ce000f-cad4-20c0-078d-a111fa1ad82x/configBundle-esxi.local.tgz
-[root@esxi:~]
-```
-先頭に`http://*/`とありますが、ここはESXiのホスト名またはIPアドレスを指定しブラウザでアクセスします。例えば、`http://192.168.1.1/downloads〜`という具合です。万が一レストアが必要になってしまった場合はESXi6.7をクリーンインストール後、バックアップを取得したバージョンのパッチを適用の上、メンテナンスモードに移行してから`vim-cmd hostsvc/firmware/restore_config /backup_location/configBundle-esxi.local.tgz`で戻します。仮想マシンはデータストアブラウザから再登録する必要があります。詳細は上記VMwareのドキュメントを参照してください。
-
+z
 ## アップグレード対象のESXi7.0を確認する
 
-ESXiのISOインストーラをダウンロードは、2022年4月2日時点ではESXi7.0 Update3dとなっています。
+ESXiのISOインストーラのダウンロードは、2022年4月2日時点ではESXi7.0 Update3dとなっています。
 
 >VMware vSphere Hypervisor 7.0 Update3d ダウンロード センター(※VMware Customer Connectへログインが必要です)
  <https://customerconnect.vmware.com/jp/web/vmware/evalcenter?p=free-esxi7>
