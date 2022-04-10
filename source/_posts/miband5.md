@@ -15,6 +15,13 @@ comments: false
 
 <!-- more -->
 
+{% note warning %}
+
+この記事は2020年のものであり、MI bandの最新版は2022年4月時点でMI band6となっています。スマートバンドを管理するスマホアプリも当時とは名称が変わっていますのでアプリの使い方などは「{% post_link miband6 %}」の記事を参照してください。
+
+{% endnote %}
+
+
 ## MI band 5の特徴（抜粋）
 
 {% asset_img image4.png 480 alt %}

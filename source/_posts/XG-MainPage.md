@@ -1,5 +1,5 @@
 ---
-title: XG Firewall v18のメイン画面と特徴について
+title: Sophos Firewallのメイン画面と特徴について
 date: 2020-03-08 20:56:35
 tags:
   - XG Firewall
@@ -7,7 +7,7 @@ categories:
   - Security
 ---
 <p class="onepoint">この記事で実現すること</p>
-XG Firewall v18およびv18.5の管理画面とメニューから、製品の持つ機能を説明します。
+Sophos Firewallの管理画面とメニューから、製品の持つ機能を説明します。
 
 <!-- more -->
 ## XGのメインページ
@@ -32,13 +32,7 @@ XG Firewall v18およびv18.5の管理画面とメニューから、製品の持
 
 右上のログビューアをクリックすると別画面でFirewallのログがポップアップします。
 
-## XG v18の変更点
-
-Sophos社による英語の動画解説がVimeoあります。V17との比較についても説明されているので、具体的にv18の設定を開始するにあたり、非常に理解が進みます。
-> Vimeo -XG Firewall v18 Firewall Rule Enhancements-
- <https://vimeo.com/387247792>
-
-## XG v18の大幅な性能向上
+## Sophos Firewallのアーキテクチャ
 
 昔からv17以前のXGを使っている方のために私がお伝えしたいのは、v18から採用されている{% label primary@XStreamアーキテクチャ %}です。全て暗号化されたhttpsプロトコルの様々なアプリケーションを高速かつ適切に判断し、脅威から保護する仕組みとなっています。
 
