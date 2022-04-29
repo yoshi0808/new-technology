@@ -10,7 +10,7 @@ categories:
 
 ## Sophos Firewall v18.5 MR-3
 
-Sophos Firewall v18.5 MR3が2022年3月24日に発表されました。主としては不具合の解消がメインです。また、v18.5を含みSophos Firewallの脆弱性の情報が提供されています。
+Sophos Firewall v18.5 MR3が2022年3月24日に発表されました。主としては不具合の解消がメインです。また、v18.5を含みSophos Firewallの脆弱性の情報が提供されています。なお、XG Firewallの最新パッチについては、「{% post_link esxi-backup %}」の関連リンクを参照してください。
 <!-- more -->
 
 ## 主なエンハンスの内容

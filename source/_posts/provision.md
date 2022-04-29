@@ -9,7 +9,7 @@ categories:
 ---
 ## ネットワーク構成
 
-XG Firewall(以下、XG)を導入した場合のネットワーク構成は以下の図のようになります。一般的にはプロバイダーから貸与されるホームゲートウェイ（外側の光モデム等は省略）に直接PCを繋ぐか、ホームゲートウェイの無線機能でPCやスマホを接続する事になります。XGを導入する場合は、ホームゲートウェイとPCの間にXGを挟み込む形になります。
+Sophos Firewall(XG Firewal 以下、XG)を導入した場合のネットワーク構成は以下の図のようになります。一般的にはプロバイダーから貸与されるホームゲートウェイ（外側の光モデム等は省略）に直接PCを繋ぐか、ホームゲートウェイの無線機能でPCやスマホを接続する事になります。XGを導入する場合は、ホームゲートウェイとPCの間にXGを挟み込む形になります。
 <!-- more -->
  {% asset_img network.drawio.png alt %}
 
@@ -29,7 +29,7 @@ XG Firewall(以下、XG)を導入した場合のネットワーク構成は以�
  <https://www.intel.co.jp/content/www/jp/ja/products/details/ethernet/gigabit-network-adapters/gigabit-ct-desktop-adapters.html>
  {% asset_img ct-desktop.png 800 alt %}
 
-今は、プロバイダーをauひかりにし、5Gbpsの契約になっているため、10GbpsのNICをESXiで使っています。
+2022年2月までは以下の10GbpsのNICをESXiで使っていました。
 
 > インテル® イーサネット・コンバージド・ネットワーク・アダプター X550
  <https://www.intel.co.jp/content/www/jp/ja/products/details/ethernet/gigabit-network-adapters/gigabit-ct-desktop-adapters.html>
@@ -38,5 +38,5 @@ XG Firewall(以下、XG)を導入した場合のネットワーク構成は以�
 このNICだと、1つのPCI Expressバスにこのカード1枚を刺し、WanとLanのインタフェースを用意できます。
 
 （2022-3-25更新）
-最近、Ryzenでマシンを一新しました。NVMeも動作させており、参考までにこちらの記事も参照して下さい。
+最近、Ryzenでマシンを一新しました。NVMeも動作させており、ネットワークカードはX710に変えました。参考までにこちらの記事も参照して下さい。
 {% post_link building-setup-esxi7 %}

@@ -11,7 +11,7 @@ categories:
 
 ## XG Firewall v18 MR-4
 
-XG Firewall v18のMR-4が2020年12月15日に発表されました。すでにv18.5のユーザーはこのパッチの適用は不要です。
+XG Firewall v18のMR-4が2020年12月15日に発表されました。なお、XG Firewallの最新パッチについては、「{% post_link esxi-backup %}」の関連リンクを参照してください。
 <!-- more -->
 
 ## 主なエンハンスの内容

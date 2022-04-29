@@ -10,7 +10,7 @@ categories:
 
 ## XG Firewall v18 MR-3
 
-XG Firewall v18のMR-3が2020年10月12日に発表されました。変更点について記載します。すでにv18.5のユーザーはこのパッチの適用は不要です。
+XG Firewall v18のMR-3が2020年10月12日に発表されました。変更点について記載します。なお、XG Firewallの最新パッチについては、「{% post_link esxi-backup %}」の関連リンクを参照してください。
 
 <!-- more -->
 

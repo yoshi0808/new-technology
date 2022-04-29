@@ -11,7 +11,7 @@ categories:
 
 ## Sophos Firewall v18.5 MR-2
 
-Sophos Firewall v18.5 MR2が2021年11月29日に発表されました。主としては不具合の解消がメインです。adminユーザーは2要素認証の設定が可能になりました。
+Sophos Firewall v18.5 MR2が2021年11月29日に発表されました。主としては不具合の解消がメインです。adminユーザーは2要素認証の設定が可能になりました。なお、XG Firewallの最新パッチについては、「{% post_link esxi-backup %}」の関連リンクを参照してください。
 <!-- more -->
 
 ## 主なエンハンスの内容
