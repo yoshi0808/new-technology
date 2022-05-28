@@ -1,0 +1,8 @@
+nwdiag {
+  network Switch {
+      address = "192.168.0.x/24";
+
+      NAS-10Gbps[address = "192.168.0.1"];
+      Client-2.5Gbps[address = "192.168.0.2"];
+  }
+}
