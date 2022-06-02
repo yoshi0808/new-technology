@@ -1,8 +1,12 @@
 ---
 title: 10GネットワークとSFP+
 date: 2022-05-28T09:00:00+09:00
-tags: SFP
-categories: Hardware
+tags:
+- SFP+
+- 10GbE
+categories:
+- [Hardware]
+- [Network]
 ---
 
 {% asset_img title.png 1024 alt %}

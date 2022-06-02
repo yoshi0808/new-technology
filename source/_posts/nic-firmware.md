@@ -2,7 +2,9 @@
 title: ESXiでネットワークカードのファームウェアを更新する
 date: 2022-04-02 08:10:04
 tags: ESXi
-categories: Hardware
+categories:
+- [Hardware]
+- [Network]
 ---
 {% asset_img title.png 1024 alt %}
 

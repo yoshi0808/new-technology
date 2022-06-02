@@ -3,7 +3,10 @@ title: 10GbEスイッチ QSW-M408-4C
 date: 2021-10-31 9:00:00
 tags:
  - QNAP
-categories: Network
+ - 10GbE
+categories:
+- [Hardware]
+- [Network]
 ---
 
 {% asset_img QSW-M408-4C.png 1024 alt %}

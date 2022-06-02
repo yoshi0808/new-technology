@@ -1,8 +1,11 @@
 ---
 title: ESXI7.0をRyzen7 5700Gで構築
 date: 2022-02-27T12:58:48+09:00
-tags: ESXi
-categories: Hardware
+tags:
+ - ESXi
+ - 10GbE
+categories:
+ - Hardware
 ---
 
 <p class="onepoint">この記事で実現すること</p>
