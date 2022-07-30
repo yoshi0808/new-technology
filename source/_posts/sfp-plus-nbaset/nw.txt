@@ -1,8 +1,0 @@
-nwdiag {
-  network Switch {
-      address = "192.168.x.x/24";
-
-      ubuntu20[address = "192.168.x.181"];
-      Windows10[address = "192.168.x.164"];
-  }
-}
