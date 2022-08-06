@@ -26,7 +26,7 @@ Firewallなどルーターの内側（LAN）がユニークローカルアドレ
 
 ブラウザやOSがIPv6優先であっても、ULAそのものはインターネットにルーティングしないという大前提があります。IPv6において、NATは一般的に推奨されない構成でもあります。
 
-OSの設定を変更することで、ULAを使いながらIPv6優先に変更する事ができます。
+OSの設定を変更することで、ULAを使いながらIPv6優先に変更できます。
 
 ## IPv6優先設定
 
@@ -76,6 +76,7 @@ IPv4マップドアドレスは、IPv6の世界でIPv4を表現したもので�
 
 1. コマンドプロンプトを**管理者権限**で実行します。
 2. 出力結果は環境によって異なりますが、概ね以下のように出力されます。
+
  ```
  C:\>netsh interface ipv6 show prefixpolicies
  アクティブ状態を照会しています...
@@ -92,7 +93,8 @@ IPv4マップドアドレスは、IPv6の世界でIPv4を表現したもので�
           1     12  3ffe::/16
           1      4  ::/96
  ```
-3. IPv6 > IPv4となるよう、管理者権限で以下のコマンドを1行づつ投入します。
+
+3. IPv6(::/0、fc00::/7) > IPv4(::ffff:0:0/96)となるよう、管理者権限で以下のコマンドを1行づつ投入します。
  ```
  netsh interface ipv6 set prefixpolicy ::ffff:0:0/96 25 0
  netsh interface ipv6 set prefixpolicy ::1/128 40 1
@@ -105,10 +107,10 @@ IPv4マップドアドレスは、IPv6の世界でIPv4を表現したもので�
  netsh interface ipv6 set prefixpolicy ::/96 1 4
  ```
  {% note info  %}
- 設定するラベルと優先度はこの例示に拘らず、お使いのPCが示す内容を修正してください。
+ 表示されるラベルおよび優先度は環境によって異なる場合があります。
  {% endnote %}
 
-1. 設定内容を改めて確認します。
+4. 設定内容を改めて確認します。
 {% asset_img prefix.png 480 alt %}
 
 これで設定完了です。OSを再起動して設定が変わっていない事、IPv6が優先されている事を確認してください。設定をやり直す場合は、PrefixPolicyをリセットしてからOSを再起動します。
@@ -136,9 +138,8 @@ Linux（ubuntu）の場合は、`/etc/gai.conf`に設定ファイルがありま
  #label 2001:0::/32   7
  ```
  つまり、コメントされた状態がデフォルト設定であり、カスタマイズが必要な場合はコメントを外して対応できるようになっています。
-1. 上記の8行あるplefixpolicyについて**すべてのコメントを外し**、ULA`fc00::/7`のラベル6を`::/0`のラベルである2に修正します。
-2. 続いて、このファイルのさらに下を見ていくと優先度の項目が並びます。
-
+3. 上記の8行あるplefixpolicyについて**すべてのコメントを外し**、ULA`fc00::/7`のラベル6を`::/0`のラベルである1に修正します。
+4. 続いて、このファイルのさらに下を見ていくと優先度の項目が並びます。
  ``` bash
  #precedence  ::1/128       50
  #precedence  ::/0          40
@@ -146,10 +147,8 @@ Linux（ubuntu）の場合は、`/etc/gai.conf`に設定ファイルがありま
  #precedence ::/96          20
  #precedence ::ffff:0:0/96  10
  ```
-
  ネットワーク（Prefix）毎に優先度を決めています。Windowsと設定する項目の意味は同じです。
-3. 5つの行のコメントを外し、ULAのリストを加えます。Loopback→→ULA→`::/0`→IPv4の並びにします。修正後は以下になります。
-
+5. 上記5行のprecedendeのコメントを外し、ULAのリストを加えます。Loopback→→ULA→`::/0`→IPv4の並びにします。修正後は以下になります。
  ``` bash
  label ::1/128       0
  label ::/0          1
@@ -168,17 +167,17 @@ Linux（ubuntu）の場合は、`/etc/gai.conf`に設定ファイルがありま
  precedence ::ffff:0:0/96  10
  ```
 
- 4. ファイルを保存し、OSを再起動します。
+6. ファイルを保存し、OSを再起動します。
 
-なお、LinuxでmDNS（Bonjour）が使える環境にあり、LANにおける名前解決がIPv4指定となっている場合は、`/etc/nsswitch.conf`を修正する事でIPv6対応に変更可能です。
+以上でIPv6が優先となります {% emoji turtle %}
+
+なお、LinuxでmDNS（Bonjour）が使える環境にあり、LANにおける名前解決がIPv4指定となっている場合は、`/etc/nsswitch.conf`を修正する事でIPv6対応に変更可能です。LAN内の端末をIPv6で明示的に指定することはあまりないのでここは参考程度に留めておいてください。
 ``` bash
 # 以下の行をコメントアウトします
 #hosts:          files mdns4_minimal [NOTFOUND=return] dns
 # 代わりに以下の行を追加します
 hosts:          files mdns_minimal [NOTFOUND=return] dns
 ```
-
-以上でIPv6が優先となります {% emoji turtle %}
 
 ## getaddrinfo()
 
