@@ -44,7 +44,7 @@ ScanWatchでは1日における自身の目標歩数に対する達成率（針�
 
 2021年9月にScanWatchはSPO2に対応しました。計測の様子は以下になります。
 
-{% video scanwatch.mp4 %}
+{% video ar.mov %}
 
 数分後にパルスオキシメーターでSPO2を計測してみました。ScanWatchと近い値が出ています。
 {% asset_img spo2.png 360 alt %}

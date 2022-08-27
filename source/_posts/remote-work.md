@@ -1,8 +1,11 @@
 ---
 title: 安全快適にリモートワークを行う
-categories: Security
 date: 2020-08-14 20:19:00
 tags:
+- Wi-Fi
+categories:
+- Security
+-
 ---
 
 {% asset_img title.png alt %}

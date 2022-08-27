@@ -4,6 +4,7 @@ date: 2021-10-31 9:00:00
 tags:
  - QNAP
  - 10GbE
+ - SFP+
 categories:
 - [Hardware]
 - [Network]
