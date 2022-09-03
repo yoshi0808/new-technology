@@ -9,7 +9,7 @@ date: 2020-06-14 22:19:20
 
 <p class="onepoint">この記事で実現すること</p>
 
-無償版ESXi（VMware vSphere Hypervisor）について、VMwareのサイトから製品パッチに関する情報を入手し、ESXi上でパッチを適用します。この記事ではESXi6.7、7.0を対象にしています。
+無償版ESXi（VMware vSphere Hypervisor）について、VMwareのサイトから製品パッチに関する情報を入手し、ESXi上でパッチを適用します。この記事ではESXi7.0を対象にしています。
 
 <!-- more -->
 
@@ -21,11 +21,8 @@ SSHでESXiに接続し、コマンドラインでパッチを適用します。W
 
 ESXiのパッチ情報は以下を参照してください。当該ページの左ペインメニューには最新パッチの情報が掲載されていますので、最新のパッチ情報を辿ってください。また、過去のパッチの情報も提供されています。
 
-> VMware ESXi 7.0 Update 3f（2022-7-12発表）
- <https://docs.vmware.com/en/VMware-vSphere/7.0/rn/vsphere-esxi-70u3f-release-notes.html>
-
-> VMware ESXi 7.0 Update 3e（2022-6-14発表）
- <https://docs.vmware.com/en/VMware-vSphere/7.0/rn/vsphere-esxi-70u3e-release-notes.html>
+> VMware ESXi 7.0 Update 3g（2022-9-1発表）
+ <https://docs.vmware.com/en/VMware-vSphere/7.0/rn/vsphere-esxi-70u3g-release-notes.html>
 
 ## 製品パッチの情報を入手する
 
@@ -37,11 +34,11 @@ ESXiのセットアップ時にCustomer Connectへの登録を行い、個人向
 
 {% asset_img myvm3.png alt %}
 
-さらに、"ESXi"とバージョンの"7.0"または"6.7"を選択し"検索"ボタンをクリックすると、パッチの一覧が表示されます。以下は7.0U3eの画面です。
+さらに、"ESXi"とバージョンの"7.0"を選択し"検索"ボタンをクリックすると、パッチの一覧が表示されます。以下は7.0U3eの画面です。
 
 {% asset_img myvm2.png alt %}
 
-基本的にESXiは7.0のバージョンのまま修正パッチを適用する場合はこの7.0という2桁の数字は変わりません。この数字が変わる更新をアップグレードと呼びます。それ以外の小さい更新をパッチまたはアップデートと呼びます。但し、ESXi7.0の場合はUpdate2,Update3というグループもあります。さらにUpdate3c、Update3dという具合にそのグループ単位でパッチ毎に末尾の英字が大きくなっていきます。VMwareのパッチは累積パッチとなるため、最新のパッチを適用するだけでよく、古いパッチの適用は必要ありません。ここでは最新版のパッチをダウンロードします。
+基本的にESXiは7.0のバージョンのまま修正パッチを適用する場合はこの7.0という2桁の数字は変わりません。この数字が変わる更新をアップグレードと呼びます。それ以外の小さい更新をパッチまたはアップデートと呼びます。但し、ESXi7.0の場合はUpdate2,Update3というグループがあり、さらにUpdate3f、Update3gという具合にグループ単位でパッチ毎に末尾の英字が大きくなっていきます。VMwareのパッチは累積パッチとなるため、最新のパッチを適用するだけでよく、古いパッチの適用は必要ありません。ここでは最新版のパッチをダウンロードします。
 
 ## パッチ適用作業
 
@@ -68,7 +65,7 @@ ESXiにログインし、以下の作業を行います。
 4. パッチファイルのESXiへのアップロード
  ESXiの左ペインメニューの"ストレージ"を選択、メインのストレージ（一般的にはdatastore1）を選択し、"データストアブラウザ"をクリックします
  {% asset_img esxi3.png alt %}
- {% label primary@アップロード %}ボタンをクリックし、ダウンロードしたパッチファイルをアップロードします。ここの例では{% label primary@ディレクトリの作成 %}ボタンでupdateフォルダを作成し、そこにアップロードします。
+ {% label primary@アップロード %}ボタンをクリックし、ダウンロードしたパッチファイルをZIPのままアップロードします。ここの例では{% label primary@ディレクトリの作成 %}ボタンでupdateフォルダを作成し、そこにアップロードします。
 
 5. SSHでESXiにログイン
  ログイン後、パッチをアップロードしたフォルダ（datastore1/update）に移動しアップロードしたパッチファイルが存在するか`ls`で確認します
@@ -90,64 +87,31 @@ ESXiにログインし、以下の作業を行います。
  ```
 
 6. パッチ適用コマンドを入力します
- 新しいドライバやバグフィックス、セキュリティパッチなど含めたprofileとして整合性が取れたvibのアップデートはprofile updateを実行します。ここでは、ESXi7.0Update3eからUpdate 3fにアップデートすることを例にします。
+ 新しいドライバやバグフィックス、セキュリティパッチなど含めたprofileとして整合性が取れたvibのアップデートはprofile updateを実行します。ここでは、ESXi7.0Update3fからUpdate 3gにアップデートすることを例にします。
 
  現在の実行中のprofileを確認します。`esxcli software profile get`
  ``` bash
 [root@esxi2:~] esxcli software profile get
-(Updated) ESXi-7.0U3e-19898904-standard
-   Name: (Updated) ESXi-7.0U3e-19898904-standard
-   Vendor: VMware, Inc.
+(Updated) ESXi-7.0U3f-20036589-standard
+   Name: (Updated) ESXi-7.0U3f-20036589-standard
  ```
 
  一般的にはバージョンの最後に"-standard"の文字が付いています。standard版がインストールされている事を示します。
  次に、パッチファイルに登録されているprofileを確認します（パッチはフルパス指定が必要です）。
  ``` bash
- [root@esxi] esxcli software sources profile list -d /vmfs/volumes/datastore1/update/VMware-ESXi-7.0U3f-20036589-depot.zip
-Name                            Vendor        Acceptance Level  Creation Time        Modification Time
-------------------------------  ------------  ----------------  -------------------  -----------------
-ESXi-7.0U3sf-20036586-standard  VMware, Inc.  PartnerSupported  2022-07-12T00:00:00  2022-07-12T00:00:00
-ESXi-7.0U3sf-20036586-no-tools  VMware, Inc.  PartnerSupported  2022-07-12T00:00:00  2022-06-30T13:58:41
-ESXi-7.0U3f-20036589-standard   VMware, Inc.  PartnerSupported  2022-07-12T00:00:00  2022-07-12T00:00:00
-ESXi-7.0U3f-20036589-no-tools   VMware, Inc.  PartnerSupported  2022-07-12T00:00:00  2022-06-30T15:28:40
+ [root@esxi] esxcli software sources profile list -d /vmfs/volumes/datastore1/update/VMware-ESXi-7.0U3g-20328353-depot.zip
+Name                           Vendor        Acceptance Level  Creation Time        Modification Time
+-----------------------------  ------------  ----------------  -------------------  -----------------
+ESXi-7.0U3g-20328353-standard  VMware, Inc.  PartnerSupported  2022-09-01T00:00:00  2022-09-01T00:00:00
+ESXi-7.0U3g-20328353-no-tools  VMware, Inc.  PartnerSupported  2022-09-01T00:00:00  2022-08-23T03:00:16
  ```
 
-今回は4つのprofileが存在しています。意図的にVMWare Toolsを含まないProfileであるno-tools、セキュリティパッチおよび不具合対応（ドライバ無し）の7.0U3**s**fの4パターンがあります。VMWare Tools付きで、standard版とのドライバ無し版とを比較すると以下の通りです。
+今回は2つのprofileが存在しています。VMWare Toolsを含まないProfileであるno-tools、VMWare Tools付きのstandard版です。
 
-| ESXi-7.0U3f-20036589-standard                                            | ESXi-7.0U3sf-20036586-standard                                    |
-| ------------------------------------------------------------------------ | ----------------------------------------------------------------- |
-| VMware_bootbank_esxio-combiner_7.0.3-0.50.20036589                       | VMware_bootbank_esxio-combiner_7.0.3-0.45.20036586                |
-| VMware_bootbank_esx-ui_1.43.8-19798623                                   | VMware_bootbank_esx-ui_1.43.8-19798623                            |
-| VMware_bootbank_esx-xserver_7.0.3-0.50.20036589                          | VMware_bootbank_esx-xserver_7.0.3-0.45.20036586                   |
-| VMware_bootbank_cpu-microcode_7.0.3-0.50.20036589                        | VMware_bootbank_cpu-microcode_7.0.3-0.45.20036586                 |
-| VMware_bootbank_trx_7.0.3-0.50.20036589                                  | VMware_bootbank_trx_7.0.3-0.45.20036586                           |
-| VMware_bootbank_vsanhealth_7.0.3-0.50.20036589                           | VMware_bootbank_vsanhealth_7.0.3-0.45.20036586                    |
-| VMware_bootbank_esx-base_7.0.3-0.50.20036589                             | VMware_bootbank_esx-base_7.0.3-0.45.20036586                      |
-| VMware_bootbank_esx-dvfilter-generic-fastpath_7.0.3-0.50.20036589        | VMware_bootbank_esx-dvfilter-generic-fastpath_7.0.3-0.45.20036586 |
-| VMware_bootbank_gc_7.0.3-0.50.20036589                                   | VMware_bootbank_gc_7.0.3-0.45.20036586                            |
-| VMware_bootbank_native-misc-drivers_7.0.3-0.50.20036589                  | VMware_bootbank_native-misc-drivers_7.0.3-0.45.20036586           |
-| VMware_bootbank_bmcal_7.0.3-0.50.20036589                                | VMware_bootbank_bmcal_7.0.3-0.45.20036586                         |
-| VMware_bootbank_vsan_7.0.3-0.50.20036589                                 | VMware_bootbank_vsan_7.0.3-0.45.20036586                          |
-| VMware_bootbank_vdfs_7.0.3-0.50.20036589                                 | VMware_bootbank_vdfs_7.0.3-0.45.20036586                          |
-| VMware_bootbank_crx_7.0.3-0.50.20036589                                  | VMware_bootbank_crx_7.0.3-0.45.20036586                           |
-| VMware_bootbank_esx-update_7.0.3-0.50.20036589                           | VMware_bootbank_esx-update_7.0.3-0.45.20036586                    |
-| VMware_bootbank_loadesx_7.0.3-0.50.20036589                              | VMware_bootbank_loadesx_7.0.3-0.45.20036586                       |
-| VMW_bootbank_bnxtroce_216.0.58.0-23vmw.703.0.50.20036589                 |                                                                   |
-| VMW_bootbank_lpfc_14.0.169.26-5vmw.703.0.50.20036589                     |                                                                   |
-| VMW_bootbank_lpfc_14.0.169.26-5vmw.703.0.50.20036589                     |                                                                   |
-| VMware_bootbank_lsuv2-lsiv2-drivers-plugin_1.0.0-12vmw.703.0.50.20036589 |                                                                   |
-| VMW_bootbank_icen_1.4.1.20-1vmw.703.0.50.20036589                        |                                                                   |
-| VMW_bootbank_irdman_1.3.1.22-1vmw.703.0.50.20036589                      |                                                                   |
-| VMW_bootbank_ne1000_0.9.0-1vmw.703.0.50.20036589                         |                                                                   |
-| VMW_bootbank_iser_1.1.0.1-1vmw.703.0.50.20036589                         |                                                                   |
-| VMW_bootbank_vmkusb_0.1-7vmw.703.0.50.20036589                           |                                                                   |
-| VMware_locker_tools-light_12.0.0.19345655-20036586                       | VMware_locker_tools-light_12.0.0.19345655-20036586                |
-
-standardの方がドライバ無し版のモジュールよりもバージョンが新しく、アップデート対象のモジュール群も全て内包されています。
-
-以下のようにパッチファイルのzipをフルパスで指定し、VMwareのパッチ情報にあるプロファイル名を指定しパッチを適用します。
+以下のようにパッチファイルのzipをフルパスで指定し、VMwareのパッチ情報にあるプロファイル名を指定しパッチを適用します。ここではstandardを指定します。
  ``` bash
-  [root@esxi:~] esxcli software profile update -d /vmfs/volumes/datastore1/update/VMware-ESXi-7.0U3f-20036589-depot.zip -p ESXi-7.0U3f-20036589-standard
+  [root@esxi:~] esxcli software profile update -d /vmfs/volumes/datastore1/update/VMware-ESXi-7.0U3g-20328
+353-depot.zip -p ESXi-7.0U3g-20328353-standard
  ```
  1. `esxcli software profile update`の実行後しばらくしてから、結果が表示されます。
  ```
@@ -158,21 +122,19 @@ Update Result
 
 2. コマンドプロンプトから、`reboot`としてESXiを再起動します。
 
-3. 再起動完了後、ESXiにログインします。左ペインメニューの"ホスト"をクリックし、バージョンの表記に今回パッチを当てたビルド番号が表示されている事を確認してください。以下は7.0U3eの画面です。
+3. 再起動完了後、ESXiにログインします。左ペインメニューの"ホスト"をクリックし、バージョンの表記に今回パッチを当てたビルド番号が表示されている事を確認してください。以下は7.0U3dの画面ですが、今回はU3gとなっているはずです。
 
  - ESXi7.0
   {% asset_img esxi5.png alt %}
- - ESXi6.7
-  {% asset_img esxi4.png alt %}
 
   または、sshでESXiに接続し、`vmware -v`を実行し確認します。
 
  ``` bash
  [root@esxi2:~] vmware -v
- VMware ESXi 7.0.3 build-20036589
+ VMware ESXi 7.0.3 build-20328353
  ```
 
-3. 最後にこれまで実施してきたメンテナンス準備とは反対の作業をします。メンテナンスモードの終了・SSHの無効化・仮想マシンの起動と続けます。
+4. 最後にこれまで実施してきたメンテナンス準備とは反対の作業をします。メンテナンスモードの終了・SSHの無効化・仮想マシンの起動と続けます。
 
 ## パッチのロールバック
 
