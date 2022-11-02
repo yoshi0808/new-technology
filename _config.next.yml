@@ -293,7 +293,7 @@ follow_me:
 related_posts:
   enable: false
   title: # Custom header, leave empty to use the default one
-  display_in_home: false
+  display_in_home: true
 
 # Post edit
 # Easily browse and edit blog source code online.
