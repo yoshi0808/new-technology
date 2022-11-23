@@ -188,7 +188,10 @@ Fast Roaming(802.11r)を前提として、APの切り替えがスムーズに行
 
 ここではUniFiの製品群を説明しました。製品としては荒削りなところもあり、それなりに不具合や未対応の箇所を抱えながら少しづつ機能強化しているというプロダクトの特徴があります。特に見える化という観点で、ネットワーク環境を変える予定のある方は検討の候補になるかもしれません。私が保有しているスイッチを簡単に紹介しましたがSFP+に偏っており、他にも魅力的なスイッチがありますので、是非Ubiquitオンラインストアにアクセスされてみることをお勧めします。なお、サポートは存在しますが、原則はコミュニティで自ら情報収集・調査する必要があり、簡単とは言えません。
 
-このブログでは仮想環境のESXi上にUbuntuをセットアップし、UniFi Network Applicationを運用する方法を紹介します。
+このブログでは仮想環境のESXi上にUbuntuをセットアップし、UniFi Network Applicationを運用する方法を紹介しています。
 
 - 「{% post_link ubuntu22-04lts %}」
 - 「{% post_link unifi-network-application %}」
+- 「{% post_link unifi-network-application2 %}」
+- 「{% post_link unifi-switch %}」
+
