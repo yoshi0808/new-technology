@@ -7,9 +7,10 @@ categories:
 date: 2020-06-14 22:19:20
 ---
 
+{% asset_img title.png alt %}
 <p class="onepoint">この記事で実現すること</p>
 
-無償版ESXi（VMware vSphere Hypervisor）について、VMwareのサイトから製品パッチに関する情報を入手し、ESXi上でパッチを適用します。この記事ではESXi7.0を対象にしています。
+無償版ESXi（VMware vSphere Hypervisor）について、VMwareのサイトから製品パッチに関する情報を入手し、ESXi上でパッチを適用します。この記事ではESXi7.0を対象にしています。2022年12月現在、ESXi8.0は発表されていますが、私は当面安定しているESXi7.0を稼働させる予定で、ESXi7.0のパッチ情報を記載していきます。
 
 <!-- more -->
 
@@ -21,8 +22,8 @@ SSHでESXiに接続し、コマンドラインでパッチを適用します。W
 
 ESXiのパッチ情報は以下を参照してください。当該ページの左ペインメニューには最新パッチの情報が掲載されていますので、最新のパッチ情報を辿ってください。また、過去のパッチの情報も提供されています。
 
-> VMware ESXi 7.0 Update 3g（2022-9-1発表）
- <https://docs.vmware.com/en/VMware-vSphere/7.0/rn/vsphere-esxi-70u3g-release-notes.html>
+> VMware ESXi 7.0 Update 3i（2022-12-8発表）
+ <https://docs.vmware.com/en/VMware-vSphere/7.0/rn/vsphere-esxi-70u3i-release-notes.html>
 
 ## 製品パッチの情報を入手する
 
@@ -34,11 +35,11 @@ ESXiのセットアップ時にCustomer Connectへの登録を行い、個人向
 
 {% asset_img myvm3.png alt %}
 
-さらに、"ESXi"とバージョンの"7.0"を選択し"検索"ボタンをクリックすると、パッチの一覧が表示されます。以下は7.0U3eの画面です。
+さらに、"ESXi"とバージョンの"7.0"を選択し"検索"ボタンをクリックすると、パッチの一覧が表示されます。以下は7.0U3iの画面です。
 
 {% asset_img myvm2.png alt %}
 
-基本的にESXiは7.0のバージョンのまま修正パッチを適用する場合はこの7.0という2桁の数字は変わりません。この数字が変わる更新をアップグレードと呼びます。それ以外の小さい更新をパッチまたはアップデートと呼びます。但し、ESXi7.0の場合はUpdate2,Update3というグループがあり、さらにUpdate3f、Update3gという具合にグループ単位でパッチ毎に末尾の英字が大きくなっていきます。VMwareのパッチは累積パッチとなるため、最新のパッチを適用するだけでよく、古いパッチの適用は必要ありません。ここでは最新版のパッチをダウンロードします。
+基本的にESXiは7.0のバージョンのまま修正パッチを適用する場合はこの7.0という2桁の数字は変わりません。この数字が変わる更新をアップグレードと呼びます。それ以外の小さい更新をパッチまたはアップデートと呼びます。但し、ESXi7.0の場合はUpdate2,Update3というグループがあり、さらにUpdate3g、Update3iという具合にグループ単位でパッチ毎に末尾の英字が大きくなっていきます。VMwareのパッチは累積パッチとなるため、最新のパッチを適用するだけでよく、古いパッチの適用は必要ありません。ここでは最新版のパッチをダウンロードします。
 
 ## パッチ適用作業
 
@@ -87,31 +88,60 @@ ESXiにログインし、以下の作業を行います。
  ```
 
 6. パッチ適用コマンドを入力します
- 新しいドライバやバグフィックス、セキュリティパッチなど含めたprofileとして整合性が取れたvibのアップデートはprofile updateを実行します。ここでは、ESXi7.0Update3fからUpdate 3gにアップデートすることを例にします。
+ 新しいドライバやバグフィックス、セキュリティパッチなど含めたprofileとして整合性が取れたvibのアップデートはprofile updateを実行します。ここでは、ESXi7.0Update3gからUpdate3iにアップデートすることを例にします。
 
  現在の実行中のprofileを確認します。`esxcli software profile get`
  ``` bash
-[root@esxi2:~] esxcli software profile get
-(Updated) ESXi-7.0U3f-20036589-standard
-   Name: (Updated) ESXi-7.0U3f-20036589-standard
+[root@esxi2:] esxcli software profile get
+(Updated) ESXi-7.0U3g-20328353-standard
+   Name: (Updated) ESXi-7.0U3g-20328353-standard
+   Vendor: VMware, Inc.
+   Creation Time: 2022-09-03T03:53:39
+   Modification Time: 2022-12-10T08:23:23
+   Stateless Ready: True
  ```
 
  一般的にはバージョンの最後に"-standard"の文字が付いています。standard版がインストールされている事を示します。
  次に、パッチファイルに登録されているprofileを確認します（パッチはフルパス指定が必要です）。
  ``` bash
- [root@esxi] esxcli software sources profile list -d /vmfs/volumes/datastore1/update/VMware-ESXi-7.0U3g-20328353-depot.zip
-Name                           Vendor        Acceptance Level  Creation Time        Modification Time
------------------------------  ------------  ----------------  -------------------  -----------------
-ESXi-7.0U3g-20328353-standard  VMware, Inc.  PartnerSupported  2022-09-01T00:00:00  2022-09-01T00:00:00
-ESXi-7.0U3g-20328353-no-tools  VMware, Inc.  PartnerSupported  2022-09-01T00:00:00  2022-08-23T03:00:16
+[root@esxi2] esxcli software sources profile list -d /vmfs/volumes/datastore1/update/VMware-ESXi-7.0U3i-20842708-depot.zi
+p
+Name                            Vendor        Acceptance Level  Creation Time        Modification Time
+------------------------------  ------------  ----------------  -------------------  -----------------
+ESXi-7.0U3si-20841705-standard  VMware, Inc.  PartnerSupported  2022-12-08T00:00:00  2022-12-08T00:00:00
+ESXi-7.0U3si-20841705-no-tools  VMware, Inc.  PartnerSupported  2022-12-08T00:00:00  2022-11-24T01:25:32
+ESXi-7.0U3i-20842708-standard   VMware, Inc.  PartnerSupported  2022-12-08T00:00:00  2022-12-08T00:00:00
+ESXi-7.0U3i-20842708-no-tools   VMware, Inc.  PartnerSupported  2022-12-08T00:00:00  2022-11-24T05:06:48
  ```
 
-今回は2つのprofileが存在しています。VMWare Toolsを含まないProfileであるno-tools、VMWare Tools付きのstandard版です。
+今回は4つのprofileが存在しています。VMWare Toolsを含まないProfileであるno-tools、VMWare Tools付きのstandard版、それとU3siがセキュリティパッチのみ、U3iがセキュリティパッチを含む一般的なエンハンスとなります。
+VMWare Toolsを使う一般的なユーザーはNo Tools版を選択しないので除外します。
+以下のように、セキュリティパッチのみのプロファイルは全て一般的なエンハンスに包含されていますので、特に互換性に拘るのでなければ不具合の修正も含んだスタンダードであるESXi-7.0U3i-20842708-standardを適用するのがおすすめです。
+
+| ESXi-7.0U3si-20841705-standard                                    | ESXi-7.0U3i-20842708-standard                                     |
+| ----------------------------------------------------------------- | ----------------------------------------------------------------- |
+| VMware_bootbank_esx-base_7.0.3-0.60.20841705                      | VMware_bootbank_esx-base_7.0.3-0.65.20842708                      |
+| VMware_bootbank_trx_7.0.3-0.60.20841705                           | VMware_bootbank_trx_7.0.3-0.65.20842708                           |
+| VMware_bootbank_vsanhealth_7.0.3-0.60.20841705                    | VMware_bootbank_vsanhealth_7.0.3-0.65.20842708                    |
+| VMware_bootbank_cpu-microcode_7.0.3-0.60.20841705                 | VMware_bootbank_cpu-microcode_7.0.3-0.65.20842708                 |
+| VMware_bootbank_crx_7.0.3-0.60.20841705                           | VMware_bootbank_crx_7.0.3-0.65.20842708                           |
+| VMware_bootbank_vsan_7.0.3-0.60.20841705                          | VMware_bootbank_vsan_7.0.3-0.65.20842708                          |
+| VMware_bootbank_native-misc-drivers_7.0.3-0.60.20841705           | VMware_bootbank_native-misc-drivers_7.0.3-0.65.20842708           |
+| VMware_bootbank_esx-xserver_7.0.3-0.60.20841705                   | VMware_bootbank_esx-xserver_7.0.3-0.65.20842708                   |
+| VMware_bootbank_esx-dvfilter-generic-fastpath_7.0.3-0.60.20841705 | VMware_bootbank_esx-dvfilter-generic-fastpath_7.0.3-0.65.20842708 |
+| VMware_bootbank_gc_7.0.3-0.60.20841705                            | VMware_bootbank_gc_7.0.3-0.65.20842708                            |
+| VMware_bootbank_esx-ui_2.1.1-20188605                             | VMware_bootbank_esx-ui_2.1.1-20188605                             |
+| VMware_bootbank_vdfs_7.0.3-0.60.20841705                          | VMware_bootbank_vdfs_7.0.3-0.65.20842708                          |
+| VMware_bootbank_bmcal_7.0.3-0.60.20841705                         | VMware_bootbank_bmcal_7.0.3-0.65.20842708                         |
+| VMware_bootbank_esxio-combiner_7.0.3-0.60.20841705                | VMware_bootbank_esxio-combiner_7.0.3-0.65.20842708                |
+| VMware_bootbank_loadesx_7.0.3-0.60.20841705                       | VMware_bootbank_loadesx_7.0.3-0.65.20842708                       |
+| VMware_bootbank_esx-update_7.0.3-0.60.20841705                    | VMware_bootbank_esx-update_7.0.3-0.65.20842708                    |
+| VMware_locker_tools-light_12.1.0.20219665-20841705                | VMware_locker_tools-light_12.1.0.20219665-20841705                |
+|                                                                   | VMW_bootbank_ntg3_4.1.8.0-4vmw.703.0.65.20842708                  |
 
 以下のようにパッチファイルのzipをフルパスで指定し、VMwareのパッチ情報にあるプロファイル名を指定しパッチを適用します。ここではstandardを指定します。
  ``` bash
-  [root@esxi:~] esxcli software profile update -d /vmfs/volumes/datastore1/update/VMware-ESXi-7.0U3g-20328
-353-depot.zip -p ESXi-7.0U3g-20328353-standard
+  [root@esxi:~] esxcli software profile update -d /vmfs/volumes/datastore1/update/VMware-ESXi-7.0U3i-20842708-depot.zip -p ESXi-7.0U3i-20842708-standard
  ```
  1. `esxcli software profile update`の実行後しばらくしてから、結果が表示されます。
  ```
@@ -122,7 +152,7 @@ Update Result
 
 2. コマンドプロンプトから、`reboot`としてESXiを再起動します。
 
-3. 再起動完了後、ESXiにログインします。左ペインメニューの"ホスト"をクリックし、バージョンの表記に今回パッチを当てたビルド番号が表示されている事を確認してください。以下は7.0U3dの画面ですが、今回はU3gとなっているはずです。
+3. 再起動完了後、ESXiにログインします。画面デザインが大きく変わっています。左ペインメニューの"ホスト"をクリックし、バージョンの表記に今回パッチを当てたビルド番号が表示されている事を確認してください。今回はU3iとなっているはずです。
 
  - ESXi7.0
   {% asset_img esxi5.png alt %}
@@ -130,8 +160,8 @@ Update Result
   または、sshでESXiに接続し、`vmware -v`を実行し確認します。
 
  ``` bash
- [root@esxi2:~] vmware -v
- VMware ESXi 7.0.3 build-20328353
+[root@esxi2:~] vmware -v
+VMware ESXi 7.0.3 build-20842708
  ```
 
 4. 最後にこれまで実施してきたメンテナンス準備とは反対の作業をします。メンテナンスモードの終了・SSHの無効化・仮想マシンの起動と続けます。
