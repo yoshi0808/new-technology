@@ -12,7 +12,7 @@
     "version": "6.3.0"
   },
   "dependencies": {
-    "@next-theme/plugins": "^8.14.0",
+    "@next-theme/plugins": "^8.14.1",
     "hexo": "^6.3.0",
     "hexo-deployer-git": "^3.0.0",
     "hexo-filter-emoji": "^2.2.2",
@@ -29,11 +29,11 @@
     "hexo-renderer-stylus": "^2.1.0",
     "hexo-server": "^3.0.0",
     "hexo-tag-qrcode": "^1.0.0",
-    "hexo-theme-next": "^8.14.0",
+    "hexo-theme-next": "^8.14.1",
     "hexo-util": "^3.0.1"
   },
   "devDependencies": {
-    "textlint": "^12.2.3",
+    "textlint": "^12.4.0",
     "textlint-rule-preset-ja-spacing": "^2.2.0",
     "textlint-rule-preset-ja-technical-writing": "^7.0.0",
     "textlint-rule-preset-jtf-style": "^2.3.13",
