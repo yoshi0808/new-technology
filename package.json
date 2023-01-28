@@ -33,8 +33,8 @@
     "hexo-util": "^3.0.1"
   },
   "devDependencies": {
-    "textlint": "^12.5.1",
-    "textlint-rule-preset-ja-spacing": "^2.2.0",
+    "textlint": "^13.0.0",
+    "textlint-rule-preset-ja-spacing": "^2.3.0",
     "textlint-rule-preset-ja-technical-writing": "^7.0.0",
     "textlint-rule-preset-jtf-style": "^2.3.13",
     "textlint-rule-spellcheck-tech-word": "^5.0.0"
