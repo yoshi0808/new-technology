@@ -181,6 +181,9 @@ intelの手順書では、NOTEとして、以下の説明があります。
 
 ## MellanoxのNICファームウェア更新
 
+（2023-2-4追記）
+現在、Mellanox(NVIDIA)のサイトが再構築中なのか、下記で紹介しているリンクでエラーが発生する状況を確認しています。
+
 Mellanoxの場合は、NVIDIAのサイトに"How-to: Install NVIDIA Firmware Tools (MFT) on VMware ESXi 6.7/7.0."というマニュアルがありますので、そこで手順を確認します。
 
 > How-to: Install NVIDIA Firmware Tools (MFT) on VMware ESXi 6.7/7.0.

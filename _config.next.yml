@@ -160,7 +160,6 @@ social:
   GitHub: https://github.com/yoshi0808 || fab fa-github
   E-Mail: mailto:yoshi0808.blog@gmail.com || fa fa-envelope
   #Weibo: https://weibo.com/yourname || fab fa-weibo
-  #Google: https://plus.google.com/yourname || fab fa-google
   Twitter: https://twitter.com/yoshi0808_ || fab fa-twitter
   #FB Page: https://www.facebook.com/yourname || fab fa-facebook
   #StackOverflow: https://stackoverflow.com/yourname || fab fa-stack-overflow
@@ -240,7 +239,7 @@ footer:
 # See: https://theme-next.js.org/docs/theme-settings/posts
 # ---------------------------------------------------------------
 
-# Automatically excerpt description in homepage as preamble text.
+# Use `description` in front-matter to specify post excerpt.
 excerpt_description: true
 
 # Read more button
@@ -407,7 +406,6 @@ bookmark:
 github_banner:
   enable: true
   permalink: https://github.com/yoshi0808
-  title: Follow me on GitHub
 
 
 # ---------------------------------------------------------------
@@ -611,6 +609,7 @@ quicklink:
   timeout: 3000
   # Default (true) will attempt to use the fetch() API if supported (rather than link[rel=prefetch]).
   priority: true
+
 
 # ---------------------------------------------------------------
 # Animation Settings
