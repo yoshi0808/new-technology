@@ -98,7 +98,7 @@ intelの純正のNICであればそのカード名称でintelのサイトを検�
    Virtual Address: 00:00:00:00:00:00
    Wakeon: MagicPacket(tm)
 ```
-続いてダウンロードしたファイル（700シリーズは2022年4月2日時点では最新がv8.6です）をscpかストアブラウザを使ってESXi上にアップロードします。その後展開し実行します。700シリーズではJVN IPediaから辿ったintelの情報では、v8.2以前のFirmwareに問題があるとのことで、私はv8.5を選択しました。特に注意点はありませんが、私は実行にあたりメンテナンスモードにして（VMを停止）から開始しました。
+続いてダウンロードしたファイル（700シリーズは2022年11月22日時点では最新がv9.1です）をscpかストアブラウザを使ってESXi上にアップロードします。その後展開し実行します。700シリーズではJVN IPediaから辿ったintelの情報では、v8.2以前のFirmwareに問題があるとのことで、私はv8.5を選択しました。特に注意点はありませんが、私は実行にあたりメンテナンスモードにして（VMを停止）から開始しました。
 ```
 [root@esxi2:] tar -xvf 700Series_NVMUpdatePackage_v8_50_ESX.tar.gz
 #展開されたフォルダに入り以下を実行します。
@@ -181,9 +181,6 @@ intelの手順書では、NOTEとして、以下の説明があります。
 
 ## MellanoxのNICファームウェア更新
 
-（2023-2-4追記）
-現在、Mellanox(NVIDIA)のサイトが再構築中なのか、下記で紹介しているリンクでエラーが発生する状況を確認しています。
-
 Mellanoxの場合は、NVIDIAのサイトに"How-to: Install NVIDIA Firmware Tools (MFT) on VMware ESXi 6.7/7.0."というマニュアルがありますので、そこで手順を確認します。
 
 > How-to: Install NVIDIA Firmware Tools (MFT) on VMware ESXi 6.7/7.0.
@@ -193,13 +190,13 @@ NVIDIA Firmware Toolをダウンロードし、ESXiにインストールしま�
 
 1. ツールを2つダウンロードするために、ダウンロードページにアクセスします。
  <http://www.mellanox.com/page/management_tools>
-2. 2022-04-2時点でESXi7.0向けはVersion4.18.1、ESXi6.7向けはVersion4.18.0となっています。ここではESXi7.0を例にして進めます。
-3. "7 Native"、”x64”を選択し、”Mellanox-NATIVE-NMST_4.18.1.14-1OEM.700.1.0.15843807_19206114-package.zip”をダウンロードし展開します。
-4. ZIPの中にはさらにZIPファイルがあり、"MEL_bootbank_nmst_4.18.1.14-1OEM.700.1.0.15843807.vib"というESXiのモジュールファイルを見つけます。 {% asset_img nmst.png 480 alt %}
-5. 続いて、"Mellanox-MFT-Tools_4.18.1.14-1OEM.700.1.0.15843807_19206112-package.zip"をダウンロードし展開します。
-6. こちらもZIPの中にさらにZIPファイルがあり、”mft”というフォルダの中に"MEL_bootbank_mft_4.18.1.14-0.vib"のモジュールファイルを見つけます。別にOEMというフォルダがあり、NVIDIAの手順書でもファイル名からもOEMを選ぶべきのように見えますが、OEMのフォルダのものは必要なモジュールが見つかりません。{% asset_img mft.png 480 alt %}
-7. scpかストアブラウザを使いこの2つのファイルをESXiにアップロードします。2つのモジュールは1つづつインストール、リブートが必要になりますので、/tmpにコピーする場合は最初のリブートで/tmpがクリアされるのでお気をつけください。
-8. ESXiにSSHで接続し、最初のモジュール(NMST)をインストールします。`esxcli software vib install -v /tmp/MEL_bootbank_nmst_4.18.1.14-1OEM.700.1.0.15843807.vib -f`
+1. ここの例ではESXi7.0向けのVersion4.18.1を使い進めます。
+2. "7 Native"、”x64”を選択し、”Mellanox-NATIVE-NMST_4.18.1.14-1OEM.700.1.0.15843807_19206114-package.zip”をダウンロードし展開します。
+3. ZIPの中にはさらにZIPファイルがあり、"MEL_bootbank_nmst_4.18.1.14-1OEM.700.1.0.15843807.vib"というESXiのモジュールファイルを見つけます。 {% asset_img nmst.png 480 alt %}
+4. 続いて、"Mellanox-MFT-Tools_4.18.1.14-1OEM.700.1.0.15843807_19206112-package.zip"をダウンロードし展開します。
+5. こちらもZIPの中にさらにZIPファイルがあり、”mft”というフォルダの中に"MEL_bootbank_mft_4.18.1.14-0.vib"のモジュールファイルを見つけます。別にOEMというフォルダがあり、NVIDIAの手順書でもファイル名からもOEMを選ぶべきのように見えますが、OEMのフォルダのものは必要なモジュールが見つかりません。{% asset_img mft.png 480 alt %}
+6. scpかストアブラウザを使いこの2つのファイルをESXiにアップロードします。2つのモジュールは1つづつインストール、リブートが必要になりますので、/tmpにコピーする場合は最初のリブートで/tmpがクリアされるのでお気をつけください。
+7. ESXiにSSHで接続し、最初のモジュール(NMST)をインストールします。`esxcli software vib install -v /tmp/MEL_bootbank_nmst_4.18.1.14-1OEM.700.1.0.15843807.vib -f`
  ``` bash
 [root@localhost:/tmp] esxcli software vib install -v /tmp/MEL_bootbank_nmst_4.18.1.14-1OEM.700.1.0.15843807.vib -f
 Installation Result
@@ -268,13 +265,14 @@ nmst                           4.18.1.14-1OEM.700.1.0.15843807        MEL     Pa
 
   Status:           No matching image found
  ```
-15. NVIDIAのサイトからファームウェアをダウンロードします。
+ 今回のケースでは、ebayにて＄50で購入可能な、ConnectX-3（MCX311A-XCAT）を対象としています。
+1.  NVIDIAのサイトからファームウェアをダウンロードします。
 　<https://network.nvidia.com/support/firmware/firmware-downloads/>
-16. 該当するEthernetファームウェアを選択し、ZIPファイルをダウンロードし展開します。*.binというファイルが抽出されます。
+1.  該当するEthernetファームウェアを選択し、ZIPファイルをダウンロードし展開します。*.binというファイルが抽出されます。
  {% asset_img firmware.png 480 alt %}
 
-17. scpまたはストアブラウザでbinファイルをESXiの/tmpにアップロードします。
-18. ファームウェアのアップデートを行います `./mlxfwmanager -u -i /tmp/ファームウェア.bin`。ファームウェアの実行直前に確認が求められるので、"y"を入力します。
+1.  scpまたはストアブラウザでbinファイルをESXiの/tmpにアップロードします。
+2.  ファームウェアのアップデートを行います `./mlxfwmanager -u -i /tmp/ファームウェア.bin`。ファームウェアの実行直前に確認が求められるので、"y"を入力します。
  ```
  [root@localhost:/opt/mellanox/bin] ./mlxfwmanager -u -i /tmp/fw-ConnectX3-rel-2_42_5000-MCX311A-XCA_Ax-FlexBoot-3.4.752.bin
  Querying Mellanox devices firmware ...
