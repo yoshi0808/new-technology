@@ -9,9 +9,26 @@ categories:
 {% asset_img title.png 1024 alt %}
 <p class="onepoint">この記事で実現すること</p>
 
-無償版ESXi（VMware vSphere Hypervisor）について、ESXi6.7からESXi7.0にアップグレードします。ここではUEFI（セキュアブート）で構成されているESXiを対象とし、できるだけ安全にアップグレードを行います。2022年12月10日時点では、ESXi8.0が発表されているものの、無償版としてのライセンスが公開されていないようです。
+無償版ESXi（VMware vSphere Hypervisor）について、ESXi6.7からESXi7.0にアップグレードします。ここではUEFI（セキュアブート）で構成されているESXiを対象とし、できるだけ安全にアップグレードを行います。2023年2月8日時点では、ESXi8.0が発表されているものの、無償版としてのライセンスが公開されていないようです。
 
 <!-- more -->
+
+## ESXiの脆弱性を狙ったランサムウェアについて
+
+JPCERT/CCより、2023-02-07にESXiのランサムウェア攻撃についての情報が提供されています。
+
+> VMware ESXiを標的としたランサムウェア攻撃について
+ <https://www.jpcert.or.jp/newsflash/2023020601.html>
+
+既知のOpenSLPのヒープオーバーフローの脆弱性（CVE-2021-21974）を悪用した攻撃とみられ、攻撃を受けるとファイルが暗号化され身代金の支払いを求めるメッセージが残されます。
+
+VMware ESXi 7.0系 Update 1cより前のバージョン（ESXi70U1c-17325551パッチ未適用）
+VMware ESXi 6.7系 ESXi670-202102001より前のバージョン（ESXi670-202102401-SGパッチ未適用）
+VMware ESXi 6.5系 ESXi650-202102001より前のバージョン（ESXi650-202102101-SGパッチ未適用）
+VMware Cloud Foundation 4系 4.2より前のバージョンに含まれるESXi
+VMware Cloud Foundation 3系 KB82705未適用のバージョンに含まれるESXi
+
+ESXi7.0未満は既にEOSLを迎えていますので、早急にアップグレードをお勧めします。
 
 ## ESXiのアップグレード
 
@@ -47,43 +64,18 @@ VMware互換性ガイドは個人向けのハードウェアが殆ど列挙さ�
 {% asset_img upgradepath.png 1024 alt %}
 
 > VMware Product Interoperability Matrix
- <https://interopmatrix.vmware.com/Upgrade?productId=1>
+ <https://interopmatrix.vmware.com/Upgrade?productId=1&isHidePatch=true>
 
 ## 仮想マシンのバックアップ（任意）
 
 バージョンアップの前には仮想マシンのバックアップを別の筐体またはメディアに取得される事をお勧めします。「{% post_link esxi-backup %}」の記事を参照してください。ghettoVCBを使ったバックアップでは、ESXiにsshした上で、次のコマンドで全ての仮想マシンのバックアップ取得が可能です。`/bin/sh ./ghettoVCB.sh -a`
-z
+
 ## アップグレード対象のESXi7.0を確認する
 
-ESXiのISOインストーラのダウンロードは、2022年7月13日時点ではESXi7.0 Update3fとなっています。下記の通り、ダウンロードセンターのタイトルは7.0 Update 3dとなっているのですが、実際のダウンロードのリンクには、{% label primary@2022-07-12 | 7.0U3f | 382.97 MB | iso %}とあります。
+ESXiのISOインストーラのダウンロードは、2023年2月8日時点ではESXi7.0 Update3gとなっています。
 
->VMware vSphere Hypervisor 7.0 Update3d ダウンロード センター(※VMware Customer Connectへログインが必要です)
+>VMware vSphere Hypervisor 7.0 Update3g ダウンロード センター(※VMware Customer Connectへログインが必要です)
  <https://customerconnect.vmware.com/jp/web/vmware/evalcenter?p=free-esxi7>
-
-## ESXi6.7のダウングレード（ご参考）
-
-（この章は、ESXi6.7からESXi7.0Update2aへのアップグレード時にエラーが発生するケースがあり記載しています）
-
-ESXi6.7で運用されている方は最新パッチの適用がなされているかと思います。ESXi6.7の最新パッチはESXi670-202111001でリリース日は2021年11月23日です。一方、ESXi7.0Update2aのリリース日は2021年4月29日です。
-
-結論から書きますが、この日付が逆転していることでESXi6.7からESXi7.0へのアップグレードが行えません。
-
-{% asset_img err.png 1024 alt %}
-
-`VMW_bootbank_vmkusb_0.1-4vmw.670.3.159.18828794`と依存関係の問題があるとのことで、調べたところ、ESXi6.7の最新パッチでした。
-
-対策としてESXi6.7のひとつ前のパッチリリースに戻すことを検討します。ESXiホストを再起動し、起動中にShift+’R'キーを押すことによって1つ前のバージョンに戻せます。
-
-> VMware ESXi を前のバージョンに戻す (1033604)
- <https://kb.vmware.com/s/article/1033604?lang=ja>
-
- >Hypervisor のプログレス バーの読み込みが開始されたら、Shift+R を押します。(これはバーが表示されたロード後ではなく、ロード中に実行する必要があります。コマンドを実行するタイミングを逃さないよう、"system is preparing to boot" 表示中に Shift+R を繰り返し押すことをお勧めいたします)。
-
- 私の環境では以下のように表示されました。
-
-{% asset_img rollback.png 1024 alt %}
-
-戻す対象のビルド番号は17700523と表示されています。これは、Patch Release ESXi670-202103001であり、2021年3月18日にリリースされているESXi6.7の一つ前のパッチリリースです。これはリリース日付が逆転しておらず、うまくいきそうです。ここでロールバックを実行します。
 
 ## ESXi7.0インストールメディア（USB）の作成
 
@@ -149,7 +141,7 @@ ESXi7.0はWebUIではビルド番号までは判明しません。sshでESXiに�
 [root@esxi:~] esxcli system version get
 Product: VMware ESXi
 Version: 7.0.2
-Build: Releasebuild-17867351
+Build: Releasebuild-20328353
 ```
 
 コマンドで確認する際は、Versionとビルド番号で見るのが確実です。VMwareのサイトではパッチは7.0を対象に検索し、あとはビルド番号で照会します。
@@ -160,7 +152,7 @@ Build: Releasebuild-17867351
 1. ESXi7.0のライセンス登録
  ESXiにログイン後、左ペインメニューの{% label primary@ホスト %}-{% label primary@管理 %}から{% label primary@ライセンスタブ %}を選択し、{% label primary@ライセンスの割り当て %}でダウンロード時に控えたライセンスキーを登録します。
 2. ESXi7.0の最新パッチ適用
- ESXiのパッチ適用については、過去記事「{% post_link esxi67-patch %}」を参照してください。
+ ESXiのパッチ適用については、「{% post_link esxi67-patch %}」を参照してください。
 3. ESXi7.0の構成情報のバックアップ（任意）
 
 ## 仮想マシンのアップグレード（任意）
@@ -193,3 +185,26 @@ VMware Toolsを最新にした後、仮想マシンハードウェアをアッ�
 この操作は以下の通りWebUIで左ペインの{% label primary@仮想マシン %}で対象仮想マシンを選択し、{% label primary@アクション %}メニューから{% label primary@仮想マシンの互換性のアップグレード %}を実行します。
 
 {% asset_img upgrade-vm.png 800 alt %}
+
+## ESXi6.7のダウングレード（ご参考）
+
+（この章は、ESXi6.7からESXi7.0Update2aへのアップグレード時にエラーが発生するケースがあり記載しています）
+
+ESXi6.7のパッチバージョンがESXi670-202111001の場合、ESXi7.0Update2aへのアップグレードが行えません。
+
+{% asset_img err.png 1024 alt %}
+
+`VMW_bootbank_vmkusb_0.1-4vmw.670.3.159.18828794`と依存関係の問題があるとのことです。
+
+対策としてESXi6.7のひとつ前のパッチリリースに戻すことを検討します。ESXiホストを再起動し、起動中にShift+’R'キーを押すことによって1つ前のバージョンに戻せます。
+
+> VMware ESXi を前のバージョンに戻す (1033604)
+ <https://kb.vmware.com/s/article/1033604?lang=ja>
+
+ >Hypervisor のプログレス バーの読み込みが開始されたら、Shift+R を押します。(これはバーが表示されたロード後ではなく、ロード中に実行する必要があります。コマンドを実行するタイミングを逃さないよう、"system is preparing to boot" 表示中に Shift+R を繰り返し押すことをお勧めいたします)。
+
+ 私の環境では以下のように表示されました。
+
+{% asset_img rollback.png 1024 alt %}
+
+戻す対象のビルド番号は17700523と表示されています。これは、Patch Release ESXi670-202103001であり、2021年3月18日にリリースされているESXi6.7の一つ前のパッチリリースです。これはリリース日付が逆転しておらず、うまくいきそうです。ここでロールバックを実行します。
