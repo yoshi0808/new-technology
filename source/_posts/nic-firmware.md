@@ -16,12 +16,31 @@ ESXiにおいてネットワークカードの主要ITベンダーであるintel
 
 ## ネットワークカード自体の脆弱性
 
+（2023-3-5更新）
+2023-2-14にintelのサイトで700シリーズおよびE810シリーズでCVE-2022-36382の脆弱性について発表がありました。
+境界外への書き込みでサービス拒否に繋がるとの事。Base Score: 6.0 MEDIUMとのこと。
+
+その数日後の23-2-17に700シリーズでは新しいv9.2、およびE180シリーズではv4.2のファームウェアが発表されています。
+
+> Intel® Ethernet Controllers and Adapters Advisory
+ <https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00754.html>
+
+> Intel 700 nvmupdate v9.2
+ <https://www.intel.co.jp/content/www/jp/ja/download/18638/non-volatile-memory-nvm-update-utility-for-intel-ethernet-adapters-700-series-vmware-esx.html?wapkw=nvm%E3%80%80update>
+
+> Intel E810 nvmupdate v4.2
+ <https://www.intel.com/content/www/us/en/download/19624/non-volatile-memory-nvm-update-utility-for-intel-ethernet-network-adapter-e810-series.html>
+
+> NATIONAL VULNERABILITY DATABASE
+ <https://nvd.nist.gov/vuln/detail/CVE-2022-36382>
+
 脆弱性対策情報データベースである、JVN iPdeiaでの検索では、2020年以降、Intel(R) Ethernet I210 Controller、Intel(R) Ethernet 700 Series Controller 、Intel(R) Ethernet Network Controller E810において脆弱性が発見されています。
 
 - JVN iPdeia （"Intel Ethernet Controller"で検索）
  <https://jvndb.jvn.jp/search/index.php?mode=_vulnerability_search_IA_VulnSearch&lang=ja&keyword=Intel+Ethernet+Controller&useSynonym=1&vendor=&product=&datePublicFromYear=&datePublicFromMonth=&datePublicToYear=&datePublicToMonth=&dateLastPublishedFromYear=&dateLastPublishedFromMonth=&dateLastPublishedToYear=&dateLastPublishedToMonth=&cwe=&searchProductId=>
 
 Mellanox(NVIDIA)のネットワークカードについては脆弱性は見つかっていないようです。
+
 
 ## ネットワークカード(NIC)の保守期限
 
@@ -40,12 +59,9 @@ ESXiのハードウェア互換リストでは古いネットワークカード�
 ## Melanoxのサポート終了NIC
 
 Mellanoxにおいても"Products End-of-Life Policy"というものがあり、販売終了から5年経過し、End of Supportとなるようです。
-このURLには、"Mellanox EOL'd Products file"という**Excelファイル**へのリンクがあります。
-- Mellanox
- <https://network.nvidia.com/support/eol/>
- Excelが起動してきて少しびっくりしました{% emoji confused %}
+以前にはEOSの製品一覧が記載されているExcelファイルが置いてあったんですが、最近は無くなってしまいました。
 
-最近は$50で購入できるMCX311A-XCATなどは2020年3月31日に販売終了となっています。また、Connect X-4やX-5,X-6であっても型番によっては販売終了としてリストされているので一度確認されることをお勧めします。
+最近は$40で購入できるMCX311A-XCATなどは2020年3月31日に販売終了となっています。
 Mellanoxの場合はVMwareの互換リストから外れているConnect X-3についてもWebにはファームウェアの情報が掲載されているので、いつでも最新のファームウェアに更新できます。
 
 ## intelのNICファームウェア更新
@@ -81,15 +97,15 @@ intelの純正のNICであればそのカード名称でintelのサイトを検�
    Driver Info:
          Bus Info: 0000:01:00:0
          Driver: i40en
-         Firmware Version: 6.80 0x80003ce6 1.2074.0
+         Firmware Version: 8.50 0x8000b6c5 1.2074.0
          Version: 1.11.1.31
    Link Detected: true
    Link Status: Up
    Name: vmnic0
    PHYAddress: 0
    Pause Autonegotiate: false
-   Pause RX: false
-   Pause TX: false
+   Pause RX: true
+   Pause TX: true
    Supported Ports: DA
    Supports Auto Negotiation: true
    Supports Pause: true
@@ -98,9 +114,10 @@ intelの純正のNICであればそのカード名称でintelのサイトを検�
    Virtual Address: 00:00:00:00:00:00
    Wakeon: MagicPacket(tm)
 ```
-続いてダウンロードしたファイル（700シリーズは2022年11月22日時点では最新がv9.1です）をscpかストアブラウザを使ってESXi上にアップロードします。その後展開し実行します。700シリーズではJVN IPediaから辿ったintelの情報では、v8.2以前のFirmwareに問題があるとのことで、私はv8.5を選択しました。特に注意点はありませんが、私は実行にあたりメンテナンスモードにして（VMを停止）から開始しました。
+続いてダウンロードしたファイル（700シリーズは2023年3月5日時点では最新がv9.2です）をscpかストアブラウザを使ってESXi上にアップロードします。その後展開し実行します。
+特に注意点はありませんが、私は実行にあたりメンテナンスモードにして（VMを停止）から開始しました（アップデート中に、仮想マシンが止まるようなことはありませんが）。
 ```
-[root@esxi2:] tar -xvf 700Series_NVMUpdatePackage_v8_50_ESX.tar.gz
+[root@esxi2:] tar -xvf 700Series_NVMUpdatePackage_v9_20_ESX.tar.gz
 #展開されたフォルダに入り以下を実行します。
 [root@esxi2:] ./nvmupdaten64e
 ```
@@ -108,17 +125,17 @@ intelの純正のNICであればそのカード名称でintelのサイトを検�
 以下ではNICを全て対象、NVMイメージのバックアップは有りということで実行したログになります。
 ```
 Intel(R) Ethernet NVM Update Tool
-NVMUpdate version 1.37.28.0
-Copyright(C) 2013 - 2021 Intel Corporation.
+NVMUpdate version 1.39.32.6
+Copyright(C) 2013 - 2023 Intel Corporation.
 
 
 WARNING: To avoid damage to your device, do not stop the update or reboot or power off the system during this update.
-Inventory in progress. Please wait [****-.....]
+Inventory in progress. Please wait [****......]
 
 
 Num Description                          Ver.(hex)  DevId S:B    Status
 === ================================== ============ ===== ====== ==============
-01) Intel(R) Ethernet Controller X710  6.128(6.80)   1572 00:001 Update
+01) Intel(R) Ethernet Controller X710  8.112(8.70)   1572 00:001 Update
     for 10GbE SFP+                                               available
 
 Options: Adapter Index List (comma-separated), [A]ll, e[X]it
@@ -130,7 +147,7 @@ Update in progress. This operation may take several minutes.
 
 Num Description                          Ver.(hex)  DevId S:B    Status
 === ================================== ============ ===== ====== ==============
-01) Intel(R) Ethernet Controller X710   8.80(8.50)   1572 00:001 Update
+01) Intel(R) Ethernet Controller X710   9.32(9.20)   1572 00:001 Update
     for 10GbE SFP+                                               successful
 
 Reboot is required to complete the update process.
@@ -154,15 +171,15 @@ Press any key to exit.
    Driver Info:
          Bus Info: 0000:01:00:0
          Driver: i40en
-         Firmware Version: 8.50 0x8000b6c5 1.2074.0
+         Firmware Version: 9.20 0x8000d8bc 1.2074.0
          Version: 1.11.1.31
    Link Detected: true
    Link Status: Up
    Name: vmnic0
    PHYAddress: 0
    Pause Autonegotiate: false
-   Pause RX: false
-   Pause TX: false
+   Pause RX: true
+   Pause TX: true
    Supported Ports: DA
    Supports Auto Negotiation: true
    Supports Pause: true
@@ -172,7 +189,7 @@ Press any key to exit.
    Wakeon: MagicPacket(tm)
 ```
 
-`Firmware Version: 8.50`ということで、無事更新されました。
+`Firmware Version: 9.20`ということで、無事更新されました。
 
 intelの手順書では、NOTEとして、以下の説明があります。
 > On 700 Series and 500 Series devices, updating to the most current NVM (with the NVM Update Package) and driver does not update the Option ROM. Intel recommends an Option ROM update after the NVM and driver are updated. Refer to the User Guide for Intel® Ethernet Adapters page for the most current Option ROM update process version.
