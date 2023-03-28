@@ -12,12 +12,12 @@ categories:
 {% asset_img title.png 1024 alt %}
 <p class="onepoint">この記事で実現すること</p>
 
-この記事ではSFP+のネットワークカードである、Mellanox Connect-XについてWindows11の対応状況やWindowsでのファームウェアアップデートなどを記します。
+この記事ではSFP+のネットワークカードである、Mellanox Connect XについてWindows11の対応状況やWindowsでのファームウェアアップデートなどを記します。
 <!-- more -->
 
 ## 安価なMellanox Connect-Xカード
 
-すでに販売終了となったConnect X-3はeBayで5,000円弱で売られています。MellanoxのConnectXシリーズは脆弱性の指摘も見かけず、安定しているNICでしょうか。intelに比べればマイナーですが、SFP＋で安価に入手可能となっており、ホームユーザーにとっても大変ありがたい存在です。
+すでに販売終了となったConnect X-3はeBayで5,000円弱で売られています。MellanoxのConnect Xシリーズは脆弱性の指摘も見かけず、安定しているNICでしょうか。intelに比べればマイナーですが、SFP＋で安価に入手可能となっており、ホームユーザーにとっても大変ありがたい存在です。
 Connect X-3はWindows10までのドライバはNvidiaのサイトに掲載されていますがWindows11ではドライバの存在はありません。
 
 しかしながら、Windows11ではConnect Xを認識してWindowsとして用意されたドライバのインストールが行われ、すぐに使えます。
@@ -36,6 +36,9 @@ Connect X-3はやや個人向けの色合いが強かったですが、Connect X
 
 > Nvidia ConnectX-4 Lx 製品概要
  <https://www.nvidia.com/ja-jp/networking/ethernet/connectx-4-lx/>
+
+> NVidiaフォーラムでConnect X-3のWin11のドライバが無いことをNVidiaのテクニカルサポートが示唆
+ <https://forums.developer.nvidia.com/t/connectx-3-cx311a-xcat-for-win11-crashed/205962>
 
 ## Windows11でのデバイスドライバ
 
@@ -60,6 +63,7 @@ Connect X-3をPCIeにセットしてWin11を起動します。デバイスドラ
 [SUM]   0.00-10.00  sec  11.1 GBytes  9.49 Gbits/sec                  receiver
 
 ```
+
 (Ryzen 7 5700G、メモリDDR4-3200 DIMM (PC4-25600)32GByte)
 このPCにはPCIe×16のスロットにConnect X-4を、PCIe x4のスロットにConnect X-3を挿しています。
 
@@ -90,9 +94,8 @@ PCのConnect X-4（SFP28スロット）にSFP＋モジュールを挿入し、�
 Connect X-3もConnect X-4も同じ10GbEとして使うなら変わらないように思えますが、ドライバの違いもさることながら能力は結構違います。
 多重度1でUbuntuに対して実行した結果です。
 
-```
-
-Connect X-4
+``` bash
+Connect X-4 flow control send
 
 [ ID] Interval           Transfer     Bitrate
 [  5]   0.00-1.00   sec  1.11 GBytes  9.51 Gbits/sec
@@ -109,6 +112,8 @@ Connect X-4
 [ ID] Interval           Transfer     Bitrate
 [  5]   0.00-10.00  sec  11.1 GBytes  9.49 Gbits/sec                  sender
 [  5]   0.00-10.04  sec  11.0 GBytes  9.45 Gbits/sec                  receiver
+
+Connect X-4 flow control recv
 
 [ ID] Interval           Transfer     Bitrate
 [  5]   0.00-1.00   sec  1.11 GBytes  9.51 Gbits/sec
@@ -130,8 +135,8 @@ Connect X-4
 非常に安定していますね。Windowsのiperf3のシングルプロセスでRetryが0です。
 ちなみにこれだけ安定しているならということでスイッチのフローコントロールを外してみます。
 
-```
-Connect X-4 no flow control
+``` bash
+Connect X-4 no flow control send
 
 [ ID] Interval           Transfer     Bitrate
 [  5]   0.00-1.00   sec  1.11 GBytes  9.52 Gbits/sec
@@ -149,12 +154,8 @@ Connect X-4 no flow control
 [  5]   0.00-10.00  sec  11.1 GBytes  9.50 Gbits/sec                  sender
 [  5]   0.00-10.04  sec  11.1 GBytes  9.45 Gbits/sec                  receiver
 
-iperf Done.
+Connect X-4 no flow control recv
 
-C:\Users\yoshi>iperf3 -c 192.168.x.181 -R
-Connecting to host 192.168.x.181, port 5201
-Reverse mode, remote host 192.168.x.181 is sending
-[  5] local 192.168.x.165 port 51737 connected to 192.168.x.181 port 5201
 [ ID] Interval           Transfer     Bitrate
 [  5]   0.00-1.00   sec  1.11 GBytes  9.49 Gbits/sec
 [  5]   1.00-2.00   sec  1.10 GBytes  9.47 Gbits/sec
@@ -170,8 +171,6 @@ Reverse mode, remote host 192.168.x.181 is sending
 [ ID] Interval           Transfer     Bitrate         Retr
 [  5]   0.00-10.05  sec  11.0 GBytes  9.42 Gbits/sec    0             sender
 [  5]   0.00-10.00  sec  11.0 GBytes  9.47 Gbits/sec                  receiver
-
-
 ```
 
 フローコントロール無しでこれは良い結果です。もっとも、アプリケーション（iperf3）が再送を必要としていないだけであって、NIC同士がオフロードして送受信管理するのでOSまでその情報は見えていないと考えられます。昔はとても高価かつ使いこなすのが難しいNICでしたが、シンプルに使うだけであれば、容易にその高い性能がホームユーザーにも享受できるようになってきました。
@@ -224,7 +223,7 @@ Device #1:
   Description:      ConnectX-4 Lx EN network interface card; 25GbE dual-port SFP28; PCIe3.0 x8; ROHS R6
   PSID:             MT_2420110034
   PCI Device Name:  mt4117_pciconf0
-  Base MAC:         0c42a1a18c94
+  Base MAC:         0c42a1000000
   Versions:         Current        Available
      FW             14.25.1020     14.32.1010
      PXE            3.5.0701       3.6.0502
@@ -247,7 +246,7 @@ Device #1:
   Description:      ConnectX-4 Lx EN network interface card; 25GbE dual-port SFP28; PCIe3.0 x8; ROHS R6
   PSID:             MT_2420110034
   PCI Device Name:  mt4117_pciconf0
-  Base MAC:         0c42a1a18c94
+  Base MAC:         0c42a1000000
   Versions:         Current        Available
      FW             14.25.1020     14.32.1010
      PXE            3.5.0701       3.6.0502
@@ -290,7 +289,7 @@ Device #1:
   Description:      ConnectX-4 Lx EN network interface card; 25GbE dual-port SFP28; PCIe3.0 x8; ROHS R6
   PSID:             MT_2420110034
   PCI Device Name:  mt4117_pciconf0
-  Base MAC:         0c42a1a18c94
+  Base MAC:         0c42a1000000
   Versions:         Current        Available
      FW             14.25.1020     14.32.1010
      PXE            3.5.0701       3.6.0502
@@ -359,8 +358,7 @@ Connect X-4を挿すところです。どう見てもレーン数が不足して
 
 iperf3のテストです。Windows11同士、それぞれがConnectx-4で片方がPCIe x4です。多重度は2です。
 
-```
-
+``` bash
 iperf3 PCIe x4 Ryzen5(SFP28) <- Ryzen7(SFP28)
 
 C:\Users\yoshi>iperf3 -c 192.168.x.165 -R -P2
@@ -420,20 +418,7 @@ Reverse mode, remote host 192.168.x.165 is sending
 iperf Done.
 ```
 
-中途半端な繋ぎ方ですが、25GbEワイヤレートの速度がしっかり出ています。念の為、ESXiのUbuntuとの10GbEでも確認しました。多重度は1です。
-
-```
-send
-[ ID] Interval           Transfer     Bitrate
-[  5]   0.00-10.00  sec  11.1 GBytes  9.49 Gbits/sec                  sender
-[  5]   0.00-10.04  sec  11.0 GBytes  9.45 Gbits/sec                  receiver
-
-
-receive
-[ ID] Interval           Transfer     Bitrate         Retr
-[  5]   0.00-10.05  sec  11.0 GBytes  9.36 Gbits/sec    0             sender
-[  5]   0.00-10.00  sec  11.0 GBytes  9.41 Gbits/sec                  receiver
-```
+中途半端な繋ぎ方ですが、25GbEワイヤレートの速度がしっかり出ています。25GbEの全二重通信の検証まではやっていませんが、そもそもPCIe x8で25GbEが2Portならば、PCIe x4で25GbEの1Portはいけるでしょうし、10GbEなら2Portともに大丈夫でしょう。
 
 まるでギャンブルですが、エイプリールフールでした、、、ということではありません。Mellanox Connect X-4はこういった接続方法に対応しています。
 {% asset_img mellanox.png 480 alt %}
