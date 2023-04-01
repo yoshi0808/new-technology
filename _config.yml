@@ -132,8 +132,9 @@ favicon:
   safari_pinned_tab: /images/logo.svg
   # android_manifest: /images/manifest.json
 
+
 search:
-  path: search.xml
+  path: search.json
   field: post
   content: true
   format: html
