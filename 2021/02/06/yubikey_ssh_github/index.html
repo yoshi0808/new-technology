@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/icon-16x16.png">
+  <link rel="mask-icon" href="/new-technology/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/new-technology/css/main.css">
+
+
+
+<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-/4UQcSmErDzPCMAiuOiWPVVsNN2s3ZY/NsmXNcj0IFc=" crossorigin="anonymous">
+  <link rel="stylesheet" href="/new-technology/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.15.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
+
+    <meta name="description" content="この記事で実現すること  YubiKeyと関係するソフトウェアの概要説明、そして公開鍵認証でリモートホストにSSHを行えるようにします。またGitHubにコマンドラインからSSH接続できるようにします。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="YubiKeyとSSHとGitHub">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2021/02/06/yubikey_ssh_github/index.html">
+<meta property="og:site_name" content="New technologies in our life">
+<meta property="og:description" content="この記事で実現すること  YubiKeyと関係するソフトウェアの概要説明、そして公開鍵認証でリモートホストにSSHを行えるようにします。またGitHubにコマンドラインからSSH接続できるようにします。">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/02/06/yubikey_ssh_github/title.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/02/06/yubikey_ssh_github/5C.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/02/06/yubikey_ssh_github/touch.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/02/06/yubikey_ssh_github/bitwarden.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/02/06/yubikey_ssh_github/otp3.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/02/06/yubikey_ssh_github/yubi1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/02/06/yubikey_ssh_github/yubi2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/02/06/yubikey_ssh_github/yubi3.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/02/06/yubikey_ssh_github/yubi4.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/02/06/yubikey_ssh_github/gh-desktop.png">
+<meta property="article:published_time" content="2021-02-05T16:18:54.000Z">
+<meta property="article:modified_time" content="2021-10-24T01:16:57.000Z">
+<meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
+<meta property="article:tag" content="yubikey">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2021/02/06/yubikey_ssh_github/title.png">
+
+
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2021/02/06/yubikey_ssh_github/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"ja","comments":true,"permalink":"https://yoshi0808.github.io/new-technology/2021/02/06/yubikey_ssh_github/","path":"2021/02/06/yubikey_ssh_github/","title":"YubiKeyとSSHとGitHub"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>YubiKeyとSSHとGitHub | New technologies in our life</title>
+  
+
+
+
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{&quot;token&quot;: &quot;0148b4d0442e42b483ddce684030bd2f&quot;}'></script>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JMY6NSC2KK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+  'ad_storage': 'denied',
+  'analytics_storage': 'denied'
+  });
+
+  dataLayer.push({
+  'event': 'default_consent'
+  });
+
+  if (Cookies.get('PRVCY202112') == 'Agree') {
+    gtag('consent', 'update', {
+    'analytics_storage': 'granted'
+    });
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'G-JMY6NSC2KK',{ 'anonymize_ip': true });
+</script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/new-technology/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/new-technology/atom.xml" title="New technologies in our life" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="ナビゲーションバーの切り替え" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/new-technology/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">New technologies in our life</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Device,Network,Code,etc...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="検索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/new-technology/" rel="section"><i class="fa fa-home fa-fw"></i>ホーム</a></li><li class="menu-item menu-item-about"><a href="/new-technology/about/" rel="section"><i class="fa fa-user fa-fw"></i>サイトポリシー</a></li><li class="menu-item menu-item-tags"><a href="/new-technology/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>タグ</a></li><li class="menu-item menu-item-categories"><a href="/new-technology/categories/" rel="section"><i class="fa fa-th fa-fw"></i>カテゴリ</a></li><li class="menu-item menu-item-archives"><a href="/new-technology/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>アーカイブ</a></li><li class="menu-item menu-item-privacy"><a href="/new-technology/privacypolicy/" rel="section"><i class="fa fa-check fa-fw"></i>プライバシーポリシー</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="検索…" spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          見出し
+        </li>
+        <li class="sidebar-nav-overview">
+          概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Yubico%E7%A4%BE%E3%81%AEYubiKey"><span class="nav-number">1.</span> <span class="nav-text">Yubico社のYubiKey</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Yubikey-Authenticator"><span class="nav-number">2.</span> <span class="nav-text">Yubikey Authenticator</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#YubiKey%E3%81%AE%E5%B0%91%E3%81%97%E9%AB%98%E5%BA%A6%E3%81%AA%E4%BD%BF%E3%81%84%E6%96%B9"><span class="nav-number">3.</span> <span class="nav-text">YubiKeyの少し高度な使い方</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#YubiKey-Manager%E3%81%A8YubiKey%E3%81%AE%E6%A9%9F%E8%83%BD"><span class="nav-number">4.</span> <span class="nav-text">YubiKey ManagerとYubiKeyの機能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PIN-Management%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span class="nav-number">4.1.</span> <span class="nav-text">PIN Managementについて</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSH%EF%BC%88PIV-Authentication%EF%BC%89%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">5.</span> <span class="nav-text">SSH（PIV Authentication）の設定</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#macOS%E5%90%91%E3%81%91"><span class="nav-number">5.1.</span> <span class="nav-text">macOS向け</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSH%E6%8E%A5%E7%B6%9A%E3%83%86%E3%82%B9%E3%83%88"><span class="nav-number">6.</span> <span class="nav-text">SSH接続テスト</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GitHub%E3%81%B8%E3%81%AESSH%E6%8E%A5%E7%B6%9A"><span class="nav-number">7.</span> <span class="nav-text">GitHubへのSSH接続</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SSH%E6%8E%A5%E7%B6%9A%E3%81%AE%E5%88%B6%E9%99%90%E4%BA%8B%E9%A0%85"><span class="nav-number">7.1.</span> <span class="nav-text">SSH接続の制限事項</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#macOS%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8Byubico-piv-tool%E3%81%A7%E3%81%AE%E7%A7%98%E5%AF%86%E9%8D%B5%E4%BD%9C%E6%88%90%E3%83%AD%E3%82%B0"><span class="nav-number">8.</span> <span class="nav-text">macOSにおけるyubico-piv-toolでの秘密鍵作成ログ</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Yubikey%E3%81%A7SSH%E8%A8%AD%E5%AE%9A%E3%81%97%E3%81%A6%E3%81%BF%E3%81%9F%E6%84%9F%E6%83%B3"><span class="nav-number">9.</span> <span class="nav-text">YubikeyでSSH設定してみた感想</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="阿部　吉伸(Yoshinobu ABE)"
+      src="/new-technology/images/yoshi.png">
+  <p class="site-author-name" itemprop="name">阿部　吉伸(Yoshinobu ABE)</p>
+  <div class="site-description" itemprop="description">IT</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/new-technology/archives/">
+          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-name">ポスト</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/new-technology/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">カテゴリ</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/new-technology/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">タグ</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yoshi0808" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yoshi0808" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yoshi0808.blog@gmail.com" title="E-Mail → mailto:yoshi0808.blog@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yoshi0808_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yoshi0808_" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="/new-technology/lib/@creativecommons/vocabulary/assets/license_badges/big/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="ja">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2021/02/06/yubikey_ssh_github/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/new-technology/images/yoshi.png">
+      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="New technologies in our life">
+      <meta itemprop="description" content="IT">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="YubiKeyとSSHとGitHub | New technologies in our life">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          YubiKeyとSSHとGitHub
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">投稿日</span>
+
+      <time title="作成日：2021-02-06 01:18:54" itemprop="dateCreated datePublished" datetime="2021-02-06T01:18:54+09:00">2021-02-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">編集日</span>
+      <time title="修正日：2021-10-24 10:16:57" itemprop="dateModified" datetime="2021-10-24T10:16:57+09:00">2021-10-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">カテゴリ</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/Security/" itemprop="url" rel="index"><span itemprop="name">Security</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <img src="/new-technology/2021/02/06/yubikey_ssh_github/title.png" class="" width="800" title="alt">
+<p class="onepoint">この記事で実現すること</p>
+
+<p>YubiKeyと関係するソフトウェアの概要説明、そして公開鍵認証でリモートホストにSSHを行えるようにします。またGitHubにコマンドラインからSSH接続できるようにします。</p>
+<span id="more"></span>
+<h2 id="Yubico社のYubiKey"><a href="#Yubico社のYubiKey" class="headerlink" title="Yubico社のYubiKey"></a>Yubico社のYubiKey</h2><p>Yubico社のYubiKeyはなんとなくご存知の方も多いかもしれません。指紋認証ではなく、秘密鍵をこの小さなハードウェアに埋め込み、公開鍵認証、Yubico独自のワンタイムパスワード、FIDO2、そしてGitHubやGoogleなどはWebAuthn（ウェブオースン）でYubiKeyにタッチするだけで簡単に2要素認証が可能になります。6桁のワンタイムパスワードをいちいち入力しなくて済むのは魅力的です。ただ法人向けの要素が強く、実際の使い方については情報が少ないのが現状です。しかし、Amazonなどの商品の評価では非常にユーザー満足度が高いのが見て取れます。</p>
+<img src="/new-technology/2021/02/06/yubikey_ssh_github/5C.png" class="" width="320" title="alt">
+
+<p>私はUSB-Cの最も小さい”YubiKey 5C Nano”をmacOSで使っています。2要素認証が必要な時にこの小さいデバイスに”Touch to Sign”で認証できます。</p>
+<p>macOSでは、GitHubへの2要素認証はTouch IDによるWebAuthnが使えます。このブログを書いている時点でChrome、Edgeは対応しています。以下の通り、組み込みセンサーという表示がTouchIDに相当します。Safariのタッチ認証はYubikeyが必要です。</p>
+<img src="/new-technology/2021/02/06/yubikey_ssh_github/touch.png" class="" width="480" title="alt">
+
+<p>細かいことを言えば、WebAuthnはパスワードを必要としない認証のはずで、GitHubのような2要素認証は定義からすると少し違うような気がします。Microsoftアカウントは、YubiKeyを事前登録する事で、アカウントやパスワードを一切入力せず、YubiKeyのタッチだけでログインできます。公開鍵認証のお手本ですね。<br>他には、パスワード管理ソフトのbitwardenのプレミアムアカウント（年$10と格安です）では、2要素目の認証にWebAuthnを使えます。</p>
+<img src="/new-technology/2021/02/06/yubikey_ssh_github/bitwarden.png" class="" width="480" title="alt">
+
+<p>bitwardenに関する詳細は、「<a href="/new-technology/2020/08/30/bitwarden/" title="パスワード管理ソフトのbitwardenを活用する">パスワード管理ソフトのbitwardenを活用する</a>」の記事を参照してください。</p>
+<p>Yubikeyの小さいパッケージには”Get started yubico.com&#x2F;start”と清々しいシンプルな記載があります。そして、このURLにアクセスすると、使えるWebサイト、サービスの一覧が表示されます。そして、そのサイトでの使い方が説明されているだけです。</p>
+<p>Google、Facebookなどのサイトで”Touch to Sign”の2要素認証を楽しんでみてください。一度認証してしまえば、Cookieに認証情報を保存してしまうため、次からは認証不要で使うという方が大半でしょうから、楽しいのは最初だけかもしれません<span class="github-emoji" alias="grin" style="" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f601.png?v8">&#x1f601;</span></p>
+<p>また、YubiKeyが本物かどうかのテストができます。</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.yubico.com/genuine/">https://www.yubico.com/genuine/</a></p>
+</blockquote>
+<h2 id="Yubikey-Authenticator"><a href="#Yubikey-Authenticator" class="headerlink" title="Yubikey Authenticator"></a>Yubikey Authenticator</h2><p>PCのアプリケーションを使っている時には、ワンタイムパスワード（OTP）の入力のためにスマホを取り出すのが少々面倒に感じます。PCにYubico Authenticatorをインストールすればいつもの6桁の数字をコピペで入力できるようになります。当然ですが、YubiKeyが接続されている事が前提（NFCモデルはタッチが前提）になります。スキャナ機能があってデスクトップ上に表示しているOTPのバーコードを読み取る機能もありこれも便利です。</p>
+<p>（左：YubiKey未接続、右：YubiKey接続済）</p>
+<img src="/new-technology/2021/02/06/yubikey_ssh_github/otp3.png" class="" width="480" title="alt">
+
+<h2 id="YubiKeyの少し高度な使い方"><a href="#YubiKeyの少し高度な使い方" class="headerlink" title="YubiKeyの少し高度な使い方"></a>YubiKeyの少し高度な使い方</h2><p>これまで説明してきただけでもYubiKeyは便利で満足度は高く感じるところですが、せっかくなのでもう少し高度な使い方について見ていきましょう。私が使っているmacOSを例にして説明しますが、あまり固有OSに偏らない形で説明していきます。YubiKeyの使い方について、私なりの解釈で難易度として3段階あります。</p>
+<table>
+<thead>
+<tr>
+<th>段階</th>
+<th>難易度</th>
+<th>実現可能になるもの</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>易しい</td>
+<td>FIDO、2要素認証など</td>
+</tr>
+<tr>
+<td>2</td>
+<td>普通</td>
+<td>秘密鍵＋PINによるSSH公開鍵認証</td>
+</tr>
+<tr>
+<td>3</td>
+<td>高</td>
+<td>GnuPGによるGitHubリポジトリへのコミット時の署名およびSSH</td>
+</tr>
+</tbody></table>
+<p>3番目のGnuPGを使ったGitHubの署名、SSH接続は難易度が高く、別記事にします。</p>
+<p>GitHub開発者でなくとも、YubiKeyを使いこなすために、2段階目のSSH公開鍵認証まではやってみたいものです。SSHによる公開鍵認証、かつパスフレーズを簡素なものにするという目的で必要なソフトウェアの一覧を以下に記載します。</p>
+<table>
+<thead>
+<tr>
+<th>Yubicoソフトウェア</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>YubiKey ManagerGUI)</td>
+<td>最初に使う管理ツール（GUI）</td>
+</tr>
+<tr>
+<td>Yubico PIV Tool</td>
+<td>SSHを行う際にPIVカード認証（公開鍵認証）方式で接続する（CLI）</td>
+</tr>
+<tr>
+<td>Yubikey PIV Manager</td>
+<td>SSHを行う際にPIVカード認証（公開鍵認証）方式で接続する（GUI）</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.yubico.com/products/services-software/download/smart-card-drivers-tools/">https://www.yubico.com/products/services-software/download/smart-card-drivers-tools/</a><br><a target="_blank" rel="noopener" href="https://developers.yubico.com/yubikey-piv-manager/Releases/">https://developers.yubico.com/yubikey-piv-manager/Releases/</a></p>
+</blockquote>
+<p>上記以外には、PKCS#11と呼ばれるスマートカードやUSBトークンを対象とした認証ライブラリが存在しますのでそれをダウンロードする必要があります（後述します）。</p>
+<p>過去から様々な変遷があって、Yubicoでは正直ソフトウェアが乱立しています。もう使わなくなったソフトウェアや、新しいソフトウェアだけどまだ機能が移行されていないなど少しわかりづらいものがあります。</p>
+<h2 id="YubiKey-ManagerとYubiKeyの機能"><a href="#YubiKey-ManagerとYubiKeyの機能" class="headerlink" title="YubiKey ManagerとYubiKeyの機能"></a>YubiKey ManagerとYubiKeyの機能</h2><p>YubiKey Manager(GUI)はYubiKeyの全体管理に使うソフトウェアです。セットアップは全く難しくありません。</p>
+<img src="/new-technology/2021/02/06/yubikey_ssh_github/yubi1.png" class="" width="480" title="alt">
+
+<mark class="label primary">Applications</mark>から、OTPを選択すると以下の画面になります。
+<img src="/new-technology/2021/02/06/yubikey_ssh_github/yubi2.png" class="" width="480" title="alt">
+<p>OTPにはSlot1,2の2つのスロットがあります。Slot1のショートタッチにはOTPが割り当てられています。さらに<mark class="label primary">Configure</mark>に進みます。</p>
+<img src="/new-technology/2021/02/06/yubikey_ssh_github/yubi3.png" class="" width="480" title="alt">
+<p>ここでは、Slot1に対してYubico OTP（Yubico独自のワンタイムパスワード）、チャレンジレスポンス、スタティックパスワード、OATH-HOTPが選択できます。このスロットはショートタッチ、一瞬YubiKeyに触れると、キーが入力されます。つまりキーボードのように振舞います。なお、Slot2のロングタッチに重要なアプリケーションの長めのパスワードを割り当てておくと便利です。2秒程度YubiKeyに触れているとSlot2のスタティックパスワードが入力されます。パスワード管理ソフトなどのログインには便利に使えます。</p>
+<p>この他、FIDO2、PIVと並んでいますが、SSHで利用する場合はこのPIVが重要になります。<br>PIVは米国の連邦政府における政府職員の身分証明用のICカードの規格になります。</p>
+<h3 id="PIN-Managementについて"><a href="#PIN-Managementについて" class="headerlink" title="PIN Managementについて"></a>PIN Managementについて</h3><mark class="label primary">Applications</mark>から<mark class="label primary">PIV</mark>を選択すると、"PIN Management"、"Certificates"、"Reset"と並びます。
+<p>PIVは、ICカード向けの規格に基づくものです。4つのSlotがあります。</p>
+<table>
+<thead>
+<tr>
+<th>Slot</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>9a</td>
+<td>Authentication SSHでPIN入力と共に利用します</td>
+</tr>
+<tr>
+<td>9c</td>
+<td>Digital Signature</td>
+</tr>
+<tr>
+<td>9d</td>
+<td>Key Management</td>
+</tr>
+<tr>
+<td>9e</td>
+<td>Card Authentication</td>
+</tr>
+</tbody></table>
+<p>SSHでは、Slot9aのAuthenticationを使うことになります。</p>
+<img src="/new-technology/2021/02/06/yubikey_ssh_github/yubi4.png" class="" width="480" title="alt">
+
+<p>そして、このSlot9aを用いて接続する際は、PINの認証が必要です。まず最初にPINの設定を変更しましょう。PINは日本のマイナンバーカードとほぼ扱いは同じで多少緊張感が必要です。3回入力ミスするとPUK（PIN Unlock Key）によるリセットが必要になります。PINの初期設定は”123456”となります。</p>
+<h2 id="SSH（PIV-Authentication）の設定"><a href="#SSH（PIV-Authentication）の設定" class="headerlink" title="SSH（PIV Authentication）の設定"></a>SSH（PIV Authentication）の設定</h2><p>さて、実際のSSHの設定ですが、実は以前に自分が設定したものよりもわかりやすい方法が掲載されていたのでそちらをまず紹介させていただきます。</p>
+<blockquote>
+<p>ペンティオ Engineer’s Blog<br> <a target="_blank" rel="noopener" href="https://techblog.pentio.com/entry/ssh-using-yubikey">https://techblog.pentio.com/entry/ssh-using-yubikey</a></p>
+</blockquote>
+<p>このページで紹介している方法はWindowsもmacOSも考慮されているので多くの方の参考になるでしょう。</p>
+<p>ここではYubikey ManagerとYubikey PIV Managerを用いてGUIで構成されています。また、PKCS#11のために、OpenSCライブラリをダウンロードし構成する方法が紹介されています。実際のダウンロードリンクは以下を参照してください。</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.pentio.com/yubikey/support/smartcard/">https://www.pentio.com/yubikey/support/smartcard/</a></p>
+</blockquote>
+<h3 id="macOS向け"><a href="#macOS向け" class="headerlink" title="macOS向け"></a>macOS向け</h3><p>私は色々なライブラリがさまざまな場所にインストールされ、またバージョン管理が煩雑になるのを好まないため、<strong>Homebrew</strong>を使っています。Macユーザーにとっては一般的なものですが、こちらを使ったインストールをお勧めします。私はYubiKey Managerは単独でインストールし、残りのYubikey関連は<code>brew install opensc yubico-piv-tool</code>としてインストールしました。openscは大型ライブラリのため、依存関係で様々なパッケージが自動インストールされます。私はopenscのインストールが終わった後に気づいたのですが、yubico-piv-toolのなかに、SSHに必要なライブラリがあるようです。私のセットアップ（macOS）は、Yubicoのサイトを参考にコマンドラインベースで行いました。</p>
+<blockquote>
+<p>Homebrew<br> <a target="_blank" rel="noopener" href="https://brew.sh/index_ja">https://brew.sh/index_ja</a><br>Yubico -Using PIV for SSH through PKCS #11-<br> <a target="_blank" rel="noopener" href="https://developers.yubico.com/PIV/Guides/SSH_with_PIV_and_PKCS11.html">https://developers.yubico.com/PIV/Guides/SSH_with_PIV_and_PKCS11.html</a></p>
+</blockquote>
+<p>上記の説明のなかに”Find out where ykcs11 has been installed. For a Debian-based system, the ykcs11 module ends up in &#x2F;usr&#x2F;local&#x2F;lib&#x2F;libykcs11. On MacOS, it is in &#x2F;usr&#x2F;local&#x2F;lib&#x2F;libykcs11.dylib.”と説明があります。実際に<code>/usr/local/lib</code>を確認しましたが、<code>libykcs11.dylib -&gt; ../Cellar/yubico-piv-tool/2.2.0/lib/libykcs11.dylib</code>とインストール済みのyubico-piv-toolのライブラリにシンボリックリンクが張られていました。</p>
+<h2 id="SSH接続テスト"><a href="#SSH接続テスト" class="headerlink" title="SSH接続テスト"></a>SSH接続テスト</h2><p>さて、YubiKeyで秘密鍵を生成し終わったところで、公開鍵を生成します。(Pathは環境によって異なります）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -D /usr/local/opt/opensc/lib/opensc-pkcs11.so -e</span><br></pre></td></tr></table></figure>
+<p>また、Yubicoのライブラリを利用するのであれば、以下の通りです。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -D /usr/local/lib/libykcs11.dylib -e</span><br></pre></td></tr></table></figure>
+
+<p>出力された公開鍵を接続先のサーバーのauthorized_keysに配置します（一般的な方法であり手順は省略します）。</p>
+<p>相手先サーバに接続してみます。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ ssh -I /usr/local/lib/libykcs11.dylib usr1@192.168.x.x</span><br><span class="line">Enter PIN <span class="keyword">for</span> <span class="string">&#x27;YubiKey PIV #XXXXXXXX&#x27;</span>:</span><br><span class="line">Welcome to Ubuntu 20.04.2 LTS (GNU/Linux 5.8.0-41-generic x86_64)</span><br><span class="line">Your Hardware Enablement Stack (HWE) is supported until April 2025.</span><br><span class="line">Last login: Fri Feb  5 20:59:22 2021 from 192.168.x.x</span><br><span class="line">usr1@ubuntu:~$</span><br></pre></td></tr></table></figure>
+<p>PINを入力して公開鍵認証で接続できました。秘密鍵はYubiKey内部で生成されているため、漏洩する事はありません。</p>
+<p>簡単にYubiKeyを利用してSSHに接続するためには、<code>~/.ssh/config</code>に設定を加えます。接続先ホストに対してライブラリを明示します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Host ubuntu</span><br><span class="line"> HostName 192.168.x.x</span><br><span class="line"> User usr1</span><br><span class="line"> <span class="comment">#PKCS11Provider /usr/local/opt/opensc/lib/opensc-pkcs11.so</span></span><br><span class="line"> PKCS11Provider /usr/local/lib/libykcs11.dylib</span><br><span class="line"> IdentitiesOnly <span class="built_in">yes</span></span><br><span class="line"></span><br><span class="line">Host github.com</span><br><span class="line"> <span class="comment">#PKCS11Provider /usr/local/opt/opensc/lib/opensc-pkcs11.so</span></span><br><span class="line"> PKCS11Provider /usr/local/lib/libykcs11.dylib</span><br><span class="line"> IdentitiesOnly <span class="built_in">yes</span></span><br></pre></td></tr></table></figure>
+<p>「<a href="/new-technology/2021/01/23/esxi-security/" title="ESXi(無償版)のセキュリティを高める">ESXi(無償版)のセキュリティを高める</a>」の記事で触れましたが、これらの設定を行う事で、ESXiへのSSHでYubiKeyを使った公開鍵認証が可能になります。</p>
+<h2 id="GitHubへのSSH接続"><a href="#GitHubへのSSH接続" class="headerlink" title="GitHubへのSSH接続"></a>GitHubへのSSH接続</h2><p>開発者の方であればGitHubへの接続もYubiKeyで行いたいかもしれません。私はGitHub上にブログを構築しており、普段はTerminalのコマンドラインでデプロイしています。これは2要素認証は行えませんからGitHub上でパーソナルアクセストークンを発行し、それを利用します。パーソナルアクセストークンはアプリケーション専用パスワードという事になります。それなりの文字長なので安全性は高いですが、2要素認証よりは劣ります。もしあなたが趣味としてのホームユーザーではなく開発者であり、さらに安全性を高める必要があれば、パーソナルアクセストークンをやめて、SSH接続を検討してみてください。なお、この設定には制限事項があるので後述します。</p>
+<p>GitHubのSSH接続に関するリソースを掲載します。以下でGitHubにログインし、公開鍵を登録します。</p>
+<blockquote>
+<p>GitHub アカウントへの新しい SSH キーの追加<br> <a target="_blank" rel="noopener" href="https://docs.github.com/ja/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account">https://docs.github.com/ja/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account</a></p>
+</blockquote>
+<p>これでPIN入力とともに、GitHubにはSSHで接続できるようになりました。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ ssh -T git@github.com</span><br><span class="line">Enter PIN for &#x27;YubiKey PIV #XXXXXXXX&#x27;:</span><br><span class="line">Hi yoshi0808! You&#x27;ve successfully authenticated, but GitHub does not provide shell access.</span><br></pre></td></tr></table></figure>
+
+<p>また、gitコマンドでSSH接続を有効にするには以下のコマンドを実行します。<br><code>$ git remote set-url origin git@github.com:[ユーザID]/[リポジトリ].git</code></p>
+<p>設定確認は以下の通りです<br><code>$ git remote -v</code></p>
+<p>HTTPS接続に戻す場合は、<strong>リモートの URL の変更</strong>を参照してください。</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://docs.github.com/ja/github/using-git/changing-a-remotes-url">https://docs.github.com/ja/github/using-git/changing-a-remotes-url</a></p>
+</blockquote>
+<h3 id="SSH接続の制限事項"><a href="#SSH接続の制限事項" class="headerlink" title="SSH接続の制限事項"></a>SSH接続の制限事項</h3><p>コマンドライン中心にgitを使われている方は問題ありませんが、YubiKeyのPIVによるPIN入力はTerminalにおける標準入出力を使用しています。従って、GUIアプリケーションを利用した時に標準入出力を使えませんから、SSH認証が失敗します。例えば、GitHub Desktopなどは以下のエラーが発生します。</p>
+<img src="/new-technology/2021/02/06/yubikey_ssh_github/gh-desktop.png" class="" width="800" title="alt">
+
+<p>これが困るという事であれば一旦GUIはHTTPS接続とし、パーソナルアクセストークンを必要としたアプリケーション専用にSSH接続とする使い分けが必要となります。</p>
+<h2 id="macOSにおけるyubico-piv-toolでの秘密鍵作成ログ"><a href="#macOSにおけるyubico-piv-toolでの秘密鍵作成ログ" class="headerlink" title="macOSにおけるyubico-piv-toolでの秘密鍵作成ログ"></a>macOSにおけるyubico-piv-toolでの秘密鍵作成ログ</h2><p>以下は私が過去に実行したSSHの秘密鍵作成からSSHの実行までの作業ログです。openscはYubico提供のライブラリを利用しています。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">[xxxx@MB-Air:~]</span><br><span class="line">$ yubico-piv-tool -s 9a -a generate -o public.pem -k</span><br><span class="line">Enter management key:</span><br><span class="line">Successfully generated a new private key.</span><br><span class="line"></span><br><span class="line">[xxxx@MB-Air:~]</span><br><span class="line">$ yubico-piv-tool -a verify-pin -a selfsign-certificate -s 9a -S <span class="string">&quot;/CN=SSH key/&quot;</span> -i public.pem -o cert.pem</span><br><span class="line">Enter PIN:</span><br><span class="line">Successfully verified PIN.</span><br><span class="line">Successfully generated a new self signed certificate.</span><br><span class="line"></span><br><span class="line">[xxxx@MB-Air:~]</span><br><span class="line">$ yubico-piv-tool -a import-certificate -s 9a -i cert.pem -k</span><br><span class="line">Enter management key:</span><br><span class="line">Successfully imported a new certificate.</span><br><span class="line"></span><br><span class="line">$ ssh-keygen -D /usr/local/lib/libykcs11.dylib -e &gt; id_rsa.pub</span><br><span class="line"></span><br><span class="line">$ ssh -I /usr/local/lib/libykcs11.dylib usr1@192.168.x.x</span><br><span class="line">Enter PIN <span class="keyword">for</span> <span class="string">&#x27;YubiKey PIV #XXXXXXXX&#x27;</span>:</span><br></pre></td></tr></table></figure>
+
+<p>上記では公開鍵id_rsa.pubをサーバー側に配置している手順は省略しています。</p>
+<h2 id="YubikeyでSSH設定してみた感想"><a href="#YubikeyでSSH設定してみた感想" class="headerlink" title="YubikeyでSSH設定してみた感想"></a>YubikeyでSSH設定してみた感想</h2><p>WebAuthnや2要素認証以上にYubiKeyを使いこなそうとすると、プロダクトが新旧あり混乱しやすく難易度も上がります。一番便利だなと感じているのはbitwardenへのローカルのログインで使うスタティックパスワードだったりします。さらにGnuPGを使ったGitHubへのコミット時の署名をYubiKeyで行う事もできますが、GnuPGの理解も必要となりもっと複雑です。今回制約となったGitHub DesktopなどのSSH認証時の課題はGnuPGを使う事で完全に解決します。続きは「<a href="/new-technology/2021/02/13/yubikey_gpg/" title="GPG ToolsでYubiKeyを使う">GPG ToolsでYubiKeyを使う</a>」にその方法を記載しています。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/new-technology/tags/yubikey/" rel="tag"><i class="fa fa-tag"></i> yubikey</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/new-technology/2021/01/23/esxi-security/" rel="prev" title="ESXi(無償版)のセキュリティを高める">
+                  <i class="fa fa-chevron-left"></i> ESXi(無償版)のセキュリティを高める
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/new-technology/2021/02/13/yubikey_gpg/" rel="next" title="GPG ToolsでYubiKeyを使う">
+                  GPG ToolsでYubiKeyを使う <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">阿部　吉伸(Yoshinobu ABE)</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div><script src="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.umd.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.min.css" rel="stylesheet">
+
+<script>
+if (Cookies.get('PRVCY202112') != 'Agree') {
+  const notice = new SimpleGDPR({
+    title: 'Accept Cookies & Privacy Policy?',
+    message: 'このWebサイトでは、訪問や活動に関するデータがクッキー等によって収集されます。閲覧を継続される場合、\
+    プライバシーポリシーをご覧いただき同意(Agree)をお願いします',
+    link: null,
+    icons: true,
+    theme: 'light',
+    animation: 'fade',
+    float: 'bottom-right',
+      callback: () => {
+      notice.close();
+      Cookies.set('PRVCY202112', 'Agree', { expires: 365, path: '/'});
+      notice.destroy();
+      // Google Analytics 4
+      gtag('consent', 'update', {
+      'analytics_storage': 'granted'
+      });
+      gtag('js', new Date());
+      gtag('config', 'G-JMY6NSC2KK', { 'anonymize_ip': true });
+      },
+  });
+}
+</script>
+<div class="disclaimer1">
+このサイトの記事は、特別な記載がない限り <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja">クリエイティブ・コモンズ BY-NC-SA ライセンス</a>で保護されています</div>
+
+
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/yoshi0808" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="/new-technology/lib/animejs/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="/new-technology/lib/medium-zoom/dist/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/comments.js"></script><script src="/new-technology/js/utils.js"></script><script src="/new-technology/js/motion.js"></script><script src="/new-technology/js/schemes/muse.js"></script><script src="/new-technology/js/next-boot.js"></script>
+
+  <script src="/new-technology/lib/hexo-generator-searchdb/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"/new-technology/lib/mermaid/dist/mermaid.min.js","integrity":"sha256-3JloMMI/ZQx6ryuhhZTsQJQmGAkXeni6PkshX7UUO2s="}}</script>
+  <script src="/new-technology/js/third-party/tags/mermaid.js"></script>
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,20 @@
+nwdiag {
+  network Internet {
+      address = "200.x.x.x/24"
+
+      HGW[address = "200.x.x.1"];
+  }
+  network vSwitch1 {
+      address = "192.168.0.x/24";
+
+      HGW[address = "192.168.0.1"];
+      FW[address = "192.168.0.2"];
+  }
+  network vSwitch0 {
+      address = "192.168.1.x/24";
+
+      ESXi[address = "192.168.1.1"];
+      FW[address = "192.168.1.2"];
+      PC[address = "192.168.1.101"];
+  }
+}

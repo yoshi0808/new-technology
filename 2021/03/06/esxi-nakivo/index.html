@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/icon-16x16.png">
+  <link rel="mask-icon" href="/new-technology/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/new-technology/css/main.css">
+
+
+
+<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-/4UQcSmErDzPCMAiuOiWPVVsNN2s3ZY/NsmXNcj0IFc=" crossorigin="anonymous">
+  <link rel="stylesheet" href="/new-technology/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.15.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
+
+    <meta name="description" content="この記事で実現すること  無償版ESXi6.7（VMware vSphere Hypervisor6.7）はvStorage APIが使えないため、有名なESXiのバックアップ製品は大半が利用できません。vStorage APIを使わないGUI製品であるNakivo Backup Free Editionを用いてXG Firewallなどの仮想マシンがバックアップできます。GUIによる設定、定">
+<meta property="og:type" content="article">
+<meta property="og:title" content="無償版ESXiの高度なバックアップ">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2021/03/06/esxi-nakivo/index.html">
+<meta property="og:site_name" content="New technologies in our life">
+<meta property="og:description" content="この記事で実現すること  無償版ESXi6.7（VMware vSphere Hypervisor6.7）はvStorage APIが使えないため、有名なESXiのバックアップ製品は大半が利用できません。vStorage APIを使わないGUI製品であるNakivo Backup Free Editionを用いてXG Firewallなどの仮想マシンがバックアップできます。GUIによる設定、定">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/03/06/esxi-nakivo/Monitor2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/03/06/esxi-nakivo/nakivo1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/03/06/esxi-nakivo/account.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/03/06/esxi-nakivo/transporter.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/03/06/esxi-nakivo/nakivo2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/03/06/esxi-nakivo/nakivo3.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/03/06/esxi-nakivo/nakivo4.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/03/06/esxi-nakivo/nakivo5.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/03/06/esxi-nakivo/nakivo6.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/03/06/esxi-nakivo/nakivo7.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/03/06/esxi-nakivo/nakivo8.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/03/06/esxi-nakivo/esxi.png">
+<meta property="article:published_time" content="2021-03-05T15:26:19.000Z">
+<meta property="article:modified_time" content="2021-10-23T23:33:51.000Z">
+<meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
+<meta property="article:tag" content="XG Firewall">
+<meta property="article:tag" content="ESXi">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2021/03/06/esxi-nakivo/Monitor2.png">
+
+
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2021/03/06/esxi-nakivo/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"ja","comments":true,"permalink":"https://yoshi0808.github.io/new-technology/2021/03/06/esxi-nakivo/","path":"2021/03/06/esxi-nakivo/","title":"無償版ESXiの高度なバックアップ"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>無償版ESXiの高度なバックアップ | New technologies in our life</title>
+  
+
+
+
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{&quot;token&quot;: &quot;0148b4d0442e42b483ddce684030bd2f&quot;}'></script>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JMY6NSC2KK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+  'ad_storage': 'denied',
+  'analytics_storage': 'denied'
+  });
+
+  dataLayer.push({
+  'event': 'default_consent'
+  });
+
+  if (Cookies.get('PRVCY202112') == 'Agree') {
+    gtag('consent', 'update', {
+    'analytics_storage': 'granted'
+    });
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'G-JMY6NSC2KK',{ 'anonymize_ip': true });
+</script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/new-technology/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/new-technology/atom.xml" title="New technologies in our life" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="ナビゲーションバーの切り替え" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/new-technology/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">New technologies in our life</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Device,Network,Code,etc...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="検索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/new-technology/" rel="section"><i class="fa fa-home fa-fw"></i>ホーム</a></li><li class="menu-item menu-item-about"><a href="/new-technology/about/" rel="section"><i class="fa fa-user fa-fw"></i>サイトポリシー</a></li><li class="menu-item menu-item-tags"><a href="/new-technology/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>タグ</a></li><li class="menu-item menu-item-categories"><a href="/new-technology/categories/" rel="section"><i class="fa fa-th fa-fw"></i>カテゴリ</a></li><li class="menu-item menu-item-archives"><a href="/new-technology/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>アーカイブ</a></li><li class="menu-item menu-item-privacy"><a href="/new-technology/privacypolicy/" rel="section"><i class="fa fa-check fa-fw"></i>プライバシーポリシー</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="検索…" spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          見出し
+        </li>
+        <li class="sidebar-nav-overview">
+          概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%84%A1%E5%84%9F%E7%89%88ESXi%E3%81%AE%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E7%92%B0%E5%A2%83"><span class="nav-number">1.</span> <span class="nav-text">無償版ESXiのバックアップ環境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nakivo-Backup%E3%81%AE%E7%84%A1%E5%84%9F%E3%81%AE%E6%84%8F%E5%91%B3"><span class="nav-number">2.</span> <span class="nav-text">Nakivo Backupの無償の意味</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nakivo-Backup%E3%81%AE%E5%BF%85%E8%A6%81%E7%92%B0%E5%A2%83"><span class="nav-number">3.</span> <span class="nav-text">Nakivo Backupの必要環境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%80%E3%82%A6%E3%83%B3%E3%83%AD%E3%83%BC%E3%83%89%E3%81%8A%E3%82%88%E3%81%B3%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><span class="nav-number">4.</span> <span class="nav-text">ダウンロードおよびインストール</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nakivo-Backup%E3%81%8B%E3%82%89ESXi%E3%81%AE%E3%82%A4%E3%83%B3%E3%83%99%E3%83%B3%E3%83%88%E3%83%AA%E7%A2%BA%E8%AA%8D"><span class="nav-number">5.</span> <span class="nav-text">Nakivo BackupからESXiのインベントリ確認</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Backup%E5%AE%9F%E8%A1%8C%E3%81%A8%E3%82%B9%E3%82%B1%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AA%E3%83%B3%E3%82%B0"><span class="nav-number">6.</span> <span class="nav-text">Backup実行とスケジューリング</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi%E3%81%AEChanged-Block-Tracking"><span class="nav-number">7.</span> <span class="nav-text">ESXiのChanged Block Tracking</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E6%9C%9F%E7%9A%84%E3%81%AA%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E3%82%92%E3%81%8A%E5%8B%A7%E3%82%81%E3%81%97%E3%81%BE%E3%81%99"><span class="nav-number">8.</span> <span class="nav-text">定期的なバックアップをお勧めします</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="阿部　吉伸(Yoshinobu ABE)"
+      src="/new-technology/images/yoshi.png">
+  <p class="site-author-name" itemprop="name">阿部　吉伸(Yoshinobu ABE)</p>
+  <div class="site-description" itemprop="description">IT</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/new-technology/archives/">
+          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-name">ポスト</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/new-technology/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">カテゴリ</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/new-technology/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">タグ</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yoshi0808" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yoshi0808" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yoshi0808.blog@gmail.com" title="E-Mail → mailto:yoshi0808.blog@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yoshi0808_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yoshi0808_" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="/new-technology/lib/@creativecommons/vocabulary/assets/license_badges/big/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="ja">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2021/03/06/esxi-nakivo/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/new-technology/images/yoshi.png">
+      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="New technologies in our life">
+      <meta itemprop="description" content="IT">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="無償版ESXiの高度なバックアップ | New technologies in our life">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          無償版ESXiの高度なバックアップ
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">投稿日</span>
+
+      <time title="作成日：2021-03-06 00:26:19" itemprop="dateCreated datePublished" datetime="2021-03-06T00:26:19+09:00">2021-03-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">編集日</span>
+      <time title="修正日：2021-10-24 08:33:51" itemprop="dateModified" datetime="2021-10-24T08:33:51+09:00">2021-10-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">カテゴリ</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/Software/" itemprop="url" rel="index"><span itemprop="name">Software</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <img src="/new-technology/2021/03/06/esxi-nakivo/Monitor2.png" class="" title="alt">
+
+<p class="onepoint">この記事で実現すること</p>
+
+<p>無償版ESXi6.7（VMware vSphere Hypervisor6.7）はvStorage APIが使えないため、有名なESXiのバックアップ製品は大半が利用できません。vStorage APIを使わないGUI製品であるNakivo Backup Free Editionを用いてXG Firewallなどの仮想マシンがバックアップできます。GUIによる設定、定期的なバックアップ、差分バックアップをサポートします。</p>
+<span id="more"></span>
+
+<h2 id="無償版ESXiのバックアップ環境"><a href="#無償版ESXiのバックアップ環境" class="headerlink" title="無償版ESXiのバックアップ環境"></a>無償版ESXiのバックアップ環境</h2><p>「<a href="/new-technology/2020/10/11/esxi-backup/" title="VMware ESXiの仮想マシンをバックアップする">VMware ESXiの仮想マシンをバックアップする</a>」の記事では、無償版ESXiのバックアップについて説明していますが、コマンドラインベースであることやUEFIシステムによってCronで定期的なバックアップが行えない制約がありました。一方、GUIによるバックアップ製品は多くの製品があります。「ずっと無償」などの言葉が並んでいますが、無償というのはバックアップ製品が無償という事であり、無償ESXiのバックアップは取れず、色々捜しつつもGUI製品には殆どめぐり合えないというのが実態です。昨年夏に私が利用しているNASのQNAPでも無償のESXiバックアップ製品が発表という事で少しときめいたのですが、Inventoryには仮想マシンが表示されるものの結局はvStorage APIが必要であり、バックアップは行えませんでした。</p>
+<h2 id="Nakivo-Backupの無償の意味"><a href="#Nakivo-Backupの無償の意味" class="headerlink" title="Nakivo Backupの無償の意味"></a>Nakivo Backupの無償の意味</h2><p><strong>Nakivo backup Free Edition</strong>は無償のオープンシステムではなく、あくまでビジネス向けに収益をあげるモデルです。無償ライセンスは1年単位となっています。10以下の仮想マシンのバックアップなど制約はありますが、個人向けには十分な内容です。しかし、あくまで無償版はお試しという位置付けであり実際は個人向けでも正式なライセンスを購入してほしいようです。製品をダウンロードすると、米国の営業担当から電話がかかってきました<span class="github-emoji" alias="frowning" style="" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f626.png?v8">&#x1f626;</span>。私はメールでやりとりし、とりあえず1年間はこの無償版を使いますよという事になりましたが<sup><a href="#note1"><strong>[1]</strong></a></sup>、次回は有償版のライセンスにて更新するかどうするかは少し値段の面で悩んでいるところです。ライセンス費用も公開されていますが、マザーボードに物理接続されたCPUあたり＄99&#x2F;年という事です。ビジネス用途であれば極めて安価ですが、個人向けとしては悩みどころの価格帯です。また、ghettoVCBで事足りているというのもあります。</p>
+<p>他の無償製品に目を向けてみると、<strong>Unitrends Free</strong>で無償版ESXiの仮想マシンがバックアップ可能ですが、これはエージェントモデルで、仮想マシンそのものにエージェントをインストールし、エージェントが自分自身のOSのバックアップを取得する事になります。これはLinuxやWindowsの仮想マシンには使えますが、XG Firewallなど他のモジュールインストールを認めていない仮想マシンはバックアップする事はできません。</p>
+<blockquote>
+<p>Nakivo backup Free Edition<br> <a target="_blank" rel="noopener" href="https://www.nakivo.com/resources/download/free-edition/">https://www.nakivo.com/resources/download/free-edition/</a><br>Unitrends Free<br> <a target="_blank" rel="noopener" href="https://www.unitrends.com/landing/free-backup-vmware-hyper-v-software">https://www.unitrends.com/landing/free-backup-vmware-hyper-v-software</a></p>
+</blockquote>
+<h2 id="Nakivo-Backupの必要環境"><a href="#Nakivo-Backupの必要環境" class="headerlink" title="Nakivo Backupの必要環境"></a>Nakivo Backupの必要環境</h2><p>ESXiの仮想マシンをバックアップするにあたり、スケジューリングによるバックアップがまずは期待されるところです。常時起動したままのOS、またはNASなどが適任です。対象OSは以下の通りです。なお、私のブログのテーマと関連するためESXiを前提として記事を書いていますが、Hyper-Vのバックアップも可能です。</p>
+<ul>
+<li>Windows</li>
+<li>Linux</li>
+<li>Esxiの仮想マシンとして</li>
+<li>NAS(ASUSTOR,NETGEAR,QNAP,Synology,WesternDigital)</li>
+</ul>
+<p>私はQNAP上にインストールしています。ESXiの仮想マシン自体にインストールする事も可能ですが、バックアップデータ自体はNASをはじめとする別筐体のストレージにバックアップされる事をお勧めします。</p>
+<h2 id="ダウンロードおよびインストール"><a href="#ダウンロードおよびインストール" class="headerlink" title="ダウンロードおよびインストール"></a>ダウンロードおよびインストール</h2><p>上記のNakivoサイトからダウンロードしてください。</p>
+<img src="/new-technology/2021/03/06/esxi-nakivo/nakivo1.png" class="" title="alt">
+<p>ダウンロードにはビジネスで利用しているメールアドレスが必要になります。昔はgmailやicloudメールが使えましたが、現在は認められないようで会社勤めの方であれば会社のメールアカウントを入力必要です。私は会社のメアドを登録するのは躊躇して登録していませんが、エンジニアの方であれば、一般的には自己啓発という名目もあり構わないと考えられるでしょうか。<br>インストール自体は難しいものではありません。以下のURLから各環境に応じた手順でセットアップを行います。</p>
+<blockquote>
+<p>Nakivo User Guide<br> <a target="_blank" rel="noopener" href="https://helpcenter.nakivo.com/display/NH/Installing+NAKIVO+Backup+and+Replication">https://helpcenter.nakivo.com/display/NH/Installing+NAKIVO+Backup+and+Replication</a></p>
+</blockquote>
+<p>ポイントは以下の2点です。</p>
+<ol>
+<li>ユーザー名、メールアドレスの登録を行います。ここのメアドはバックアップ結果などの通知のために使うものでダウンロード時に用いたビジネスアカウントメールとは異なります。</li>
+</ol>
+<img src="/new-technology/2021/03/06/esxi-nakivo/account.png" class="" title="alt">
+
+<ol start="2">
+<li>Transportarという複数のチャネルでバックアップを吸い上げる機能がありますが、この選択がある場合は、”Transportar only”で構いません</li>
+</ol>
+<img src="/new-technology/2021/03/06/esxi-nakivo/transporter.png" class="" width="480" title="alt">
+
+<p>セットアップ完了後、Nakivo BackupをインストールしたマシンのTCP4443ポートにブラウザから接続します。</p>
+<h2 id="Nakivo-BackupからESXiのインベントリ確認"><a href="#Nakivo-BackupからESXiのインベントリ確認" class="headerlink" title="Nakivo BackupからESXiのインベントリ確認"></a>Nakivo BackupからESXiのインベントリ確認</h2><p>Nakivo BackupからFree版のESXiに接続するにはESXiのHTTPS(Port443)、SSH(Port22)に接続できる必要があります。ESXiのSSHの有効化については「<a href="/new-technology/2020/10/11/esxi-backup/" title="VMware ESXiの仮想マシンをバックアップする">VMware ESXiの仮想マシンをバックアップする</a>」の記事を参照してください。また、SSHの認証はパスワード認証となり、公開鍵認証は使えません。</p>
+<p><code>https:nakivo-host:4443</code>に接続しログインします</p>
+<img src="/new-technology/2021/03/06/esxi-nakivo/nakivo2.png" class="" title="alt">
+
+<p>ログイン後の全体像は以下のようになっています。</p>
+<img src="/new-technology/2021/03/06/esxi-nakivo/nakivo3.png" class="" title="alt">
+
+<p>初期セットアップとして、左ペインメニューの<mark class="label primary">Settings</mark>からESXiに接続し仮想マシンの一覧を取得します</p>
+<img src="/new-technology/2021/03/06/esxi-nakivo/nakivo4.png" class="" width="640" title="alt">
+
+<p>テストドライブとしてはrootで接続確認を行うでしょうけれども、恒久的にこのプロダクトを利用される場合は、「<a href="/new-technology/2021/01/23/esxi-security/" title="ESXi(無償版)のセキュリティを高める">ESXi(無償版)のセキュリティを高める</a>」の記事で示したように、SSHを開けたままにする事になるので、ESXiへのSSH接続可能なIPアドレスを制限する事、nakivo用の専用ユーザーアカウントをESXiに作成する事をお勧めします。接続が無事行えるとInventoryに仮想マシンの一覧が表示されます。</p>
+<h2 id="Backup実行とスケジューリング"><a href="#Backup実行とスケジューリング" class="headerlink" title="Backup実行とスケジューリング"></a>Backup実行とスケジューリング</h2><p>ダッシュボードからジョブの設定を行います。左ペインの<mark class="label primary">Dashboard</mark>から<mark class="label primary">VMWare backup job</mark>ー<mark class="label primary">Create</mark>ー<mark class="label primary">VMWare vSphere backup job</mark>をクリックします。</p>
+<img src="/new-technology/2021/03/06/esxi-nakivo/nakivo5.png" class="" title="alt">
+
+<p>設定の流れとしては以下の通りです。</p>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>設定内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1.Source</td>
+<td>接続先のESXiから仮想マシンを選択します</td>
+</tr>
+<tr>
+<td>2.Destination</td>
+<td>バックアップするリポジトリとしての場所を指定します（任意）</td>
+</tr>
+<tr>
+<td>3.Schedule</td>
+<td>定期的なバックアップの指定をします</td>
+</tr>
+<tr>
+<td>4.Retention</td>
+<td>バックアップの世代管理をします</td>
+</tr>
+<tr>
+<td>5.Options</td>
+<td>ジョブ通知のメールやバックアップ形式を指定します</td>
+</tr>
+</tbody></table>
+<p>設定のポイントは以下の通りです。特に設定が難しいものはないでしょう。</p>
+<p>“Schedule” この例では月曜日の朝6時にバックアップを開始します</p>
+<img src="/new-technology/2021/03/06/esxi-nakivo/nakivo6.png" class="" width="480" title="alt">
+
+<p>“Retention” この例では過去5世代のバックアップを確保し、月次バックアップを過去2か月確保します</p>
+<img src="/new-technology/2021/03/06/esxi-nakivo/nakivo7.png" class="" width="480" title="alt">
+
+<p>“Options” この例では差分バックアップの指定とジョブの通知メールを指定しています</p>
+<img src="/new-technology/2021/03/06/esxi-nakivo/nakivo8.png" class="" width="480" title="alt">
+
+<p>差分バックアップについてはESXiの機能であるCBT(Changed Block Tracking)の機能を使えます。バックアップのストレージと時間の圧縮効果があるので設定をお勧めします。これは次の章で説明します。</p>
+<p>Nakivo Backupのユーザーマニュアルの詳細は以下を参照してください。</p>
+<blockquote>
+<p>NAKIVO Backup &amp; Replication USER GUIDE<br> <a target="_blank" rel="noopener" href="https://helpcenter.nakivo.com/display/NH/User+Guide">https://helpcenter.nakivo.com/display/NH/User+Guide</a></p>
+</blockquote>
+<h2 id="ESXiのChanged-Block-Tracking"><a href="#ESXiのChanged-Block-Tracking" class="headerlink" title="ESXiのChanged Block Tracking"></a>ESXiのChanged Block Tracking</h2><p>ESXiの機能であるChanged Block Trackingは仮想マシンが稼働していて前回バックアップしたものから未更新のディスクブロックをスキップして差分のみバックアップする機能です。途中で別のバックアップ製品によるバックアップ、例えばghettoVCBなどでバックアップされると、次回のNakivo BackupによるCBTはフルバックアップを行います。</p>
+<p>最初に仮想マシンがインストールされているディスクを調べ、そのSCSI-IDを確認します。<br>ESXi管理画面の仮想マシンを選択し右クリックして<mark class="label primary">設定の編集</mark>をクリックします。</p>
+<img src="/new-technology/2021/03/06/esxi-nakivo/esxi.png" class="" width="640" title="alt">
+
+
+<mark class="label primary">ハードディスク</mark>の詳細を開き、<mark class="label primary">コントローラの場所</mark>でSCSI-IDを確認します（SCSI(0:0)など）。
+
+<ol>
+<li>仮想マシンを停止します。</li>
+<li>ESXi管理画面の仮想マシンを右クリックして、<mark class="label primary">設定の編集</mark>をクリックします。</li>
+<li><mark class="label primary">仮想マシンオプション</mark>タブをクリックします。</li>
+<li><mark class="label primary">詳細</mark>セクションを開き <mark class="label primary">設定パラメータ</mark>の<mark class="label primary">設定の編集</mark>をクリックします。<mark class="label primary">設定パラメータ</mark>ダイアログが開きます。</li>
+<li><mark class="label primary">パラメータの追加</mark>をクリックします。</li>
+<li>ctkEnabledパラメータを追加して、その値をtrueに設定します。</li>
+<li><mark class="label primary">パラメータの追加</mark>をクリックし、scsi0:0.ctkEnabledを追加して、その値をtrueに設定します（環境に合わせてscsi0:0の内容は変更してください）。</li>
+<li>OKボタンをクリックし設定を完了させます。</li>
+<li>仮想マシンを起動します。</li>
+<li>SSHでESXiに入り、仮想マシンが配置されているディレクトリで、<code>&quot;vm-name&quot;-ctk.vmdk</code>ファイルがあることを確認します。</li>
+</ol>
+<p>CBTを無効にする場合はこの逆の手順、ctkEnabledの値をfalseに設定します。<br>手順の詳細についてはVMWareのガイドを参照してください。</p>
+<blockquote>
+<p>VMware 仮想マシン上の変更ブロックのトラッキング（CBT） (1020128)<br> <a target="_blank" rel="noopener" href="https://kb.vmware.com/s/article/1031873?lang=ja&amp;queryTerm=changed+block+tracking">https://kb.vmware.com/s/article/1031873?lang=ja&amp;queryTerm=changed+block+tracking</a></p>
+</blockquote>
+<h2 id="定期的なバックアップをお勧めします"><a href="#定期的なバックアップをお勧めします" class="headerlink" title="定期的なバックアップをお勧めします"></a>定期的なバックアップをお勧めします</h2><p>この製品もghettoVCBと同様にスナップショットをとってからバックアップに入りますので、制約はほとんど感じる事がありません。せいぜい数ヶ月に1度のESXiパッチ適用の前に手動でバックアップを取る事くらいでしょうか。不慮の事故に備えて定期的なバックアップを取得される事をお勧めします。最近はOSもIoTもパッチの自動更新機能が充実してきました。多少意識する事としてはパッチ適用による自動リブートなどと、このバックアップとの時間帯が重ならないように留意する事くらいでしょうか。それでもジョブ通知があるのでバックアップ失敗が放置される懸念もありません。</p>
+<p><small id="note1"><strong>[1]</strong><br>営業担当曰く、「気に入ったら買って欲しい」との事でした。こちらはそこまでパワーユーザーじゃないからというやりとりのあと、こちらから「目的から外れるのならソフトウェアを削除するけど、そうした方が良い？」という質問には明確な回答がありませんでした。もちろん、ソフトウェアで収益を上げている事はビジネスとして当然の行為で、良いソフトウェアには適切な値段があるべきですが、できればそのあたりをWebサイトに明記されると良いのになと感じたところです。しかしホームユーザーとして悩む絶妙な価格設定<span class="github-emoji" alias="sweat_smile" style="" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f605.png?v8">&#x1f605;</span><br></small></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/new-technology/tags/XG-Firewall/" rel="tag"><i class="fa fa-tag"></i> XG Firewall</a>
+              <a href="/new-technology/tags/ESXi/" rel="tag"><i class="fa fa-tag"></i> ESXi</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/new-technology/2021/02/13/yubikey_gpg/" rel="prev" title="GPG ToolsでYubiKeyを使う">
+                  <i class="fa fa-chevron-left"></i> GPG ToolsでYubiKeyを使う
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/new-technology/2021/04/07/xg-v18-mr5/" rel="next" title="XG Firewall v18 MR5の更新">
+                  XG Firewall v18 MR5の更新 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">阿部　吉伸(Yoshinobu ABE)</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div><script src="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.umd.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.min.css" rel="stylesheet">
+
+<script>
+if (Cookies.get('PRVCY202112') != 'Agree') {
+  const notice = new SimpleGDPR({
+    title: 'Accept Cookies & Privacy Policy?',
+    message: 'このWebサイトでは、訪問や活動に関するデータがクッキー等によって収集されます。閲覧を継続される場合、\
+    プライバシーポリシーをご覧いただき同意(Agree)をお願いします',
+    link: null,
+    icons: true,
+    theme: 'light',
+    animation: 'fade',
+    float: 'bottom-right',
+      callback: () => {
+      notice.close();
+      Cookies.set('PRVCY202112', 'Agree', { expires: 365, path: '/'});
+      notice.destroy();
+      // Google Analytics 4
+      gtag('consent', 'update', {
+      'analytics_storage': 'granted'
+      });
+      gtag('js', new Date());
+      gtag('config', 'G-JMY6NSC2KK', { 'anonymize_ip': true });
+      },
+  });
+}
+</script>
+<div class="disclaimer1">
+このサイトの記事は、特別な記載がない限り <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja">クリエイティブ・コモンズ BY-NC-SA ライセンス</a>で保護されています</div>
+
+
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/yoshi0808" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="/new-technology/lib/animejs/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="/new-technology/lib/medium-zoom/dist/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/comments.js"></script><script src="/new-technology/js/utils.js"></script><script src="/new-technology/js/motion.js"></script><script src="/new-technology/js/schemes/muse.js"></script><script src="/new-technology/js/next-boot.js"></script>
+
+  <script src="/new-technology/lib/hexo-generator-searchdb/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"/new-technology/lib/mermaid/dist/mermaid.min.js","integrity":"sha256-3JloMMI/ZQx6ryuhhZTsQJQmGAkXeni6PkshX7UUO2s="}}</script>
+  <script src="/new-technology/js/third-party/tags/mermaid.js"></script>
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

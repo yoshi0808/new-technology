@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/icon-16x16.png">
+  <link rel="mask-icon" href="/new-technology/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/new-technology/css/main.css">
+
+
+
+<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-/4UQcSmErDzPCMAiuOiWPVVsNN2s3ZY/NsmXNcj0IFc=" crossorigin="anonymous">
+  <link rel="stylesheet" href="/new-technology/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.15.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
+
+    <meta name="description" content="この記事で実現すること  Firewallなどルーターの内側（LAN）がユニークローカルアドレス（ULA）となるネットワーク構成、かつ、NATでインターネットに接続しているIPv4、IPv6のデュアルスタック環境では通常IPv4が優先されます。クライアント側のWindowsおよびLinuxではシステム設定変更を行う事でULA環境下でもIPv6を優先させる事ができます。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IPv6のULAをIPv4より優先する">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2021/06/26/ipv6-first/index.html">
+<meta property="og:site_name" content="New technologies in our life">
+<meta property="og:description" content="この記事で実現すること  Firewallなどルーターの内側（LAN）がユニークローカルアドレス（ULA）となるネットワーク構成、かつ、NATでインターネットに接続しているIPv4、IPv6のデュアルスタック環境では通常IPv4が優先されます。クライアント側のWindowsおよびLinuxではシステム設定変更を行う事でULA環境下でもIPv6を優先させる事ができます。">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/06/26/ipv6-first/prefix.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/06/26/ipv6-first/he.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/06/26/ipv6-first/he2.png">
+<meta property="article:published_time" content="2021-06-26T00:22:51.000Z">
+<meta property="article:modified_time" content="2022-08-06T01:14:05.000Z">
+<meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
+<meta property="article:tag" content="XG Firewall">
+<meta property="article:tag" content="IPv6">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2021/06/26/ipv6-first/prefix.png">
+
+
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2021/06/26/ipv6-first/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"ja","comments":true,"permalink":"https://yoshi0808.github.io/new-technology/2021/06/26/ipv6-first/","path":"2021/06/26/ipv6-first/","title":"IPv6のULAをIPv4より優先する"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>IPv6のULAをIPv4より優先する | New technologies in our life</title>
+  
+
+
+
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{&quot;token&quot;: &quot;0148b4d0442e42b483ddce684030bd2f&quot;}'></script>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JMY6NSC2KK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+  'ad_storage': 'denied',
+  'analytics_storage': 'denied'
+  });
+
+  dataLayer.push({
+  'event': 'default_consent'
+  });
+
+  if (Cookies.get('PRVCY202112') == 'Agree') {
+    gtag('consent', 'update', {
+    'analytics_storage': 'granted'
+    });
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'G-JMY6NSC2KK',{ 'anonymize_ip': true });
+</script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/new-technology/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/new-technology/atom.xml" title="New technologies in our life" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="ナビゲーションバーの切り替え" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/new-technology/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">New technologies in our life</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Device,Network,Code,etc...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="検索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/new-technology/" rel="section"><i class="fa fa-home fa-fw"></i>ホーム</a></li><li class="menu-item menu-item-about"><a href="/new-technology/about/" rel="section"><i class="fa fa-user fa-fw"></i>サイトポリシー</a></li><li class="menu-item menu-item-tags"><a href="/new-technology/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>タグ</a></li><li class="menu-item menu-item-categories"><a href="/new-technology/categories/" rel="section"><i class="fa fa-th fa-fw"></i>カテゴリ</a></li><li class="menu-item menu-item-archives"><a href="/new-technology/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>アーカイブ</a></li><li class="menu-item menu-item-privacy"><a href="/new-technology/privacypolicy/" rel="section"><i class="fa fa-check fa-fw"></i>プライバシーポリシー</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="検索…" spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          見出し
+        </li>
+        <li class="sidebar-nav-overview">
+          概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#IPv4%E3%82%92%E5%84%AA%E5%85%88%E3%81%99%E3%82%8BULA"><span class="nav-number">1.</span> <span class="nav-text">IPv4を優先するULA</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IPv6%E5%84%AA%E5%85%88%E8%A8%AD%E5%AE%9A"><span class="nav-number">2.</span> <span class="nav-text">IPv6優先設定</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Prefix%E3%83%9D%E3%83%AA%E3%82%B7%E3%83%BC%E3%81%AE%E8%AA%AC%E6%98%8E"><span class="nav-number">2.1.</span> <span class="nav-text">Prefixポリシーの説明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Windows10"><span class="nav-number">2.2.</span> <span class="nav-text">Windows10</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux-ubuntu"><span class="nav-number">2.3.</span> <span class="nav-text">Linux(ubuntu)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#getaddrinfo"><span class="nav-number">3.</span> <span class="nav-text">getaddrinfo()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Happy-Eyeballs"><span class="nav-number">4.</span> <span class="nav-text">Happy Eyeballs</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="阿部　吉伸(Yoshinobu ABE)"
+      src="/new-technology/images/yoshi.png">
+  <p class="site-author-name" itemprop="name">阿部　吉伸(Yoshinobu ABE)</p>
+  <div class="site-description" itemprop="description">IT</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/new-technology/archives/">
+          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-name">ポスト</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/new-technology/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">カテゴリ</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/new-technology/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">タグ</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yoshi0808" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yoshi0808" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yoshi0808.blog@gmail.com" title="E-Mail → mailto:yoshi0808.blog@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yoshi0808_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yoshi0808_" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="/new-technology/lib/@creativecommons/vocabulary/assets/license_badges/big/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="ja">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2021/06/26/ipv6-first/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/new-technology/images/yoshi.png">
+      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="New technologies in our life">
+      <meta itemprop="description" content="IT">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="IPv6のULAをIPv4より優先する | New technologies in our life">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          IPv6のULAをIPv4より優先する
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">投稿日</span>
+
+      <time title="作成日：2021-06-26 09:22:51" itemprop="dateCreated datePublished" datetime="2021-06-26T09:22:51+09:00">2021-06-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">編集日</span>
+      <time title="修正日：2022-08-06 10:14:05" itemprop="dateModified" datetime="2022-08-06T10:14:05+09:00">2022-08-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">カテゴリ</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/Network/" itemprop="url" rel="index"><span itemprop="name">Network</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        
+<p class="onepoint">この記事で実現すること</p>
+
+<p>Firewallなどルーターの内側（LAN）がユニークローカルアドレス（ULA）となるネットワーク構成、かつ、NATでインターネットに接続しているIPv4、IPv6のデュアルスタック環境では通常IPv4が優先されます。クライアント側のWindowsおよびLinuxではシステム設定変更を行う事でULA環境下でもIPv6を優先させる事ができます。</p>
+<span id="more"></span>
+
+<h2 id="IPv4を優先するULA"><a href="#IPv4を優先するULA" class="headerlink" title="IPv4を優先するULA"></a>IPv4を優先するULA</h2><p>現時点でIPv6&#x2F;IPv4の優先度を確認する方法の1つは、<strong>The KAME project</strong>にブラウザでアクセスし、亀が踊っていればIPv6接続、動かなければIPv4接続という事になります。プロバイダのWebサイトの右上に「IPv6（IPv4）で接続しています」との記載も見かけます。</p>
+<blockquote>
+<p>The KAME project<br> <a target="_blank" rel="noopener" href="http://www.kame.net/">http://www.kame.net</a></p>
+</blockquote>
+<p>ブラウザやOSがIPv6優先であっても、ULAそのものはインターネットにルーティングしないという大前提があります。IPv6において、NATは一般的に推奨されない構成でもあります。</p>
+<p>OSの設定を変更することで、ULAを使いながらIPv6優先に変更できます。</p>
+<h2 id="IPv6優先設定"><a href="#IPv6優先設定" class="headerlink" title="IPv6優先設定"></a>IPv6優先設定</h2><p>IPv6やIPv4の通信優先度を決定するPrefixポリシーというものがあり、これをIPv6優先にします。ネットワークのグループ（Prefix）毎に優先度を決めます。Windows、Linuxで設定は異なりますが、概念は同じです。残念ながらmacOS（Catalina）やスマホについては、この設定を見つける事ができませんでした。</p>
+<h3 id="Prefixポリシーの説明"><a href="#Prefixポリシーの説明" class="headerlink" title="Prefixポリシーの説明"></a>Prefixポリシーの説明</h3><p>Windowsの場合、このPrefixポリシーを表示させると以下の表示がされます。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">C:\&gt; netsh interface ipv6 show prefixpolicies</span><br><span class="line"></span><br><span class="line">優先順位   ラベル  プレフィックス</span><br><span class="line">----------  -----  --------------------------------</span><br><span class="line">        50      0  ::ffff:0:0/96</span><br><span class="line">        40      1  ::1/128</span><br><span class="line">        30      2  ::/0</span><br><span class="line">        20      3  2002::/16</span><br><span class="line">         5      5  2001::/32</span><br><span class="line">         3     13  fc00::/7</span><br><span class="line">         1     11  fec0::/10</span><br><span class="line">         1     12  3ffe::/16</span><br><span class="line">         1      4  ::/96</span><br></pre></td></tr></table></figure>
+
+<p>各プレフィックスの説明は以下の通りです。</p>
+<blockquote>
+<table>
+<thead>
+<tr>
+<th><strong>Prefix</strong></th>
+<th><strong>説明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>::1&#x2F;128</td>
+<td>Loopback</td>
+</tr>
+<tr>
+<td>::&#x2F;0</td>
+<td>グローバルスコープ</td>
+</tr>
+<tr>
+<td>2002::&#x2F;16</td>
+<td>6to4</td>
+</tr>
+<tr>
+<td>::&#x2F;96</td>
+<td>IPv4互換アドレス（廃止）</td>
+</tr>
+<tr>
+<td>::ffff:0:0&#x2F;96</td>
+<td>IPv4マップドアドレス</td>
+</tr>
+<tr>
+<td>fec0::&#x2F;10</td>
+<td>サイトローカルアドレス（廃止）</td>
+</tr>
+<tr>
+<td>fc00::&#x2F;7</td>
+<td>ユニークローカルアドレス</td>
+</tr>
+<tr>
+<td>2001:0::&#x2F;32</td>
+<td>Teredo</td>
+</tr>
+</tbody></table>
+</blockquote>
+<p>IPv4マップドアドレスは、IPv6の世界でIPv4を表現したものです。具体的には、<code>::ffff:192.168.0.1</code>という形となり、IPv6アドレスの前半64ビットは0、65〜96ビットの32ビットが<code>ffff</code>、97ビット〜128ビットの32ビットがIPv4アドレスとなります。<br>“グローバルスコープ”は、0ビットのマスクなので全てのアドレスにマッチします。インターネットのIPv6アドレスであるグローバルユニキャストアドレス（GUA）は<code>2000::/3</code>ですが、このPrefixポリシー上ではグローバルスコープが該当します。<br><code>fc00::/7</code>はおなじみULAです。</p>
+<p>設定のポイントは2箇所です。</p>
+<ul>
+<li>優先度は数字が大きいものほど優先度が高く、IPv6 Loopback → ULA → グローバルスコープ → IPv4マップドアドレスの順に並べます</li>
+<li>ULAからインターネット宛（GUA）にルーティングを認めるために、ネットワーク単位に割り振られているラベルについてULAとグローバルスコープのラベルを同じ数字にします</li>
+</ul>
+<h3 id="Windows10"><a href="#Windows10" class="headerlink" title="Windows10"></a>Windows10</h3><ol>
+<li>コマンドプロンプトを<strong>管理者権限</strong>で実行します。</li>
+<li>出力結果は環境によって異なりますが、概ね以下のように出力されます。</li>
+</ol>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">C:\&gt;netsh interface ipv6 show prefixpolicies</span><br><span class="line">アクティブ状態を照会しています...</span><br><span class="line"></span><br><span class="line">優先順位   ラベル  プレフィックス</span><br><span class="line">----------  -----  --------------------------------</span><br><span class="line">        50      0  ::ffff:0:0/96</span><br><span class="line">        40      1  ::1/128</span><br><span class="line">        30      2  ::/0</span><br><span class="line">        20      3  2002::/16</span><br><span class="line">         5      5  2001::/32</span><br><span class="line">         3     13  fc00::/7</span><br><span class="line">         1     11  fec0::/10</span><br><span class="line">         1     12  3ffe::/16</span><br><span class="line">         1      4  ::/96</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><p>IPv6(::&#x2F;0、fc00::&#x2F;7) &gt; IPv4(::ffff:0:0&#x2F;96)となるよう、管理者権限で以下のコマンドを1行づつ投入します。</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">netsh interface ipv6 set prefixpolicy ::ffff:0:0/96 25 0</span><br><span class="line">netsh interface ipv6 set prefixpolicy ::1/128 40 1</span><br><span class="line">netsh interface ipv6 set prefixpolicy ::/0 30 2</span><br><span class="line">netsh interface ipv6 set prefixpolicy 2002::/16 20 3</span><br><span class="line">netsh interface ipv6 set prefixpolicy 2001::/32 5 5</span><br><span class="line">netsh interface ipv6 set prefixpolicy fc00::/7 35 2</span><br><span class="line">netsh interface ipv6 set prefixpolicy fec0::/10 1 11</span><br><span class="line">netsh interface ipv6 set prefixpolicy 3ffe::/16 1 12</span><br><span class="line">netsh interface ipv6 set prefixpolicy ::/96 1 4</span><br></pre></td></tr></table></figure>
+ <div class="note info"><p>表示されるラベルおよび優先度は環境によって異なる場合があります。</p>
+</div>
+</li>
+<li><p>設定内容を改めて確認します。</p>
+<img src="/new-technology/2021/06/26/ipv6-first/prefix.png" class="" width="480" title="alt"></li>
+</ol>
+<p>これで設定完了です。OSを再起動して設定が変わっていない事、IPv6が優先されている事を確認してください。設定をやり直す場合は、PrefixPolicyをリセットしてからOSを再起動します。</p>
+<p><code>netsh interface ipv6 reset</code></p>
+<h3 id="Linux-ubuntu"><a href="#Linux-ubuntu" class="headerlink" title="Linux(ubuntu)"></a>Linux(ubuntu)</h3><p>Linux（ubuntu）の場合は、<code>/etc/gai.conf</code>に設定ファイルがあります。</p>
+<ol>
+<li><p>viなどでファイルを開きます。<code>sudo vi /etc/gai.con</code></p>
+</li>
+<li><p>ファイルの中身は全てコメントアウトされています。plefixpolicyは以下の通りです。</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">label   &lt;mask&gt;   &lt;value&gt;</span><br><span class="line"><span class="comment">#    Add another rule to the RFC 3484 label table.  See section 2.1 in</span></span><br><span class="line"><span class="comment">#    RFC 3484.  The default is:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#label ::1/128       0</span></span><br><span class="line"><span class="comment">#label ::/0          1</span></span><br><span class="line"><span class="comment">#label 2002::/16     2</span></span><br><span class="line"><span class="comment">#label ::/96         3</span></span><br><span class="line"><span class="comment">#label ::ffff:0:0/96 4</span></span><br><span class="line"><span class="comment">#label fec0::/10     5</span></span><br><span class="line"><span class="comment">#label fc00::/7      6</span></span><br><span class="line"><span class="comment">#label 2001:0::/32   7</span></span><br></pre></td></tr></table></figure>
+<p> つまり、コメントされた状態がデフォルト設定であり、カスタマイズが必要な場合はコメントを外して対応できるようになっています。</p>
+</li>
+<li><p>上記の8行あるplefixpolicyについて<strong>すべてのコメントを外し</strong>、ULA<code>fc00::/7</code>のラベル6を<code>::/0</code>のラベルである1に修正します。</p>
+</li>
+<li><p>続いて、このファイルのさらに下を見ていくと優先度の項目が並びます。</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#precedence  ::1/128       50</span></span><br><span class="line"><span class="comment">#precedence  ::/0          40</span></span><br><span class="line"><span class="comment">#precedence  2002::/16     30</span></span><br><span class="line"><span class="comment">#precedence ::/96          20</span></span><br><span class="line"><span class="comment">#precedence ::ffff:0:0/96  10</span></span><br></pre></td></tr></table></figure>
+<p> ネットワーク（Prefix）毎に優先度を決めています。Windowsと設定する項目の意味は同じです。</p>
+</li>
+<li><p>上記5行のprecedendeのコメントを外し、ULAのリストを加えます。Loopback→→ULA→<code>::/0</code>→IPv4の並びにします。修正後は以下になります。</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">label ::1/128       0</span><br><span class="line">label ::/0          1</span><br><span class="line">label fc00::/7      1</span><br><span class="line">label 2002::/16     2</span><br><span class="line">label ::/96         3</span><br><span class="line">label ::ffff:0:0/96 4</span><br><span class="line">label fec0::/10     5</span><br><span class="line">label 2001:0::/32   7</span><br><span class="line"></span><br><span class="line">precedence  ::1/128       50</span><br><span class="line">precedence  fc00::/7      45</span><br><span class="line">precedence  ::/0          40</span><br><span class="line">precedence  2002::/16     30</span><br><span class="line">precedence ::/96          20</span><br><span class="line">precedence ::ffff:0:0/96  10</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>ファイルを保存し、OSを再起動します。</p>
+</li>
+</ol>
+<p>以上でIPv6が優先となります <span class="github-emoji" alias="turtle" style="" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f422.png?v8">&#x1f422;</span></p>
+<p>なお、LinuxでmDNS（Bonjour）が使える環境にあり、LANにおける名前解決がIPv4指定となっている場合は、<code>/etc/nsswitch.conf</code>を修正する事でIPv6対応に変更可能です。LAN内の端末をIPv6で明示的に指定することはあまりないのでここは参考程度に留めておいてください。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 以下の行をコメントアウトします</span></span><br><span class="line"><span class="comment">#hosts:          files mdns4_minimal [NOTFOUND=return] dns</span></span><br><span class="line"><span class="comment"># 代わりに以下の行を追加します</span></span><br><span class="line">hosts:          files mdns_minimal [NOTFOUND=<span class="built_in">return</span>] dns</span><br></pre></td></tr></table></figure>
+
+<h2 id="getaddrinfo"><a href="#getaddrinfo" class="headerlink" title="getaddrinfo()"></a>getaddrinfo()</h2><p>送信元IPアドレスと送信先アドレスでPolicyによってどのネットワークを使うかは、<strong>RFC6724</strong>で詳細が記載されています。</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc6724">https://datatracker.ietf.org/doc/html/rfc6724</a></p>
+</blockquote>
+<p>多くのアプリケーションは、getaddrinfo()という関数を使い、URLから名前解決されるとともに、プレフィックスポリシーを踏まえてIPv4またはIPv6の優先度が決定されます。<br>nslookupで<code>google.com</code>を見てみます。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ nslookup google.com.</span><br><span class="line">Server:		127.0.0.53</span><br><span class="line">Address:	127.0.0.53#53</span><br><span class="line"></span><br><span class="line">Non-authoritative answer:</span><br><span class="line">Name:	google.com</span><br><span class="line">Address: 172.217.xxx.110</span><br><span class="line">Name:	google.com</span><br><span class="line">Address: 2404:6800:4004:xxxx::200e</span><br></pre></td></tr></table></figure>
+
+<p>上記のようにIPv4とIPv6のアドレスが両方定義されています。<br>getaddrinfo()はpythonのインタラクティブシェルで確認できます。以下はIPv6が優先のケースです。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> socket</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>socket.getaddrinfo(<span class="string">&quot;google.com&quot;</span>, <span class="number">80</span>, proto=socket.IPPROTO_TCP)</span><br><span class="line">[(&lt;AddressFamily.AF_INET6: <span class="number">10</span>&gt;, &lt;SocketKind.SOCK_STREAM: <span class="number">1</span>&gt;, <span class="number">6</span>, <span class="string">&#x27;&#x27;</span>, (<span class="string">&#x27;2404:6800:4004:xxxx::200e&#x27;</span>, <span class="number">80</span>, <span class="number">0</span>, <span class="number">0</span>)), (&lt;AddressFamily.AF_INET: <span class="number">2</span>&gt;, &lt;SocketKind.SOCK_STREAM: <span class="number">1</span>&gt;, <span class="number">6</span>, <span class="string">&#x27;&#x27;</span>, (<span class="string">&#x27;172.217.xxx.110&#x27;</span>, <span class="number">80</span>))]</span><br></pre></td></tr></table></figure>
+<p>1-2行目で関数を呼び出し、3行目の関数の出力はタプル（List形式）で2要素あります。0番目の要素にIPv6アドレスが入り、1番目の要素にIPv4アドレスがあります。PrefixPolicyをIPv4優先に変更した場合は、このレスポンスの順番が入れ替わります。<br>macOSでは0番目の要素にIPv4アドレスを返します。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> socket</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>socket.getaddrinfo(<span class="string">&quot;google.com&quot;</span>, <span class="number">80</span>, proto=socket.IPPROTO_TCP)</span><br><span class="line">[(&lt;AddressFamily.AF_INET: <span class="number">2</span>&gt;, &lt;SocketKind.SOCK_STREAM: <span class="number">1</span>&gt;, <span class="number">6</span>, <span class="string">&#x27;&#x27;</span>, (<span class="string">&#x27;172.217.xxx.238&#x27;</span>, <span class="number">80</span>)), (&lt;AddressFamily.AF_INET6: <span class="number">30</span>&gt;, &lt;SocketKind.SOCK_STREAM: <span class="number">1</span>&gt;, <span class="number">6</span>, <span class="string">&#x27;&#x27;</span>, (<span class="string">&#x27;2404:6800:4004:XXXX::200e&#x27;</span>, <span class="number">80</span>, <span class="number">0</span>, <span class="number">0</span>))]</span><br></pre></td></tr></table></figure>
+<p><strong>RFC6724</strong>を読んでいると色々な設定が見られます。例えば以下のようにIPv6のリンクローカルアドレスの優先度をグローバルよりも下げてしまうなどです。</p>
+<blockquote>
+<p>10.4.  Configuring Preference for Link-Local Addresses<br>The destination address selection rules give preference to destinations of smaller scope.For example,a link-local destination will be sorted before a global scope destination when the two are otherwise equally suitable.An administrator can change the policy table to reverse this preference and sort global destinations before link-local destinations:</p>
+</blockquote>
+<blockquote>
+<p>宛先アドレス選択ルールは、<strong>スコープの小さい宛先が優先されます</strong>。 例えば、リンクローカルな宛先は、グローバルな宛先と同等に適している場合にグローバルな宛先よりも優先されます。管理者はポリシーテーブルの優先順位を逆転させることで、リンクローカルな宛先よりもグローバルな宛先を優先するように変更できます。</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Prefix        Precedence Label</span><br><span class="line">::1/128               50     0</span><br><span class="line">::/0                  40     1</span><br><span class="line">::ffff:0:0/96         35     4</span><br><span class="line">fe80::/10             33     1</span><br><span class="line">2002::/16             30     2</span><br><span class="line">2001::/32              5     5</span><br><span class="line">fc00::/7               3    13</span><br><span class="line">::/96                  1     3</span><br><span class="line">fec0::/10              1    11</span><br><span class="line">3ffe::/16              1    12</span><br></pre></td></tr></table></figure>
+
+<p>※（補足）スコープの小さい宛先が優先されるというのは、送信先アドレスと送信元アドレスの上位ビットからの一致ビット数によって決定されることでロンゲストマッチアルゴリズムと呼ばれます。<code>fdxx〜</code>のULAアドレスは<code>::/0</code>と<code>fc00::/7</code>とにマッチしますが、優先度が高い<code>::/0</code>にマッチするのではなくて、一致ビット数が多いもの、つまり<code>fc00::/7</code>にマッチします。その上で、getaddrinfo()で有効なネットワークが複数あればそこで初めて優先度について評価されます。</p>
+<p>上記の例は自身のホストにグローバルなIPv6アドレスが振られている事を想定しているはずで、今回のようなULAを使うケースとはまた違うシチュエーションですので、あくまで参考となります。</p>
+<h2 id="Happy-Eyeballs"><a href="#Happy-Eyeballs" class="headerlink" title="Happy Eyeballs"></a>Happy Eyeballs</h2><p>Happy Eyeballsは、ブラウザに実装されている機能で、IPv6を優先しつつも、IPv4と応答の早い結果を採用するという合理的な仕組みです。Happy Eyeballsは<strong>RFC6555</strong>、Happy Eyeballs ver2については、<strong>RFC8305</strong>で定義されています。Eyeballsというのはユーザーを意味します。ユーザーにとってハッピーな仕組みという事でしょうか。</p>
+<blockquote>
+<p>RFC6555<br> <a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc6555">https://datatracker.ietf.org/doc/html/rfc6555</a><br>RFC8305<br> <a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc8305">https://datatracker.ietf.org/doc/html/rfc8305</a><br>用語解説<br> <a target="_blank" rel="noopener" href="https://dictionary.cambridge.org/dictionary/english/eyeballs">https://dictionary.cambridge.org/dictionary/english/eyeballs</a></p>
+</blockquote>
+<p>LANから挙動を見る限り、IPv6を優先としたOSでの挙動はブラウザからもIPv6が優先されているように見えます。macOSやiPhoneで見る限りは応答の早い方に接続するようです。<strong>Test your Happy Eyeballs</strong>では、その挙動を確認できます。</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="http://he.test-ipv6.com/">http://he.test-ipv6.com</a></p>
+</blockquote>
+<img src="/new-technology/2021/06/26/ipv6-first/he.png" class="" width="800" title="alt">
+
+<p>私の環境ではmacOSが6:4、iOSが7:3でそれぞれIPv4が多く選択されました。このサイトではランダムなホスト名を生成し、そこに毎秒接続確認をする手法を取っているようです。ただし、このサイトに限らずULA環境におけるmacOSでは一度接続した情報がOS上のキャッシュに残ると次からはIPv4に接続します。ネットワークのキャプチャを見ると、名前解決ではAAAAレコードとAレコードとを同時にクエリ要求しますが、キャッシュされた接続先がある場合はIPv6には接続せずIPv4のみ接続開始しています。OS内部ではLinux同様にPrefix管理テーブルがあるものと考えられます。</p>
+<p>”test-ipv6.com”についてIPv4のFirewallルールで拒否する設定をするとエラー無くIPv6で接続されます（macOSのSafariの場合）。</p>
+<img src="/new-technology/2021/06/26/ipv6-first/he2.png" class="" width="800" title="alt">
+
+<p>可用性としては優れた仕組みですが、IPv4の国別フィルタで意図的に宛先国をブロックする運用をしている場合、IPv6の国別フィルタの機能がFirewallに無ければセキュリティリスクに見えます。ホームユーザーにとってリスク対策のためにIPv6を無効にするまでは無いと考えていますが、こういったブラウザの挙動も頭の片隅に置いておく必要がありそうです。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/new-technology/tags/XG-Firewall/" rel="tag"><i class="fa fa-tag"></i> XG Firewall</a>
+              <a href="/new-technology/tags/IPv6/" rel="tag"><i class="fa fa-tag"></i> IPv6</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/new-technology/2021/05/30/ssl-vpn/" rel="prev" title="XG Firewall SSL-VPN">
+                  <i class="fa fa-chevron-left"></i> XG Firewall SSL-VPN
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/new-technology/2021/07/24/miband6/" rel="next" title="MIスマートバンド6を活用する">
+                  MIスマートバンド6を活用する <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">阿部　吉伸(Yoshinobu ABE)</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div><script src="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.umd.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.min.css" rel="stylesheet">
+
+<script>
+if (Cookies.get('PRVCY202112') != 'Agree') {
+  const notice = new SimpleGDPR({
+    title: 'Accept Cookies & Privacy Policy?',
+    message: 'このWebサイトでは、訪問や活動に関するデータがクッキー等によって収集されます。閲覧を継続される場合、\
+    プライバシーポリシーをご覧いただき同意(Agree)をお願いします',
+    link: null,
+    icons: true,
+    theme: 'light',
+    animation: 'fade',
+    float: 'bottom-right',
+      callback: () => {
+      notice.close();
+      Cookies.set('PRVCY202112', 'Agree', { expires: 365, path: '/'});
+      notice.destroy();
+      // Google Analytics 4
+      gtag('consent', 'update', {
+      'analytics_storage': 'granted'
+      });
+      gtag('js', new Date());
+      gtag('config', 'G-JMY6NSC2KK', { 'anonymize_ip': true });
+      },
+  });
+}
+</script>
+<div class="disclaimer1">
+このサイトの記事は、特別な記載がない限り <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja">クリエイティブ・コモンズ BY-NC-SA ライセンス</a>で保護されています</div>
+
+
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/yoshi0808" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="/new-technology/lib/animejs/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="/new-technology/lib/medium-zoom/dist/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/comments.js"></script><script src="/new-technology/js/utils.js"></script><script src="/new-technology/js/motion.js"></script><script src="/new-technology/js/schemes/muse.js"></script><script src="/new-technology/js/next-boot.js"></script>
+
+  <script src="/new-technology/lib/hexo-generator-searchdb/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"/new-technology/lib/mermaid/dist/mermaid.min.js","integrity":"sha256-3JloMMI/ZQx6ryuhhZTsQJQmGAkXeni6PkshX7UUO2s="}}</script>
+  <script src="/new-technology/js/third-party/tags/mermaid.js"></script>
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/icon-16x16.png">
+  <link rel="mask-icon" href="/new-technology/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/new-technology/css/main.css">
+
+
+
+<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-/4UQcSmErDzPCMAiuOiWPVVsNN2s3ZY/NsmXNcj0IFc=" crossorigin="anonymous">
+  <link rel="stylesheet" href="/new-technology/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.15.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
+
+    <meta name="description" content="この記事で実現すること  フィッシングサイトから身を守るためには、自身が騙されないために日頃から意識する事が最も重要ですが、フェールセーフで各種セキュリティサービスに助けられるケースもあるはずです。それぞれのサービスがどの程度の実力を持つのか検証してみます。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="フィッシング対策ツールの実力">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2021/05/05/avoid-phishing/index.html">
+<meta property="og:site_name" content="New technologies in our life">
+<meta property="og:description" content="この記事で実現すること  フィッシングサイトから身を守るためには、自身が騙されないために日頃から意識する事が最も重要ですが、フェールセーフで各種セキュリティサービスに助けられるケースもあるはずです。それぞれのサービスがどの程度の実力を持つのか検証してみます。">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/05/05/avoid-phishing/phishing.png">
+<meta property="article:published_time" content="2021-05-04T16:04:05.000Z">
+<meta property="article:modified_time" content="2021-10-03T04:22:09.000Z">
+<meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2021/05/05/avoid-phishing/phishing.png">
+
+
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2021/05/05/avoid-phishing/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"ja","comments":true,"permalink":"https://yoshi0808.github.io/new-technology/2021/05/05/avoid-phishing/","path":"2021/05/05/avoid-phishing/","title":"フィッシング対策ツールの実力"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>フィッシング対策ツールの実力 | New technologies in our life</title>
+  
+
+
+
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{&quot;token&quot;: &quot;0148b4d0442e42b483ddce684030bd2f&quot;}'></script>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JMY6NSC2KK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+  'ad_storage': 'denied',
+  'analytics_storage': 'denied'
+  });
+
+  dataLayer.push({
+  'event': 'default_consent'
+  });
+
+  if (Cookies.get('PRVCY202112') == 'Agree') {
+    gtag('consent', 'update', {
+    'analytics_storage': 'granted'
+    });
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'G-JMY6NSC2KK',{ 'anonymize_ip': true });
+</script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/new-technology/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/new-technology/atom.xml" title="New technologies in our life" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="ナビゲーションバーの切り替え" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/new-technology/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">New technologies in our life</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Device,Network,Code,etc...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="検索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/new-technology/" rel="section"><i class="fa fa-home fa-fw"></i>ホーム</a></li><li class="menu-item menu-item-about"><a href="/new-technology/about/" rel="section"><i class="fa fa-user fa-fw"></i>サイトポリシー</a></li><li class="menu-item menu-item-tags"><a href="/new-technology/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>タグ</a></li><li class="menu-item menu-item-categories"><a href="/new-technology/categories/" rel="section"><i class="fa fa-th fa-fw"></i>カテゴリ</a></li><li class="menu-item menu-item-archives"><a href="/new-technology/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>アーカイブ</a></li><li class="menu-item menu-item-privacy"><a href="/new-technology/privacypolicy/" rel="section"><i class="fa fa-check fa-fw"></i>プライバシーポリシー</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="検索…" spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          見出し
+        </li>
+        <li class="sidebar-nav-overview">
+          概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%95%E3%82%A3%E3%83%83%E3%82%B7%E3%83%B3%E3%82%B0%E5%AF%BE%E7%AD%96%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span class="nav-number">1.</span> <span class="nav-text">フィッシング対策について</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%95%E3%82%A3%E3%83%83%E3%82%B7%E3%83%B3%E3%82%B0%E3%82%B5%E3%82%A4%E3%83%88%E3%81%A8%E3%80%81%E5%AF%BE%E8%B1%A1%E3%82%BD%E3%83%95%E3%83%88%E3%82%A6%E3%82%A7%E3%82%A2%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span class="nav-number">2.</span> <span class="nav-text">フィッシングサイトと、対象ソフトウェアについて</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%95%E3%82%A3%E3%83%83%E3%82%B7%E3%83%B3%E3%82%B0%E3%82%B5%E3%82%A4%E3%83%88%E3%81%AE%E9%81%B8%E5%AE%9A"><span class="nav-number">2.1.</span> <span class="nav-text">フィッシングサイトの選定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%BE%E8%B1%A1%E3%82%BD%E3%83%95%E3%83%88%E3%82%A6%E3%82%A7%E3%82%A2"><span class="nav-number">2.2.</span> <span class="nav-text">対象ソフトウェア</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A4%9C%E8%A8%BC%E6%96%B9%E6%B3%95"><span class="nav-number">2.3.</span> <span class="nav-text">検証方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A4%9C%E8%A8%BC%E7%B5%90%E6%9E%9C"><span class="nav-number">3.</span> <span class="nav-text">検証結果</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Windows%E3%80%81Linux"><span class="nav-number">3.1.</span> <span class="nav-text">Windows、Linux</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Chrome%E3%80%81Firefox"><span class="nav-number">3.1.1.</span> <span class="nav-text">Chrome、Firefox</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Edge%EF%BC%88Windows%E3%81%AE%E3%81%BF%EF%BC%89"><span class="nav-number">3.1.2.</span> <span class="nav-text">Edge（Windowsのみ）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#macOS"><span class="nav-number">3.2.</span> <span class="nav-text">macOS</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Safari"><span class="nav-number">3.2.1.</span> <span class="nav-text">Safari</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Chrome%E3%80%81Firefox-1"><span class="nav-number">3.2.2.</span> <span class="nav-text">Chrome、Firefox</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Edge"><span class="nav-number">3.2.3.</span> <span class="nav-text">Edge</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PC%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B%E3%83%95%E3%82%A3%E3%83%83%E3%82%B7%E3%83%B3%E3%82%B0%E3%82%B5%E3%82%A4%E3%83%88%E3%81%AE%E6%A4%9C%E5%87%BA%E8%83%BD%E5%8A%9B"><span class="nav-number">3.3.</span> <span class="nav-text">PCにおけるフィッシングサイトの検出能力</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Android"><span class="nav-number">3.4.</span> <span class="nav-text">Android</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Chrome%E3%80%81Firefox-2"><span class="nav-number">3.4.1.</span> <span class="nav-text">Chrome、Firefox</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Edge-1"><span class="nav-number">3.4.2.</span> <span class="nav-text">Edge</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Android%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B%E3%83%95%E3%82%A3%E3%83%83%E3%82%B7%E3%83%B3%E3%82%B0%E3%82%B5%E3%82%A4%E3%83%88%E3%81%AE%E6%A4%9C%E5%87%BA%E8%83%BD%E5%8A%9B"><span class="nav-number">3.4.3.</span> <span class="nav-text">Androidにおけるフィッシングサイトの検出能力</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#iOS"><span class="nav-number">3.5.</span> <span class="nav-text">iOS</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Safari-1"><span class="nav-number">3.5.1.</span> <span class="nav-text">Safari</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Edge-2"><span class="nav-number">3.5.2.</span> <span class="nav-text">Edge</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Chrome%E3%80%81Firefox-3"><span class="nav-number">3.5.3.</span> <span class="nav-text">Chrome、Firefox</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#iOS%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B%E3%83%95%E3%82%A3%E3%83%83%E3%82%B7%E3%83%B3%E3%82%B0%E3%82%B5%E3%82%A4%E3%83%88%E3%81%AE%E6%A4%9C%E5%87%BA%E8%83%BD%E5%8A%9B"><span class="nav-number">3.5.4.</span> <span class="nav-text">iOSにおけるフィッシングサイトの検出能力</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%82%A6%E3%82%A3%E3%83%AB%E3%82%B9%E5%AF%BE%E7%AD%96%E3%82%BD%E3%83%95%E3%83%88%E7%AD%89"><span class="nav-number">3.6.</span> <span class="nav-text">ウィルス対策ソフト等</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#bitdefender"><span class="nav-number">3.6.1.</span> <span class="nav-text">bitdefender</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#XG-Firewall"><span class="nav-number">3.6.2.</span> <span class="nav-text">XG Firewall</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Norton360"><span class="nav-number">3.6.3.</span> <span class="nav-text">Norton360</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E3%82%A6%E3%82%A3%E3%83%AB%E3%82%B9%E3%83%90%E3%82%B9%E3%82%BF%E3%83%BC%E3%83%A2%E3%83%90%E3%82%A4%E3%83%AB"><span class="nav-number">3.6.4.</span> <span class="nav-text">ウィルスバスターモバイル</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A4%9C%E8%A8%BC%E7%B5%90%E6%9E%9C%E3%82%92%E8%B8%8F%E3%81%BE%E3%81%88%E3%81%A6"><span class="nav-number">4.</span> <span class="nav-text">検証結果を踏まえて</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="阿部　吉伸(Yoshinobu ABE)"
+      src="/new-technology/images/yoshi.png">
+  <p class="site-author-name" itemprop="name">阿部　吉伸(Yoshinobu ABE)</p>
+  <div class="site-description" itemprop="description">IT</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/new-technology/archives/">
+          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-name">ポスト</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/new-technology/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">カテゴリ</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/new-technology/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">タグ</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yoshi0808" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yoshi0808" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yoshi0808.blog@gmail.com" title="E-Mail → mailto:yoshi0808.blog@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yoshi0808_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yoshi0808_" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="/new-technology/lib/@creativecommons/vocabulary/assets/license_badges/big/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="ja">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2021/05/05/avoid-phishing/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/new-technology/images/yoshi.png">
+      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="New technologies in our life">
+      <meta itemprop="description" content="IT">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="フィッシング対策ツールの実力 | New technologies in our life">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          フィッシング対策ツールの実力
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">投稿日</span>
+
+      <time title="作成日：2021-05-05 01:04:05" itemprop="dateCreated datePublished" datetime="2021-05-05T01:04:05+09:00">2021-05-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">編集日</span>
+      <time title="修正日：2021-10-03 13:22:09" itemprop="dateModified" datetime="2021-10-03T13:22:09+09:00">2021-10-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">カテゴリ</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/Security/" itemprop="url" rel="index"><span itemprop="name">Security</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <img src="/new-technology/2021/05/05/avoid-phishing/phishing.png" class="" title="alt">
+
+<p class="onepoint">この記事で実現すること</p>
+
+<p>フィッシングサイトから身を守るためには、自身が騙されないために日頃から意識する事が最も重要ですが、フェールセーフで各種セキュリティサービスに助けられるケースもあるはずです。それぞれのサービスがどの程度の実力を持つのか検証してみます。</p>
+<span id="more"></span>
+
+<h2 id="フィッシング対策について"><a href="#フィッシング対策について" class="headerlink" title="フィッシング対策について"></a>フィッシング対策について</h2><p>巷で記載されているフィッシング対策は、「本人が気を付ける」という観点で書かれている記事が大半です。ITに詳しくなくてもきちんとニュースやサイトの案内を理解され、慎重な方であれば滅多に引っかからないものですが、家族を含めて考えると無視できないテーマです。ウィルス対策ソフトなどはフィッシング対策も含めてアピールしている製品もありますが、実力はどの程度のものでしょうか。今回は、このサイトでお勧めしているXG Firewallを含め、代表的なウィルス対策ソフトの実力について調べてみました。</p>
+<h2 id="フィッシングサイトと、対象ソフトウェアについて"><a href="#フィッシングサイトと、対象ソフトウェアについて" class="headerlink" title="フィッシングサイトと、対象ソフトウェアについて"></a>フィッシングサイトと、対象ソフトウェアについて</h2><h3 id="フィッシングサイトの選定"><a href="#フィッシングサイトの選定" class="headerlink" title="フィッシングサイトの選定"></a>フィッシングサイトの選定</h3><p>フィッシングサイトは日本国内で有名になったものをTwitterなどからPickupしてみました。</p>
+<ul>
+<li>銀行・カード</li>
+<li>宅急便</li>
+<li>通販会社</li>
+<li>カード</li>
+<li>通販会社（別サイト）</li>
+</ul>
+<h3 id="対象ソフトウェア"><a href="#対象ソフトウェア" class="headerlink" title="対象ソフトウェア"></a>対象ソフトウェア</h3><p>Googleはセーフブラウジングという機能を持っています。ChromeやFireFoxではこの機能が採用されています。これと同じ仕組みでMicrosoftのEdgeは”Smart Screen”という機能が提供されています。双方ともブラウザ画面いっぱいに赤色で警告を表示しますのでかなり驚きます。いずれもユーザーが報告を行える仕組みをとっています。</p>
+<p>ウィルス対策ソフトは海外製品がどこまで日本の事情を理解できているかがポイントになるでしょうか。ある意味日本語という言葉の壁がフィッシングから身を守っていると言っても過言ではありません。従い、日本国内のサービスを対象とするフィッシング詐欺は日本の事に精通している必要があります。対策ソフトを作る側も同じ事が求められます。<br>ウィルス対策ソフトについては、Norton360、Bitdefender、トレンドマイクロ（ウィルスバスター）を選定してみました。XG Firewallについても検証対象に加えてみます。</p>
+<h3 id="検証方法"><a href="#検証方法" class="headerlink" title="検証方法"></a>検証方法</h3><p>PC、モバイルにおいて、セーフブラウジング、Smart Screenの実力を検証します。また、ウィルス対策ソフトを提供するベンダーは、簡易VPNとしてデバイス上で宛先（ドメインまたはURL）チェックを行う機能を持っていますので、これでフィッシングが認識できるか検証します。</p>
+<h2 id="検証結果"><a href="#検証結果" class="headerlink" title="検証結果"></a>検証結果</h2><p>まずは検証結果の一覧です。URLの一部は伏せてあります。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>銀行direct5-xxxx[.]xxx</th>
+<th>宅急便znwjwvfgna[.]xx[.]xx</th>
+<th>通販会社1 www[.]xxx-amazon[.]xxx&#x2F;[.]</th>
+<th>カードxxx[.]epos-card[.]xxx&#x2F;</th>
+<th>通販会社2 amazon[.]co[.]jp[.]xxx[.]xx</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>iPhone Safari</td>
+<td>○</td>
+<td>✖️</td>
+<td>○</td>
+<td>✖️</td>
+<td>✖️</td>
+</tr>
+<tr>
+<td>iPhone Chrome</td>
+<td>○</td>
+<td>✖️</td>
+<td>○</td>
+<td>✖️</td>
+<td>✖️</td>
+</tr>
+<tr>
+<td>iPhone Edge</td>
+<td>○</td>
+<td>✖️</td>
+<td>○</td>
+<td>✖️</td>
+<td>✖️</td>
+</tr>
+<tr>
+<td>iPhone Firefox</td>
+<td>○</td>
+<td>✖️</td>
+<td>○</td>
+<td>✖️</td>
+<td>✖️</td>
+</tr>
+<tr>
+<td>Android Chrome</td>
+<td>○</td>
+<td>✖️</td>
+<td>○</td>
+<td>○</td>
+<td>○</td>
+</tr>
+<tr>
+<td>Android Edge</td>
+<td>✖️</td>
+<td>✖️</td>
+<td>✖️</td>
+<td>✖️</td>
+<td>✖️</td>
+</tr>
+<tr>
+<td>Android Firefox</td>
+<td>○</td>
+<td>✖️</td>
+<td>○</td>
+<td>○</td>
+<td>○</td>
+</tr>
+<tr>
+<td>PC Edge</td>
+<td>○</td>
+<td>✖️</td>
+<td>○</td>
+<td>○</td>
+<td>○</td>
+</tr>
+<tr>
+<td>PC Firefox</td>
+<td>○</td>
+<td>✖️</td>
+<td>○</td>
+<td>○</td>
+<td>○</td>
+</tr>
+<tr>
+<td>Mac Safari</td>
+<td>○</td>
+<td>✖️</td>
+<td>○</td>
+<td>✖️</td>
+<td>✖️</td>
+</tr>
+<tr>
+<td>Mac Edge</td>
+<td>○</td>
+<td>✖️</td>
+<td>✖️</td>
+<td>✖️</td>
+<td>○</td>
+</tr>
+<tr>
+<td>Mac Firefox</td>
+<td>○</td>
+<td>✖️</td>
+<td>○</td>
+<td>○</td>
+<td>○</td>
+</tr>
+<tr>
+<td>Linux(ubuntu) Firefox</td>
+<td>○</td>
+<td>✖️</td>
+<td>○</td>
+<td>○</td>
+<td>○</td>
+</tr>
+<tr>
+<td>Bitdefender</td>
+<td>○</td>
+<td>✖️</td>
+<td>○</td>
+<td>○</td>
+<td>✖️</td>
+</tr>
+<tr>
+<td>XG Firewall</td>
+<td>○</td>
+<td>✖️</td>
+<td>○</td>
+<td>✖️</td>
+<td>✖️</td>
+</tr>
+<tr>
+<td>Norton360</td>
+<td>✖️</td>
+<td>✖️</td>
+<td>✖️</td>
+<td>✖️</td>
+<td>✖️</td>
+</tr>
+<tr>
+<td>ウィルスバスターモバイル</td>
+<td>○</td>
+<td>○</td>
+<td>○</td>
+<td>○</td>
+<td>○</td>
+</tr>
+</tbody></table>
+<p>（※上記の表は閲覧するデバイスによって見切れる場合がありますが、←→のスワイプで確認できます）</p>
+<h3 id="Windows、Linux"><a href="#Windows、Linux" class="headerlink" title="Windows、Linux"></a>Windows、Linux</h3><h4 id="Chrome、Firefox"><a href="#Chrome、Firefox" class="headerlink" title="Chrome、Firefox"></a>Chrome、Firefox</h4><p>これはGoogleセーフブラウジングを使う事になりますが、良い結果です。かなりの精度でフィッシングサイトを認識できています。✖️は1つですが、フィッシングサイトは次から次へと作られますからある意味いたちごっこではあります。ユーザーからの報告を受け、防御していくPDCAがうまく活用できているのでしょうね。</p>
+<h4 id="Edge（Windowsのみ）"><a href="#Edge（Windowsのみ）" class="headerlink" title="Edge（Windowsのみ）"></a>Edge（Windowsのみ）</h4><p>MicrosoftのSmart Screenも良い結果でした。✖️は1つです。</p>
+<h3 id="macOS"><a href="#macOS" class="headerlink" title="macOS"></a>macOS</h3><h4 id="Safari"><a href="#Safari" class="headerlink" title="Safari"></a>Safari</h4><p>SafariはGoogleセーフブラウジングの情報を活用しています。しかしWindowsとバージョンが異なるのか、不芳で✖️は3つです。</p>
+<h4 id="Chrome、Firefox-1"><a href="#Chrome、Firefox-1" class="headerlink" title="Chrome、Firefox"></a>Chrome、Firefox</h4><p>Windows版と同様で良い結果でした。✖️は1つです。</p>
+<h4 id="Edge"><a href="#Edge" class="headerlink" title="Edge"></a>Edge</h4><p>これも意外です。Windows版と結果が異なります。不芳で✖️は3つです。</p>
+<h3 id="PCにおけるフィッシングサイトの検出能力"><a href="#PCにおけるフィッシングサイトの検出能力" class="headerlink" title="PCにおけるフィッシングサイトの検出能力"></a>PCにおけるフィッシングサイトの検出能力</h3><p>Chrome、Firefoxを使う事で一定の防御が可能という事がわかりました。macOSでのみ、Edge、Safariの防御力が劣ります。</p>
+<h3 id="Android"><a href="#Android" class="headerlink" title="Android"></a>Android</h3><h4 id="Chrome、Firefox-2"><a href="#Chrome、Firefox-2" class="headerlink" title="Chrome、Firefox"></a>Chrome、Firefox</h4><p>PCと共通で良い結果でした。✖️は1つです。</p>
+<h4 id="Edge-1"><a href="#Edge-1" class="headerlink" title="Edge"></a>Edge</h4><p>意外です。Android版Edgeはフィッシングサイトを全く検知できていません。仕組みが異なるのでしょうか。まだ発展途中のプロダクトという事でしょうか。</p>
+<h4 id="Androidにおけるフィッシングサイトの検出能力"><a href="#Androidにおけるフィッシングサイトの検出能力" class="headerlink" title="Androidにおけるフィッシングサイトの検出能力"></a>Androidにおけるフィッシングサイトの検出能力</h4><p>デフォルトのChromeを使う事で一定の防御が可能です。しかし、Edgeはフィッシングという観点では現段階で支援してくれない事を留意して使用すべきでしょうか。今後のアップデートで強化されていくものと考えられます。</p>
+<h3 id="iOS"><a href="#iOS" class="headerlink" title="iOS"></a>iOS</h3><h4 id="Safari-1"><a href="#Safari-1" class="headerlink" title="Safari"></a>Safari</h4><p>iOSもmacOSと同じでGoogleのセーフブラウジングを使っています。不芳で✖️は3つです。</p>
+<h4 id="Edge-2"><a href="#Edge-2" class="headerlink" title="Edge"></a>Edge</h4><p>意外な事にGoogleセーフブラウジングを使っているようです。これは何らかの制約があるのでしょうか。不芳で✖️は3つです。</p>
+<h4 id="Chrome、Firefox-3"><a href="#Chrome、Firefox-3" class="headerlink" title="Chrome、Firefox"></a>Chrome、Firefox</h4><p>想定通り、Googleセーフブラウジングを使っていますが、PC版のGoogleセーフブラウジングとは結果が異なります。不芳で✖️は3つです。</p>
+<h4 id="iOSにおけるフィッシングサイトの検出能力"><a href="#iOSにおけるフィッシングサイトの検出能力" class="headerlink" title="iOSにおけるフィッシングサイトの検出能力"></a>iOSにおけるフィッシングサイトの検出能力</h4><p>iOSは全てのブラウザで同じ結果、Googleセーフブラウジングを使っています。そして検出能力は高くありません。何らかの事情があるのでしょうか。また、Safariでは設定で、他社の<mark class="label primary">コンテンツブロッカー</mark>を設定可能としています。そのせいなのか今1つiOS単体としての防御力を高める事は目指していないように見えます。</p>
+<h3 id="ウィルス対策ソフト等"><a href="#ウィルス対策ソフト等" class="headerlink" title="ウィルス対策ソフト等"></a>ウィルス対策ソフト等</h3><h4 id="bitdefender"><a href="#bitdefender" class="headerlink" title="bitdefender"></a>bitdefender</h4><p>海外のベンダーですが、どれだけ日本のものを検出可能でしょうか。✖️は2つと及第点です。ウィルス対策ソフトとしては信頼できるベンダーではありますが、日本からのタイムリーな情報入手は難しいものがあるのでしょうか。</p>
+<h4 id="XG-Firewall"><a href="#XG-Firewall" class="headerlink" title="XG Firewall"></a>XG Firewall</h4><p>こちらも期待には応えられず、不芳で✖️は3つです。やはり海外製品はフィッシングについては苦手分野なようです。自宅におけるIoTからマルウェアなどを防御できる事をメリットに考えるべきでしょうか。</p>
+<h4 id="Norton360"><a href="#Norton360" class="headerlink" title="Norton360"></a>Norton360</h4><p>iPhone上でVPNとして設定してみましたが全くフィッシングサイトを検知できませんでした。フィッシングとは関係のないサイトで警告を出すなど出来ていたので、Norton360のVPNの仕組みを使った保護というのはフィッシングを対象としていないのかもしれません。</p>
+<h4 id="ウィルスバスターモバイル"><a href="#ウィルスバスターモバイル" class="headerlink" title="ウィルスバスターモバイル"></a>ウィルスバスターモバイル</h4><p>この製品は唯一全てのフィッシングサイトを検出できました。優秀です。トレンドマイクロは日本国内のオフィスもあり、日本の事情に精通している事も一因としてあるのでしょうか。前述したiPhoneのSafariのコンテンツブロッカーとして設定できます。また、SMSもフィルタする機能を持っています。</p>
+<h2 id="検証結果を踏まえて"><a href="#検証結果を踏まえて" class="headerlink" title="検証結果を踏まえて"></a>検証結果を踏まえて</h2><p>フィッシングサイトから防御するため、様々な環境でテストしました。OSやソフトウェアによって特徴がありますので参考にしてください。多くのプログラムをインストールしたり開発する方であればフィッシングへの耐性は強いと思われるので、ウィルス・マルウェア対策に重点を置いて対策すべきでしょうか。一方、スマホアプリ、SNS、ブラウザ程度の使い方でITにあまり詳しくない方なのであればフィッシング対策に重きを置くという考えもあります。</p>
+<p>今回紹介には含められませんでしたが、携帯キャリアが提供しているフィッシング対策もあります。<br>ご家族やご年配の方など心配であればフィッシングについての啓蒙、こういったツールの導入などを検討されてはいかがでしょうか。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/new-technology/2021/04/26/scanwatch/" rel="prev" title="Withings ScanWatch">
+                  <i class="fa fa-chevron-left"></i> Withings ScanWatch
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/new-technology/2021/05/30/ssl-vpn/" rel="next" title="XG Firewall SSL-VPN">
+                  XG Firewall SSL-VPN <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">阿部　吉伸(Yoshinobu ABE)</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div><script src="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.umd.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.min.css" rel="stylesheet">
+
+<script>
+if (Cookies.get('PRVCY202112') != 'Agree') {
+  const notice = new SimpleGDPR({
+    title: 'Accept Cookies & Privacy Policy?',
+    message: 'このWebサイトでは、訪問や活動に関するデータがクッキー等によって収集されます。閲覧を継続される場合、\
+    プライバシーポリシーをご覧いただき同意(Agree)をお願いします',
+    link: null,
+    icons: true,
+    theme: 'light',
+    animation: 'fade',
+    float: 'bottom-right',
+      callback: () => {
+      notice.close();
+      Cookies.set('PRVCY202112', 'Agree', { expires: 365, path: '/'});
+      notice.destroy();
+      // Google Analytics 4
+      gtag('consent', 'update', {
+      'analytics_storage': 'granted'
+      });
+      gtag('js', new Date());
+      gtag('config', 'G-JMY6NSC2KK', { 'anonymize_ip': true });
+      },
+  });
+}
+</script>
+<div class="disclaimer1">
+このサイトの記事は、特別な記載がない限り <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja">クリエイティブ・コモンズ BY-NC-SA ライセンス</a>で保護されています</div>
+
+
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/yoshi0808" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="/new-technology/lib/animejs/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="/new-technology/lib/medium-zoom/dist/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/comments.js"></script><script src="/new-technology/js/utils.js"></script><script src="/new-technology/js/motion.js"></script><script src="/new-technology/js/schemes/muse.js"></script><script src="/new-technology/js/next-boot.js"></script>
+
+  <script src="/new-technology/lib/hexo-generator-searchdb/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"/new-technology/lib/mermaid/dist/mermaid.min.js","integrity":"sha256-3JloMMI/ZQx6ryuhhZTsQJQmGAkXeni6PkshX7UUO2s="}}</script>
+  <script src="/new-technology/js/third-party/tags/mermaid.js"></script>
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

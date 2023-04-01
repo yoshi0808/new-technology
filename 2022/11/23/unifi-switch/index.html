@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/icon-16x16.png">
+  <link rel="mask-icon" href="/new-technology/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/new-technology/css/main.css">
+
+
+
+<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-/4UQcSmErDzPCMAiuOiWPVVsNN2s3ZY/NsmXNcj0IFc=" crossorigin="anonymous">
+  <link rel="stylesheet" href="/new-technology/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.15.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
+
+    <meta name="description" content="この記事で実現すること  この記事ではホームユーザー向けにUniFiスイッチの設定ができるようになることを目的としています。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UniFiスイッチ">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2022/11/23/unifi-switch/index.html">
+<meta property="og:site_name" content="New technologies in our life">
+<meta property="og:description" content="この記事で実現すること  この記事ではホームユーザー向けにUniFiスイッチの設定ができるようになることを目的としています。">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/11/23/unifi-switch/title.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/11/23/unifi-switch/netapp2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/11/23/unifi-switch/netapp3.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/11/23/unifi-switch/netapp4.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/11/23/unifi-switch/netapp5.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/11/23/unifi-switch/netapp7.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/11/23/unifi-switch/netapp8.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/11/23/unifi-switch/netapp6.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/11/23/unifi-switch/module.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/11/23/unifi-switch/netapp9.png">
+<meta property="article:published_time" content="2022-11-22T15:00:00.000Z">
+<meta property="article:modified_time" content="2023-02-04T07:22:56.000Z">
+<meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
+<meta property="article:tag" content="SFP+">
+<meta property="article:tag" content="10GbE">
+<meta property="article:tag" content="UniFi">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2022/11/23/unifi-switch/title.png">
+
+
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2022/11/23/unifi-switch/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"ja","comments":true,"permalink":"https://yoshi0808.github.io/new-technology/2022/11/23/unifi-switch/","path":"2022/11/23/unifi-switch/","title":"UniFiスイッチ"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>UniFiスイッチ | New technologies in our life</title>
+  
+
+
+
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{&quot;token&quot;: &quot;0148b4d0442e42b483ddce684030bd2f&quot;}'></script>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JMY6NSC2KK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+  'ad_storage': 'denied',
+  'analytics_storage': 'denied'
+  });
+
+  dataLayer.push({
+  'event': 'default_consent'
+  });
+
+  if (Cookies.get('PRVCY202112') == 'Agree') {
+    gtag('consent', 'update', {
+    'analytics_storage': 'granted'
+    });
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'G-JMY6NSC2KK',{ 'anonymize_ip': true });
+</script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/new-technology/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/new-technology/atom.xml" title="New technologies in our life" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="ナビゲーションバーの切り替え" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/new-technology/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">New technologies in our life</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Device,Network,Code,etc...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="検索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/new-technology/" rel="section"><i class="fa fa-home fa-fw"></i>ホーム</a></li><li class="menu-item menu-item-about"><a href="/new-technology/about/" rel="section"><i class="fa fa-user fa-fw"></i>サイトポリシー</a></li><li class="menu-item menu-item-tags"><a href="/new-technology/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>タグ</a></li><li class="menu-item menu-item-categories"><a href="/new-technology/categories/" rel="section"><i class="fa fa-th fa-fw"></i>カテゴリ</a></li><li class="menu-item menu-item-archives"><a href="/new-technology/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>アーカイブ</a></li><li class="menu-item menu-item-privacy"><a href="/new-technology/privacypolicy/" rel="section"><i class="fa fa-check fa-fw"></i>プライバシーポリシー</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="検索…" spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          見出し
+        </li>
+        <li class="sidebar-nav-overview">
+          概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#UniFi%E3%82%B9%E3%82%A4%E3%83%83%E3%83%81%E3%81%AE%E7%89%B9%E5%BE%B4"><span class="nav-number">1.</span> <span class="nav-text">UniFiスイッチの特徴</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E8%A8%AD%E5%AE%9A"><span class="nav-number">2.</span> <span class="nav-text">基本設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%82%B9%E3%82%A4%E3%83%83%E3%83%81%E3%83%9D%E3%83%BC%E3%83%88%E7%A2%BA%E8%AA%8D"><span class="nav-number">3.</span> <span class="nav-text">スイッチポート確認</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%82%B9%E3%82%A4%E3%83%83%E3%83%81%E3%83%9D%E3%83%BC%E3%83%88%E8%A8%AD%E5%AE%9A"><span class="nav-number">4.</span> <span class="nav-text">スイッチポート設定</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Port%E3%81%AE%E8%A8%AD%E5%AE%9A%E5%A4%89%E6%9B%B4"><span class="nav-number">4.1.</span> <span class="nav-text">Portの設定変更</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VLAN%E3%82%92%E8%A8%AD%E5%AE%9A"><span class="nav-number">5.</span> <span class="nav-text">VLANを設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSH"><span class="nav-number">6.</span> <span class="nav-text">SSH</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%82%B9%E3%82%A4%E3%83%83%E3%83%81%E3%81%AE%E8%A9%B3%E7%B4%B0%E6%83%85%E5%A0%B1%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span class="nav-number">6.1.</span> <span class="nav-text">スイッチの詳細情報について</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#USW-Pro-Aggregation-L3%E3%82%B9%E3%82%A4%E3%83%83%E3%83%81"><span class="nav-number">6.2.</span> <span class="nav-text">USW-Pro-Aggregation(L3スイッチ)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#USW-Aggregation-SFP-8Port"><span class="nav-number">6.3.</span> <span class="nav-text">USW-Aggregation(SFP+ 8Port)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#L3%E3%82%B9%E3%82%A4%E3%83%83%E3%83%81%E3%81%AE%E5%88%B6%E7%B4%84"><span class="nav-number">7.</span> <span class="nav-text">L3スイッチの制約</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SFP%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB"><span class="nav-number">8.</span> <span class="nav-text">SFPモジュール</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PoE"><span class="nav-number">9.</span> <span class="nav-text">PoE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%BE%E3%81%A8%E3%82%81"><span class="nav-number">10.</span> <span class="nav-text">まとめ</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="阿部　吉伸(Yoshinobu ABE)"
+      src="/new-technology/images/yoshi.png">
+  <p class="site-author-name" itemprop="name">阿部　吉伸(Yoshinobu ABE)</p>
+  <div class="site-description" itemprop="description">IT</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/new-technology/archives/">
+          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-name">ポスト</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/new-technology/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">カテゴリ</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/new-technology/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">タグ</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yoshi0808" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yoshi0808" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yoshi0808.blog@gmail.com" title="E-Mail → mailto:yoshi0808.blog@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yoshi0808_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yoshi0808_" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="/new-technology/lib/@creativecommons/vocabulary/assets/license_badges/big/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="ja">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2022/11/23/unifi-switch/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/new-technology/images/yoshi.png">
+      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="New technologies in our life">
+      <meta itemprop="description" content="IT">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="UniFiスイッチ | New technologies in our life">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          UniFiスイッチ
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">投稿日</span>
+
+      <time title="作成日：2022-11-23 00:00:00" itemprop="dateCreated datePublished" datetime="2022-11-23T00:00:00+09:00">2022-11-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">編集日</span>
+      <time title="修正日：2023-02-04 16:22:56" itemprop="dateModified" datetime="2023-02-04T16:22:56+09:00">2023-02-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">カテゴリ</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/Hardware/" itemprop="url" rel="index"><span itemprop="name">Hardware</span></a>
+        </span>
+          、
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/Network/" itemprop="url" rel="index"><span itemprop="name">Network</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <img src="/new-technology/2022/11/23/unifi-switch/title.png" class="" width="1024" title="alt">
+<p class="onepoint">この記事で実現すること</p>
+
+<p>この記事ではホームユーザー向けにUniFiスイッチの設定ができるようになることを目的としています。</p>
+<span id="more"></span>
+
+<h2 id="UniFiスイッチの特徴"><a href="#UniFiスイッチの特徴" class="headerlink" title="UniFiスイッチの特徴"></a>UniFiスイッチの特徴</h2><p>UniFiネットワークスイッチの特徴としては、どちらかといえばスモールビジネス向けの製品が中心ではあります。<br>スモールオフィスの基幹ネットワークを構成しながら、監視カメラやWi-Fiシステムを導入し、トータルソリューションが売りになります。<br>ネットワークスイッチ単独の機能として見ると、以下の特徴があります。</p>
+<ol>
+<li>Wi-FiにRJ45ケーブルで通信と電力出力を兼ねるPoE</li>
+<li>SFP＋などの10GbEネットワーク</li>
+<li>UniFiネットワークアプリケーションによる集中管理</li>
+</ol>
+<p>ホームユーザー向けとして自宅内のネットワークを10GbEかつSFP+を選択する場合は、いくつかの魅力的なネットワークスイッチが候補に上がります。<br>発熱対策のために各部屋にSFP+でOM3などの光ケーブルを通す場合は、個人向けのネットワークスイッチではPortが不足してしまうのが実態です。<br>機器の価格帯が個人向け、かつ消去法でいくとMikroTikかUniFiが選択肢に上がります。円安で昔ほどは安いと思えなくなりましたが、SFP+スイッチは廉価です。</p>
+<h2 id="基本設定"><a href="#基本設定" class="headerlink" title="基本設定"></a>基本設定</h2><p>基本設定です。UniFiスイッチを新規導入する際には、ネットワークアプリケーションに登録（採用）する必要があります。初期セットアップについては、以下の記事を参照してください。UniFi製品群の標準の考え方ではセキュリティゲートウェイをインターネットルーターの役割として配置し、そこに各UniFi製品群をぶら下げることになります。私はSophos Firewallを利用しており、UniFiセキュリティゲートウェイは不要としているため、集中管理のためのUniFiネットワークアプリケーションを導入しています。</p>
+<ul>
+<li><a href="/new-technology/2022/08/27/ubiquiti-unifi/" title="Ubiquiti UniFiの世界">Ubiquiti UniFiの世界</a></li>
+<li><a href="/new-technology/2022/09/23/unifi-network-application/" title="UniFi Network Applicationのセットアップ">UniFi Network Applicationのセットアップ</a></li>
+<li><a href="/new-technology/2022/10/23/unifi-network-application2/" title="UniFi Network Applicationの運用">UniFi Network Applicationの運用</a></li>
+</ul>
+<p>UniFiスイッチが採用（Adoption）されると、ネットワークアプリケーションから管理できるようになります。</p>
+<p>スイッチ毎の<mark class="label primary">Settings</mark>では、<mark class="label primary">Service</mark>で基本設定を、<mark class="label primary">Network</mark>でIPアドレスを設定できます。</p>
+<img src="/new-technology/2022/11/23/unifi-switch/netapp2.png" class="" width="360" title="alt">
+
+<mark class="label primary">Service</mark>では、スイッチ自身がどのネットワーク（VLAN）に属するのかを決め、Flow ControlやJumbo Frameの設定が可能です。デフォルトでFlow ControlはOffです。ネットワーク速度が異なる端末を接続する場合は、Flow ControlはOnの方が良いでしょう。もちろん、送信側端末のネットワークカードがFlow Controlに対応している必要はあります。最近、UniFiネットワークアプリケーションではスイッチのGlobalSettingが可能となり、スイッチ毎にこれらの設定が不要になっています。
+
+<img src="/new-technology/2022/11/23/unifi-switch/netapp3.png" class="" width="360" title="alt">
+
+<mark class="label primary">Network</mark>では、静的IPアドレスを設定することもできます。
+<p>その他、<mark class="label primary">Settings</mark>からは、スイッチの再起動が可能です。</p>
+<h2 id="スイッチポート確認"><a href="#スイッチポート確認" class="headerlink" title="スイッチポート確認"></a>スイッチポート確認</h2><p>スイッチ毎の<mark class="label primary">Ports</mark>からはPortの稼働状況が確認できます。</p>
+<img src="/new-technology/2022/11/23/unifi-switch/netapp4.png" class="" width="360" title="alt">
+
+<table>
+<thead>
+<tr>
+<th>項目名</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Status</td>
+<td>実際に接続されている速度を示します。稀にファームウェアのアップデートのタイミングで誤った認識になる場合があります</td>
+</tr>
+<tr>
+<td>Tx&#x2F;Rx</td>
+<td>送信(Tx)、受信(Rx)量を示します</td>
+</tr>
+<tr>
+<td>Profile</td>
+<td>UniFiのVLANは複数のネットワークを指定した上で纏めたトランクポートを複数種類作成可能です。私の環境の一例では、管理用LAN（タグ無し※デフォルトVLAN）、家族用VLAN、ゲスト用VLAN（会社向けやIoTなどのゲストネットワーク）を1つに束ねて上流スイッチから接続しています。</td>
+</tr>
+<tr>
+<td>Uplink</td>
+<td>上流の機器を示します。UniFiがInternetへのルーティングを解析し、Internet接続ルーターを上流として自動的にUplinkポートを判別します</td>
+</tr>
+</tbody></table>
+<p>その他、SFPモジュールの情報などが出力されています。</p>
+<h2 id="スイッチポート設定"><a href="#スイッチポート設定" class="headerlink" title="スイッチポート設定"></a>スイッチポート設定</h2><p>スイッチ毎の<mark class="label primary">Ports</mark>からさらに<mark class="label primary">Port Management</mark>を選択すると、個々のPortの設定を行えます。</p>
+<img src="/new-technology/2022/11/23/unifi-switch/netapp5.png" class="" width="1024" title="alt">
+
+<p>これはPro-Aggregationの例ですが、Portごとに接続されているクライアントが表示されています。ここで個別のPortを選択すると、ポートの速度やVLANを設定できます。</p>
+<h3 id="Portの設定変更"><a href="#Portの設定変更" class="headerlink" title="Portの設定変更"></a>Portの設定変更</h3><p>Portの物理的な設定変更は以下の<mark class="label primary">Port Profile Override</mark>から行います。</p>
+<img src="/new-technology/2022/11/23/unifi-switch/netapp7.png" class="" width="360" title="alt">
+
+<table>
+<thead>
+<tr>
+<th>項目名</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Operation</td>
+<td>Switching または、Aggregate（複数のPortを束ねて帯域を増やす）、Mirrorを選択します。</td>
+</tr>
+<tr>
+<td>Link Speed</td>
+<td>オートネゴ、10Gbps、2.5Gbpsなどの速度固定を選択します。なお、2.5Gはオートネゴでは動作しません</td>
+</tr>
+<tr>
+<td>Port Isolation</td>
+<td>Uplinkポートのみトラフィックを転送します</td>
+</tr>
+<tr>
+<td>Storm Control</td>
+<td>ブロードキャスト、マルチキャストなどの飽和を某防止します</td>
+</tr>
+<tr>
+<td>LLDP</td>
+<td>ディスカバリプロトコルを有効にします（デフォルトON）</td>
+</tr>
+<tr>
+<td>Spanning Tree Protocol</td>
+<td>スパニングツリーを有効にします（デフォルトON）</td>
+</tr>
+</tbody></table>
+<p>ミラーPortはトラブル時の確認のために使います。トラブルのあるPort番号を指定し、ミラーに設定することで同じデータが流れます。ノートPCなどを接続し、WireSharkなどを使いパケット解析します。</p>
+<p>SFP+の製品であっても、USW-AggregationスイッチやUSW-Enterprise-8-PoEのSFP+ポートは2.5GbEに対応していません。過去記事「<a href="/new-technology/2022/07/30/sfp-plus-nbaset/" title="SFP+の2.5GbE対応">SFP+の2.5GbE対応</a>」で書いたように、10GbEを2.5GbEとして偽装させる特殊なSFP+モジュールが必要になります（もっとも、USW-Enterprise-8-PoEは2.5GbEのRJ45ポートを備えているので運用上困ることはありませんが）。</p>
+<h2 id="VLANを設定"><a href="#VLANを設定" class="headerlink" title="VLANを設定"></a>VLANを設定</h2><p>VLANを作成するにはネットワークアプリケーションの<mark class="label primary">SETTINGS</mark>から<mark class="label primary">NETWORKS</mark>を選択し、<mark class="label primary">Create New Network</mark>をクリックします。</p>
+<p>L3スイッチではなく、単にVLANを作成したい場合は、ここで<mark class="label primary">VLAN-only Network</mark>のチェックボックスをONにし、VLAN IDを決定します。</p>
+<img src="/new-technology/2022/11/23/unifi-switch/netapp8.png" class="" width="360" title="alt">
+
+<p>こういったネットワーク構成全般の変更を行うと、全てのスイッチに対してコンフィグの転送が行われ、スイッチの再構成が実行されます。</p>
+<p>トランクポートとして使うのであれば予め作成した複数のネットワークを束ねたProfileを作成した上でそれを指定します。<br>Profile作成時には指定する複数のネットワークのうちどれか1つをネイティブVLANとしてタグ無しに設定します。昨今、デフォルトVLANを変えることがセキュリティ上優位であるとも思えないので、私は管理用VLANは無条件にデフォルトVLAN（VLAN ID&#x3D;1）で管理するようにしています。</p>
+<img src="/new-technology/2022/11/23/unifi-switch/netapp6.png" class="" width="1024" title="alt">
+<p>ProfileではこのようにネイティブVLANがどのネットワークか定め、タグ付きのVLANを追加で選択していきます。この例では、 UniFi-APはデフォルトVLANで接続し、AP同士の制御用パケットは全てデフォルトVLAN配下に流れます。また、タグ付きネットワークでVLAN-XXX（一般端末向け）とGuestがありますが、UniFi-APは複数のネットワークに属することができますので1つのAPで複数のネットワークに対してWi-Fiサービス提供できるようになります。</p>
+<p>ネットワーク機器のLANをデフォルトVLAN、かつ、ネイティブVLAN（タグ無し）としているのは何らかのトラブル時に復旧させやすいという点もあります。</p>
+<p>なお、SFP＋のインタフェースを持つFirewallなどの機器からホームゲートウェイ(HGW)などRJ45を持つ機器に接続するときにはインタフェースの変換が必要となります。スイッチを2Port、LANとは異なるVLANネットワークにし、RJ45 SFP+モジュールを使うことでインタフェースの変換に使うのもVLANの一つの活用方法です。上記の例ではHGWという名前のVLANを作成し、auひかりから提供されるHGWのRJ45ポートから、スイッチのPort26（RJ45モジュール）へ、FirewallのWAN（SFP＋）をスイッチのPort22へ接続し、実質メディアコンバーターとして使っています。</p>
+<p>SFP+のネットワークカード（NIC）に10GbEのRJ45モジュールを使う事はお勧めしません。電力不足によりリンクアップしなかったり2.5Gbpsでリンクアップするなどの事象が発生する場合があります。また、モジュールの発熱によるNICの故障の原因になります。</p>
+<p>スイッチを最初にAdoptした時はPortのプロファイルは”All”となっています。これはネイティブVLANおよび全てのタグ付きVLANを転送するモードです。VLANを設定しないならProfileはALLのままで使っても構いません。</p>
+<h2 id="SSH"><a href="#SSH" class="headerlink" title="SSH"></a>SSH</h2><p>UniFiスイッチは廉価なSwitch Flex Miniを除き、大半のスイッチはSSH接続が可能です。ネットワークアプリケーションで設定したID&#x2F;パスワードでも接続できますし、公開鍵認証でも接続可能です。スイッチにSSHすると Linuxのインタフェースのように見えます。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">$ ssh xxx</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">BusyBox v1.25.1 () built-in shell (ash)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  ___ ___      .__________.__</span><br><span class="line"> |   |   |____ |__\_  ____/__|</span><br><span class="line"> |   |   /    \|  ||  __) |  |   (c) 2010-2022</span><br><span class="line"> |   |  |   |  \  ||  \   |  |   Ubiquiti Inc.</span><br><span class="line"> |______|___|  /__||__/   |__|</span><br><span class="line">            |_/                  https://www.ui.com</span><br><span class="line"></span><br><span class="line">      Welcome to UniFi USW-Aggregation!</span><br><span class="line"></span><br><span class="line">********************************* NOTICE **********************************</span><br><span class="line">* By logging <span class="keyword">in</span> to, accessing, or using any Ubiquiti product, you are     *</span><br><span class="line">* signifying that you have <span class="built_in">read</span> our Terms of Service (ToS) and End User   *</span><br><span class="line">* License Agreement (EULA), understand their terms, and agree to be       *</span><br><span class="line">* fully bound to them. The use of SSH (Secure Shell) can potentially      *</span><br><span class="line">* harm Ubiquiti devices and result <span class="keyword">in</span> lost access to them and their data. *</span><br><span class="line">* By proceeding, you acknowledge that the use of SSH to modify device(s)  *</span><br><span class="line">* outside of their normal operational scope, or <span class="keyword">in</span> any manner             *</span><br><span class="line">* inconsistent with the ToS or EULA, will permanently and irrevocably     *</span><br><span class="line">* void any applicable warranty.                                           *</span><br><span class="line">***************************************************************************</span><br><span class="line"></span><br><span class="line">USW-Aggregation-US.6.3.13<span class="comment"># cd /var/log</span></span><br><span class="line">USW-Aggregation-US.6.3.13<span class="comment"># vi messages</span></span><br><span class="line">USW-Aggregation-US.6.3.13<span class="comment"># ping 192.168.x.100</span></span><br><span class="line">PING 192.168.x.100 (192.168.x.100): 56 data bytes</span><br><span class="line">64 bytes from 192.168.x.100: <span class="built_in">seq</span>=0 ttl=64 time=0.000 ms</span><br><span class="line">64 bytes from 192.168.x.100: <span class="built_in">seq</span>=1 ttl=64 time=10.000 ms</span><br><span class="line">64 bytes from 192.168.x.100: <span class="built_in">seq</span>=2 ttl=64 time=10.001 ms</span><br><span class="line">64 bytes from 192.168.x.100: <span class="built_in">seq</span>=3 ttl=64 time=10.000 ms</span><br><span class="line">64 bytes from 192.168.x.100: <span class="built_in">seq</span>=4 ttl=64 time=10.001 ms</span><br></pre></td></tr></table></figure>
+
+<p><code> /var/log/messages</code>にはsyslogがありますので、たまには中身を確認されることをお勧めします（viコマンドなどで開きます）。表向き、SFPモジュールが動作しているように見えても、互換性の問題でエラーを吐いている場合もあります。ダイレクトアタッチケーブルなどを対向の端末を繋がずスイッチに接続している場合など定期的にLinkDownのアラートが出ている場合もあります。RJ45とは動きは異なります。</p>
+<p>上記はUSW-Aggregationに接続した状態ですが、pingも動作しますが、レスポンスは悪いです。LAN内の機器の応答に10ms掛かっていますが驚かないでください。スイッチのデータ転送は専用チップ（ASIC）が行うため、機器のCPUがスイッチの実力にはなりません。OSに割り当てるCPUリソースの関係でしょうか、このpingの応答速度は「ご参考」として割り切った方が良さそうです。</p>
+<h3 id="スイッチの詳細情報について"><a href="#スイッチの詳細情報について" class="headerlink" title="スイッチの詳細情報について"></a>スイッチの詳細情報について</h3><p>Linuxのコンソールから、<code>cli</code>コマンドを投入することで、Ciscoライクなスイッチのコマンドモードに入ることができます。<br>コマンド入力途中でタブを押下するとコマンドが補完されます。<br><code>show  running-config</code>などそのまま使えます。<code>copy running-config startup-config</code>なども実行できそうですが、UniFiではネットワークアプリケーションから完全同期されていることが大前提であり、コマンドモードで設定しても再起動時にはネットワークアプリケーションから上書きされてしまいます。<br>ややこしいのは、スイッチ毎にコマンドの互換性が殆どないことです。コマンドの途中で<code>&quot;？&quot;</code>を入力すると、実行できるパラメータが列挙されるので推測でコマンドを補完しながら入力することになります。私の知る限り、機種毎のコマンドラインのマニュアルは存在しないようです。</p>
+<h3 id="USW-Pro-Aggregation-L3スイッチ"><a href="#USW-Pro-Aggregation-L3スイッチ" class="headerlink" title="USW-Pro-Aggregation(L3スイッチ)"></a>USW-Pro-Aggregation(L3スイッチ)</h3><p>このスイッチは比較的コマンドが充実しています。<code>cli</code>でコマンドモードに入り、<code>en</code>で特権モードに入ります。<br>Portの状況を見るには以下のコマンドを使います。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(UBNT) #show interface ethernet 0/x</span><br></pre></td></tr></table></figure>
+<p>これだと100行余りの結果が表示されるのでパイプ（｜）で区切り、必要な項目だけフィルタできます。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">(UBNT) #show interface ethernet 0/x | include Error|Collision|Discard</span><br><span class="line"></span><br><span class="line">Total Packets Received Without Errors.......... 43388669</span><br><span class="line">Receive Packets Discarded...................... 0</span><br><span class="line">Total Packets Received with MAC Errors......... 0</span><br><span class="line">Alignment Errors Received...................... 0</span><br><span class="line">FCS Errors Received............................ 0</span><br><span class="line">URPF Discards.................................. 0</span><br><span class="line">Transmit Packets Discarded..................... 0</span><br><span class="line">Total Transmit Errors.......................... 0</span><br><span class="line">FCS Errors Transmitted......................... 0</span><br><span class="line">Total Transmit Packets Discarded............... 0</span><br><span class="line">Single Collision Frames........................ 0</span><br><span class="line">Multiple Collision Frames...................... 0</span><br><span class="line">Excessive Collision Frames..................... 0</span><br><span class="line"></span><br><span class="line">(UBNT) #</span><br></pre></td></tr></table></figure>
+
+<p>このようにして重要な情報のみ取得できます。あくまで一般的なパラメータとしていますが、現代の全二重の通信前提であればCollisionまで見る必要はないですね。一般的にはReceiveでエラーがあるときはケーブルを最初に疑ってみること、Transmit Packets Discardedの場合はVLANの設定が間違っている可能性があることでしょうか。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">clear counters all</span><br></pre></td></tr></table></figure>
+<p>カウンタをクリアします。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show fiber-ports optics-info all</span><br></pre></td></tr></table></figure>
+<p>モジュールのメーカーやシリアル番号を表示します。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">(UBNT) #show fiber-ports optics all</span><br><span class="line"></span><br><span class="line">                                                 Output   Input</span><br><span class="line">Port    Physical Port/  Temp  Voltage  Current   Power    Power     TX     LOS</span><br><span class="line">        Lane Number     [C]   [Volt]     [mA]    [dBm]    [dBm]     Fault</span><br><span class="line">------  --------------  ----  -------  -------   -------  -------   -----  ---</span><br><span class="line">0/4     0/4-Lane1       34.2    3.328     10.2    -3.370   -2.496   No     No</span><br><span class="line">0/5     0/5-Lane1       34.5    3.265     10.4    -2.976   -3.373   No     No</span><br><span class="line">0/8     0/8-Lane1       34.0    3.360     10.2    -3.799   -1.643   No     No</span><br><span class="line">0/9     0/9-Lane1        N/A      N/A      N/A       N/A      N/A   N/A    N/A</span><br><span class="line">0/12    0/12-Lane1       N/A      N/A      N/A       N/A      N/A   N/A    N/A</span><br><span class="line">0/15    0/15-Lane1       N/A      N/A      N/A       N/A      N/A   N/A    N/A</span><br><span class="line">0/18    0/18-Lane1       N/A      N/A      N/A       N/A      N/A   N/A    N/A</span><br><span class="line">0/19    0/19-Lane1       N/A      N/A      N/A       N/A      N/A   N/A    N/A</span><br><span class="line">0/22    0/22-Lane1       N/A      N/A      N/A       N/A      N/A   N/A    N/A</span><br><span class="line">0/26    0/26-Lane1      33.3    3.235      6.0    -3.002   -3.002   No     No</span><br><span class="line"></span><br><span class="line"> Temp - Internally measured transceiver temperatures.</span><br><span class="line"> Voltage - Internally measured supply voltage.</span><br><span class="line"> Current - Measured TX bias current.</span><br><span class="line"> Output Power - Measured optical output power relative to 1mW.</span><br><span class="line"> Input Power - Measured optical power received relative to 1mW.</span><br><span class="line"> TX Fault - Transmitter fault.</span><br><span class="line"> LOS - Loss of signal.</span><br><span class="line"></span><br><span class="line">(UBNT) #</span><br></pre></td></tr></table></figure>
+<p>モジュールのDDM（温度、光の強さ）を表示します。</p>
+<h3 id="USW-Aggregation-SFP-8Port"><a href="#USW-Aggregation-SFP-8Port" class="headerlink" title="USW-Aggregation(SFP+ 8Port)"></a>USW-Aggregation(SFP+ 8Port)</h3><p>このスイッチは<code>cli</code>でコマンドモードに入ったら、すぐに大半のコマンドが実行できます。代表的なのは以下のものです。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show interfaces TenGigabitEthernet x</span><br></pre></td></tr></table></figure>
+<p>Port xのPort状況を表示します。パケットカウントやコリジョンなどの数を示します。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">clear interfaces TenGigabitEthernet  x counters</span><br></pre></td></tr></table></figure>
+<p>Port xのカウンタをクリアします。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show fiber-transceiver-info interfaces  TenGigabitEthernet  x</span><br></pre></td></tr></table></figure>
+<p>SFPモジュールの種類やシリアル番号を表示します。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show fiber-transceiver interfaces  TenGigabitEthernet x</span><br></pre></td></tr></table></figure>
+<p>SFPモジュールのDDM（信号の強さ、温度）を示します。</p>
+<h2 id="L3スイッチの制約"><a href="#L3スイッチの制約" class="headerlink" title="L3スイッチの制約"></a>L3スイッチの制約</h2><p>UniFiのL3スイッチはDHCP機能を持ちますが、管理機能やルーティングについてはIPv6には対応していません。スイッチ自身はIPv6アドレスを持てるようですが、現段階でIPv6のL3ルーティングできるようにはなっていません。別のルーターでDHCPv6を割り当て、そちらをゲートウェイにするなどが必要です。L2スイッチを含めてIPv6通信が行えないということではありません。</p>
+<h2 id="SFPモジュール"><a href="#SFPモジュール" class="headerlink" title="SFPモジュール"></a>SFPモジュール</h2><p>Ubiquitiのモジュール群は廉価なため、光モジュールは純正が間違いないでしょう。OM3ケーブルやDACはさまざまなメーカーのものを使いましたが、UniFi製品で問題が発生したことはありません。RJ45モジュールは特に10GbEのものは低電力を踏まえるとSFPメーカーの製品を選定することになります。</p>
+<img src="/new-technology/2022/11/23/unifi-switch/module.png" class="" width="640" title="alt">
+
+<p>1GbE tp-link TL-SM331<br>一般的なMarvell社88E1111などを使ったモジュールが通常使用（Typical）で1.05Wの消費電力なのに対し、その半分以下の0.5Wとなっており、発熱もかなり抑えられています。最近、国内でも発売になったようですが、私は今年の5月に米Amazonで$19.99で購入し、問題なく使えています。</p>
+<blockquote>
+<p>tp-link<br> <a target="_blank" rel="noopener" href="https://www.tp-link.com/jp/service-provider/switch-accessory/tl-sm331t/">https://www.tp-link.com/jp/service-provider/switch-accessory/tl-sm331t/</a></p>
+</blockquote>
+<p>10GbE Fiber mall SFP-10G-T-UB-80m<br>80mまで対応した省電力の10GbEモジュールです。こちらも米Amazonで購入しました。＄68.99でした。BroadcomのBCM84891のチップを採用している80mに対応したモジュールはいくつか存在します。Cisco用のモジュール（SFP-10G-TS80）についてはメーカーの公表ではDDMに対応していないと記載があるものの、UniFiスイッチ上では、モジュールの温度などのパラメータが出力されています。</p>
+<blockquote>
+<p>Fiber mall<br> <a target="_blank" rel="noopener" href="https://www.fibermall.com/ja/news/10g-copper-sfp.htm">https://www.fibermall.com/ja/news/10g-copper-sfp.htm</a></p>
+</blockquote>
+<p>英語ですが、ぜひAmazonのカスタマーレビューを見てください。より詳細で素晴らしい知見に基づいたコメントが見られます。</p>
+<blockquote>
+<p>米Amazon Customer Review<br> <a target="_blank" rel="noopener" href="https://www.amazon.com/gp/customer-reviews/RLHW2OL4I1QZP/ref=cm_cr_dp_d_rvw_ttl?ie=UTF8&amp;ASIN=B0B18BY1XK">https://www.amazon.com/gp/customer-reviews/RLHW2OL4I1QZP/ref=cm_cr_dp_d_rvw_ttl?ie=UTF8&amp;ASIN=B0B18BY1XK</a></p>
+</blockquote>
+<h2 id="PoE"><a href="#PoE" class="headerlink" title="PoE"></a>PoE</h2><p>スイッチにおけるPoEもネットワークアプリケーションから設定できます。USW-Enterprise-8-PoEの例では、Switch Flex MiniおよびAPのU6 Proに給電している状況が確認できます。</p>
+<img src="/new-technology/2022/11/23/unifi-switch/netapp9.png" class="" width="640" title="alt">
+
+<p>Port ManagementからPoEのOn&#x2F;Offが可能となっています。</p>
+<h2 id="まとめ"><a href="#まとめ" class="headerlink" title="まとめ"></a>まとめ</h2><p>これらのように、ネットワークスイッチをただ単に繋げるための道具ではなく、ITやネットワークを見える化するという目的においては非常に有用な機器になります。セキュリティ観点ではできることは限られていますが、ホームユーザーにとっても有用な機能は活用できると思われます。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/new-technology/tags/SFP/" rel="tag"><i class="fa fa-tag"></i> SFP+</a>
+              <a href="/new-technology/tags/10GbE/" rel="tag"><i class="fa fa-tag"></i> 10GbE</a>
+              <a href="/new-technology/tags/UniFi/" rel="tag"><i class="fa fa-tag"></i> UniFi</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/new-technology/2022/10/23/unifi-network-application2/" rel="prev" title="UniFi Network Applicationの運用">
+                  <i class="fa fa-chevron-left"></i> UniFi Network Applicationの運用
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/new-technology/2022/12/03/xg-v195/" rel="next" title="Sophos Firewall v19.5">
+                  Sophos Firewall v19.5 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">阿部　吉伸(Yoshinobu ABE)</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div><script src="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.umd.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.min.css" rel="stylesheet">
+
+<script>
+if (Cookies.get('PRVCY202112') != 'Agree') {
+  const notice = new SimpleGDPR({
+    title: 'Accept Cookies & Privacy Policy?',
+    message: 'このWebサイトでは、訪問や活動に関するデータがクッキー等によって収集されます。閲覧を継続される場合、\
+    プライバシーポリシーをご覧いただき同意(Agree)をお願いします',
+    link: null,
+    icons: true,
+    theme: 'light',
+    animation: 'fade',
+    float: 'bottom-right',
+      callback: () => {
+      notice.close();
+      Cookies.set('PRVCY202112', 'Agree', { expires: 365, path: '/'});
+      notice.destroy();
+      // Google Analytics 4
+      gtag('consent', 'update', {
+      'analytics_storage': 'granted'
+      });
+      gtag('js', new Date());
+      gtag('config', 'G-JMY6NSC2KK', { 'anonymize_ip': true });
+      },
+  });
+}
+</script>
+<div class="disclaimer1">
+このサイトの記事は、特別な記載がない限り <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja">クリエイティブ・コモンズ BY-NC-SA ライセンス</a>で保護されています</div>
+
+
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/yoshi0808" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="/new-technology/lib/animejs/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="/new-technology/lib/medium-zoom/dist/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/comments.js"></script><script src="/new-technology/js/utils.js"></script><script src="/new-technology/js/motion.js"></script><script src="/new-technology/js/schemes/muse.js"></script><script src="/new-technology/js/next-boot.js"></script>
+
+  <script src="/new-technology/lib/hexo-generator-searchdb/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"/new-technology/lib/mermaid/dist/mermaid.min.js","integrity":"sha256-3JloMMI/ZQx6ryuhhZTsQJQmGAkXeni6PkshX7UUO2s="}}</script>
+  <script src="/new-technology/js/third-party/tags/mermaid.js"></script>
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

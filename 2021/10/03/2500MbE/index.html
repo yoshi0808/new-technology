@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/icon-16x16.png">
+  <link rel="mask-icon" href="/new-technology/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/new-technology/css/main.css">
+
+
+
+<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-/4UQcSmErDzPCMAiuOiWPVVsNN2s3ZY/NsmXNcj0IFc=" crossorigin="anonymous">
+  <link rel="stylesheet" href="/new-technology/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.15.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
+
+    <meta name="description" content="自宅のLANにつながるIT機器は増える一方、2.5GbEのUSBアダプターが値段もこなれてきています。2.5G〜10Gのネットワークスイッチも廉価、小型化してきているので導入するいいタイミングです。2.5Gbps、5GbpsのUSBアダプター、イーサネットカードの実力はどの程度のレベルでしょうか。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Plugable 2.5GbE USB アダプター">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2021/10/03/2500MbE/index.html">
+<meta property="og:site_name" content="New technologies in our life">
+<meta property="og:description" content="自宅のLANにつながるIT機器は増える一方、2.5GbEのUSBアダプターが値段もこなれてきています。2.5G〜10Gのネットワークスイッチも廉価、小型化してきているので導入するいいタイミングです。2.5Gbps、5GbpsのUSBアダプター、イーサネットカードの実力はどの程度のレベルでしょうか。">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/10/03/2500MbE/title.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/10/03/2500MbE/wifi.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/10/03/2500MbE/1gbe.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/10/03/2500MbE/systemrepo.png">
+<meta property="article:published_time" content="2021-10-03T04:00:00.000Z">
+<meta property="article:modified_time" content="2022-06-02T12:24:49.000Z">
+<meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2021/10/03/2500MbE/title.png">
+
+
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2021/10/03/2500MbE/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"ja","comments":true,"permalink":"https://yoshi0808.github.io/new-technology/2021/10/03/2500MbE/","path":"2021/10/03/2500MbE/","title":"Plugable 2.5GbE USB アダプター"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Plugable 2.5GbE USB アダプター | New technologies in our life</title>
+  
+
+
+
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{&quot;token&quot;: &quot;0148b4d0442e42b483ddce684030bd2f&quot;}'></script>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JMY6NSC2KK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+  'ad_storage': 'denied',
+  'analytics_storage': 'denied'
+  });
+
+  dataLayer.push({
+  'event': 'default_consent'
+  });
+
+  if (Cookies.get('PRVCY202112') == 'Agree') {
+    gtag('consent', 'update', {
+    'analytics_storage': 'granted'
+    });
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'G-JMY6NSC2KK',{ 'anonymize_ip': true });
+</script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/new-technology/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/new-technology/atom.xml" title="New technologies in our life" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="ナビゲーションバーの切り替え" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/new-technology/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">New technologies in our life</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Device,Network,Code,etc...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="検索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/new-technology/" rel="section"><i class="fa fa-home fa-fw"></i>ホーム</a></li><li class="menu-item menu-item-about"><a href="/new-technology/about/" rel="section"><i class="fa fa-user fa-fw"></i>サイトポリシー</a></li><li class="menu-item menu-item-tags"><a href="/new-technology/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>タグ</a></li><li class="menu-item menu-item-categories"><a href="/new-technology/categories/" rel="section"><i class="fa fa-th fa-fw"></i>カテゴリ</a></li><li class="menu-item menu-item-archives"><a href="/new-technology/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>アーカイブ</a></li><li class="menu-item menu-item-privacy"><a href="/new-technology/privacypolicy/" rel="section"><i class="fa fa-check fa-fw"></i>プライバシーポリシー</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="検索…" spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          見出し
+        </li>
+        <li class="sidebar-nav-overview">
+          概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-000%E5%86%86%E5%8F%B0%E3%81%A7%E8%B3%BC%E5%85%A5%E3%81%A7%E3%81%8D%E3%82%8B2-5GbE%E3%82%A2%E3%83%80%E3%83%97%E3%82%BF%E3%83%BC"><span class="nav-number">1.</span> <span class="nav-text">3,000円台で購入できる2.5GbEアダプター</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E3%81%AE%E7%90%86%E8%AB%96%E5%80%A4%E3%81%A8%E7%8F%BE%E5%AE%9F"><span class="nav-number">2.</span> <span class="nav-text">ネットワークの理論値と現実</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Plugable-2-5GbE-USB%E3%82%A2%E3%83%80%E3%83%97%E3%82%BF%E3%83%BC"><span class="nav-number">3.</span> <span class="nav-text">Plugable 2.5GbE USBアダプター</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#macOS%E3%81%AE%E6%9C%89%E7%B7%9ALAN%E3%81%AB%E3%81%8A%E5%8B%A7%E3%82%81%E3%81%97%E3%81%BE%E3%81%99"><span class="nav-number">4.</span> <span class="nav-text">macOSの有線LANにお勧めします</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="阿部　吉伸(Yoshinobu ABE)"
+      src="/new-technology/images/yoshi.png">
+  <p class="site-author-name" itemprop="name">阿部　吉伸(Yoshinobu ABE)</p>
+  <div class="site-description" itemprop="description">IT</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/new-technology/archives/">
+          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-name">ポスト</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/new-technology/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">カテゴリ</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/new-technology/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">タグ</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yoshi0808" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yoshi0808" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yoshi0808.blog@gmail.com" title="E-Mail → mailto:yoshi0808.blog@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yoshi0808_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yoshi0808_" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="/new-technology/lib/@creativecommons/vocabulary/assets/license_badges/big/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="ja">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2021/10/03/2500MbE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/new-technology/images/yoshi.png">
+      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="New technologies in our life">
+      <meta itemprop="description" content="IT">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Plugable 2.5GbE USB アダプター | New technologies in our life">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Plugable 2.5GbE USB アダプター
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">投稿日</span>
+
+      <time title="作成日：2021-10-03 13:00:00" itemprop="dateCreated datePublished" datetime="2021-10-03T13:00:00+09:00">2021-10-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">編集日</span>
+      <time title="修正日：2022-06-02 21:24:49" itemprop="dateModified" datetime="2022-06-02T21:24:49+09:00">2022-06-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">カテゴリ</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/Hardware/" itemprop="url" rel="index"><span itemprop="name">Hardware</span></a>
+        </span>
+          、
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/Network/" itemprop="url" rel="index"><span itemprop="name">Network</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <img src="/new-technology/2021/10/03/2500MbE/title.png" class="" title="alt">
+
+<p>自宅のLANにつながるIT機器は増える一方、2.5GbEのUSBアダプターが値段もこなれてきています。2.5G〜10Gのネットワークスイッチも廉価、小型化してきているので導入するいいタイミングです。2.5Gbps、5GbpsのUSBアダプター、イーサネットカードの実力はどの程度のレベルでしょうか。</p>
+<span id="more"></span>
+
+<h2 id="3-000円台で購入できる2-5GbEアダプター"><a href="#3-000円台で購入できる2-5GbEアダプター" class="headerlink" title="3,000円台で購入できる2.5GbEアダプター"></a>3,000円台で購入できる2.5GbEアダプター</h2><p>最近、米国のPlugable社から3,680円で、2.5GbpsのUSB(USB3.2&#x2F;USB2.0&#x2F;Thunderbolt)接続ができる有線イーサネットアダプターが発売されています。Plugableは私が好きなメーカーで認証済みのThunderbolt3ケーブルを安価に提供しています。</p>
+<blockquote>
+<p>Plugable有線イーサネットアダプター<br> <a target="_blank" rel="noopener" href="https://ja.plugable.com/products/usbc-e2500">https://ja.plugable.com/products/usbc-e2500</a></p>
+</blockquote>
+<p>また、デスクトップPCにおいても、PCI Express×1のスロットは空きがある状態ではないでしょうか。ここ最近2.5GのPCI Express×1カードは、実売価格で4,000円を切ってきています。値段で躊躇してしまうレベルではありません。</p>
+<h2 id="ネットワークの理論値と現実"><a href="#ネットワークの理論値と現実" class="headerlink" title="ネットワークの理論値と現実"></a>ネットワークの理論値と現実</h2><p>1GbEのNICがあれば無理に2.5GbEを使う必要はないように感じます。ネットワークは難しいもので必ず遅延（レイテンシ）が存在しますので、比較高速な自宅内のLANであれば1GbEのNICで上限ぎりぎりまで速度は出ますが、インターネット向けだとそこまでスピードは出ません。私のデスクトップPCで利用しているAquantiaのカードは5Gbpsのチップが載ったPCI Express×1のカードですが、実力としては3Gbps程度です（自宅内のNASに対してiperf3で確認）。これがインターネット宛の通信で<strong>スピードテスト</strong>では1.4Gbps程度になります。このPCの接続を1GbpsのNICに変更すると700Mbps程度までに落ち込みます（この落ち込みはサーバー・PCの能力、回線の太さ、PCとサーバーとの物理的な距離によって変わります）。遅延要素としてはアプリケーションファイアウォールやウィルス対策ソフト、色々なものが入ります。Wi-Fiを使っているならば11acの高速なWi-Fiでも実測500Mbps〜600Mbps程度でしょうか。LAN内は限りなく1Gbpsで通信できていても実際のネットを使う場合は意外と低速な状態になっています。</p>
+<blockquote>
+<p>Speedtest by Ookla<br> <a target="_blank" rel="noopener" href="https://www.speedtest.net/">https://www.speedtest.net</a></p>
+</blockquote>
+<p>ジャンボフレームで速度を引き上げる手法もありますが見た目に分かりづらいトラブルを起こしやすく、私は最新テクノロジーによる能力増でセキュリティ対策などのパフォーマンス劣化をカバーする方法が好きです。</p>
+<h2 id="Plugable-2-5GbE-USBアダプター"><a href="#Plugable-2-5GbE-USBアダプター" class="headerlink" title="Plugable 2.5GbE USBアダプター"></a>Plugable 2.5GbE USBアダプター</h2><p>このPlugable 2.5GbE USBアダプターを利用したWindows10のiperf3（ネットワーク速度測定ツール）の結果です（ウィルス対策ソフトとWindowsDefender Firewallが有効）。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">C:\iperf3 -c 192.168.x.b</span><br><span class="line">Connecting to host 192.168.x.b, port 5201</span><br><span class="line">[  4] <span class="built_in">local</span> 192.168.x.c port 57672 connected to 192.168.x.b port 5201</span><br><span class="line">[ ID] Interval           Transfer     Bandwidth</span><br><span class="line">[  4]   0.00-1.00   sec   278 MBytes  2.33 Gbits/sec</span><br><span class="line">[  4]   1.00-2.00   sec   275 MBytes  2.31 Gbits/sec</span><br><span class="line">[  4]   2.00-3.00   sec   276 MBytes  2.31 Gbits/sec</span><br><span class="line">[  4]   3.00-4.00   sec   277 MBytes  2.32 Gbits/sec</span><br><span class="line">[  4]   4.00-5.00   sec   278 MBytes  2.34 Gbits/sec</span><br><span class="line">[  4]   5.00-6.00   sec   280 MBytes  2.35 Gbits/sec</span><br><span class="line">[  4]   6.00-7.00   sec   280 MBytes  2.35 Gbits/sec</span><br><span class="line">[  4]   7.00-8.00   sec   280 MBytes  2.35 Gbits/sec</span><br><span class="line">[  4]   8.00-9.00   sec   280 MBytes  2.35 Gbits/sec</span><br><span class="line">[  4]   9.00-10.00  sec   278 MBytes  2.33 Gbits/sec</span><br><span class="line">- - - - - - - - - - - - - - - - - - - - - - - - -</span><br><span class="line">[ ID] Interval           Transfer     Bandwidth</span><br><span class="line">[  4]   0.00-10.00  sec  2.72 GBytes  2.33 Gbits/sec                  sender</span><br><span class="line">[  4]   0.00-10.00  sec  2.72 GBytes  2.33 Gbits/sec                  receiver</span><br><span class="line"></span><br><span class="line">iperf Done.</span><br></pre></td></tr></table></figure>
+
+<p>結果はとても安定しています。私の自宅の環境では家の中を大きく経由（1階→2階→1階）して2つの10Gbpsスイッチを経由していますが、十分な速度です。</p>
+<p>何よりも発熱が非常に抑えられ、熱いという感じはありません。これは採用されているチップが進歩したためです。Plugable社の説明によれば、RTL8156Bというチップが採用されているとの事です。</p>
+<blockquote>
+<p>このイーサネット・アダプターは Realtek 社製 RTL8156B チップセットを使用しており、10&#x2F;100&#x2F;1000&#x2F;2500 Mbit ネットワーク・スピードに対応しています。USB 2.0、3.0、3.1、3.2、または Thunderbolt 3、Thunderbolt 4、USB 3.2&#x2F;3.１&#x2F;3.0&#x2F;2.0 プロトコルに対応したホストシステムで使用できます。（USB 2.0 ポートに接続した場合には転送速度が制限されます。）</p>
+</blockquote>
+<p>このアダプターはUSB-CとUSB-Aが使える事、Windows・macOSのどちらも使えます。1Gbps&#x2F;100Mbpsも認識できますので1つ持っておくとさまざまなデバイスに支えて便利ではないでしょうか。なお、USB-C→USB-Aの変換コネクタは事故の恐れがあるので他のケーブルには使えません。そういう意味で変換コネクタはこのアダプターにくくりつけられています。</p>
+<p>普段はWi-Fiを使っていても、何か大きなファイルを操作するとか大量のバックアップを取るなどする場合にはノートPCでも活躍しそうです。2.5Gbのスイッチも1万円切るくらいから発売されているので、少しの投資で速度アップが期待できます。</p>
+<p>macOSでのiperf3の結果も安定しています。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">$ iperf3 -c 192.168.x.b</span><br><span class="line">Connecting to host 192.168.x.b, port 5201</span><br><span class="line">[  5] <span class="built_in">local</span> 192.168.x.a port 50420 connected to 192.168.x.b port 5201</span><br><span class="line">[ ID] Interval           Transfer     Bitrate</span><br><span class="line">[  5]   0.00-1.00   sec   280 MBytes  2.35 Gbits/sec</span><br><span class="line">[  5]   1.00-2.00   sec   280 MBytes  2.35 Gbits/sec</span><br><span class="line">[  5]   2.00-3.00   sec   278 MBytes  2.33 Gbits/sec</span><br><span class="line">[  5]   3.00-4.00   sec   278 MBytes  2.33 Gbits/sec</span><br><span class="line">[  5]   4.00-5.00   sec   277 MBytes  2.32 Gbits/sec</span><br><span class="line">[  5]   5.00-6.00   sec   266 MBytes  2.23 Gbits/sec</span><br><span class="line">[  5]   6.00-7.00   sec   278 MBytes  2.33 Gbits/sec</span><br><span class="line">[  5]   7.00-8.00   sec   268 MBytes  2.25 Gbits/sec</span><br><span class="line">[  5]   8.00-9.00   sec   277 MBytes  2.32 Gbits/sec</span><br><span class="line">[  5]   9.00-10.00  sec   281 MBytes  2.35 Gbits/sec</span><br><span class="line">- - - - - - - - - - - - - - - - - - - - - - - - -</span><br><span class="line">[ ID] Interval           Transfer     Bitrate</span><br><span class="line">[  5]   0.00-10.00  sec  2.70 GBytes  2.32 Gbits/sec                  sender</span><br><span class="line">[  5]   0.00-10.00  sec  2.70 GBytes  2.32 Gbits/sec                  receiver</span><br><span class="line"></span><br><span class="line">iperf Done.</span><br></pre></td></tr></table></figure>
+
+<p>上記はMacBook-Air 2019(intel)のBig Surにおいて、macOSのFirewall・アプリケーションFirewall(Vallum)・ウィルス対策ソフト（BitDefender）をオフにした状態での検証です。通常利用しているセキュリティを全てオンにすると、CPUパワーが足りないようで、1.6Gbps程度までに落ち込みます。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">$ iperf3 -c 192.168.x.b</span><br><span class="line">Connecting to host 192.168.x.b, port 5201</span><br><span class="line">[  5] <span class="built_in">local</span> 192.168.x.a port 51620 connected to 192.168.x.b port 5201</span><br><span class="line">[ ID] Interval           Transfer     Bitrate</span><br><span class="line">[  5]   0.00-1.00   sec   205 MBytes  1.72 Gbits/sec</span><br><span class="line">[  5]   1.00-2.00   sec   205 MBytes  1.72 Gbits/sec</span><br><span class="line">[  5]   2.00-3.00   sec   193 MBytes  1.62 Gbits/sec</span><br><span class="line">[  5]   3.00-4.00   sec   202 MBytes  1.69 Gbits/sec</span><br><span class="line">[  5]   4.00-5.00   sec   198 MBytes  1.66 Gbits/sec</span><br><span class="line">[  5]   5.00-6.00   sec   191 MBytes  1.61 Gbits/sec</span><br><span class="line">[  5]   6.00-7.00   sec   199 MBytes  1.67 Gbits/sec</span><br><span class="line">[  5]   7.00-8.00   sec   199 MBytes  1.67 Gbits/sec</span><br><span class="line">[  5]   8.00-9.00   sec   181 MBytes  1.52 Gbits/sec</span><br><span class="line">[  5]   9.00-10.00  sec   196 MBytes  1.65 Gbits/sec</span><br><span class="line">- - - - - - - - - - - - - - - - - - - - - - - - -</span><br><span class="line">[ ID] Interval           Transfer     Bitrate</span><br><span class="line">[  5]   0.00-10.00  sec  1.92 GBytes  1.65 Gbits/sec                  sender</span><br><span class="line">[  5]   0.00-10.00  sec  1.92 GBytes  1.65 Gbits/sec                  receiver</span><br><span class="line"></span><br><span class="line">iperf Done.</span><br></pre></td></tr></table></figure>
+
+<p>Planex社からも2.5GbEのUSBアダプターが今年の7月に発売されています。</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.planex.co.jp/products/usbc-lan2500r/">https://www.planex.co.jp/products/usbc-lan2500r/</a></p>
+</blockquote>
+<p>2.5Gbpsも要らない、そんなサイズの大きなファイルを移動したり使う事もないというのは普通の感覚ですが、Webブラウザのようにマルチスレッドを用いた通信と画面描画とが完全に最適化されている場合は、それこそ100Mbpsでも十分に機能します。しかし使いたいアプリケーションは必ずしも最適化されているわけでもなく、4K動画を変換しながら再生するなどの処理はとても重いためネットワーク速度もより高速なものが好ましいです。数Mバイト単位のデータを極めて短時間に頻繁に読み込むまたは書き出すアプリケーションがあれば、通信とストレージのデータ処理の遅延が都度発生します。それぞれがシーケンシャルに処理されるアプリケーションは高速化しづらい面があります。例えばmacOSのバックアップソフトであるTimeMachineは、読み取り・差分確認・圧縮・暗号化・書き込みと1つ1つのシーケンシャルの処理の遅延が最終的に数時間にわたり動作し続けるする事になります。これらの1つのオーバーヘッドの要素である通信部分を比較的廉価な投資で速度面の解決ができる点はメリットがあります。</p>
+<p>もちろん、5Gbps、10Gbpsのチップを乗せたUSBアダプターでも良いのですが、5Gbpsは速度・発熱において効率の良いチップが見当たりません。QNAPが出している5GbEのUSBアダプター”QNAP QNA-UC5G1T USB 5GbE Adapter Review”によるとiperf3のテストでは3.4Gbps程度の能力のようです。私の持っているAquantiaのAQC108チップとほぼ変わりません。10Gbpsのチップはたくさんありますが、発熱・ファンが必要で大型となり、気軽にUSBアダプターとして持ちはこべるものではありません。</p>
+<blockquote>
+<p>QNAP QNA-UC5G1T USB 5GbE Adapter Review<br> <a target="_blank" rel="noopener" href="https://www.servethehome.com/qnap-qna-uc5g1t-usb-5gbe-adapter-review/">https://www.servethehome.com/qnap-qna-uc5g1t-usb-5gbe-adapter-review/</a></p>
+</blockquote>
+<p>やはりキーポイントとしては、Realtek社のRTL8156Bチップセットなんでしょうか。末尾に”B”がないチップは発熱量が大きいのでご注意ください。</p>
+<div class="note warning"><p>2Gbps〜10Gbpsのインターネットサービスが提供されている場合で、回線会社から提供されているホームゲートウェイは必ずしも2.5GbE、5GbEと直接接続できるとは限りません。この場合は10GbEの口を持つPCかスイッチを用意する必要があります。</p>
+</div>
+
+<h2 id="macOSの有線LANにお勧めします"><a href="#macOSの有線LANにお勧めします" class="headerlink" title="macOSの有線LANにお勧めします"></a>macOSの有線LANにお勧めします</h2><p>MacBook(Big Sur)で1GbpsのUSBアダプターをお使いの方で速度が出ない方であれば<strong>Plugable 2.5GbE USBアダプター</strong>を検討してみてください。</p>
+<p>実は、intel版のMacBook-AirをCatalinaからBig Surに変えてからTimeMachineのバックアップが非常に遅く感じるようになりました。フルバックアップの時は時間が掛かる事を見越して1Gbpsの有線アダプターを使っていましたが、それが10時間ほど掛かってしまい、これは明らかにおかしいと思い調べ始めました。</p>
+<p>いろいろ調べるなかで、Plugableのサイトであるきっかけが見つかりました。</p>
+<blockquote>
+<p>macOS（10.13.6 ~ 10.15）：基本的には内蔵ドライバーによりサポートされていますが、当アダプターの完全なパフォーマンスを得るためには、こちらのドライバーページから最新のドライバーをダウンロードし更新してください。<br>macOS（11.x） ：ドライバの導入は必要ありません。ただし、 macOS 11.x では、リンクレートの報告とパケット数が正しくないという既知の問題がわかっています。オートネゴシエーションによってアダプターは 2.5 Gbps の接続を取得し、デバイスは正常に動作しているのにもかかわらず、macOS 上でリンクレートが 1000Mbps しかないように表示されるというものです。またジャンボフレームは現在、macOS 11.x ではサポートされていません。 これらの問題を解決するために、Realtek 社は macOS 11.ｘ 用修正ドライバの開発に取り組んでいます。</p>
+</blockquote>
+<p>PlagableのサイトではApple純正のドライバの問題点とされるものもきちんとした説明がされていて安心できます。今時日本語のWebサイトも用意してくれているのも好感が持てます。またmacOSの投稿者からは、Plagableコミュニティで以下の書き込みがあったのでドライバについてとても参考になりました。</p>
+<blockquote>
+<p>Excellent Big Sur compatibility, but concerned about future support<br> <a target="_blank" rel="noopener" href="https://support.plugable.com/t/excellent-big-sur-compatibility-but-concerned-about-future-support/20802">https://support.plugable.com/t/excellent-big-sur-compatibility-but-concerned-about-future-support/20802</a></p>
+</blockquote>
+<p>この記事の一部を抜粋します。</p>
+<blockquote class="blockquote-center">
+<p>macOS Big Sur appears to be using a Driver Extensions (DEXTs) to provide support to most USB network adapters built with Realtek chipsets. This allows for simple plug-and-play compatibility. But my testing has shown than CPU usage is excessive with the Apple provided DEXT. It interferes with normal system operation. For example, it causes stutters in system audio. Furthermore, on gigabit or faster connections, the DEXT is unable to reach actual gigabit speeds, instead reaching actual performance that typically tops out between 600 and 700 Mbps.</p>
+<p>macOS Big Surは、DEXTs（Driver Extensions）を使用して、Realtekチップセットを搭載したほとんどのUSBネットワークアダプターに対応しているようです。これにより、シンプルなプラグアンドプレイの互換性を実現しています。しかし、私のテストによると、Appleが提供するDEXTでは、CPU使用率が過剰になります。これは、システムの正常な動作を妨げるものです。例えば、システムオーディオが途切れたりします。さらに、ギガビット以上の接続では、DEXTは実際のギガビットの速度に到達できず、600〜700Mbps程度のパフォーマンスとなります。</p>
+
+</blockquote>
+
+<p>この投稿者の指摘通り、私のmacOSのアクティビティモニタでiperf3の実行中のパフォーマンスを確認すると、アイドル状態が数％まで落ち込みます。つまり通信部分で多くのリソースを使い果たしているのです。</p>
+<p>Wi-Fiでiperf3実行時</p>
+<img src="/new-technology/2021/10/03/2500MbE/wifi.png" class="" width="1024" title="alt">
+
+<p>1GbEでiperf3実行時</p>
+<img src="/new-technology/2021/10/03/2500MbE/1gbe.png" class="" width="1024" title="alt">
+
+<p>システムがCPUを74.1％使用し、アイドルが1.35％しかありません。その時のiperf3実行結果はWi-Fi以下の速度でした。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">$ iperf3 -c 192.168.x.b</span><br><span class="line">Connecting to host 192.168.x.b, port 5201</span><br><span class="line">[  5] <span class="built_in">local</span> 192.168.x.a port 59287 connected to 192.168.x.b port 5201</span><br><span class="line">[ ID] Interval           Transfer     Bitrate</span><br><span class="line">[  5]   0.00-1.00   sec  40.9 MBytes   342 Mbits/sec</span><br><span class="line">[  5]   1.00-2.00   sec  38.5 MBytes   324 Mbits/sec</span><br><span class="line">[  5]   2.00-3.00   sec  54.6 MBytes   458 Mbits/sec</span><br><span class="line">[  5]   3.00-4.00   sec  56.3 MBytes   472 Mbits/sec</span><br><span class="line">[  5]   4.00-5.00   sec  49.5 MBytes   415 Mbits/sec</span><br><span class="line">[  5]   5.00-6.00   sec  53.4 MBytes   448 Mbits/sec</span><br><span class="line">[  5]   6.00-7.00   sec  41.0 MBytes   344 Mbits/sec</span><br><span class="line">[  5]   7.00-8.00   sec  52.7 MBytes   443 Mbits/sec</span><br><span class="line">[  5]   8.00-9.00   sec  50.2 MBytes   420 Mbits/sec</span><br><span class="line">[  5]   9.00-10.00  sec  49.4 MBytes   416 Mbits/sec</span><br><span class="line">- - - - - - - - - - - - - - - - - - - - - - - - -</span><br><span class="line">[ ID] Interval           Transfer     Bitrate</span><br><span class="line">[  5]   0.00-10.00  sec   487 MBytes   408 Mbits/sec                  sender</span><br><span class="line">[  5]   0.00-10.01  sec   485 MBytes   407 Mbits/sec                  receiver</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>このPlugable 2.5GbE USBアダプターでは、ドライバの拡張子が”kext”となっており十分なパフォーマンスです。<br>※Firewallやウィルス対策ソフトを利用しているとCPUは100％近くにはなります。</p>
+<img src="/new-technology/2021/10/03/2500MbE/systemrepo.png" class="" width="1024" title="alt">
+
+<p>Plugableの製品そのものの魅力ももちろんですが、ナレッジベースやコミュニティなどがきちんと運営されています。いずれ提供されるであろうRealtekのドライバ開発についても、先の投稿者は以下のように述べています。素晴らしい会社には素晴らしいユーザーが集まるものですね。</p>
+<blockquote>
+<p>ありがとうございます。これこそが、私がPlugable社のアダプターを選んだ理由です。数年前にもPlugable社のデバイスを購入したことがあり、その時のサポートレベルの高さに感銘を受けました。Big Surに搭載されているASIXのネットワーク・チップセット・ドライバについて御社が行った非常に詳細な分析を読んで、Big Sur専用に推奨されているUSBC-E2500も十分にサポートされているだろうと思いました。これまでのところ、素晴らしい経験をしています。</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/new-technology/2021/09/04/vallum/" rel="prev" title="macOSのアプリケーションファイアウォール Vallum">
+                  <i class="fa fa-chevron-left"></i> macOSのアプリケーションファイアウォール Vallum
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/new-technology/2021/10/31/QSW-M408-4C/" rel="next" title="10GbEスイッチ QSW-M408-4C">
+                  10GbEスイッチ QSW-M408-4C <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">阿部　吉伸(Yoshinobu ABE)</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div><script src="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.umd.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.min.css" rel="stylesheet">
+
+<script>
+if (Cookies.get('PRVCY202112') != 'Agree') {
+  const notice = new SimpleGDPR({
+    title: 'Accept Cookies & Privacy Policy?',
+    message: 'このWebサイトでは、訪問や活動に関するデータがクッキー等によって収集されます。閲覧を継続される場合、\
+    プライバシーポリシーをご覧いただき同意(Agree)をお願いします',
+    link: null,
+    icons: true,
+    theme: 'light',
+    animation: 'fade',
+    float: 'bottom-right',
+      callback: () => {
+      notice.close();
+      Cookies.set('PRVCY202112', 'Agree', { expires: 365, path: '/'});
+      notice.destroy();
+      // Google Analytics 4
+      gtag('consent', 'update', {
+      'analytics_storage': 'granted'
+      });
+      gtag('js', new Date());
+      gtag('config', 'G-JMY6NSC2KK', { 'anonymize_ip': true });
+      },
+  });
+}
+</script>
+<div class="disclaimer1">
+このサイトの記事は、特別な記載がない限り <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja">クリエイティブ・コモンズ BY-NC-SA ライセンス</a>で保護されています</div>
+
+
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/yoshi0808" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="/new-technology/lib/animejs/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="/new-technology/lib/medium-zoom/dist/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/comments.js"></script><script src="/new-technology/js/utils.js"></script><script src="/new-technology/js/motion.js"></script><script src="/new-technology/js/schemes/muse.js"></script><script src="/new-technology/js/next-boot.js"></script>
+
+  <script src="/new-technology/lib/hexo-generator-searchdb/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"/new-technology/lib/mermaid/dist/mermaid.min.js","integrity":"sha256-3JloMMI/ZQx6ryuhhZTsQJQmGAkXeni6PkshX7UUO2s="}}</script>
+  <script src="/new-technology/js/third-party/tags/mermaid.js"></script>
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

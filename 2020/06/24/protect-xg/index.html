@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/icon-16x16.png">
+  <link rel="mask-icon" href="/new-technology/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/new-technology/css/main.css">
+
+
+
+<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-/4UQcSmErDzPCMAiuOiWPVVsNN2s3ZY/NsmXNcj0IFc=" crossorigin="anonymous">
+  <link rel="stylesheet" href="/new-technology/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.15.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
+
+    <meta name="description" content="この記事で実現すること ホームユーザー向けにXG Firewall自身を防御する、ベストプラクティスとなる設定をします。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="XG Firewall自身を防御する">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/06/24/protect-xg/index.html">
+<meta property="og:site_name" content="New technologies in our life">
+<meta property="og:description" content="この記事で実現すること ホームユーザー向けにXG Firewall自身を防御する、ベストプラクティスとなる設定をします。">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/24/protect-xg/acl.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/24/protect-xg/ips.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/24/protect-xg/admin.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/24/protect-xg/hotfix.png">
+<meta property="article:published_time" content="2020-06-24T09:46:11.000Z">
+<meta property="article:modified_time" content="2021-10-17T03:34:21.000Z">
+<meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
+<meta property="article:tag" content="XG Firewall">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2020/06/24/protect-xg/acl.png">
+
+
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2020/06/24/protect-xg/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"ja","comments":true,"permalink":"https://yoshi0808.github.io/new-technology/2020/06/24/protect-xg/","path":"2020/06/24/protect-xg/","title":"XG Firewall自身を防御する"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>XG Firewall自身を防御する | New technologies in our life</title>
+  
+
+
+
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{&quot;token&quot;: &quot;0148b4d0442e42b483ddce684030bd2f&quot;}'></script>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JMY6NSC2KK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+  'ad_storage': 'denied',
+  'analytics_storage': 'denied'
+  });
+
+  dataLayer.push({
+  'event': 'default_consent'
+  });
+
+  if (Cookies.get('PRVCY202112') == 'Agree') {
+    gtag('consent', 'update', {
+    'analytics_storage': 'granted'
+    });
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'G-JMY6NSC2KK',{ 'anonymize_ip': true });
+</script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/new-technology/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/new-technology/atom.xml" title="New technologies in our life" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="ナビゲーションバーの切り替え" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/new-technology/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">New technologies in our life</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Device,Network,Code,etc...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="検索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/new-technology/" rel="section"><i class="fa fa-home fa-fw"></i>ホーム</a></li><li class="menu-item menu-item-about"><a href="/new-technology/about/" rel="section"><i class="fa fa-user fa-fw"></i>サイトポリシー</a></li><li class="menu-item menu-item-tags"><a href="/new-technology/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>タグ</a></li><li class="menu-item menu-item-categories"><a href="/new-technology/categories/" rel="section"><i class="fa fa-th fa-fw"></i>カテゴリ</a></li><li class="menu-item menu-item-archives"><a href="/new-technology/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>アーカイブ</a></li><li class="menu-item menu-item-privacy"><a href="/new-technology/privacypolicy/" rel="section"><i class="fa fa-check fa-fw"></i>プライバシーポリシー</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="検索…" spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          見出し
+        </li>
+        <li class="sidebar-nav-overview">
+          概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Best-practices-for-securing-your-firewall"><span class="nav-number">1.</span> <span class="nav-text">Best practices for securing your firewall</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Firewall%E8%87%AA%E8%BA%AB%E3%81%AE%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3%E5%BC%B7%E5%8C%96"><span class="nav-number">2.</span> <span class="nav-text">Firewall自身のセキュリティ強化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%AD%E3%83%BC%E3%82%AB%E3%83%AB%E3%82%B5%E3%83%BC%E3%83%93%E3%82%B9ACL"><span class="nav-number">2.1.</span> <span class="nav-text">ローカルサービスACL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DDoS%E9%98%B2%E5%BE%A1"><span class="nav-number">2.2.</span> <span class="nav-text">DDoS防御</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%A1%E7%90%86%E8%80%85ID"><span class="nav-number">2.3.</span> <span class="nav-text">管理者ID</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HotFix%E3%81%AE%E8%87%AA%E5%8B%95%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><span class="nav-number">2.4.</span> <span class="nav-text">HotFixの自動インストール</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="阿部　吉伸(Yoshinobu ABE)"
+      src="/new-technology/images/yoshi.png">
+  <p class="site-author-name" itemprop="name">阿部　吉伸(Yoshinobu ABE)</p>
+  <div class="site-description" itemprop="description">IT</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/new-technology/archives/">
+          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-name">ポスト</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/new-technology/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">カテゴリ</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/new-technology/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">タグ</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yoshi0808" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yoshi0808" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yoshi0808.blog@gmail.com" title="E-Mail → mailto:yoshi0808.blog@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yoshi0808_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yoshi0808_" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="/new-technology/lib/@creativecommons/vocabulary/assets/license_badges/big/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="ja">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2020/06/24/protect-xg/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/new-technology/images/yoshi.png">
+      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="New technologies in our life">
+      <meta itemprop="description" content="IT">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="XG Firewall自身を防御する | New technologies in our life">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          XG Firewall自身を防御する
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">投稿日</span>
+
+      <time title="作成日：2020-06-24 18:46:11" itemprop="dateCreated datePublished" datetime="2020-06-24T18:46:11+09:00">2020-06-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">編集日</span>
+      <time title="修正日：2021-10-17 12:34:21" itemprop="dateModified" datetime="2021-10-17T12:34:21+09:00">2021-10-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">カテゴリ</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/Security/" itemprop="url" rel="index"><span itemprop="name">Security</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p class="onepoint">この記事で実現すること</p>
+ホームユーザー向けにXG Firewall自身を防御する、ベストプラクティスとなる設定をします。
+<span id="more"></span>
+
+<h2 id="Best-practices-for-securing-your-firewall"><a href="#Best-practices-for-securing-your-firewall" class="headerlink" title="Best practices for securing your firewall"></a>Best practices for securing your firewall</h2><p>2020-6-24にSophos Communityのお勧め記事に「Sophos XG Firewall: Best practices for securing your firewall」というタイトルの文書が投稿されました。以下の記載があります。</p>
+<blockquote class="blockquote-center">
+<p>このドキュメントの焦点は、Sophos XG Firewallを最低限のレベルでセキュリティを確保するための基本的なガイダンスを提供することです。この文書では、内部ネットワークデバイスやリソースを保護する個々のファイアウォール機能についてのガイダンスは提供しません （詳細な Sophos XG Firewall ベストプラクティスガイドは後日公開される予定です）。</p>
+
+</blockquote>
+
+<p>「<a href="/new-technology/2020/05/09/best-practice/" title="XG Firewall v18の設定におけるベストプラクティス">XG Firewall v18の設定におけるベストプラクティス</a>」で記載した通り、ルールやポリシーについてのベストプラクティスを記載していますが、将来Sophosから詳細なベストプラクティスガイドが公開されるとの事です。今回公開されたものはルールやポリシーではなく、運用について記述されたものであり、どのようにしてFirewallを守るかに言及されています。IPSの設定については、過去記事をアップデートしています。</p>
+<blockquote>
+<p>Sophos XG Firewall: Best practices for securing your firewall<br> <a target="_blank" rel="noopener" href="https://community.sophos.com/products/xg-firewall/f/recommended-reads/121461/sophos-xg-firewall-best-practices-for-securing-your-firewall">https://community.sophos.com/products/xg-firewall/f/recommended-reads/121461/sophos-xg-firewall-best-practices-for-securing-your-firewall</a></p>
+</blockquote>
+<h2 id="Firewall自身のセキュリティ強化"><a href="#Firewall自身のセキュリティ強化" class="headerlink" title="Firewall自身のセキュリティ強化"></a>Firewall自身のセキュリティ強化</h2><p>まずこのガイドの先頭には以下の説明があります。</p>
+<blockquote>
+<p>管理者は、ファイアウォール自体の安全性を確保する前に、内部ネットワークやリソースを保護するために、ファイアウォールの機能や機能を設定することに集中してしまうことがよくあります。</p>
+</blockquote>
+<p>これはご指摘の通りで、確かにXG自身にログインするパスワードもLAN内からのアクセスだからという理由で単純なパスワードにしがちです。業務で利用するほど厳格では無いにせよ、ホームユーザーとしてもFirewall自身の管理をしっかりと行うべきです。具体的なドキュメントについては、上記のページにあるPDFを参照いただくのが一番ベストですが、ここではホームユーザーにとって重要と思われるものを紹介します。</p>
+<h3 id="ローカルサービスACL"><a href="#ローカルサービスACL" class="headerlink" title="ローカルサービスACL"></a>ローカルサービスACL</h3><p>XGの左ペインメニューの<mark class="label primary">管理</mark>の”デバイスのアクセス”でWANなど外部ゾーンからのすべてのサービスを削除します。使わないサービスはオフにするのが原則であり、SSHを利用しないのであればLANゾーンのSSHもオフにしてしまうのがお勧めです。</p>
+<img src="/new-technology/2020/06/24/protect-xg/acl.png" class="" title="alt">
+
+<p>このSophosのドキュメントではSSHのために、公開鍵認証を行う事を勧めています。もし、LANやVPNからSSHを使うのであればこの<mark class="label primary">デバイスのアクセス</mark>の画面の下部に<mark class="label primary">管理者の公開鍵認証</mark>の項目があるので、そこで公開鍵を追加できます。</p>
+<h3 id="DDoS防御"><a href="#DDoS防御" class="headerlink" title="DDoS防御"></a>DDoS防御</h3><p>これまでも特にDDoS防御については説明してきていませんでした。ホームユーザーには不要と考えているためです。ping関連のDDoS防御の勧めが記述されていますので紹介します。しかしこの設定を行うとダウンロードのスループットが低下するので確認しながら利用の判断可否が必要です。XGの左ペインメニューの<mark class="label primary">侵入防御</mark>の”DoS／スプーフ防御”のタブにてICMP&#x2F;ICMPv6フラッドの項目を以下の図のように設定します。</p>
+<img src="/new-technology/2020/06/24/protect-xg/ips.png" class="" title="alt">
+
+<p>このドキュメント上で”XG550”、”XG650”および”XG750”のハードウェア提供モデルのDDoS防御の設定が記載してありますが、XG Home（ソフトウェアバージョン）はこのDDoS防御の機能は持っていません。</p>
+<h3 id="管理者ID"><a href="#管理者ID" class="headerlink" title="管理者ID"></a>管理者ID</h3><p>XGの左ペインメニューの<mark class="label primary">管理</mark>の”管理の設定”で以下のように管理者のログイン失敗時のブロック、パスワードの複雑性の登録を行います。新しい管理者アカウントを作成し、2要素認証の設定は可能ですが、デフォルト管理者のadminアカウントは無効に設定できません。業務上利用する場合は担当者が変わる場合など意味がありますが、ホームユーザーが利用する場合は定期的なパスワード変更も不要であり、2要素認証の設定は現時点ではあまり魅力はありません。adminアカウントの無効化対応を期待します。</p>
+<img src="/new-technology/2020/06/24/protect-xg/admin.png" class="" title="alt">
+
+<p>「<a href="/new-technology/2020/04/03/Notifications/" title="XG Firewallの通知設定を行う">XG Firewallの通知設定を行う</a>」で記載した通り、通知設定を行う事でログイン失敗の状況も迅速にキャッチが可能です。</p>
+<h3 id="HotFixの自動インストール"><a href="#HotFixの自動インストール" class="headerlink" title="HotFixの自動インストール"></a>HotFixの自動インストール</h3><p>XGに脆弱性が見つかった場合に、過去の事例では極めて迅速にパッチが自動適用されます。具体的には下記の図のように、左ペインメニューの<mark class="label primary">バックアップ＆ファームウェア</mark>の”ファームウェア”タブの画面にある、”ホットフィックスの自動インストールを許可する”にチェックが付いている事を確認してください。</p>
+<img src="/new-technology/2020/06/24/protect-xg/hotfix.png" class="" title="alt">
+
+<p>また、定期的な設定のバックアップが推奨されています。この<mark class="label primary">バックアップ＆ファームウェア</mark>メニュー上でのバックアップを取得されると共に、仮想環境をお使いの方は仮想環境上でのバックアップを取得される事をお勧めします。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/new-technology/tags/XG-Firewall/" rel="tag"><i class="fa fa-tag"></i> XG Firewall</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/new-technology/2020/06/14/esxi67-patch/" rel="prev" title="VMware ESXiにパッチを適用する">
+                  <i class="fa fa-chevron-left"></i> VMware ESXiにパッチを適用する
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/new-technology/2020/08/14/remote-work/" rel="next" title="安全快適にリモートワークを行う">
+                  安全快適にリモートワークを行う <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">阿部　吉伸(Yoshinobu ABE)</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div><script src="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.umd.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.min.css" rel="stylesheet">
+
+<script>
+if (Cookies.get('PRVCY202112') != 'Agree') {
+  const notice = new SimpleGDPR({
+    title: 'Accept Cookies & Privacy Policy?',
+    message: 'このWebサイトでは、訪問や活動に関するデータがクッキー等によって収集されます。閲覧を継続される場合、\
+    プライバシーポリシーをご覧いただき同意(Agree)をお願いします',
+    link: null,
+    icons: true,
+    theme: 'light',
+    animation: 'fade',
+    float: 'bottom-right',
+      callback: () => {
+      notice.close();
+      Cookies.set('PRVCY202112', 'Agree', { expires: 365, path: '/'});
+      notice.destroy();
+      // Google Analytics 4
+      gtag('consent', 'update', {
+      'analytics_storage': 'granted'
+      });
+      gtag('js', new Date());
+      gtag('config', 'G-JMY6NSC2KK', { 'anonymize_ip': true });
+      },
+  });
+}
+</script>
+<div class="disclaimer1">
+このサイトの記事は、特別な記載がない限り <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja">クリエイティブ・コモンズ BY-NC-SA ライセンス</a>で保護されています</div>
+
+
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/yoshi0808" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="/new-technology/lib/animejs/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="/new-technology/lib/medium-zoom/dist/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/comments.js"></script><script src="/new-technology/js/utils.js"></script><script src="/new-technology/js/motion.js"></script><script src="/new-technology/js/schemes/muse.js"></script><script src="/new-technology/js/next-boot.js"></script>
+
+  <script src="/new-technology/lib/hexo-generator-searchdb/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"/new-technology/lib/mermaid/dist/mermaid.min.js","integrity":"sha256-3JloMMI/ZQx6ryuhhZTsQJQmGAkXeni6PkshX7UUO2s="}}</script>
+  <script src="/new-technology/js/third-party/tags/mermaid.js"></script>
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

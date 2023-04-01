@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/icon-16x16.png">
+  <link rel="mask-icon" href="/new-technology/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/new-technology/css/main.css">
+
+
+
+<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-/4UQcSmErDzPCMAiuOiWPVVsNN2s3ZY/NsmXNcj0IFc=" crossorigin="anonymous">
+  <link rel="stylesheet" href="/new-technology/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.15.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
+
+    <meta name="description" content="この記事で実現すること XG FirewallのWebフィルタ・アプリケーションフィルタについて、活用方法を説明します。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="XG FirewallのWebとアプリケーションフィルタについて">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/05/06/web-application-filter/index.html">
+<meta property="og:site_name" content="New technologies in our life">
+<meta property="og:description" content="この記事で実現すること XG FirewallのWebフィルタ・アプリケーションフィルタについて、活用方法を説明します。">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/06/web-application-filter/onedrive.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/06/web-application-filter/appfilter2.png">
+<meta property="article:published_time" content="2020-05-06T05:54:00.000Z">
+<meta property="article:modified_time" content="2021-10-17T03:47:36.000Z">
+<meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
+<meta property="article:tag" content="XG Firewall">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2020/05/06/web-application-filter/onedrive.png">
+
+
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2020/05/06/web-application-filter/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"ja","comments":true,"permalink":"https://yoshi0808.github.io/new-technology/2020/05/06/web-application-filter/","path":"2020/05/06/web-application-filter/","title":"XG FirewallのWebとアプリケーションフィルタについて"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>XG FirewallのWebとアプリケーションフィルタについて | New technologies in our life</title>
+  
+
+
+
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{&quot;token&quot;: &quot;0148b4d0442e42b483ddce684030bd2f&quot;}'></script>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JMY6NSC2KK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+  'ad_storage': 'denied',
+  'analytics_storage': 'denied'
+  });
+
+  dataLayer.push({
+  'event': 'default_consent'
+  });
+
+  if (Cookies.get('PRVCY202112') == 'Agree') {
+    gtag('consent', 'update', {
+    'analytics_storage': 'granted'
+    });
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'G-JMY6NSC2KK',{ 'anonymize_ip': true });
+</script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/new-technology/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/new-technology/atom.xml" title="New technologies in our life" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="ナビゲーションバーの切り替え" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/new-technology/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">New technologies in our life</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Device,Network,Code,etc...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="検索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/new-technology/" rel="section"><i class="fa fa-home fa-fw"></i>ホーム</a></li><li class="menu-item menu-item-about"><a href="/new-technology/about/" rel="section"><i class="fa fa-user fa-fw"></i>サイトポリシー</a></li><li class="menu-item menu-item-tags"><a href="/new-technology/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>タグ</a></li><li class="menu-item menu-item-categories"><a href="/new-technology/categories/" rel="section"><i class="fa fa-th fa-fw"></i>カテゴリ</a></li><li class="menu-item menu-item-archives"><a href="/new-technology/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>アーカイブ</a></li><li class="menu-item menu-item-privacy"><a href="/new-technology/privacypolicy/" rel="section"><i class="fa fa-check fa-fw"></i>プライバシーポリシー</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="検索…" spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          見出し
+        </li>
+        <li class="sidebar-nav-overview">
+          概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Web%E3%83%95%E3%82%A3%E3%83%AB%E3%82%BF%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span class="nav-number">1.</span> <span class="nav-text">Webフィルタについて</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SNI%E3%81%A8%E3%83%95%E3%82%A3%E3%83%AB%E3%82%BF%E3%81%A8%E3%81%AE%E9%96%A2%E4%BF%82"><span class="nav-number">2.</span> <span class="nav-text">SNIとフィルタとの関係</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%83%95%E3%82%A3%E3%83%AB%E3%82%BF%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span class="nav-number">3.</span> <span class="nav-text">アプリケーションフィルタについて</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="阿部　吉伸(Yoshinobu ABE)"
+      src="/new-technology/images/yoshi.png">
+  <p class="site-author-name" itemprop="name">阿部　吉伸(Yoshinobu ABE)</p>
+  <div class="site-description" itemprop="description">IT</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/new-technology/archives/">
+          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-name">ポスト</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/new-technology/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">カテゴリ</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/new-technology/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">タグ</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yoshi0808" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yoshi0808" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yoshi0808.blog@gmail.com" title="E-Mail → mailto:yoshi0808.blog@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yoshi0808_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yoshi0808_" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="/new-technology/lib/@creativecommons/vocabulary/assets/license_badges/big/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="ja">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2020/05/06/web-application-filter/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/new-technology/images/yoshi.png">
+      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="New technologies in our life">
+      <meta itemprop="description" content="IT">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="XG FirewallのWebとアプリケーションフィルタについて | New technologies in our life">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          XG FirewallのWebとアプリケーションフィルタについて
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">投稿日</span>
+
+      <time title="作成日：2020-05-06 14:54:00" itemprop="dateCreated datePublished" datetime="2020-05-06T14:54:00+09:00">2020-05-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">編集日</span>
+      <time title="修正日：2021-10-17 12:47:36" itemprop="dateModified" datetime="2021-10-17T12:47:36+09:00">2021-10-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">カテゴリ</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/Security/" itemprop="url" rel="index"><span itemprop="name">Security</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p class="onepoint">この記事で実現すること</p>
+XG FirewallのWebフィルタ・アプリケーションフィルタについて、活用方法を説明します。
+
+<span id="more"></span>
+
+<h2 id="Webフィルタについて"><a href="#Webフィルタについて" class="headerlink" title="Webフィルタについて"></a>Webフィルタについて</h2><p>XGの左ペインメニューでは、<mark class="label primary">Web</mark>、<mark class="label primary">アプリケーション</mark>とそれぞれ分かれています。<mark class="label primary">Web</mark>ではサイトのカテゴリが分かれていて、そのサイトのカテゴリによっては閲覧を制限する事が一般的な使い方です。これらのポリシーは、「Sophos XG Firewall: Web カテゴリ」の記事にも日本語の解説があります。サイトのカテゴリについては、ビジネス、ギャンブル、ゲーム、アダルト、ファイナンス等多岐に渡ります。ホームユーザーとしてはいわゆる怪しいサイトや過度な広告をフィルタする事が主目的になります。しかし、上記サイトのポリシーを眺めていると疑問に感じるところがあります。”ActiveX”、”Applets”、”SpamURLs”です。ActiveXやAppletは単純にサーバー名とも関係ありません。サイトのカテゴリに加え、URLまでを対象としているようです。Web カテゴリについては、以下のの記事を参照してください。</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://community.sophos.com/kb/ja-jp/134155">https://community.sophos.com/kb/ja-jp/134155</a></p>
+</blockquote>
+<p>上記のWebカテゴリには記載がないものの、XGの左ペインメニューの<mark class="label primary">Web</mark>の<mark class="label primary">ファイルタイプ</mark>の内容には、ファイル拡張子やMIMEヘッダーの情報が並びます。そしてここにはZIPファイルなどの”Compressed Files”、Windowsの実行ファイルである”Executable File”などの項目が並んでいます。</p>
+<p>ホームユーザーとしては、ZIPファイルやEXEファイルが使えないと不便なのでフィルタする事は考えにくいですが、何らかのMIMEタイプを拒否するポリシーを作成する場合は有効に機能しそうです。最終的には、Webフィルタは以下の種類の分類となります。</p>
+<ul>
+<li>Webカテゴリ</li>
+<li>URLグループ（自身で作成したURLの集まり）、280blockerなどのURLデータベースもこのグループ</li>
+<li>ファイルタイプ</li>
+<li>ダイナミックカテゴリ（ActiveX・Applets・Cookies・HTTP Upload）</li>
+</ul>
+<p>これらの事から、Webフィルタはカテゴリの分類という主目的はあるものの、ブラウザを対象としたフィルタの機能である事がわかります。</p>
+<h2 id="SNIとフィルタとの関係"><a href="#SNIとフィルタとの関係" class="headerlink" title="SNIとフィルタとの関係"></a>SNIとフィルタとの関係</h2><p>SNIとは、Server Name Indicationの略です。SSL&#x2F;TLS通信において、クライアントからサーバ証明書を要求する時に<strong>サーバ名（SNI）を暗号化せずサーバーに渡します</strong>。XGはこのSNIを見てWebフィルタを行っていますので、接続しようとしているドメインやサーバー単位にアクセス許可・不許可の判断が可能になります。しかし<strong>フォルダ構成やMIMEタイプ、引数やダウンロードするデータを検査するには、SSLインスペクションが必要です</strong>。もちろん、ドメイン単位の制御でIoT機器はある程度の防御が可能と言えますが、防御を最大限に高めるにはSSLインスペクションが必要です。「<a href="/new-technology/2020/03/21/ssl-inspection2/" title="XG Firewall v18のSSLインスペクションの動作確認と調整">XG Firewall v18のSSLインスペクションの動作確認と調整</a> 」で記載した通り、ZIP化されたマルウェアはSSLインスペクションが行えなければ検知は出来ません。</p>
+<h2 id="アプリケーションフィルタについて"><a href="#アプリケーションフィルタについて" class="headerlink" title="アプリケーションフィルタについて"></a>アプリケーションフィルタについて</h2><p>XGのアプリケーションフィルタは、XGの左ペインメニューの<mark class="label primary">アプリケーション</mark>から確認できます。ブラウザーではないインターネットに接続するアプリケーションを対象にしています。ここの挙動の確認は非常に難しいものがあります。例えば、MicrosoftのOneDriveを題材にテストしてみましょう。SSLインスペクションが行えるWindows端末とSSLインスペクションが行えないAndroid端末を用いて検証します。</p>
+<p>OneDriveのURLは、現時点で、<code>https://onedrive.live.com/</code>です。Webフィルタで当該ドメインのフィルタを行うと、想定通りブラウザーからOneDriveにはアクセス出来ません。これはSNIで判断できるため、SSLインスペクションの有無に関わらずアクセス不可が実現できます。</p>
+<img src="/new-technology/2020/05/06/web-application-filter/onedrive.png" class="" title="alt">
+
+<p>しかし、Android端末の<strong>OneDriveアプリ</strong>経由では制御が効かずファイルをアップロードできてしまいます。また、WindowsPCのエクスプローラーの<strong>OneDriveフォルダ</strong>からもファイルが削除出来、クラウド上のファイルは削除されます。これは<strong>アプリが使うWebAPIのURLとブラウザが使うURLとは異なる</strong>ためにこういった事象（Webフィルタでは制御できないこと）が発生すると考えられます。</p>
+<p>さらに検証を続けます。一旦Webフィルタを削除し、アプリケーションフィルタにOneDriveの項目があるので、そちらをフィルタしてみます。</p>
+<p>XGの左ペインメニューの<mark class="label primary">アプリケーション</mark>からファイアウォールルールで選択されているポリシーの先頭で<mark class="label primary">追加</mark>ボタンをクリックし、<mark class="label primary">スマートフィルタ</mark>に<code>onedrive</code>と入力し、Enterキーを押します。</p>
+<img src="/new-technology/2020/05/06/web-application-filter/appfilter2.png" class="" title="alt">
+
+<p>OneDriveのルールがいくつか表示されます。”OneDrive Application”,”OneDrive Base”,”OneDrive File Download”,”OneDrive File Upload”です。<mark class="label primary">アクション</mark>を”拒否”して最後に”保存”をクリックします。この作業の結果は以下の通りの挙動でした。</p>
+<table>
+<thead>
+<tr>
+<th>OS</th>
+<th>テスト内容</th>
+<th>結果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Windows</td>
+<td>ブラウザからOneDriveにアクセス</td>
+<td>接続不可</td>
+</tr>
+<tr>
+<td></td>
+<td>WindowsエクスプローラーからOneDriveにファイル追加</td>
+<td>不可</td>
+</tr>
+<tr>
+<td></td>
+<td>WindowsエクスプローラーからOneDriveのファイル削除</td>
+<td><strong>不可</strong></td>
+</tr>
+<tr>
+<td>Android</td>
+<td>ブラウザからOneDriveにアクセス</td>
+<td>接続不可</td>
+</tr>
+<tr>
+<td></td>
+<td>OneDriveアプリからファイル追加</td>
+<td>不可</td>
+</tr>
+<tr>
+<td></td>
+<td>OneDriveアプリからファイル削除</td>
+<td><strong>可能</strong></td>
+</tr>
+</tbody></table>
+<p>上記のOneDriveに関するテスト結果では、ファイル削除について、SSLインスペクションの有無で動作に違いが表れました。AndroidはSSLインスペクションが行えないため、URL（SNI）の検証は行えますが、データの中身はhttpsで暗号化されておりファイル削除については制御出来ませんでした。また、OneDriveはファイルのアップロード・ダウンロードと分かれていましたが、他のアプリケーションであるAppleのiCloudDriveに関してはアプリケーションフィルタは1種類だけです。このようにアプリケーションフィルタは、アプリの作り方にも左右されるものとなります。</p>
+<p>なお、アプリケーションフィルタの中には、”EXE File Download”というフィルタも存在しますが、あくまで汎用的なものです。全てのいかなるアプリケーションからのEXEファイルのダウンロードを禁止できるものではありません。</p>
+<div class="note info"><p>Webフィルタ・アプリケーションフィルタを完全に動作させるには、SSLインスペクションが必要です。</p>
+</div>
+
+<p>このアプリケーションは止めておきたいというニーズに対して、都度メンテナンスしていくのはとても大変です。従い、高リスクのアプリケーションは拒否する設定をします。具体的な設定については、「<a href="/new-technology/2020/05/09/best-practice/" title="XG Firewall v18の設定におけるベストプラクティス">XG Firewall v18の設定におけるベストプラクティス</a>」を参照してください。</p>
+<p>XGを運営しているプロダクトチームは、こういったトラフィックの中身を見ながら制御するポリシーを作るのですから、極めて大変な作業です。特にクラウドアプリケーションは予告なくURLやAPIが変更されるでしょうから、そのメンテナンスコストは計り知れません。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/new-technology/tags/XG-Firewall/" rel="tag"><i class="fa fa-tag"></i> XG Firewall</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/new-technology/2020/05/04/ips-policy/" rel="prev" title="XG FirewallでIPSのポリシーを確認する">
+                  <i class="fa fa-chevron-left"></i> XG FirewallでIPSのポリシーを確認する
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/new-technology/2020/05/09/best-practice/" rel="next" title="XG Firewall v18の設定におけるベストプラクティス">
+                  XG Firewall v18の設定におけるベストプラクティス <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">阿部　吉伸(Yoshinobu ABE)</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div><script src="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.umd.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.min.css" rel="stylesheet">
+
+<script>
+if (Cookies.get('PRVCY202112') != 'Agree') {
+  const notice = new SimpleGDPR({
+    title: 'Accept Cookies & Privacy Policy?',
+    message: 'このWebサイトでは、訪問や活動に関するデータがクッキー等によって収集されます。閲覧を継続される場合、\
+    プライバシーポリシーをご覧いただき同意(Agree)をお願いします',
+    link: null,
+    icons: true,
+    theme: 'light',
+    animation: 'fade',
+    float: 'bottom-right',
+      callback: () => {
+      notice.close();
+      Cookies.set('PRVCY202112', 'Agree', { expires: 365, path: '/'});
+      notice.destroy();
+      // Google Analytics 4
+      gtag('consent', 'update', {
+      'analytics_storage': 'granted'
+      });
+      gtag('js', new Date());
+      gtag('config', 'G-JMY6NSC2KK', { 'anonymize_ip': true });
+      },
+  });
+}
+</script>
+<div class="disclaimer1">
+このサイトの記事は、特別な記載がない限り <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja">クリエイティブ・コモンズ BY-NC-SA ライセンス</a>で保護されています</div>
+
+
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/yoshi0808" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="/new-technology/lib/animejs/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="/new-technology/lib/medium-zoom/dist/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/comments.js"></script><script src="/new-technology/js/utils.js"></script><script src="/new-technology/js/motion.js"></script><script src="/new-technology/js/schemes/muse.js"></script><script src="/new-technology/js/next-boot.js"></script>
+
+  <script src="/new-technology/lib/hexo-generator-searchdb/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"/new-technology/lib/mermaid/dist/mermaid.min.js","integrity":"sha256-3JloMMI/ZQx6ryuhhZTsQJQmGAkXeni6PkshX7UUO2s="}}</script>
+  <script src="/new-technology/js/third-party/tags/mermaid.js"></script>
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

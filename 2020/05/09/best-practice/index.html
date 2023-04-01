@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/icon-16x16.png">
+  <link rel="mask-icon" href="/new-technology/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/new-technology/css/main.css">
+
+
+
+<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-/4UQcSmErDzPCMAiuOiWPVVsNN2s3ZY/NsmXNcj0IFc=" crossorigin="anonymous">
+  <link rel="stylesheet" href="/new-technology/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.15.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
+
+    <meta name="description" content="この記事で実現すること XG Firewall v18を利用するホームユーザー向けに、ベストプラクティスとなる設定をします。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="XG Firewall v18の設定におけるベストプラクティス">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/05/09/best-practice/index.html">
+<meta property="og:site_name" content="New technologies in our life">
+<meta property="og:description" content="この記事で実現すること XG Firewall v18を利用するホームユーザー向けに、ベストプラクティスとなる設定をします。">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/09/best-practice/filter.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/09/best-practice/application1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/09/best-practice/application2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/09/best-practice/application3.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/09/best-practice/webfilter1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/09/best-practice/webfilter2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/09/best-practice/webfilter3.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/09/best-practice/rule1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/05/09/best-practice/ssl-inspection.png">
+<meta property="article:published_time" content="2020-05-09T08:55:26.000Z">
+<meta property="article:modified_time" content="2022-05-02T22:25:51.000Z">
+<meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
+<meta property="article:tag" content="XG Firewall">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2020/05/09/best-practice/filter.png">
+
+
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2020/05/09/best-practice/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"ja","comments":true,"permalink":"https://yoshi0808.github.io/new-technology/2020/05/09/best-practice/","path":"2020/05/09/best-practice/","title":"XG Firewall v18の設定におけるベストプラクティス"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>XG Firewall v18の設定におけるベストプラクティス | New technologies in our life</title>
+  
+
+
+
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{&quot;token&quot;: &quot;0148b4d0442e42b483ddce684030bd2f&quot;}'></script>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JMY6NSC2KK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+  'ad_storage': 'denied',
+  'analytics_storage': 'denied'
+  });
+
+  dataLayer.push({
+  'event': 'default_consent'
+  });
+
+  if (Cookies.get('PRVCY202112') == 'Agree') {
+    gtag('consent', 'update', {
+    'analytics_storage': 'granted'
+    });
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'G-JMY6NSC2KK',{ 'anonymize_ip': true });
+</script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/new-technology/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/new-technology/atom.xml" title="New technologies in our life" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="ナビゲーションバーの切り替え" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/new-technology/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">New technologies in our life</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Device,Network,Code,etc...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="検索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/new-technology/" rel="section"><i class="fa fa-home fa-fw"></i>ホーム</a></li><li class="menu-item menu-item-about"><a href="/new-technology/about/" rel="section"><i class="fa fa-user fa-fw"></i>サイトポリシー</a></li><li class="menu-item menu-item-tags"><a href="/new-technology/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>タグ</a></li><li class="menu-item menu-item-categories"><a href="/new-technology/categories/" rel="section"><i class="fa fa-th fa-fw"></i>カテゴリ</a></li><li class="menu-item menu-item-archives"><a href="/new-technology/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>アーカイブ</a></li><li class="menu-item menu-item-privacy"><a href="/new-technology/privacypolicy/" rel="section"><i class="fa fa-check fa-fw"></i>プライバシーポリシー</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="検索…" spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          見出し
+        </li>
+        <li class="sidebar-nav-overview">
+          概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#XG-v18%E3%81%AE%E3%83%99%E3%82%B9%E3%83%88%E3%83%97%E3%83%A9%E3%82%AF%E3%83%86%E3%82%A3%E3%82%B9"><span class="nav-number">1.</span> <span class="nav-text">XG v18のベストプラクティス</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A8%AD%E5%AE%9A%E5%86%85%E5%AE%B9"><span class="nav-number">2.</span> <span class="nav-text">設定内容</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A8%AD%E5%AE%9A%E3%81%AE%E6%A6%82%E8%A6%81"><span class="nav-number">2.0.1.</span> <span class="nav-text">設定の概要</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IPS%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">2.1.</span> <span class="nav-text">IPSの設定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%83%95%E3%82%A3%E3%83%AB%E3%82%BF%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">2.2.</span> <span class="nav-text">アプリケーションフィルタの設定</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%83%95%E3%82%A3%E3%83%AB%E3%82%BF%E3%81%AE%E8%A8%AD%E5%AE%9A%E6%96%B9%E6%B3%95"><span class="nav-number">2.2.1.</span> <span class="nav-text">アプリケーションフィルタの設定方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web%E3%83%95%E3%82%A3%E3%83%AB%E3%82%BF%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">2.3.</span> <span class="nav-text">Webフィルタの設定</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Web%E3%83%95%E3%82%A3%E3%83%AB%E3%82%BF%E3%81%AE%E8%A8%AD%E5%AE%9A%E6%96%B9%E6%B3%95"><span class="nav-number">2.3.1.</span> <span class="nav-text">Webフィルタの設定方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%AB%E3%83%BC%E3%83%AB%E3%81%A8%E3%83%9D%E3%83%AA%E3%82%B7%E3%83%BC%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">2.4.</span> <span class="nav-text">ルールとポリシーの設定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SSL-x2F-TLS%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%9A%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3%E3%83%AB%E3%83%BC%E3%83%AB%E3%81%AE%E7%A2%BA%E8%AA%8D"><span class="nav-number">2.5.</span> <span class="nav-text">SSL&#x2F;TLSインスペクションルールの確認</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%99%A4%E5%A4%96%E3%81%97%E3%81%9F%E8%A8%AD%E5%AE%9A"><span class="nav-number">3.</span> <span class="nav-text">除外した設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8B%95%E4%BD%9C%E7%A2%BA%E8%AA%8D"><span class="nav-number">4.</span> <span class="nav-text">動作確認</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="阿部　吉伸(Yoshinobu ABE)"
+      src="/new-technology/images/yoshi.png">
+  <p class="site-author-name" itemprop="name">阿部　吉伸(Yoshinobu ABE)</p>
+  <div class="site-description" itemprop="description">IT</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/new-technology/archives/">
+          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-name">ポスト</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/new-technology/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">カテゴリ</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/new-technology/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">タグ</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yoshi0808" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yoshi0808" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yoshi0808.blog@gmail.com" title="E-Mail → mailto:yoshi0808.blog@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yoshi0808_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yoshi0808_" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="/new-technology/lib/@creativecommons/vocabulary/assets/license_badges/big/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="ja">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2020/05/09/best-practice/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/new-technology/images/yoshi.png">
+      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="New technologies in our life">
+      <meta itemprop="description" content="IT">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="XG Firewall v18の設定におけるベストプラクティス | New technologies in our life">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          XG Firewall v18の設定におけるベストプラクティス
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">投稿日</span>
+
+      <time title="作成日：2020-05-09 17:55:26" itemprop="dateCreated datePublished" datetime="2020-05-09T17:55:26+09:00">2020-05-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">編集日</span>
+      <time title="修正日：2022-05-03 07:25:51" itemprop="dateModified" datetime="2022-05-03T07:25:51+09:00">2022-05-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">カテゴリ</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/Security/" itemprop="url" rel="index"><span itemprop="name">Security</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p class="onepoint">この記事で実現すること</p>
+XG Firewall v18を利用するホームユーザー向けに、ベストプラクティスとなる設定をします。
+
+<span id="more"></span>
+
+<h2 id="XG-v18のベストプラクティス"><a href="#XG-v18のベストプラクティス" class="headerlink" title="XG v18のベストプラクティス"></a>XG v18のベストプラクティス</h2><p>XG v18のレイヤ7ファイアウォールは、SSL&#x2F;TLS通信をPort443に限定していません。これまでの一連の設定で実施してきましたが、そもそもファイアウォールのルール自体は非常にシンプルです。https通信を通すのは原則であり、URL・アプリケーション・データの中身をどうチェックするかがレイヤ7ファイアウォールの肝となります。Sophos Communityにおいては、過去発生したランサムウェアや情報漏洩に繋がるProxyやVPN等、様々な検討、議論が重ねられ、ベストプラクティスといえるお勧めの設定が存在します。以下の記事を参考にします。</p>
+<blockquote>
+<p>Sophos XG Firewall &#x2F; Cyberoam: Application filter recommended settings for better application detection<br> <a target="_blank" rel="noopener" href="https://community.sophos.com/products/xg-firewall/f/recommended-reads/119051/sophos-xg-firewall-cyberoam-application-filter-recommended-settings-for-better-application-detection">https://community.sophos.com/products/xg-firewall/f/recommended-reads/119051/sophos-xg-firewall-cyberoam-application-filter-recommended-settings-for-better-application-detection</a><br>ランサムウェア: ソフォス製品による回避策のアドバイス<br> <a target="_blank" rel="noopener" href="https://community.sophos.com/kb/ja-jp/124744">https://community.sophos.com/kb/ja-jp/124744</a><br>Sophos XG Firewall: 高リスクのアプリケーションをブロックする手順<br> <a target="_blank" rel="noopener" href="https://community.sophos.com/kb/ja-jp/123102">https://community.sophos.com/kb/ja-jp/123102</a>　<sup><strong><a href="#note1">[1]</a></strong></sup><br>Best Practice Guide.pdf（2020-06-24追加）<br> <a target="_blank" rel="noopener" href="https://community.sophos.com/cfs-file/__key/communityserver-discussions-components-files/258/Securing-your-Sophos-XG-Firewall-_2D00_-Best-Practice-Guide.pdf">https://community.sophos.com/cfs-file/__key/communityserver-discussions-components-files/258/Securing-your-Sophos-XG-Firewall-_2D00_-Best-Practice-Guide.pdf</a></p>
+</blockquote>
+<p>最初の記事がベストプラクティスとも言える内容になっており、この記事を中心に、関連する記事も参考にしながら設定します。</p>
+<h2 id="設定内容"><a href="#設定内容" class="headerlink" title="設定内容"></a>設定内容</h2><h4 id="設定の概要"><a href="#設定の概要" class="headerlink" title="設定の概要"></a>設定の概要</h4><ol>
+<li>XGのコマンドラインでIPSの設定を変更します。初期設定から変更するのはmaxpktsの値です。これは、データの先頭からアプリケーションの判定に8パケットを渡すというもので、この値はパフォーマンスや検出精度に影響するようです。100〜300パケットを設定するのがお勧めとされています。</li>
+<li>アプリケーションフィルタでは、P2P&#x2F;Proxy and Tunnel&#x2F;DNS Multiple QNAME（DNS経由の情報漏洩）&#x2F;OpenVPNを止めるべきと記載があります。また、ハイリスクアプリケーションのカテゴリ（Risk&#x3D;4、High Risk&#x3D;5）も止める事が推奨されるようにカテゴライズされています。</li>
+<li>Webフィルタでは、以下の項目が拒否対象です。</li>
+</ol>
+<ul>
+<li>IPAddress</li>
+<li>None</li>
+<li>Parked Domains</li>
+<li>Spam URLs</li>
+<li>Anonymizers</li>
+<li>Command &amp; Control</li>
+<li>Phishing &amp; Fraud</li>
+<li>Spyware &amp; Malware</li>
+<li>Uncategorized</li>
+</ul>
+<ol start="4">
+<li>個別のファイアウォールのルールでUDP443のQUICを認めない設定、不正なSSL証明書を許可しない等の設定が必要です。</li>
+</ol>
+<h3 id="IPSの設定"><a href="#IPSの設定" class="headerlink" title="IPSの設定"></a>IPSの設定</h3><p>XGの画面右上にある、<mark class="label primary">admin▼</mark>から<mark class="label primary">コンソール</mark>を選択し起動します。パスワードを入力し、<mark class="label primary">4.Device Console</mark>に入ります。そして、以下のコマンドを入力し、期待する設定値を合っているか確認します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console&gt; show advanced-firewall</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Midstream Connection Pickup Off</li>
+</ul>
+<p>ここはXGのv18であれば基本変更する必要はありません。次にIPSの設定です。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console&gt; show ips-settings</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>maxsesbytes 0</li>
+<li>stream on</li>
+<li>maxpkts 200（推奨値100〜300）</li>
+</ul>
+<p>デフォルトでは、maxpktsが8となっているので、以下のコマンドで200に変更します。ここはマシンスペックにもよるので、100から300の間で設定をチューニングしながらスループットを確認してください。これまでのCommunityでは、この値は80が推奨されていましたが、2020-06-24にSophosより公開された<strong>Best Practice Guide</strong>ではスループットを確認しながら100〜300の間で設定する事が推奨されています。ここでは中央値の200を設定しています。</p>
+<blockquote>
+<p>Best Practice Guide<br> <a target="_blank" rel="noopener" href="https://community.sophos.com/cfs-file/__key/communityserver-discussions-components-files/258/Securing-your-Sophos-XG-Firewall-_2D00_-Best-Practice-Guide.pdf">https://community.sophos.com/cfs-file/__key/communityserver-discussions-components-files/258/Securing-your-Sophos-XG-Firewall-_2D00_-Best-Practice-Guide.pdf</a></p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console&gt; <span class="built_in">set</span> ips maxpkts 200</span><br></pre></td></tr></table></figure>
+
+<h3 id="アプリケーションフィルタの設定"><a href="#アプリケーションフィルタの設定" class="headerlink" title="アプリケーションフィルタの設定"></a>アプリケーションフィルタの設定</h3><p>とにかくアプリケーションの数が多い事と、今後もメンテナンスしていく事を留意して設定します。高リスクというカテゴリであっても、ホームユーザーが利用するアプリケーションもそれなりにあります。ここでは、リコメンドされた拒否アプリの拒否設定をしつつ、ユーザー側で許可する設定を加えていく事になります。ただし下手にアプリを個別選択するようなフィルタにしてしまうと、新しいアプリケーションが追加される都度、メンテナンスが必要となってしまいます。従い<strong>リスクの高いアプリケーションは停止を原則とし、自分が許可するアプリの設定を加え</strong>、以後はなるべくメンテナンスが不要となるように設定します。</p>
+<p>XGの左メニューの<mark class="label primary">アプリケーション</mark>の<mark class="label primary">アプリケーションリスト</mark>の右上に”分類”というフィルタがあります。このフィルタをクリックし展開すると、新規&#x2F;認証済み&#x2F;許容&#x2F;未認証とあります。これはクラウドアプリケーションとして登録されているものが対象となります。左ペインメニューの<mark class="label primary">アプリケーション</mark>から<mark class="label primary">クラウドアプリケーション</mark>で内容が確認できます。</p>
+<img src="/new-technology/2020/05/09/best-practice/filter.png" class="" title="alt">
+
+<p>“未認証”というのは不許可の意味です。デフォルトで、”新規”か”設定なし（空白）”となっています。リスクの高低によらず、自身で”認証済み”または”許容”としたものは許可する事になります。またリスクが低くとも明らかに使わないものは”未認証”を設定すると、そのアプリケーションは直ちに拒否されるようになります。</p>
+<p>具体的にリコメンドされた高リスクアプリケーションを止める設定をしていきます。以下の数字の順番に設定を行ってください。最後に設定したものがルールとして一番上（優先）に位置します。</p>
+<table>
+<thead>
+<tr>
+<th>項番</th>
+<th>対象</th>
+<th>内容</th>
+<th>推奨</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Risk4,5のアプリ</td>
+<td>ハイリスクアプリケーションは拒否する</td>
+<td>Sophos</td>
+</tr>
+<tr>
+<td>2</td>
+<td>P2P Proxy</td>
+<td>Firewallで電文が解読できない宛先は拒否する</td>
+<td>Sophos</td>
+</tr>
+<tr>
+<td>3</td>
+<td>DNS QNAME,OpenVPN</td>
+<td>アプリケーション個別指定で拒否設する</td>
+<td>Sophos</td>
+</tr>
+<tr>
+<td>4</td>
+<td>自身で許容</td>
+<td>上記で拒否するアプリケーションであっても自身で許容して利用するアプリケーションを列挙する。ホームユーザー向けには、EXEファイル・ZIPファイルなど</td>
+<td>筆者</td>
+</tr>
+<tr>
+<td>5</td>
+<td>未認証</td>
+<td>クラウドアプリケーションで通したくないものについて拒否する</td>
+<td>-</td>
+</tr>
+<tr>
+<td>6</td>
+<td>許容、認証済み</td>
+<td>クラウドアプリケーションで許容する或いは様子をみるものは許可する</td>
+<td>-</td>
+</tr>
+</tbody></table>
+<h4 id="アプリケーションフィルタの設定方法"><a href="#アプリケーションフィルタの設定方法" class="headerlink" title="アプリケーションフィルタの設定方法"></a>アプリケーションフィルタの設定方法</h4><ol>
+<li><p>XGの左メニューの<mark class="label primary">アプリケーション</mark>の<mark class="label primary">アプリケーションフィルタ</mark>から、”追加”ボタンをクリックしてください。フィルタの名前を決めます。テンプレートは”Allow ALL”のままで構いません。ここでは、”Block High Risk Apps”と命名します。</p>
+<img src="/new-technology/2020/05/09/best-practice/application1.png" class="" title="alt">
+</li>
+<li><p>以下のようにカテゴリで<mark class="label primary">リスク</mark>のプルダウンからHigh、Very Highのものを選択し、アクションは”拒否”を選び保存してください。</p>
+<img src="/new-technology/2020/05/09/best-practice/application2.png" class="" title="alt">登録が完了するとリスクの高いアプリケーションが並びます。
+<img src="/new-technology/2020/05/09/best-practice/application3.png" class="" title="alt">
+</li>
+<li><p>アプリケーションフィルタの<mark class="label primary">追加</mark>ボタンをクリックし、フィルタを追加します。今度はカテゴリから、P2PとProxyを選び、<mark class="label primary">アクション</mark>は”拒否”を選び保存します。</p>
+</li>
+<li><p>“DNS QNAME”と”OpenVPN”とをフィルタします。一番右側のプルダウンのスマートフィルタに<code>qname</code>と入力し、Enterキーを押下してください。一旦”DNS Multiple QNAME”が絞り込まれスマートフィルタの欄が空白になりますので、引き続き<code>openvpn</code>と入力し、Enterキーを押下してください。これで2つのフィルタが絞り込まれているので、”拒否”を選択し、”保存”をクリックしてください。</p>
+</li>
+<li><p>ご自身で利用しているアプリが高リスクまたはP2PとProxyに含まれる場合の除外設定です。ログビューアでアプリケーションフィルタログを見ながら拒否されてしまった対象を除外する設定が必要です。ホームユーザーには最低限度EXEファイルおよびZIPファイルは必要でしょうから、スマートフィルタを活用し<code>exe file</code>、<code>zip file</code>と入力し、許可と設定します。</p>
+</li>
+<li><p>フィルタの<mark class="label primary">分類</mark>から”未認証”を選ぶと、自動で”Cloud Application”が選択されます。これを”拒否”として保存します。</p>
+</li>
+<li><p>フィルタの<mark class="label primary">分類</mark>から”許容”と”認証済み”を選択し、<mark class="label primary">アクション</mark>は”許可”として登録します。</p>
+</li>
+</ol>
+<p>クラウドアプリケーションの画面では、以下の通り、過去に通信のあったアプリケーション一覧が表示されます。既に安全と分かっているものについては、<mark class="label primary">classify</mark>から分類を”認証済み”にマークできます。未認証と設定した場合は、アプリケーションフィルタで即座に通信が停止されます。</p>
+<p>これでアプリケーションフィルタの設定は終了です。今後Sophosによりフィルタが定期的に追加されていきますが、リスクの高いアプリケーションは自動的にフィルタされる事になります。また、クラウドアプリケーションはリスクが高でも即座に拒否とはなりませんので、上記の記載のとおり、定期的にクラウドアプリケーションの利用状況を確認してください。</p>
+<h3 id="Webフィルタの設定"><a href="#Webフィルタの設定" class="headerlink" title="Webフィルタの設定"></a>Webフィルタの設定</h3><p>続いてWebフィルタの設定を行います。フィルタとその内容は以下の通りです。</p>
+<table>
+<thead>
+<tr>
+<th>対象</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>IPAddress</td>
+<td>IPアドレスでアクセスするサイト</td>
+</tr>
+<tr>
+<td>None</td>
+<td>カテゴリに該当しない通信</td>
+</tr>
+<tr>
+<td>Parked Domains</td>
+<td>ドメイン取得後放置されているドメイン</td>
+</tr>
+<tr>
+<td>Spam URLs</td>
+<td>スパムメールに含まれるURL</td>
+</tr>
+<tr>
+<td>Anonymizers</td>
+<td>セキュリティと制御を回避する目的をもって運用されるProxyなど</td>
+</tr>
+<tr>
+<td>Command &amp; Control</td>
+<td>感染したマシン上の悪意のあるソフトウェアからのC2C通信</td>
+</tr>
+<tr>
+<td>Phishing &amp; Fraud</td>
+<td>フィッシングサイト</td>
+</tr>
+<tr>
+<td>Spyware &amp; Malware</td>
+<td>スパイウェア、マルウェア</td>
+</tr>
+<tr>
+<td>Uncategorized</td>
+<td>分類不能なサイト</td>
+</tr>
+</tbody></table>
+<h4 id="Webフィルタの設定方法"><a href="#Webフィルタの設定方法" class="headerlink" title="Webフィルタの設定方法"></a>Webフィルタの設定方法</h4><ol>
+<li><p>XGの左ペインメニューの、<mark class="label primary">Web</mark>、<mark class="label primary">ポリシー</mark>から、”追加”ボタンをクリックします。</p>
+<img src="/new-technology/2020/05/09/best-practice/webfilter1.png" class="" title="alt">
+</li>
+<li><p>上記の図のとおり名前を入力します。ここでは、”Home Policy”とします。デフォルトは許可で、その上に拒否するルールを追加していきます。</p>
+</li>
+<li><p>以下の図のとおり拒否する対象を選択する時には”すべて表示”とし、全てのカテゴリを表示させ、選択してください。<img src="/new-technology/2020/05/09/best-practice/webfilter2.png" class="" title="alt"></p>
+</li>
+<li><p>登録が終わったら、画面の最下部にある、<mark class="label primary">変更を適用</mark>をクリックしてください。</p>
+</li>
+<li><p>最後にWebの<mark class="label primary">全般設定</mark>をクリックします。</p>
+</li>
+</ol>
+<ul>
+<li><mark class="label primary">認識されていないSSLプロトコルをブロック</mark>にチェックします</li>
+<li><mark class="label primary">無効な証明書をブロック</mark>にチェックします</li>
+<li><mark class="label primary">スキャンエンジンの選択</mark>は"デュアルエンジン"を選択します<img src="/new-technology/2020/05/09/best-practice/webfilter3.png" class="" title="alt"></li>
+</ul>
+<h3 id="ルールとポリシーの設定"><a href="#ルールとポリシーの設定" class="headerlink" title="ルールとポリシーの設定"></a>ルールとポリシーの設定</h3><p>XGの左ペインの<mark class="label primary">ルールとポリシー</mark>で設定を見直します。デフォルトポリシーとしているルールを選択します。</p>
+<img src="/new-technology/2020/05/09/best-practice/rule1.png" class="" title="alt">
+
+<p>これまでの記事では”To Internet”というデフォルトのルールを作ってきましたので、そのルールを修正します。</p>
+<ul>
+<li><mark class="label primary">Webポリシー</mark>に、"Home Policy"を設定します。</li>
+<li><mark class="label primary">アプリケーションコントロール</mark>に、"Block High Risk Apps"を設定します。</li>
+<li>Sophos推奨の<mark class="label primary">QUICプロトコルのブロック</mark>にチェックします。</li>
+</ul>
+<p>IPv6を有効にされている方は、IPv4と同様にIPv6のポリシーを設定してください。</p>
+<h3 id="SSL-x2F-TLSインスペクションルールの確認"><a href="#SSL-x2F-TLSインスペクションルールの確認" class="headerlink" title="SSL&#x2F;TLSインスペクションルールの確認"></a>SSL&#x2F;TLSインスペクションルールの確認</h3><p>いよいよ設定も最後です。XGの左ペインメニューの<mark class="label primary">ルールとポリシー</mark>から<mark class="label primary">SSL/TLSインスペクションルール</mark>に進み、右上の<mark class="label primary">SSL/TLSインスペクションの設定</mark>をクリックします。特に設定変更は不要ですが、以下の通りである事を確認してください。</p>
+<img src="/new-technology/2020/05/09/best-practice/ssl-inspection.png" class="" title="alt">
+
+<h2 id="除外した設定"><a href="#除外した設定" class="headerlink" title="除外した設定"></a>除外した設定</h2><p>ベストプラクティスとして記事に記載のある中で今回設定していないものがあります。以下の記載の部分です。</p>
+<blockquote>
+<p>Allow only HTTPS, HTTP, DNS, ICMP, SMPT. Services on LAN→WAN</p>
+</blockquote>
+<p>これはPsiphonおよびTor（トーア）Proxyの対策で、ビジネスの現場においては、恣意的にFirewallを回避させるケースを想定しています。端的に言えば、HTTPS、DNS、メール等の通信許可するポートを最低限にせよというものです。<strong>これを制限すると個人で利用する音楽のストリーミングやSNSなど多くのアプリケーションが動作しなくなる可能性があります</strong>。アプリケーションを全て特定し、宛先サーバーと利用ポートを全て管理するのは個人向けとしては現実的ではありません。願わくば、Torの個人利用はお控えいただいて、この設定を不要とすることをお勧めします。そのうち、XGのアプリケーションフィルタで対応出来るようになる事を期待しましょう。</p>
+<h2 id="動作確認"><a href="#動作確認" class="headerlink" title="動作確認"></a>動作確認</h2><p>ログビューアを開き、”ファイアウォール”、”アプリケーションフィルタ”、”Webフィルタ”を確認します。IPアドレスで接続するもの・カテゴリ無し・分類不能とされたWebフィルタは拒否されるケースが多くあります。ここは状況に応じて除外設定が必要です。</p>
+<p><small id="note1"><strong>[1]</strong><br>　アプリケーションフィルタの説明で、”新しく起動またはアップグレードされたアプリケーションを自動的に次のグループに分類するアプリケーションフィルタ機能が含まれています”と記載されています。クラウドアプリケーションについてはその通りの解釈ですが、アプリケーションフィルタについては起動された場合ではなく、”Sophos社がアプリケーションフィルタを追加した場合”と解釈してください。<br></small></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/new-technology/tags/XG-Firewall/" rel="tag"><i class="fa fa-tag"></i> XG Firewall</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/new-technology/2020/05/06/web-application-filter/" rel="prev" title="XG FirewallのWebとアプリケーションフィルタについて">
+                  <i class="fa fa-chevron-left"></i> XG FirewallのWebとアプリケーションフィルタについて
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/new-technology/2020/05/16/Intercept-DNS/" rel="next" title="XG Firewall v18で正しいDNS利用を強制する">
+                  XG Firewall v18で正しいDNS利用を強制する <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">阿部　吉伸(Yoshinobu ABE)</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div><script src="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.umd.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.min.css" rel="stylesheet">
+
+<script>
+if (Cookies.get('PRVCY202112') != 'Agree') {
+  const notice = new SimpleGDPR({
+    title: 'Accept Cookies & Privacy Policy?',
+    message: 'このWebサイトでは、訪問や活動に関するデータがクッキー等によって収集されます。閲覧を継続される場合、\
+    プライバシーポリシーをご覧いただき同意(Agree)をお願いします',
+    link: null,
+    icons: true,
+    theme: 'light',
+    animation: 'fade',
+    float: 'bottom-right',
+      callback: () => {
+      notice.close();
+      Cookies.set('PRVCY202112', 'Agree', { expires: 365, path: '/'});
+      notice.destroy();
+      // Google Analytics 4
+      gtag('consent', 'update', {
+      'analytics_storage': 'granted'
+      });
+      gtag('js', new Date());
+      gtag('config', 'G-JMY6NSC2KK', { 'anonymize_ip': true });
+      },
+  });
+}
+</script>
+<div class="disclaimer1">
+このサイトの記事は、特別な記載がない限り <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja">クリエイティブ・コモンズ BY-NC-SA ライセンス</a>で保護されています</div>
+
+
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/yoshi0808" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="/new-technology/lib/animejs/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="/new-technology/lib/medium-zoom/dist/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/comments.js"></script><script src="/new-technology/js/utils.js"></script><script src="/new-technology/js/motion.js"></script><script src="/new-technology/js/schemes/muse.js"></script><script src="/new-technology/js/next-boot.js"></script>
+
+  <script src="/new-technology/lib/hexo-generator-searchdb/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"/new-technology/lib/mermaid/dist/mermaid.min.js","integrity":"sha256-3JloMMI/ZQx6ryuhhZTsQJQmGAkXeni6PkshX7UUO2s="}}</script>
+  <script src="/new-technology/js/third-party/tags/mermaid.js"></script>
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

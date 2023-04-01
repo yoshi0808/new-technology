@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/icon-16x16.png">
+  <link rel="mask-icon" href="/new-technology/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/new-technology/css/main.css">
+
+
+
+<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-/4UQcSmErDzPCMAiuOiWPVVsNN2s3ZY/NsmXNcj0IFc=" crossorigin="anonymous">
+  <link rel="stylesheet" href="/new-technology/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.15.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
+
+    <meta name="description" content="この記事で実現すること  米国Ubiquiti（ユビキティ）社のネットワーク製品群であるUniFiを紹介します。Ubiquiti社はAppleにも在籍経験のあるロバートJ・ペラ氏が立ち上げた会社でWi-Fiネットワークの製品に強みを持っています。NY証券取引所にも上場しており、ビジネス向けのネットワーク機器販売が主力のビジネスです。Ubiquitiにもいくつか製品群があり、このうちUniFiと">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ubiquiti UniFiの世界">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2022/08/27/ubiquiti-unifi/index.html">
+<meta property="og:site_name" content="New technologies in our life">
+<meta property="og:description" content="この記事で実現すること  米国Ubiquiti（ユビキティ）社のネットワーク製品群であるUniFiを紹介します。Ubiquiti社はAppleにも在籍経験のあるロバートJ・ペラ氏が立ち上げた会社でWi-Fiネットワークの製品に強みを持っています。NY証券取引所にも上場しており、ビジネス向けのネットワーク機器販売が主力のビジネスです。Ubiquitiにもいくつか製品群があり、このうちUniFiと">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/08/27/ubiquiti-unifi/title.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/08/27/ubiquiti-unifi/console.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/08/27/ubiquiti-unifi/udmpro.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/08/27/ubiquiti-unifi/udm.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/08/27/ubiquiti-unifi/cloudkey.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/08/27/ubiquiti-unifi/unifi1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/08/27/ubiquiti-unifi/unifi2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/08/27/ubiquiti-unifi/unifi3.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/08/27/ubiquiti-unifi/unifi4.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/08/27/ubiquiti-unifi/unifi5.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/08/27/ubiquiti-unifi/app1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/08/27/ubiquiti-unifi/app2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/08/27/ubiquiti-unifi/app3.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/08/27/ubiquiti-unifi/verify1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/08/27/ubiquiti-unifi/verify2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/08/27/ubiquiti-unifi/cat6.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/08/27/ubiquiti-unifi/USW-Aggregation.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/08/27/ubiquiti-unifi/USW-Aggregation-PRO.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/08/27/ubiquiti-unifi/USW-Enterprise-8-PoE.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/08/27/ubiquiti-unifi/USW-Flex-Mini.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/08/27/ubiquiti-unifi/U6-Pro1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/08/27/ubiquiti-unifi/poe.png">
+<meta property="article:published_time" content="2022-08-26T23:40:00.000Z">
+<meta property="article:modified_time" content="2022-11-23T00:19:13.000Z">
+<meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
+<meta property="article:tag" content="SFP+">
+<meta property="article:tag" content="10GbE">
+<meta property="article:tag" content="Wi-Fi">
+<meta property="article:tag" content="UniFi">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2022/08/27/ubiquiti-unifi/title.png">
+
+
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2022/08/27/ubiquiti-unifi/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"ja","comments":true,"permalink":"https://yoshi0808.github.io/new-technology/2022/08/27/ubiquiti-unifi/","path":"2022/08/27/ubiquiti-unifi/","title":"Ubiquiti UniFiの世界"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Ubiquiti UniFiの世界 | New technologies in our life</title>
+  
+
+
+
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{&quot;token&quot;: &quot;0148b4d0442e42b483ddce684030bd2f&quot;}'></script>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JMY6NSC2KK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+  'ad_storage': 'denied',
+  'analytics_storage': 'denied'
+  });
+
+  dataLayer.push({
+  'event': 'default_consent'
+  });
+
+  if (Cookies.get('PRVCY202112') == 'Agree') {
+    gtag('consent', 'update', {
+    'analytics_storage': 'granted'
+    });
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'G-JMY6NSC2KK',{ 'anonymize_ip': true });
+</script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/new-technology/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/new-technology/atom.xml" title="New technologies in our life" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="ナビゲーションバーの切り替え" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/new-technology/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">New technologies in our life</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Device,Network,Code,etc...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="検索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/new-technology/" rel="section"><i class="fa fa-home fa-fw"></i>ホーム</a></li><li class="menu-item menu-item-about"><a href="/new-technology/about/" rel="section"><i class="fa fa-user fa-fw"></i>サイトポリシー</a></li><li class="menu-item menu-item-tags"><a href="/new-technology/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>タグ</a></li><li class="menu-item menu-item-categories"><a href="/new-technology/categories/" rel="section"><i class="fa fa-th fa-fw"></i>カテゴリ</a></li><li class="menu-item menu-item-archives"><a href="/new-technology/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>アーカイブ</a></li><li class="menu-item menu-item-privacy"><a href="/new-technology/privacypolicy/" rel="section"><i class="fa fa-check fa-fw"></i>プライバシーポリシー</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="検索…" spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          見出し
+        </li>
+        <li class="sidebar-nav-overview">
+          概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#UniFi%E8%A3%BD%E5%93%81%E3%81%AE%E7%89%B9%E5%BE%B4"><span class="nav-number">1.</span> <span class="nav-text">UniFi製品の特徴</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#UniFi-OS-Console"><span class="nav-number">1.1.</span> <span class="nav-text">UniFi OS Console</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UniFi%E3%81%AE%E7%AE%A1%E7%90%86%E7%94%BB%E9%9D%A2"><span class="nav-number">1.2.</span> <span class="nav-text">UniFiの管理画面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%82%B9%E3%83%9E%E3%83%9B%E3%82%A2%E3%83%97%E3%83%AA"><span class="nav-number">1.3.</span> <span class="nav-text">スマホアプリ</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%81%9D%E3%81%AE%E4%BB%96%E7%AE%A1%E7%90%86"><span class="nav-number">1.4.</span> <span class="nav-text">その他管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%82%AA%E3%83%B3%E3%83%A9%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%82%A2"><span class="nav-number">1.5.</span> <span class="nav-text">オンラインストア</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E3%82%B9%E3%82%A4%E3%83%83%E3%83%81"><span class="nav-number">1.6.</span> <span class="nav-text">ネットワークスイッチ</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#USW-Aggregation"><span class="nav-number">1.6.1.</span> <span class="nav-text">USW-Aggregation</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#USW-Pro-Aggregation"><span class="nav-number">1.6.2.</span> <span class="nav-text">USW-Pro-Aggregation</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#USW-Enterprise-8-PoE"><span class="nav-number">1.6.3.</span> <span class="nav-text">USW-Enterprise-8-PoE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Switch-Flex-Mini"><span class="nav-number">1.6.4.</span> <span class="nav-text">Switch Flex Mini</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Wi-Fi"><span class="nav-number">1.7.</span> <span class="nav-text">Wi-Fi</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%BE%E3%81%A8%E3%82%81"><span class="nav-number">2.</span> <span class="nav-text">まとめ</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="阿部　吉伸(Yoshinobu ABE)"
+      src="/new-technology/images/yoshi.png">
+  <p class="site-author-name" itemprop="name">阿部　吉伸(Yoshinobu ABE)</p>
+  <div class="site-description" itemprop="description">IT</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/new-technology/archives/">
+          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-name">ポスト</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/new-technology/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">カテゴリ</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/new-technology/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">タグ</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yoshi0808" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yoshi0808" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yoshi0808.blog@gmail.com" title="E-Mail → mailto:yoshi0808.blog@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yoshi0808_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yoshi0808_" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="/new-technology/lib/@creativecommons/vocabulary/assets/license_badges/big/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="ja">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2022/08/27/ubiquiti-unifi/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/new-technology/images/yoshi.png">
+      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="New technologies in our life">
+      <meta itemprop="description" content="IT">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Ubiquiti UniFiの世界 | New technologies in our life">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Ubiquiti UniFiの世界
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">投稿日</span>
+
+      <time title="作成日：2022-08-27 08:40:00" itemprop="dateCreated datePublished" datetime="2022-08-27T08:40:00+09:00">2022-08-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">編集日</span>
+      <time title="修正日：2022-11-23 09:19:13" itemprop="dateModified" datetime="2022-11-23T09:19:13+09:00">2022-11-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">カテゴリ</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/Hardware/" itemprop="url" rel="index"><span itemprop="name">Hardware</span></a>
+        </span>
+          、
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/Network/" itemprop="url" rel="index"><span itemprop="name">Network</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <img src="/new-technology/2022/08/27/ubiquiti-unifi/title.png" class="" width="1024" title="alt">
+
+<p class="onepoint">この記事で実現すること</p>
+
+<p>米国Ubiquiti（ユビキティ）社のネットワーク製品群であるUniFiを紹介します。Ubiquiti社はAppleにも在籍経験のあるロバートJ・ペラ氏が立ち上げた会社でWi-Fiネットワークの製品に強みを持っています。NY証券取引所にも上場しており、ビジネス向けのネットワーク機器販売が主力のビジネスです。<br>Ubiquitiにもいくつか製品群があり、このうちUniFiという製品群では、ネットワーク、監視カメラ、入退室管理などの製品があります。法人向けと個人向けのちょうど中間に位置するこの製品群は、ビジネスグレードという位置付けながら廉価です。Ubiquti製品群でも上級者向けのEdgeMaxシリーズがあり、初級者〜中級者向けをターゲットとしているのがUniFiです（ネットワークの知識は必要です）。ここではネットワーク製品のうちスイッチとWi-Fiにフォーカスを当ててどのような機能・サービスがあるのか説明していきます。ペラ氏はカリフォルニア大学において日本語の学士号を保有されており、親近感を覚えます。</p>
+<span id="more"></span>
+
+<h2 id="UniFi製品の特徴"><a href="#UniFi製品の特徴" class="headerlink" title="UniFi製品の特徴"></a>UniFi製品の特徴</h2><p>UniFiはネットワークの「見える化」をテーマとした製品群と言えます。複数のネットワーク機器や個々の端末を集中管理することに長けています。代表的なのは特にWi-Fiですが、クライアントの通信量や電波の届き具合、通信量、どこのアクセスポイントに接続されているか把握・管理が容易です。ネットワークスイッチも同様でネットワークトポロジーが明瞭で設定内容やトラフィック量が把握できます。インターネットに接続するルーターの役目を果たすセキュリティゲートウェイはどのようなサイトに接続しているか、どれくらいのトラフィック量なのかが非常に見やすくなっています。また、直感的に分かりやすいGUIによる管理が可能で、難しい従来のコマンドラインは必要ありません（※詳細の情報把握にSSHでコマンド確認することも可能です）</p>
+<p>カメラや電話などのネットワーク製品を除いた、UniFiにおけるコアネットワーク製品を管理するためにはUniFi OS Consoleが必要です。</p>
+<h3 id="UniFi-OS-Console"><a href="#UniFi-OS-Console" class="headerlink" title="UniFi OS Console"></a>UniFi OS Console</h3><img src="/new-technology/2022/08/27/ubiquiti-unifi/console.png" class="" width="1024" title="alt">
+
+<p>UniFi OS ConsoleはUniFi環境において必ず1つ必要なものです。Wi-Fi機器やネットワーク機器はコントロールのためのGUIなど持ち合わせていないため、GUI管理のためのConsoleが必要となります。セキュリティゲートウェイである、UniFi Dream Machine(UDM)やUDM Proはセキュリティゲートウェイと各ネットワーク機器を管理するConsole機能を持ちます。Dream Machineはセキュリティゲートウェイ、Wi-Fi（日本では11ac対応）、Consoleとが一体になっています。UDM Proは、Wi-Fiの機能は持ちませんが、LAN&#x2F;WANに10GbE SFP+を持ち、IDS(侵入検知システム）&#x2F;IPS(侵入防止システム）のスループットが3.5Gbpsあります（iperf3で計測しているとの記載があります）。</p>
+<p>残念ながら、私はUniFiのセキュリティゲートウェイであるDream MachineやUDM Proを保有していないので、ここでUniFiの魅力的な製品の1つであるセキュリティ製品の説明ができません。私の場合、IPv6やセキュリティなど多くのことを求めるというのもありますが、日本の環境におけるMAP-EやDS-Liteに対応していないように見えます。UDM ProなどはIPv6 Delegationに対応しており魅力的ですが、日本においてはプロバイダを選ぶ（具体的にはフレッツなどでひかり電話を契約し&#x2F;56などの複数のIPv6プレフィックスの割り当てが必要）ことになり、かなり利用環境が限定されます。私自身、セキュリティを担保するルーターにはこのブログでも紹介しているSophos Firewallと現在のプロバイダ（auひかり）に非常に満足しているため、購入には至っておらずここではUniFiのセキュリティルーターの紹介ができません。どうぞご容赦ください。日本でもUDM Proを動作させているユーザーもいらっしゃるようです。もし、UniFiの監視カメラなどを導入されたい場合は、ハードディスクをセッティングする必要がありUniFiの専用ハードウェアが必要です。この場合は、UDMシリーズや後述するCloud Key Gen2 Plusを導入する必要があります。</p>
+<p>なお、セキュリティゲートウェイの機能という意味ではUDMやUDM ProはIDS&#x2F;IPS、DPI（ディープパケットインスペクション）の機能を持ち、DNSフィルタやパケットのシグネチャを検査する仕組みを持っています。DPIは通信するPort番号に関わらず、TCP通信のデータの中身を見てそれが何のアクセスデータか分類したり脅威分析を行いますが、暗号化されたSSL&#x2F;TSL通信を解読できません。今日では、AWS&#x2F;Akamai&#x2F;CloudflareなどのCDN（コンテンツデリバリネットワーク）が台頭してきており、接続先のサーバー名だけでは容易に安全性の判断ができなくなってきています。SSL&#x2F;TLSの解読にはSophos FirewallなどのSSL&#x2F;TLSインスペクションの機能を持つ製品が必要です。セキュリティゲートウェイではVPNはPPTP、L2TPに加え、最近Teleport VPNに対応しています。</p>
+<blockquote>
+<p>UDM Pro<br> <a target="_blank" rel="noopener" href="https://jp.store.ui.com/collections/UniFi-network-UniFi-os-consoles/products/udm-pro">https://jp.store.ui.com/collections/UniFi-network-UniFi-os-consoles/products/udm-pro</a><br> <img src="/new-technology/2022/08/27/ubiquiti-unifi/udmpro.png" class="" width="480" title="alt"></p>
+</blockquote>
+<blockquote>
+<p>Dream Machine<br> <a target="_blank" rel="noopener" href="https://jp.store.ui.com/collections/UniFi-network-UniFi-os-consoles/products/UniFi-dream-machine">https://jp.store.ui.com/collections/UniFi-network-UniFi-os-consoles/products/UniFi-dream-machine</a><br> <img src="/new-technology/2022/08/27/ubiquiti-unifi/udm.png" class="" width="240" title="alt"></p>
+</blockquote>
+<p>UniFi OS Console単体機能として、Cloud Keyという製品もあります。</p>
+<p>Cloud Key Gen2は25,000円ほどしますが、監視カメラを導入する場合は必要です。予め1TBのHDDが用意されているので特に難しいセットアップは不要でUniFiの運用を開始できます。</p>
+<blockquote>
+<p>Cloud Key Gen2 Plus<br> <a target="_blank" rel="noopener" href="https://jp.store.ui.com/collections/UniFi-network-UniFi-os-consoles/products/UniFi-cloudkey-gen2-plus-1">https://jp.store.ui.com/collections/UniFi-network-UniFi-os-consoles/products/UniFi-cloudkey-gen2-plus-1</a><br> <img src="/new-technology/2022/08/27/ubiquiti-unifi/cloudkey.png" class="" width="240" title="alt"></p>
+</blockquote>
+<p>UniFi OS Consoleを購入しなくとも、WindowsやmacOSでUniFi Network Applicationをセットアップできます。別途、Java8のインストールが必要です。もし、仮想環境のESXiをお持ちであれば（一定のネットワークの知識があることが前提です）、ESXi上にUbuntuなどを導入し、そこにUniFi Network Applicationをセットアップできます。ネットワークアプリケーションのロールバックはサポートされておらず、旧バージョンを再インストールするか、ESXiによるバックアップからロールバックすることになります。UniFi本来のメリットを享受するためには見える化が大事ですから24時間365日の稼働とトラフィック収集が重要です。もちろんカジュアルユーザーは設定変更時だけ都度PCを起動し、UniFi Network Applicationを起動し、設定変更する方法もあります。</p>
+<p>自分でUniFi Network Applicationをセットアップする場合は自身で用意するハードウェア以外の費用はかかりません。UniFiソフトウェアは無償ですし、サブスクリプションなどの定額支払いもありません。Linuxの場合、最低2GByteのメモリ、HDDは最低10Gバイトが必要です。私はUbuntu Desktop上に構築しており、4Gバイトのメモリ、HDDは40Gバイトにしています。UniFiのセットアップやバージョンアップにGUIは不要ですが、ハードウェアスペックに余裕のある方はGUI(Ubuntu Desktop)をお薦めします。</p>
+<blockquote>
+<p>UniFi Help Center<br> <a target="_blank" rel="noopener" href="https://help.ui.com/hc/en-us/articles/360012282453-UniFi-Network-Self-Hosting-your-UniFi-Network-Without-a-Console-Advanced-">https://help.ui.com/hc/en-us/articles/360012282453-UniFi-Network-Self-Hosting-your-UniFi-Network-Without-a-Console-Advanced-</a></p>
+</blockquote>
+<h3 id="UniFiの管理画面"><a href="#UniFiの管理画面" class="headerlink" title="UniFiの管理画面"></a>UniFiの管理画面</h3><p>UniFiの管理画面は新旧の2種類あります。旧画面は日本語にも対応していますが、最新機器の製品名が表示されないなどちょっと中途半端な対応状況です。デザイン的にも少し洗練された新画面はまだまだ機能が不足しているというデメリットもあり、ユーザーも好みによって使い分けているというのが現状です。</p>
+<p>新画面の抜粋</p>
+<img src="/new-technology/2022/08/27/ubiquiti-unifi/unifi1.png" class="" width="1024" title="alt">
+<img src="/new-technology/2022/08/27/ubiquiti-unifi/unifi2.png" class="" width="1024" title="alt">
+<img src="/new-technology/2022/08/27/ubiquiti-unifi/unifi3.png" class="" width="1024" title="alt">
+
+<p>旧画面</p>
+<img src="/new-technology/2022/08/27/ubiquiti-unifi/unifi4.png" class="" width="1024" title="alt">
+<img src="/new-technology/2022/08/27/ubiquiti-unifi/unifi5.png" class="" width="1024" title="alt">
+
+<h3 id="スマホアプリ"><a href="#スマホアプリ" class="headerlink" title="スマホアプリ"></a>スマホアプリ</h3><p>UniFiの管理システムはハイブリッドクラウドのような仕組みがあり、無償で利用できます。完全なオンプレミスも可能ですが、外出先から自宅内のネットワーク機器を手軽にコントロールできるのは魅力的です。</p>
+<p>特にスマホアプリから行うWi-Fi機器やスイッチ機器のモニタリング、設定変更が容易で秀逸です。コントローラは2要素認証に対応しており、自宅でコントローラにログインすると、スマホにPush通知が来ますのでこれに応答することによりログインが完了します。アプリからはLANの直接接続、或いはUbiquitiのクラウド経由で自宅のConsoleまたはネットワークアプリケーションと接続されますが、クラウド経由の場合でも自宅のFirewallやルーターで特定のPortで待ち受ける（Port解放する）ことなく、UniFi Console（ネットワークアプリケーション）側からUbiquitiのクラウドへ接続する形態です。セキュリティ的にも一段レベルが上で、ダイナミックDNSなどの準備が不要であることが特徴です。</p>
+<p>UniFi Networkアプリ（iOS&#x2F;Android)<br>UniFiのシングルサインオンアカウントを使ってスマホアプリにログインします。自宅内でも自宅外であってもVPNなど意識することなく簡単かつ素早くUniFi機器の管理ができます。</p>
+<img src="/new-technology/2022/08/27/ubiquiti-unifi/app1.png" class="" width="360" title="alt">
+<img src="/new-technology/2022/08/27/ubiquiti-unifi/app2.png" class="" width="360" title="alt">
+<img src="/new-technology/2022/08/27/ubiquiti-unifi/app3.png" class="" width="360" title="alt">
+
+<p>新しい機器をスイッチポートに接続する際にはどのVLANに属するか設定しますが、この場合はスマホアプリからConsoleを経由し大抵のことができます。SFP＋のDDM(Digital Diagnostic Monitoring)の値も取れますし、スイッチによっては機器本体の温度も把握できます。</p>
+<p>このスマホアプリではARという機能があり、UniFiスイッチの第2世代以降は以下のビデオのようにスマホで実際のスイッチ機器をかざすことによって接続された端末がVR的にマッピングされたものを見られます。UniFiスイッチを一躍有名にした機能でもあります。</p>
+<video src='ar.mov' type='video/mp4' controls='controls'  width='45%' height='45%'>
+</video>
+
+<p> UI Verifyアプリ（iOS&#x2F;Android)<br> これはConsoleやUbiquitiのサイトにログインする際の2要素認証のためのワンタイムパスワードのスマホアプリです。</p>
+<img src="/new-technology/2022/08/27/ubiquiti-unifi/verify1.png" class="" width="360" title="alt">
+
+<p>これを導入してシングルサインオンの設定をしておくとPCなどからログインした際にはプッシュ通知がされます。</p>
+<img src="/new-technology/2022/08/27/ubiquiti-unifi/verify2.png" class="" width="360" title="alt">
+
+<p>これで2要素認証も簡単に対応できます。</p>
+<h3 id="その他管理"><a href="#その他管理" class="headerlink" title="その他管理"></a>その他管理</h3><ul>
+<li><p>Syslog&#x2F;SNMP<br>UniFi Console、各機器それぞれが統合管理されるので、1箇所のSyslogサーバにログを書き出せます。あくまでsyslogなので、UniFiシステムの障害切り分けに使うレベルのものです。また、SNMPv3の管理機能を持ちます。</p>
+</li>
+<li><p>SSH<br> スイッチの詳細情報を確認できます、パスワード認証、公開鍵認証が可能です。私はYubicoのYubiKeyで公開鍵認証を使っています。</p>
+</li>
+<li><p>バックアップ<br> 構成情報を定期的にバックアップできます。</p>
+</li>
+<li><p>通知<br> メール、アプリにイベントを通知できます。ファームウェア更新の通知（自動更新も可能）、スイッチやWi-Fiを対象にすればクライアント（インタフェース）の新規接続、切断、ローミングが通知されます。他にもリスク管理の通知機能があります。</p>
+</li>
+</ul>
+<h3 id="オンラインストア"><a href="#オンラインストア" class="headerlink" title="オンラインストア"></a>オンラインストア</h3><p>UniFi製品は日本のオンラインストアがあります。製品はワールドワイドに展開されていますが、ONUと接続する可能性のあるセキュリティゲートウェイや電波を出すWi-Fi製品は技適マークもありますし、ネットワークスイッチの電源コードはPSEマークも付与されており安心して購入できます（電源ケーブルは3PINとなっており、日本のコンセントに合うように2PIN変換アダプタが別途必要です）。</p>
+<blockquote>
+<p>Ubiquit Japan Store<br> <a target="_blank" rel="noopener" href="https://jp.store.ui.com/">https://jp.store.ui.com</a></p>
+</blockquote>
+<p>世界的にはUbiquitiの製品・パーツは非常に廉価です。日本においては今年に円安のため2回ほど価格改定があり、以前と比べると特別廉価とは感じなくなっています。</p>
+<ul>
+<li>MMモジュール（10Gbpsマルチモード光学モジュール）2つで6,282円</li>
+<li>10GSFP+ RJ45モジュール9,092円</li>
+</ul>
+<p>日本のサイトでは今のところ送料が無料です。UbiquitiのMMモジュールは様々な機器に繋いでいますが、特段問題が発生したことはありません。UbiquitiのスイッチではSFP&#x2F;SFP+の互換性の問題が出やすいため、純正のMMモジュールまたは信頼のあるSFPベンダーからの購入をお勧めします。</p>
+<p>ケーブルに関してはUbiquitiの純正のOM3ケーブルは部屋と部屋とを繋ぐにしては短すぎるものばかりなので別途FSやAmazonなどで調達する必要があります。</p>
+<p>UbiquitiのRJ45ケーブル（Cat6)はコネクタ付近で曲げることができるユニークなパッチケーブルです。基本的にCat6Aはなく、Cat6のケーブルのみの取り扱いですが、最大8メートルのパッチケーブルであれば10GbEでも問題が出ることはありません。</p>
+<img src="/new-technology/2022/08/27/ubiquiti-unifi/cat6.png" class="" width="280" title="alt">
+
+<h3 id="ネットワークスイッチ"><a href="#ネットワークスイッチ" class="headerlink" title="ネットワークスイッチ"></a>ネットワークスイッチ</h3><p>ここ数ヶ月、このブログでは省電力化および低発熱を目的としてSFP＋の説明をしてきましたが、UniFiスイッチを簡単に紹介します。</p>
+<p>UniFiスイッチはL2の製品群が主流です。設定はGUIのみで行います。SSHでスイッチに接続し、設定変更は行えますが再起動のタイミングにおいて、GUIで設定した内容に上書きされます。見える化やスイッチ全体の一括管理のために、全てのスイッチをUniFiのものに統一したくなりますが、部分的にUniFiスイッチを導入できます。UniFiスイッチはハードウェア自体は一般的なL2スイッチとあまり違いは無いので異なるメーカーのL2スイッチをUniFiスイッチに接続し、VLANで相互に運用できます。</p>
+<p>個人で利用する場合、無理にVLANを切る必要もありませんが、マルチプルVLANも対応しているので、1つのネットワークアドレスで複数のVLANに属する形を取ればネットワーク分離も簡単に行えます。</p>
+<p>一部の製品にはL3に対応したスイッチも存在しますが、IPv6に対応していないことや、アクセスコントロール（ACL）が行えないというものであり、L3としてはまだ使えるレベルには達していません。</p>
+<h4 id="USW-Aggregation"><a href="#USW-Aggregation" class="headerlink" title="USW-Aggregation"></a>USW-Aggregation</h4><img src="/new-technology/2022/08/27/ubiquiti-unifi/USW-Aggregation.png" class="" width="280" title="alt">
+
+<p>ファンレスL2スイッチです。SFP＋ポートを8つ持ちます。小規模なネットワークにも向いていますが、アグリゲーションという名前が付くだけあって、本来はいくつかのスイッチを束ねる目的のスイッチでもあります。MikroTikの8Portスイッチと値段も同程度でもあり、良く比較される対象になっています。奥行きは短いですが、基本は19インチラックに合うように作られているので結構幅があります。あまりIT機器のようにも見えないデザインでもあり、リビングに単独で置いても違和感はありません。</p>
+<h4 id="USW-Pro-Aggregation"><a href="#USW-Pro-Aggregation" class="headerlink" title="USW-Pro-Aggregation"></a>USW-Pro-Aggregation</h4><img src="/new-technology/2022/08/27/ubiquiti-unifi/USW-Aggregation-PRO.png" class="" width="280" title="alt">
+<p>L3スイッチです。10G SFP＋ポートを28ポート、および25G SFP28ポートを4ポート持っています。私は寝室にあるクローゼットにこのスイッチを置いており、ファンの音はしますが、クローゼットのドアを閉めれば全く気にならない程度で静音といえます。L3は前述したように本来のL3としては制約がありますが、セグメント超えのiperf3を実行しても殆どスループットは落ちません。ここはさすがL3スイッチです。</p>
+<h4 id="USW-Enterprise-8-PoE"><a href="#USW-Enterprise-8-PoE" class="headerlink" title="USW-Enterprise-8-PoE"></a>USW-Enterprise-8-PoE</h4><img src="/new-technology/2022/08/27/ubiquiti-unifi/USW-Enterprise-8-PoE.png" class="" width="280" title="alt">
+<p>L3スイッチです。Enterpriseという割には小ぶりでリビングに似合いそうなスイッチです。SFP＋を2ポート、2.5GbE（1GbE、100Base）のRJ45ポートを8ポート持ちます。ファンの音は殆どわかりません。実際にフロントのLCDパネルでファンの回転数を引き上げられ、その際はさすがにファンの音はするものの、やがて自動運転ではかなりの抑えた風量に戻るようです。米国ではTVとかオーディオなど色々な専用セグメントが必要だったりするのでL3が必要なのでしょうか。これはPoEスイッチでもあり、UniFiの世界では小型スイッチやWi-FiがPoE、つまりLANケーブル1本で通信と給電とが行われます。家が小さい日本ではあまり馴染みがないテクノロジですが、アメリカのように大きい家ではLANケーブル1本で各部屋まで配線し、天井や壁にWi-Fiやスイッチを埋め込む形でLANを構築していく事が多いのでPoEが重宝されます。RJ45の8ポートが2.5GbEであると同時にPoEによる給電が可能です。かなりの発熱で筐体上部は50℃ほどあり、コンソールからは70℃以上の熱を示しています。この温度であればファンが回っても良さそうな雰囲気ですが、LCDパネル上のファン回転数は80rpmで静かです。普段の運用ではファンが回るイメージがありません。</p>
+<h4 id="Switch-Flex-Mini"><a href="#Switch-Flex-Mini" class="headerlink" title="Switch Flex Mini"></a>Switch Flex Mini</h4><img src="/new-technology/2022/08/27/ubiquiti-unifi/USW-Flex-Mini.png" class="" width="280" title="alt">
+
+<p>小型の1G RJ45を5ポート持つ小型スイッチです。4,794円と廉価です（最近の円安で値上がりしました）。UniFiではトランクポートとして設定する場合、複数のVLANを選択しグループ化しますが、トランクポートは全てのVLANが対象となる制約があります。一応L2対応になっています。洗練されたデザインで小型のこのスイッチは発熱が小さく安定しており気に入ってます。しかし、気に入っている割には無造作にマジックテープを裏面にべったり貼り付け、TVの後ろに貼り付けています。PoEの入力が可能なので、PoEスイッチから電源を取っていますが、はっきり言ってこのスイッチの電源をPoEで取ることに関してはメリットは殆ど感じられません。最初から小さい電源アダプタも付属していますので普通にコンセントから給電すれば済みます。100Base-TXのLANを持つテレビなどは目立たないこのスイッチに集約させ、多くの長いLANケーブルから解放されるのに便利です。3,700円でUniFiの世界をテストドライブしてみるのも良いかもしれません。</p>
+<h3 id="Wi-Fi"><a href="#Wi-Fi" class="headerlink" title="Wi-Fi"></a>Wi-Fi</h3><p>米国ではUniFiのWi-Fiシステムは非常に多くの製品が発売されていますが、日本で販売されている利用可能な製品はWi-Fi5、Wi-Fi6の有線接続を必須とする数製品に絞られます。日本のメーカーとは異なった魅力のあるアクセスポイント（AP）です。主流の11ax対応製品については、3製品あります。Lite、Pro、LR（ロングレンジ）になります。日本においては、発売予定という製品はあるものの、現時点ではワイヤレスメッシュとなる製品が発売されていません。つまり中継機の機能を持つ製品が日本では発売されていません。</p>
+<img src="/new-technology/2022/08/27/ubiquiti-unifi/U6-Pro1.png" class="" width="280" title="alt">
+
+<p>基本的に壁に固定し、LANケーブルのPoEから電源を取ります。これまでのWi-Fiルータを棚やテーブルに置くという方法ではなく、電源コンセントの制約が無いため、自由度が高く、壁などに取り付けられます。APの設置は壁にねじ止めするのが本来の姿ですが、小心者の私は100均で売っている壁にメモを留めるようなピンを打ち付けてAPを固定しています。APを取り外した後も壁紙の補修液を塗り込めば壁の穴は目立ちません。</p>
+<p>UniFiのWi-Fi製品は、ネットワークスイッチのPoEまたはPoEインジェクタを別途購入し接続することになります。</p>
+<img src="/new-technology/2022/08/27/ubiquiti-unifi/poe.png" class="" width="280" title="alt">
+
+<p>壁掛けで1本のLANケーブルのみであれば部屋に馴染み、さほど気になるものでもありません。<br>Fast Roaming(802.11r)を前提として、APの切り替えがスムーズに行えます。一般的には端末を持つ人が移動した時のローミングを目的としていますが、家族が普段通りにスマホを使っていながら接続APを切り替えられます。私の場合、自宅の1階にU6-Proを、2階にU6-Liteを設置していますが、どちらのAPからも家じゅう電波は届きます。APの故障対策のためというよりは、私が色々なことをやってAPやスイッチの設定を変更したりリブートしたりするので、自宅内で家族向けに安定的なWi-Fiサービスの提供のためにはとても便利な機能です。AP毎の周波数を設定し、お互いが競合しないようにするなど、より細かい設定ができます。</p>
+<p>ハードウェアスペックとしては一般的ですが、端末がどのAPに接続されているか、それぞれの端末の電波状況などがわかります。また時間でSSID単位に停波させることも可能で、私は夜間は11gの最小限の送信出力に絞り11axは止めています。スマホは夜間に勝手に11gに切り替わり最低限の通信は可能になっています。</p>
+<p>日本のWiーFiルーターも多機能で、当たり前のようにあるWPSプッシュボタンによるクライアント登録（認証）や子供の端末を管理するなどの機能はUniFiは持っていません。下手に長いWi-Fiパスワードにしてしまうと、UniFiではIoTに対するパスワード入力が困難です。UniFiと国内のWi-Fiルーターとは目指す方向が違う事になり、基本性能という意味では殆ど変わらないものとお考えください。</p>
+<p>ホームゲートウェイやスイッチなどが揃っている環境でUniFiのWi-Fi製品のみを導入できます。</p>
+<h2 id="まとめ"><a href="#まとめ" class="headerlink" title="まとめ"></a>まとめ</h2><p>ここではUniFiの製品群を説明しました。製品としては荒削りなところもあり、それなりに不具合や未対応の箇所を抱えながら少しづつ機能強化しているというプロダクトの特徴があります。特に見える化という観点で、ネットワーク環境を変える予定のある方は検討の候補になるかもしれません。私が保有しているスイッチを簡単に紹介しましたがSFP+に偏っており、他にも魅力的なスイッチがありますので、是非Ubiquitオンラインストアにアクセスされてみることをお勧めします。なお、サポートは存在しますが、原則はコミュニティで自ら情報収集・調査する必要があり、簡単とは言えません。</p>
+<p>このブログでは仮想環境のESXi上にUbuntuをセットアップし、UniFi Network Applicationを運用する方法を紹介しています。</p>
+<ul>
+<li>「<a href="/new-technology/2022/09/23/ubuntu22-04lts/" title="Ubuntu22.04LTSをESXiにセットアップする">Ubuntu22.04LTSをESXiにセットアップする</a>」</li>
+<li>「<a href="/new-technology/2022/09/23/unifi-network-application/" title="UniFi Network Applicationのセットアップ">UniFi Network Applicationのセットアップ</a>」</li>
+<li>「<a href="/new-technology/2022/10/23/unifi-network-application2/" title="UniFi Network Applicationの運用">UniFi Network Applicationの運用</a>」</li>
+<li>「<a href="/new-technology/2022/11/23/unifi-switch/" title="UniFiスイッチ">UniFiスイッチ</a>」</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/new-technology/tags/SFP/" rel="tag"><i class="fa fa-tag"></i> SFP+</a>
+              <a href="/new-technology/tags/10GbE/" rel="tag"><i class="fa fa-tag"></i> 10GbE</a>
+              <a href="/new-technology/tags/Wi-Fi/" rel="tag"><i class="fa fa-tag"></i> Wi-Fi</a>
+              <a href="/new-technology/tags/UniFi/" rel="tag"><i class="fa fa-tag"></i> UniFi</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/new-technology/2022/07/30/sfp-plus-nbaset/" rel="prev" title="SFP+の2.5GbE対応">
+                  <i class="fa fa-chevron-left"></i> SFP+の2.5GbE対応
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/new-technology/2022/09/23/ubuntu22-04lts/" rel="next" title="Ubuntu22.04LTSをESXiにセットアップする">
+                  Ubuntu22.04LTSをESXiにセットアップする <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">阿部　吉伸(Yoshinobu ABE)</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div><script src="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.umd.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.min.css" rel="stylesheet">
+
+<script>
+if (Cookies.get('PRVCY202112') != 'Agree') {
+  const notice = new SimpleGDPR({
+    title: 'Accept Cookies & Privacy Policy?',
+    message: 'このWebサイトでは、訪問や活動に関するデータがクッキー等によって収集されます。閲覧を継続される場合、\
+    プライバシーポリシーをご覧いただき同意(Agree)をお願いします',
+    link: null,
+    icons: true,
+    theme: 'light',
+    animation: 'fade',
+    float: 'bottom-right',
+      callback: () => {
+      notice.close();
+      Cookies.set('PRVCY202112', 'Agree', { expires: 365, path: '/'});
+      notice.destroy();
+      // Google Analytics 4
+      gtag('consent', 'update', {
+      'analytics_storage': 'granted'
+      });
+      gtag('js', new Date());
+      gtag('config', 'G-JMY6NSC2KK', { 'anonymize_ip': true });
+      },
+  });
+}
+</script>
+<div class="disclaimer1">
+このサイトの記事は、特別な記載がない限り <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja">クリエイティブ・コモンズ BY-NC-SA ライセンス</a>で保護されています</div>
+
+
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/yoshi0808" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="/new-technology/lib/animejs/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="/new-technology/lib/medium-zoom/dist/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/comments.js"></script><script src="/new-technology/js/utils.js"></script><script src="/new-technology/js/motion.js"></script><script src="/new-technology/js/schemes/muse.js"></script><script src="/new-technology/js/next-boot.js"></script>
+
+  <script src="/new-technology/lib/hexo-generator-searchdb/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"/new-technology/lib/mermaid/dist/mermaid.min.js","integrity":"sha256-3JloMMI/ZQx6ryuhhZTsQJQmGAkXeni6PkshX7UUO2s="}}</script>
+  <script src="/new-technology/js/third-party/tags/mermaid.js"></script>
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

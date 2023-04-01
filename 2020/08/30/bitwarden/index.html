@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/icon-16x16.png">
+  <link rel="mask-icon" href="/new-technology/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/new-technology/css/main.css">
+
+
+
+<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-/4UQcSmErDzPCMAiuOiWPVVsNN2s3ZY/NsmXNcj0IFc=" crossorigin="anonymous">
+  <link rel="stylesheet" href="/new-technology/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.15.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
+
+    <meta name="description" content="パスワード管理はソフトウェアに任せる「安全快適にリモートワークを行う」で記載したように、リモートワークの活用機会が高まり、ますます各自のパスワード管理が重要になってきています。頭ではパスワードの使い回しは良く無いと理解していながら、結局は文字列＋数字で似たようなパスワードをいくつも作ってしまい、脆弱な状態にあるケースは多いように感じます。パスワード管理ソフトの導入はITリテラシが高く無いとなか">
+<meta property="og:type" content="article">
+<meta property="og:title" content="パスワード管理ソフトのbitwardenを活用する">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/08/30/bitwarden/index.html">
+<meta property="og:site_name" content="New technologies in our life">
+<meta property="og:description" content="パスワード管理はソフトウェアに任せる「安全快適にリモートワークを行う」で記載したように、リモートワークの活用機会が高まり、ますます各自のパスワード管理が重要になってきています。頭ではパスワードの使い回しは良く無いと理解していながら、結局は文字列＋数字で似たようなパスワードをいくつも作ってしまい、脆弱な状態にあるケースは多いように感じます。パスワード管理ソフトの導入はITリテラシが高く無いとなか">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/08/30/bitwarden/password.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/08/30/bitwarden/bitwarden.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/08/30/bitwarden/account.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/08/30/bitwarden/bitwarden1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/08/30/bitwarden/bitwarden2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/08/30/bitwarden/duo1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/08/30/bitwarden/duo2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/08/30/bitwarden/duo3.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/08/30/bitwarden/bitwarden3.png">
+<meta property="article:published_time" content="2020-08-30T04:35:30.000Z">
+<meta property="article:modified_time" content="2022-02-11T03:19:38.000Z">
+<meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
+<meta property="article:tag" content="bitwarden">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2020/08/30/bitwarden/password.png">
+
+
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2020/08/30/bitwarden/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"ja","comments":true,"permalink":"https://yoshi0808.github.io/new-technology/2020/08/30/bitwarden/","path":"2020/08/30/bitwarden/","title":"パスワード管理ソフトのbitwardenを活用する"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>パスワード管理ソフトのbitwardenを活用する | New technologies in our life</title>
+  
+
+
+
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{&quot;token&quot;: &quot;0148b4d0442e42b483ddce684030bd2f&quot;}'></script>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JMY6NSC2KK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+  'ad_storage': 'denied',
+  'analytics_storage': 'denied'
+  });
+
+  dataLayer.push({
+  'event': 'default_consent'
+  });
+
+  if (Cookies.get('PRVCY202112') == 'Agree') {
+    gtag('consent', 'update', {
+    'analytics_storage': 'granted'
+    });
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'G-JMY6NSC2KK',{ 'anonymize_ip': true });
+</script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/new-technology/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/new-technology/atom.xml" title="New technologies in our life" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="ナビゲーションバーの切り替え" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/new-technology/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">New technologies in our life</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Device,Network,Code,etc...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="検索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/new-technology/" rel="section"><i class="fa fa-home fa-fw"></i>ホーム</a></li><li class="menu-item menu-item-about"><a href="/new-technology/about/" rel="section"><i class="fa fa-user fa-fw"></i>サイトポリシー</a></li><li class="menu-item menu-item-tags"><a href="/new-technology/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>タグ</a></li><li class="menu-item menu-item-categories"><a href="/new-technology/categories/" rel="section"><i class="fa fa-th fa-fw"></i>カテゴリ</a></li><li class="menu-item menu-item-archives"><a href="/new-technology/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>アーカイブ</a></li><li class="menu-item menu-item-privacy"><a href="/new-technology/privacypolicy/" rel="section"><i class="fa fa-check fa-fw"></i>プライバシーポリシー</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="検索…" spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          見出し
+        </li>
+        <li class="sidebar-nav-overview">
+          概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%91%E3%82%B9%E3%83%AF%E3%83%BC%E3%83%89%E7%AE%A1%E7%90%86%E3%81%AF%E3%82%BD%E3%83%95%E3%83%88%E3%82%A6%E3%82%A7%E3%82%A2%E3%81%AB%E4%BB%BB%E3%81%9B%E3%82%8B"><span class="nav-number">1.</span> <span class="nav-text">パスワード管理はソフトウェアに任せる</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%91%E3%82%B9%E3%83%AF%E3%83%BC%E3%83%89%E7%AE%A1%E7%90%86%E3%81%AE%E7%9B%AE%E6%8C%87%E3%81%99%E5%A7%BF"><span class="nav-number">2.</span> <span class="nav-text">パスワード管理の目指す姿</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bitwarden%E3%81%AE%E5%88%A9%E7%94%A8%E6%96%B9%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">bitwardenの利用方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#bitwarden%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">3.1.</span> <span class="nav-text">bitwardenの設定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PIN%E3%81%AB%E3%82%88%E3%82%8B%E3%83%AD%E3%83%83%E3%82%AF%E8%A7%A3%E9%99%A4"><span class="nav-number">3.2.</span> <span class="nav-text">PINによるロック解除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%9F%E4%BD%93%E8%AA%8D%E8%A8%BC%E3%81%AB%E3%82%88%E3%82%8B%E3%83%AD%E3%83%83%E3%82%AF%E8%A7%A3%E9%99%A4%EF%BC%88%E3%82%B9%E3%83%9E%E3%83%9B%EF%BC%89"><span class="nav-number">3.3.</span> <span class="nav-text">生体認証によるロック解除（スマホ）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%9F%E4%BD%93%E8%AA%8D%E8%A8%BC%E3%81%AB%E3%82%88%E3%82%8B%E3%83%AD%E3%83%83%E3%82%AF%E8%A7%A3%E9%99%A4%EF%BC%88PC%EF%BC%89"><span class="nav-number">3.4.</span> <span class="nav-text">生体認証によるロック解除（PC）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%82%A2%E3%82%AB%E3%82%A6%E3%83%B3%E3%83%88%E4%BD%9C%E6%88%90%E6%99%82%E3%81%AE%E5%AE%9F%E4%BE%8B"><span class="nav-number">4.</span> <span class="nav-text">アカウント作成時の実例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%EF%BC%88%E8%A3%9C%E8%B6%B3%EF%BC%89bitwarden%E3%81%AE%E8%84%86%E5%BC%B1%E6%80%A7%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span class="nav-number">5.</span> <span class="nav-text">（補足）bitwardenの脆弱性について</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="阿部　吉伸(Yoshinobu ABE)"
+      src="/new-technology/images/yoshi.png">
+  <p class="site-author-name" itemprop="name">阿部　吉伸(Yoshinobu ABE)</p>
+  <div class="site-description" itemprop="description">IT</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/new-technology/archives/">
+          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-name">ポスト</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/new-technology/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">カテゴリ</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/new-technology/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">タグ</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yoshi0808" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yoshi0808" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yoshi0808.blog@gmail.com" title="E-Mail → mailto:yoshi0808.blog@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yoshi0808_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yoshi0808_" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="/new-technology/lib/@creativecommons/vocabulary/assets/license_badges/big/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="ja">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2020/08/30/bitwarden/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/new-technology/images/yoshi.png">
+      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="New technologies in our life">
+      <meta itemprop="description" content="IT">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="パスワード管理ソフトのbitwardenを活用する | New technologies in our life">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          パスワード管理ソフトのbitwardenを活用する
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">投稿日</span>
+
+      <time title="作成日：2020-08-30 13:35:30" itemprop="dateCreated datePublished" datetime="2020-08-30T13:35:30+09:00">2020-08-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">編集日</span>
+      <time title="修正日：2022-02-11 12:19:38" itemprop="dateModified" datetime="2022-02-11T12:19:38+09:00">2022-02-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">カテゴリ</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/Security/" itemprop="url" rel="index"><span itemprop="name">Security</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <img src="/new-technology/2020/08/30/bitwarden/password.png" class="" title="alt">
+
+<h2 id="パスワード管理はソフトウェアに任せる"><a href="#パスワード管理はソフトウェアに任せる" class="headerlink" title="パスワード管理はソフトウェアに任せる"></a>パスワード管理はソフトウェアに任せる</h2><p>「<a href="/new-technology/2020/08/14/remote-work/" title="安全快適にリモートワークを行う">安全快適にリモートワークを行う</a>」で記載したように、リモートワークの活用機会が高まり、ますます各自のパスワード管理が重要になってきています。頭ではパスワードの使い回しは良く無いと理解していながら、結局は文字列＋数字で似たようなパスワードをいくつも作ってしまい、脆弱な状態にあるケースは多いように感じます。パスワード管理ソフトの導入はITリテラシが高く無いとなかなか取り組む機会はありませんが、個人のパスワードと会社のアカウントに利用しているパスワードが類似しているのは問題です。同僚とパスワードを共有してしまうという問題も多くあります。先日のニュースでは国内企業のVPNの脆弱性からパスワードが漏洩し、2要素認証を設定していた企業は救われたと記事になっていました。ここで紹介するパスワード管理ソフトですが、パスワードを管理する事と、ランダムな文字列でのパスワード生成機能の2つの機能を持ちます。また、このbitwardenは、パスワードが登録されたサイトに遷移すると指紋認証や顔認証等でパスワードが入力されます。当然ながら、URLが異なればパスワードを自動入力しないため、フィッシング対策にもなります。このプロダクトは無償、有償と選択が可能ですが、無償でも十分な機能を保持しています。</p>
+<span id="more"></span>
+<h2 id="パスワード管理の目指す姿"><a href="#パスワード管理の目指す姿" class="headerlink" title="パスワード管理の目指す姿"></a>パスワード管理の目指す姿</h2><ul>
+<li>信頼できるソフトウェアを活用する（bitwarden社について）</li>
+<li>クロスプラットフォームで複数のチャネル、有名なブラウザーに対応し利便性が高いこと</li>
+<li>パスワード生成機能は所定の文字数で任意に数字や記号を含められること</li>
+<li>ネットに繋がらなくてもパスワード管理ソフトを利用できること</li>
+<li>可能な限り2要素認証を組み合わせること</li>
+<li>容易にバックアップが取得できること</li>
+<li>本当に重要なIDこそ自分で記憶する。金融に関わるパスワード管理</li>
+<li>クラウド管理かオンプレミス（ローカル環境）か</li>
+</ul>
+<ol>
+<li><p>信頼できるソフトウェアを活用する（bitwarden社について）<br> プロダクトを提供している企業のプライバシーポリシーがしっかり記載され、どの国に属するかが記載され、本人の同意なく情報を開示しないという基本事項がプライバシーポリシーに記載されている事は重要です。曖昧に記載している企業のソフトウェアはお勧めしません。最終的に企業が属する国の命令には逆らえませんが、明瞭である事は重要です。オープンソースである事などは、さらに企業のスタンスが明確です。</p>
+</li>
+<li><p>クロスプラットフォームで複数のチャネル、有名なブラウザーに対応し利便性が高いこと<br> クロスプラットフォームである事は利便性が高くなります。Windowsだけで使えても、スマホでは別管理というのではじきに使わなくなってしまいます。Windows、macOS、iOS、Androidに対応している事は必須条件でしょう。スマホやタブレットなどでは指紋認証や顔認証でスムーズにパスワードを利用できる事が前提です。</p>
+</li>
+<li><p>パスワード生成機能は所定の文字数で任意に数字や記号を含められること<br> サイトによっては文字列数の下限、上限が異なります。また記号の一部が含められないなどサイトによってルールは異なります。パスワード管理ソフトでは、サイトによって任意にルールを定めたうえで生成できる事が求められます。</p>
+</li>
+<li><p>ネットに繋がらなくてもパスワード管理ソフトを利用できること<br> ネットに繋げるためのパスワードや、ブラウザから利用するものがパスワード管理の全てではありません。クローズネットワークやスマホの機内モードであったとしても重要なデータにアクセスする機会はあり得ます。これはソフトウェアのデザインですが、bitwardenはそのシチュエーションを踏まえたソフトウェアのデザインがなされています。</p>
+</li>
+<li><p>可能な限り2要素認証を組み合わせること<br> これはユーザー側に求める要件です。パスワードが漏洩する可能性を踏まえ、利用するサイトやサービスでは2要素認証を設定しておくべきです。パスワード自体を第三者に預けられる前提が2要素認証です。もちろん、bitwardenからパスワード全体が漏洩する事は企業の存続に関わるわけですし、その可能性は低いと考えられますが完璧と考えるべきではありません。今や2要素認証はサービス提供業者の基本提供機能ですからパスワードが万が一漏洩しても水際で防ぐ事ができます。なお、使い方の注意として2要素認証のキーとなる要素をbitwardenに保存するべきではありません。2要素認証で有名なAuthyはバックアップパスワードなどの存在がありますが、これは主に利用するパスワード管理ソフトとは別に管理すべきです。</p>
+</li>
+<li><p>容易にバックアップが取得できること<br> パスワードは漏洩する事が最悪の事象ですが、ロストすると回復に時間を要し、大幅な時間をロスします。各個人の責任でバックアップは取得しておくべきです。bitwardenは、csvまたはjson形式で簡単にエクスポートできます。これを暗号化されたUSBメディアなどにバックアップし、ネットとは繋がらない場所に保管しておく事が求められます。</p>
+</li>
+<li><p>本当に重要なIDこそ自分で記憶する。金融に関わるパスワード管理<br> オンラインバンキングなど、漏洩した時には直接金銭的、かつ高額となり得るものはパスワード管理システムから除外される事をお勧めします。2要素認証があるのは当然としても、です。もちろん上述した暗号化されたUSBメディアに保存しておく事でも構いません。ネットで到達できる場所に保存されるべきではありません。クレジットカードの盗難とは異なり、オンラインバンキングではユーザー側の重過失によって補償減額、または補償せずという取り扱いになりえます。これはパスワードを記載した手帳を盗まれた、パスワードをスマホに保存してあったものが盗難されるなどした場合もユーザー側の重過失にあたる可能性があります。そのアカウントの利用でどういったリスクがあるのかを考えIDとパスワードを管理していく必要があります。●●payのQR決済もオンラインバンキング程は高額にならないものの、金銭流出のリスクがあります。主要なQR決済事業者は不正利用に対して補償するというスタンスが主流ではあるものの、パスワード管理におけるユーザー側の過失があれば補償されない可能性があります。各企業の約款、補償の事項に必ず目を通す必要があります。全ては個別事案での判断という事なのでしょうが、そもそもパスワードの使い回しは過失と言われても仕方がないのではないでしょうか。金融分野は極めてリスクが高いという事になります。QR決済は少額決済ですが、2要素認証は必須といえるでしょう。英単語と数字の単純な組み合わせではない複雑さを持ったパスワードを設定される事をお勧めします。</p>
+</li>
+<li><p>クラウドかオンプレミス（ローカル環境）か<br> 自宅のPCでパスワード管理する事とbitwardenのようにクラウドで管理する事のどちらが安全かと言われれば判断は難しいところです。ちなみに、bitwardenはオンプレミスで構築できます。実際に過去、ubuntu18.04LTSにdocker、docker composeを導入し、bitwardenをセットアップし利用していた事があります。ダイナミックDNSはno-ipを使い、SSLは無償のLet’s Encryptにbitwarden自身が登録すれば完了です。3カ月ごとにスクリプトを走らせればSSL証明書を自動更新し、dockerから最新イメージを自動ダウンロードしてシステムを最新に保ちます。Linux上でMS SQLServerが動作し、bitwardenはコンパクトながらとても技術の高さを感じました。しかし、個人でWAF導入やアクセスログのチェックなどセキュリティ対策を実施する事の難易度の高さも感じ、再びクラウド管理に戻しました。ビジネス目的にて、インターネットに接続されない企業内でbitwardenを活用するのは非常に良い方法です。個人のサイバーセキュリティ対策で実現可能な事は資金面やスキル面でも限界があります。隙を見せず、目立たず狙われにくい事が大切です。</p>
+</li>
+</ol>
+<h2 id="bitwardenの利用方法"><a href="#bitwardenの利用方法" class="headerlink" title="bitwardenの利用方法"></a>bitwardenの利用方法</h2><p><strong>bitwarden</strong>のWebサイトで最初にアカウントを作成します。</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://bitwarden.com/">https://bitwarden.com</a></p>
+</blockquote>
+<img src="/new-technology/2020/08/30/bitwarden/bitwarden.png" class="" title="alt">
+
+<p>アカウント作成の最初の画面こそ英語ですが、実際のアカウント作成画面は日本語となります。利用するアプリも日本語ですので扱いはとても簡単に感じます。</p>
+<img src="/new-technology/2020/08/30/bitwarden/account.png" class="" title="alt">
+
+<p>アカウントの作成が終了したらWebにログインし、もし現在利用されているパスワードマネージャがあるのであればインポートできます。ChromeやFirefoxのパスワードをcsvに一旦出力し、インポートもできます。bitwardenではこのパスワードの集合体を保管庫と呼んでいます。</p>
+<img src="/new-technology/2020/08/30/bitwarden/bitwarden1.png" class="" title="alt">
+
+<p>続いて<mark class="label primary">設定タブ</mark>から2要素認証を設定します。おなじみのAuthyやメール通知を選択できます。</p>
+<img src="/new-technology/2020/08/30/bitwarden/bitwarden2.png" class="" title="alt">
+
+<p>次に、PCであれば、端末毎にbitwardenのクライアントアプリケーションおよび利用するブラウザの拡張機能としてbitwardenをインストールしてください。上記の画面ではYubikey、Duo、FIDOがプレミアム版としての表記がありますが、無償版のbitwardenであっても、生体認証に対応しています。プレミアム版に登録しDuoを選択した場合は、2要素認証の6桁の数字を入力する事なく、シングルサインオンでスマホに通知がきますので以下のように”Approve”をタップするだけでログインが完了します。これはあくまでbitwardenのログインの話であって、各サイトのログイン時にシングルサインオンが可能になるわけではありません。</p>
+<img src="/new-technology/2020/08/30/bitwarden/duo1.png" class="" width="400" title="alt">
+
+<p><strong>Duo Security</strong>は2018年にCisco社が買収しています。CiscoのAnyConnectを使う場合の2要素認証に使われるもので、どちらかといえば法人がターゲットです。最近だとMicrosoft365でも使えるようになりました。個人利用は無償です。</p>
+<blockquote>
+<p>Duo Security<br> <a target="_blank" rel="noopener" href="https://duo.com/">https://duo.com</a></p>
+</blockquote>
+<img src="/new-technology/2020/08/30/bitwarden/duo2.png" class="" title="alt">
+
+<p>“Free Trial”と言われると基本は有償サービスのように感じますが、”Free Trial”からアカウントを作成し、速やかに無料アカウント（Duo Free）に切り替え可能です。<br>bitwardenとの連携は以下のようにDuoの画面からbitwardenの情報を元にID、秘密鍵、APIサーバーを設定します。そしてスマホアプリの”Duo Mobile”をセットアップし利用します。</p>
+<img src="/new-technology/2020/08/30/bitwarden/duo3.png" class="" title="alt">
+
+<p>そもそもコストの低いbitwardenでDuoのPushサービスが利用できるという事は、Duoは法人向けの利用料も廉価なのでしょうか。今後色々なサービスでもDuoを利用する機会が増えてくる事が期待されます。</p>
+<h3 id="bitwardenの設定"><a href="#bitwardenの設定" class="headerlink" title="bitwardenの設定"></a>bitwardenの設定</h3><p>bitwardenに対しパスワードの入力の都度、毎回マスターパスワードを入力するのは大変な作業で現実的ではありません。2要素認証を設定していれば、初回こそマスターパスワードと2要素認証が必要ですが、2回目以降のログインでは同一クライアントまたは同一ブラウザであれば2要素認証は不要です。bitwardenはさらにpinによる簡易な対話型認証をし、保管庫にアクセスする事が可能となります。</p>
+<img src="/new-technology/2020/08/30/bitwarden/bitwarden3.png" class="" title="alt">
+
+<h3 id="PINによるロック解除"><a href="#PINによるロック解除" class="headerlink" title="PINによるロック解除"></a>PINによるロック解除</h3><p>ブラウザの拡張機能からbitwardenを呼び出し、”設定”から保管庫のタイムアウトはブラウザ再起動時とし、PINでロック解除にチェックします。すると右側の画面がポップアップするので、簡易なPINコードを決めたら入力し、”ブラウザー再起動時にマスターパスワードでロック”のチェックボックスは外します。最後に”送信”ボタンをクリックし確定します。</p>
+<p>これでブラウザーを再起動しても、再びマスターパスワードは不要でPINコードで保管庫にアクセスできます。</p>
+<h3 id="生体認証によるロック解除（スマホ）"><a href="#生体認証によるロック解除（スマホ）" class="headerlink" title="生体認証によるロック解除（スマホ）"></a>生体認証によるロック解除（スマホ）</h3><p>スマホの場合は最近では生体認証がほぼ使える状態でしょう。iOSであればbitwardenの”設定”から”Face IDでロック解除”をチェックします。Androidの場合も同様にbitwardenの”設定”から”生体認証でロック解除”を設定します。</p>
+<h3 id="生体認証によるロック解除（PC）"><a href="#生体認証によるロック解除（PC）" class="headerlink" title="生体認証によるロック解除（PC）"></a>生体認証によるロック解除（PC）</h3><p>スマホと同様ですが、bitwardenの仕組みはブラウザから生体認証するときにデスクトップアプリのbitwardenとやりとりして認証します。ブラウザ起動後、最初にbitwardenを使う場合はロック解除が必要ですが、この時にデスクトップ版のbitwardenをあらかじめ起動しておくことが必須です。</p>
+<p>Windowsのbitwardenでは、Windows Helloに対応しています。生体認証が付いていないPCであっても、Amazonなどで安価に（2,000円強）で指紋認証のUSBドングルが販売されているのでこちらを利用可能です。Windows Helloのセットアップも難しくはありません。USBに挿せばドライバを自動セットアップしてくれます。Windowsのログイン、bitwarden共に指紋認証が行え便利です。</p>
+<blockquote>
+<p>Amazon 【Amazon.co.jp 限定】SEKC USB指紋認証キー Windows Hello機能対応 0.05秒 指紋認証でセキュリティ対策 SFSD-01<br> <a target="_blank" rel="noopener" href="https://www.amazon.co.jp/gp/product/B07GLRQPHP/">https://www.amazon.co.jp/gp/product/B07GLRQPHP/</a></p>
+</blockquote>
+<p>OSのWindows Helloの設定が無事完了すると、bitwardenアプリでも生体認証が行えるようになります。設定から”生体認証でロック解除”をチェックします。また、ブラウザの拡張機能としてbitwardenをインストールし、拡張機能版のbitwardenでも同様に生体認証を設定します。</p>
+<p>macOSでも設定内容はWindowsと同じです。macbookであればTouch IDが使えるので、Touch IDでアプリ、ブラウザ共にロック解除が可能です。私が知る限りでは、SafariとMicrosoft EdgeではTouch IDで解除できますが、mac版Firefoxでは生体認証によるロック解除は使えませんでした。</p>
+<p>なお、生体認証といえばYubikeyが挙げられますが、これはWindows Helloに対応させた運用をするのは難しく、Windows Hello対応の指紋認証デバイスを購入されることをお勧めします。（なんだかややこしい書き方をしていますが、YubikeyではWindowsローカルアカウント前提とか色々運用上の制約があります）。</p>
+<p>その他カスタマイズする箇所としては<mark class="label primary">クリップボードの消去</mark>で、他のアプリケーションからクリップボードの中身を読み取られる可能性を考え、速やかに消去する設定がお勧めです。</p>
+<p>（2020-09-30追記）<br>iOS14から、クリップボードを読み取ったアプリケーションについて画面上部に表示される機能が加わりました。これまでこっそりクリップボードの内容を読み取っていたアプリ提供者も釈明に追われる事でしょう。そのようなアプリは多くないようですが、パスワードや他の重要な情報を読み取られてしまうリスクを念頭に対処してください。</p>
+<h2 id="アカウント作成時の実例"><a href="#アカウント作成時の実例" class="headerlink" title="アカウント作成時の実例"></a>アカウント作成時の実例</h2><p>アカウント作成時に、どのようにパスワードを自動生成し登録していくのかを動画にしてありますので参考にしてください。</p>
+<video src="add-account.mp4" preload="metadata" controlslist="nodownload" controls playsinline poster=""></video>
+
+<p>実例として価格comのサイトへのアカウント作成の挙動です。価格comは半角英数の8〜12文字という制約があります。記号は使えません。パスワードの規則に添うようにパスワードを生成します。</p>
+<p>一度登録してしまえば、ブラウザからのログインはとても簡単です。</p>
+<video src="login.mp4" preload="metadata" controlslist="nodownload" controls playsinline poster=""></video>
+
+<p>サイトによって挙動は異なるのですが、価格comの場合、ログインボタンをクリックするだけで、あとは勝手にbitwardenがIDとパスワードをセットしてくれます。</p>
+<p>これで、たくさんのパスワードに悩まされる事なく、パスワードの使い回しによる、”利用者の過失”というリスクから解放されます。私は、個人向けのセキュリティ対策はまず最初に認証管理が重要と考えています。なかなか興味が向かない分野ですが、参考にしていただければ幸いです。</p>
+<h2 id="（補足）bitwardenの脆弱性について"><a href="#（補足）bitwardenの脆弱性について" class="headerlink" title="（補足）bitwardenの脆弱性について"></a>（補足）bitwardenの脆弱性について</h2><p>bitwardenはオープンソースであるが故に、いろいろな脆弱性を見つけられ、指摘を受ける可能性があります。実際に<strong>JPCERT&#x2F;CC</strong>と<strong>IPA</strong>との共同で提供されている、脆弱性対策情報データベースである<strong>JVN IPedia</strong>から、bitwardenの脆弱性を検索できます。</p>
+<blockquote>
+<p>JPCERT&#x2F;CC<br> <a target="_blank" rel="noopener" href="https://www.jpcert.or.jp/">https://www.jpcert.or.jp</a><br>IPA<br> <a target="_blank" rel="noopener" href="https://www.ipa.go.jp/">https://www.ipa.go.jp</a><br>JVN IPedia<br> <a target="_blank" rel="noopener" href="https://jvndb.jvn.jp/index.html">https://jvndb.jvn.jp/index.html</a></p>
+</blockquote>
+<p>JPN IPediaでbitwardenについて検索すると、2件該当し、直近では2020年7月18日に公開された「JVNDB-2020-008246 Bitwarden Server におけるサーバサイドのリクエストフォージェリの脆弱性」が見つかります。セキュリティの専門家は、このサーバーサイドリクエストフォージェリはかなりリスクが高い内容と認識しています。端的に言えば、bitwarden Serverを踏み台にし、そこからネットワーク内の別のサーバーの情報を抜き取る事が可能（かもしれない）という脆弱性です。またCVSSv3の値が7.5と定量的にもリスクが高い事を示しています。JVN IPediaは速やかに情報共有を行うのが目的であって、ユーザーがどう対応するか、または修正が完全であるかどうかの評価を行いません。<br>この修正に関しては、JPN IPediaから辿ると、bitwardenのGitHub上の<strong>プルリクエスト</strong>が行われており、内容は<strong>hackerOne</strong>から7月16日に指摘されたものでIPv6が混在した場合の脆弱性とわかります。このやりとりを見れば7月18日には修正が行われマージコミットされています。そして7月29日にはVersion1.36.0の提供が行われ、対応完了という流れになります。Version1.36.0については以下を参照してください。</p>
+<blockquote>
+<p>bitwardenのGitHub上のプルリクエスト<br> <a target="_blank" rel="noopener" href="https://github.com/bitwarden/server/pull/827">https://github.com/bitwarden/server/pull/827</a><br>hackerOne<br> <a target="_blank" rel="noopener" href="https://www.hackerone.com/">https://www.hackerone.com</a><br>Version 1.36.0(GitHub)<br> <a target="_blank" rel="noopener" href="https://github.com/bitwarden/server/releases/tag/v1.36.0">https://github.com/bitwarden/server/releases/tag/v1.36.0</a></p>
+</blockquote>
+<p>実際に、クラウド上でbitwarden社がどのように運用しているかまでは公開されていません。一般的には多重化されたサイバーセキュリティ製品で守られており、そう簡単に攻撃が成功するケースは無いものと考えられますが、ユーザーがオンプレミスで運用している場合で、インターネットにbitwarden Serverを公開している場合は高いリスクといえます。そのような理由で私も一時はインターネット接続を認めない形でLAN内のみでオンプレでbitwarden Serverを運用していたものの、こういった情報を頻繁に追っていくのがあまりに大変であるため、再びクラウドの利用に切り替えたという次第です。</p>
+<p>hackeroneに対しては、あくまで企業の意思で登録するもので、bitwarden社はhackeroneへの登録を行っています。hackeroneに登録されたハッカーは脆弱性を見つけた場合には報奨金を得る仕組みとなっています。ハッカーの中には報奨金を寄付に回す人達もいます。bitwarden社のモデルはかなり勇気のある行動で自分たちの技術力に自信が無いとなかなかこういった行動は取れないでしょう。</p>
+<p>サーバーセキュリティ製品なのでサーバーサイドからクライアントに対し緊急パッチを当てる機能は必須です。しかし、「開発者がOSの特権を用いてやりたい放題の脆弱性」だと指摘されるケースもあります。それが脆弱性だとしたらアプリケーションを何もインストールできなくなってしまいます。そういったケースも含めてオープンに説明責任を果たし、ユーザーに考える機会を与える事、信頼を蓄積していく事がプロの仕事でありプロダクトの信頼性に繋がると私は考えています。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/new-technology/tags/bitwarden/" rel="tag"><i class="fa fa-tag"></i> bitwarden</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/new-technology/2020/08/14/remote-work/" rel="prev" title="安全快適にリモートワークを行う">
+                  <i class="fa fa-chevron-left"></i> 安全快適にリモートワークを行う
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/new-technology/2020/10/11/esxi-backup/" rel="next" title="VMware ESXiの仮想マシンをバックアップする">
+                  VMware ESXiの仮想マシンをバックアップする <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">阿部　吉伸(Yoshinobu ABE)</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div><script src="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.umd.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.min.css" rel="stylesheet">
+
+<script>
+if (Cookies.get('PRVCY202112') != 'Agree') {
+  const notice = new SimpleGDPR({
+    title: 'Accept Cookies & Privacy Policy?',
+    message: 'このWebサイトでは、訪問や活動に関するデータがクッキー等によって収集されます。閲覧を継続される場合、\
+    プライバシーポリシーをご覧いただき同意(Agree)をお願いします',
+    link: null,
+    icons: true,
+    theme: 'light',
+    animation: 'fade',
+    float: 'bottom-right',
+      callback: () => {
+      notice.close();
+      Cookies.set('PRVCY202112', 'Agree', { expires: 365, path: '/'});
+      notice.destroy();
+      // Google Analytics 4
+      gtag('consent', 'update', {
+      'analytics_storage': 'granted'
+      });
+      gtag('js', new Date());
+      gtag('config', 'G-JMY6NSC2KK', { 'anonymize_ip': true });
+      },
+  });
+}
+</script>
+<div class="disclaimer1">
+このサイトの記事は、特別な記載がない限り <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja">クリエイティブ・コモンズ BY-NC-SA ライセンス</a>で保護されています</div>
+
+
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/yoshi0808" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="/new-technology/lib/animejs/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="/new-technology/lib/medium-zoom/dist/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/comments.js"></script><script src="/new-technology/js/utils.js"></script><script src="/new-technology/js/motion.js"></script><script src="/new-technology/js/schemes/muse.js"></script><script src="/new-technology/js/next-boot.js"></script>
+
+  <script src="/new-technology/lib/hexo-generator-searchdb/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"/new-technology/lib/mermaid/dist/mermaid.min.js","integrity":"sha256-3JloMMI/ZQx6ryuhhZTsQJQmGAkXeni6PkshX7UUO2s="}}</script>
+  <script src="/new-technology/js/third-party/tags/mermaid.js"></script>
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

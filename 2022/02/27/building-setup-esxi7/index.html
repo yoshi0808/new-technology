@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/icon-16x16.png">
+  <link rel="mask-icon" href="/new-technology/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/new-technology/css/main.css">
+
+
+
+<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-/4UQcSmErDzPCMAiuOiWPVVsNN2s3ZY/NsmXNcj0IFc=" crossorigin="anonymous">
+  <link rel="stylesheet" href="/new-technology/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.15.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
+
+    <meta name="description" content="この記事で実現すること  最近、改めて無償版ESXi7.0向けのハードウェアをRyzen CPUをベースにセットアップし直したので参考までに掲載します。vmの動作などは全く問題ありませんが、ESXi自身のセキュアブートだけはうまくいきませんでした。参考になればと思い記録を残します。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ESXI7.0をRyzen7 5700Gで構築">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2022/02/27/building-setup-esxi7/index.html">
+<meta property="og:site_name" content="New technologies in our life">
+<meta property="og:description" content="この記事で実現すること  最近、改めて無償版ESXi7.0向けのハードウェアをRyzen CPUをベースにセットアップし直したので参考までに掲載します。vmの動作などは全く問題ありませんが、ESXi自身のセキュアブートだけはうまくいきませんでした。参考になればと思い記録を残します。">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/02/27/building-setup-esxi7/B550SH2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/02/27/building-setup-esxi7/970evo.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/02/27/building-setup-esxi7/ipolex.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/02/27/building-setup-esxi7/esxi1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/02/27/building-setup-esxi7/esxi2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/02/27/building-setup-esxi7/esxi3.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/02/27/building-setup-esxi7/DiskMark.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/02/27/building-setup-esxi7/fastcom.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/02/27/building-setup-esxi7/esxi4.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/02/27/building-setup-esxi7/wchecker.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/02/27/building-setup-esxi7/mellanox.png">
+<meta property="article:published_time" content="2022-02-26T18:58:48.000Z">
+<meta property="article:modified_time" content="2023-02-08T12:46:47.000Z">
+<meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
+<meta property="article:tag" content="10GbE">
+<meta property="article:tag" content="ESXi">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2022/02/27/building-setup-esxi7/B550SH2.png">
+
+
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2022/02/27/building-setup-esxi7/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"ja","comments":true,"permalink":"https://yoshi0808.github.io/new-technology/2022/02/27/building-setup-esxi7/","path":"2022/02/27/building-setup-esxi7/","title":"ESXI7.0をRyzen7 5700Gで構築"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>ESXI7.0をRyzen7 5700Gで構築 | New technologies in our life</title>
+  
+
+
+
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{&quot;token&quot;: &quot;0148b4d0442e42b483ddce684030bd2f&quot;}'></script>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JMY6NSC2KK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+  'ad_storage': 'denied',
+  'analytics_storage': 'denied'
+  });
+
+  dataLayer.push({
+  'event': 'default_consent'
+  });
+
+  if (Cookies.get('PRVCY202112') == 'Agree') {
+    gtag('consent', 'update', {
+    'analytics_storage': 'granted'
+    });
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'G-JMY6NSC2KK',{ 'anonymize_ip': true });
+</script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/new-technology/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/new-technology/atom.xml" title="New technologies in our life" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="ナビゲーションバーの切り替え" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/new-technology/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">New technologies in our life</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Device,Network,Code,etc...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="検索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/new-technology/" rel="section"><i class="fa fa-home fa-fw"></i>ホーム</a></li><li class="menu-item menu-item-about"><a href="/new-technology/about/" rel="section"><i class="fa fa-user fa-fw"></i>サイトポリシー</a></li><li class="menu-item menu-item-tags"><a href="/new-technology/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>タグ</a></li><li class="menu-item menu-item-categories"><a href="/new-technology/categories/" rel="section"><i class="fa fa-th fa-fw"></i>カテゴリ</a></li><li class="menu-item menu-item-archives"><a href="/new-technology/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>アーカイブ</a></li><li class="menu-item menu-item-privacy"><a href="/new-technology/privacypolicy/" rel="section"><i class="fa fa-check fa-fw"></i>プライバシーポリシー</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="検索…" spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          見出し
+        </li>
+        <li class="sidebar-nav-overview">
+          概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi7%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AE%E3%83%8F%E3%83%BC%E3%83%89%E3%82%A6%E3%82%A7%E3%82%A2%E9%81%B8%E5%AE%9A%E6%A4%9C%E8%A8%8E"><span class="nav-number">1.</span> <span class="nav-text">ESXi7のためのハードウェア選定検討</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%8F%E3%83%BC%E3%83%89%E3%82%A6%E3%82%A7%E3%82%A2%E6%A7%8B%E6%88%90"><span class="nav-number">2.</span> <span class="nav-text">ハードウェア構成</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CPU"><span class="nav-number">2.1.</span> <span class="nav-text">CPU</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%9E%E3%82%B6%E3%83%BC%E3%83%9C%E3%83%BC%E3%83%89"><span class="nav-number">2.2.</span> <span class="nav-text">マザーボード</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%A1%E3%83%A2%E3%83%AA"><span class="nav-number">2.3.</span> <span class="nav-text">メモリ</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%82%B9%E3%83%88%E3%83%AC%E3%83%BC%E3%82%B8"><span class="nav-number">2.4.</span> <span class="nav-text">ストレージ</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E3%82%AB%E3%83%BC%E3%83%89"><span class="nav-number">2.5.</span> <span class="nav-text">ネットワークカード</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi7-0u3c%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><span class="nav-number">3.</span> <span class="nav-text">ESXi7.0u3cのインストール</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#UEFI%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">3.1.</span> <span class="nav-text">UEFIの設定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><span class="nav-number">3.2.</span> <span class="nav-text">インストール</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A7%E3%83%9E%E3%82%B7%E3%83%B3%E3%81%8B%E3%82%89vm%E3%81%AE%E7%A7%BB%E8%A1%8C"><span class="nav-number">3.3.</span> <span class="nav-text">旧マシンからvmの移行</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%82%B9%E3%83%88%E3%83%AC%E3%83%BC%E3%82%B8%E3%81%AE%E3%83%91%E3%83%95%E3%82%A9%E3%83%BC%E3%83%9E%E3%83%B3%E3%82%B9"><span class="nav-number">4.</span> <span class="nav-text">ストレージのパフォーマンス</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E3%81%AE%E3%83%91%E3%83%95%E3%82%A9%E3%83%BC%E3%83%9E%E3%83%B3%E3%82%B9"><span class="nav-number">5.</span> <span class="nav-text">ネットワークのパフォーマンス</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9B%BB%E5%8A%9B%E3%83%81%E3%82%A7%E3%83%83%E3%82%AF"><span class="nav-number">6.</span> <span class="nav-text">電力チェック</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SFP-%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span class="nav-number">7.</span> <span class="nav-text">SFP+について</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#intel-X710%E3%81%AE%E6%B3%A8%E6%84%8F%E7%82%B9%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span class="nav-number">8.</span> <span class="nav-text">intel X710の注意点について</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="阿部　吉伸(Yoshinobu ABE)"
+      src="/new-technology/images/yoshi.png">
+  <p class="site-author-name" itemprop="name">阿部　吉伸(Yoshinobu ABE)</p>
+  <div class="site-description" itemprop="description">IT</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/new-technology/archives/">
+          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-name">ポスト</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/new-technology/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">カテゴリ</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/new-technology/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">タグ</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yoshi0808" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yoshi0808" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yoshi0808.blog@gmail.com" title="E-Mail → mailto:yoshi0808.blog@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yoshi0808_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yoshi0808_" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="/new-technology/lib/@creativecommons/vocabulary/assets/license_badges/big/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="ja">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2022/02/27/building-setup-esxi7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/new-technology/images/yoshi.png">
+      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="New technologies in our life">
+      <meta itemprop="description" content="IT">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="ESXI7.0をRyzen7 5700Gで構築 | New technologies in our life">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ESXI7.0をRyzen7 5700Gで構築
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">投稿日</span>
+
+      <time title="作成日：2022-02-27 03:58:48" itemprop="dateCreated datePublished" datetime="2022-02-27T03:58:48+09:00">2022-02-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">編集日</span>
+      <time title="修正日：2023-02-08 21:46:47" itemprop="dateModified" datetime="2023-02-08T21:46:47+09:00">2023-02-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">カテゴリ</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/Hardware/" itemprop="url" rel="index"><span itemprop="name">Hardware</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p class="onepoint">この記事で実現すること</p>
+
+<p>最近、改めて無償版ESXi7.0向けのハードウェアをRyzen CPUをベースにセットアップし直したので参考までに掲載します。vmの動作などは全く問題ありませんが、ESXi自身のセキュアブートだけはうまくいきませんでした。参考になればと思い記録を残します。</p>
+<span id="more"></span>
+
+<h2 id="ESXi7のためのハードウェア選定検討"><a href="#ESXi7のためのハードウェア選定検討" class="headerlink" title="ESXi7のためのハードウェア選定検討"></a>ESXi7のためのハードウェア選定検討</h2><p>ハードウェア選定については以下のポリシーとしました。私はパワーユーザーではなく、1つの仮想マシン（vm)に大きな能力を求めていませんが、LinuxやFirewallなどを中心にvmの数だけは増えていきそうな気がします。これまで使っていたハードウェアは10GBase-TのNICも含めてかなり熱を出していたのでもう少し省電力を求めて探しました。</p>
+<ul>
+<li>CPUは多くのvmを動かすことが想定されるが省電力を意識したい</li>
+<li>筐体はスリムタイプ（Micro-ATX）でグラフィックカードは積まず貴重なPCIeスロットはネットワークカードに使う</li>
+<li>ネットワークカードはintelかMellanoxが候補。熱対策が必要なので10Gbase-Tではなく、SFP+を中心に検討</li>
+<li>ストレージは高速化のためNVMeにしたい</li>
+</ul>
+<h2 id="ハードウェア構成"><a href="#ハードウェア構成" class="headerlink" title="ハードウェア構成"></a>ハードウェア構成</h2><p>以下のハードウェア構成となりました。</p>
+<table>
+<thead>
+<tr>
+<th>パーツ</th>
+<th>製品名</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CPU</td>
+<td>Ryzen7 5700G 3.8GHz(Radeon Graphics)</td>
+</tr>
+<tr>
+<td>マザーボード</td>
+<td>GIGABYTE B550M S2H Micro-ATX</td>
+</tr>
+<tr>
+<td>メモリ</td>
+<td>SanMax DDR4-3200 1.2Volt Skhynix(88H) 32GB x 2</td>
+</tr>
+<tr>
+<td>NVMe</td>
+<td>Samsung 970EVO Plus PCIE x Gen3 x 4 1TB</td>
+</tr>
+<tr>
+<td>SSD</td>
+<td>WesternDigital Blue 500GB</td>
+</tr>
+<tr>
+<td>NIC</td>
+<td>ipolex OEM (intel X710 chipset) 10GbE SFP＋ 4Port</td>
+</tr>
+<tr>
+<td>電源</td>
+<td>スリムタイプ 300W電源</td>
+</tr>
+</tbody></table>
+<p>キーボード・マウス・NICを除き163,480円でした。NICはダイレクトアタッチケーブル2本を含め$531でした（送料と関税入れると＄580程度）。</p>
+<h3 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h3><p>毎回の説明ですが、ESXiにおいてはリテール向けのCPUは公式にサポートされていません。intelのCore iシリーズは鉄板ですが、AMD Ryzenでも動くようだという記事もちらほら見かけるようになりました。ESXi7.0になって、AMDのZEN3アーキテクチャをサポートするという内容（具体的にはEPYCに対応する）についてVMWareの方が説明しているビデオを見た事があり、ZEN3アーキテクチャのRyzenなら安定動作が見込めるのではないかと考えました。 私の場合省電力のPCを必要としていました。省電力ながらCPU8コア16スレッドは魅力です。Ryzen7 5700GはTDP65Wなので、全体で100W程度の省電力マシンを構築することを目標としました。ヘッドレスシステム、いわゆるキーボードもマウスもディスプレイ（グラフィックカード）も持たないESXiでのGPUレスのセットアップもあるようですが、トラブル時の緊急対応や後々のクライアントPCとしての再利用も視野に入れ、GPU付きのCPU(APU)を選択しました。</p>
+<h3 id="マザーボード"><a href="#マザーボード" class="headerlink" title="マザーボード"></a>マザーボード</h3><p>秋葉原のパソコンSHOPアーク（Ark)にカスタマイズモデルがあり、それをベースに選択しました。無線LANや2.5GbEなども使う必要がないのでシンプルなマザーボードのGIGABYTE B550M S2H Micro-ATXを選定しました。</p>
+<img src="/new-technology/2022/02/27/building-setup-esxi7/B550SH2.png" class="" width="1000" title="alt">
+
+<h3 id="メモリ"><a href="#メモリ" class="headerlink" title="メモリ"></a>メモリ</h3><p>安定していると評判の国内メーカーのものを選定しました。</p>
+<h3 id="ストレージ"><a href="#ストレージ" class="headerlink" title="ストレージ"></a>ストレージ</h3><p>VMware Commmunityで970EVO Plusが動作するという情報が数件あったのでそれを参考に選定しました。980 Proなどそれ以上の魅力的な製品もありますが、Ryzen7 5700Gを選定しているため、PCIe x 3の制約があり、その上限に合わせた製品にしました。</p>
+<img src="/new-technology/2022/02/27/building-setup-esxi7/970evo.png" class="" width="1000" title="alt">
+
+<h3 id="ネットワークカード"><a href="#ネットワークカード" class="headerlink" title="ネットワークカード"></a>ネットワークカード</h3><p>それなりの数のvmを動作させるとなると必然的にNICは10Gbpsを用意したくなります。過去からintel X550-T2を使ってきてそのまま使い続けるのでも良かったのですが、私の場合、クローゼットに光回線とモデム、CD管が集約されてしまっていることから、そこにあまり熱の出すハードウェアを置けません。次回はSFP&#x2F;SFP+にしようと決めていました。が、NICについては昨今の半導体不足で、欲しいカードは殆ど品切れの状態です。それでAmazon.comでipolexというSFPメーカーがOEM提供しているintel X710のチップが乗った4Portの10GbEカードを購入しました。intel純正のX710のSFP+4Portはフルハイトのカードですが、このipolex社のNICはロープロファイルでしたので私にとっては都合が良いものでした。</p>
+<img src="/new-technology/2022/02/27/building-setup-esxi7/ipolex.png" class="" width="640" title="alt">
+
+<p>なお、2023-2-8時点でamazon.comでもintel純正のSFP+モデルは完売、X710チップが乗った2Portの3rdベンダー製品で$270です。</p>
+<h2 id="ESXi7-0u3cのインストール"><a href="#ESXi7-0u3cのインストール" class="headerlink" title="ESXi7.0u3cのインストール"></a>ESXi7.0u3cのインストール</h2><h3 id="UEFIの設定"><a href="#UEFIの設定" class="headerlink" title="UEFIの設定"></a>UEFIの設定</h3><p>UEFIについては、以下の項目を設定しました。</p>
+<table>
+<thead>
+<tr>
+<th>項目名</th>
+<th>設定値</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SVM mode</td>
+<td>Enable</td>
+</tr>
+<tr>
+<td>Fast Boot</td>
+<td>Disable</td>
+</tr>
+<tr>
+<td>CSM Support</td>
+<td>Disable</td>
+</tr>
+<tr>
+<td>Secure Boot</td>
+<td>Advanced</td>
+</tr>
+</tbody></table>
+<p>しかし、最終的にはセキュアブートでインストールされませんでした。</p>
+<p>ESXiは事後にもセキュアブートに変更できるのですが、うまくいきません。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@esxi:~] /usr/lib/vmware/secureboot/bin/secureBoot.py -c</span><br><span class="line">Secure boot can be enabled: All vib signatures verified. All tardisks validated. All acceptance levels validated</span><br><span class="line">[root@esxi:~]</span><br><span class="line"></span><br><span class="line">[root@esxi:~] esxcli system settings encryption set --require-secure-boot=T</span><br><span class="line">Unable to change the encryption mode and policy. Verify that the current host configuration can satisfy the new requirement.</span><br><span class="line">[root@esxi:~]</span><br></pre></td></tr></table></figure>
+
+<p>コマンドの前半では、セキュアブートに移行できるかのチェックではOKということですが、実際のセキュアブートへの変更ではエラーとなってしまいます。VMware Communityでも見かける内容ですが明確な答えは無いようです。これはマザーボードとESXiとの相性と考えられますが、今後もウォッチしていきたいと思います。</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://communities.vmware.com/t5/ESXi-Discussions/Enabling-Secure-Boot-not-possible/m-p/2864968">https://communities.vmware.com/t5/ESXi-Discussions/Enabling-Secure-Boot-not-possible/m-p/2864968</a></p>
+</blockquote>
+<h3 id="インストール"><a href="#インストール" class="headerlink" title="インストール"></a>インストール</h3><p>これまで同様、Rufusで32GBのUSBメモリにISOファイルを登録しUSBブートからセットアップしています。64Gbyteのメモリを認識し、NICも4つ認識されました。</p>
+<img src="/new-technology/2022/02/27/building-setup-esxi7/esxi1.png" class="" width="800" title="alt">
+
+<p>NICの情報はこちらです。</p>
+<img src="/new-technology/2022/02/27/building-setup-esxi7/esxi2.png" class="" width="800" title="alt">
+
+<p>ipolexはさらに製造をアウトソースしているのでしょうか、単に販売代理店でしょうか。MACアドレスを見る限りでは、「Beijing Sinead Technology」が製造しているようです。購入にあたってはipolexのサポートの方と色々やりとりができましたので安心して購入できました。</p>
+<p>ストレージコントローラは以下の通りです。NVMe 1GBに加え、バックアップ用途で500GBのSSDを加えています。</p>
+<img src="/new-technology/2022/02/27/building-setup-esxi7/esxi3.png" class="" width="800" title="alt">
+
+<h3 id="旧マシンからvmの移行"><a href="#旧マシンからvmの移行" class="headerlink" title="旧マシンからvmの移行"></a>旧マシンからvmの移行</h3><p>環境が異なるため、vSwitchやポートグループの設定はやり直しになりました。NASに対するNFSのマウントなど、いくつかの作業はありますが、そう重い作業ではありません。旧マシンでghettoVCBのバックアップから新環境にレストア、こちらも特段問題がなく3つのvmはあっさり30分程度で終了です。セキュアブートにしていたubuntuやWin10などは問題なく起動しています。</p>
+<h2 id="ストレージのパフォーマンス"><a href="#ストレージのパフォーマンス" class="headerlink" title="ストレージのパフォーマンス"></a>ストレージのパフォーマンス</h2><p>vmのWindows10で実行したCrystal Disk Markの結果です。</p>
+<img src="/new-technology/2022/02/27/building-setup-esxi7/DiskMark.png" class="" width="480" title="alt">
+
+<h2 id="ネットワークのパフォーマンス"><a href="#ネットワークのパフォーマンス" class="headerlink" title="ネットワークのパフォーマンス"></a>ネットワークのパフォーマンス</h2><p>こちらはWindows10Proのvmから10GbEのNASに対するiperf3の結果です。シングルスレッドだと7Gbps程度が限界のようです。元々、Windows版のiperf3はUNIXからの移植のためのヘルパー機能であるランタイムライブラリ「Cygwin1.dll」を使っておりパフォーマンスが出づらい状況にあります。さらに対向する端末の能力が高くないとこのような結果になりやすいです。10並列でようやく期待値となりました。</p>
+<ul>
+<li>シングルスレッド</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">C:\Users&gt;iperf3 -c 192.168.x.x</span><br><span class="line">[ ID] Interval           Transfer     Bandwidth</span><br><span class="line">[  4]   0.00-10.00  sec  8.48 GBytes  7.29 Gbits/sec                  sender</span><br><span class="line">[  4]   0.00-10.00  sec  8.48 GBytes  7.29 Gbits/sec                  receiver</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>10スレッド</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">C:\Users&gt;iperf3 -c 192.168.x.x -P10</span><br><span class="line">[ ID] Interval           Transfer     Bandwidth</span><br><span class="line">(省略)</span><br><span class="line">[SUM]   0.00-10.00  sec  10.9 GBytes  9.33 Gbits/sec                  sender</span><br><span class="line">[SUM]   0.00-10.00  sec  10.8 GBytes  9.28 Gbits/sec                  receiver</span><br></pre></td></tr></table></figure>
+
+<p>ubuntu20は問題なしです。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">user@ubuntu1:~$ iperf3 -c 192.168.x.x</span><br><span class="line"></span><br><span class="line">Connecting to host 192.168.x.x, port 5201</span><br><span class="line">[  5] local 192.168.x.x port 55808 connected to 192.168.x.x port 5201</span><br><span class="line">[ ID] Interval           Transfer     Bitrate         Retr  Cwnd</span><br><span class="line">[  5]   0.00-1.00   sec  1.09 GBytes  9.39 Gbits/sec    0   1.69 MBytes</span><br><span class="line">[  5]   1.00-2.00   sec  1.07 GBytes  9.20 Gbits/sec    0   1.69 MBytes</span><br><span class="line">[  5]   2.00-3.00   sec  1.10 GBytes  9.42 Gbits/sec    0   1.69 MBytes</span><br><span class="line">[  5]   3.00-4.00   sec  1.09 GBytes  9.40 Gbits/sec    0   2.10 MBytes</span><br><span class="line">[  5]   4.00-5.00   sec  1.10 GBytes  9.42 Gbits/sec    0   2.21 MBytes</span><br><span class="line">[  5]   5.00-6.00   sec  1.09 GBytes  9.40 Gbits/sec  696   1.75 MBytes</span><br><span class="line">[  5]   6.00-7.00   sec  1.09 GBytes  9.41 Gbits/sec    0   1.75 MBytes</span><br><span class="line">[  5]   7.00-8.00   sec  1.10 GBytes  9.42 Gbits/sec    0   1.75 MBytes</span><br><span class="line">[  5]   8.00-9.00   sec  1.10 GBytes  9.42 Gbits/sec    0   1.75 MBytes</span><br><span class="line">[  5]   9.00-10.00  sec  1.06 GBytes  9.10 Gbits/sec    0   2.22 MBytes</span><br><span class="line">- - - - - - - - - - - - - - - - - - - - - - - - -</span><br><span class="line">[ ID] Interval           Transfer     Bitrate         Retr</span><br><span class="line">[  5]   0.00-10.00  sec  10.9 GBytes  9.36 Gbits/sec  696             sender</span><br><span class="line">[  5]   0.00-10.00  sec  10.9 GBytes  9.34 Gbits/sec                  receiver</span><br><span class="line"></span><br><span class="line">iperf Done.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>速度としては問題ありませんが、ubuntu側にRetrの数字が出ており、対向側端末の能力不足で送信側のTCPの再送が稀に入っています。</p>
+<h2 id="電力チェック"><a href="#電力チェック" class="headerlink" title="電力チェック"></a>電力チェック</h2><p>簡単な負荷テストを実施してみました。このESXi上にある仮想マシン2つを使ったテストです。ubuntu(2vCPU)からfast.comへの速度テストとSophos Firewall(4vCPU)でIPSによるSSL&#x2F;TLSインスペクションの負荷試験です。回線契約はauひかりの5Gbpsですが、FirewallのSSL&#x2F;TLSインスペクションが入るのでスループットは落ちます。CPUリソースおよび電力の記録は以下の通りです。</p>
+<img src="/new-technology/2022/02/27/building-setup-esxi7/fastcom.png" class="" width="400" title="alt">
+
+<img src="/new-technology/2022/02/27/building-setup-esxi7/esxi4.png" class="" width="1024" title="alt">
+
+<img src="/new-technology/2022/02/27/building-setup-esxi7/wchecker.png" class="" width="400" title="alt">
+
+<p>CPU使用率は綺麗に分散していますしまだ半分ほど余力があります。Sophos FirewallのIPSは4つのスレッドで動作すると聞いていたことがあったので、1つのスレッド（vCPU）に偏るか最大4つのスレッドに偏るかと思いましたが、良い意味で予想は外れました。電力については、何もしていない時で35W、速度テスト実施中でも100Wに到達しない程度です。</p>
+<p>ちなみに、数分速度テストを実施した後のダイレクトアタッチケーブルのSFP+モジュール部分は冷たく感じる程度で全く熱を持っていませんでした。</p>
+<h2 id="SFP-について"><a href="#SFP-について" class="headerlink" title="SFP+について"></a>SFP+について</h2><p>今回、SFP+の4PortのNICを選択しましたが、インターネット接続側のホームゲートウェイ（HGW)は従来のRJ-45の端子であることが殆どです。この場合は以下の選択肢があります。</p>
+<ol>
+<li>拡張性のあるマザーボードを選定し、2つのPCIeスロットに2枚のネットワークカードを挿す（1つはRJ45、1つはSFP＋）</li>
+<li>RJ45ポートとSFP＋ポートを持つスイッチングハブを経由し、ESXiからスイッチにはSFP＋で接続、スイッチからHGWにはRJ45で接続する。この場合はスイッチにおけるLAN側、WAN側とをVLANでネットワークセグメントを分離する必要があります（私はこの方法を選択）。</li>
+<li>SFP＋からRJ45への変換専用の小さなスイッチを用意する（CRS305-1G-4S+IN)。但し、この場合もRJ45変換のSFP＋トランシーバーは必要です。HGWが2.5GbpsのRJ45タイプであればQNAPの小さいスイッチも合うでしょうか。</li>
+</ol>
+<ul>
+<li>MikroTik<br> <a target="_blank" rel="noopener" href="https://mikrotik.com/product/crs305_1g_4s_in">https://mikrotik.com/product/crs305_1g_4s_in</a></li>
+<li>QNAP<br> <a target="_blank" rel="noopener" href="https://www.qnap.com/ja-jp/product/qsw-2104-2s">https://www.qnap.com/ja-jp/product/qsw-2104-2s</a></li>
+</ul>
+<p>お勧めしないのは、NICのSFP＋ポートにRJ45変換のための10Gトランシーバーを接続することです。10GのRJ45トランシーバーは最大3W程度の消費電力ではありますが、触れなくなるほど高熱（70℃）になり、NICに接続するのはNIC破損の危険が高いです。またPCIからSFP+ポートへの電力供給不足でリンクアップしなかったり、2.5Gでリンクアップする場合があります。<br>スイッチに10Gトランシーバーを接続する場合、ネットワーク機器を販売しているMikroTikでは以下のガイダンスを提示しています。</p>
+<blockquote>
+<p>MikroTik S+RJ10 general guidance<br> 前述の通り、S+RJ10(10Gbps RJ45トランシーバー)は通常のトランシーバーよりも発熱が大きく、特にリニアSFPケージを4つ持つデバイスでは、並べて置くとオーバーヒートにつながる可能性があります。S+RJ10は2個おきに配置し、その間に光トランシーバーか空きポートを確保することをお勧めします。</p>
+</blockquote>
+<p> <a target="_blank" rel="noopener" href="https://wiki.mikrotik.com/wiki/S%2BRJ10_general_guidance">https://wiki.mikrotik.com/wiki/S%2BRJ10_general_guidance</a></p>
+<p>MikroTikのS+RJ10は高発熱で有名なモジュールですが、他の10GBase-T SFP+モジュールも相当な温度になります。トランシーバーの作りに問題があるわけではなく、そもそも10GBase-T（RJ-45）はかなりの発熱になってしまい、スイッチングハブであっても内部は相当な熱を持ちます。</p>
+<p>SFP+の詳細な情報については「 <a href="/new-technology/2022/05/28/sfp-plus/" title="10GネットワークとSFP+">10GネットワークとSFP+</a> 」にまとめてあります。</p>
+<p>Mellanoxの現行モデルはやはり在庫を殆ど見かけない状況ですが、古いMellanoxのConnect X-3(MCX311A-XCAT)は安価で手に入ります（ebayなどでは5,000円程度です）。私はMellanoxのConnect X-3(PCIe3 x 4)を保有しており、Windows10とQNAPのNAS（TVS-473e）で動いています。Connect X-3は2019年10月に既に販売終了しています。5年後のサービス終了までは保守されるようですが、最近のドライバなどは見かけません。また新しいOSでは対応が見送られる可能性があります。ただ、半導体不足の今の時期のつなぎとして割り切る考え方もありだと思います。Nvidia（Mellanox）のサイトではESXi7.0のドライバはConnect X-4を対象にしているようですが、セキュアブートのESXi 7.0U3cではインストール時にドライバ追加無しでNICのリンクアップ、疎通確認はできています。動作確認についてはESXiにログインしたまでで、仮想マシンを作成して動作まではさせていません。あくまでご参考です。</p>
+<img src="/new-technology/2022/02/27/building-setup-esxi7/mellanox.png" class="" width="1024" title="alt">
+
+<blockquote>
+<p>Mellanox End of Life Notification Procedure<br> <a target="_blank" rel="noopener" href="https://network.nvidia.com/related-docs/eol/LCR-000532.pdf">https://network.nvidia.com/related-docs/eol/LCR-000532.pdf</a></p>
+</blockquote>
+<h2 id="intel-X710の注意点について"><a href="#intel-X710の注意点について" class="headerlink" title="intel X710の注意点について"></a>intel X710の注意点について</h2><p>X710は省電力で安定した動作をしますが、過去に何度もファームウェアの脆弱性が指摘されています。今の半導体不足の外部環境下において、もはやintel純正を購入することは困難ですが、サードパーティ製のNICでX710のチップが乗ったものを購入する場合であっても、ファームウェアの更新が必要になってきます。ESXiにおけるネットワークカードのファームウェアの更新方法も整理していますので、以下の記事を参照してください。</p>
+<ul>
+<li><a href="/new-technology/2022/04/02/nic-firmware/" title="ESXiでネットワークカードのファームウェアを更新する">ESXiでネットワークカードのファームウェアを更新する</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/new-technology/tags/10GbE/" rel="tag"><i class="fa fa-tag"></i> 10GbE</a>
+              <a href="/new-technology/tags/ESXi/" rel="tag"><i class="fa fa-tag"></i> ESXi</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/new-technology/2022/01/29/parerentalcontrol/" rel="prev" title="子供のスマホ・タブレットの使い方">
+                  <i class="fa fa-chevron-left"></i> 子供のスマホ・タブレットの使い方
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/new-technology/2022/03/25/xg-v185-mr3/" rel="next" title="Sophos Firewall v18.5 MR-3">
+                  Sophos Firewall v18.5 MR-3 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">阿部　吉伸(Yoshinobu ABE)</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div><script src="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.umd.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.min.css" rel="stylesheet">
+
+<script>
+if (Cookies.get('PRVCY202112') != 'Agree') {
+  const notice = new SimpleGDPR({
+    title: 'Accept Cookies & Privacy Policy?',
+    message: 'このWebサイトでは、訪問や活動に関するデータがクッキー等によって収集されます。閲覧を継続される場合、\
+    プライバシーポリシーをご覧いただき同意(Agree)をお願いします',
+    link: null,
+    icons: true,
+    theme: 'light',
+    animation: 'fade',
+    float: 'bottom-right',
+      callback: () => {
+      notice.close();
+      Cookies.set('PRVCY202112', 'Agree', { expires: 365, path: '/'});
+      notice.destroy();
+      // Google Analytics 4
+      gtag('consent', 'update', {
+      'analytics_storage': 'granted'
+      });
+      gtag('js', new Date());
+      gtag('config', 'G-JMY6NSC2KK', { 'anonymize_ip': true });
+      },
+  });
+}
+</script>
+<div class="disclaimer1">
+このサイトの記事は、特別な記載がない限り <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja">クリエイティブ・コモンズ BY-NC-SA ライセンス</a>で保護されています</div>
+
+
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/yoshi0808" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="/new-technology/lib/animejs/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="/new-technology/lib/medium-zoom/dist/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/comments.js"></script><script src="/new-technology/js/utils.js"></script><script src="/new-technology/js/motion.js"></script><script src="/new-technology/js/schemes/muse.js"></script><script src="/new-technology/js/next-boot.js"></script>
+
+  <script src="/new-technology/lib/hexo-generator-searchdb/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"/new-technology/lib/mermaid/dist/mermaid.min.js","integrity":"sha256-3JloMMI/ZQx6ryuhhZTsQJQmGAkXeni6PkshX7UUO2s="}}</script>
+  <script src="/new-technology/js/third-party/tags/mermaid.js"></script>
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

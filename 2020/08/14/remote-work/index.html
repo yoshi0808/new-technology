@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/icon-16x16.png">
+  <link rel="mask-icon" href="/new-technology/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/new-technology/css/main.css">
+
+
+
+<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-/4UQcSmErDzPCMAiuOiWPVVsNN2s3ZY/NsmXNcj0IFc=" crossorigin="anonymous">
+  <link rel="stylesheet" href="/new-technology/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.15.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
+
+    <meta name="description" content="安全快適な在宅勤務を行うためにすっかり在宅勤務が新たな日常として定着しつつありますが、2020-07-01にICT-ISAC（アイシーティ・アイザック）から「家庭内で安全快適に在宅勤務を行うためのリファレンスガイド」が公開されています。ICT-ISACは、サイバーセキュリティに関する情報収集・調査・分析等の業務を行っている組織で、IPA情報処理推進機構と同様に、情報セキュリティについて分かり易">
+<meta property="og:type" content="article">
+<meta property="og:title" content="安全快適にリモートワークを行う">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/08/14/remote-work/index.html">
+<meta property="og:site_name" content="New technologies in our life">
+<meta property="og:description" content="安全快適な在宅勤務を行うためにすっかり在宅勤務が新たな日常として定着しつつありますが、2020-07-01にICT-ISAC（アイシーティ・アイザック）から「家庭内で安全快適に在宅勤務を行うためのリファレンスガイド」が公開されています。ICT-ISACは、サイバーセキュリティに関する情報収集・調査・分析等の業務を行っている組織で、IPA情報処理推進機構と同様に、情報セキュリティについて分かり易">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/08/14/remote-work/title.png">
+<meta property="article:published_time" content="2020-08-14T11:19:00.000Z">
+<meta property="article:modified_time" content="2022-08-18T10:28:26.000Z">
+<meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
+<meta property="article:tag" content="Wi-Fi">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2020/08/14/remote-work/title.png">
+
+
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2020/08/14/remote-work/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"ja","comments":true,"permalink":"https://yoshi0808.github.io/new-technology/2020/08/14/remote-work/","path":"2020/08/14/remote-work/","title":"安全快適にリモートワークを行う"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>安全快適にリモートワークを行う | New technologies in our life</title>
+  
+
+
+
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{&quot;token&quot;: &quot;0148b4d0442e42b483ddce684030bd2f&quot;}'></script>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JMY6NSC2KK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+  'ad_storage': 'denied',
+  'analytics_storage': 'denied'
+  });
+
+  dataLayer.push({
+  'event': 'default_consent'
+  });
+
+  if (Cookies.get('PRVCY202112') == 'Agree') {
+    gtag('consent', 'update', {
+    'analytics_storage': 'granted'
+    });
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'G-JMY6NSC2KK',{ 'anonymize_ip': true });
+</script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/new-technology/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/new-technology/atom.xml" title="New technologies in our life" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="ナビゲーションバーの切り替え" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/new-technology/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">New technologies in our life</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Device,Network,Code,etc...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="検索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/new-technology/" rel="section"><i class="fa fa-home fa-fw"></i>ホーム</a></li><li class="menu-item menu-item-about"><a href="/new-technology/about/" rel="section"><i class="fa fa-user fa-fw"></i>サイトポリシー</a></li><li class="menu-item menu-item-tags"><a href="/new-technology/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>タグ</a></li><li class="menu-item menu-item-categories"><a href="/new-technology/categories/" rel="section"><i class="fa fa-th fa-fw"></i>カテゴリ</a></li><li class="menu-item menu-item-archives"><a href="/new-technology/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>アーカイブ</a></li><li class="menu-item menu-item-privacy"><a href="/new-technology/privacypolicy/" rel="section"><i class="fa fa-check fa-fw"></i>プライバシーポリシー</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="検索…" spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          見出し
+        </li>
+        <li class="sidebar-nav-overview">
+          概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E5%BF%AB%E9%81%A9%E3%81%AA%E5%9C%A8%E5%AE%85%E5%8B%A4%E5%8B%99%E3%82%92%E8%A1%8C%E3%81%86%E3%81%9F%E3%82%81%E3%81%AB"><span class="nav-number">1.</span> <span class="nav-text">安全快適な在宅勤務を行うために</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8%E5%AE%85%E5%8B%A4%E5%8B%99%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AE%E6%8A%80%E8%A1%93%E7%9A%84%E8%A6%81%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text">在宅勤務のための技術的要件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E7%84%A1%E7%B7%9A%E3%83%AB%E3%83%BC%E3%82%BF%E3%83%BC%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span class="nav-number">3.</span> <span class="nav-text">（1）無線ルーターについて</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A9%9F%E5%99%A8%E3%81%AE%E3%83%95%E3%82%A1%E3%83%BC%E3%83%A0%E3%82%A6%E3%82%A7%E3%82%A2%E3%82%92%E6%9B%B4%E6%96%B0%E3%81%99%E3%82%8B"><span class="nav-number">3.1.</span> <span class="nav-text">機器のファームウェアを更新する</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%91%E3%82%BD%E3%82%B3%E3%83%B3%E3%81%AE%E5%85%B1%E6%9C%89%E8%A8%AD%E5%AE%9A%E3%82%92%E7%A2%BA%E8%AA%8D%E3%81%99%E3%82%8B"><span class="nav-number">3.2.</span> <span class="nav-text">パソコンの共有設定を確認する</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%84%A1%E7%B7%9A%E3%83%AB%E3%83%BC%E3%82%BF%E3%83%BC%E3%81%AE%E3%83%81%E3%82%A7%E3%83%83%E3%82%AF%E3%83%9D%E3%82%A4%E3%83%B3%E3%83%88"><span class="nav-number">3.3.</span> <span class="nav-text">無線ルーターのチェックポイント</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E3%83%91%E3%82%B9%E3%83%AF%E3%83%BC%E3%83%89%E7%AE%A1%E7%90%86%E3%82%BD%E3%83%95%E3%83%88%E3%81%AE%E5%B0%8E%E5%85%A5"><span class="nav-number">4.</span> <span class="nav-text">（2）パスワード管理ソフトの導入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3%E5%AF%BE%E7%AD%96%E3%82%BD%E3%83%95%E3%83%88%E3%81%AE%E5%B0%8E%E5%85%A5"><span class="nav-number">5.</span> <span class="nav-text">（3）セキュリティ対策ソフトの導入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%EF%BC%884%EF%BC%89%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E3%83%81%E3%82%A7%E3%83%83%E3%82%AF%E3%83%84%E3%83%BC%E3%83%AB%E3%81%AE%E5%88%A9%E7%94%A8"><span class="nav-number">6.</span> <span class="nav-text">（4）ネットワークチェックツールの利用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B0%A1%E6%98%93%E3%81%AA%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E8%84%86%E5%BC%B1%E6%80%A7%E3%83%81%E3%82%A7%E3%83%83%E3%82%AF"><span class="nav-number">6.1.</span> <span class="nav-text">簡易なネットワーク脆弱性チェック</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%84%86%E5%BC%B1%E6%80%A7%E6%A4%9C%E8%A8%BC%E3%83%84%E3%83%BC%E3%83%AB%E3%80%8CNessus%E3%80%8D"><span class="nav-number">6.2.</span> <span class="nav-text">脆弱性検証ツール「Nessus」</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OS%E3%81%AE%E3%83%95%E3%82%A1%E3%82%A4%E3%82%A2%E3%83%BC%E3%82%A6%E3%82%A9%E3%83%BC%E3%83%AB%E8%A8%AD%E5%AE%9A"><span class="nav-number">6.3.</span> <span class="nav-text">OSのファイアーウォール設定</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AF%E7%94%A8%E6%80%A7%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AB%E6%A4%9C%E8%A8%8E%E3%81%99%E3%82%8B%E3%81%93%E3%81%A8"><span class="nav-number">7.</span> <span class="nav-text">可用性のために検討すること</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="阿部　吉伸(Yoshinobu ABE)"
+      src="/new-technology/images/yoshi.png">
+  <p class="site-author-name" itemprop="name">阿部　吉伸(Yoshinobu ABE)</p>
+  <div class="site-description" itemprop="description">IT</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/new-technology/archives/">
+          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-name">ポスト</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/new-technology/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">カテゴリ</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/new-technology/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">タグ</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yoshi0808" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yoshi0808" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yoshi0808.blog@gmail.com" title="E-Mail → mailto:yoshi0808.blog@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yoshi0808_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yoshi0808_" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="/new-technology/lib/@creativecommons/vocabulary/assets/license_badges/big/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="ja">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2020/08/14/remote-work/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/new-technology/images/yoshi.png">
+      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="New technologies in our life">
+      <meta itemprop="description" content="IT">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="安全快適にリモートワークを行う | New technologies in our life">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          安全快適にリモートワークを行う
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">投稿日</span>
+
+      <time title="作成日：2020-08-14 20:19:00" itemprop="dateCreated datePublished" datetime="2020-08-14T20:19:00+09:00">2020-08-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">編集日</span>
+      <time title="修正日：2022-08-18 19:28:26" itemprop="dateModified" datetime="2022-08-18T19:28:26+09:00">2022-08-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">カテゴリ</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/Security/" itemprop="url" rel="index"><span itemprop="name">Security</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <img src="/new-technology/2020/08/14/remote-work/title.png" class="" title="alt">
+
+<h2 id="安全快適な在宅勤務を行うために"><a href="#安全快適な在宅勤務を行うために" class="headerlink" title="安全快適な在宅勤務を行うために"></a>安全快適な在宅勤務を行うために</h2><p>すっかり在宅勤務が新たな日常として定着しつつありますが、2020-07-01に<strong>ICT-ISAC</strong>（アイシーティ・アイザック）から「家庭内で安全快適に在宅勤務を行うためのリファレンスガイド」が公開されています。ICT-ISACは、サイバーセキュリティに関する情報収集・調査・分析等の業務を行っている組織で、<strong>IPA情報処理推進機構</strong>と同様に、情報セキュリティについて分かり易く記事が掲載されています。ガイドの詳細は、以下の記事を参照してください。</p>
+<blockquote>
+<p>ICT-ISAC（アイシーティ・アイザック）<br> <a target="_blank" rel="noopener" href="https://www.ict-isac.jp/index.html">https://www.ict-isac.jp/index.html</a><br>IPA情報処理推進機構<br> <a target="_blank" rel="noopener" href="https://www.ipa.go.jp/">https://www.ipa.go.jp</a><br>家庭内で安全快適に在宅勤務を行うための リファレンスガイド<br> <a target="_blank" rel="noopener" href="https://www.ict-isac.jp/news/remote%20work%20reference%20guide.pdf">https://www.ict-isac.jp/news/remote%20work%20reference%20guide.pdf</a></p>
+</blockquote>
+<span id="more"></span>
+<h2 id="在宅勤務のための技術的要件"><a href="#在宅勤務のための技術的要件" class="headerlink" title="在宅勤務のための技術的要件"></a>在宅勤務のための技術的要件</h2><p>上記のリファレンスガイドは、大事な会議の内容を家族などに聞かれないなどの<strong>体制面</strong>の話と、Wi-Fiルーターの設定などの<strong>技術面</strong>の2つを両立する必要があります。会社のノートPCを貸与され、自宅の無線ルーターおよびインターネット回線を用い、VPNで会社に接続するのが一般的な形態ではないでしょうか。ここでは技術的要件として、セキュリティ上安全である事を筆頭に、大事な会議中に無線が切断されてしまう事の無い安定したリモートワークを実現するための無線ルーターの設定やソフトウェアなどの活用について紹介します。</p>
+<p>まず、上記のリファレンスをチェックシートにすると以下の内容となります。</p>
+<table>
+<thead>
+<tr>
+<th>要件</th>
+<th>対応方法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>P6自宅のルーターの管理画面や機器がインターネットから見えていないこと</td>
+<td>（1）無線ルーターについて</td>
+</tr>
+<tr>
+<td>P8自宅のルーターの管理画面のパスワードを適切に設定しておく</td>
+<td>（2）パスワード管理ソフトの導入</td>
+</tr>
+<tr>
+<td>P9自宅のWi-Fiネットワークのセキュリティを適切に設定する</td>
+<td>（1）無線ルーターについて</td>
+</tr>
+<tr>
+<td>P12パソコンの共有設定を確認しておく</td>
+<td>（1）無線ルーターについて</td>
+</tr>
+<tr>
+<td>P13自宅のLANに接続されている機器を確認しておく</td>
+<td>（4）ネットワークチェックツールの利用</td>
+</tr>
+<tr>
+<td>P15すべての機器のファームウェアを更新する</td>
+<td>（1）無線ルーターについて</td>
+</tr>
+<tr>
+<td>P16すべての機器に対して適切なパスワードを設定する</td>
+<td>（2）パスワード管理ソフトの導入</td>
+</tr>
+<tr>
+<td>P18パソコンに接続されたマイクやカメラの状態を意識する</td>
+<td>（3）セキュリティ対策ソフトの導入</td>
+</tr>
+<tr>
+<td>P20利用機器のサポート体制を確認する</td>
+<td>（1）無線ルーターについて<p>※メーカーWebサイトの確認</td>
+</tr>
+</tbody></table>
+<h2 id="（1）無線ルーターについて"><a href="#（1）無線ルーターについて" class="headerlink" title="（1）無線ルーターについて"></a>（1）無線ルーターについて</h2><p>無線ルーターの設定のポイントは上記で示すようにたくさんあります。無線ルーターは毎年規格が新しくなっていくもので、耐用年数もPCなどと比較し、寿命が短いと言えます。</p>
+<ul>
+<li>ルーターの設定画面がインターネットから見えていないこと</li>
+<li>Wi-Fiネットワークのセキュリティを適切に設定する</li>
+<li>利用機器のサポート体制を確認する</li>
+</ul>
+<p>上記の1点目はデフォルト設定で特に問題は起きない内容ではあります。ルーターの設定画面についても、業務用ルーターを間違った使い方をしない限りは発生しないものです。Wi-Fiのセキュリティについて、WPA2も一時は脆弱性で話題となりましたが、最近発売されているルーターはきちんと対応がなされています。しかし、過去に販売されているものを継続して使っている場合はサポートが切れていないか確認が必要です。<strong>サポートが切れている機器はセキュリティ事故が発生する前に、速やかな交換が必要です</strong>。Wi-Fiセキュリティについて、最近はWPA3に対応した製品も発売されています。WPA3&#x2F;WPA2と併用できる設定もありますが、脆弱性の対応がなされているWPA2（AES）であれば無理をしてWPA3を併用する必要はありません。Apple社のWi-Fiアクセスポイントに関する推奨としては、WPA3→WPA3&#x2F;WPA2（AES）併用→WPA2（AES）の順に推奨されています。詳細は以下を参照してください。</p>
+<blockquote>
+<p>NECプラットフォームズ：【重要】「WPA2」の脆弱性に関するお知らせ<br> <a target="_blank" rel="noopener" href="https://www.aterm.jp/product/atermstation/info/2017/info1018.html">https://www.aterm.jp/product/atermstation/info/2017/info1018.html</a><br>バッファロー：無線LAN商品のWPA2の脆弱性について<br> <a target="_blank" rel="noopener" href="https://www.buffalo.jp/news/detail/20171017-01.html">https://www.buffalo.jp/news/detail/20171017-01.html</a><br>Apple -Wi-Fi ルーターと Wi-Fi アクセスポイントの推奨設定-<br> <a target="_blank" rel="noopener" href="https://support.apple.com/ja-jp/HT202068">https://support.apple.com/ja-jp/HT202068</a></p>
+</blockquote>
+<h3 id="機器のファームウェアを更新する"><a href="#機器のファームウェアを更新する" class="headerlink" title="機器のファームウェアを更新する"></a>機器のファームウェアを更新する</h3><p>国内の無線LANの有名メーカーでは、ファームウェアは自動更新する方式に変わってきています。もし無線ルーターを買い換えるのであれば自動更新機能がついた機器を購入される事をお勧めします。過去の発売された無線ルーターもファームウェアの更新で、自動更新モードが加えられるケースもあります。脆弱性対応のために<strong>自動更新を設定する事</strong>をお勧めします。</p>
+<p>「ご家庭でWi-Fiルーターをより安全にお使い頂くために」というタイトルで、Wi-Fiルーターを利用する上での注意喚起が公開されています。提言しているのは以下の4社です。ITリテラシーの啓蒙だけではなく、こういう形でメーカー自らが主導する取り組みは素晴らしい事です。詳細は以下を参照してください。</p>
+<p>  ・株式会社アイ・オー・データ機器<br>  ・NECプラットフォームズ株式会社<br>  ・エレコム株式会社<br>  ・株式会社バッファロー</p>
+<blockquote>
+<p>一般社団法人デジタルライフ推進協会-ご家庭で Wi-Fi ルーターをより安全にお使い頂くために-<br> <a target="_blank" rel="noopener" href="https://dlpa.jp/pdf/dlpa_pr_20191218.pdf">https://dlpa.jp/pdf/dlpa_pr_20191218.pdf</a><br>NECプラットフォームズ：【重要】Wi-Fiルータをより安全にお使いいただくためのお願い<br> <a target="_blank" rel="noopener" href="https://www.aterm.jp/product/atermstation/info/2019/info1218.html">https://www.aterm.jp/product/atermstation/info/2019/info1218.html</a><br>バッファロー：Wi-Fiルーター&#x2F;中継機を最新のファームウェアに更新する方法（ファームウェア自動更新機能を利用）<br> <a target="_blank" rel="noopener" href="https://www.buffalo.jp/support/faq/detail/15923.html">https://www.buffalo.jp/support/faq/detail/15923.html</a></p>
+</blockquote>
+<h3 id="パソコンの共有設定を確認する"><a href="#パソコンの共有設定を確認する" class="headerlink" title="パソコンの共有設定を確認する"></a>パソコンの共有設定を確認する</h3><p>会社から貸与されたPCを使う上でのポイントを記載します。会社が貸与するPCは流石にセキュリティ対策もしっかりしたものが行われていると考えられますが、完全にそれを信頼するわけにはいきません。逆もまた然りで、個人の利用するPCが会社の貸与PCに対しての脅威となる可能性があります。パソコンの共有設定を制限する代わりに、<strong>ゲスト用の無線APに接続する事で対策が可能</strong>となります。バッファローでは”ゲストポート”、NECプラットフォームズでは”ネットワーク分離機能”と呼ばれます。有線接続を含めた個人の機器へ一切アクセスさせずにインターネットの接続が可能となります。</p>
+<h3 id="無線ルーターのチェックポイント"><a href="#無線ルーターのチェックポイント" class="headerlink" title="無線ルーターのチェックポイント"></a>無線ルーターのチェックポイント</h3><p>価格．COMの無線LANルーター(Wi-Fiルーター) 人気売れ筋ランキング2022年3月によれば、人気のある無線ルーターは、バッファロー、NECプラットフォームズ（Aterm）などの国内製品が上位20位までに19がランクインしています。私見ですが、少しでも安定稼働、安全に利用するためのポイントを記載します。</p>
+<ol>
+<li><p>無線LANのAPモードにでは、固定IPを振る<br>無線LANをAPモードにする場合は親機やプロバイダ貸与のHGWからのDHCPによってIPを割り当てられますが、固定IPとする方が瞬断などの不具合の可能性を下げられます。</p>
+</li>
+<li><p>Wi-Fiの5GHzはW52固定を利用する<br>気象レーダーや軍事レーダーの影響でW53およびW56は1分間無線の出力を停止してしまう可能性があります。大事な会議では致命的です。自宅がレーダーの影響を受けないと確認できていれば気にする必要はありません。無線チャンネルが自動選択の場合（Atermではオートチャネルセレクトと呼ばれます）も瞬断の原因になりやすいため、使わない方が無難です。また最新の高性能ルーターでは160Mzhのオクタチャンネルで高速化を図る製品も出ていますが、これもW52の4チャネルでは不足し、他のチャネルを併用することになります。つまり、レーダーの影響を受ける事になるため、W52のクアッドチャネルまでに留めておいたほうが無難です。</p>
+</li>
+<li><p>暗号キーの自動更新間隔について<br>設定画面で暗号キーを一定間隔で更新するという機能があり、更新間隔の設定項目があります。基本的にビジネスで利用するアプリケーションは殆どがユニキャスト通信（1対1の通信）で、これの暗号キーはフレーム単位に鍵を変化させており、この設定間隔とは関係ありません。但しブロードキャストおよびマルチキャストのような1対1通信ではない場合は、1フレーム毎に変更というわけにはいかず、暗号キーを一定期間で更新する仕組みを取っています。従い暗号キーを一定間隔で更新しない事が即座に脆弱性となるわけではなく、ネットワークが混乱しないようにする仕組みと考えた方が良いようです。バッファローの初期値は0（更新しない）、Atermは30分となっています。ビジネス用途ではありませんが動画配信のDLNAプロトコルはマルチキャストですから、アプリケーションが利用するプロトコルによってはこの鍵更新のタイミングで途切れる場合があります。</p>
+</li>
+<li><p>マルチキャストの速度設定<br>上述したDLNAはひかりTVなどで利用されます。このDLNAに利用されるマルチキャストは、バッファローであればマルチキャストレート、Atermであればマルチキャスト伝送速度という名前で記載されています。例えばAtermですと初期値が6Mbpsで、これだと十分に番組を伝送出来ない可能性があります。従いその値を増やす事でTV映像は安定します。しかし、マルチキャストは1対多で指定した帯域を確保し伝送するわけですから、全ての端末にデータ配信が行われます。無線機に接続された仕事用の端末はマルチキャストパケットの帯域確保が優先されてしまう事で仕事上のTV会議などが思わず影響を受けてしまう事になります。従いマルチキャストレートは上げすぎても良くないという事になります。マルチキャスト通信も種類があり、上述のひかりTVは番組を視聴している間ずっとマルチキャストを転送し続けますが、PanasonicのプライベートビエラなどのPortableTVなどは最初だけマルチキャストで接続を確認した後はユニキャストになります。</p>
+<blockquote>
+<p>Panasonic プライベートビエラ<br> <a target="_blank" rel="noopener" href="https://panasonic.jp/privateviera/">https://panasonic.jp/privateviera/</a></p>
+</blockquote>
+</li>
+<li><p>UPnpの停止<br>Universal plug and playの機能でホームゲートウェイなど光回線に接続する機器には装備されている機能です。インターネットからLAN内の機器に接続する仕組みです。これは過去から脆弱性攻撃に利用されやすいものですので明確に必要としていない場合はこの機能を停止する事をお勧めします。</p>
+</li>
+</ol>
+<h2 id="（2）パスワード管理ソフトの導入"><a href="#（2）パスワード管理ソフトの導入" class="headerlink" title="（2）パスワード管理ソフトの導入"></a>（2）パスワード管理ソフトの導入</h2><p>無線ルーターの設定では、機器にログインするためのIDとSSIDに対するパスワード（暗号キー）を必ず変更して下さい。Wi-Fiに入られない限り安全だろうという理由で、無線ルーターのパスワードが短かったり単純なものは危険です。悪意のあるスマホアプリからWi-Fiを経由し、簡単に無線ルーターの乗っ取りが可能です。個人的にはパスワード管理ソフトとして、米国の<strong>bitwarden</strong>がお勧めです。</p>
+<blockquote>
+<p>bitwarden<br> <a target="_blank" rel="noopener" href="https://bitwarden.com/">https://bitwarden.com/</a></p>
+</blockquote>
+<ul>
+<li>パスワードの自動生成が可能</li>
+<li>Windows、macOS、iOS、Androidに対応</li>
+<li>スマホは指紋認証（Touch ID）や顔認証（Face ID）に対応</li>
+<li>主要ブラウザに対応</li>
+<li>サイトのURLに反応しID、パスワードを自動入力可能（フィッシング対策としても有効）</li>
+<li>無償（有償オプションもあるが無償でも十分利用可能）</li>
+<li>暗号化に関する部分のソースコードが公開されている</li>
+<li>日本語対応</li>
+</ul>
+<p>パスワードの使い回しが良くない事と理解しつつも、少しだけ変えた似たようなパスワードを使い、しかも忘れてしまいパスワードの再作成というのはよく経験する事でないでしょうか。ブラウザからでもオートコンプリートで一発入力なので非常に快適です。クラウド上にパスワードを置くのが怖いという考え方もありますが、2要素認証の標準化により、昔ほどパスワード漏洩が脅威では無くなりつつあります。何よりパスワードの使い回しより遥かに安全です。私は本当に重要なサイト、2要素認証アプリのパスワードを除き、bitwardenでランダムに生成した13桁程度の文字列をパスワードに利用し、全てbitwarden任せです。詳細は「<a href="/new-technology/2020/08/30/bitwarden/" title="パスワード管理ソフトのbitwardenを活用する">パスワード管理ソフトのbitwardenを活用する</a>」を参照してください。</p>
+<h2 id="（3）セキュリティ対策ソフトの導入"><a href="#（3）セキュリティ対策ソフトの導入" class="headerlink" title="（3）セキュリティ対策ソフトの導入"></a>（3）セキュリティ対策ソフトの導入</h2><p>Windowsをお使いの方であれば、WindowsDefenderがありますから敢えて別のウィルス対策ソフトを購入する必要はありません。ただ付加機能として、有名どころのNortonやカスペルスキーなどでは、個人PCのカメラを意図して使われないようにコントロールできる機能を持っています。リモートワークでのTV会議の風景を録画されてしまう事の対策として利用を検討してみて下さい。個人的には多少ITスキルを要求しますが、ルーマニアのBitdefender SRL社が提供する<strong>bitdefender</strong>をお勧めします。私は、Windows、macOSなど複数の端末を持っているため、”トータルセキュリティ2020”という製品を利用しています。ちょっとだけ微妙な日本語はご愛嬌ですが、よりプライバシーに配慮したセキュリティ対策ソフトです。彼らのプライバシーポリシーはとても丁寧に記述されている事、どのソフトが通信しているかコントロールしやすい（かといって煩雑すぎもしない絶妙なバランス）点が挙げられます。カメラのコントロール、マイクを使うタイミングでのアラート機能が装備されています。こちらは有償のソフトウェアですが、対応している機能からすれば非常に安価です。</p>
+<blockquote>
+<p>bitdefender<br> <a target="_blank" rel="noopener" href="https://www.bitdefender.com/">https://www.bitdefender.com/</a></p>
+</blockquote>
+<p>macOS、Linuxでも「ウィルス対策ソフトは本当に必要か？」という議論を見かけますがほとんどのケースで必要と考えています。対策ソフトで完璧に防ぐ事は困難ですが、自身の不注意から最悪のシナリオに繋がるケースから守ってくれる事もあります。「全てのOS、利用しているアプリケーションの脆弱性に伴うパッチを公開初日に確実に適用する自信がある」かつ「信頼できない未確認のサイトにアクセスしない」とわかっている場合のみウィルス対策ソフトは不要です（パッチ未公開の攻撃はホームユーザーにとって防御が困難です）。IoTはウィルス対策ソフトが導入できない代わりに「パッチの自動更新が必須」でありインターネットへアクセス可能な範囲を絞るべきです。<br>ウィルス対策ソフトで確実に防御できるわけではありません。対策ソフトにも優劣がありますし限界があります。申し上げたいのは稼働させられるウィルス対策ソフトを使っていなかった、つまり<strong>本人の過失</strong>とならないように稼働させる事をお勧めするものです。</p>
+<p>では、WindowsDefenderを導入しておけば絶対安全か？と言われればそうではありません。デフォルトでWindowsにインストールされているウィルス対策ソフトで防御されてしまうレベルの攻撃では全く意味がない事を攻撃者は理解しているからです。繰り返しになりますがウィルス対策ソフトは稼働させた上でデータのバックアップや頻繁なパッチ適用をお勧めします。</p>
+<p>また、音声で留意する点は、Google Home、Apple HomePod、Amazon Echo（Alexa）の存在です。これはどのタイミングで音声をキャプチャされているか分かりませんので十分気を付ける必要があります。</p>
+<h2 id="（4）ネットワークチェックツールの利用"><a href="#（4）ネットワークチェックツールの利用" class="headerlink" title="（4）ネットワークチェックツールの利用"></a>（4）ネットワークチェックツールの利用</h2><h3 id="簡易なネットワーク脆弱性チェック"><a href="#簡易なネットワーク脆弱性チェック" class="headerlink" title="簡易なネットワーク脆弱性チェック"></a>簡易なネットワーク脆弱性チェック</h3><p>上述したbitdefender社から、<strong>Home Scanner</strong>という無償ツールが公開されています。これは彼らの製品であるbitdefender BOXと呼ばれるFirewallを売るためのチェックツールでもあります。ネットワーク上の端末やIoT機器に脆弱性のリスクがあると警告してくれます。実際の対策内容は”bitdefender BOXの導入を”となるわけですが、私の環境ですと、きちんとファームウェアの更新された無線機器1台とQNAPのhttpで脆弱性ありとの診断結果でした。QNAPではhttpを使っており、httpsに強制リダイレクトされるデザインなのですが、どういう点での脆弱性の可能性を指摘しているのかは一切不明で実態の把握しようがありませんでした。初級者〜中級者向けにはこのツールを使い、まずは当該機器のファームウェア更新の有無を確認するために活用できるでしょう。また、忘れがちのIoT機器に気づくきっかけとなります。前述した「家庭内で安全快適に在宅勤務を行うためのリファレンスガイド」ではトレンドマイクロ社の「オンラインスキャンfor Home Network」が紹介されています。これは家庭向けIDS(Intrusion Detection System)といったところの機能です。仕組み上、ネットワーク全体の速度としての遅延が発生しますので、このブログでお勧めしている <a href="/new-technology/2020/02/23/XG-Firewall/" title="Sophos Firewallの導入">Sophos Firewallの導入</a> ほど手間を掛けられないが安心は得たいという事であれば検討してみる価値はあります。</p>
+<blockquote>
+<p>bitdefender Home Scanner<br> <a target="_blank" rel="noopener" href="https://www.bitdefender.com/solutions/home-scanner.html">https://www.bitdefender.com/solutions/home-scanner.html</a></p>
+</blockquote>
+<h3 id="脆弱性検証ツール「Nessus」"><a href="#脆弱性検証ツール「Nessus」" class="headerlink" title="脆弱性検証ツール「Nessus」"></a>脆弱性検証ツール「Nessus」</h3><p>上級者向けには、ビジネスでは有名どころのTenable社の<strong>Nessus</strong>が候補に挙げられます。Nessusは16IPを上限に検査できるNessus Essential（無償）が提供されています。しょっちゅう稼働させるプロダクトではありませんので、ノートPCにインストールしておき、普段はサービスを停止させておくと便利です。前出のNASのQNAPに対しNessusのBasicスキャンをかけてみると<del>リスク＝Mediumとして、アクセス権がなくともNFSのディレクトリ名が参照可能（これは許容）の結果でした。</del> <sup><strong><a href="#note1">[1]</a></strong></sup>、 Windowsで利用しているSMB（Port445）については、送受信するデータに署名が行われていないので中間者攻撃が可能（リスク＝Medium）との結果でした。対策が難しい場合にはある程度のリスクを受容し、NASに接続する端末を絞るなどNAS自身が持つFirewallで回避策を用意する事が有効です。</p>
+<blockquote>
+<p>Nessus<br> <a target="_blank" rel="noopener" href="https://jp.tenable.com/products/nessus">https://jp.tenable.com/products/nessus</a></p>
+</blockquote>
+<h3 id="OSのファイアーウォール設定"><a href="#OSのファイアーウォール設定" class="headerlink" title="OSのファイアーウォール設定"></a>OSのファイアーウォール設定</h3><p>私見ですが、自宅のネットワーク環境を安易に信頼しない事です。Windowsはパブリックネットワーク、macOSではOSが持つFirewallを有効にする事を検討してください。パブリックネットワークの設定でもプリンターは使えますし、さほど不便はありません。FirewallでSSLインスペクションが使えないIoTやAndroid端末もネットワークの他のホストとは通信させず可能な限り分離させています。もちろん絶対に通信させてはいけないという事ではなく、あらかじめ利用がわかっているものはもちろん明示的に許可をします。あくまで使わないものは遮断しておくのが安全です。私はAppleのAirDropはとても便利なので明示的に許可しています。</p>
+<p>（2020-09-30追記）<br>iOS14では設定に<mark class="label primary">ローカルネットワーク</mark>という項目が追加されました。悪意のあるスマホアプリがネットワーク上の機器に不正アクセスするリスクが懸念されますが、ネットワーク内にある他の端末にアクセス可能なアプリを最低限度に抑える事ができるようになりました。こちらも是非設定される事をお勧めします。</p>
+<h2 id="可用性のために検討すること"><a href="#可用性のために検討すること" class="headerlink" title="可用性のために検討すること"></a>可用性のために検討すること</h2><p>会議の時に自宅が停電というリスクを考えると、デスクトップPCよりはノートPCのほうが可用性が高いです。また、Wi-Fiルーターが停止した場合の予備機を考えるよりは、スマホのテザリングでしのぐ方が現実的ですのであらかじめスマホとPCにそれぞれ設定される事をお勧めします。</p>
+<p><small id="note1"><strong>[1]</strong><br>2020-09-04発表のQTS4.4.3.1421で解消（Fixed a vulnerability concerning world-readable NFS shared folders.）<br></small></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/new-technology/tags/Wi-Fi/" rel="tag"><i class="fa fa-tag"></i> Wi-Fi</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/new-technology/2020/06/24/protect-xg/" rel="prev" title="XG Firewall自身を防御する">
+                  <i class="fa fa-chevron-left"></i> XG Firewall自身を防御する
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/new-technology/2020/08/30/bitwarden/" rel="next" title="パスワード管理ソフトのbitwardenを活用する">
+                  パスワード管理ソフトのbitwardenを活用する <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">阿部　吉伸(Yoshinobu ABE)</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div><script src="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.umd.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.min.css" rel="stylesheet">
+
+<script>
+if (Cookies.get('PRVCY202112') != 'Agree') {
+  const notice = new SimpleGDPR({
+    title: 'Accept Cookies & Privacy Policy?',
+    message: 'このWebサイトでは、訪問や活動に関するデータがクッキー等によって収集されます。閲覧を継続される場合、\
+    プライバシーポリシーをご覧いただき同意(Agree)をお願いします',
+    link: null,
+    icons: true,
+    theme: 'light',
+    animation: 'fade',
+    float: 'bottom-right',
+      callback: () => {
+      notice.close();
+      Cookies.set('PRVCY202112', 'Agree', { expires: 365, path: '/'});
+      notice.destroy();
+      // Google Analytics 4
+      gtag('consent', 'update', {
+      'analytics_storage': 'granted'
+      });
+      gtag('js', new Date());
+      gtag('config', 'G-JMY6NSC2KK', { 'anonymize_ip': true });
+      },
+  });
+}
+</script>
+<div class="disclaimer1">
+このサイトの記事は、特別な記載がない限り <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja">クリエイティブ・コモンズ BY-NC-SA ライセンス</a>で保護されています</div>
+
+
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/yoshi0808" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="/new-technology/lib/animejs/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="/new-technology/lib/medium-zoom/dist/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/comments.js"></script><script src="/new-technology/js/utils.js"></script><script src="/new-technology/js/motion.js"></script><script src="/new-technology/js/schemes/muse.js"></script><script src="/new-technology/js/next-boot.js"></script>
+
+  <script src="/new-technology/lib/hexo-generator-searchdb/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"/new-technology/lib/mermaid/dist/mermaid.min.js","integrity":"sha256-3JloMMI/ZQx6ryuhhZTsQJQmGAkXeni6PkshX7UUO2s="}}</script>
+  <script src="/new-technology/js/third-party/tags/mermaid.js"></script>
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/icon-16x16.png">
+  <link rel="mask-icon" href="/new-technology/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/new-technology/css/main.css">
+
+
+
+<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-/4UQcSmErDzPCMAiuOiWPVVsNN2s3ZY/NsmXNcj0IFc=" crossorigin="anonymous">
+  <link rel="stylesheet" href="/new-technology/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.15.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
+
+    <meta name="description" content="この記事で実現すること  XG FirewallのSSL-VPNを構成し、実家や友人宅または、ホテル滞在時など公衆Wi-FiをはじめとしたさまざまなWi-Fi環境下においてIPSec-VPNよりも接続可能性を高める事を目的にします。SSL-VPNのTCPの待ち受けポートを設定し、自宅がv6プラスの環境でも接続可能となる期待があります。公衆Wi-Fiによく見られるIPv4アドレスのみ払い出しされる">
+<meta property="og:type" content="article">
+<meta property="og:title" content="XG Firewall SSL-VPN">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2021/05/30/ssl-vpn/index.html">
+<meta property="og:site_name" content="New technologies in our life">
+<meta property="og:description" content="この記事で実現すること  XG FirewallのSSL-VPNを構成し、実家や友人宅または、ホテル滞在時など公衆Wi-FiをはじめとしたさまざまなWi-Fi環境下においてIPSec-VPNよりも接続可能性を高める事を目的にします。SSL-VPNのTCPの待ち受けポートを設定し、自宅がv6プラスの環境でも接続可能となる期待があります。公衆Wi-Fiによく見られるIPv4アドレスのみ払い出しされる">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/05/30/ssl-vpn/title.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/05/30/ssl-vpn/sslvpn2.drawio.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/05/30/ssl-vpn/TAP-Driver.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/05/30/ssl-vpn/vpn-conf.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/05/30/ssl-vpn/ipv4host.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/05/30/ssl-vpn/ipv6host.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/05/30/ssl-vpn/user1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/05/30/ssl-vpn/user2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/05/30/ssl-vpn/vpn-conf2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/05/30/ssl-vpn/acl.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/05/30/ssl-vpn/rule1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/05/30/ssl-vpn/rule2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/05/30/ssl-vpn/rule3.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/05/30/ssl-vpn/hgw.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/05/30/ssl-vpn/portal.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/05/30/ssl-vpn/sc1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/05/30/ssl-vpn/sc2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/05/30/ssl-vpn/openvpn.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/05/30/ssl-vpn/tunnelblick.png">
+<meta property="article:published_time" content="2021-05-30T00:10:00.000Z">
+<meta property="article:modified_time" content="2021-10-17T00:52:27.000Z">
+<meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
+<meta property="article:tag" content="XG Firewall">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2021/05/30/ssl-vpn/title.png">
+
+
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2021/05/30/ssl-vpn/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"ja","comments":true,"permalink":"https://yoshi0808.github.io/new-technology/2021/05/30/ssl-vpn/","path":"2021/05/30/ssl-vpn/","title":"XG Firewall SSL-VPN"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>XG Firewall SSL-VPN | New technologies in our life</title>
+  
+
+
+
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{&quot;token&quot;: &quot;0148b4d0442e42b483ddce684030bd2f&quot;}'></script>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JMY6NSC2KK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+  'ad_storage': 'denied',
+  'analytics_storage': 'denied'
+  });
+
+  dataLayer.push({
+  'event': 'default_consent'
+  });
+
+  if (Cookies.get('PRVCY202112') == 'Agree') {
+    gtag('consent', 'update', {
+    'analytics_storage': 'granted'
+    });
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'G-JMY6NSC2KK',{ 'anonymize_ip': true });
+</script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/new-technology/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/new-technology/atom.xml" title="New technologies in our life" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="ナビゲーションバーの切り替え" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/new-technology/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">New technologies in our life</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Device,Network,Code,etc...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="検索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/new-technology/" rel="section"><i class="fa fa-home fa-fw"></i>ホーム</a></li><li class="menu-item menu-item-about"><a href="/new-technology/about/" rel="section"><i class="fa fa-user fa-fw"></i>サイトポリシー</a></li><li class="menu-item menu-item-tags"><a href="/new-technology/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>タグ</a></li><li class="menu-item menu-item-categories"><a href="/new-technology/categories/" rel="section"><i class="fa fa-th fa-fw"></i>カテゴリ</a></li><li class="menu-item menu-item-archives"><a href="/new-technology/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>アーカイブ</a></li><li class="menu-item menu-item-privacy"><a href="/new-technology/privacypolicy/" rel="section"><i class="fa fa-check fa-fw"></i>プライバシーポリシー</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="検索…" spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          見出し
+        </li>
+        <li class="sidebar-nav-overview">
+          概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#XG-Firewall%E3%81%AEIPSec-VPN"><span class="nav-number">1.</span> <span class="nav-text">XG FirewallのIPSec-VPN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSL-VPN%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span class="nav-number">2.</span> <span class="nav-text">SSL VPNについて</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSL-VPN%E3%81%AE%E6%A7%8B%E6%88%90"><span class="nav-number">3.</span> <span class="nav-text">SSL VPNの構成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSL-VPN%E3%81%AE%E4%BA%8B%E5%89%8D%E6%BA%96%E5%82%99"><span class="nav-number">4.</span> <span class="nav-text">SSL VPNの事前準備</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%82%B5%E3%83%BC%E3%83%90%E3%83%BC%EF%BC%88XG%EF%BC%89%E5%81%B4%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">5.</span> <span class="nav-text">サーバー（XG）側の設定</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SSL-VPN%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">5.1.</span> <span class="nav-text">SSL VPNの設定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A9%E7%94%A8%E3%82%BB%E3%82%B0%E3%83%A1%E3%83%B3%E3%83%88%E3%81%AEIP%E3%83%9B%E3%82%B9%E3%83%88%E3%81%B8%E3%81%AE%E7%99%BB%E9%8C%B2"><span class="nav-number">5.2.</span> <span class="nav-text">利用セグメントのIPホストへの登録</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#VPN%E3%83%A6%E3%83%BC%E3%82%B6%E3%83%BC%E3%81%AE%E4%BD%9C%E6%88%90"><span class="nav-number">5.3.</span> <span class="nav-text">VPNユーザーの作成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SSL-VPN%E8%A8%AD%E5%AE%9A2"><span class="nav-number">5.4.</span> <span class="nav-text">SSL VPN設定2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%87%E3%83%90%E3%82%A4%E3%82%B9%E3%81%AE%E3%82%A2%E3%82%AF%E3%82%BB%E3%82%B9"><span class="nav-number">5.5.</span> <span class="nav-text">デバイスのアクセス</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%95%E3%82%A1%E3%82%A4%E3%82%A2%E3%82%A6%E3%82%A9%E3%83%BC%E3%83%AB%E3%83%AB%E3%83%BC%E3%83%AB"><span class="nav-number">5.6.</span> <span class="nav-text">ファイアウォールルール</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%9B%E3%83%BC%E3%83%A0%E3%82%B2%E3%83%BC%E3%83%88%E3%82%A6%E3%82%A7%E3%82%A4%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">6.</span> <span class="nav-text">ホームゲートウェイの設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VPN%E3%82%AF%E3%83%A9%E3%82%A4%E3%82%A2%E3%83%B3%E3%83%88%EF%BC%88Windows%EF%BC%89"><span class="nav-number">7.</span> <span class="nav-text">VPNクライアント（Windows）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VPN%E3%82%AF%E3%83%A9%E3%82%A4%E3%82%A2%E3%83%B3%E3%83%88%EF%BC%88macOS%EF%BC%89"><span class="nav-number">8.</span> <span class="nav-text">VPNクライアント（macOS）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VPN%E3%82%AF%E3%83%A9%E3%82%A4%E3%82%A2%E3%83%B3%E3%83%88%EF%BC%88%E3%81%9D%E3%81%AE%E4%BB%96%EF%BC%89"><span class="nav-number">9.</span> <span class="nav-text">VPNクライアント（その他）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%AF%E3%83%B3%E3%82%BF%E3%82%A4%E3%83%A0%E3%83%91%E3%82%B9%E3%83%AF%E3%83%BC%E3%83%89"><span class="nav-number">10.</span> <span class="nav-text">ワンタイムパスワード</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="阿部　吉伸(Yoshinobu ABE)"
+      src="/new-technology/images/yoshi.png">
+  <p class="site-author-name" itemprop="name">阿部　吉伸(Yoshinobu ABE)</p>
+  <div class="site-description" itemprop="description">IT</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/new-technology/archives/">
+          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-name">ポスト</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/new-technology/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">カテゴリ</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/new-technology/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">タグ</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yoshi0808" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yoshi0808" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yoshi0808.blog@gmail.com" title="E-Mail → mailto:yoshi0808.blog@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yoshi0808_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yoshi0808_" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="/new-technology/lib/@creativecommons/vocabulary/assets/license_badges/big/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="ja">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2021/05/30/ssl-vpn/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/new-technology/images/yoshi.png">
+      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="New technologies in our life">
+      <meta itemprop="description" content="IT">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="XG Firewall SSL-VPN | New technologies in our life">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          XG Firewall SSL-VPN
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">投稿日</span>
+
+      <time title="作成日：2021-05-30 09:10:00" itemprop="dateCreated datePublished" datetime="2021-05-30T09:10:00+09:00">2021-05-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">編集日</span>
+      <time title="修正日：2021-10-17 09:52:27" itemprop="dateModified" datetime="2021-10-17T09:52:27+09:00">2021-10-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">カテゴリ</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/Security/" itemprop="url" rel="index"><span itemprop="name">Security</span></a>
+        </span>
+          、
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/Security/VPN/" itemprop="url" rel="index"><span itemprop="name">VPN</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <img src="/new-technology/2021/05/30/ssl-vpn/title.png" class="" title="alt">
+<p class="onepoint">この記事で実現すること</p>
+
+<p>XG FirewallのSSL-VPNを構成し、実家や友人宅または、ホテル滞在時など公衆Wi-FiをはじめとしたさまざまなWi-Fi環境下においてIPSec-VPNよりも接続可能性を高める事を目的にします。SSL-VPNのTCPの待ち受けポートを設定し、自宅がv6プラスの環境でも接続可能となる期待があります。公衆Wi-Fiによく見られるIPv4アドレスのみ払い出しされる環境においても、IPv4 VPNトンネルの中でIPv4&#x2F;IPv6デュアルスタックによるインターネットアクセス、および自宅LANリソースにアクセスできます。</p>
+<span id="more"></span>
+
+<h2 id="XG-FirewallのIPSec-VPN"><a href="#XG-FirewallのIPSec-VPN" class="headerlink" title="XG FirewallのIPSec-VPN"></a>XG FirewallのIPSec-VPN</h2><p>IPSec-VPNは一般的に安全性が高く安定しているため、それが使える場合はまずは最優先候補に挙げられますが、制約があります。</p>
+<ol>
+<li>v6プラスの環境では接続に必要なポートが制限され接続できません（別途PPPoEで接続している場合は可能です）。</li>
+<li>公衆Wi-Fiの一部では最低必要なUDPを除き、UDP全般を止めているところがあります（VPNを禁止していないところでも）。</li>
+<li>公衆WIFIではIPv4のみ提供している場所が多いです。</li>
+</ol>
+<h2 id="SSL-VPNについて"><a href="#SSL-VPNについて" class="headerlink" title="SSL VPNについて"></a>SSL VPNについて</h2><p>Sophosは昨年（2020年10月）に<strong>Sophos Connectクライアント Ver2</strong>を発表し、SSL VPNで接続できるようになりました。またv18 MR3より、SSL-VPNのパフォーマンスが向上しているとの事です。</p>
+<blockquote>
+<p>Sophos Connectクライアント Ver2<br> <a target="_blank" rel="noopener" href="https://partnernews.sophos.com/ja-jp/2020/10/products/sophos-connect-v2-remote-access-vpn/">https://partnernews.sophos.com/ja-jp/2020/10/products/sophos-connect-v2-remote-access-vpn/</a></p>
+</blockquote>
+<p>XGのIPSec-VPNの速度と安定性は大変満足していますが、IPv6インターネットに対応しません<sup><strong><a href="#note1">[1]</a></strong></sup>。デュアルスタック環境のWi-Fiに接続した場合、VPNを張ってもIPv4のみがVPNを経由し、IPv6は素のままInternetに出ていきます。また大部分のUDPポートが止められているケースを想定し、IPSec-VPNとは別にSSL-VPNもセットアップしておこうと考えました。前述したSophosのドキュメントでは、”macOSサポートが間も無く予定されていますが”との事ですが、なかなか発表される様子がありません。Big Sur対応で苦労されているんでしょうか。現時点において、IPSec-VPNを補完する<strong>HTTPS接続によるSSL-VPN構成</strong>を考えてみます。</p>
+<h2 id="SSL-VPNの構成"><a href="#SSL-VPNの構成" class="headerlink" title="SSL VPNの構成"></a>SSL VPNの構成</h2><p>ここでは、一般例としてXGとインターネットとの間にホームゲートウェイ（HGW）が配置されている前提です。もちろん、IPv4のみのネットワーク環境でもVPNは構築できます。自宅のパブリックIPアドレスに接続するためにダイナミックDNS(DDNS)としてSophosが提供している<code>myfirewall.co</code>を使います。</p>
+ <img src="/new-technology/2021/05/30/ssl-vpn/sslvpn2.drawio.png" class="" title="alt">
+
+<table>
+<thead>
+<tr>
+<th>ネットワーク</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>IPv4 LAN Segment①</td>
+<td>LANで利用しているIPv4プライベートネットワーク</td>
+</tr>
+<tr>
+<td>IPv6 LAN Segment②</td>
+<td>LANで利用しているIPv6プライベートネットワーク。<code>fdxx:xxxx:xxxx/48</code>を先頭に持つ64ビットPrefixのユニークローカルアドレス（ULA）です。</td>
+</tr>
+<tr>
+<td>IPv4 Session③</td>
+<td>XGのWANに流れるInternet向けのトラフィックです。このセグメントは一般的にプライベートIPで、HGWでNAT変換されます。</td>
+</tr>
+<tr>
+<td>IPv6 Session④</td>
+<td>XGのWANに流れるInternet向けのIPv6トラフィックです。このセグメントは一般的にHGWからDHCPv6またはRouter Advertisement(RA)によって、パブリックIPアドレスが振られます。</td>
+</tr>
+</tbody></table>
+<p>ここまでが通常LANからInternetに接続する構成です。そしてSSL-VPNではIPv4のVPNトンネルを1つ、その中にIPv4セッション、IPv6セッションを張ります。このトンネルを張る事で、XGの物理インタフェースのWAN、LANに加えて仮想のVPNセグメントが設定されます。</p>
+<table>
+<thead>
+<tr>
+<th>ネットワーク</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>IPv4 SSL VPN Tunnel⑤</td>
+<td>テザリングや公衆Wi-Fiで振られたIPアドレスから、Internetを経由し、XGのWANポートとを結ぶセッション。</td>
+</tr>
+<tr>
+<td>IPv4 VPN Segment⑥</td>
+<td>VPNトンネルの中で作成される仮想IPv4ネットワーク。これはLANとは異なるプライベートIPネットワークアドレスです。</td>
+</tr>
+<tr>
+<td>IPv6 VPN Segment⑦</td>
+<td>VPNトンネルの中で作成される仮想IPv6ネットワーク。これはLANとは異なるULAです。</td>
+</tr>
+</tbody></table>
+<p>仮想のVPNセグメントは、LANとネットワークアドレスを重複させてはいけません。あくまで別のセグメントです。また可能性は低いですが、公衆Wi-FiなどプライベートIPを使う場所でVPNセグメントのプライベートIPと重複し、VPNセッションを張れない可能性があります。<br>私が知る限り、公衆Wi-Fiでは10.x.x.xのネットワークが多く使われるようです。<br>⑤のトンネルが張られると、クライアントでは仮想ネットワークインタフェース<mark class="label primary">Sophos TAP Adapter</mark>がActiveになります。<br> <img src="/new-technology/2021/05/30/ssl-vpn/TAP-Driver.png" class="" width="480" title="alt"></p>
+<h2 id="SSL-VPNの事前準備"><a href="#SSL-VPNの事前準備" class="headerlink" title="SSL VPNの事前準備"></a>SSL VPNの事前準備</h2><ol>
+<li>VPNセッションのためのIPv4ネットワークアドレス（IPの範囲でも可能）を決める</li>
+<li>XGのSSL待ち受けポートを決める</li>
+<li>DDNSのホスト名を決定する</li>
+<li>VPNセッションのためのIPv6 ULAを決める</li>
+</ol>
+<p>XGのSSL-VPNはUDPがTCPの3倍ほど高速ですが、公衆Wi-Fiを使う場合、<strong>安全・安心・確実に接続するにはHTTPS(443&#x2F;TCP)を使う事が手堅いです</strong>。自宅がv6プラスの方はプロバイダーから自宅まで通す事のできるポートの範囲を選定する事になります。</p>
+<p>LANのIPv6は、「<a href="/new-technology/2020/04/29/xg-ipv6-2/" title="Sophos FirewallでIPv6の設定を行う（後半）">Sophos FirewallでIPv6の設定を行う（後半）</a>」の記事で設定したように、ULAの48ビットPrefixにサブネットの16ビットを加えて64ビットPrefixを決定しました。今回のVPNはサブネットの16ビットの値を変える事で別のセグメントを割り当てます。</p>
+<h2 id="サーバー（XG）側の設定"><a href="#サーバー（XG）側の設定" class="headerlink" title="サーバー（XG）側の設定"></a>サーバー（XG）側の設定</h2><h3 id="SSL-VPNの設定"><a href="#SSL-VPNの設定" class="headerlink" title="SSL VPNの設定"></a>SSL VPNの設定</h3><p>XGの管理画面の左ペイン<mark class="label primary">VPN</mark>を選択すると、右上に<mark class="label primary">VPN設定を表示</mark>という項目があるのでこれをクリックします。さらに<mark class="label primary">SSL VPN</mark>と<mark class="label primary">L2TP</mark>のタブがありますので、SSLVPNを選択します。</p>
+<img src="/new-technology/2021/05/30/ssl-vpn/vpn-conf.png" class="" width="1024" title="alt">
+
+<p>前の章で事前に決めた設定内容を加えていきます。</p>
+<ul>
+<li>赤枠で囲ったTCP&#x2F;UDPの別はTCPとポート番号、そして、<mark class="label primary">ホスト名の上書き</mark>というところはNo-IPなどのダイナミックDNSホスト名を入力します。設定可能なダイナミックDNSについては、「<a href="/new-technology/2020/03/28/vpn/" title="XG Firewall VPNについて">XG Firewall VPNについて</a>」の記事を参照してください。</li>
+<li>IPv4のVPNネットワークの範囲は、LANやその他競合しないと思われるプライベートIP群から設定します。デフォルトの10.xでも構いませんが、あまり使われない、<code>192.168.200.x/24</code>近辺を使ってはいかがでしょうか。</li>
+<li>VPNクライアントが参照するDNSはXGのDNSですので、XGのLAN側IPアドレスを入力します。</li>
+<li>IPv6は利用しているULAの別のサブネットを設定します。<code>fd00:beef:cafe:2::/64</code>をLANで使っているとすれば、<code>fd00:beef:cafe:12::/64</code>という具合です。</li>
+<li>IPv6を利用するのであれば、リースモードを”IPv4とIPv6の両方”を選択します。</li>
+</ul>
+<p>適用をクリックし変更を完了させます。</p>
+<p>もし、VPNの待ち受けポートを443&#x2F;TCPとするならば、ユーザーポータルがデフォルト443&#x2F;TCPですので合わせて変更する必要があります。これは、XGの左ペインメニューの<mark class="label primary">管理</mark>→<mark class="label primary">管理者とユーザーの設定</mark>に<mark class="label primary">ユーザーポータルHTTPSポート</mark>とありますので、そこの443を別のポートに変更します。</p>
+<div class="note warning"><p><mark class="label primary">ホスト名の上書き</mark>にDDNSホストを登録しないとVPN設定ファイルにXGのWANのプライベートIPアドレスが含まれてしまい、VPN接続に大幅に時間が掛かりますので必ず設定してください。XGにパブリックIPアドレスが割り振られている環境の方は設定は不要です。</p>
+</div>
+
+<h3 id="利用セグメントのIPホストへの登録"><a href="#利用セグメントのIPホストへの登録" class="headerlink" title="利用セグメントのIPホストへの登録"></a>利用セグメントのIPホストへの登録</h3><p>XGでは、セグメント間の通信には必ずそのネットワークの名前を登録し、その名前でアクセス許可を行うため、ネットワークやホストの名前を付ける必要があります。左ペインメニューの<mark class="label primary">ホストとサービス</mark>→<mark class="label primary">IPホスト</mark>でVPNとLANの相互アクセスのために、LANで利用しているIPv4のネットワークアドレスとIPv6のネットワークアドレスを登録します。</p>
+<p>また、SSLインスペクションをVPNでも使う方は、VPNで割り当てる上記のIPv4の範囲とIPv6のネットワークアドレスを登録します。</p>
+<p>以下のように、VPNのネットワーク、いつも利用しているLANの合計4つ（IPv4のみであれば2つ）を名前をつけて登録します。</p>
+<img src="/new-technology/2021/05/30/ssl-vpn/ipv4host.png" class="" width="800" title="alt">
+<img src="/new-technology/2021/05/30/ssl-vpn/ipv6host.png" class="" width="800" title="alt">
+
+<h3 id="VPNユーザーの作成"><a href="#VPNユーザーの作成" class="headerlink" title="VPNユーザーの作成"></a>VPNユーザーの作成</h3><p>初めてVPNを設定する方はユーザーの作成が必要です。既にIPSec-VPNを設定されている方は対応不要です。XGの左ペインメニューから<mark class="label primary">認証</mark>を選択、<mark class="label primary">ユーザー</mark>のタブから、追加ボタンをクリックします。そして以下のようにユーザー名、パスワードとメールアドレスを入力します。</p>
+<img src="/new-technology/2021/05/30/ssl-vpn/user1.png" class="" title="alt">
+<img src="/new-technology/2021/05/30/ssl-vpn/user2.png" class="" title="alt">
+
+<h3 id="SSL-VPN設定2"><a href="#SSL-VPN設定2" class="headerlink" title="SSL VPN設定2"></a>SSL VPN設定2</h3><p>左ペインメニューの<mark class="label primary">VPN</mark>から<mark class="label primary">SSL VPN（リモートアクセス）</mark>に進み、<mark class="label primary">追加</mark>ボタンをクリックします。</p>
+<img src="/new-technology/2021/05/30/ssl-vpn/vpn-conf2.png" class="" width="640" title="alt">
+
+<ul>
+<li>名前を決め、<mark class="label primary">ポリシーメンバー</mark>には、ユーザーグループまたはユーザーを追加します。</li>
+<li><mark class="label primary">デフォルトのゲートウェイとして使用</mark>を"ON"にします。</li>
+<li>許可するネットワークソースには、上記で作成済みのLANのネットワークアドレスを追加します（VPNのネットワークアドレスではありません）。</li>
+</ul>
+<p>適用をクリックして登録を完了させます。</p>
+<div class="note info"><p>XGをデフォルトゲートウェイとする事で、DNSを含めた全てのリクエスト情報を公衆回線に流さない事をお勧めします</p>
+</div>
+
+<h3 id="デバイスのアクセス"><a href="#デバイスのアクセス" class="headerlink" title="デバイスのアクセス"></a>デバイスのアクセス</h3><p>左ペインメニューの<mark class="label primary">管理</mark>から<mark class="label primary">デバイスのアクセス</mark>に進み、<mark class="label primary">ローカルサービスACL</mark>でWANにSSL VPNの権限を付与します。また、VPNからXGのDNSが参照できるように設定します。</p>
+<img src="/new-technology/2021/05/30/ssl-vpn/acl.png" class="" width="1024" title="alt">
+
+<p>LANからVPNを張る事が無ければ、LANのSSLVPNのチェックは外した方が良いでしょう。</p>
+<h3 id="ファイアウォールルール"><a href="#ファイアウォールルール" class="headerlink" title="ファイアウォールルール"></a>ファイアウォールルール</h3><p>ファイアウォールルールでは、VPNからInternetとLANへのアクセスを許可します。送信元ゾーンがLANとVPNになっている事を確認します。</p>
+<img src="/new-technology/2021/05/30/ssl-vpn/rule1.png" class="" width="1024" title="alt">
+
+<p>また、LANとVPNとが相互に許可されている事を確認します。</p>
+<img src="/new-technology/2021/05/30/ssl-vpn/rule2.png" class="" width="1024" title="alt">
+
+<p>これらはIPv4、IPv6それぞれで設定が必要です。また、NATルールに関しては、WANポートから出ていくパケットが変換対象となるので追加設定は不要です。ただし、XGv17以前の互換性のために用意されているLinkedNATを利用されている方は、ファイアウォールルール毎に対応したリンクNATルールを追加してください。</p>
+<p>もし、VPNに対してもSSLインスペクションを有効にするのであれば、SSL&#x2F;TLSインスペクションのルールにVPNセグメントのネットワーク情報を追加します。</p>
+<img src="/new-technology/2021/05/30/ssl-vpn/rule3.png" class="" width="1024" title="alt">
+
+<h2 id="ホームゲートウェイの設定"><a href="#ホームゲートウェイの設定" class="headerlink" title="ホームゲートウェイの設定"></a>ホームゲートウェイの設定</h2><p>HGWはユーザーの環境によって異なりますが、IPsec VPNで設定したように、HGWでIPv4のSSL VPNに関するパケットをXGに着信させる設定を加えます。</p>
+<img src="/new-technology/2021/05/30/ssl-vpn/hgw.png" class="" width="800" title="alt">
+
+<h2 id="VPNクライアント（Windows）"><a href="#VPNクライアント（Windows）" class="headerlink" title="VPNクライアント（Windows）"></a>VPNクライアント（Windows）</h2><p>Windowsでは、Sophos提供のSophos Connectを利用します。クライアントとVPN設定ファイルのダウンロードのために、ユーザーポータル<code>https://xgのIPアドレス:443/</code>にログインします。ユーザーポータルの待ち受けポートを変更された方は443を適切な値に変更してアクセスしてください。</p>
+<img src="/new-technology/2021/05/30/ssl-vpn/portal.png" class="" width="480" title="alt">
+
+<p>赤枠で囲った”Download client for Windows”のリンクをクリックします。Windowsクライアントのセットアップは難しくありません、順に進めていけば完了します。セットアップが完了するとプロセスがタスクバーに常駐します。<br>続いて、”その他のOS向け設定のダウンロード”を行います。ここでは拡張子ovpnのファイルがダウンロードされます。ダウンロードしたファイルをダブルクリックすると、VPN設定ファイルがSophos Connectに取り込まれます。</p>
+<img src="/new-technology/2021/05/30/ssl-vpn/sc1.png" class="" width="480" title="alt">
+
+<p>少し判りづらいですが、Homeの項目がIPSec-VPNでmyfirewall.coのものがSSL-VPNです。</p>
+<p>ユーザーIDとパスワードを入力し、接続ボタンをクリックすると接続に掛かる時間は12秒程度でしょうか、IPSec-VPNが2〜3秒程度なので、結構時間が掛かる気がします。</p>
+<img src="/new-technology/2021/05/30/ssl-vpn/sc2.png" class="" width="480" title="alt">
+
+<p>このSophosConnectはアプリケーションの作りが洗練されていません。一旦接続しにいくと、キャンセルをクリックしようとしてもボタンが押せず、タイムアウトが発生するまで、十数秒〜数十秒くらい待たされてしまいます。Sophos Connectの<strong>紹介記事</strong>ではmacOS向けに<strong>OPENVPN Connect</strong>を勧めていますが、OPENVPN Connectは、Windows版もあります。OPENVPN ConnectではVPNの接続ネゴシエーション中にキャンセルすると即座にVPNサーバーに対しRSTを送信すると共に、瞬時にUIもキャンセル応答します。このあたりは流石デファクトスタンダードというところでしょうか。もちろん、正しくセションを終了した時は行儀良くFINを送信し接続終了しています。IPSec-VPNとSSL-VPNとで2つのクライアントを持つのが嫌でなければ、操作性でシンプルなOPENVPN Connectのほうが使い勝手が良いでしょう。設定もovpnファイルを取り込むだけでそれ以外の設定はありません。</p>
+<blockquote>
+<p>Sophos Connect<br> <a target="_blank" rel="noopener" href="https://partnernews.sophos.com/ja-jp/2020/10/products/sophos-connect-v2-remote-access-vpn/">https://partnernews.sophos.com/ja-jp/2020/10/products/sophos-connect-v2-remote-access-vpn/</a><br>OPENVPN Connect<br> <a target="_blank" rel="noopener" href="https://openvpn.net/vpn-client/">https://openvpn.net/vpn-client/</a></p>
+</blockquote>
+<img src="/new-technology/2021/05/30/ssl-vpn/openvpn.png" class="" width="480" title="alt">
+
+<h2 id="VPNクライアント（macOS）"><a href="#VPNクライアント（macOS）" class="headerlink" title="VPNクライアント（macOS）"></a>VPNクライアント（macOS）</h2><p>macOSはOPENVPN Connectがお勧めされているわけですが、私は<strong>Tunnelblick</strong>をお勧めします。こちらはオープンソースでGNU GPLv2です。UIが少し古いかなという印象はありますが、日本語に翻訳されており細かい設定が可能で詳細なログも分かり易いのでエンジニア向けです。設定は2箇所あります。</p>
+<blockquote>
+<p>Tunnelblick<br> <a target="_blank" rel="noopener" href="https://tunnelblick.net/">https://tunnelblick.net/</a></p>
+</blockquote>
+<img src="/new-technology/2021/05/30/ssl-vpn/tunnelblick.png" class="" width="1024" title="alt">
+
+<ul>
+<li>IPv6無効のチェックを外しIPv6を有効にする</li>
+<li>不意の切断時に「ネットワーク接続を切断する」を選択する</li>
+</ul>
+<p>この2つの設定を加えます。後者はいつの間にかVPNセションが切れていてVPNを通さず公衆Wi-Fiを使っていた、という事が無くなり、ピタリとアクセスが止まります。安全措置として良い機能です。</p>
+<p>macOS Big Surではインストールに少し手間が掛かるようです。詳細は以下の記事を参照してください。</p>
+<blockquote>
+<p>Installing System Extensions<br> <a target="_blank" rel="noopener" href="https://tunnelblick.net/cKextsInstallation.html">https://tunnelblick.net/cKextsInstallation.html</a></p>
+</blockquote>
+<p>これら2つのクライアントは、Homebrewからもインストール可能です。<br><code>brew install openvpn-connect --cask</code><br><code>brew install tunnelblick --cask</code></p>
+<p>Tunnelblickは前述した接続キャンセル時の応答性も機敏です（RST送信と即座のUI応答）。</p>
+<h2 id="VPNクライアント（その他）"><a href="#VPNクライアント（その他）" class="headerlink" title="VPNクライアント（その他）"></a>VPNクライアント（その他）</h2><p>スマホ、Linux向けにも、OPENVPN Connectがあります。設定ファイルの取り込みは、クラウド経由やメールの添付などの方法でアプリに渡します。</p>
+<h2 id="ワンタイムパスワード"><a href="#ワンタイムパスワード" class="headerlink" title="ワンタイムパスワード"></a>ワンタイムパスワード</h2><p>XGではSSL-VPNにおいても2要素認証の設定が可能ですので設定される事をお勧めします。「<a href="/new-technology/2020/03/28/vpnotp/" title="XG Firewall VPNに2要素認証を設定する">XG Firewall VPNに2要素認証を設定する</a>」の記事を参照してください。XGにおけるVPN-SSLのワンタイムパスワードはパスワードの文字列に続けてOTPの数字6文字を入力する事で2要素認証を行います。パスワードが”abcdef”でOTPが”123456”ならば、パスワードに”abcdef123456”を入力します。</p>
+<p> <small id="note1"><strong>[1]</strong><br>IPSecによるサイト間接続VPNはIPv6に対応しています。クライアントからのリモートアクセスとしてのIPSecはIPv6未対応です。<br></small></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/new-technology/tags/XG-Firewall/" rel="tag"><i class="fa fa-tag"></i> XG Firewall</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/new-technology/2021/05/05/avoid-phishing/" rel="prev" title="フィッシング対策ツールの実力">
+                  <i class="fa fa-chevron-left"></i> フィッシング対策ツールの実力
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/new-technology/2021/06/26/ipv6-first/" rel="next" title="IPv6のULAをIPv4より優先する">
+                  IPv6のULAをIPv4より優先する <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">阿部　吉伸(Yoshinobu ABE)</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div><script src="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.umd.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.min.css" rel="stylesheet">
+
+<script>
+if (Cookies.get('PRVCY202112') != 'Agree') {
+  const notice = new SimpleGDPR({
+    title: 'Accept Cookies & Privacy Policy?',
+    message: 'このWebサイトでは、訪問や活動に関するデータがクッキー等によって収集されます。閲覧を継続される場合、\
+    プライバシーポリシーをご覧いただき同意(Agree)をお願いします',
+    link: null,
+    icons: true,
+    theme: 'light',
+    animation: 'fade',
+    float: 'bottom-right',
+      callback: () => {
+      notice.close();
+      Cookies.set('PRVCY202112', 'Agree', { expires: 365, path: '/'});
+      notice.destroy();
+      // Google Analytics 4
+      gtag('consent', 'update', {
+      'analytics_storage': 'granted'
+      });
+      gtag('js', new Date());
+      gtag('config', 'G-JMY6NSC2KK', { 'anonymize_ip': true });
+      },
+  });
+}
+</script>
+<div class="disclaimer1">
+このサイトの記事は、特別な記載がない限り <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja">クリエイティブ・コモンズ BY-NC-SA ライセンス</a>で保護されています</div>
+
+
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/yoshi0808" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="/new-technology/lib/animejs/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="/new-technology/lib/medium-zoom/dist/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/comments.js"></script><script src="/new-technology/js/utils.js"></script><script src="/new-technology/js/motion.js"></script><script src="/new-technology/js/schemes/muse.js"></script><script src="/new-technology/js/next-boot.js"></script>
+
+  <script src="/new-technology/lib/hexo-generator-searchdb/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"/new-technology/lib/mermaid/dist/mermaid.min.js","integrity":"sha256-3JloMMI/ZQx6ryuhhZTsQJQmGAkXeni6PkshX7UUO2s="}}</script>
+  <script src="/new-technology/js/third-party/tags/mermaid.js"></script>
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

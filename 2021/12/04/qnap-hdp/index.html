@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/icon-16x16.png">
+  <link rel="mask-icon" href="/new-technology/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/new-technology/css/main.css">
+
+
+
+<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-/4UQcSmErDzPCMAiuOiWPVVsNN2s3ZY/NsmXNcj0IFc=" crossorigin="anonymous">
+  <link rel="stylesheet" href="/new-technology/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.15.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
+
+    <meta name="description" content="この記事で実現すること  QNAPより無償版ESXiの仮想マシン（VM）バックアップが可能なHyper Data Protector(HDP)という無償ソフトウェアが提供されています。Windows Server2016および2019のHyper-Vにも対応しています（Windows10のHyper-Vには対応しません）。無償版ESXiのバックアップソフトは「無償版ESXiの高度なバックアップ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="無償版ESXiのVMをQNAP NASにバックアップ">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2021/12/04/qnap-hdp/index.html">
+<meta property="og:site_name" content="New technologies in our life">
+<meta property="og:description" content="この記事で実現すること  QNAPより無償版ESXiの仮想マシン（VM）バックアップが可能なHyper Data Protector(HDP)という無償ソフトウェアが提供されています。Windows Server2016および2019のHyper-Vにも対応しています（Windows10のHyper-Vには対応しません）。無償版ESXiのバックアップソフトは「無償版ESXiの高度なバックアップ">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/12/04/qnap-hdp/title.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/12/04/qnap-hdp/install.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/12/04/qnap-hdp/share-folder1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/12/04/qnap-hdp/share-folder2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/12/04/qnap-hdp/share-folder3.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/12/04/qnap-hdp/volume1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/12/04/qnap-hdp/volume2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/12/04/qnap-hdp/esxi1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/12/04/qnap-hdp/esxi2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/12/04/qnap-hdp/esxi5.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/12/04/qnap-hdp/esxi4.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/12/04/qnap-hdp/esxi3.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/12/04/qnap-hdp/hdp1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/12/04/qnap-hdp/hdp2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/12/04/qnap-hdp/hdp3.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/12/04/qnap-hdp/hdp4.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/12/04/qnap-hdp/hdp5.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/12/04/qnap-hdp/hdp6.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/12/04/qnap-hdp/hdp7.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/12/04/qnap-hdp/hdp8.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/12/04/qnap-hdp/hdp9.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/12/04/qnap-hdp/hdp10.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/12/04/qnap-hdp/hdp11.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/12/04/qnap-hdp/hdp12.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/12/04/qnap-hdp/hdp13.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/12/04/qnap-hdp/hdp14.png">
+<meta property="article:published_time" content="2021-12-03T23:00:00.000Z">
+<meta property="article:modified_time" content="2023-01-09T09:17:23.000Z">
+<meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
+<meta property="article:tag" content="QNAP">
+<meta property="article:tag" content="ESXi">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2021/12/04/qnap-hdp/title.png">
+
+
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2021/12/04/qnap-hdp/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"ja","comments":true,"permalink":"https://yoshi0808.github.io/new-technology/2021/12/04/qnap-hdp/","path":"2021/12/04/qnap-hdp/","title":"無償版ESXiのVMをQNAP NASにバックアップ"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>無償版ESXiのVMをQNAP NASにバックアップ | New technologies in our life</title>
+  
+
+
+
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{&quot;token&quot;: &quot;0148b4d0442e42b483ddce684030bd2f&quot;}'></script>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JMY6NSC2KK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+  'ad_storage': 'denied',
+  'analytics_storage': 'denied'
+  });
+
+  dataLayer.push({
+  'event': 'default_consent'
+  });
+
+  if (Cookies.get('PRVCY202112') == 'Agree') {
+    gtag('consent', 'update', {
+    'analytics_storage': 'granted'
+    });
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'G-JMY6NSC2KK',{ 'anonymize_ip': true });
+</script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/new-technology/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/new-technology/atom.xml" title="New technologies in our life" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="ナビゲーションバーの切り替え" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/new-technology/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">New technologies in our life</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Device,Network,Code,etc...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="検索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/new-technology/" rel="section"><i class="fa fa-home fa-fw"></i>ホーム</a></li><li class="menu-item menu-item-about"><a href="/new-technology/about/" rel="section"><i class="fa fa-user fa-fw"></i>サイトポリシー</a></li><li class="menu-item menu-item-tags"><a href="/new-technology/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>タグ</a></li><li class="menu-item menu-item-categories"><a href="/new-technology/categories/" rel="section"><i class="fa fa-th fa-fw"></i>カテゴリ</a></li><li class="menu-item menu-item-archives"><a href="/new-technology/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>アーカイブ</a></li><li class="menu-item menu-item-privacy"><a href="/new-technology/privacypolicy/" rel="section"><i class="fa fa-check fa-fw"></i>プライバシーポリシー</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="検索…" spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          見出し
+        </li>
+        <li class="sidebar-nav-overview">
+          概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A8%BC%E5%83%8D%E6%9D%A1%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">稼働条件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B4%E8%BF%91%E3%81%AEHDP%E3%81%AE%E3%82%A2%E3%83%83%E3%83%97%E3%83%87%E3%83%BC%E3%83%88"><span class="nav-number">2.</span> <span class="nav-text">直近のHDPのアップデート</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HDP%E3%81%AE%E4%B8%BB%E8%A6%81%E3%81%AA%E6%A9%9F%E8%83%BD%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span class="nav-number">3.</span> <span class="nav-text">HDPの主要な機能について</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#QNAP-NAS%E3%81%AE%E4%BA%8B%E5%89%8D%E6%BA%96%E5%82%99"><span class="nav-number">4.</span> <span class="nav-text">QNAP NASの事前準備</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HDP%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><span class="nav-number">4.1.</span> <span class="nav-text">HDPのインストール</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B1%E6%9C%89%E3%83%95%E3%82%A9%E3%83%AB%E3%83%80%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">4.2.</span> <span class="nav-text">共有フォルダの設定</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%AF%E7%94%A8%E6%80%A7%E3%81%8A%E3%82%88%E3%81%B3%E6%A9%9F%E5%AF%86%E6%80%A7%E5%90%91%E4%B8%8A%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AB"><span class="nav-number">4.2.1.</span> <span class="nav-text">可用性および機密性向上のために</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%82%E7%94%A8%E3%83%87%E3%82%A3%E3%82%B9%E3%82%AF%E3%83%9C%E3%83%AA%E3%83%A5%E3%83%BC%E3%83%A0%E3%81%AE%E8%A8%AD%E5%AE%9A%EF%BC%88%E4%BB%BB%E6%84%8F%EF%BC%89"><span class="nav-number">4.3.</span> <span class="nav-text">専用ディスクボリュームの設定（任意）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi%E3%81%AE%E4%BA%8B%E5%89%8D%E6%BA%96%E5%82%99"><span class="nav-number">5.</span> <span class="nav-text">ESXiの事前準備</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ESXi%E4%B8%8A%E3%81%A7HTTPS%E3%80%81SSH%E3%81%AE%E8%A7%A3%E6%94%BE"><span class="nav-number">5.1.</span> <span class="nav-text">ESXi上でHTTPS、SSHの解放</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#VM%E3%81%AEChanged-Block-Tracking%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">5.2.</span> <span class="nav-text">VMのChanged Block Trackingの設定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%88%E4%BB%BB%E6%84%8F%EF%BC%89%E7%AE%A1%E7%90%86%E8%80%85%E3%82%A2%E3%82%AB%E3%82%A6%E3%83%B3%E3%83%88%E3%81%AE%E4%BD%9C%E6%88%90"><span class="nav-number">5.3.</span> <span class="nav-text">（任意）管理者アカウントの作成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%88%E4%BB%BB%E6%84%8F%EF%BC%89SSH%E3%80%81Web-Client%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AB%E6%8E%A5%E7%B6%9A%E5%8F%AF%E8%83%BD%E3%81%AAIP%E3%82%A2%E3%83%89%E3%83%AC%E3%82%B9%E3%82%92%E7%B5%9E%E3%82%8B"><span class="nav-number">5.4.</span> <span class="nav-text">（任意）SSH、Web Clientのために接続可能なIPアドレスを絞る</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HDP%E3%81%B8%E3%81%AE%E3%83%AD%E3%82%B0%E3%82%A4%E3%83%B3"><span class="nav-number">6.</span> <span class="nav-text">HDPへのログイン</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%82%A4%E3%83%B3%E3%83%99%E3%83%B3%E3%83%88%E3%83%AA%E7%99%BB%E9%8C%B2"><span class="nav-number">7.</span> <span class="nav-text">インベントリ登録</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E3%83%AA%E3%83%9D%E3%82%B8%E3%83%88%E3%83%AA%E7%99%BB%E9%8C%B2"><span class="nav-number">8.</span> <span class="nav-text">バックアップリポジトリ登録</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97"><span class="nav-number">9.</span> <span class="nav-text">バックアップ</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%A9%E5%85%83"><span class="nav-number">10.</span> <span class="nav-text">復元</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HDP%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%9F%E6%84%9F%E6%83%B3"><span class="nav-number">11.</span> <span class="nav-text">HDPを使った感想</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="阿部　吉伸(Yoshinobu ABE)"
+      src="/new-technology/images/yoshi.png">
+  <p class="site-author-name" itemprop="name">阿部　吉伸(Yoshinobu ABE)</p>
+  <div class="site-description" itemprop="description">IT</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/new-technology/archives/">
+          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-name">ポスト</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/new-technology/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">カテゴリ</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/new-technology/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">タグ</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yoshi0808" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yoshi0808" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yoshi0808.blog@gmail.com" title="E-Mail → mailto:yoshi0808.blog@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yoshi0808_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yoshi0808_" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="/new-technology/lib/@creativecommons/vocabulary/assets/license_badges/big/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="ja">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2021/12/04/qnap-hdp/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/new-technology/images/yoshi.png">
+      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="New technologies in our life">
+      <meta itemprop="description" content="IT">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="無償版ESXiのVMをQNAP NASにバックアップ | New technologies in our life">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          無償版ESXiのVMをQNAP NASにバックアップ
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">投稿日</span>
+
+      <time title="作成日：2021-12-04 08:00:00" itemprop="dateCreated datePublished" datetime="2021-12-04T08:00:00+09:00">2021-12-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">編集日</span>
+      <time title="修正日：2023-01-09 18:17:23" itemprop="dateModified" datetime="2023-01-09T18:17:23+09:00">2023-01-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">カテゴリ</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/Software/" itemprop="url" rel="index"><span itemprop="name">Software</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <img src="/new-technology/2021/12/04/qnap-hdp/title.png" class="" width="1024" title="alt">
+
+<p class="onepoint">この記事で実現すること</p>
+
+<p>QNAPより無償版ESXiの仮想マシン（VM）バックアップが可能なHyper Data Protector(HDP)という無償ソフトウェアが提供されています。Windows Server2016および2019のHyper-Vにも対応しています（Windows10のHyper-Vには対応しません）。無償版ESXiのバックアップソフトは「<a href="/new-technology/2021/03/06/esxi-nakivo/" title="無償版ESXiの高度なバックアップ">無償版ESXiの高度なバックアップ</a>」で書いた有償のもの（1年期限の無償版）は存在します。無償バックアップソフトは無償版ESXiに対応していないという難しい状況でしたが、NASが必須という前提はあるものの、無償ESXi×無償バックアップソフトウェアが登場してきました。エージェントレスで、ESXi本体やVMには何もインストールする必要はありません。まだ製品として安定していませんが、この記事ではESXiのVMをQNAPのNAS上にバックアップする方法をまとめています。なお、別のNASメーカーであるSynologyからもActive Backup for Businessという製品が提供されています。</p>
+<blockquote>
+<p>QNAP<br> <a target="_blank" rel="noopener" href="https://www.qnap.com/ja-jp/software/hyper-data-protector">https://www.qnap.com/ja-jp/software/hyper-data-protector</a><br>Synology<br> <a target="_blank" rel="noopener" href="https://www.synology.com/ja-jp/dsm/feature/active_backup_business">https://www.synology.com/ja-jp/dsm/feature/active_backup_business</a></p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="稼働条件"><a href="#稼働条件" class="headerlink" title="稼働条件"></a>稼働条件</h2><ol>
+<li>HDPは現在x86ベース（IntelまたはAMD）のNAS QTS 4.5.4（またはそれ以降）のみ対応しています、またはQuTS hero h4.5.4（以降）を搭載したQuTS hero NASのみ対応しています。</li>
+<li>VMware ESXiは6.5、6.7、7.0が対象です（6.7以下は既にVMWareのサポートが切れていますので実質ESXi7.0が対象です）</li>
+</ol>
+<h2 id="直近のHDPのアップデート"><a href="#直近のHDPのアップデート" class="headerlink" title="直近のHDPのアップデート"></a>直近のHDPのアップデート</h2><p>アップデートのリストは以下を参照してください。</p>
+<blockquote>
+<p>QNAP Hyper Data Protector リリースノーツ（英語）<br> <a target="_blank" rel="noopener" href="https://www.qnap.com/ja-jp/app_releasenotes/list.php?app_choose=HyperDataProtector">https://www.qnap.com/ja-jp/app_releasenotes/list.php?app_choose=HyperDataProtector</a></p>
+</blockquote>
+<p> 現在は、2022年12月に発表された、1.4.2.1201が最新です。</p>
+<h2 id="HDPの主要な機能について"><a href="#HDPの主要な機能について" class="headerlink" title="HDPの主要な機能について"></a>HDPの主要な機能について</h2><ol>
+<li>VMのバックアップを複数世代管理</li>
+<li>ジョブスケジューリング機能<br> ワンタイム、定期、日次、週次、月次を利用できます。</li>
+<li>重複排除（データ圧縮）<br> ストレージレベルの重複排除ではありません。VMに対してのデータ圧縮を重複排除と表現しています。</li>
+<li>暗号化転送</li>
+<li>バックアップデータの暗号化</li>
+</ol>
+<h2 id="QNAP-NASの事前準備"><a href="#QNAP-NASの事前準備" class="headerlink" title="QNAP NASの事前準備"></a>QNAP NASの事前準備</h2><h3 id="HDPのインストール"><a href="#HDPのインストール" class="headerlink" title="HDPのインストール"></a>HDPのインストール</h3><p>QNAPのWeb画面に管理者としてログインし、AppCenterから”Hyper Data Protector”をインストールします。なおContainerStationが合わせてインストールされます。</p>
+<img src="/new-technology/2021/12/04/qnap-hdp/install.png" class="" width="1024" title="alt">
+
+<p>上記はインストール済みの状態ですが、<mark class="label primary">「＋ インストール」ボタン</mark>をクリックしてインストールします。<br>必須要件のContainerStationがインストールされると物理ネットワークカードに対し仮想ネットワークが自動構築されます。既存端末から手動でのルーティング設定は不要でQNAP自身がProxyのように振る舞います。QNAPのQuFirewallを利用している場合は追加設定が必要となる場合があります。</p>
+<h3 id="共有フォルダの設定"><a href="#共有フォルダの設定" class="headerlink" title="共有フォルダの設定"></a>共有フォルダの設定</h3><p>バックアップデータを保存する共有フォルダを作成します。<mark class="label primary">コントロールパネル</mark>を起動し、<mark class="label primary">権限設定</mark>-<mark class="label primary">共有フォルダ</mark>へと進み、<mark class="label primary">作成</mark>ボタンをクリックします。</p>
+<div class="note info"><h4 id="可用性および機密性向上のために"><a href="#可用性および機密性向上のために" class="headerlink" title="可用性および機密性向上のために"></a>可用性および機密性向上のために</h4><ul>
+<li>バックアップデータが肥大化して他のファイル共有サービスなどに影響を与えないよう、バックアップ計画に基づいたデータ容量を計算の上で、HDP専用のディスクボリュームを作成される事をお勧めします。</li>
+<li>HDPの運用には管理者権限を持ったユーザーが必要です。セキュリティ向上のため、HDP専用ユーザーを新規作成しフォルダへのアクセス権を最小限にし、各種ネットワークサービスを無効化される事をお勧めします。また、HDP管理画面へのログインは2要素認証に対応しています。</li>
+</ul>
+</div>
+
+<ol>
+<li><p>バックアップデータを保存したいディスクボリュームを選択し、フォルダ名を指定します。私の例では事前にディスクボリュームを作成しています（次項で説明します）。</p>
+ <img src="/new-technology/2021/12/04/qnap-hdp/share-folder1.png" class="" width="640" title="alt">
+<p> バックアップ領域を暗号化するのであれば、このタイミングで暗号化を選択（チェック）し、パスワードを設定、暗号化キーの保存を選択（チェック）します。</p>
+</li>
+<li><p>共有フォルダにアクセス可能な管理者ユーザーを指定します。この例ではhdpという管理者アカウントを作成しており、そのアカウントに共有フォルダのアクセス権を加えています（この手順ではユーザーの作成は省略しています）。</p>
+ <img src="/new-technology/2021/12/04/qnap-hdp/share-folder2.png" class="" width="640" title="alt"></li>
+<li><p>フォルダのオプションを設定します。</p>
+ <img src="/new-technology/2021/12/04/qnap-hdp/share-folder3.png" class="" width="640" title="alt"></li>
+</ol>
+<p>暗号化有無によってバックアップ速度は殆ど変わりません。</p>
+<h3 id="専用ディスクボリュームの設定（任意）"><a href="#専用ディスクボリュームの設定（任意）" class="headerlink" title="専用ディスクボリュームの設定（任意）"></a>専用ディスクボリュームの設定（任意）</h3><p>前述したとおり、バックアップ計画に基づき割り当てるディスクボリュームを設定します。</p>
+<ol>
+<li><mark class="label primary">ストレージ＆スナップショット</mark>を起動し、左ペインメニューの<mark class="label primary">ストレージ＆スナップショット</mark>から<mark class="label primary">作成</mark>ボタンをクリックし、ディスクボリュームを作成するストレージプールを選択します。
+ <img src="/new-technology/2021/12/04/qnap-hdp/volume1.png" class="" width="800" title="alt">
+</li>
+<li><p>ボリュームのエイリアス名を指定し、ボリューム容量を決定します。</p>
+ <img src="/new-technology/2021/12/04/qnap-hdp/volume2.png" class="" width="640" title="alt">
+</li>
+<li><mark class="label primary">次へ</mark>ボタン、続いて<mark class="label primary">完了</mark>ボタンをクリックしてボリュームを作成します。</li>
+</ol>
+<p>HDPはバックアップ時の圧縮が可能ですので、目安としてはVMのシンプロビジョニングの容量×世代数で圧縮率が50％〜70％程度を目標にするのがよろしいかと思います。シックプロビジョニングであれば圧縮率が高い事が期待されます。私の環境では64GBのWin10、40GBのSophos Firewall、256GBのUbuntuと合計360GBのVMが最終的に62.73GBまで圧縮されています。Ubuntuの実態はおそらく数GBしかなく、シック プロビジョニング (Lazy Zeroed)は相当に圧縮率が高くなると思われます。一旦テストでバックアップを取得され、圧縮結果を確認のうえ、世代数を乗じたものをボリューム容量とされるのが1つの方法かとも思われます。</p>
+<p>私の場合、最低半年の月毎のバックアップを6世代、直近月内の週毎のバックアップを4世代と考え、合計10世代としています。計算上は640GB、もちろん今後アプリケーションやデータを追加していけばVMは膨らんでいくので、目安として1TBを確保しています。</p>
+<h2 id="ESXiの事前準備"><a href="#ESXiの事前準備" class="headerlink" title="ESXiの事前準備"></a>ESXiの事前準備</h2><p>ESXiには以下の設定が必要です。</p>
+<ol>
+<li>HDPからESXiに対しHTTPS(Port443)、SSH(Port22)を使って接続可能なように設定します。</li>
+<li>HDPがバックアップするVMはCBT(Changed Block Tracking)を有効にしなければなりません。</li>
+<li>（任意）セキュリティ向上のため、ESXi上に管理者アカウントを作成します。</li>
+<li>（任意）セキュリティ向上のため、接続可能なIPアドレスをESXi上のFirewall設定で絞ります。</li>
+</ol>
+<h3 id="ESXi上でHTTPS、SSHの解放"><a href="#ESXi上でHTTPS、SSHの解放" class="headerlink" title="ESXi上でHTTPS、SSHの解放"></a>ESXi上でHTTPS、SSHの解放</h3><p>無償版ESXiを使う場合はブラウザから基本はvSphere Web Clientを使いますので、HTTPS(Pprt443)の解放は特に意識する必要はありません。ESXiのファイアウォールで接続可能なIPアドレスを絞っている場合はQNAP NASのIPアドレスから接続できるようにしておきます。</p>
+<p>SSH(Port22)についてはESXiはデフォルトでサービス停止されている状態ですので、シェルおよびSSHのサービスを起動します。<br>左ペインメニューの<mark class="label primary">ホスト</mark>ー<mark class="label primary">管理</mark>の<mark class="label primary">サービスタブ</mark>から<mark class="label primary">TSM</mark>および<mark class="label primary">TSM-SSH</mark>を起動します。<br> <img src="/new-technology/2021/12/04/qnap-hdp/esxi1.png" class="" width="800" title="alt"><br>この2つのサービスは右クリックメニューの<mark class="label primary">ポリシー</mark>から<mark class="label primary">ホストと連動して起動および停止します</mark>をチェックしておく事でESXiの起動時に自動的にサービスが起動するようになります。</p>
+<h3 id="VMのChanged-Block-Trackingの設定"><a href="#VMのChanged-Block-Trackingの設定" class="headerlink" title="VMのChanged Block Trackingの設定"></a>VMのChanged Block Trackingの設定</h3><p>事前にVMのデータを退避することをお勧めします。VMを停止のうえで、データストアブラウザからVMの入っているフォルダ毎別の場所にコピーしてください。もし、設定の変更でVMを壊してしまった場合は、当該フォルダの<code>VM名.vmx</code>を右クリックから「VMの登録」で再登録できます。<a href="/new-technology/2020/10/11/esxi-backup/" title="VMware ESXiの仮想マシンをバックアップする">VMware ESXiの仮想マシンをバックアップする</a>を参考にghettoVCBなど無償ツールでバックアップを取る事も可能です。</p>
+<p>ESXiの機能であるChanged Block Tracking(CBT)はVMが稼働していて前回バックアップしたものから未更新のディスクブロックをスキップして差分のみバックアップする機能です。途中で別のバックアップ製品によるバックアップ、例えばghettoVCBなどでバックアップされると、次回のバックアップはフルバックアップを行います。</p>
+<p>最初にVMがインストールされているディスクを調べ、そのSCSI-IDを確認します。<br>ESXi管理画面のVMを選択し右クリックして<mark class="label primary">設定の編集</mark>をクリックします。</p>
+<img src="/new-technology/2021/12/04/qnap-hdp/esxi2.png" class="" width="640" title="alt">
+
+<mark class="label primary">ハードディスク</mark>の詳細を開き、<mark class="label primary">コントローラの場所</mark>でSCSI-IDを確認します（SCSI(0:0)など）。
+
+<ol>
+<li>VMを停止します。</li>
+<li>ESXi管理画面のVMを右クリックして、<mark class="label primary">設定の編集</mark>をクリックします。</li>
+<li><mark class="label primary">VMオプション</mark>タブをクリックします。</li>
+<li><mark class="label primary">詳細</mark>セクションを開き <mark class="label primary">設定パラメータ</mark>の<mark class="label primary">設定の編集</mark>をクリックします。<mark class="label primary">設定パラメータ</mark>ダイアログが開きます。</li>
+<li><mark class="label primary">パラメータの追加</mark>をクリックします。</li>
+<li><code>ctkEnabled</code>パラメータを追加して、その値を<code>true</code>に設定します。</li>
+<li>さらに<mark class="label primary">パラメータの追加</mark>をクリックし、<code>scsi0:0.ctkEnabled</code>を追加して、その値を<code>true</code>に設定します（環境に合わせて<code>scsi0:0</code>の内容は変更してください）。</li>
+<li>OKボタンをクリックし設定を完了させます。</li>
+<li>VMを起動します。</li>
+<li>SSHでESXiに入り、VMが配置されているディレクトリで、<code>VM名-ctk.vmdk</code>ファイルがあることを確認します。</li>
+</ol>
+<p>CBTを無効にする場合はこの逆の手順、ctkEnabledの値をfalseに設定します。<br>VMWareによるCBTの説明は以下を参照してください。</p>
+<blockquote>
+<p>VMware VM上の変更ブロックのトラッキング（CBT） (1020128)<br> <a target="_blank" rel="noopener" href="https://kb.vmware.com/s/article/1031873?lang=ja&amp;queryTerm=changed+block+tracking">https://kb.vmware.com/s/article/1031873?lang=ja&amp;queryTerm=changed+block+tracking</a></p>
+</blockquote>
+<h3 id="（任意）管理者アカウントの作成"><a href="#（任意）管理者アカウントの作成" class="headerlink" title="（任意）管理者アカウントの作成"></a>（任意）管理者アカウントの作成</h3><p>セキュリティの観点からrootはできるだけ使わない事をお勧めします。これは一般論でありrootがよく知られたユーザー名だからです。例えばQNAP-NASからESXiのrootユーザーの情報が漏洩しないようにrootを使う機会を減らすべきです。以下の手順で管理者アカウントを作成します。</p>
+<ol>
+<li>管理メニューの左ペイン<mark class="label primary">ホスト</mark>ー<mark class="label primary">管理</mark>から<mark class="label primary">セキュリティとユーザー</mark>に進み、<mark class="label primary">ユーザー</mark>から<mark class="label primary">ユーザーの追加</mark>をクリックします。<img src="/new-technology/2021/12/04/qnap-hdp/esxi5.png" class="" width="800" title="alt"></li>
+<li>HDPから接続する専用のユーザー名とパスワードを登録してユーザーの作成を終えます。</li>
+<li>管理メニューの左ペイン<mark class="label primary">ホスト</mark>から<mark class="label primary">アクション</mark>を選択し、プルダウンの<mark class="label primary">権限</mark>をクリックします。</li>
+<li>さらに<mark class="label primary">ユーザーの追加</mark>を選択します。実際には上記で作成したユーザーと同一名のユーザー名を入力します。ロールについては”システム管理者”を選択します。<img src="/new-technology/2021/12/04/qnap-hdp/esxi4.png" class="" width="800" title="alt"></li>
+</ol>
+<p>これで新しいユーザーが作成できたので、Web管理画面からログイン可能か確認してください。rootユーザーは長めのパスワードを再設定し、パスワード管理ソフトに登録し普段は使わないようにします。普段から使わずにパスワードを封印しておけばより安全になります。</p>
+<h3 id="（任意）SSH、Web-Clientのために接続可能なIPアドレスを絞る"><a href="#（任意）SSH、Web-Clientのために接続可能なIPアドレスを絞る" class="headerlink" title="（任意）SSH、Web Clientのために接続可能なIPアドレスを絞る"></a>（任意）SSH、Web Clientのために接続可能なIPアドレスを絞る</h3><p>この機能はESXiではファイアウォールと呼ばれ、Linuxのiptablesやufwと同様にシンプルなものです。ホームユーザーはシンプルなLANで閉じられたアクセスですが、安全のために特にSSHは設定を検討すべきです。<br>Web管理画面の左ペインメニューの <mark class="label primary">ネットワーク</mark>を選択し、<mark class="label primary">ファイアウォール</mark>タブをクリックして見つける事ができます。デフォルトでは一切の制約なく接続可能になっていますので、ここでSSHとWeb Clientに接続可能なIPを登録できます。</p>
+<img src="/new-technology/2021/12/04/qnap-hdp/esxi3.png" class="" title="alt">
+
+<h2 id="HDPへのログイン"><a href="#HDPへのログイン" class="headerlink" title="HDPへのログイン"></a>HDPへのログイン</h2><p>QNAP-NASでHDPを起動するとHDPのログイン画面が表示されます。</p>
+<img src="/new-technology/2021/12/04/qnap-hdp/hdp1.png" class="" title="alt">
+
+<p>2要素認証を設定されている方には「2段階認証」のポップアップが表示されます。6桁のワンタイムパスワードを入力しログインします。</p>
+<p>以下はログイン直後のメインページです。</p>
+<img src="/new-technology/2021/12/04/qnap-hdp/hdp2.png" class="" title="alt">
+
+<table>
+<thead>
+<tr>
+<th>ネットワーク</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>インベントリ</td>
+<td>ESXiのホストおよび登録されているVMを選択します</td>
+</tr>
+<tr>
+<td>リポジトリ領域</td>
+<td>QNAP-NASの共有フォルダを選択し、そこにバックアップデータを登録します。複数の保存先が設定できます</td>
+</tr>
+<tr>
+<td>バックアップ</td>
+<td>バックアップジョブを作成します。同一のVMについて周期の異なるジョブやリポジトリを変えたジョブを作成できます</td>
+</tr>
+<tr>
+<td>復元</td>
+<td>バックアップからESXiにVMを復元します</td>
+</tr>
+<tr>
+<td>ジョブの状態</td>
+<td>バックアップジョブ毎のジョブ状態を表示します</td>
+</tr>
+<tr>
+<td>システム</td>
+<td>イベントログが表示されます</td>
+</tr>
+</tbody></table>
+<h2 id="インベントリ登録"><a href="#インベントリ登録" class="headerlink" title="インベントリ登録"></a>インベントリ登録</h2><p>ここでは、任意の名前、ESXiのIPアドレス、ESXiにログインするユーザーおよびパスワードを指定し、登録します。</p>
+<img src="/new-technology/2021/12/04/qnap-hdp/hdp3.png" class="" width="800" title="alt">
+
+<p>登録が無事完了するとVMの数が表示されます。</p>
+<h2 id="バックアップリポジトリ登録"><a href="#バックアップリポジトリ登録" class="headerlink" title="バックアップリポジトリ登録"></a>バックアップリポジトリ登録</h2><p>既に作成してある共有フォルダを指定します。画面右上の<mark class="label primary">バックアップリポジトリの追加</mark>ボタンをクリックします。</p>
+<img src="/new-technology/2021/12/04/qnap-hdp/hdp4.png" class="" width="640" title="alt">
+
+<mark class="label primary">選択</mark>ボタンをクリックし、共有フォルダを選択します。バックアップデータを暗号化しない場合は<mark class="label primary">データ暗号化を有効にする</mark>のチェックボックスが空白になっています。NASの共有フォルダを暗号化している場合はチェックボックスが選択された状態になっています。
+
+<h2 id="バックアップ"><a href="#バックアップ" class="headerlink" title="バックアップ"></a>バックアップ</h2><p>いよいよバックアップです。</p>
+<img src="/new-technology/2021/12/04/qnap-hdp/hdp5.png" class="" width="640" title="alt">
+<p>画面右上の<mark class="label primary">ジョブの作成</mark>ボタンをクリックし、ジョブを構成します。</p>
+<ol>
+<li><p>VMの選択<br> VMとバックアップ先のリポジトリを設定します</p>
+ <img src="/new-technology/2021/12/04/qnap-hdp/hdp6.png" class="" width="640" title="alt">
+</li>
+<li><p>スケジュール</p>
+ <mark class="label primary">スケジューラー</mark>、<mark class="label primary">リンクしたジョブの後に実行</mark>、<mark class="label primary">スケジュールなし</mark>を選択します。
+ <img src="/new-technology/2021/12/04/qnap-hdp/hdp7.png" class="" width="640" title="alt">
+<p> 少し気づきづらいですが、画面上部の <mark class="label primary">スケジュール</mark>の隣に<mark class="label primary">保持</mark>とあります。ここをクリックすると、以下の通りバックアップの保存期間を設定可能です。</p>
+ <img src="/new-technology/2021/12/04/qnap-hdp/hdp8.png" class="" width="640" title="alt">
+</li>
+<li><p>ルール<br> バックアップ時のデータ転送に関する暗号化や圧縮について設定します。</p>
+ <img src="/new-technology/2021/12/04/qnap-hdp/hdp9.png" class="" width="640" title="alt">
+ <mark class="label primary">全VMに対しVMware CBTを有効にする</mark>では以下の説明があります。
+<p>「VMware CBT (Changed Block Tracking) は、Hyper Data Protectorがバックアップを実行する時には有効になっていなければなりません」<br> また、<mark class="label primary">アプリケーションアウェア処理の有効化</mark>とあります。VSSというのはWindowsのVolume Shadow Copy Serviceを指しています。スナップショットなどを取得する場合、VSSに対応したアプリケーションに対して一旦データ書き込みなどを待たせるなどの命令を出し、アプリケーションのデータ一貫性を保つ機能です。バックアップ対象がWindowsの場合に意味があります。詳しくは以下の記事を参照してください。</p>
+<blockquote>
+<p>Microsoft<br> <a target="_blank" rel="noopener" href="https://docs.microsoft.com/ja-jp/windows-server/storage/file-server/volume-shadow-copy-service">https://docs.microsoft.com/ja-jp/windows-server/storage/file-server/volume-shadow-copy-service</a></p>
+</blockquote>
+</li>
+<li><p>要約<br> 設定した内容を確認し、スケジューリングしたものを保存するか、すぐにバックアップを取得するかを選択します。</p>
+ <img src="/new-technology/2021/12/04/qnap-hdp/hdp10.png" class="" width="640" title="alt"></li>
+</ol>
+<p>HDPのデザインですが、以下の注意事項があります。</p>
+<div class="note warning"><ul>
+<li>ESXiのVMのバックアップはESXi上でほぼ同じサイズのコピーを作成します。従い、ESXiのデータストアはVMの分だけ空きを残している必要があります。ストレージが不足していても単にバックアップエラーとなり原因に悩みますのでご注意ください</li>
+</ul>
+</div>
+
+<p>メニューの<mark class="label primary">ジョブの状態</mark>、<mark class="label primary">システム</mark>ではバックアップの状況やエラーログを確認できます。また、HDPの右上のメニューから通知の設定ができますので、スマホなどへの通知設定をお勧めします。</p>
+<p>私の環境のバックアップ時間は、リポジトリ暗号化なし、転送時暗号化あり、圧縮なしのオプションで64GBのWindows10のバックアップに16分程度掛かりました。ESXiとNASはそれぞれ10GbEで接続され、NASはHDDとQtierと呼ばれるNVMeとの動的な組み合わせになっていますが、データ転送時は最大で2.5Gbps程度の速度です。</p>
+<h2 id="復元"><a href="#復元" class="headerlink" title="復元"></a>復元</h2><p>復元メニューからジョブの作成を行います。まず最初に復元するジョブと復元するVMの場所を指定します。</p>
+ <img src="/new-technology/2021/12/04/qnap-hdp/hdp11.png" class="" width="640" title="alt">
+
+<p>バックアップジョブ（リポジトリ）に含まれている対象のバックアップを選択します。</p>
+ <img src="/new-technology/2021/12/04/qnap-hdp/hdp12.png" class="" width="640" title="alt">
+
+<p>復元先はデフォルトでバックアップしたESXiが選択されています。</p>
+<img src="/new-technology/2021/12/04/qnap-hdp/hdp13.png" class="" width="640" title="alt">
+
+<mark class="label primary">ターゲットの編集</mark>をクリックして、VMストレージ先の変更や新しい場所に（別のVMとして）復元する事も可能です。ここでも戻す際のESXi上のデータストアの容量には気をつけてください。
+
+<p>続いてスケジュールが必要であれば設定します。</p>
+<mark class="label primary">ルール</mark>設定では、VMを上書きするか名前の変更して別名で登録するかを選びます。
+
+<img src="/new-technology/2021/12/04/qnap-hdp/hdp14.png" class="" width="640" title="alt">
+
+<p>復元されたVMを自動的に起動するというオプションもあります。これは上書きで戻す場合には使い勝手が良いですが、複製を作る場合はvSwitchにおける仮想NICが変わる事やIPアドレスの重複の可能性に留意する必要があります。もちろんOSのライセンス上の問題もありますので注意が必要です。</p>
+<p>最後にジョブを作成するかすぐに復元するか選択します。</p>
+<h2 id="HDPを使った感想"><a href="#HDPを使った感想" class="headerlink" title="HDPを使った感想"></a>HDPを使った感想</h2><p>HDPは有償版ESXiのvStorageAPIを使ったバックアップのように高機能ではありませんが、日次・週次のバックアップなどホームユーザーが利用するための必須条件は押さえていると思います。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/new-technology/tags/QNAP/" rel="tag"><i class="fa fa-tag"></i> QNAP</a>
+              <a href="/new-technology/tags/ESXi/" rel="tag"><i class="fa fa-tag"></i> ESXi</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/new-technology/2021/10/31/QSW-M408-4C/" rel="prev" title="10GbEスイッチ QSW-M408-4C">
+                  <i class="fa fa-chevron-left"></i> 10GbEスイッチ QSW-M408-4C
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/new-technology/2021/12/11/xg-v185-mr2/" rel="next" title="Sophos Firewall v18.5 MR-2">
+                  Sophos Firewall v18.5 MR-2 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">阿部　吉伸(Yoshinobu ABE)</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div><script src="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.umd.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.min.css" rel="stylesheet">
+
+<script>
+if (Cookies.get('PRVCY202112') != 'Agree') {
+  const notice = new SimpleGDPR({
+    title: 'Accept Cookies & Privacy Policy?',
+    message: 'このWebサイトでは、訪問や活動に関するデータがクッキー等によって収集されます。閲覧を継続される場合、\
+    プライバシーポリシーをご覧いただき同意(Agree)をお願いします',
+    link: null,
+    icons: true,
+    theme: 'light',
+    animation: 'fade',
+    float: 'bottom-right',
+      callback: () => {
+      notice.close();
+      Cookies.set('PRVCY202112', 'Agree', { expires: 365, path: '/'});
+      notice.destroy();
+      // Google Analytics 4
+      gtag('consent', 'update', {
+      'analytics_storage': 'granted'
+      });
+      gtag('js', new Date());
+      gtag('config', 'G-JMY6NSC2KK', { 'anonymize_ip': true });
+      },
+  });
+}
+</script>
+<div class="disclaimer1">
+このサイトの記事は、特別な記載がない限り <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja">クリエイティブ・コモンズ BY-NC-SA ライセンス</a>で保護されています</div>
+
+
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/yoshi0808" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="/new-technology/lib/animejs/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="/new-technology/lib/medium-zoom/dist/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/comments.js"></script><script src="/new-technology/js/utils.js"></script><script src="/new-technology/js/motion.js"></script><script src="/new-technology/js/schemes/muse.js"></script><script src="/new-technology/js/next-boot.js"></script>
+
+  <script src="/new-technology/lib/hexo-generator-searchdb/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"/new-technology/lib/mermaid/dist/mermaid.min.js","integrity":"sha256-3JloMMI/ZQx6ryuhhZTsQJQmGAkXeni6PkshX7UUO2s="}}</script>
+  <script src="/new-technology/js/third-party/tags/mermaid.js"></script>
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/icon-16x16.png">
+  <link rel="mask-icon" href="/new-technology/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/new-technology/css/main.css">
+
+
+
+<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-/4UQcSmErDzPCMAiuOiWPVVsNN2s3ZY/NsmXNcj0IFc=" crossorigin="anonymous">
+  <link rel="stylesheet" href="/new-technology/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.15.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
+
+    <meta name="description" content="この記事で実現すること  最近の円安や物価高と慢性的な在庫不足によりIT機器も買いづらい状況が続いています。海外通販でパーツ等を購入する時、クレジットカードやPayPalを使われている方は自動で両替されるためあまり為替レートを意識することも少ないかもしれません。輸送コストに加え、この為替の両替手数料は意外とトータルコストに響きます。少しでもコストを抑えてショッピングできる、WISEデビットカー">
+<meta property="og:type" content="article">
+<meta property="og:title" content="マルチカレンシー口座 WISE">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2022/06/28/multi-currency-account/index.html">
+<meta property="og:site_name" content="New technologies in our life">
+<meta property="og:description" content="この記事で実現すること  最近の円安や物価高と慢性的な在庫不足によりIT機器も買いづらい状況が続いています。海外通販でパーツ等を購入する時、クレジットカードやPayPalを使われている方は自動で両替されるためあまり為替レートを意識することも少ないかもしれません。輸送コストに加え、この為替の両替手数料は意外とトータルコストに響きます。少しでもコストを抑えてショッピングできる、WISEデビットカー">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/06/28/multi-currency-account/wise.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/06/28/multi-currency-account/ebay1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/06/28/multi-currency-account/ebay2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/06/28/multi-currency-account/ebay3.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/06/28/multi-currency-account/ebay4.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/06/28/multi-currency-account/ebay5.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/06/28/multi-currency-account/amazon1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/06/28/multi-currency-account/amazon2.png">
+<meta property="article:published_time" content="2022-06-28T02:00:00.000Z">
+<meta property="article:modified_time" content="2022-06-28T11:15:56.000Z">
+<meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2022/06/28/multi-currency-account/wise.png">
+
+
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2022/06/28/multi-currency-account/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"ja","comments":true,"permalink":"https://yoshi0808.github.io/new-technology/2022/06/28/multi-currency-account/","path":"2022/06/28/multi-currency-account/","title":"マルチカレンシー口座 WISE"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>マルチカレンシー口座 WISE | New technologies in our life</title>
+  
+
+
+
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{&quot;token&quot;: &quot;0148b4d0442e42b483ddce684030bd2f&quot;}'></script>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JMY6NSC2KK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+  'ad_storage': 'denied',
+  'analytics_storage': 'denied'
+  });
+
+  dataLayer.push({
+  'event': 'default_consent'
+  });
+
+  if (Cookies.get('PRVCY202112') == 'Agree') {
+    gtag('consent', 'update', {
+    'analytics_storage': 'granted'
+    });
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'G-JMY6NSC2KK',{ 'anonymize_ip': true });
+</script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/new-technology/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/new-technology/atom.xml" title="New technologies in our life" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="ナビゲーションバーの切り替え" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/new-technology/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">New technologies in our life</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Device,Network,Code,etc...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="検索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/new-technology/" rel="section"><i class="fa fa-home fa-fw"></i>ホーム</a></li><li class="menu-item menu-item-about"><a href="/new-technology/about/" rel="section"><i class="fa fa-user fa-fw"></i>サイトポリシー</a></li><li class="menu-item menu-item-tags"><a href="/new-technology/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>タグ</a></li><li class="menu-item menu-item-categories"><a href="/new-technology/categories/" rel="section"><i class="fa fa-th fa-fw"></i>カテゴリ</a></li><li class="menu-item menu-item-archives"><a href="/new-technology/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>アーカイブ</a></li><li class="menu-item menu-item-privacy"><a href="/new-technology/privacypolicy/" rel="section"><i class="fa fa-check fa-fw"></i>プライバシーポリシー</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="検索…" spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          見出し
+        </li>
+        <li class="sidebar-nav-overview">
+          概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8C%BF%E5%90%8D%E3%81%AB%E3%82%88%E3%82%8B%E3%82%B7%E3%83%A7%E3%83%83%E3%83%94%E3%83%B3%E3%82%B0%E3%81%AE%E3%83%A1%E3%83%AA%E3%83%83%E3%83%88%E3%81%A8%E7%82%BA%E6%9B%BF%E6%89%8B%E6%95%B0%E6%96%99"><span class="nav-number">1.</span> <span class="nav-text">匿名によるショッピングのメリットと為替手数料</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%89%E3%83%AB%E3%81%AE%E4%B8%A1%E6%9B%BF%E7%9B%B8%E5%A0%B4"><span class="nav-number">2.</span> <span class="nav-text">ドルの両替相場</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Wise%E7%A4%BE%E3%81%A8%E3%81%AF"><span class="nav-number">3.</span> <span class="nav-text">Wise社とは</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%A3%E5%BA%A7%E9%96%8B%E8%A8%AD"><span class="nav-number">4.</span> <span class="nav-text">口座開設</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%87%E3%83%93%E3%83%83%E3%83%88%E3%82%AB%E3%83%BC%E3%83%89"><span class="nav-number">5.</span> <span class="nav-text">デビットカード</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%82%A2%E3%83%97%E3%83%AA%E3%81%A8%E4%B8%A1%E6%9B%BF"><span class="nav-number">6.</span> <span class="nav-text">アプリと両替</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%8D%E3%83%83%E3%83%88%E3%82%B7%E3%83%A7%E3%83%83%E3%83%94%E3%83%B3%E3%82%B0%E3%81%A7%E3%81%AE%E4%BD%BF%E3%81%84%E6%96%B9"><span class="nav-number">7.</span> <span class="nav-text">ネットショッピングでの使い方</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#eBay%E3%81%AE%E5%A0%B4%E5%90%88"><span class="nav-number">7.1.</span> <span class="nav-text">eBayの場合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Amazon-com%E3%81%AE%E5%A0%B4%E5%90%88"><span class="nav-number">7.2.</span> <span class="nav-text">Amazon.comの場合</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%AA%E3%82%B9%E3%82%AF"><span class="nav-number">8.</span> <span class="nav-text">リスク</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A9%E7%94%A8%E9%99%90%E5%BA%A6%E9%A1%8D"><span class="nav-number">9.</span> <span class="nav-text">利用限度額</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%BE%E3%81%A8%E3%82%81"><span class="nav-number">10.</span> <span class="nav-text">まとめ</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="阿部　吉伸(Yoshinobu ABE)"
+      src="/new-technology/images/yoshi.png">
+  <p class="site-author-name" itemprop="name">阿部　吉伸(Yoshinobu ABE)</p>
+  <div class="site-description" itemprop="description">IT</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/new-technology/archives/">
+          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-name">ポスト</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/new-technology/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">カテゴリ</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/new-technology/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">タグ</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yoshi0808" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yoshi0808" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yoshi0808.blog@gmail.com" title="E-Mail → mailto:yoshi0808.blog@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yoshi0808_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yoshi0808_" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="/new-technology/lib/@creativecommons/vocabulary/assets/license_badges/big/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="ja">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2022/06/28/multi-currency-account/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/new-technology/images/yoshi.png">
+      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="New technologies in our life">
+      <meta itemprop="description" content="IT">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="マルチカレンシー口座 WISE | New technologies in our life">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          マルチカレンシー口座 WISE
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">投稿日</span>
+      
+
+      <time title="作成日：2022-06-28 11:00:00 / 修正日：20:15:56" itemprop="dateCreated datePublished" datetime="2022-06-28T11:00:00+09:00">2022-06-28</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <img src="/new-technology/2022/06/28/multi-currency-account/wise.png" class="" width="1024" title="alt">
+
+<p class="onepoint">この記事で実現すること</p>
+
+<p>最近の円安や物価高と慢性的な在庫不足によりIT機器も買いづらい状況が続いています。海外通販でパーツ等を購入する時、クレジットカードやPayPalを使われている方は自動で両替されるためあまり為替レートを意識することも少ないかもしれません。輸送コストに加え、この為替の両替手数料は意外とトータルコストに響きます。少しでもコストを抑えてショッピングできる、WISEデビットカードが便利です。カードを作るのに1,200円が掛かることと多少本人確認作業に手間は掛かりますが月額の口座管理料などは掛からないため持っておくと便利なカードです。外貨口座を持てるので、海外送金も廉価に行えます。アカウントを作るにはマイナンバーカードが必要です。</p>
+<span id="more"></span>
+
+<h2 id="匿名によるショッピングのメリットと為替手数料"><a href="#匿名によるショッピングのメリットと為替手数料" class="headerlink" title="匿名によるショッピングのメリットと為替手数料"></a>匿名によるショッピングのメリットと為替手数料</h2><p>米国eBayをはじめとする海外の通販サイトでパーツやIT機器をショッピングされる方はPayPalを使っていらっしゃる方が多いのでは無いでしょうか。クレジットカードを使う際のトラブルなどを考えると、住所はともかく、クレジット番号を販売者に知られたくないというのはもはや基本事項になってきていると感じます。ApplePayの利用は海外では大きく売上を伸ばしていると聞きます。日本でも個人対個人における商取引のメルカリなどは住所や支払い口座など匿名が大原則ですね。</p>
+<p>PayPalはeBayをはじめ対応しているサイトが多く、日本国内、海外に限らずよく利用されます。しかしながらPayPalの場合は日本のユーザーだと円決済でPayPalが為替レートを提示し、そのレートで外貨に両替の上取引が成立します。この手数料が4％とかなり高額です。</p>
+<p>もちろん、商売でやっていることなので一定のフィーが掛かるのはわかりますが、そのコストをユーザーからわかりづらくして4％という高額な手数料を徴収するのは私は少し抵抗があります。また、海外サイトでの為替レートの提示は例えば130円&#x2F;ドルという我々が見慣れた表記ではなく、ドル&#x2F;円表記なので”0.00769”と提示されるため余計に分かりづらくなっています。</p>
+<h2 id="ドルの両替相場"><a href="#ドルの両替相場" class="headerlink" title="ドルの両替相場"></a>ドルの両替相場</h2><p>円からドルに交換した場合、有名なクレジットカード会社、Amazon.com、PayPal、Wiseと比較しています。</p>
+<table>
+<thead>
+<tr>
+<th>両替会社</th>
+<th>手数料</th>
+<th>URL</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>三井住友カード</td>
+<td>2.20%</td>
+<td><a target="_blank" rel="noopener" href="https://www.smbc-card.com/mem/service/sec/kaigai01.jsp">https://www.smbc-card.com/mem/service/sec/kaigai01.jsp</a></td>
+</tr>
+<tr>
+<td>楽天カード Mastercard</td>
+<td>1.63%</td>
+<td><a target="_blank" rel="noopener" href="https://www.rakuten-card.co.jp/overseas/payment/">https://www.rakuten-card.co.jp/overseas/payment/</a></td>
+</tr>
+<tr>
+<td>楽天カード Visa</td>
+<td>1.63%</td>
+<td></td>
+</tr>
+<tr>
+<td>楽天カード JCB</td>
+<td>1.60%</td>
+<td></td>
+</tr>
+<tr>
+<td>イオンカード Mastercard</td>
+<td>1.60%</td>
+<td><a target="_blank" rel="noopener" href="https://www.aeonbank.co.jp/aeoncard/use/shopping_w/">https://www.aeonbank.co.jp/aeoncard/use/shopping_w/</a></td>
+</tr>
+<tr>
+<td>イオンカード Visa</td>
+<td>1.60%</td>
+<td></td>
+</tr>
+<tr>
+<td>イオンカード JCB</td>
+<td>1.60%</td>
+<td></td>
+</tr>
+<tr>
+<td>PayPayカード Mastercard</td>
+<td>2.20%</td>
+<td><a target="_blank" rel="noopener" href="https://card.yahoo.co.jp/service/faq/04usage/oversea/1401.html">https://card.yahoo.co.jp/service/faq/04usage/oversea/1401.html</a></td>
+</tr>
+<tr>
+<td>PayPayカード Visa</td>
+<td>2.20%</td>
+<td></td>
+</tr>
+<tr>
+<td>PayPayカード JCB</td>
+<td>1.60%</td>
+<td></td>
+</tr>
+<tr>
+<td>Amazon.com</td>
+<td>1.45%</td>
+<td>Yahoo  financeの週末レート(134.9600)とAmazon.comのCheckoutレート(136.9163950055)を確認（6&#x2F;18）</td>
+</tr>
+<tr>
+<td>PayPal</td>
+<td>4.00%</td>
+<td><a target="_blank" rel="noopener" href="https://www.paypal.com/jp/webapps/mpp/paypal-fees#no-fee">https://www.paypal.com/jp/webapps/mpp/paypal-fees#no-fee</a></td>
+</tr>
+<tr>
+<td>Wise</td>
+<td>0.60%</td>
+<td><a target="_blank" rel="noopener" href="https://wise.com/jp/pricing/card-fees?sourceAmount=100000&amp;sourceCcy=JPY&amp;targetCcy=USD">https://wise.com/jp/pricing/card-fees?sourceAmount=100000&amp;sourceCcy=JPY&amp;targetCcy=USD</a></td>
+</tr>
+</tbody></table>
+<p>10万円のものを購入して、Wiseでは約600円、2.2％のカード会社であれば約2,200円です。PayPalに至っては約4,000円にもなります。</p>
+<h2 id="Wise社とは"><a href="#Wise社とは" class="headerlink" title="Wise社とは"></a>Wise社とは</h2><p>Wiseは、第二種資金移動業として関東財務局に「ワイズ・ペイメンツ・ジャパン株式会社」として登録されています。金融というよりはFintechの会社というところでしょうか。また、顧客から預かった資産は自己の資産とは分別して管理されています。</p>
+<blockquote>
+<p>金融庁　資金移動業社登録一覧<br> <a target="_blank" rel="noopener" href="https://www.fsa.go.jp/menkyo/menkyoj/shikin_idou.pdf">https://www.fsa.go.jp/menkyo/menkyoj/shikin_idou.pdf</a></p>
+</blockquote>
+<p>Wise社はエストニア出身の二人が作った会社でロンドン証券取引所に上場しています。世界各国にWebサイトがあります。<br>Wiseデビットカードを作ると200カ国で利用できます。このブログではその機能の一部、海外通販の決済についてしか触れませんが、海外のATMで外貨を引き出したり海外送金したり外貨を受け取ることができます。</p>
+<blockquote>
+<p>Wise<br><a target="_blank" rel="noopener" href="https://wise.com/">https://wise.com</a></p>
+</blockquote>
+<h2 id="口座開設"><a href="#口座開設" class="headerlink" title="口座開設"></a>口座開設</h2><p>口座を作るのは無料ですが、実質的にデビットカードが必要ですので1,200円が掛かります。年会費は無料です。</p>
+<p>口座開設は本人確認が必要ですが、日本の金融機関と同じように、2つの本人確認、つまり、本人の証明と身元確認が必要です。<br>日本の法律としては犯罪収益移転防止法と税法との関係で、マイナンバーカードが必要になります。<br>本人確認はFintech企業らしく、eKYCで行われます。免許証・マイナンバーカードで犯収法の確認を行い、さらに税法上、マイナンバーの提出義務があります。この2つが身元証明です。そしてメモ紙に4桁の数字を書かされ、それを持った自分自身を写メし、画像をアップロードすることで間違いなく本人であることの証明が行われ、口座開設の本人確認が終了します。<br>運転免許証で犯収法への確認はOKですが、税法上の理由で結局はマイナンバーカードが必要です。過去に発行されたマイナンバーの通知カードでは対応できません。</p>
+<p>マイナンバーカードの写メを撮ってアップロードしたり、4桁の数字を片手で持ってもう片手のスマホで写メを撮って海外企業に送るというのは、若干の抵抗はあります。が、今の日本の法律がそれを求めているので必要なことです。</p>
+<h2 id="デビットカード"><a href="#デビットカード" class="headerlink" title="デビットカード"></a>デビットカード</h2><p>口座開設が完了したら、まずは口座に入金が必要です。国内の指定された銀行口座に円で振り込みます。最低1,200円を振り込み、デビットカードの作成に進みます。クレジットカードとは異なり、後払いではなく事前入金が必要です。入金時は、振り込み名義人にWiseの口座番号を指定するのが必要です。これを行わず普通の仮名氏名で送ってしまうと入金確認に数日掛かってしまいます（私は最初これで数日掛かってしまいました）。通常は3時間程度で反映されます。</p>
+<p>また米ドルやユーロなど使うと想定される口座を開ける必要があります。米ドル口座を開くと日本の金融機関では馴染みのない、個人のルーティングナンバーが付与され、米ドルの銀行口座として使用可能になります。海外で仕事をする時など、このルーティングナンバーを指定して振り込んでもらいます。海外通販の決済に使う場合はこのルーティングナンバーは使うことはありませんが、日本に居ながらここまでできるのは結構すごいことだなと感心しました。</p>
+<p>その後、マスターカードのアイコンがついたデビットカードが2〜3週間程度で届けられます。</p>
+<p>黄緑色のカードで表には識別する番号や名前などはありません。Mastercardのマークついており、裏面にはカード番号、名前が記入されています。</p>
+<p>さて、届いてすぐに使えるわけではなく、後払いのクレジットカードとは違い、まず円で入金しておかなければなりません。デビットカードを作るときに余分に円を入れておけばその金額分は普通にショッピングで使えます。<mark class="label primary">Mastercardコンタクトレス</mark>、すなわちタッチ決済が使えますので、国内のコンビニでも気軽に使えます。</p>
+<p>最初に使うのにはお作法が必要で、指定のATMで残高照会をしてデビットカードを有効化する必要があります。<br>以下のページにあるように、有効化には以下の場所で残高照会をする必要があります。</p>
+<ul>
+<li>イオン</li>
+<li>イーネット</li>
+<li>ビューカード</li>
+<li>デイリーヤマザキ</li>
+</ul>
+<p>私はイオン銀行のATMで残高照会をしてみましたが使えないカードと言われてしまいました。。。<br>結局ファミリーマートのATMのイーネットで残高照会をし有効化できました。残高照会時に照会する口座種別を聞かれたように記憶していますが、その際は「チェッキング」を選択します。チェッキングは決済用口座で一般的に決済用の用途で利用され、金利がつかない口座のことです。</p>
+<blockquote>
+<p>Wiseデビットカードを有効化する方法<br> <a target="_blank" rel="noopener" href="https://wise.com/ja/help/articles/2978024/">https://wise.com/ja/help/articles/2978024/</a></p>
+</blockquote>
+<p>その日のうちにコンビニでタッチ決済を使ってみましたが、利用の記録もアプリで確認できました。</p>
+<h2 id="アプリと両替"><a href="#アプリと両替" class="headerlink" title="アプリと両替"></a>アプリと両替</h2><p>Wiseのアプリをスマホにインストールしておくと便利です。好きなタイミングで外貨に交換できます。あらかじめ両替しておいてももちろん構いませんが、円貨のまま保有していても通販で購入時にWise側で外貨に自動的に両替してくれるので便利です（特に割り増し手数料などはありません）。もちろん、事前にある程度まとまった金額をドルに変えておいても良いですね（今後さらに円安に振れるとお考えなのであれば）。アプリは2要素認証に対応しており、Webログイン時にプッシュ通知で確認を求められるように設定できます。</p>
+<p>両替自体はマーケットレートを使って一瞬で交換が成立します（その時に手数料も差し引かれます）。</p>
+<p>なお、自動両替という機能もあり、レートを指定しておくと、そのレートになった時に両替してくれる機能もあります。</p>
+<h2 id="ネットショッピングでの使い方"><a href="#ネットショッピングでの使い方" class="headerlink" title="ネットショッピングでの使い方"></a>ネットショッピングでの使い方</h2><p>Amazon、eBay(PayPal)など外貨で決済を使うユーザーに最も適しています。</p>
+<h3 id="eBayの場合"><a href="#eBayの場合" class="headerlink" title="eBayの場合"></a>eBayの場合</h3><p>仮にConnect X-3をeBayで購入するとしましょう。</p>
+<img src="/new-technology/2022/06/28/multi-currency-account/ebay1.png" class="" width="1024" title="alt">
+
+<p>カートに入れて…USDを選んで…</p>
+<img src="/new-technology/2022/06/28/multi-currency-account/ebay2.png" class="" width="1024" title="alt">
+
+<p>確認、ここで気を付けてください！！「今すぐ支払う」をクリックしてはいけません。</p>
+<img src="/new-technology/2022/06/28/multi-currency-account/ebay3.png" class="" width="480" title="alt">
+<p>eBayでドル払いと言いつつ、PayPalが円からドルに4％の手数料で両替し、円＋手数料をPayPalに払うことになってしまうんです。<br>わざと目立たなくしている、「通貨オプションを表示」をクリックする必要があります。ここでは私が赤枠で囲っていますが、人間の目線をうまく回避するかのような絶妙な右側の外れた位置にポツンと円表記があります。</p>
+<img src="/new-technology/2022/06/28/multi-currency-account/ebay4.png" class="" width="480" title="alt">
+<p>これは毎回「通貨オプションを表示」をクリックする必要があります。</p>
+<p>USDをクリックして確実にWiseでドル払いにして決済します。</p>
+<img src="/new-technology/2022/06/28/multi-currency-account/ebay5.png" class="" width="480" title="alt">
+
+<h3 id="Amazon-comの場合"><a href="#Amazon-comの場合" class="headerlink" title="Amazon.comの場合"></a>Amazon.comの場合</h3><p>こちらも同じような状況です。ipolexの2PortのX710がありました。でも高いですね。。。4ヶ月前にX710の4Portが$500だったのに2Portで＄420です。。</p>
+<img src="/new-technology/2022/06/28/multi-currency-account/amazon1.png" class="" width="1024" title="alt">
+
+<p>Amaon.comの場合は、普通にクレジットカードのようにカード番号を入力して購入します。私はドル払いでしかAmazon.comで購入したことはありませんが、デフォルトは円払いになっています。良い点は為替レートが良心的であることでしょうか。それでも約1.5％ですね。あとは1ドル137円という表記で多少は分かりやすいのが良いところでしょうか。</p>
+<img src="/new-technology/2022/06/28/multi-currency-account/amazon2.png" class="" width="1024" title="alt">
+
+<p>こちらもドル払いに変更して、チェックアウトします。</p>
+<h2 id="リスク"><a href="#リスク" class="headerlink" title="リスク"></a>リスク</h2><p>便利なデビットカードによるショッピングですがデメリットもあります。一般的なクレジットカードに付帯されている海外通販などの保険がありません。Wiseの約款においてはショッピング保険などの対応は一切できないことが明確です。従い、多くのサイトでカード番号を入力せずに、信頼のおけるサイトやタッチ決済などのクレカ番号が相手に知られない決済方法に限り利用すべきでしょう。</p>
+<h2 id="利用限度額"><a href="#利用限度額" class="headerlink" title="利用限度額"></a>利用限度額</h2><p>Wiseのアプリでは利用限度額が設定できます。</p>
+<ul>
+<li>ATM引き出し</li>
+<li>ICチップ決済（暗証番号を使った決済）</li>
+<li>磁気ストライプ決済</li>
+<li>オンラインでの支払い</li>
+<li>コンタクトレス決済</li>
+</ul>
+<p>これだけ細かく設定できればカード紛失を想定しあらかじめ設定しておけるでしょう。</p>
+<h2 id="まとめ"><a href="#まとめ" class="headerlink" title="まとめ"></a>まとめ</h2><p>海外の色々なものが割高になっているので気軽に買い物できる状況には無いかもしれませんが、持っておいて損はないカードです。是非検討される事をお勧めします。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/new-technology/2022/05/28/sfp-plus/" rel="prev" title="10GネットワークとSFP+">
+                  <i class="fa fa-chevron-left"></i> 10GネットワークとSFP+
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/new-technology/2022/07/30/xg-v19-mr1/" rel="next" title="Sophos Firewall v19 MR-1">
+                  Sophos Firewall v19 MR-1 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">阿部　吉伸(Yoshinobu ABE)</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div><script src="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.umd.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.min.css" rel="stylesheet">
+
+<script>
+if (Cookies.get('PRVCY202112') != 'Agree') {
+  const notice = new SimpleGDPR({
+    title: 'Accept Cookies & Privacy Policy?',
+    message: 'このWebサイトでは、訪問や活動に関するデータがクッキー等によって収集されます。閲覧を継続される場合、\
+    プライバシーポリシーをご覧いただき同意(Agree)をお願いします',
+    link: null,
+    icons: true,
+    theme: 'light',
+    animation: 'fade',
+    float: 'bottom-right',
+      callback: () => {
+      notice.close();
+      Cookies.set('PRVCY202112', 'Agree', { expires: 365, path: '/'});
+      notice.destroy();
+      // Google Analytics 4
+      gtag('consent', 'update', {
+      'analytics_storage': 'granted'
+      });
+      gtag('js', new Date());
+      gtag('config', 'G-JMY6NSC2KK', { 'anonymize_ip': true });
+      },
+  });
+}
+</script>
+<div class="disclaimer1">
+このサイトの記事は、特別な記載がない限り <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja">クリエイティブ・コモンズ BY-NC-SA ライセンス</a>で保護されています</div>
+
+
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/yoshi0808" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="/new-technology/lib/animejs/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="/new-technology/lib/medium-zoom/dist/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/comments.js"></script><script src="/new-technology/js/utils.js"></script><script src="/new-technology/js/motion.js"></script><script src="/new-technology/js/schemes/muse.js"></script><script src="/new-technology/js/next-boot.js"></script>
+
+  <script src="/new-technology/lib/hexo-generator-searchdb/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"/new-technology/lib/mermaid/dist/mermaid.min.js","integrity":"sha256-3JloMMI/ZQx6ryuhhZTsQJQmGAkXeni6PkshX7UUO2s="}}</script>
+  <script src="/new-technology/js/third-party/tags/mermaid.js"></script>
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/icon-16x16.png">
+  <link rel="mask-icon" href="/new-technology/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/new-technology/css/main.css">
+
+
+
+<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-/4UQcSmErDzPCMAiuOiWPVVsNN2s3ZY/NsmXNcj0IFc=" crossorigin="anonymous">
+  <link rel="stylesheet" href="/new-technology/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.15.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
+
+    <meta name="description" content="この記事で実現すること  米国Ubiquiti（ユビキティ）社のUniFi製品であるネットワークスイッチ、Wi-Fiアクセスポイントを利用するには、管理コンソールとしてUniFi OS ConsoleまたはUniFi Network Applicationが必要となります。UniFi Network ApplicationはUbiquitiより無償提供されており、管理・運用においてはUniFi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UniFi Network Applicationのセットアップ">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/index.html">
+<meta property="og:site_name" content="New technologies in our life">
+<meta property="og:description" content="この記事で実現すること  米国Ubiquiti（ユビキティ）社のUniFi製品であるネットワークスイッチ、Wi-Fiアクセスポイントを利用するには、管理コンソールとしてUniFi OS ConsoleまたはUniFi Network Applicationが必要となります。UniFi Network ApplicationはUbiquitiより無償提供されており、管理・運用においてはUniFi">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/unifi1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/unifi4.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/unifi6.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/unifi15.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/unifi7.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/unifi8.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/unifi8-1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/unifi8-2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/unifi8-3.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/unifi9.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/unifi10.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/unifi11.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/unifi12.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/unifi13.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/unifi13-1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/unifi13-2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/unifi13-3.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/unifi13-4.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/unifi14.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/app1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/app2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/app3.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/app4.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/app5.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/app6.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/app7.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/app8.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/app9.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/app10.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/app11.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/app12.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/app12-1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/app13.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/verify1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/verify2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/verify3.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/verify4.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/verify5.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/verify6.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/ubuntu1.png">
+<meta property="article:published_time" content="2022-09-22T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-10-23T10:44:14.000Z">
+<meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
+<meta property="article:tag" content="UniFi">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/unifi1.png">
+
+
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"ja","comments":true,"permalink":"https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/","path":"2022/09/23/unifi-network-application/","title":"UniFi Network Applicationのセットアップ"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>UniFi Network Applicationのセットアップ | New technologies in our life</title>
+  
+
+
+
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{&quot;token&quot;: &quot;0148b4d0442e42b483ddce684030bd2f&quot;}'></script>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JMY6NSC2KK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+  'ad_storage': 'denied',
+  'analytics_storage': 'denied'
+  });
+
+  dataLayer.push({
+  'event': 'default_consent'
+  });
+
+  if (Cookies.get('PRVCY202112') == 'Agree') {
+    gtag('consent', 'update', {
+    'analytics_storage': 'granted'
+    });
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'G-JMY6NSC2KK',{ 'anonymize_ip': true });
+</script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/new-technology/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/new-technology/atom.xml" title="New technologies in our life" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="ナビゲーションバーの切り替え" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/new-technology/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">New technologies in our life</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Device,Network,Code,etc...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="検索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/new-technology/" rel="section"><i class="fa fa-home fa-fw"></i>ホーム</a></li><li class="menu-item menu-item-about"><a href="/new-technology/about/" rel="section"><i class="fa fa-user fa-fw"></i>サイトポリシー</a></li><li class="menu-item menu-item-tags"><a href="/new-technology/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>タグ</a></li><li class="menu-item menu-item-categories"><a href="/new-technology/categories/" rel="section"><i class="fa fa-th fa-fw"></i>カテゴリ</a></li><li class="menu-item menu-item-archives"><a href="/new-technology/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>アーカイブ</a></li><li class="menu-item menu-item-privacy"><a href="/new-technology/privacypolicy/" rel="section"><i class="fa fa-check fa-fw"></i>プライバシーポリシー</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="検索…" spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          見出し
+        </li>
+        <li class="sidebar-nav-overview">
+          概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#UniFi-Network-Application%E3%81%AE%E3%82%BB%E3%83%83%E3%83%88%E3%82%A2%E3%83%83%E3%83%97%E3%81%AE%E5%89%8D%E6%8F%90"><span class="nav-number">1.</span> <span class="nav-text">UniFi Network Applicationのセットアップの前提</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#UniFi-Network%E3%81%AE%E3%83%AA%E3%83%A2%E3%83%BC%E3%83%88%E3%82%A2%E3%82%AF%E3%82%BB%E3%82%B9"><span class="nav-number">1.1.</span> <span class="nav-text">UniFi Networkのリモートアクセス</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UI%E3%82%B7%E3%83%B3%E3%82%B0%E3%83%AB%E3%82%B5%E3%82%A4%E3%83%B3%E3%82%AA%E3%83%B3%E3%82%A2%E3%82%AB%E3%82%A6%E3%83%B3%E3%83%88%E3%81%AE%E4%BD%9C%E6%88%90"><span class="nav-number">1.2.</span> <span class="nav-text">UIシングルサインオンアカウントの作成</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UniFi-Console%E3%81%AE%E8%A6%81%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text">UniFi Consoleの要件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ubuntu%E3%81%AE%E4%BA%8B%E5%89%8D%E6%BA%96%E5%82%99"><span class="nav-number">3.</span> <span class="nav-text">Ubuntuの事前準備</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Ubuntu%E3%81%AE%E5%9B%BA%E5%AE%9AIP%E3%82%A2%E3%83%89%E3%83%AC%E3%82%B9%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">3.1.</span> <span class="nav-text">Ubuntuの固定IPアドレスの設定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ufw%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">3.2.</span> <span class="nav-text">ufwの設定</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UniFi-Network-Application%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><span class="nav-number">4.</span> <span class="nav-text">UniFi Network Applicationのインストール</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UniFi-%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%AE%E3%82%BB%E3%83%83%E3%83%88%E3%82%A2%E3%83%83%E3%83%97"><span class="nav-number">5.</span> <span class="nav-text">UniFi ネットワークアプリケーションのセットアップ</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UniFi-%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%AE%E5%88%9D%E6%9C%9F%E8%A8%AD%E5%AE%9A"><span class="nav-number">6.</span> <span class="nav-text">UniFi ネットワークアプリケーションの初期設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UniFi-%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF-%E3%82%B9%E3%83%9E%E3%83%9B%E3%82%A2%E3%83%97%E3%83%AA"><span class="nav-number">7.</span> <span class="nav-text">UniFi ネットワーク スマホアプリ</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UniFi%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E7%B5%8C%E7%94%B1%E3%81%AE%E3%83%AD%E3%82%B0%E3%82%A4%E3%83%B3"><span class="nav-number">8.</span> <span class="nav-text">UniFiネットワーク経由のログイン</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E8%A6%81%E7%B4%A0%E8%AA%8D%E8%A8%BC"><span class="nav-number">9.</span> <span class="nav-text">2要素認証</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ufw%E3%81%AEGUI"><span class="nav-number">10.</span> <span class="nav-text">ufwのGUI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%82%BB%E3%83%83%E3%83%88%E3%82%A2%E3%83%83%E3%83%97%E3%81%AE%E5%AE%8C%E4%BA%86"><span class="nav-number">11.</span> <span class="nav-text">セットアップの完了</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="阿部　吉伸(Yoshinobu ABE)"
+      src="/new-technology/images/yoshi.png">
+  <p class="site-author-name" itemprop="name">阿部　吉伸(Yoshinobu ABE)</p>
+  <div class="site-description" itemprop="description">IT</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/new-technology/archives/">
+          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-name">ポスト</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/new-technology/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">カテゴリ</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/new-technology/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">タグ</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yoshi0808" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yoshi0808" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yoshi0808.blog@gmail.com" title="E-Mail → mailto:yoshi0808.blog@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yoshi0808_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yoshi0808_" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="/new-technology/lib/@creativecommons/vocabulary/assets/license_badges/big/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="ja">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/new-technology/images/yoshi.png">
+      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="New technologies in our life">
+      <meta itemprop="description" content="IT">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="UniFi Network Applicationのセットアップ | New technologies in our life">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          UniFi Network Applicationのセットアップ
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">投稿日</span>
+
+      <time title="作成日：2022-09-23 01:00:00" itemprop="dateCreated datePublished" datetime="2022-09-23T01:00:00+09:00">2022-09-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">編集日</span>
+      <time title="修正日：2022-10-23 19:44:14" itemprop="dateModified" datetime="2022-10-23T19:44:14+09:00">2022-10-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">カテゴリ</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/Network/" itemprop="url" rel="index"><span itemprop="name">Network</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <img src="/new-technology/2022/09/23/unifi-network-application/unifi1.png" class="" width="1024" title="alt">
+
+<p class="onepoint">この記事で実現すること</p>
+
+<p>米国Ubiquiti（ユビキティ）社のUniFi製品であるネットワークスイッチ、Wi-Fiアクセスポイントを利用するには、管理コンソールとしてUniFi OS ConsoleまたはUniFi Network Applicationが必要となります。UniFi Network ApplicationはUbiquitiより無償提供されており、管理・運用においてはUniFiクラウドサービスと連携します。一般的にはこのようなサービスはサブスクリプション費用が必要ですが、この費用も掛かりません。UniFi製品はネットワークの見える化に特化しているため、管理コンソールの24時間稼働が理想です。最初からハード組み込みのセキュリティ機器（UniFi Security Gateway等）やUniFi Cloud Keyを購入すればすぐにUniFi製品を使い始めることができますが、これらのハードウェアを購入しなくとも、ネットワークやLinuxの知識がある人はUniFi Network Applicationをセットアップし、使い始めることができます。</p>
+<span id="more"></span>
+
+<h2 id="UniFi-Network-Applicationのセットアップの前提"><a href="#UniFi-Network-Applicationのセットアップの前提" class="headerlink" title="UniFi Network Applicationのセットアップの前提"></a>UniFi Network Applicationのセットアップの前提</h2><p>「<a href="/new-technology/2022/08/27/ubiquiti-unifi/" title="Ubiquiti UniFiの世界">Ubiquiti UniFiの世界</a>」ではUniFiの機能全般を説明しました。UniFi Network Applicationをセットアップする以前に製品の情報やアップデートの情報は全てUbiquitiの提供するCommunityから入手します。英語のコミュニティサイトではSOHOなどのユーザーはUDM Proなどのセキュリティゲートウェイに、スイッチ、APを組み合わせているケースが多く見られます。スイッチユーザーは、もう少し大きな規模のユーザーがネットワークアプリケーションをLinuxで構築しているユーザーが多いように見えます。実際に顧客にサービスを提供しているSIerやエンジニアの参加もあります。コミュニティの情報・不具合などの割合から見ると、ネットワークアプリケーションの機能とスイッチの情報が圧倒的に多いように見え、セキュリティゲートウェイの質問やセキュリティそのものに関する技術的な内容は少ないように見えます。</p>
+<p>手っ取り早くUniFi機器を稼働させるには、Windows、macOSのUniFi Network Applicationをセットアップし、動作させることです。</p>
+<p>基本的には24時間稼働させ、スイッチ&#x2F;APからリアルタイムで情報を収集したり、スイッチ&#x2F;APに必要な動作を指示するのがConsole&#x2F;Network Applicationの役目です。Linux上（Debian&#x2F;Ubuntu）にセットアップされるケースが多いようです。わざわざLinuxのセットアップをするのは手間だと思えますが、運用を継続することを考えると、Linuxへのセットアップがお勧めです。また、バックアップや設定変更で動作しなくなった時のロールバックを考えると仮想環境（ESXi）にセットアップされることをお勧めします。Ubuntuの最新バージョンであるUbuntu22.04LTSはサポート期間が2027年までと十分長い期間があります。UniFiのためのUbuntuのセットアップ記事は「<a href="/new-technology/2022/09/23/ubuntu22-04lts/" title="Ubuntu22.04LTSをESXiにセットアップする">Ubuntu22.04LTSをESXiにセットアップする</a>」を参照してください。</p>
+<p>ローカル環境のみのアクセス（オンプレミス）、リモート（スマホアプリ）から管理可能なハイブリッドクラウド方式がありますが、ここではハイブリッドクラウド方式で進めます。クラウドはUbiquitが提供する無償のサービスです（※有償のUbiquitiクラウド管理の方式もあります）。基本的には機器のCPU、メモリ使用量、温度管理に加え、スマホへの通知やリモートによる機器のリスタート、アップグレード、高い利便性があります。</p>
+<p>UniFiはAppleのiPhoneのように説明書が無くても使えることを目標にしているのでしょうか。難しいスイッチなどのコマンドラインを必要としませんが、マニュアルというものがありません。コミュニティにはUbiquitiのサポートスタッフも発言していますが、コミュニティが貴重な情報源でもあります。操作が不明な場合や不具合かなと思った場合は、まずコミュニティで検索することから始まります。</p>
+<h3 id="UniFi-Networkのリモートアクセス"><a href="#UniFi-Networkのリモートアクセス" class="headerlink" title="UniFi Networkのリモートアクセス"></a>UniFi Networkのリモートアクセス</h3><p>Requirementとして以下のドキュメントがあります。</p>
+<blockquote>
+<p>UniFi Network - Remote Access Requirements<br> <a target="_blank" rel="noopener" href="https://help.ui.com/hc/en-us/articles/115012240067-UniFi-Network-Remote-Access-Requirements">https://help.ui.com/hc/en-us/articles/115012240067-UniFi-Network-Remote-Access-Requirements</a></p>
+</blockquote>
+<p>説明は至ってシンプルです。UIシングルサインオンアカウント、インターネットに接続されているネットワークアプリケーションホストが必要とあります。<br>よくあるトラブルとしては、Port解放の問題、DNS、NTPへの接続が必要という項目があります。また、コミュニティのリリースポストを参照してほしいとあります。</p>
+<p>UniFiの環境は慣れるまでは理解するのが大変ですが、その世界観を理解できれば1つ1つは難しくありません。</p>
+<h3 id="UIシングルサインオンアカウントの作成"><a href="#UIシングルサインオンアカウントの作成" class="headerlink" title="UIシングルサインオンアカウントの作成"></a>UIシングルサインオンアカウントの作成</h3><p>早速、Ubiquitiのシングルサインオンアカウントを作成しましょう。アカウントの作成は無償です。</p>
+<p><a target="_blank" rel="noopener" href="https://account.ui.com/register">https://account.ui.com/register</a></p>
+<p>ユーザー名、メールアドレス、パスワードが必要です。ユーザー名は他のユーザーと重複しない名前が必要です。一度決定するとこのユーザー名でローカル環境もログインする事になります。</p>
+<img src="/new-technology/2022/09/23/unifi-network-application/unifi4.png" class="" width="360" title="alt">
+
+<p>登録が完了すると以下の画面になります。</p>
+<img src="/new-technology/2022/09/23/unifi-network-application/unifi6.png" class="" width="360" title="alt">
+
+<p>登録したメールアドレスに”Email Verification”が行きますのでVerifyしてください。</p>
+<h2 id="UniFi-Consoleの要件"><a href="#UniFi-Consoleの要件" class="headerlink" title="UniFi Consoleの要件"></a>UniFi Consoleの要件</h2><ul>
+<li>2 GHz dual core processor(2vCPU)</li>
+<li>4 GiB RAM (system memory)</li>
+<li>64 GB Disk</li>
+</ul>
+<p>UniFi Network Applicationに対してはユーザーからのWebサービス、スイッチからネットワークアプリケーションへの接続などがあり、いくつかのサーバーPortをオープンしておく必要があります。Ubuntuと言われるとWindows上のWSL2を思い浮かべますが、WindowsOS上にPort Forwardの設定を行う必要があり、通常のUbuntuより余計な手間が掛かるためWSL2はお勧めしません。</p>
+<p>UniFi Network ApplicationではMongoDB3.6&#x2F;Java8を使います。MongoDB3.6は2021年4月で既にEOLを迎えています。Java8は古いプロダクトではありますが、2030年まではサポートされることが言及されています。これらのミドルウェアの利用はアプリケーション内部の組み込み型モジュールとして考えるべきでもあり、セキュリティの観点からは可能な限りUbuntu上の公開ポートを制限すべきです。従い、UbuntuはUniFiネットワークアプリケーション専用として利用し、必要なPort以外は閉じます。</p>
+<p>実際のインストールは有志が作成した素晴らしいシェルスクリプトが公開されており、悩むことなくセットアップは完了します。</p>
+<p>UniFi Network Applicationのバージョンアップはインストール同様にシェルスクリプトを動作させます。また、UniFi Network Applicationはロールバックに対応していないため、何か問題があった場合に旧環境に戻すにはアンインストール、インストールをするかESXiのレベルでスナップショットからの戻し、または仮想マシンごとのバックアップからの戻しをします。ESXiによるOSのロールバックは非常に手軽なため、万が一の際はOSレベルでのレストアが早く確実です。</p>
+<blockquote>
+<p>Oracle Java<br> <a target="_blank" rel="noopener" href="https://www.oracle.com/jp/java/technologies/java-se-support-roadmap.html">https://www.oracle.com/jp/java/technologies/java-se-support-roadmap.html</a><br> オラクルは今後も、 java.comで、個人ユーザー、開発ユーザー、およびその他のユーザーに、Java SE 8の無償の公開アップデートと自動アップデートを無期限に提供します。</p>
+</blockquote>
+<blockquote>
+<p>MongoDB<br> <a target="_blank" rel="noopener" href="https://www.mongodb.com/support-policy/lifecycles">https://www.mongodb.com/support-policy/lifecycles</a></p>
+</blockquote>
+<h2 id="Ubuntuの事前準備"><a href="#Ubuntuの事前準備" class="headerlink" title="Ubuntuの事前準備"></a>Ubuntuの事前準備</h2><p>ここでは「<a href="/new-technology/2022/09/23/ubuntu22-04lts/" title="Ubuntu22.04LTSをESXiにセットアップする">Ubuntu22.04LTSをESXiにセットアップする</a>」で記載したようにUbuntuがESXi上にセットアップされ、ESXiのUbuntuにVMware Remote Consoleで接続して操作する事を前提としています。ESXiのWebUIにログインし、Ubuntuの仮想マシンに対してVMRCで接続するか、ブラウザから、<code>vmrc://ユーザー名@esxiのホスト名/?moid=[仮想マシンのID]</code>で接続します（VMRCウィンドウが起動します）。クライアントへのVMRCのインストールはESXiのWebUIからダウンロードできます。</p>
+<h3 id="Ubuntuの固定IPアドレスの設定"><a href="#Ubuntuの固定IPアドレスの設定" class="headerlink" title="Ubuntuの固定IPアドレスの設定"></a>Ubuntuの固定IPアドレスの設定</h3><p>UniFiの機器から、或いはWeb Consoleとして常に同一のIPアドレスに接続するために固定IPアドレス、またはDHCPの配布でmacアドレスを元に常に同じIPアドレスを配布するように設定します。Ubuntu上で固定IPにするには、<mark class="label primary">設定</mark>画面の<mark class="label primary">ネットワーク</mark>で固定IPを設定します。</p>
+<img src="/new-technology/2022/09/23/unifi-network-application/unifi15.png" class="" width="640" title="alt">
+
+<p>UniFi Network Applicationでは現時点でIPv4のみを利用しIPv6は未対応と考えてください。個々のスイッチ&#x2F;APはもちろんIPv6通信に対応していますが、機器本体の管理をIPv4で行います。</p>
+<h3 id="ufwの設定"><a href="#ufwの設定" class="headerlink" title="ufwの設定"></a>ufwの設定</h3><p>UniFi Consoleで最低限のPortを開けるため、UbuntuのFirewallであるufwを設定します。Ubuntuの<mark class="label primary">端末</mark>を起動します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo ufw status</span><br><span class="line">状態: 非アクティブ</span><br><span class="line">$</span><br></pre></td></tr></table></figure>
+
+<p>ufwを有効にします。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo ufw <span class="built_in">enable</span></span><br><span class="line">ファイアウォールはアクティブかつシステムの起動時に有効化されます。</span><br></pre></td></tr></table></figure>
+
+<p>再度状態確認します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo ufw status</span><br><span class="line">状態: アクティブ</span><br><span class="line">$</span><br></pre></td></tr></table></figure>
+
+<div class="note danger"><p>ESXiやVMRCを使わずSSHで接続しufwを有効にする場合は、SSHポート（22&#x2F;TCP)を許可しておかないと新しいSSHの接続ができません。再起動などのタイミングでSSHできず面倒になるのでご注意ください。なお、UniFi Network Applicationのセットアップ途中でSSHポートを開けます。</p>
+</div>
+
+<p>ufwを有効化しただけでは外部へ接続する方向へは制限しませんが、UbuntuのFirefoxでInternetに接続可能な状態である事を確認します。セキュリティ機器やFirewall機器で<strong>Outbound通信</strong>に厳密な管理をされている方は以下の記事を参考に必要なPortを開けてください。UniFi Network ApplicationのセットアップにはInternetへの接続が必要です。Internetから内部にポート解放する必要はありません。</p>
+<blockquote>
+<p>UniFi - Setting Up a UniFi OS Console<br> <a target="_blank" rel="noopener" href="https://help.ui.com/hc/en-us/articles/4416276882327-UniFi-Setting-Up-a-UniFi-OS-Console">https://help.ui.com/hc/en-us/articles/4416276882327-UniFi-Setting-Up-a-UniFi-OS-Console</a></p>
+</blockquote>
+<h2 id="UniFi-Network-Applicationのインストール"><a href="#UniFi-Network-Applicationのインストール" class="headerlink" title="UniFi Network Applicationのインストール"></a>UniFi Network Applicationのインストール</h2><p>スクリプトの情報は、コミュニティにあります。<br><a target="_blank" rel="noopener" href="https://community.ui.com/questions/UniFi-Installation-Scripts-or-UniFi-Easy-Update-Script-or-UniFi-Lets-Encrypt-or-UniFi-Easy-Encrypt-/ccbc7530-dd61-40a7-82ec-22b17f027776">https://community.ui.com/questions/UniFi-Installation-Scripts-or-UniFi-Easy-Update-Script-or-UniFi-Lets-Encrypt-or-UniFi-Easy-Encrypt-/ccbc7530-dd61-40a7-82ec-22b17f027776</a></p>
+<p>セットアップで失敗した際にすぐに戻れるように、このタイミングでESXiのスナップショット、またはバックアップの取得をお勧めします。</p>
+<p>実行は3ステップです。Ubuntuの<mark class="label primary">端末</mark>から、以下のコマンドを実行します。</p>
+<ol>
+<li><p>管理者になります</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo -i</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>証明書などのダウンロードをします。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ apt-get update; apt-get install ca-certificates wget -y</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>ネットワークアプリケーションのセットアップを行います。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">rm</span> unifi-latest.sh &amp;&gt; /dev/null; wget https://get.glennr.nl/unifi/install/install_latest/unifi-latest.sh &amp;&amp; bash unifi-latest.sh</span><br></pre></td></tr></table></figure>
+<p>必要なモジュールをインストールし、最新のUniFi Network Applicationをインストールしていきます。何回かユーザーとコマンド上の対話があります。全て”Y”を回答します。</p>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Do you want to keep the script on your system after completion? (Y/n)</span></span><br></pre></td></tr></table></figure>
+<p>“Y”を入力しEnterを押下します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Do you want to proceed with updating your system? (Y/n)</span></span><br></pre></td></tr></table></figure>
+<p>“Y”を入力しEnterを押下します。その後いくつかのモジュールがセットアップされていきます。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Preparing for MongoDB installation...</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Adding key for MongoDB 3.6...</span></span><br><span class="line"><span class="comment"># Successfully added key for MongoDB 3.6!</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Running apt-get update...</span></span><br><span class="line"><span class="comment"># Successfully ran apt-get update!</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Installing mongodb-org version 3.6...</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Preparing OpenJDK 8 installation...</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Installing openjdk-8-jre-headless...</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Installing your UniFi Network Application ( 7.2.94 )...</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Downloading the UniFi Network Application...</span></span><br><span class="line"><span class="comment"># Successfully downloaded application version 7.2.94!</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Installing the UniFi Network Application...</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Would you like to update the UniFi Network Application via APT?</span></span><br><span class="line"><span class="comment"># Do you want the script to add the source list file? (Y/n)</span></span><br></pre></td></tr></table></figure>
+
+<p>“Y”を入力しEnterを押下します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Is/will your application only be used locally ( regarding device discovery )? (Y/n)</span></span><br></pre></td></tr></table></figure>
+<p>あなたのアプリケーションはディスカバリにおいてローカル環境だけで使いますか？という質問ですが、これはスクリプトの中身を見る限りは、”Y”を選択しないと、ufwの10001&#x2F;udpを開けないので、”Y”を選択します。10001&#x2F;UDPを開けないとローカル環境のUniFi機器を見つけられません。AWSなどのクラウド上にネットワークアプリケーションをセットアップする場合、ローカルのUniFi機器を直接UniFi Network Applicationに向かわせる方法もあり、その場合はクラウド上のローカルネットワークに不要なポートを公開しないための設定と考えられます。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Do you want to add the required ports for your UniFi Network Application? (Y/n)</span></span><br></pre></td></tr></table></figure>
+<p>“Y”を入力しEnterを押下します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Successfully added port 3478/udp to UFW.</span></span><br><span class="line"><span class="comment"># Successfully added port 8080/tcp to UFW.</span></span><br><span class="line"><span class="comment"># Successfully added port 8443/tcp to UFW.</span></span><br><span class="line"><span class="comment"># Successfully added port 8880/tcp to UFW.</span></span><br><span class="line"><span class="comment"># Successfully added port 8843/tcp to UFW.</span></span><br><span class="line"><span class="comment"># Successfully added port 6789/tcp to UFW.</span></span><br><span class="line"><span class="comment"># Successfully added port 10001/udp to UFW.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Your SSH port ( 22 ) doesn&#x27;t seem to be in your UFW list..</span></span><br><span class="line"><span class="comment"># Do you want to add your SSH port to the UFW list? (Y/n)</span></span><br></pre></td></tr></table></figure>
+<p>UniFiに必要なポートを開け、さらにSSHも開けますか？と聞かれるので”Y”を入力しEnterを押下します。</p>
+<p>最後に以下の表示でスクリプトは終了します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># UniFi Network Application 7.2.94 has been installed successfully</span></span><br><span class="line"><span class="comment"># Your application address: https://192.168.xxx.222:8443</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># UniFi is active ( running )</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Author   |  Glenn R.</span></span><br><span class="line"><span class="comment"># Email    |  glennrietveld8@hotmail.nl</span></span><br><span class="line"><span class="comment"># Website  |  https://GlennR.nl</span></span><br></pre></td></tr></table></figure>
+
+<p>とても素晴らしいシェルスクリプトです。Glenn R氏に深謝です。<br>最後の”Your application address:”にあるように、クライアントのブラウザから<code>https://UbuntuのIPアドレス:8443</code>に接続します。</p>
+<h2 id="UniFi-ネットワークアプリケーションのセットアップ"><a href="#UniFi-ネットワークアプリケーションのセットアップ" class="headerlink" title="UniFi ネットワークアプリケーションのセットアップ"></a>UniFi ネットワークアプリケーションのセットアップ</h2><p>ここからはしばらくUbuntuは操作しません。WindowsやmacOS、スマホなどのクライアントから<code>https://UbuntuのIPアドレス:8443</code>に接続します。独自証明書のため、ブラウザのエラーが表示されますが、「危険を理解して進む」などをクリックして画面を開きます。UniFi Network ApplicationのSSL対応は別の機会に記事を書きます。</p>
+<p>以下では規約に同意するチェックを入れ、”Next”で進みます。</p>
+<img src="/new-technology/2022/09/23/unifi-network-application/unifi7.png" class="" width="480" title="alt">
+
+<p>ここでは、<mark class="label primary">Switch to Advanced Setup</mark>をクリックします。</p>
+<img src="/new-technology/2022/09/23/unifi-network-application/unifi8.png" class="" width="480" title="alt">
+
+<mark class="label primary">Advanced remote and local access</mark>では、以下のようにリモートアクセスとUIシングルサインオンアカウントのトグルスイッチをOnにした状態で"Next"で進みます。
+<img src="/new-technology/2022/09/23/unifi-network-application/unifi8-1.png" class="" width="480" title="alt">
+<p>UIシングルサインオンアカウントでログインします。</p>
+<img src="/new-technology/2022/09/23/unifi-network-application/unifi8-2.png" class="" width="480" title="alt">
+
+<p>ここではバックアップを有効にします。</p>
+<img src="/new-technology/2022/09/23/unifi-network-application/unifi8-3.png" class="" width="480" title="alt">
+
+<p>デバイスセットアップです。ここで新しいUniFiのハードウェアがネットワークアプリケーションのサブネット内で接続状態であれば、自動的に検出します。ただし、ネットワークアプリケーションで最初にネットワークアドレスを設定する必要があり、ここではデバイスのセットアップをせずに、”Next”で進みます。</p>
+<img src="/new-technology/2022/09/23/unifi-network-application/unifi9.png" class="" width="640" title="alt">
+
+<p>WiFiセットアップです。UniFiのAPがある場合はここでWiFiセットアップが可能ですが、スキップし”Next”で進みます。</p>
+<img src="/new-technology/2022/09/23/unifi-network-application/unifi10.png" class="" width="640" title="alt">
+
+<p>確認画面です。所在地である日本を選択し、”Finish”で完了します。</p>
+<img src="/new-technology/2022/09/23/unifi-network-application/unifi11.png" class="" width="800" title="alt">
+
+<p>ここまで完了すると初期画面が表示されます。</p>
+<img src="/new-technology/2022/09/23/unifi-network-application/unifi12.png" class="" width="800" title="alt">
+
+<h2 id="UniFi-ネットワークアプリケーションの初期設定"><a href="#UniFi-ネットワークアプリケーションの初期設定" class="headerlink" title="UniFi ネットワークアプリケーションの初期設定"></a>UniFi ネットワークアプリケーションの初期設定</h2><p>最初にUniFiネットワークアプリケーションのネットワークアドレスと動作モードを設定します。<br>ネットワークアプリケーションの左下の歯車アイコンをクリックし、<mark class="label primary">Networks</mark>を選択します。</p>
+<img src="/new-technology/2022/09/23/unifi-network-application/unifi13.png" class="" width="800" title="alt">
+
+<p>最初のネットワークアドレスは”192.168.1.0&#x2F;24”となっていますのでこれを修正します。</p>
+<img src="/new-technology/2022/09/23/unifi-network-application/unifi13-1.png" class="" width="480" title="alt">
+
+<mark class="label primary">Auto Scale Network</mark>のチェックを外し、実際のルーターのLAN側IPアドレスを入力します。
+<img src="/new-technology/2022/09/23/unifi-network-application/unifi13-2.png" class="" width="480" title="alt">
+
+<p>続いて<mark class="label primary">Advanced Configuration</mark>では、今回のようにセキュリティゲートウェイなどのUniFi Consoleがありませんが、デフォルトではセキュリティゲートウェイがDHCPを提供するDHCPサーバーモードとなっています。</p>
+<img src="/new-technology/2022/09/23/unifi-network-application/unifi13-3.png" class="" width="480" title="alt">
+
+<p>ここでは、DHCPモードを”無し”にし、”Apply Changes”で変更を完了させます。</p>
+<img src="/new-technology/2022/09/23/unifi-network-application/unifi13-4.png" class="" width="480" title="alt">
+
+<p>左側の丸い二重丸のアイコン（UniFiAPのシンボルです）からは、新しいUniFi機器のAdoptが可能な状態になっています。</p>
+<img src="/new-technology/2022/09/23/unifi-network-application/unifi14.png" class="" width="480" title="alt">
+
+<p>Ubuntuを再起動後してみてください。再度ブラウザでUniFi管理画面にログインできること、UbuntuにSSH可能である事を確認しましょう。</p>
+<p>これでUniFiネットワークアプリケーションの設定は一旦完了です。もちろんこの段階で検出したスイッチを採用（Adopt）できますが、管理の主体はスマホアプリで可能なため、スマホアプリをインストールしていきましょう。</p>
+<h2 id="UniFi-ネットワーク-スマホアプリ"><a href="#UniFi-ネットワーク-スマホアプリ" class="headerlink" title="UniFi ネットワーク スマホアプリ"></a>UniFi ネットワーク スマホアプリ</h2><p>UniFiの使い勝手の良さはスマホアプリにあります。スマホアプリからUniFiネットワークアプリケーションを制御します。普段はスマホアプリがあれば大抵は事足ります。アプリストアから”UniFi Network&#x2F;Ubiquiti Inc”を見つけスマホにアプリをインストールします。</p>
+<ul>
+<li><p>Apple iOS</p>
+ <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKUAAAClCAAAAAAYQGIGAAAB90lEQVR42u3a0W7DIAxG4b7/S2d3mzQFc36Stg46XHUqK18rEYzt12s+jt/x9+dwyr/J9aeczVsdKlV+R3mMBiXQrzR8txaoVNlcebbccKV6Mti79MGhUuVOyuFKgBWtoVLldsrhIZq/UqlyE2UdXy4ef/U3vD0KVqny40p6tr3v1U0ZGJUqP6k84KDnGN2nRzJUqmypBHstQtOzMlpXpcqWymHaL0qBL558dc5x/DOqVNlCuXj/ispQUXWX/KAqVbZQggxEdExGm5/GoSpV9lWCPEbe5FAfrHVtaxIAq1TZRxkluekVbfEWhy95KlV+W0n7FmiNqQ5VF8tVKlW2VNZ58HylesdGrUmT7L9KlX2U0edfrk9lNzaVKh+ljPb9PQHlJHWpUmUz5WL5NbqigZgzK02pVNlCmd+XorwIzUxM5qlU2VYZpekWWyBApEmaIVSq7KO8nA8E8qgtYvyQUKmyrRLs7LzvCISloKFVpconKPGGm8eXeTF2kp1XqfJRSrpwvQhNhEyeNypVNlMecFzJkkcVqNPJKlV2VNIMXV64ilL79D9UquymBG11N27qPFuhUmVzZdTfsJgyzFMiKlVuosx3O2ifoJUqlSo3UdJmCFywBXyVKtsq6/gyajkC8SVti1CpsrkyCvZAkSq6f9EAVaXKZsofDWwJqEp4wN0AAAAASUVORK5CYII=" alt="UniFi Network" title="" class="title: UniFi Network">
+<p> <a target="_blank" rel="noopener" href="https://apps.apple.com/jp/app/unifi-network/id1057750338">https://apps.apple.com/jp/app/unifi-network/id1057750338</a></p>
+</li>
+<li><p>Android</p>
+ <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALkAAAC5CAAAAABRxsGAAAACV0lEQVR42u3bS46EMAxF0dr/pqtnNUAkuc9BLRHfjFrF74CEcRz357Me39+4/Ha3y2Xc7Ty8Bt0ZD+XKz5CDC893Kd4SuIfFscqVt5HTt53e0vzm5k8HqJQrV559vOeBY54+3KUZypUrr8YW8BuVD73KlSvPJsAgeoAUAGx9cmahXPnr5Xn96T/+eqg6p1z5m+XRLPiZ2AK++QSkXHkHOXifd77qxdozXrNSrvxwOV31yddq6fnAhtudlSvvIM9XaUBsmacKO7UwUv5Wrvw0efTxBlXjPCsHbVfjHEK58nPltKWCzn2jdVkadMZPWrnyw+Xzrzp42yPlfM4N8vPbAKNc+bnyyAGy7bwWVg0wypW3kRe/9OAwKgfhTLnyjvJ5sRmUogvJxkZ+vphGK1d+rpy+1BG6GKboDEG58mby6GBQbAaxCjSDkNK5cuXnyvP2p6gqBq4BWjTImZUrP00ODo6WZIuVssJ1lSvvJQeOqC0i6nKKopZy5crJ/5p+1iPvlaK3rlx5H/lOsXln8hy1d1zPolx5B3lhgr0m7Eyoo1ZK5cpbyHEH0rqRgk6F6aLSIvVQrryNHLzZeQ9U1H+RNUIpV95anndO0AJ0VJlePDHlytvI8+ZB2iAxjw9RzUy58mbyLxzZK79eWaI5xDgdUa68g5y+ylnaDFOAfBk5ikHKlR8ip+cCX/VqAlKMLcqVt5HnjQ9Rsap4cyS2KFeunG4F7RjzZADUwZUrV57FlnwrnRKQdSLlyjvIix2EO7GFZgnjnZUr7yCPsmM6g366ql0YypW/Xf4Hl2yz0I8KdVwAAAAASUVORK5CYII=" alt="UniFi Network" title="" class="title: UniFi Network">
+<p> <a target="_blank" rel="noopener" href="https://play.google.com/store/apps/details?id=com.ubnt.easyunifi&amp;hl=en_US&amp;gl=US">https://play.google.com/store/apps/details?id=com.ubnt.easyunifi&amp;hl=en_US&amp;gl=US</a></p>
+</li>
+</ul>
+<p>ここではiPhoneで操作します。”Set up a New Device”をタップします</p>
+<img src="/new-technology/2022/09/23/unifi-network-application/app1.png" class="" width="280" title="alt">
+
+<p>ネットワークを検索しに行きます</p>
+<img src="/new-technology/2022/09/23/unifi-network-application/app2.png" class="" width="280" title="alt">
+
+<p>UniFi OS Consoleは存在していないので見つけられません。”Set up a connection by IP address”でUniFi Network ApplicationのIPアドレスを指定します。</p>
+<img src="/new-technology/2022/09/23/unifi-network-application/app3.png" class="" width="280" title="alt">
+
+<p>UniFi Network ApplicationのIPアドレス、UIシングルサインオンアカウントのIDとパスワードを指定します。</p>
+<img src="/new-technology/2022/09/23/unifi-network-application/app4.png" class="" width="280" title="alt">
+
+<p>しばらく経ってから、UniFi Network Applicationを見つけるので、”Proceed”をタップします。</p>
+<img src="/new-technology/2022/09/23/unifi-network-application/app5.png" class="" width="280" title="alt">
+
+<p>無事ログインが完了し、早速Adopt可能なデバイスが表示されます。Adoptしてみます。”Set Up”をタップします。</p>
+<img src="/new-technology/2022/09/23/unifi-network-application/app6.png" class="" width="280" title="alt">
+
+<p>“Next”をタップします。</p>
+<img src="/new-technology/2022/09/23/unifi-network-application/app7.png" class="" width="280" title="alt">
+
+<p>デバイスを採用中です。しばらく待ちます。少し時間が掛かります。ここではデバイスの採用と最新ファームウェアのダウンロード、適用が行われます。</p>
+<img src="/new-technology/2022/09/23/unifi-network-application/app8.png" class="" width="280" title="alt">
+
+<p>デバイスの採用が完了すると、以下の画面になります。”Go to Dashboard”をタップします。</p>
+<img src="/new-technology/2022/09/23/unifi-network-application/app9.png" class="" width="280" title="alt">
+
+<p>Top画面です</p>
+<img src="/new-technology/2022/09/23/unifi-network-application/app10.png" class="" width="280" title="alt">
+
+<p>UniFiデバイスの画面をタップすると、採用されたスイッチが見えます。</p>
+<img src="/new-technology/2022/09/23/unifi-network-application/app11.png" class="" width="280" title="alt">
+
+<p>スイッチのPortの状況です。GbEでアップリンク（上流のネットワーク）に接続されています。</p>
+<img src="/new-technology/2022/09/23/unifi-network-application/app12.png" class="" width="280" title="alt">
+
+<p>アプリの歯車アイコン（System）から”Network Application Configuration”を選択します。以下のHostname&#x2F;IPとなっている場所にネットワークアプリケーションのIPアドレスを設定しておきます。</p>
+<img src="/new-technology/2022/09/23/unifi-network-application/app12-1.png" class="" width="280" title="alt">
+
+<h2 id="UniFiネットワーク経由のログイン"><a href="#UniFiネットワーク経由のログイン" class="headerlink" title="UniFiネットワーク経由のログイン"></a>UniFiネットワーク経由のログイン</h2><p>UniFiスマホアプリを終了し、Wi-Fiをオフにしてから再びアプリを起動します。今度は”Log in to Your UI Account”をタップし、UIシングルサインオンアカウントでログインします。</p>
+<img src="/new-technology/2022/09/23/unifi-network-application/app13.png" class="" width="280" title="alt">
+
+<p>接続に少し時間が掛かりますが、Ubiquitiのクラウド経由でローカルのUniFiネットワークアプリケーションに接続され、スイッチや接続されたクライアントの状態が把握可能となります。厳密にはUbiquitiクラウドからスマホのパブリックIPアドレスを取得し、UniFi Network Applicationからスマホアプリへの直接接続を行うようです。</p>
+<h2 id="2要素認証"><a href="#2要素認証" class="headerlink" title="2要素認証"></a>2要素認証</h2><p>ハイブリッドクラウドで外部からログインができるようになったので、2要素認証を設定します。ブラウザで<code>&lt;https://account.ui.com/&gt;</code>に接続します。</p>
+<p>“My Security”をタップします。</p>
+<img src="/new-technology/2022/09/23/unifi-network-application/verify1.png" class="" width="280" title="alt">
+
+<p>Multi Factor Authentication(MFA)をEnableにします。</p>
+<img src="/new-technology/2022/09/23/unifi-network-application/verify2.png" class="" width="280" title="alt">
+
+<p>”UI Verify”アプリを選択します。</p>
+<img src="/new-technology/2022/09/23/unifi-network-application/verify3.png" class="" width="280" title="alt">
+
+<p>UI VerifyアプリをダウンロードしAppを構成します。</p>
+<img src="/new-technology/2022/09/23/unifi-network-application/verify4.png" class="" width="280" title="alt">
+
+<p>2要素認証が完了し、アプリが使えない場合のメールアドレスへの通知が2要素認証のバックアップとして利用されます。</p>
+<img src="/new-technology/2022/09/23/unifi-network-application/verify5.png" class="" width="280" title="alt">
+
+<p>これで2要素認証が必須となり、UniFi Networkスマホアプリでは初回の認証時にUI Verifyアプリへのプッシュ通知が行われます。ユーザーが確認の応答を実施しログインが完了します。ローカル環境でブラウザなどからネットワークアプリケーションにログインする際や、UIアカウントサイトにログインする場合も2要素認証が求められ、UI Verifyアプリで応答する必要があります。</p>
+<img src="/new-technology/2022/09/23/unifi-network-application/verify6.png" class="" width="280" title="alt">
+
+<h2 id="ufwのGUI"><a href="#ufwのGUI" class="headerlink" title="ufwのGUI"></a>ufwのGUI</h2><p>Ubuntuで今回設定したufwの設定を追加する場合、GUIによるツールを導入しておくと便利です。<mark class="label primary">Ubuntu Software</mark>から”gufw”を探し、インストールします。</p>
+<img src="/new-technology/2022/09/23/unifi-network-application/ubuntu1.png" class="" width="640" title="alt">
+
+<h2 id="セットアップの完了"><a href="#セットアップの完了" class="headerlink" title="セットアップの完了"></a>セットアップの完了</h2><p>ここまででUniFiのセットアップは完了です。ESXiのスナップショットを取得していらした方はスナップショットの管理から「すべて削除」し、一旦、Ubuntu全体のバックアップを取得される事をお勧めします。次の記事「<a href="/new-technology/2022/10/23/unifi-network-application2/" title="UniFi Network Applicationの運用">UniFi Network Applicationの運用</a>」で、UniFi Network Applicationの運用全般（設定のバックアップ、アップデート、通知）を紹介します。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/new-technology/tags/UniFi/" rel="tag"><i class="fa fa-tag"></i> UniFi</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/new-technology/2022/09/23/ubuntu22-04lts/" rel="prev" title="Ubuntu22.04LTSをESXiにセットアップする">
+                  <i class="fa fa-chevron-left"></i> Ubuntu22.04LTSをESXiにセットアップする
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/new-technology/2022/10/23/unifi-network-application2/" rel="next" title="UniFi Network Applicationの運用">
+                  UniFi Network Applicationの運用 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">阿部　吉伸(Yoshinobu ABE)</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div><script src="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.umd.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.min.css" rel="stylesheet">
+
+<script>
+if (Cookies.get('PRVCY202112') != 'Agree') {
+  const notice = new SimpleGDPR({
+    title: 'Accept Cookies & Privacy Policy?',
+    message: 'このWebサイトでは、訪問や活動に関するデータがクッキー等によって収集されます。閲覧を継続される場合、\
+    プライバシーポリシーをご覧いただき同意(Agree)をお願いします',
+    link: null,
+    icons: true,
+    theme: 'light',
+    animation: 'fade',
+    float: 'bottom-right',
+      callback: () => {
+      notice.close();
+      Cookies.set('PRVCY202112', 'Agree', { expires: 365, path: '/'});
+      notice.destroy();
+      // Google Analytics 4
+      gtag('consent', 'update', {
+      'analytics_storage': 'granted'
+      });
+      gtag('js', new Date());
+      gtag('config', 'G-JMY6NSC2KK', { 'anonymize_ip': true });
+      },
+  });
+}
+</script>
+<div class="disclaimer1">
+このサイトの記事は、特別な記載がない限り <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja">クリエイティブ・コモンズ BY-NC-SA ライセンス</a>で保護されています</div>
+
+
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/yoshi0808" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="/new-technology/lib/animejs/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="/new-technology/lib/medium-zoom/dist/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/comments.js"></script><script src="/new-technology/js/utils.js"></script><script src="/new-technology/js/motion.js"></script><script src="/new-technology/js/schemes/muse.js"></script><script src="/new-technology/js/next-boot.js"></script>
+
+  <script src="/new-technology/lib/hexo-generator-searchdb/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"/new-technology/lib/mermaid/dist/mermaid.min.js","integrity":"sha256-3JloMMI/ZQx6ryuhhZTsQJQmGAkXeni6PkshX7UUO2s="}}</script>
+  <script src="/new-technology/js/third-party/tags/mermaid.js"></script>
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/icon-16x16.png">
+  <link rel="mask-icon" href="/new-technology/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/new-technology/css/main.css">
+
+
+
+<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-/4UQcSmErDzPCMAiuOiWPVVsNN2s3ZY/NsmXNcj0IFc=" crossorigin="anonymous">
+  <link rel="stylesheet" href="/new-technology/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.15.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
+
+    <meta name="description" content="この記事で実現すること PC（Windows、macOS）からXG FirewallのIPSec VPNへ接続しているユーザーに、ワンタイムパスワードによる2要素認証機能を追加し、セキュリティを高められます。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="XG Firewall VPNに2要素認証を設定する">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/03/28/vpnotp/index.html">
+<meta property="og:site_name" content="New technologies in our life">
+<meta property="og:description" content="この記事で実現すること PC（Windows、macOS）からXG FirewallのIPSec VPNへ接続しているユーザーに、ワンタイムパスワードによる2要素認証機能を追加し、セキュリティを高められます。">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/28/vpnotp/otp3.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/28/vpnotp/otp1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/28/vpnotp/otp2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/28/vpnotp/otp4.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/28/vpnotp/mr4.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/28/vpnotp/otp5.png">
+<meta property="article:published_time" content="2020-03-28T09:22:30.000Z">
+<meta property="article:modified_time" content="2021-10-17T07:19:26.000Z">
+<meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
+<meta property="article:tag" content="XG Firewall">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2020/03/28/vpnotp/otp3.png">
+
+
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2020/03/28/vpnotp/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"ja","comments":true,"permalink":"https://yoshi0808.github.io/new-technology/2020/03/28/vpnotp/","path":"2020/03/28/vpnotp/","title":"XG Firewall VPNに2要素認証を設定する"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>XG Firewall VPNに2要素認証を設定する | New technologies in our life</title>
+  
+
+
+
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{&quot;token&quot;: &quot;0148b4d0442e42b483ddce684030bd2f&quot;}'></script>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JMY6NSC2KK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+  'ad_storage': 'denied',
+  'analytics_storage': 'denied'
+  });
+
+  dataLayer.push({
+  'event': 'default_consent'
+  });
+
+  if (Cookies.get('PRVCY202112') == 'Agree') {
+    gtag('consent', 'update', {
+    'analytics_storage': 'granted'
+    });
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'G-JMY6NSC2KK',{ 'anonymize_ip': true });
+</script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/new-technology/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/new-technology/atom.xml" title="New technologies in our life" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="ナビゲーションバーの切り替え" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/new-technology/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">New technologies in our life</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Device,Network,Code,etc...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="検索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/new-technology/" rel="section"><i class="fa fa-home fa-fw"></i>ホーム</a></li><li class="menu-item menu-item-about"><a href="/new-technology/about/" rel="section"><i class="fa fa-user fa-fw"></i>サイトポリシー</a></li><li class="menu-item menu-item-tags"><a href="/new-technology/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>タグ</a></li><li class="menu-item menu-item-categories"><a href="/new-technology/categories/" rel="section"><i class="fa fa-th fa-fw"></i>カテゴリ</a></li><li class="menu-item menu-item-archives"><a href="/new-technology/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>アーカイブ</a></li><li class="menu-item menu-item-privacy"><a href="/new-technology/privacypolicy/" rel="section"><i class="fa fa-check fa-fw"></i>プライバシーポリシー</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="検索…" spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          見出し
+        </li>
+        <li class="sidebar-nav-overview">
+          概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#XG%E3%81%8C%E6%8F%90%E4%BE%9B%E3%81%99%E3%82%8BVPN%E3%81%AE2%E8%A6%81%E7%B4%A0%E8%AA%8D%E8%A8%BC"><span class="nav-number">1.</span> <span class="nav-text">XGが提供するVPNの2要素認証</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%AF%E3%83%B3%E3%82%BF%E3%82%A4%E3%83%A0%E3%83%91%E3%82%B9%E3%83%AF%E3%83%BC%E3%83%89%E3%82%A2%E3%83%97%E3%83%AA"><span class="nav-number">2.</span> <span class="nav-text">ワンタイムパスワードアプリ</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%AF%E3%83%B3%E3%82%BF%E3%82%A4%E3%83%A0%E3%83%91%E3%82%B9%E3%83%AF%E3%83%BC%E3%83%89%E3%81%AE%E5%9F%BA%E6%9C%AC%E8%A8%AD%E5%AE%9A"><span class="nav-number">3.</span> <span class="nav-text">ワンタイムパスワードの基本設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%AF%E3%83%B3%E3%82%BF%E3%82%A4%E3%83%A0%E3%83%91%E3%82%B9%E3%83%AF%E3%83%BC%E3%83%89%E3%81%AE%E8%87%AA%E5%8B%95%E7%94%9F%E6%88%90"><span class="nav-number">4.</span> <span class="nav-text">ワンタイムパスワードの自動生成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG-v18-MR-3%E4%BB%A5%E5%89%8D%E3%81%AE%E8%A8%AD%E5%AE%9A%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB"><span class="nav-number">5.</span> <span class="nav-text">XG v18 MR-3以前の設定ファイル</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#scadmin%E3%83%84%E3%83%BC%E3%83%AB%E3%81%A7%E8%A8%AD%E5%AE%9A%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E4%BD%9C%E6%88%90"><span class="nav-number">5.1.</span> <span class="nav-text">scadminツールで設定ファイルを作成</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XG-v18-MR-4%E4%BB%A5%E9%99%8D%E3%81%AE%E8%A8%AD%E5%AE%9A%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB"><span class="nav-number">6.</span> <span class="nav-text">XG v18 MR-4以降の設定ファイル</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A5%E7%B6%9A"><span class="nav-number">7.</span> <span class="nav-text">接続</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="阿部　吉伸(Yoshinobu ABE)"
+      src="/new-technology/images/yoshi.png">
+  <p class="site-author-name" itemprop="name">阿部　吉伸(Yoshinobu ABE)</p>
+  <div class="site-description" itemprop="description">IT</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/new-technology/archives/">
+          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-name">ポスト</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/new-technology/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">カテゴリ</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/new-technology/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">タグ</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yoshi0808" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yoshi0808" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yoshi0808.blog@gmail.com" title="E-Mail → mailto:yoshi0808.blog@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yoshi0808_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yoshi0808_" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="/new-technology/lib/@creativecommons/vocabulary/assets/license_badges/big/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="ja">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2020/03/28/vpnotp/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/new-technology/images/yoshi.png">
+      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="New technologies in our life">
+      <meta itemprop="description" content="IT">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="XG Firewall VPNに2要素認証を設定する | New technologies in our life">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          XG Firewall VPNに2要素認証を設定する
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">投稿日</span>
+
+      <time title="作成日：2020-03-28 18:22:30" itemprop="dateCreated datePublished" datetime="2020-03-28T18:22:30+09:00">2020-03-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">編集日</span>
+      <time title="修正日：2021-10-17 16:19:26" itemprop="dateModified" datetime="2021-10-17T16:19:26+09:00">2021-10-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">カテゴリ</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/Security/" itemprop="url" rel="index"><span itemprop="name">Security</span></a>
+        </span>
+          、
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/Security/VPN/" itemprop="url" rel="index"><span itemprop="name">VPN</span></a>
+        </span>
+          、
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/Security/VPN/%E3%83%AF%E3%83%B3%E3%82%BF%E3%82%A4%E3%83%A0%E3%83%91%E3%82%B9%E3%83%AF%E3%83%BC%E3%83%89/" itemprop="url" rel="index"><span itemprop="name">ワンタイムパスワード</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p class="onepoint">この記事で実現すること</p>
+PC（Windows、macOS）からXG FirewallのIPSec VPNへ接続しているユーザーに、ワンタイムパスワードによる2要素認証機能を追加し、セキュリティを高められます。
+
+<span id="more"></span>
+
+<h2 id="XGが提供するVPNの2要素認証"><a href="#XGが提供するVPNの2要素認証" class="headerlink" title="XGが提供するVPNの2要素認証"></a>XGが提供するVPNの2要素認証</h2><p>XGのVPNにおいて、SSL-VPNとIPSecはワンタイムパスワードが設定できます。サイバー攻撃の脅威がますます大きくなる今日においては、VPNの多要素認証は必須条件ではないでしょうか。</p>
+<h2 id="ワンタイムパスワードアプリ"><a href="#ワンタイムパスワードアプリ" class="headerlink" title="ワンタイムパスワードアプリ"></a>ワンタイムパスワードアプリ</h2><p>ワンタイムパスワードについては、定番のGoogleのオーセンティケーターが有名です。GoogleのオーセンティケーターはXGが表示するワンタイムパスワードのQRコードが読み込めません。Sophosからは、以下のスマホアプリが提供されています。</p>
+<blockquote>
+<p>Sophos Intercept X for Mobile(iOS)<br> <a target="_blank" rel="noopener" href="https://apps.apple.com/jp/app/sophos-intercept-x-for-mobile/id1086924662">https://apps.apple.com/jp/app/sophos-intercept-x-for-mobile/id1086924662</a><br>Sophos Intercept X for Mobile(Android)<br> <a target="_blank" rel="noopener" href="https://play.google.com/store/apps/details?id=com.sophos.smsec">https://play.google.com/store/apps/details?id=com.sophos.smsec</a></p>
+</blockquote>
+<p>なお、私は複数の端末でワンタイムパスワードの同期ができる<strong>Authy</strong>を利用しています。</p>
+<blockquote>
+<p>Authy<br> <a target="_blank" rel="noopener" href="https://apps.apple.com/jp/app/authy/id494168017">https://apps.apple.com/jp/app/authy/id494168017</a></p>
+</blockquote>
+<h2 id="ワンタイムパスワードの基本設定"><a href="#ワンタイムパスワードの基本設定" class="headerlink" title="ワンタイムパスワードの基本設定"></a>ワンタイムパスワードの基本設定</h2><p>XGにおけるワンタイムパスワードの設定は、左ペインの<mark class="label primary">認証</mark>から<mark class="label primary">ワンタイムパスワード</mark>へと進んでください。設定ボタンをクリックし、以下の項目を設定します。</p>
+<img src="/new-technology/2020/03/28/vpnotp/otp3.png" class="" title="alt">
+
+<ul>
+<li><mark class="label primary">ワンタイムパスワード</mark>のトグルをオンにします</li>
+<li><mark class="label primary">全ユーザーのOTP</mark>のトグルはオフにします</li>
+<li><mark class="label primary">ユーザーのOTPトークンを自動生成</mark>のトグルはオンにします</li>
+<li><mark class="label primary">以下のユーザーとグループにOTPが必要</mark>のリストボックスからは、Open Groupを選択します</li>
+<li><mark class="label primary">以下について、OTPを有効化</mark>は、<mark class="label primary">ユーザーポータル</mark>、<mark class="label primary">IPSecリモートアクセス</mark>にチェックします</li>
+<li>最後に適用ボタンをクリックします</li>
+</ul>
+<h2 id="ワンタイムパスワードの自動生成"><a href="#ワンタイムパスワードの自動生成" class="headerlink" title="ワンタイムパスワードの自動生成"></a>ワンタイムパスワードの自動生成</h2><p>続いて、ユーザーポータルという画面にログインします。これは管理者向けではなく、ユーザー向けに提供されているものです。XGの管理者メニューは、デフォルトでは、<code>https://XGのIPアドレス:4444/</code>になっていますが、<code>https://XGのIPアドレス/</code>に接続するとユーザーポータル画面が開きます。XGの管理画面の<mark class="label primary">管理</mark>メニュー→<mark class="label primary">管理者とユーザーの設定</mark>メニューでユーザーポータルのHTTPSポートが確認できます。</p>
+<p>ユーザーポータル画面では、VPN向けに作成したユーザーとパスワードでログインします。すると、次にワンタイムパスワードのトークンが自動生成され、QRコードが表示されます。</p>
+<img src="/new-technology/2020/03/28/vpnotp/otp1.png" class="" title="alt">
+
+<p>ここで、ワンタイムパスワードのアプリでQRコードを読み込み、アプリにトークンを取り込んでください。完了後、XGのメニューで<mark class="label primary">ログインに進む</mark>をクリックすると、再びログイン画面になります。ここではユーザーはそのまま入力、パスワードの部分は、<strong>パスワード＋ワンタイムパスワードの数字6桁を続けて入力</strong>します。ユーザーポータルにログインできれば、ワンタイムパスワードは正しくアプリに取り込まれています。</p>
+<p>再び、XGの管理画面にadminでログインします。左ペインの<mark class="label primary">認証</mark>から<mark class="label primary">ワンタイムパスワード</mark>に進むと、<mark class="label primary">シークレット</mark>が生成されている事がわかります。</p>
+<img src="/new-technology/2020/03/28/vpnotp/otp2.png" class="" title="alt">
+
+<p>これで、IPsecVPNにはワンタイムパスワードが必須となりました。以前作成したSophosConnectクライアントの接続設定ファイルについて、再設定が必要になります。「<a href="/new-technology/2020/03/28/vpn/" title="XG Firewall VPNについて">XG Firewall VPNについて</a>」ではVPNのセットアップを行い、クライアントソフトウェアをダウンロードしましたが、2要素認証の設定を加える必要があります。</p>
+<h2 id="XG-v18-MR-3以前の設定ファイル"><a href="#XG-v18-MR-3以前の設定ファイル" class="headerlink" title="XG v18 MR-3以前の設定ファイル"></a>XG v18 MR-3以前の設定ファイル</h2><h3 id="scadminツールで設定ファイルを作成"><a href="#scadminツールで設定ファイルを作成" class="headerlink" title="scadminツールで設定ファイルを作成"></a>scadminツールで設定ファイルを作成</h3><p>こちらは少し古い方法です。v18MR-3以前の場合は、SophosConnectクライアントではなく、もう1つの設定ファイル作成ツールである、scadminツールをWindowsにインストールします。このアプリケーションはmacOS版がありませんので、Windowsで設定ファイルを作成する事になります。出力された設定ファイルは、Windows、mac共に共通で利用出来ますので、それをSophosConnectクライアントに取り込みます。scadmin.msiをインストールし起動します。OPENボタンを押して、以前に生成された接続設定ファイル（拡張子tgb）ファイルを開きます。</p>
+<img src="/new-technology/2020/03/28/vpnotp/otp4.png" class="" title="alt">
+
+<p>設定は<mark class="label primary">Allow Password Saving</mark>と、<mark class="label primary">Prompt for 2FA</mark>のトグルスイッチをOnにするのみです。そして、右下のSaveで保存してください。今回はファイルの拡張子は、scxとなっています。最後に、Sophos Connect Clientより、再度作成した設定ファイル（scx）を読み込み完了です。IDとパスワードに加え、ワンタイムパスワードをセットし接続できる事を確認してください。</p>
+<h2 id="XG-v18-MR-4以降の設定ファイル"><a href="#XG-v18-MR-4以降の設定ファイル" class="headerlink" title="XG v18 MR-4以降の設定ファイル"></a>XG v18 MR-4以降の設定ファイル</h2><p>MR-4以降の場合は、XG管理画面のVPN→IPSecで詳細設定が可能ですので、<mark class="label primary">ユーザーに2FAトークンの入力を求める</mark> をチェックし、2要素認証を有効に設定します。その後、設定ファイル（tar.gz）をダウンロード、その中にある拡張子scxの設定ファイルをSophosConnectクライアントに取り込みます。</p>
+<img src="/new-technology/2020/03/28/vpnotp/mr4.png" class="" title="alt">
+
+<h2 id="接続"><a href="#接続" class="headerlink" title="接続"></a>接続</h2><p>SophosConnectクライアントから接続します。ユーザー、パスワードを保存しておくと、次回からはワンタイムパスワードのみを入力すれば接続可能となります。</p>
+<img src="/new-technology/2020/03/28/vpnotp/otp5.png" class="" title="alt">
+
+<p>これまでの設定で、外出先から2要素認証による堅牢な環境でLANの機器にアクセスしたり、安全なWebブラウジングができるようになりました。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/new-technology/tags/XG-Firewall/" rel="tag"><i class="fa fa-tag"></i> XG Firewall</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/new-technology/2020/03/28/vpn/" rel="prev" title="XG Firewall VPNについて">
+                  <i class="fa fa-chevron-left"></i> XG Firewall VPNについて
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/new-technology/2020/03/31/vpn-iphone/" rel="next" title="XG Firewall VPNにスマホから接続する">
+                  XG Firewall VPNにスマホから接続する <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">阿部　吉伸(Yoshinobu ABE)</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div><script src="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.umd.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.min.css" rel="stylesheet">
+
+<script>
+if (Cookies.get('PRVCY202112') != 'Agree') {
+  const notice = new SimpleGDPR({
+    title: 'Accept Cookies & Privacy Policy?',
+    message: 'このWebサイトでは、訪問や活動に関するデータがクッキー等によって収集されます。閲覧を継続される場合、\
+    プライバシーポリシーをご覧いただき同意(Agree)をお願いします',
+    link: null,
+    icons: true,
+    theme: 'light',
+    animation: 'fade',
+    float: 'bottom-right',
+      callback: () => {
+      notice.close();
+      Cookies.set('PRVCY202112', 'Agree', { expires: 365, path: '/'});
+      notice.destroy();
+      // Google Analytics 4
+      gtag('consent', 'update', {
+      'analytics_storage': 'granted'
+      });
+      gtag('js', new Date());
+      gtag('config', 'G-JMY6NSC2KK', { 'anonymize_ip': true });
+      },
+  });
+}
+</script>
+<div class="disclaimer1">
+このサイトの記事は、特別な記載がない限り <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja">クリエイティブ・コモンズ BY-NC-SA ライセンス</a>で保護されています</div>
+
+
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/yoshi0808" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="/new-technology/lib/animejs/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="/new-technology/lib/medium-zoom/dist/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/comments.js"></script><script src="/new-technology/js/utils.js"></script><script src="/new-technology/js/motion.js"></script><script src="/new-technology/js/schemes/muse.js"></script><script src="/new-technology/js/next-boot.js"></script>
+
+  <script src="/new-technology/lib/hexo-generator-searchdb/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"/new-technology/lib/mermaid/dist/mermaid.min.js","integrity":"sha256-3JloMMI/ZQx6ryuhhZTsQJQmGAkXeni6PkshX7UUO2s="}}</script>
+  <script src="/new-technology/js/third-party/tags/mermaid.js"></script>
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

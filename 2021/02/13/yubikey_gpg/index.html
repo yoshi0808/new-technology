@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/icon-16x16.png">
+  <link rel="mask-icon" href="/new-technology/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/new-technology/css/main.css">
+
+
+
+<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-/4UQcSmErDzPCMAiuOiWPVVsNN2s3ZY/NsmXNcj0IFc=" crossorigin="anonymous">
+  <link rel="stylesheet" href="/new-technology/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.15.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
+
+    <meta name="description" content="この記事で実現すること macOS環境下でGPG Tools(GPG Suite)の鍵管理（署名、暗号化、SSH認証）にYubiKeyを使います。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GPG ToolsでYubiKeyを使う">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2021/02/13/yubikey_gpg/index.html">
+<meta property="og:site_name" content="New technologies in our life">
+<meta property="og:description" content="この記事で実現すること macOS環境下でGPG Tools(GPG Suite)の鍵管理（署名、暗号化、SSH認証）にYubiKeyを使います。">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/02/13/yubikey_gpg/menu.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/02/13/yubikey_gpg/menu2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/02/13/yubikey_gpg/verify.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/02/13/yubikey_gpg/mail.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/02/13/yubikey_gpg/ssh.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/02/13/yubikey_gpg/automator1.png">
+<meta property="article:published_time" content="2021-02-12T15:58:00.000Z">
+<meta property="article:modified_time" content="2021-10-24T02:30:10.000Z">
+<meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
+<meta property="article:tag" content="yubikey">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2021/02/13/yubikey_gpg/menu.png">
+
+
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2021/02/13/yubikey_gpg/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"ja","comments":true,"permalink":"https://yoshi0808.github.io/new-technology/2021/02/13/yubikey_gpg/","path":"2021/02/13/yubikey_gpg/","title":"GPG ToolsでYubiKeyを使う"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>GPG ToolsでYubiKeyを使う | New technologies in our life</title>
+  
+
+
+
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{&quot;token&quot;: &quot;0148b4d0442e42b483ddce684030bd2f&quot;}'></script>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JMY6NSC2KK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+  'ad_storage': 'denied',
+  'analytics_storage': 'denied'
+  });
+
+  dataLayer.push({
+  'event': 'default_consent'
+  });
+
+  if (Cookies.get('PRVCY202112') == 'Agree') {
+    gtag('consent', 'update', {
+    'analytics_storage': 'granted'
+    });
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'G-JMY6NSC2KK',{ 'anonymize_ip': true });
+</script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/new-technology/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/new-technology/atom.xml" title="New technologies in our life" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="ナビゲーションバーの切り替え" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/new-technology/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">New technologies in our life</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Device,Network,Code,etc...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="検索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/new-technology/" rel="section"><i class="fa fa-home fa-fw"></i>ホーム</a></li><li class="menu-item menu-item-about"><a href="/new-technology/about/" rel="section"><i class="fa fa-user fa-fw"></i>サイトポリシー</a></li><li class="menu-item menu-item-tags"><a href="/new-technology/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>タグ</a></li><li class="menu-item menu-item-categories"><a href="/new-technology/categories/" rel="section"><i class="fa fa-th fa-fw"></i>カテゴリ</a></li><li class="menu-item menu-item-archives"><a href="/new-technology/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>アーカイブ</a></li><li class="menu-item menu-item-privacy"><a href="/new-technology/privacypolicy/" rel="section"><i class="fa fa-check fa-fw"></i>プライバシーポリシー</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="検索…" spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          見出し
+        </li>
+        <li class="sidebar-nav-overview">
+          概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#GPG-GnuPG-%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span class="nav-number">1.</span> <span class="nav-text">GPG(GnuPG)について</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%82%BD%E3%83%95%E3%83%88%E3%82%A6%E3%82%A7%E3%82%A2%E6%A7%8B%E6%88%90"><span class="nav-number">2.</span> <span class="nav-text">ソフトウェア構成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GPG-Tools-GPG-Suite-%E3%81%AE%E4%B8%BB%E3%81%AA%E4%BD%BF%E3%81%84%E6%96%B9"><span class="nav-number">3.</span> <span class="nav-text">GPG Tools(GPG Suite)の主な使い方</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#GUI%E3%81%A7%E3%81%AE%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%81%AE%E6%9A%97%E5%8F%B7%E5%8C%96%E3%83%BB%E5%BE%A9%E5%8F%B7%E5%8C%96%E3%83%BB%E7%BD%B2%E5%90%8D"><span class="nav-number">3.1.</span> <span class="nav-text">GUIでのファイルの暗号化・復号化・署名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GUI%E3%81%A7%E3%81%AE%E9%81%B8%E6%8A%9E%E9%83%A8%E5%88%86%E3%81%AE%E6%9A%97%E5%8F%B7%E5%8C%96%E3%83%BB%E5%BE%A9%E5%8F%B7%E5%8C%96%E3%83%BB%E7%BD%B2%E5%90%8D"><span class="nav-number">3.2.</span> <span class="nav-text">GUIでの選択部分の暗号化・復号化・署名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GitHub%E3%81%A7%E3%81%AEVerify"><span class="nav-number">3.3.</span> <span class="nav-text">GitHubでのVerify</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mail%E3%81%A7%E3%81%AE%E7%BD%B2%E5%90%8D%E3%81%A8%E6%9A%97%E5%8F%B7%E5%8C%96"><span class="nav-number">3.4.</span> <span class="nav-text">Mailでの署名と暗号化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GPG%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%9FSSH"><span class="nav-number">3.5.</span> <span class="nav-text">GPGを使ったSSH</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#YubiKey%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%9FGPG%E3%81%AE%E9%8D%B5%E7%AE%A1%E7%90%86"><span class="nav-number">4.</span> <span class="nav-text">YubiKeyを使ったGPGの鍵管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GPG%E3%82%92%E3%82%BB%E3%83%83%E3%83%88%E3%82%A2%E3%83%83%E3%83%97%E3%81%99%E3%82%8B%E3%81%9F%E3%82%81%E3%81%AE%E6%89%8B%E9%A0%86"><span class="nav-number">5.</span> <span class="nav-text">GPGをセットアップするための手順</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#GPG%E3%81%AE%E9%8D%B5%E4%BD%9C%E6%88%90%E3%81%8B%E3%82%89YubiKey%E3%81%B8%E3%81%AE%E9%8D%B5%E3%81%AE%E5%8F%96%E3%82%8A%E8%BE%BC%E3%81%BF"><span class="nav-number">5.1.</span> <span class="nav-text">GPGの鍵作成からYubiKeyへの鍵の取り込み</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%89%8D%E6%8F%90"><span class="nav-number">5.1.1.</span> <span class="nav-text">前提</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9D%E6%9C%9F%E8%A8%AD%E5%AE%9A"><span class="nav-number">5.1.2.</span> <span class="nav-text">初期設定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BB%E9%8D%B5%E3%81%AE%E7%94%9F%E6%88%90"><span class="nav-number">5.1.3.</span> <span class="nav-text">主鍵の生成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BD%B2%E5%90%8D%E5%89%AF%E9%8D%B5%E3%81%AE%E4%BD%9C%E6%88%90"><span class="nav-number">5.1.4.</span> <span class="nav-text">署名副鍵の作成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9A%97%E5%8F%B7%E5%8C%96%E5%89%AF%E9%8D%B5%E3%81%AE%E4%BD%9C%E6%88%90"><span class="nav-number">5.1.5.</span> <span class="nav-text">暗号化副鍵の作成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AA%8D%E8%A8%BC%E5%89%AF%E9%8D%B5%E3%81%AE%E4%BD%9C%E6%88%90"><span class="nav-number">5.1.6.</span> <span class="nav-text">認証副鍵の作成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%9C%E6%88%90%E3%81%97%E3%81%9F%E9%8D%B5%E3%81%AE%E7%A2%BA%E8%AA%8D"><span class="nav-number">5.1.7.</span> <span class="nav-text">作成した鍵の確認</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A7%98%E5%AF%86%E9%8D%B5%E3%81%AE%E3%82%A8%E3%82%AF%E3%82%B9%E3%83%9D%E3%83%BC%E3%83%88"><span class="nav-number">5.1.8.</span> <span class="nav-text">秘密鍵のエクスポート</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%B1%E5%8A%B9%E8%A8%BC%E6%98%8E%E6%9B%B8%E3%81%AE%E4%BD%9C%E6%88%90"><span class="nav-number">5.1.9.</span> <span class="nav-text">失効証明書の作成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#USB%E3%83%A1%E3%83%87%E3%82%A3%E3%82%A2%E3%82%92%E6%8C%BF%E5%85%A5%E3%81%97%E3%80%81-GNUHOME%E3%83%95%E3%82%A9%E3%83%AB%E3%83%80%E3%82%92%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97"><span class="nav-number">5.1.10.</span> <span class="nav-text">USBメディアを挿入し、$GNUHOMEフォルダをバックアップ</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%AC%E9%96%8B%E9%8D%B5%E3%82%92%E3%83%9B%E3%83%BC%E3%83%A0%E3%83%87%E3%82%A3%E3%82%AF%E3%83%AC%E3%83%88%E3%83%AA%E3%81%AEpublic-key-pgp%E3%81%A8%E3%81%97%E3%81%A6%E3%82%A8%E3%82%AF%E3%82%B9%E3%83%9D%E3%83%BC%E3%83%88"><span class="nav-number">5.1.11.</span> <span class="nav-text">公開鍵をホームディクレトリのpublic_key.pgpとしてエクスポート</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#YubiKey%E3%81%AE%E7%A2%BA%E8%AA%8D"><span class="nav-number">5.1.12.</span> <span class="nav-text">YubiKeyの確認</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PIN%E3%81%AE%E5%A4%89%E6%9B%B4"><span class="nav-number">5.1.13.</span> <span class="nav-text">PINの変更</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3%E3%81%A4%E3%81%AE%E5%89%AF%E9%8D%B5%E3%82%92YubiKey%E3%81%AB%E8%BB%A2%E9%80%81"><span class="nav-number">5.1.14.</span> <span class="nav-text">3つの副鍵をYubiKeyに転送</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BD%B2%E5%90%8D%E9%8D%B5%E3%81%AE%E8%BB%A2%E9%80%81"><span class="nav-number">5.1.15.</span> <span class="nav-text">署名鍵の転送</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9A%97%E5%8F%B7%E5%8C%96%E9%8D%B5%E3%81%AE%E8%BB%A2%E9%80%81"><span class="nav-number">5.1.16.</span> <span class="nav-text">暗号化鍵の転送</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AA%8D%E8%A8%BC%E9%8D%B5%E3%81%AE%E8%BB%A2%E9%80%81"><span class="nav-number">5.1.17.</span> <span class="nav-text">認証鍵の転送</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#YubiKey%E3%81%B8%E3%81%AE%E7%A7%BB%E5%8B%95%E3%82%92%E7%A2%BA%E8%AA%8D"><span class="nav-number">5.1.18.</span> <span class="nav-text">YubiKeyへの移動を確認</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%80%E7%B5%82%E7%A2%BA%E8%AA%8D%E3%81%AE%E3%83%81%E3%82%A7%E3%83%83%E3%82%AF%E3%83%AA%E3%82%B9%E3%83%88"><span class="nav-number">5.1.19.</span> <span class="nav-text">最終確認のチェックリスト</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%A2%E3%83%83%E3%83%97"><span class="nav-number">5.1.20.</span> <span class="nav-text">クリーンアップ</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%AC%E9%96%8B%E9%8D%B5%E3%81%AE%E3%82%A4%E3%83%B3%E3%83%9D%E3%83%BC%E3%83%88%E3%81%A8%E4%BF%A1%E9%A0%BC"><span class="nav-number">5.1.21.</span> <span class="nav-text">公開鍵のインポートと信頼</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GPG%E7%92%B0%E5%A2%83%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">5.2.</span> <span class="nav-text">GPG環境の設定</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#gpg-agent-conf%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">5.2.1.</span> <span class="nav-text">gpg-agent.confの設定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GPG-Agent%E3%81%AE%E8%87%AA%E5%8B%95%E8%B5%B7%E5%8B%95%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span class="nav-number">5.2.2.</span> <span class="nav-text">GPG Agentの自動起動について</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SSH%E5%85%AC%E9%96%8B%E9%8D%B5%E3%81%AE%E3%82%A8%E3%82%AF%E3%82%B9%E3%83%9D%E3%83%BC%E3%83%88"><span class="nav-number">5.3.</span> <span class="nav-text">SSH公開鍵のエクスポート</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GPG%E3%81%AE%E5%85%AC%E9%96%8B%E9%8D%B5%E3%81%A8SSH%E5%85%AC%E9%96%8B%E9%8D%B5%E3%81%A8%E3%82%92GitHub%E3%81%AB%E7%99%BB%E9%8C%B2"><span class="nav-number">5.4.</span> <span class="nav-text">GPGの公開鍵とSSH公開鍵とをGitHubに登録</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GitHub%E3%81%B8%E3%81%AE%E6%8E%A5%E7%B6%9A%E3%80%81%E7%BD%B2%E5%90%8D%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AEgit%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">5.5.</span> <span class="nav-text">GitHubへの接続、署名のためのgitの設定</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#git%E3%81%AESSH%E6%8E%A5%E7%B6%9A%E8%A8%AD%E5%AE%9A"><span class="nav-number">5.5.1.</span> <span class="nav-text">gitのSSH接続設定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#git%E7%BD%B2%E5%90%8D%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">5.5.2.</span> <span class="nav-text">git署名の設定</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%EF%BC%88%E4%BB%BB%E6%84%8F%EF%BC%89YubiKey%E3%82%BF%E3%83%83%E3%83%81%E8%AA%8D%E8%A8%BC"><span class="nav-number">6.</span> <span class="nav-text">（任意）YubiKeyタッチ認証</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GPG%E3%81%A8PIV%E3%81%A8%E3%81%AE%E5%88%87%E3%82%8A%E6%9B%BF%E3%81%88"><span class="nav-number">7.</span> <span class="nav-text">GPGとPIVとの切り替え</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%EF%BC%88%E8%A3%9C%E8%B6%B3%EF%BC%89libgcrypt%E3%81%AE%E8%84%86%E5%BC%B1%E6%80%A7"><span class="nav-number">8.</span> <span class="nav-text">（補足）libgcryptの脆弱性</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="阿部　吉伸(Yoshinobu ABE)"
+      src="/new-technology/images/yoshi.png">
+  <p class="site-author-name" itemprop="name">阿部　吉伸(Yoshinobu ABE)</p>
+  <div class="site-description" itemprop="description">IT</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/new-technology/archives/">
+          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-name">ポスト</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/new-technology/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">カテゴリ</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/new-technology/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">タグ</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yoshi0808" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yoshi0808" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yoshi0808.blog@gmail.com" title="E-Mail → mailto:yoshi0808.blog@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yoshi0808_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yoshi0808_" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="/new-technology/lib/@creativecommons/vocabulary/assets/license_badges/big/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="ja">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2021/02/13/yubikey_gpg/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/new-technology/images/yoshi.png">
+      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="New technologies in our life">
+      <meta itemprop="description" content="IT">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="GPG ToolsでYubiKeyを使う | New technologies in our life">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          GPG ToolsでYubiKeyを使う
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">投稿日</span>
+
+      <time title="作成日：2021-02-13 00:58:00" itemprop="dateCreated datePublished" datetime="2021-02-13T00:58:00+09:00">2021-02-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">編集日</span>
+      <time title="修正日：2021-10-24 11:30:10" itemprop="dateModified" datetime="2021-10-24T11:30:10+09:00">2021-10-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">カテゴリ</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/Security/" itemprop="url" rel="index"><span itemprop="name">Security</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p class="onepoint">この記事で実現すること</p>
+macOS環境下でGPG Tools(GPG Suite)の鍵管理（署名、暗号化、SSH認証）にYubiKeyを使います。
+<span id="more"></span>
+
+<h2 id="GPG-GnuPG-について"><a href="#GPG-GnuPG-について" class="headerlink" title="GPG(GnuPG)について"></a>GPG(GnuPG)について</h2><p>GPGは昔からあるオープンソースの暗号・署名の主要なコンポーネントのひとつです。日本ではパスワード付きZIPファイルのやり取り、いわゆるPPAPを無くしていく流れでもあるので、これを機会にGPGが見直されればいいなと思いこの記事を書く事にしました。特にmacOS版は複数プロダクトまたは複数バージョンに対する設定が混在していて（既に廃止された機能の説明を含む）、余計に分かりづらくなっています。</p>
+<p>昔のPGPでの主眼であった友達の輪を広げていくという考え方は現代ではもはや少なくなってしまいました。むしろそういった信用の輪がサイバー攻撃で狙われてしまう時代です。GPGでの署名やITベンダーへのサポートのためにダンプファイルを相手の公開鍵で暗号化して送付する、ダウンロードしたファイルの署名を確認するという使われ方がメインです。</p>
+<h2 id="ソフトウェア構成"><a href="#ソフトウェア構成" class="headerlink" title="ソフトウェア構成"></a>ソフトウェア構成</h2><p>GPGは基本的にはコマンドラインベースのプロダクトですが、macOSユーザーであれば、GPG Tools(GPG Suite)をお勧めします。GUIで暗号化・復号化できるのは便利です。但し、Appleメールの拡張機能でGPGを使う場合、3,000円程度の有償となります。Homebrewであれば、gpg-suite、gpg-suite-no-mail（有償のメール機能が無いもの）が該当します。<strong>GPG Suite</strong>を直接ダウンロードする方法もあります。<del>しかし、このブログを書いている2月10日時点ではYubikeyを使うようなカードインタフェースがうまく動作しません。これは不具合としてGPG Toolsサポートに報告<a target="_blank" rel="noopener" href="https://gpgtools.tenderapp.com/discussions/feedback/16266-signing-with-a-yubikey-fails-until-i-run-gpg-card-status">https://gpgtools.tenderapp.com/discussions/feedback/16266-signing-with-a-yubikey-fails-until-i-run-gpg-card-status</a>があります。という事で現時点ではナイトリービルドGPG Suite 2020.2 (2989n)<a target="_blank" rel="noopener" href="https://releases.gpgtools.org/nightlies/">https://releases.gpgtools.org/nightlies/</a>を使う事になります。</del></p>
+<p>（2021-5-23　追記）<br>2021-5-21発表のGPG Suite 2021.1で上記の不具合は解消しています。</p>
+<blockquote>
+<p>GPG Suite<br> <a target="_blank" rel="noopener" href="https://gpgtools.org/">https://gpgtools.org/</a></p>
+</blockquote>
+<p>これ以外には、YubicoのykmanというYubiKey Managerのコマンドインタフェースツールが必要です。これはHomebrewで<strong>ykman</strong>をインストールするか、Yubicoのサイトからダウンロードし、インストールしてください。</p>
+<blockquote>
+<p>Yubico ykman CLI<br> <a target="_blank" rel="noopener" href="https://developers.yubico.com/yubikey-manager/">https://developers.yubico.com/yubikey-manager/</a></p>
+</blockquote>
+<h2 id="GPG-Tools-GPG-Suite-の主な使い方"><a href="#GPG-Tools-GPG-Suite-の主な使い方" class="headerlink" title="GPG Tools(GPG Suite)の主な使い方"></a>GPG Tools(GPG Suite)の主な使い方</h2><h3 id="GUIでのファイルの暗号化・復号化・署名"><a href="#GUIでのファイルの暗号化・復号化・署名" class="headerlink" title="GUIでのファイルの暗号化・復号化・署名"></a>GUIでのファイルの暗号化・復号化・署名</h3><p>マウスの右クリック（タッチパッドは2本指のタップ）で以下のメニューが選択できます。</p>
+<img src="/new-technology/2021/02/13/yubikey_gpg/menu.png" class="" width="480" title="alt">
+
+<h3 id="GUIでの選択部分の暗号化・復号化・署名"><a href="#GUIでの選択部分の暗号化・復号化・署名" class="headerlink" title="GUIでの選択部分の暗号化・復号化・署名"></a>GUIでの選択部分の暗号化・復号化・署名</h3><p>文字列部分を選択し、マウスの右クリック（タッチパッドは2本指のタップ）で以下のメニューが選択できます。</p>
+<img src="/new-technology/2021/02/13/yubikey_gpg/menu2.png" class="" width="480" title="alt">
+
+<p>長い文字列でなければ、パスワード管理ソフトに入れておくほうが現実的でしょうか。</p>
+<h3 id="GitHubでのVerify"><a href="#GitHubでのVerify" class="headerlink" title="GitHubでのVerify"></a>GitHubでのVerify</h3><p>GitHubでコミット時に本人が署名すると、以下の”Verified”マークが付きます。</p>
+<img src="/new-technology/2021/02/13/yubikey_gpg/verify.png" class="" width="480" title="alt">
+
+<h3 id="Mailでの署名と暗号化"><a href="#Mailでの署名と暗号化" class="headerlink" title="Mailでの署名と暗号化"></a>Mailでの署名と暗号化</h3><p>メールの受取側がGPGを持っており、相手の公開鍵を自分のGPGに取り込んであれば、暗号化と署名を付けてメールを送れます。</p>
+<img src="/new-technology/2021/02/13/yubikey_gpg/mail.png" class="" width="640" title="alt">
+
+<h3 id="GPGを使ったSSH"><a href="#GPGを使ったSSH" class="headerlink" title="GPGを使ったSSH"></a>GPGを使ったSSH</h3><p>YubiKeyで設定したPINを入力して公開鍵認証でSSH接続します。</p>
+<img src="/new-technology/2021/02/13/yubikey_gpg/ssh.png" class="" width="640" title="alt">
+
+<h2 id="YubiKeyを使ったGPGの鍵管理"><a href="#YubiKeyを使ったGPGの鍵管理" class="headerlink" title="YubiKeyを使ったGPGの鍵管理"></a>YubiKeyを使ったGPGの鍵管理</h2><p>YubiKeyを使うGPGでは主鍵(MainKey)となる認定鍵(Certify)に加え、署名(Sign)、暗号(Encrypt)、認証(Authenticate)という副鍵(SubKey)を持たせます。YubiKeyの構成上、ひとつの機能にひとつの副鍵を割り当てる事が大前提です。そしてYubiKeyを紛失した場合を考慮し、主鍵はYubiKeyには置きません。主鍵は変えず、副鍵は任意に削除、追加する事を想定しています。Yubicoでは、この副鍵を端末側で生成し、それをYubiKeyに取り込む形を推奨しています。RSA暗号2048ビットのPIVとは異なり、GPGにおけるYubiKey 4&#x2F;5はRSA暗号4096ビットまで対応できます。RSA暗号は2048ビットあれば十分と考えていますが、<strong>GitHubの推奨</strong>としては「キーは少なくとも4096ビットである必要があります」との事。GitHubさん、そこまで必要ですか<span class="github-emoji" alias="persevere" style="" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f623.png?v8">&#x1f623;</span></p>
+<blockquote>
+<p>GitHub -新しいGPGキーを生成する-<br> <a target="_blank" rel="noopener" href="https://docs.github.com/ja/github/authenticating-to-github/generating-a-new-gpg-key">https://docs.github.com/ja/github/authenticating-to-github/generating-a-new-gpg-key</a></p>
+</blockquote>
+<pre class="mermaid">
+graph TD
+B[MainKey-Certify] --&gt; C{SubKey}
+C --&gt;D[Sign]
+C --&gt;E[Encrypt]
+C --&gt;F[Authenticate]
+</pre>
+
+<p>主鍵は万が一YubiKeyをなくした場合などの鍵の抹消や新しい副鍵を作る以外は使いません。USBなどに複写し安全な場所で保管する事になります。主鍵が無いと友達の輪を広げられない（相手の公開鍵に署名できない）のですが、YubiKeyを使ったGPGの使い方としては、そこに重きを置いていません。YubiKeyとGPGのセットアップはお手本となる説明があります。</p>
+<div class="link-grid"><div class="link-grid-container">
+<object class="link-grid-image" data="12475110.png"></object>
+<p>drduh/YubiKey-Guide</p><p>(https://github.com/drduh/YubiKey-Guide) This is a guide to using YubiKey as a SmartCard for storing GPG encryption, signing and authentication keys, which can also be used for SSH.</p>
+<a target="_blank" rel="noopener" href="https://github.com/drduh/YubiKey-Guide"></a>
+</div></div>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/drduh/YubiKey-Guide">https://github.com/drduh/YubiKey-Guide</a></p>
+</blockquote>
+<p>ただし、このガイドは秘密鍵を漏洩させないためにクリーンなLinux上で作業し、暗号化USBを作りセットアップするという超優等生な手順になっています。この記事では可能な限りシンプルな手順の作成を目的とし一部の手順を割愛しています。</p>
+<h2 id="GPGをセットアップするための手順"><a href="#GPGをセットアップするための手順" class="headerlink" title="GPGをセットアップするための手順"></a>GPGをセットアップするための手順</h2><p>大まかな手順は以下の通りです。</p>
+<ol>
+<li>上述した必須ソフトウェアのセットアップ、秘密鍵のバックアップのためのUSBメディア<sup><a href="#note1"><strong>[1]</strong></a></sup>を準備します</li>
+<li>GPGでの鍵の作成からYubiKeyへの鍵を取り込みます</li>
+<li>GPG環境を設定します</li>
+<li>SSHに必要なSSH公開鍵をエクスポートします</li>
+<li>GitHub署名のためのGPG公開鍵と上記SSHの鍵をGitHubにログインして登録します</li>
+<li>GitHubのSSH接続および署名のためgitを設定します</li>
+</ol>
+<h3 id="GPGの鍵作成からYubiKeyへの鍵の取り込み"><a href="#GPGの鍵作成からYubiKeyへの鍵の取り込み" class="headerlink" title="GPGの鍵作成からYubiKeyへの鍵の取り込み"></a>GPGの鍵作成からYubiKeyへの鍵の取り込み</h3><h4 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h4><p>必要なソフトウェア（GPG Suite・ykman）がインストールされている事、秘密鍵のバックアップのため、macOSで認識可能となるようフォーマット済みのUSBが用意できている前提としています。鍵の生成は出来るだけ安全な環境下で実施するために、ネットワークから切り離し、ウィルス対策ソフト以外のソフトウェアを可能な限り終了させてから作業します。また鍵の作成時にはYubiKeyの接続は必要ありません。</p>
+<p>私はmacOSのCatalina(10.15.7)、シェルはデフォルトのZshを利用しています。また、コマンドラインエディタはvim(vi)を利用していますが、他のエディタでも構いません。GPGのコマンドインタフェースがかなり特殊な事もあって、まずはアドリブ無しにこの手順をなぞっていただく事をお勧めします。変更可能な部分は主鍵および副鍵の有効期限および鍵の種類です。鍵の種類としては特に拘りがなければRSAをお勧めします。</p>
+<div class="note info"><p>以下の手順では、＃から始まるコメント部分に要点を記載しています。</p>
+</div>
+
+<h4 id="初期設定"><a href="#初期設定" class="headerlink" title="初期設定"></a>初期設定</h4><p>ターミナルを起動します。認定（Certify）鍵を無期限で作成します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 一時フォルダを作成し、そこに鍵をセットアップしていきます</span></span><br><span class="line">$ <span class="built_in">export</span> GNUPGHOME=$(<span class="built_in">mktemp</span> -d)</span><br></pre></td></tr></table></figure>
+
+<h4 id="主鍵の生成"><a href="#主鍵の生成" class="headerlink" title="主鍵の生成"></a>主鍵の生成</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 主鍵は期限無し、RSA 4096Bitで生成します</span></span><br><span class="line">$ gpg --expert --full-gen-key</span><br><span class="line">gpg (GnuPG/MacGPG2) 2.2.27; Copyright (C) 2021 Free Software Foundation, Inc.</span><br><span class="line">This is free software: you are free to change and redistribute it.</span><br><span class="line">There is NO WARRANTY, to the extent permitted by law.</span><br><span class="line"></span><br><span class="line">ご希望の鍵の種類を選択してください:</span><br><span class="line">   (1) RSA と RSA (デフォルト)</span><br><span class="line">   (2) DSA と Elgamal</span><br><span class="line">   (3) DSA (署名のみ)</span><br><span class="line">   (4) RSA (署名のみ)</span><br><span class="line">   (7) DSA (機能をあなた自身で設定)</span><br><span class="line">   (8) RSA (機能をあなた自身で設定)</span><br><span class="line">   (9) ECC と ECC</span><br><span class="line">  (10) ECC (署名のみ)</span><br><span class="line">  (11) ECC (機能をあなた自身で設定)</span><br><span class="line">  (13) 既存の鍵</span><br><span class="line">  (14) カードに存在する鍵</span><br><span class="line">あなたの選択は? 8</span><br><span class="line"></span><br><span class="line"><span class="comment"># 機能毎にフラグという概念を持ちます。これの有効、無効の切り替えに反転という表現が使われています</span></span><br><span class="line">鍵RSAに認められた操作: Sign Certify Encrypt Authenticate</span><br><span class="line">現在の認められた操作: Sign Certify Encrypt</span><br><span class="line"></span><br><span class="line">   (S) 署名機能を反転する</span><br><span class="line">   (E) 暗号機能を反転する</span><br><span class="line">   (A) 認証機能を反転する</span><br><span class="line">   (Q) 完了</span><br><span class="line"></span><br><span class="line">あなたの選択は? E</span><br><span class="line"></span><br><span class="line">鍵RSAに認められた操作: Sign Certify Encrypt Authenticate</span><br><span class="line">現在の認められた操作: Sign Certify</span><br><span class="line"></span><br><span class="line">   (S) 署名機能を反転する</span><br><span class="line">   (E) 暗号機能を反転する</span><br><span class="line">   (A) 認証機能を反転する</span><br><span class="line">   (Q) 完了</span><br><span class="line"></span><br><span class="line">あなたの選択は? S</span><br><span class="line"></span><br><span class="line">鍵RSAに認められた操作: Sign Certify Encrypt Authenticate</span><br><span class="line">現在の認められた操作: Certify</span><br><span class="line"></span><br><span class="line">   (S) 署名機能を反転する</span><br><span class="line">   (E) 暗号機能を反転する</span><br><span class="line">   (A) 認証機能を反転する</span><br><span class="line">   (Q) 完了</span><br><span class="line"></span><br><span class="line">あなたの選択は? Q</span><br><span class="line">RSA 鍵は 1024 から 4096 ビットの長さで可能です。</span><br><span class="line">鍵長は? (3072) 4096</span><br><span class="line">要求された鍵長は4096ビット</span><br><span class="line">鍵の有効期限を指定してください。</span><br><span class="line">         0 = 鍵は無期限</span><br><span class="line">      &lt;n&gt;  = 鍵は n 日間で期限切れ</span><br><span class="line">      &lt;n&gt;w = 鍵は n 週間で期限切れ</span><br><span class="line">      &lt;n&gt;m = 鍵は n か月間で期限切れ</span><br><span class="line">      &lt;n&gt;y = 鍵は n 年間で期限切れ</span><br><span class="line">鍵の有効期間は? (0)0</span><br><span class="line">鍵は無期限です</span><br><span class="line">これで正しいですか? (y/N) y</span><br><span class="line"></span><br><span class="line">GnuPGはあなたの鍵を識別するためにユーザIDを構成する必要があります。</span><br><span class="line"></span><br><span class="line">本名: Your Name</span><br><span class="line">電子メール・アドレス: your@mail.com</span><br><span class="line">コメント:</span><br><span class="line">次のユーザIDを選択しました:</span><br><span class="line">    <span class="string">&quot;Your Name &lt;your@mail.com&gt;&quot;</span></span><br><span class="line"></span><br><span class="line">名前(N)、コメント(C)、電子メール(E)の変更、またはOK(O)か終了(Q)? O</span><br><span class="line">たくさんのランダム・バイトの生成が必要です。キーボードを打つ、マウスを動か</span><br><span class="line">す、ディスクにアクセスするなどの他の操作を素数生成の間に行うことで、乱数生</span><br><span class="line">成器に十分なエントロピーを供給する機会を与えることができます。</span><br><span class="line">たくさんのランダム・バイトの生成が必要です。キーボードを打つ、マウスを動か</span><br><span class="line">す、ディスクにアクセスするなどの他の操作を素数生成の間に行うことで、乱数生</span><br><span class="line">成器に十分なエントロピーを供給する機会を与えることができます。</span><br><span class="line">gpg: 鍵1234567890123456を究極的に信用するよう記録しました</span><br><span class="line">gpg: 失効証明書を <span class="string">&#x27;/tmp/xxx/openpgp-revocs.d/XXXXED7DE0C6BC105798E304D4B75A4941146XXXX.rev&#x27;</span> に保管しました。</span><br><span class="line">公開鍵と秘密鍵を作成し、署名しました。</span><br><span class="line"></span><br><span class="line"><span class="comment"># 上記の「鍵1234567890123456を究極的に信用するよう記録しました」のKEY番号をを環境変数KEYIDに登録します</span></span><br><span class="line"><span class="comment"># セットアップの間、KEYIDを何度も使うためです</span></span><br><span class="line">$ <span class="built_in">export</span> KEYID=1234567890123456</span><br><span class="line"></span><br><span class="line">$ gpg --expert --edit-key <span class="variable">$KEYID</span></span><br><span class="line">gpg (GnuPG/MacGPG2) 2.2.27; Copyright (C) 2020 Free Software Foundation, Inc.</span><br><span class="line">This is free software: you are free to change and redistribute it.</span><br><span class="line">There is NO WARRANTY, to the extent permitted by law.</span><br><span class="line"></span><br><span class="line">秘密鍵が利用できます。</span><br><span class="line"></span><br><span class="line">sec  rsa4096/1234567890123456</span><br><span class="line">     作成: 2021-01-31  有効期限: 無期限  利用法: C</span><br><span class="line">[  究極  ] (1). Your Name &lt;your@mail.com&gt;</span><br></pre></td></tr></table></figure>
+
+<p>以降は副鍵を作成していきます。一般的な考えでは、有効期限は定めるべきものとされています。</p>
+<h4 id="署名副鍵の作成"><a href="#署名副鍵の作成" class="headerlink" title="署名副鍵の作成"></a>署名副鍵の作成</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 副鍵は期限5年、RSA4096bitで構成します</span></span><br><span class="line">gpg&gt; addkey</span><br><span class="line">ご希望の鍵の種類を選択してください:</span><br><span class="line">   (3) DSA (署名のみ)</span><br><span class="line">   (4) RSA (署名のみ)</span><br><span class="line">   (5) Elgamal (暗号化のみ)</span><br><span class="line">   (6) RSA (暗号化のみ)</span><br><span class="line">   (7) DSA (機能をあなた自身で設定)</span><br><span class="line">   (8) RSA (機能をあなた自身で設定)</span><br><span class="line">  (10) ECC (署名のみ)</span><br><span class="line">  (11) ECC (機能をあなた自身で設定)</span><br><span class="line">  (12) ECC (暗号化のみ)</span><br><span class="line">  (13) 既存の鍵</span><br><span class="line">  (14) カードに存在する鍵</span><br><span class="line">あなたの選択は? 4</span><br><span class="line"></span><br><span class="line">RSA 鍵は 1024 から 4096 ビットの長さで可能です。</span><br><span class="line">鍵長は? (3072) 4096</span><br><span class="line">要求された鍵長は4096ビット</span><br><span class="line">鍵の有効期限を指定してください。</span><br><span class="line">         0 = 鍵は無期限</span><br><span class="line">      &lt;n&gt;  = 鍵は n 日間で期限切れ</span><br><span class="line">      &lt;n&gt;w = 鍵は n 週間で期限切れ</span><br><span class="line">      &lt;n&gt;m = 鍵は n か月間で期限切れ</span><br><span class="line">      &lt;n&gt;y = 鍵は n 年間で期限切れ</span><br><span class="line">鍵の有効期間は? (0)5y</span><br><span class="line">鍵は金  1/30 11:25:03 2026 JSTで期限切れとなります</span><br><span class="line">これで正しいですか? (y/N) y</span><br><span class="line">本当に作成しますか? (y/N) y</span><br><span class="line">たくさんのランダム・バイトの生成が必要です。キーボードを打つ、マウスを動か</span><br><span class="line">す、ディスクにアクセスするなどの他の操作を素数生成の間に行うことで、乱数生</span><br><span class="line">成器に十分なエントロピーを供給する機会を与えることができます。</span><br><span class="line"></span><br><span class="line">sec  rsa4096/1234567890123456</span><br><span class="line">     作成: 2021-01-31  有効期限: 無期限  利用法: C</span><br><span class="line">     信用: 究極        有効性: 究極</span><br><span class="line">ssb  rsa4096/A234567890123456</span><br><span class="line">     作成: 2021-01-31  有効期限: 2026-01-30  利用法: S</span><br><span class="line">[  究極  ] (1). Your Name &lt;your@mail.com&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="暗号化副鍵の作成"><a href="#暗号化副鍵の作成" class="headerlink" title="暗号化副鍵の作成"></a>暗号化副鍵の作成</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 副鍵は期限5年、RSA4096bitで構成します</span></span><br><span class="line">gpg&gt; addkey</span><br><span class="line">ご希望の鍵の種類を選択してください:</span><br><span class="line">   (3) DSA (署名のみ)</span><br><span class="line">   (4) RSA (署名のみ)</span><br><span class="line">   (5) Elgamal (暗号化のみ)</span><br><span class="line">   (6) RSA (暗号化のみ)</span><br><span class="line">   (7) DSA (機能をあなた自身で設定)</span><br><span class="line">   (8) RSA (機能をあなた自身で設定)</span><br><span class="line">  (10) ECC (署名のみ)</span><br><span class="line">  (11) ECC (機能をあなた自身で設定)</span><br><span class="line">  (12) ECC (暗号化のみ)</span><br><span class="line">  (13) 既存の鍵</span><br><span class="line">  (14) カードに存在する鍵</span><br><span class="line">あなたの選択は? 6</span><br><span class="line"></span><br><span class="line">RSA 鍵は 1024 から 4096 ビットの長さで可能です。</span><br><span class="line">鍵長は? (3072) 4096</span><br><span class="line">要求された鍵長は4096ビット</span><br><span class="line">鍵の有効期限を指定してください。</span><br><span class="line">         0 = 鍵は無期限</span><br><span class="line">      &lt;n&gt;  = 鍵は n 日間で期限切れ</span><br><span class="line">      &lt;n&gt;w = 鍵は n 週間で期限切れ</span><br><span class="line">      &lt;n&gt;m = 鍵は n か月間で期限切れ</span><br><span class="line">      &lt;n&gt;y = 鍵は n 年間で期限切れ</span><br><span class="line">鍵の有効期間は? (0)5y</span><br><span class="line">鍵は金  1/30 11:25:03 2026 JSTで期限切れとなります</span><br><span class="line">これで正しいですか? (y/N) y</span><br><span class="line">本当に作成しますか? (y/N) y</span><br><span class="line">たくさんのランダム・バイトの生成が必要です。キーボードを打つ、マウスを動か</span><br><span class="line">す、ディスクにアクセスするなどの他の操作を素数生成の間に行うことで、乱数生</span><br><span class="line">成器に十分なエントロピーを供給する機会を与えることができます。</span><br><span class="line"></span><br><span class="line">sec  rsa4096/1234567890123456</span><br><span class="line">     作成: 2021-01-31  有効期限: 無期限  利用法: C</span><br><span class="line">     信用: 究極        有効性: 究極</span><br><span class="line">ssb  rsa4096/A234567890123456</span><br><span class="line">     作成: 2021-01-31  有効期限: 2026-01-30  利用法: S</span><br><span class="line">ssb  rsa4096/B234567890123456</span><br><span class="line">     作成: 2021-01-31  有効期限: 2026-01-30  利用法: E</span><br><span class="line">[  究極  ] (1). Your Name &lt;your@mail.com&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="認証副鍵の作成"><a href="#認証副鍵の作成" class="headerlink" title="認証副鍵の作成"></a>認証副鍵の作成</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 副鍵は期限5年、RSA4096bitで構成します</span></span><br><span class="line">gpg&gt; addkey</span><br><span class="line">ご希望の鍵の種類を選択してください:</span><br><span class="line">   (3) DSA (署名のみ)</span><br><span class="line">   (4) RSA (署名のみ)</span><br><span class="line">   (5) Elgamal (暗号化のみ)</span><br><span class="line">   (6) RSA (暗号化のみ)</span><br><span class="line">   (7) DSA (機能をあなた自身で設定)</span><br><span class="line">   (8) RSA (機能をあなた自身で設定)</span><br><span class="line">  (10) ECC (署名のみ)</span><br><span class="line">  (11) ECC (機能をあなた自身で設定)</span><br><span class="line">  (12) ECC (暗号化のみ)</span><br><span class="line">  (13) 既存の鍵</span><br><span class="line">  (14) カードに存在する鍵</span><br><span class="line">あなたの選択は? 8</span><br><span class="line"></span><br><span class="line">鍵RSAに認められた操作: Sign Encrypt Authenticate</span><br><span class="line">現在の認められた操作: Sign Encrypt</span><br><span class="line"></span><br><span class="line">   (S) 署名機能を反転する</span><br><span class="line">   (E) 暗号機能を反転する</span><br><span class="line">   (A) 認証機能を反転する</span><br><span class="line">   (Q) 完了</span><br><span class="line"></span><br><span class="line">あなたの選択は? S</span><br><span class="line"></span><br><span class="line">鍵RSAに認められた操作: Sign Encrypt Authenticate</span><br><span class="line">現在の認められた操作: Encrypt</span><br><span class="line"></span><br><span class="line">   (S) 署名機能を反転する</span><br><span class="line">   (E) 暗号機能を反転する</span><br><span class="line">   (A) 認証機能を反転する</span><br><span class="line">   (Q) 完了</span><br><span class="line"></span><br><span class="line">あなたの選択は? E</span><br><span class="line"></span><br><span class="line">鍵RSAに認められた操作: Sign Encrypt Authenticate</span><br><span class="line">現在の認められた操作:</span><br><span class="line"></span><br><span class="line">   (S) 署名機能を反転する</span><br><span class="line">   (E) 暗号機能を反転する</span><br><span class="line">   (A) 認証機能を反転する</span><br><span class="line">   (Q) 完了</span><br><span class="line"></span><br><span class="line">あなたの選択は? A</span><br><span class="line"></span><br><span class="line">鍵RSAに認められた操作: Sign Encrypt Authenticate</span><br><span class="line">現在の認められた操作: Authenticate</span><br><span class="line"></span><br><span class="line">   (S) 署名機能を反転する</span><br><span class="line">   (E) 暗号機能を反転する</span><br><span class="line">   (A) 認証機能を反転する</span><br><span class="line">   (Q) 完了</span><br><span class="line"></span><br><span class="line">あなたの選択は? Q</span><br><span class="line">RSA 鍵は 1024 から 4096 ビットの長さで可能です。</span><br><span class="line">鍵長は? (3072) 4096</span><br><span class="line">要求された鍵長は4096ビット</span><br><span class="line">鍵の有効期限を指定してください。</span><br><span class="line">         0 = 鍵は無期限</span><br><span class="line">      &lt;n&gt;  = 鍵は n 日間で期限切れ</span><br><span class="line">      &lt;n&gt;w = 鍵は n 週間で期限切れ</span><br><span class="line">      &lt;n&gt;m = 鍵は n か月間で期限切れ</span><br><span class="line">      &lt;n&gt;y = 鍵は n 年間で期限切れ</span><br><span class="line">鍵の有効期間は? (0)5y</span><br><span class="line">鍵は金  1/30 11:25:03 2026 JSTで期限切れとなります</span><br><span class="line">これで正しいですか? (y/N) y</span><br><span class="line">本当に作成しますか? (y/N) y</span><br><span class="line">たくさんのランダム・バイトの生成が必要です。キーボードを打つ、マウスを動か</span><br><span class="line">す、ディスクにアクセスするなどの他の操作を素数生成の間に行うことで、乱数生</span><br><span class="line">成器に十分なエントロピーを供給する機会を与えることができます。</span><br><span class="line"></span><br><span class="line">sec  rsa4096/1234567890123456</span><br><span class="line">     作成: 2021-01-31  有効期限: 無期限  利用法: C</span><br><span class="line">     信用: 究極        有効性: 究極</span><br><span class="line">ssb  rsa4096/A234567890123456</span><br><span class="line">     作成: 2021-01-31  有効期限: 2026-01-30  利用法: S</span><br><span class="line">ssb  rsa4096/B234567890123456</span><br><span class="line">     作成: 2021-01-31  有効期限: 2026-01-30  利用法: E</span><br><span class="line">ssb  rsa4096/C234567890123456</span><br><span class="line">     作成: 2021-01-31  有効期限: 2026-01-30  利用法: A</span><br><span class="line">[  究極  ] (1). Your Name &lt;your@mail.com&gt;</span><br><span class="line"></span><br><span class="line">gpg&gt; save</span><br><span class="line">gpg&gt; quit</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="作成した鍵の確認"><a href="#作成した鍵の確認" class="headerlink" title="作成した鍵の確認"></a>作成した鍵の確認</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ gpg -K</span><br><span class="line">/tmp/.xxx/pubring.kbx</span><br><span class="line">------------------------------</span><br><span class="line">sec   rsa4096 2021-01-31 [C]</span><br><span class="line">      7890123456789012345678901234567890123456</span><br><span class="line">uid           [  究極  ] Your Name &lt;your@mail.com&gt;</span><br><span class="line">ssb  rsa4096/A234567890123456 2021-01-31 [S] [有効期限: 2026-01-30]</span><br><span class="line">ssb  rsa4096/B234567890123456 2021-01-31 [E] [有効期限: 2026-01-30]</span><br><span class="line">ssb  rsa4096/C234567890123456 2021-01-31 [A] [有効期限: 2026-01-30]</span><br></pre></td></tr></table></figure>
+
+<h4 id="秘密鍵のエクスポート"><a href="#秘密鍵のエクスポート" class="headerlink" title="秘密鍵のエクスポート"></a>秘密鍵のエクスポート</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#バックアップ用途に秘密鍵をエクスポートします</span></span><br><span class="line">$ gpg --armor --export-secret-keys <span class="variable">$KEYID</span> &gt; <span class="variable">$GNUPGHOME</span>/mastersub.key</span><br><span class="line">$ gpg --armor --export-secret-subkeys <span class="variable">$KEYID</span> &gt; <span class="variable">$GNUPGHOME</span>/sub.key</span><br></pre></td></tr></table></figure>
+
+<h4 id="失効証明書の作成"><a href="#失効証明書の作成" class="headerlink" title="失効証明書の作成"></a>失効証明書の作成</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ gpg --output <span class="variable">$GNUPGHOME</span>/revoke.asc --gen-revoke <span class="variable">$KEYID</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="USBメディアを挿入し、-GNUHOMEフォルダをバックアップ"><a href="#USBメディアを挿入し、-GNUHOMEフォルダをバックアップ" class="headerlink" title="USBメディアを挿入し、$GNUHOMEフォルダをバックアップ"></a>USBメディアを挿入し、$GNUHOMEフォルダをバックアップ</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ご自身の環境に応じてUSBへのパスは変更してください。Finderでコピーしても構いません</span></span><br><span class="line">$ sudo <span class="built_in">cp</span> -avi <span class="variable">$GNUPGHOME</span> /volumes/your USB path/</span><br></pre></td></tr></table></figure>
+
+<p>USBはアンマウントします（しばらく使わないので保存）</p>
+<h4 id="公開鍵をホームディクレトリのpublic-key-pgpとしてエクスポート"><a href="#公開鍵をホームディクレトリのpublic-key-pgpとしてエクスポート" class="headerlink" title="公開鍵をホームディクレトリのpublic_key.pgpとしてエクスポート"></a>公開鍵をホームディクレトリのpublic_key.pgpとしてエクスポート</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ gpg --armor --output ~/public_key.pgp --<span class="built_in">export</span> <span class="variable">$KEYID</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="YubiKeyの確認"><a href="#YubiKeyの確認" class="headerlink" title="YubiKeyの確認"></a>YubiKeyの確認</h4><p>YubiKeyを接続します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">$ gpg --card-edit</span><br><span class="line"></span><br><span class="line">Reader ...........: Yubico YubiKey OTP FIDO CCID</span><br><span class="line">Application ID ...: 12345678901234567890123456789012</span><br><span class="line">Application <span class="built_in">type</span> .: OpenPGP</span><br><span class="line">Version ..........: 3.4</span><br><span class="line">Manufacturer .....: Yubico</span><br><span class="line">Serial number ....: 12345678</span><br><span class="line">Name of cardholder: [未設定]</span><br><span class="line">Language prefs ...: [未設定]</span><br><span class="line">Salutation .......:</span><br><span class="line">URL of public key : [未設定]</span><br><span class="line">Login data .......: [未設定]</span><br><span class="line">Signature PIN ....: 強制なし</span><br><span class="line">Key attributes ...: rsa4096 rsa4096 rsa4096</span><br><span class="line">Max. PIN lengths .: 127 127 127</span><br><span class="line">PIN retry counter : 3 0 3</span><br><span class="line">Signature counter : 0</span><br><span class="line">KDF setting ......: off</span><br><span class="line">Signature key ....: [未設定]</span><br><span class="line">Encryption key....: [未設定]</span><br><span class="line">Authentication key: [未設定]</span><br><span class="line">General key info..: [未設定]</span><br></pre></td></tr></table></figure>
+
+<h4 id="PINの変更"><a href="#PINの変更" class="headerlink" title="PINの変更"></a>PINの変更</h4><p>これは、前回の記事「<a href="/new-technology/2021/02/06/yubikey_ssh_github/" title="YubiKeyとSSHとGitHub">YubiKeyとSSHとGitHub</a>」のYubiKey ManagerでみたPIVのPIN、PUKとは異なります。YubikeyはGPG向けに別のPIN（デフォルト123456）、AdminPIN（デフォルト12345678）があるので、紛失時のためにも設定変更される事をお勧めします。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">gpg/card&gt; admin</span><br><span class="line">管理者コマンドが許可されています</span><br><span class="line"></span><br><span class="line">gpg/card&gt; passwd</span><br><span class="line">gpg: OpenPGPカードno. 12345678901234567890123456789012を検出</span><br><span class="line"></span><br><span class="line">1 - change PIN</span><br><span class="line">2 - unblock PIN</span><br><span class="line">3 - change Admin PIN</span><br><span class="line">4 - <span class="built_in">set</span> the Reset Code</span><br><span class="line">Q - quit</span><br><span class="line"></span><br><span class="line">あなたの選択は? 1</span><br><span class="line"></span><br><span class="line">1 - change PIN</span><br><span class="line">2 - unblock PIN</span><br><span class="line">3 - change Admin PIN</span><br><span class="line">4 - <span class="built_in">set</span> the Reset Code</span><br><span class="line">Q - quit</span><br><span class="line"></span><br><span class="line">あなたの選択は? 3</span><br><span class="line"></span><br><span class="line">1 - change PIN</span><br><span class="line">2 - unblock PIN</span><br><span class="line">3 - change Admin PIN</span><br><span class="line">4 - <span class="built_in">set</span> the Reset Code</span><br><span class="line">Q - quit</span><br><span class="line"></span><br><span class="line">あなたの選択は? Q</span><br></pre></td></tr></table></figure>
+
+<h4 id="3つの副鍵をYubiKeyに転送"><a href="#3つの副鍵をYubiKeyに転送" class="headerlink" title="3つの副鍵をYubiKeyに転送"></a>3つの副鍵をYubiKeyに転送</h4><p>YubiKeyに転送された秘密鍵は端末からは全て中身が抹消され、YubiKeyに情報がある事を示すポインタにしかなりません。もし、やりなおしが必要になった場合は、秘密鍵をバックアップから復活させてから行う必要があります。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ gpg --edit-key <span class="variable">$KEYID</span></span><br><span class="line"></span><br><span class="line">秘密鍵が利用できます。</span><br><span class="line"></span><br><span class="line">sec  rsa4096/1234567890123456</span><br><span class="line">     作成: 2021-01-31  有効期限: 無期限  利用法: C</span><br><span class="line">     カード番号: 0006 12345678</span><br><span class="line">     信用: 究極        有効性: 究極</span><br><span class="line">ssb  rsa4096/A234567890123456 2021-01-31 [S] [有効期限: 2026-01-30]</span><br><span class="line">ssb  rsa4096/B234567890123456 2021-01-31 [E] [有効期限: 2026-01-30]</span><br><span class="line">ssb  rsa4096/C234567890123456 2021-01-31 [A] [有効期限: 2026-01-30]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="署名鍵の転送"><a href="#署名鍵の転送" class="headerlink" title="署名鍵の転送"></a>署名鍵の転送</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 3つのキー毎にYubikeyに転送します。</span></span><br><span class="line"><span class="comment"># key 1 と入力する事で最初の副鍵が選択され、＊マークが付きます</span></span><br><span class="line">gpg&gt; key 1</span><br><span class="line"></span><br><span class="line">sec  rsa4096/1234567890123456</span><br><span class="line">     作成: 2021-01-31  有効期限: 無期限  利用法: C</span><br><span class="line">     カード番号: 0006 12345678</span><br><span class="line">     信用: 究極        有効性: 究極</span><br><span class="line">ssb*  rsa4096/A234567890123456 2021-01-31 [S] [有効期限: 2026-01-30]</span><br><span class="line">ssb  rsa4096/B234567890123456 2021-01-31 [E] [有効期限: 2026-01-30]</span><br><span class="line">ssb  rsa4096/C234567890123456 2021-01-31 [A] [有効期限: 2026-01-30]</span><br><span class="line"></span><br><span class="line"><span class="comment"># ssb＊の&quot;＊&quot;マークは選択されている事を示します</span></span><br><span class="line"></span><br><span class="line">gpg&gt; keytocard</span><br><span class="line">鍵を保管する場所を選択してください:</span><br><span class="line">   (1) 署名鍵</span><br><span class="line">   (3) 認証鍵</span><br><span class="line">あなたの選択は? 1</span><br><span class="line"><span class="comment"># PinEntryにYubiKeyのAdminPINを入力し移動を完了させます</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="暗号化鍵の転送"><a href="#暗号化鍵の転送" class="headerlink" title="暗号化鍵の転送"></a>暗号化鍵の転送</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 署名の選択を&quot;key 1&quot;を入力して外し、&quot;key 2&quot;を入力して暗号化を選択します</span></span><br><span class="line">gpg&gt; key 1</span><br><span class="line">gpg&gt; key 2</span><br><span class="line"></span><br><span class="line">sec  rsa4096/1234567890123456</span><br><span class="line">     作成: 2021-01-31  有効期限: 無期限  利用法: C</span><br><span class="line">     カード番号: 0006 12345678</span><br><span class="line">     信用: 究極        有効性: 究極</span><br><span class="line">ssb  rsa4096/A234567890123456 2021-01-31 [S] [有効期限: 2026-01-30]</span><br><span class="line">ssb*  rsa4096/B234567890123456 2021-01-31 [E] [有効期限: 2026-01-30]</span><br><span class="line">ssb  rsa4096/C234567890123456 2021-01-31 [A] [有効期限: 2026-01-30]</span><br><span class="line"></span><br><span class="line">gpg&gt; keytocard</span><br><span class="line">鍵を保管する場所を選択してください:</span><br><span class="line">   (2) 暗号鍵</span><br><span class="line">あなたの選択は? 2</span><br><span class="line"><span class="comment"># PinEntryにYubiKeyのAdminPINを入力し移動を完了させます</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="認証鍵の転送"><a href="#認証鍵の転送" class="headerlink" title="認証鍵の転送"></a>認証鍵の転送</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 暗号化の選択を&quot;key 2&quot;を入力して外し、&quot;key 3&quot;を入力して認証を選択します</span></span><br><span class="line">gpg&gt; key 2</span><br><span class="line">gpg&gt; key 3</span><br><span class="line"></span><br><span class="line">sec  rsa4096/1234567890123456</span><br><span class="line">     作成: 2021-01-31  有効期限: 無期限  利用法: C</span><br><span class="line">     カード番号: 0006 12345678</span><br><span class="line">     信用: 究極        有効性: 究極</span><br><span class="line">ssb  rsa4096/A234567890123456 2021-01-31 [S] [有効期限: 2026-01-30]</span><br><span class="line">ssb  rsa4096/B234567890123456 2021-01-31 [E] [有効期限: 2026-01-30]</span><br><span class="line">ssb*  rsa4096/C234567890123456 2021-01-31 [A] [有効期限: 2026-01-30]</span><br><span class="line"></span><br><span class="line">gpg&gt; keytocard</span><br><span class="line">鍵を保管する場所を選択してください:</span><br><span class="line">   (3) 認証鍵</span><br><span class="line">あなたの選択は? 3</span><br><span class="line"><span class="comment"># PinEntryにYubiKeyのAdminPINを入力し移動を完了させます</span></span><br><span class="line">gpg&gt; save</span><br></pre></td></tr></table></figure>
+
+<h4 id="YubiKeyへの移動を確認"><a href="#YubiKeyへの移動を確認" class="headerlink" title="YubiKeyへの移動を確認"></a>YubiKeyへの移動を確認</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ gpg -K</span><br><span class="line">/tmp/.xxx/pubring.kbx</span><br><span class="line">------------------------------</span><br><span class="line">sec   rsa4096 2021-01-31 [C]</span><br><span class="line">      7890123456789012345678901234567890123456</span><br><span class="line">uid           [  究極  ] Your Name &lt;your@mail.com&gt;</span><br><span class="line">ssb&gt;  rsa4096/A234567890123456 2021-01-31 [S] [有効期限: 2026-01-30]</span><br><span class="line">ssb&gt;  rsa4096/B234567890123456 2021-01-31 [E] [有効期限: 2026-01-30]</span><br><span class="line">ssb&gt;  rsa4096/C234567890123456 2021-01-31 [A] [有効期限: 2026-01-30]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="最終確認のチェックリスト"><a href="#最終確認のチェックリスト" class="headerlink" title="最終確認のチェックリスト"></a>最終確認のチェックリスト</h4><ul>
+<li>デフォルトから変更したYubiKeyのPINおよび管理PINを記録しました</li>
+<li>GPGの主鍵のパスワードを記録しました</li>
+<li>USBに主鍵、副鍵、および失効証明書のコピーを保管し、オフラインで保管する準備をしました</li>
+<li>ホームディレクトリに公開鍵のコピーを保存しました</li>
+</ul>
+<h4 id="クリーンアップ"><a href="#クリーンアップ" class="headerlink" title="クリーンアップ"></a>クリーンアップ</h4><p>上記のバックアップが確保されている事を前提に、作業してきた一時フォルダを削除します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo <span class="built_in">rm</span> -rf <span class="variable">$GNUPGHOME</span></span><br><span class="line">$ gpg --delete-secret-key <span class="variable">$KEYID</span></span><br><span class="line">$ <span class="built_in">unset</span> GNUPGHOME</span><br></pre></td></tr></table></figure>
+
+<p>クリーンアップが終了したらネットワークに接続できます。秘密鍵はもうmacOSの中に残っていません。秘密鍵は取り外したUSBと接続されているYubiKeyの中にあります。</p>
+<h4 id="公開鍵のインポートと信頼"><a href="#公開鍵のインポートと信頼" class="headerlink" title="公開鍵のインポートと信頼"></a>公開鍵のインポートと信頼</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">$ gpg --import ~/public_key.pgp</span><br><span class="line">$ gpg --edit-key <span class="variable">$KEYID</span></span><br><span class="line"></span><br><span class="line">gpg&gt; trust</span><br><span class="line">pub  rsa4096/1234567890123456</span><br><span class="line">     作成: 2021-01-31  有効期限: 無期限      利用法: C</span><br><span class="line">     信用: 不明        有効性: 不明</span><br><span class="line">ssb  rsa4096/A234567890123456</span><br><span class="line">     作成: 2021-01-31  有効期限: 2026-01-30  利用法: S</span><br><span class="line">     カード番号: 0006 12345678</span><br><span class="line">ssb  rsa4096/B234567890123456</span><br><span class="line">     作成: 2021-01-31  有効期限: 2026-01-30  利用法: E</span><br><span class="line">     カード番号: 0006 12345678</span><br><span class="line">ssb  rsa4096/C234567890123456</span><br><span class="line">     作成: 2021-01-31  有効期限: 2026-01-30  利用法: A</span><br><span class="line">     カード番号: 0006 12345678</span><br><span class="line">[  究極  ] (1). Your Name &lt;your@mail.com&gt;</span><br><span class="line">他のユーザの鍵を正しく検証するために、このユーザの信用度を決めてください</span><br><span class="line">(パスポートを見せてもらったり、他から得たフィンガープリントを検査したり、などなど)</span><br><span class="line"></span><br><span class="line">  1 = 知らない、または何とも言えない</span><br><span class="line">  2 = 信用しない</span><br><span class="line">  3 = まぁまぁ信用する</span><br><span class="line">  4 = 充分に信用する</span><br><span class="line">  5 = 究極的に信用する</span><br><span class="line">  m = メーン・メニューに戻る</span><br><span class="line"></span><br><span class="line">あなたの決定は? 5</span><br><span class="line">本当にこの鍵を究極的に信用しますか? (y/N)</span><br><span class="line"></span><br><span class="line">pub  rsa4096/1234567890123456</span><br><span class="line">     作成: 2021-01-31  有効期限: 無期限      利用法: C</span><br><span class="line">     信用: 究極        有効性: 不明</span><br><span class="line">ssb  rsa4096/A234567890123456</span><br><span class="line">     作成: 2021-01-31  有効期限: 2026-01-30  利用法: S</span><br><span class="line">     カード番号: 0006 12345678</span><br><span class="line">ssb  rsa4096/B234567890123456</span><br><span class="line">     作成: 2021-01-31  有効期限: 2026-01-30  利用法: E</span><br><span class="line">     カード番号: 0006 12345678</span><br><span class="line">ssb  rsa4096/C234567890123456</span><br><span class="line">     作成: 2021-01-31  有効期限: 2026-01-30  利用法: A</span><br><span class="line">     カード番号: 0006 12345678</span><br><span class="line">[  究極  ] (1). Your Name &lt;your@mail.com&gt;</span><br><span class="line"></span><br><span class="line">gpg&gt; quit</span><br></pre></td></tr></table></figure>
+
+<h3 id="GPG環境の設定"><a href="#GPG環境の設定" class="headerlink" title="GPG環境の設定"></a>GPG環境の設定</h3><h4 id="gpg-agent-confの設定"><a href="#gpg-agent-confの設定" class="headerlink" title="gpg-agent.confの設定"></a>gpg-agent.confの設定</h4><p><code>gpg-agent.conf</code>に以下の内容から不足があれば追加します。3-4行目のキャッシュ時間は環境に応じて自由に変更してください。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ vi ~/.gnupg/gpg-agent.conf</span><br><span class="line">enable-ssh-support</span><br><span class="line">default-cache-ttl 600</span><br><span class="line">max-cache-ttl 7200</span><br></pre></td></tr></table></figure>
+
+<h4 id="GPG-Agentの自動起動について"><a href="#GPG-Agentの自動起動について" class="headerlink" title="GPG Agentの自動起動について"></a>GPG Agentの自動起動について</h4><p>GPGをインストールすると、OS起動時に起動するアプリケーションがLaunchAgentに登録されます。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">ls</span> /Library/LaunchAgents | grep gpg</span><br><span class="line">org.gpgtools.Libmacgpg.xpc.plist</span><br><span class="line">org.gpgtools.macgpg2.fix.plist</span><br><span class="line">org.gpgtools.macgpg2.shutdown-gpg-agent.plist</span><br><span class="line">org.gpgtools.updater.plist</span><br></pre></td></tr></table></figure>
+
+<p>これらに加え、ユーザー毎のログイン時のスタートアップにGPG Agentの起動を登録します。<strong>ユーザーの</strong>LaunchAgentsに<strong>2つのファイル</strong>を作成します。作成先は<code>/Librarly</code>ではなく、<code>＄HOME/Library</code>です。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ vi ~/Library/LaunchAgents/gnupg.gpg-agent.plist</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"> <span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">plist</span> <span class="keyword">PUBLIC</span> <span class="string">&quot;-//Apple//DTD PLIST 1.0//EN&quot;</span> <span class="string">&quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">plist</span> <span class="attr">version</span>=<span class="string">&quot;1.0&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">key</span>&gt;</span>Label<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">string</span>&gt;</span>gnupg.gpg-agent<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">key</span>&gt;</span>RunAtLoad<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">true</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">key</span>&gt;</span>KeepAlive<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">false</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">key</span>&gt;</span>ProgramArguments<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">string</span>&gt;</span>/usr/local/MacGPG2/bin/gpg-connect-agent<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">string</span>&gt;</span>/bye<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">array</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plist</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ vi ~/Library/LaunchAgents/gnupg.gpg-agent-symlink.plist</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">plist</span> <span class="keyword">PUBLIC</span> <span class="string">&quot;-//Apple//DTD PLIST 1.0//EN&quot;</span> <span class="string">&quot;http://www.apple.com/DTDs/ProperyList-1.0/dtd&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">plist</span> <span class="attr">version</span>=<span class="string">&quot;1.0&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">key</span>&gt;</span>Label<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">string</span>&gt;</span>gnupg.gpg-agent-symlink<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">key</span>&gt;</span>ProgramArguments<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">string</span>&gt;</span>/bin/sh<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">string</span>&gt;</span>-c<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">string</span>&gt;</span>/bin/ln -sf $HOME/.gnupg/S.gpg-agent.ssh $SSH_AUTH_SOCK<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">array</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">key</span>&gt;</span>RunAtLoad<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">true</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plist</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>ここまで作成したら一度macOSをログアウト、ログインします。ターミナルから以下のコマンドでGPG Agentを含めて6つのプロセスが起動している事を確認します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ launchctl list | grep gpg</span><br><span class="line">646	0	org.gpgtools.macgpg2.shutdown-gpg-agent</span><br><span class="line">-	0	gnupg.gpg-agent</span><br><span class="line">-	0	gnupg.gpg-agent-symlink</span><br><span class="line">-	0	org.gpgtools.updater</span><br><span class="line">-	0	org.gpgtools.macgpg2.fix</span><br><span class="line">511	0	org.gpgtools.Libmacgpg.xpc</span><br></pre></td></tr></table></figure>
+
+<p>ここまでの作業で一旦はGPGの基本機能が使える状態になりました。文字列を選択してファイルの右クリックメニューから暗号化したりメモの文字列を署名、暗号、復号機能を確認します。</p>
+<h3 id="SSH公開鍵のエクスポート"><a href="#SSH公開鍵のエクスポート" class="headerlink" title="SSH公開鍵のエクスポート"></a>SSH公開鍵のエクスポート</h3><p>ここからはYubikey+GPGのSSH接続設定です。</p>
+<p><code>ssh-add -L</code> で公開鍵を取得します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ssh-add -L</span><br><span class="line">ssh-rsa AAAAB4NzaC1yc2EAAAADAQABAAACAz[...]zreOKM+HwpkHzcy9DQcVG2Nw== cardno:000612345678</span><br></pre></td></tr></table></figure>
+
+<p>Yubikeyの公開鍵の末尾にはカード番号の記載があります。SSH公開鍵を接続先のサーバーのauthorized_keysに登録します。また、macOS側の<code>~/.ssh/config</code>は設定不要です。</p>
+<p>ターミナルから接続テストしてみましょう。PinEntryダイアログが表示され、PIN入力後、公開鍵認証で接続されます。</p>
+<h3 id="GPGの公開鍵とSSH公開鍵とをGitHubに登録"><a href="#GPGの公開鍵とSSH公開鍵とをGitHubに登録" class="headerlink" title="GPGの公開鍵とSSH公開鍵とをGitHubに登録"></a>GPGの公開鍵とSSH公開鍵とをGitHubに登録</h3><p>ホームディレクトリに作成した<strong>PGP公開鍵</strong>と<strong>SSH公開鍵</strong>との2つをGitHubに登録します。<br>GitHubサイトにログイン後、<mark class="label primary">Account</mark>の”Settings”を選び、左メニューの<mark class="label primary">SSH and GPG keys</mark>をクリックします。<mark class="label primary">New SSH key</mark>と<mark class="label primary">New GPG key</mark>というボタンをクリックしそれぞれを登録します。</p>
+<p>まずは、SSHが行える事を確認しましょう。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ssh -T git@github.com</span><br><span class="line">Hi yoshi0808! You<span class="string">&#x27;ve successfully authenticated, but GitHub does not provide shell access.</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="GitHubへの接続、署名のためのgitの設定"><a href="#GitHubへの接続、署名のためのgitの設定" class="headerlink" title="GitHubへの接続、署名のためのgitの設定"></a>GitHubへの接続、署名のためのgitの設定</h3><h4 id="gitのSSH接続設定"><a href="#gitのSSH接続設定" class="headerlink" title="gitのSSH接続設定"></a>gitのSSH接続設定</h4><p>gitコマンドでSSH接続を有効にするには以下を実行します<br><code>$ git remote set-url origin git@github.com:[ユーザID]/[リポジトリ].git</code></p>
+<p>設定確認は以下の通りです<br><code>$ git remote -v</code></p>
+<p>HTTPS接続に戻す場合は、<strong>リモートの URL の変更</strong>を参照してください。</p>
+<blockquote>
+<p>GitHub -リモートの URL の変更-<br> <a target="_blank" rel="noopener" href="https://docs.github.com/ja/github/using-git/changing-a-remotes-url">https://docs.github.com/ja/github/using-git/changing-a-remotes-url</a></p>
+</blockquote>
+<h4 id="git署名の設定"><a href="#git署名の設定" class="headerlink" title="git署名の設定"></a>git署名の設定</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ここでは主鍵を指定します</span></span><br><span class="line">$ git config --global user.signingkey 1234567890123456</span><br></pre></td></tr></table></figure>
+
+<p>デフォルトですべてのコミットに署名するには、以下を実行します。</p>
+<p><code>$ git config --global commit.gpgsign true</code></p>
+<p>Visual Studio Codeをお使いの方であれば、<code>&quot;git.enableCommitSigning&quot;: true</code>を確認します。</p>
+<p>これまでの設定でGPG Toolsを使ったSSH接続と署名の対応は完了です<span class="github-emoji" alias="thumbsup" style="" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f44d.png?v8">&#x1f44d;</span>。<br>PIV方式とは異なりGUI方式によりPINの入力も行える事、また一定時間PINはキャッシュしますので、セキュアである事と利便性を両立させています。</p>
+<h2 id="（任意）YubiKeyタッチ認証"><a href="#（任意）YubiKeyタッチ認証" class="headerlink" title="（任意）YubiKeyタッチ認証"></a>（任意）YubiKeyタッチ認証</h2><p>GPGで認証、署名、暗号化を行おうとしている時に、YubiKeyへのタッチを必要とさせる設定ができます。GPGのPIN入力はキャッシュしている時間がありますが、これを設定すると、GPGのアクションの前には必ずYubiKeyにタッチする必要があります。より慎重さを求める方に向いています。デフォルトではOffになっていますが、これをOnにする場合は以下のコマンドを投入します。YubiKeyがタッチを待っている間はランプが点滅します（12秒程度応答しないとギブアップします）。これはNeoなどYubiKeyの種類によっては設定できません。<br>認証　<code>$ ykman openpgp set-touch aut on</code><br>署名　<code>$ ykman openpgp set-touch sig on</code><br>暗号化　<code>$ ykman openpgp set-touch enc on</code><br>Offにする場合は以下のコマンドになります。<br>認証　<code>$ ykman openpgp set-touch aut off</code><br>署名　<code>$ ykman openpgp set-touch sig off</code><br>暗号化　<code>$ ykman openpgp set-touch enc off</code></p>
+<p>Onの代わりに15秒キャッシュする”CACHED”という項目も設定できます。詳しくは<code>ykman openpgp set-touch -h</code>を参照します。</p>
+<div class="note info"><p>継続的インテグレーション（CI)など、署名、デプロイと連続動作させる時にこのCACHED設定は便利です。</p>
+</div>
+
+<h2 id="GPGとPIVとの切り替え"><a href="#GPGとPIVとの切り替え" class="headerlink" title="GPGとPIVとの切り替え"></a>GPGとPIVとの切り替え</h2><p>前回の記事「<a href="/new-technology/2021/02/06/yubikey_ssh_github/" title="YubiKeyとSSHとGitHub">YubiKeyとSSHとGitHub</a>」ではPIVカードとしての扱いについて説明しました。GPGは排他でカードを占有してしまう仕様のため、GPGを使っている時はPIVを使うYubico-Authenticatorは動きません。コマンド<code>$ ykaman piv info</code>を実行する事でGPGから切り離されPIVのインタフェースが使えるようになります。<strong>GPG Toolsサポートでの議論</strong>もありましたが、明確な解決が難しいまま今に至っています。実運用としては、macOS純正アプリのAutomatorを使ってPIVに切り替えてからYubico Authenticatorを起動する方法が簡単でしょうか。以下に画面キャプチャを記載しておきます。</p>
+<img src="/new-technology/2021/02/13/yubikey_gpg/automator1.png" class="" width="800" title="alt">
+
+<blockquote>
+<p>[GPG Tools -GPGMail: Fails to sign after switch from S&#x2F;MIME-<br> <a target="_blank" rel="noopener" href="https://gpgtools.tenderapp.com/discussions/nightly/110-gpgmail-fails-to-sign-after-switch-from-smime">https://gpgtools.tenderapp.com/discussions/nightly/110-gpgmail-fails-to-sign-after-switch-from-smime</a></p>
+</blockquote>
+<h2 id="（補足）libgcryptの脆弱性"><a href="#（補足）libgcryptの脆弱性" class="headerlink" title="（補足）libgcryptの脆弱性"></a>（補足）libgcryptの脆弱性</h2><p>（2021-05-23　追記）<br>本件は、2021-5-21発表のGPG Suite 2021.1において、下記の脆弱性については影響ありません。</p>
+<p>先日（1月末）に、gpgのライブラリであるlibgcryptに脆弱性があるとの速報<strong>CVE-2021-3345</strong>が流れました。対象バージョンは1.9.0ですが、今回GPG Toolsから導入しているlibgcryptのバージョンは1.8.7となっており、この脆弱性の影響は受けません。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ gpg --version</span><br><span class="line">gpg (GnuPG/MacGPG2) 2.2.27</span><br><span class="line">libgcrypt 1.8.7</span><br></pre></td></tr></table></figure>
+
+<p>長年gpgを開発されているヴェルナー・コッホさんからの不具合に関する説明は以下の通りです。内容を一部抜粋すると、”1.8LTSブランチを使用している場合は影響を受けません。1.8.5以上であることを確認してください。”との事です。</p>
+<blockquote>
+<p>CVE-2021-3345<br> <a target="_blank" rel="noopener" href="https://nvd.nist.gov/vuln/detail/CVE-2021-3345">https://nvd.nist.gov/vuln/detail/CVE-2021-3345</a><br> [Security fix] Libgcrypt 1.9.1 relased<br> <a target="_blank" rel="noopener" href="https://lists.gnupg.org/pipermail/gnupg-announce/2021q1/000456.html">https://lists.gnupg.org/pipermail/gnupg-announce/2021q1/000456.html</a></p>
+</blockquote>
+<p><small id="note1"><strong>[1]</strong><br>もし暗号化USBを導入するのであれば、Finderで暗号化する方法、VeraCryptを使う方法があります<br></small></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/new-technology/tags/yubikey/" rel="tag"><i class="fa fa-tag"></i> yubikey</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/new-technology/2021/02/06/yubikey_ssh_github/" rel="prev" title="YubiKeyとSSHとGitHub">
+                  <i class="fa fa-chevron-left"></i> YubiKeyとSSHとGitHub
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/new-technology/2021/03/06/esxi-nakivo/" rel="next" title="無償版ESXiの高度なバックアップ">
+                  無償版ESXiの高度なバックアップ <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">阿部　吉伸(Yoshinobu ABE)</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div><script src="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.umd.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.min.css" rel="stylesheet">
+
+<script>
+if (Cookies.get('PRVCY202112') != 'Agree') {
+  const notice = new SimpleGDPR({
+    title: 'Accept Cookies & Privacy Policy?',
+    message: 'このWebサイトでは、訪問や活動に関するデータがクッキー等によって収集されます。閲覧を継続される場合、\
+    プライバシーポリシーをご覧いただき同意(Agree)をお願いします',
+    link: null,
+    icons: true,
+    theme: 'light',
+    animation: 'fade',
+    float: 'bottom-right',
+      callback: () => {
+      notice.close();
+      Cookies.set('PRVCY202112', 'Agree', { expires: 365, path: '/'});
+      notice.destroy();
+      // Google Analytics 4
+      gtag('consent', 'update', {
+      'analytics_storage': 'granted'
+      });
+      gtag('js', new Date());
+      gtag('config', 'G-JMY6NSC2KK', { 'anonymize_ip': true });
+      },
+  });
+}
+</script>
+<div class="disclaimer1">
+このサイトの記事は、特別な記載がない限り <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja">クリエイティブ・コモンズ BY-NC-SA ライセンス</a>で保護されています</div>
+
+
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/yoshi0808" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="/new-technology/lib/animejs/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="/new-technology/lib/medium-zoom/dist/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/comments.js"></script><script src="/new-technology/js/utils.js"></script><script src="/new-technology/js/motion.js"></script><script src="/new-technology/js/schemes/muse.js"></script><script src="/new-technology/js/next-boot.js"></script>
+
+  <script src="/new-technology/lib/hexo-generator-searchdb/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"/new-technology/lib/mermaid/dist/mermaid.min.js","integrity":"sha256-3JloMMI/ZQx6ryuhhZTsQJQmGAkXeni6PkshX7UUO2s="}}</script>
+  <script src="/new-technology/js/third-party/tags/mermaid.js"></script>
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

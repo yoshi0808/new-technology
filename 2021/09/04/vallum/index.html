@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/icon-16x16.png">
+  <link rel="mask-icon" href="/new-technology/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/new-technology/css/main.css">
+
+
+
+<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-/4UQcSmErDzPCMAiuOiWPVVsNN2s3ZY/NsmXNcj0IFc=" crossorigin="anonymous">
+  <link rel="stylesheet" href="/new-technology/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.15.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
+
+    <meta name="description" content="この記事で実現すること  macOS(Big Sur)向けアプリケーションファイアウォールのVallumを使い、macOS標準のファイアウォールよりも高度な制御をします。自宅のWi-Fiの接続状態やVPN接続状態に応じたコントロールが可能です。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="macOSのアプリケーションファイアウォール Vallum">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2021/09/04/vallum/index.html">
+<meta property="og:site_name" content="New technologies in our life">
+<meta property="og:description" content="この記事で実現すること  macOS(Big Sur)向けアプリケーションファイアウォールのVallumを使い、macOS標準のファイアウォールよりも高度な制御をします。自宅のWi-Fiの接続状態やVPN接続状態に応じたコントロールが可能です。">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/09/04/vallum/vallum-title.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/09/04/vallum/rule1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/09/04/vallum/rule2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/09/04/vallum/install.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/09/04/vallum/setup.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/09/04/vallum/outbound-rule1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/09/04/vallum/outbound-rule2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/09/04/vallum/inbound-rule1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/09/04/vallum/fw-rule.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/09/04/vallum/popup.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/09/04/vallum/console.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/09/04/vallum/console1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/09/04/vallum/popup2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/09/04/vallum/console2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/09/04/vallum/newrule1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/09/04/vallum/newrule2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/09/04/vallum/newrule3.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/09/04/vallum/newrule4.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/09/04/vallum/newrule5.png">
+<meta property="article:published_time" content="2021-09-03T22:43:05.000Z">
+<meta property="article:modified_time" content="2021-10-24T01:00:57.000Z">
+<meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2021/09/04/vallum/vallum-title.png">
+
+
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2021/09/04/vallum/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"ja","comments":true,"permalink":"https://yoshi0808.github.io/new-technology/2021/09/04/vallum/","path":"2021/09/04/vallum/","title":"macOSのアプリケーションファイアウォール Vallum"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>macOSのアプリケーションファイアウォール Vallum | New technologies in our life</title>
+  
+
+
+
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{&quot;token&quot;: &quot;0148b4d0442e42b483ddce684030bd2f&quot;}'></script>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JMY6NSC2KK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+  'ad_storage': 'denied',
+  'analytics_storage': 'denied'
+  });
+
+  dataLayer.push({
+  'event': 'default_consent'
+  });
+
+  if (Cookies.get('PRVCY202112') == 'Agree') {
+    gtag('consent', 'update', {
+    'analytics_storage': 'granted'
+    });
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'G-JMY6NSC2KK',{ 'anonymize_ip': true });
+</script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/new-technology/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/new-technology/atom.xml" title="New technologies in our life" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="ナビゲーションバーの切り替え" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/new-technology/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">New technologies in our life</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Device,Network,Code,etc...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="検索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/new-technology/" rel="section"><i class="fa fa-home fa-fw"></i>ホーム</a></li><li class="menu-item menu-item-about"><a href="/new-technology/about/" rel="section"><i class="fa fa-user fa-fw"></i>サイトポリシー</a></li><li class="menu-item menu-item-tags"><a href="/new-technology/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>タグ</a></li><li class="menu-item menu-item-categories"><a href="/new-technology/categories/" rel="section"><i class="fa fa-th fa-fw"></i>カテゴリ</a></li><li class="menu-item menu-item-archives"><a href="/new-technology/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>アーカイブ</a></li><li class="menu-item menu-item-privacy"><a href="/new-technology/privacypolicy/" rel="section"><i class="fa fa-check fa-fw"></i>プライバシーポリシー</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="検索…" spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          見出し
+        </li>
+        <li class="sidebar-nav-overview">
+          概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Vallum%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span class="nav-number">1.</span> <span class="nav-text">Vallumについて</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%83%95%E3%82%A1%E3%82%A4%E3%82%A2%E3%83%BC%E3%82%A6%E3%82%A9%E3%83%BC%E3%83%AB%E3%81%AE%E6%9C%89%E7%94%A8%E6%80%A7"><span class="nav-number">2.</span> <span class="nav-text">アプリケーションファイアーウォールの有用性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Vallum%E8%A8%AD%E5%AE%9A%E3%81%AE%E4%B8%80%E4%BE%8B%EF%BC%88Outbound%EF%BC%89"><span class="nav-number">3.</span> <span class="nav-text">Vallum設定の一例（Outbound）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Vallum%E3%81%AE%E3%82%BB%E3%83%83%E3%83%88%E3%82%A2%E3%83%83%E3%83%97"><span class="nav-number">4.</span> <span class="nav-text">Vallumのセットアップ</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Inbound-Policy%E2%91%A0"><span class="nav-number">4.1.</span> <span class="nav-text">Inbound Policy①</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Outbound-Policy%E2%91%A1"><span class="nav-number">4.2.</span> <span class="nav-text">Outbound Policy②</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%AB%E3%83%BC%E3%83%AB%E3%81%AB%E8%A9%B2%E5%BD%93%E3%81%97%E3%81%AA%E3%81%84%E5%A0%B4%E5%90%88%E3%81%AE%E6%8C%99%E5%8B%95%E2%91%A2"><span class="nav-number">4.3.</span> <span class="nav-text">ルールに該当しない場合の挙動③</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Outbound%E3%83%AB%E3%83%BC%E3%83%AB"><span class="nav-number">5.</span> <span class="nav-text">Outboundルール</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%82%B5%E3%83%96%E3%83%89%E3%83%A1%E3%82%A4%E3%83%B3%E3%81%A7%E8%A8%B1%E5%8F%AF%E3%81%99%E3%82%8B"><span class="nav-number">5.1.</span> <span class="nav-text">サブドメインで許可する</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%AD%E3%83%BC%E3%82%AB%E3%83%AB%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E3%81%B8%E3%81%AE%E3%82%A2%E3%82%AF%E3%82%BB%E3%82%B9%E3%82%92%E6%8B%92%E5%90%A6%E3%81%99%E3%82%8B"><span class="nav-number">5.2.</span> <span class="nav-text">ローカルネットワークへのアクセスを拒否する</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Outbound%E3%83%AB%E3%83%BC%E3%83%AB%E3%81%AE%E5%B7%A5%E5%A4%AB"><span class="nav-number">5.3.</span> <span class="nav-text">Outboundルールの工夫</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Inbound%E3%81%AE%E3%83%AB%E3%83%BC%E3%83%AB"><span class="nav-number">6.</span> <span class="nav-text">Inboundのルール</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#macOS%E3%81%AE%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%83%95%E3%82%A1%E3%82%A4%E3%82%A2%E3%82%A6%E3%82%A9%E3%83%BC%E3%83%AB%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">6.1.</span> <span class="nav-text">macOSのアプリケーションファイアウォールの設定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%82%A2%E3%82%AF%E3%82%BB%E3%82%B9%E8%A6%81%E6%B1%82%E3%81%AE%E5%8F%97%E3%81%91%E5%85%A5%E3%82%8C"><span class="nav-number">6.2.</span> <span class="nav-text">アクセス要求の受け入れ</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%AD%E3%82%B0%E3%81%AE%E7%A2%BA%E8%AA%8D"><span class="nav-number">6.3.</span> <span class="nav-text">ログの確認</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A5%E7%B6%9A%E3%82%92%E5%8F%97%E3%81%91%E5%85%A5%E3%82%8C%E3%82%8B"><span class="nav-number">6.4.</span> <span class="nav-text">接続を受け入れる</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%AE%85Wi-Fi-x2F-%E6%9C%89%E7%B7%9ALAN-x2F-VPN%E3%81%A8%E5%A4%96%E5%87%BA%E6%99%82%E3%81%AE%E5%88%B6%E5%BE%A1"><span class="nav-number">7.</span> <span class="nav-text">自宅Wi-Fi&#x2F;有線LAN&#x2F;VPNと外出時の制御</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A8%AD%E5%AE%9A%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%81%AE%E4%BF%9D%E5%AD%98"><span class="nav-number">8.</span> <span class="nav-text">設定ファイルの保存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%9D%E3%81%AE%E4%BB%96%E6%A9%9F%E8%83%BD"><span class="nav-number">9.</span> <span class="nav-text">その他機能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Flows-Monitor"><span class="nav-number">9.1.</span> <span class="nav-text">Flows Monitor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%AF%E5%9F%9F%E5%88%B6%E9%99%90%E3%83%84%E3%83%BC%E3%83%AB-Snail"><span class="nav-number">9.2.</span> <span class="nav-text">帯域制限ツール　Snail</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="阿部　吉伸(Yoshinobu ABE)"
+      src="/new-technology/images/yoshi.png">
+  <p class="site-author-name" itemprop="name">阿部　吉伸(Yoshinobu ABE)</p>
+  <div class="site-description" itemprop="description">IT</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/new-technology/archives/">
+          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-name">ポスト</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/new-technology/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">カテゴリ</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/new-technology/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">タグ</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yoshi0808" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yoshi0808" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yoshi0808.blog@gmail.com" title="E-Mail → mailto:yoshi0808.blog@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yoshi0808_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yoshi0808_" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="/new-technology/lib/@creativecommons/vocabulary/assets/license_badges/big/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="ja">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2021/09/04/vallum/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/new-technology/images/yoshi.png">
+      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="New technologies in our life">
+      <meta itemprop="description" content="IT">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="macOSのアプリケーションファイアウォール Vallum | New technologies in our life">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          macOSのアプリケーションファイアウォール Vallum
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">投稿日</span>
+
+      <time title="作成日：2021-09-04 07:43:05" itemprop="dateCreated datePublished" datetime="2021-09-04T07:43:05+09:00">2021-09-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">編集日</span>
+      <time title="修正日：2021-10-24 10:00:57" itemprop="dateModified" datetime="2021-10-24T10:00:57+09:00">2021-10-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">カテゴリ</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/Security/" itemprop="url" rel="index"><span itemprop="name">Security</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <img src="/new-technology/2021/09/04/vallum/vallum-title.png" class="" title="alt">
+
+<p class="onepoint">この記事で実現すること</p>
+
+<p>macOS(Big Sur)向けアプリケーションファイアウォールのVallumを使い、macOS標準のファイアウォールよりも高度な制御をします。自宅のWi-Fiの接続状態やVPN接続状態に応じたコントロールが可能です。</p>
+<span id="more"></span>
+
+<h2 id="Vallumについて"><a href="#Vallumについて" class="headerlink" title="Vallumについて"></a>Vallumについて</h2><p>Vallum4は、macOS Big Sur向けに作成されたアプリケーションファイアウォールです。Catalina以前のmacOSにはVallum3が提供されています。作者はイタリアの方で現在3名程度のチームでエンハンスされているようです。仕組みとしてはアプリケーション毎に外への接続要求、および受信を受け入れる要求とをそれぞれにルールを決めるタイプのものです。Vallumの価格は＄15に日本国内の消費税を加え、1,850円前後でとても安価です。</p>
+<p>ファイアウォールは一般的に上位のルールから順に下位に順次チェックを行っていき、ルールが最初に一致したものを選択しアクセス制御をするのが一般的です。しかし、このVallumはファイアウォールルールが特徴的で、複数一致するルールを用意し、最後に一致したものが採用されるという方式です。</p>
+<p>Vallum4から実装された機能に接続中のWi-FiのAP名でルールを機動的に変更できます。仕事用のAPと自宅用APとで制御を変えるなど、外出事の運用には非常に有用です。</p>
+<blockquote>
+<p>Vallum Firewall<br> <a target="_blank" rel="noopener" href="https://vallumfirewall.com/">https://vallumfirewall.com</a></p>
+</blockquote>
+<h2 id="アプリケーションファイアーウォールの有用性"><a href="#アプリケーションファイアーウォールの有用性" class="headerlink" title="アプリケーションファイアーウォールの有用性"></a>アプリケーションファイアーウォールの有用性</h2><p>個人向けのサイバーセキュリティ対策としてのアプリケーションファイアーウォールは難易度が高いことや、アプリケーションの信頼性評価が難しい事によって積極的に厳格な設定を勧める記事はあまり見かけません。しかし、昨今のランサムウェアなどの個人向けサイバー攻撃の脅威を考えると、アプリケーション自身に悪意はなくとも、脆弱性を悪用されるケースが懸念されます。アプリケーションの振る舞いを把握し制約を与える事は個人向けの一歩進んだセキュリティ対策と言えるでしょう。Windowsでは、Windows Defenderの<mark class="label primary">セキュリティが強化されたWindows Defenderファイアウォール</mark>の設定で、受信&#x2F;送信それぞれのルール毎にIPアドレスやPortを詳細にフィルタできます。なお、セキュリティ対策ソフトに付属するアプリケーションファイアウォールはレピュテーションチェック<sup><a href="#note1"><strong>[1]</strong></a></sup>がメインであり、アプリケーションの信頼性評価によって通信の可否をコントロールする事を目的としていますので趣旨は異なります。</p>
+<p>一方、macOSのファイアウォールには昔から<strong>Little Snitch</strong>という定番のソフトウェアがあります。これは非常にグラフィカルで、世界地図を見せながらどの場所からアクセスしているのか、非常にわかりやすくなっています。こちらはアプリケーションの特性からどの範囲に通信を認めるかをユーザーが厳格に決める事を目的としています。45ユーロなので6,000円弱というコストで非常に長い間多くの方に愛用されているソフトウェアです。</p>
+<blockquote>
+<p>Little Snitch<br> <a target="_blank" rel="noopener" href="https://www.obdev.at/products/littlesnitch/index.html">https://www.obdev.at/products/littlesnitch/index.html</a></p>
+</blockquote>
+<p>Little Snitchのおかげか、macOSユーザーがアプリケーションファイアウォールに求めるレベルは高いものがあります。グラフィカルな見せ方や設定よりも、シンプルに細かい制御をしたいという事であればVallum Firewallは廉価でお勧めです。</p>
+<p>この記事ではVallumを使い、以下のセキュリティ強化策を実現します。</p>
+<ol>
+<li>ローカルネットワークへのアクセス不要なアプリケーションはアクセス要求を拒否します。</li>
+<li>インターネット接続先が固有ドメインなど決まっている場合はそのドメインのみ許可します。</li>
+<li>受信ルールとして最低限度必要なサービスのみ受信要求を許可します。</li>
+<li>自宅と自宅外で受信ルールを変え、外出先ではさらに受信要求を拒否します。</li>
+</ol>
+<p>Vallumは、アプリケーションのレピュテーションをチェックする機能はありません。しかし、macOSの場合はフォルダへのアクセス権など<strong>セキュリティとプライバシー</strong>でアプリケーション毎に明確に設定可能です。またApp StoreやHomebrewを使う事で正当なアプリケーションである事に一定の信頼性が担保されています。</p>
+<h2 id="Vallum設定の一例（Outbound）"><a href="#Vallum設定の一例（Outbound）" class="headerlink" title="Vallum設定の一例（Outbound）"></a>Vallum設定の一例（Outbound）</h2><p>いくつかOutbound（外に出ていく通信）のルールの例を挙げてみます。まずは翻訳ソフトのDeepLです。</p>
+<img src="/new-technology/2021/09/04/vallum/rule1.png" class="" width="1024" title="alt">
+
+<p>これは翻訳するためにDeepLのサイトに接続する事だけを許可するというわかりやすい例です。そして、 <strong>Locals</strong>というのは私が作成したグループですが、IPv4、IPv6のプライベートネットワークアドレス（リンクローカル、IPv6のULAを含む）です。翻訳ソフトは自宅のネットワークのホストにアクセスする必要は無いので、プライベート宛通信をブロックしています。iOSの<strong>ローカルネットワーク</strong>の機能で制限を与えるのと同等の設定になります。</p>
+<p>ルールに無いものは自動的にポップアップされ、その動作をユーザーに決めるよう促されます。</p>
+<img src="/new-technology/2021/09/04/vallum/rule2.png" class="" width="360" title="alt">
+
+<p>上記の例、例えばSafariであれば、さまざまなURLへとアクセスするので、個々のサイト、ドメインに対して許可するのではなく、Safariに対してインターネットアクセス全てを認める事になるでしょう。</p>
+<h2 id="Vallumのセットアップ"><a href="#Vallumのセットアップ" class="headerlink" title="Vallumのセットアップ"></a>Vallumのセットアップ</h2><p>まずはVallumのWebサイトに <mark class="label primary">DOWNLOAD VALLUM 4</mark>という文字を見つけそこからダウンロードします。macOSのCatalina以前はVallumのVersionは3となり、この記事での説明は該当しませんのでご注意ください。Vallum4にはBig Surが必要です。2021-9-4時点の最新バージョンは、4.0.3となります。<br>また、Homebrewでもインストール可能です。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install vallum --cask</span><br></pre></td></tr></table></figure>
+<img src="/new-technology/2021/09/04/vallum/install.png" class="" width="640" title="alt">
+
+<p>まず、アプリケーションのインストールが完了するとOS起動時に自動起動するように構成されます。初期セットアップでは、基本ルールをVallum Assistantによって決定します。</p>
+<img src="/new-technology/2021/09/04/vallum/setup.png" class="" width="800" title="alt">
+
+<p>ルールは、Inbound、Outboundそれぞれ分かれています。</p>
+<h3 id="Inbound-Policy①"><a href="#Inbound-Policy①" class="headerlink" title="Inbound Policy①"></a>Inbound Policy①</h3><table>
+<thead>
+<tr>
+<th>項目</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Pass connections from local networks</td>
+<td>プライベートIP（IPv6はリンクローカル）からの接続要求を許可</td>
+</tr>
+<tr>
+<td>Pass mDNS connections</td>
+<td>マルチキャストDNS(Bonjour) による名前解決の要求を受入</td>
+</tr>
+<tr>
+<td>Block unsigned apps</td>
+<td>署名されていないアプリケーションをブロック</td>
+</tr>
+</tbody></table>
+<mark class="label primary">Block unsigned APP</mark>は止めたくなりますが、最初から厳しくするとトラブルの元になるので最初は外しておいた方が無難でしょうか。ファイアウォールでよくある話です。私の場合、プリンタドライバが該当しました。また、mDNSによる名前解決はWindows、Linuxでも使えるのでそれなりに便利ですが、ここは普段の利用状況で判断してください。
+
+<h3 id="Outbound-Policy②"><a href="#Outbound-Policy②" class="headerlink" title="Outbound Policy②"></a>Outbound Policy②</h3><table>
+<thead>
+<tr>
+<th>項目</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Pass root connections</td>
+<td>rootユーザーによる接続を許可</td>
+</tr>
+<tr>
+<td>Pass mDNS connections</td>
+<td>マルチキャストDNS(Bonjour) による名前解決の要求を許可</td>
+</tr>
+<tr>
+<td>Pass connections to local networks</td>
+<td>プライベートIP（IPv6はリンクローカル）への接続要求を許可</td>
+</tr>
+<tr>
+<td>Pass connections to Apple and iCloud</td>
+<td>Appleのパブリックネットワークおよび関連ドメイン、iCloudへの接続要求を許可</td>
+</tr>
+<tr>
+<td>Pass all App Store apps</td>
+<td>Appストアでインストールしたアプリケーションは接続要求を許可</td>
+</tr>
+<tr>
+<td>Pass all macOS preinstall apps</td>
+<td>macOSのプリインストールされたアプリケーションは接続要求を許可</td>
+</tr>
+<tr>
+<td>Pass trusted system process</td>
+<td>macOSの信頼されたシステムプロセスは接続要求を許可</td>
+</tr>
+<tr>
+<td>Pass Safari Bookmarks</td>
+<td>ブラウザSafariのブックマークされたURLへの接続要求を許可</td>
+</tr>
+<tr>
+<td>Block unsigned apps</td>
+<td>署名されていないアプリケーションをブロック</td>
+</tr>
+</tbody></table>
+<h3 id="ルールに該当しない場合の挙動③"><a href="#ルールに該当しない場合の挙動③" class="headerlink" title="ルールに該当しない場合の挙動③"></a>ルールに該当しない場合の挙動③</h3><p>これらのデフォルトのルールや個別のアプリケーションで明確なルールが見つからなかった場合の挙動を選択します。</p>
+<ul>
+<li>Request user authorizationユーザーに許可するかどうかをポップアップし判断を促します（デフォルト）</li>
+<li>Block all inbound connections by defaultユーザーに尋ねずInboundの接続要求をブロックします</li>
+<li>Allow all inbound connections by defaultユーザーに尋ねずInboundの接続要求を受け入れます</li>
+<li>Allow all outbound connections by defaultユーザーに尋ねずOutboundの接続要求を許可します。</li>
+</ul>
+<p>最初はデフォルト設定で運用し、安定してきたらInboundの接続要求をブロックするなどカスタマイズされる事をお勧めします。最初から厳しくするとトラブルの元なので慣れるまでは割と緩めの設定が良いでしょう。</p>
+<p>初期設定の後は、常駐プロセスがアクセスする都度、しばらくポップアップのラッシュが続きます。落ち着くまでは<em>Pass</em>ボタンをクリックし続けるしかありませんが、ある程度経ってから、アプリケーション毎にアクセスする形態を鑑み、サブドメイン単位の許可、Port単位の許可など調整していくのが良いでしょう。</p>
+<p>Outboundルールについては、数時間ルールと格闘する事にはなりますが、やがて落ち着きポップアップの頻度も減ってくる事でしょう。</p>
+<h2 id="Outboundルール"><a href="#Outboundルール" class="headerlink" title="Outboundルール"></a>Outboundルール</h2><p>デフォルトのポリシーでセットアップした場合のOutboundルールを見てみましょう。Vallumのアイコンから<mark class="label primary">Firewall Configuration</mark>を選択し、<mark class="label primary">FIREWALLS RULES</mark>の<mark class="label primary">Outbound</mark>を選択します。</p>
+<img src="/new-technology/2021/09/04/vallum/outbound-rule1.png" class="" width="800" title="alt">
+
+<p>Outboundのルール0にユーザーに尋ねる原則ルール（ASK）があります（これは必ず一致するルールです）。ルール1以降に一致する条件が無ければ、ルール0が選択され、”ユーザーに尋ねる”という事です。</p>
+<p>VallumはASKの選択の仕方にも種類があります。</p>
+<img src="/new-technology/2021/09/04/vallum/outbound-rule2.png" class="" width="800" title="alt">
+<p>Actionの項目でユーザーに動作を尋ねる<mark class="label primary">ASK</mark>がありますが、ユーザーが応答しなかった場合、さらにその挙動を明示できます。VallumのConfigurationからPreferenceボタンをクリックし、Alert画面で設定が可能です。上記のキャプチャの右側に<mark class="label primary">Notification expire after</mark>という項目があります。ここではデフォルトの30秒となっていますが、この30秒ユーザーが無応答の場合は2分だけ接続を許可する設定ができます。また、許可する場合も永遠に許可する、今日は許可するなどの設定も可能です。<br>なお、<mark class="label primary">Bg Action</mark>という項目は、Vallumが稼働していない時の挙動を決めるものです。厳密にいえば、OS起動時にネットワーク接続した時点ではVallumはまだ起動していないでしょう。この時にルール0で許可するか拒否するかを決めます。Vallumが起動していなければルール1以降の判断は不可能で通信を許可するかしないかのいずれかです。特にOutboundの<mark class="label primary">Bg Action</mark>をBlockにすると、DHCPのIP配布に必要な通信も行えない事で、Wi-Fiが接続完了にならない事、自動起動するアプリが軒並み通信リトライとなり、大幅にOSの起動完了が遅れますのでBlockする事はお勧めしません。</p>
+<p>初期セットアップで自動作成されたルール1は、最初から用意されたグループ<mark class="label primary">local-nets</mark>、これはプライベートIPネットワークアドレスからUDP&#x2F;67のDHCPのリクエストがあります。ここのルールには<mark class="label primary">quick</mark>という記述がされています。この<mark class="label primary">quick</mark>はVallum独特の考え方で、これ以降のルールチェックは行わないというものです。Vallumは最後に有効となったルールが選択されるという原則がありますが、quickが付いたルールの場合はそれ以降のチェックは行いません。DHCPのやりとりでIPアドレスの配布が受けられないと何も始められません。</p>
+<p>続いてルール2はUDP&#x2F;53のDNSリクエスト、UDP&#x2F;5353のmDNS(Bonjour)リクエストです。こちらもquick付きで許可されています。</p>
+<p>ルール3は信頼されたシステムプロセスが許可されています。これはquickがついていないので、この後ろに拒否ルールを加える事である条件でリクエストを拒否できます。</p>
+<h3 id="サブドメインで許可する"><a href="#サブドメインで許可する" class="headerlink" title="サブドメインで許可する"></a>サブドメインで許可する</h3><p>ここからは、個別のアプリケーションの通信毎にポップアップされる都度、許可する事でルールが追加されていきます。ユーザーにアクションが求められた場合、IPアドレスで許可する、サブドメインで許可する、このアプリケーションは全て許可するなどの設定が行えます。翻訳ソフトや画像編集ソフトなど、インターネット接続先が固定的になるものはできるだけサブドメインで許可するとメンテナンスが簡単になります。</p>
+<h3 id="ローカルネットワークへのアクセスを拒否する"><a href="#ローカルネットワークへのアクセスを拒否する" class="headerlink" title="ローカルネットワークへのアクセスを拒否する"></a>ローカルネットワークへのアクセスを拒否する</h3><p>前述の翻訳ソフトのDeepLなど、ローカルネットへのアクセスが不要な場合は、手動で<mark class="label primary">local-nets</mark>に対するアクセス拒否を加えます。ちなみに、DeepLに限らず大半のアプリケーションは、ネット接続するためにDNSによる名前解決が必須です。DeepLが自宅内（ローカルネット）のDNSにリクエストする際は、1つ前の章で説明したルール2のDNSリクエストが該当します。ルール2はquickオプションがついているため、どんなアプリケーションもDNSへの名前解決は拒否されない仕組みです。よく考えられているなと感心します。</p>
+<h3 id="Outboundルールの工夫"><a href="#Outboundルールの工夫" class="headerlink" title="Outboundルールの工夫"></a>Outboundルールの工夫</h3><p>アプリケーションには、写真編集やフローチャート作成などネットアクセスを必要としない種類がありますが、バージョンアップの目的でインターネットにアクセスする場合があります。こういったケースでアクセスするドメインを絞る事ができます。またアプリケーションのバージョンアップはApp StoreまたはHomebrew任せにしているのであればアプリケーション単体のバージョンアップチェックも拒否できます。</p>
+<p>ウィルス対策ソフトなどによるURLチェックなど、信頼するしかないという場合などはベンダー指定で許可できますのでルールもシンプルになります。</p>
+<h2 id="Inboundのルール"><a href="#Inboundのルール" class="headerlink" title="Inboundのルール"></a>Inboundのルール</h2><p>Inboundルールは、Outboundに比べると多少設定はやや難しいのですが、自宅か外出先で制御を変えられるのが魅力です。Inboundは他の端末からどのようにアクセスされているのかわかりづらいため、ログファイルを活用して検証する必要があります。</p>
+<p>デフォルトのポリシーでセットアップした場合のInboundルールを見てみましょう。Vallumのアイコンから<mark class="label primary">ファイアウォールConfiguration</mark>を選択し、<mark class="label primary">FIREWALLS RULES</mark>の<mark class="label primary">Inbound</mark>を選択します。</p>
+<img src="/new-technology/2021/09/04/vallum/inbound-rule1.png" class="" width="800" title="alt">
+
+<ul>
+<li>ルール0<br>Outbound同様に原則ルール（ASK）があります。</li>
+<li>ルール1ダイナミック&#x2F;プライベートPortを許可します。<br>これはIANAによって明示された範囲外のPortでユーザーが自由に使えます。アプリケーションがサーバーPortを任意のタイミングで開く場合があるので明確に不要と判断できるまでは削除しないほうが良いでしょう。ダイナミック&#x2F;プライベートPortに関する説明はJPNICのWebサイトを参照してください。</li>
+<li>ルール2 DHCPサーバーからの受信</li>
+<li>ルール3 mDNS(Bonjour)の受信（名前解決の要求）</li>
+<li>ルール4 IPv6のicmp<br>IPv6のicmpはIPv4とは異なり、通信に必須のものなので止める事はできません。</li>
+</ul>
+<blockquote>
+<p>JPNIC -ポート番号とは-<br> <a target="_blank" rel="noopener" href="https://www.nic.ad.jp/ja/basics/terms/port-number.html">https://www.nic.ad.jp/ja/basics/terms/port-number.html</a></p>
+</blockquote>
+<p>なお、IPv6でDHCPv6を使っていらっしゃる方は、UDP&#x2F;546も手動で加える必要があります。</p>
+<h3 id="macOSのアプリケーションファイアウォールの設定"><a href="#macOSのアプリケーションファイアウォールの設定" class="headerlink" title="macOSのアプリケーションファイアウォールの設定"></a>macOSのアプリケーションファイアウォールの設定</h3><p>まずはmacOSのファイアウォールを有効にし、ファイアウォールオプションから必要なアプリケーションを許可します。</p>
+<img src="/new-technology/2021/09/04/vallum/fw-rule.png" class="" width="640" title="alt">
+
+<mark class="label primary">外部からの接続をすべてブロック</mark>のチェックを外します。チェックされていると印刷できない、またはファイル共有できない場合があります。ここでは一般的に良く利用されるAirDropを例に許可していきます。以下のようにsharingdを許可します。<mark class="label primary">内蔵ソフトウェアが外部からの接続を受け入れるのを自動的に許可</mark>にチェックしておく事で、macOSのファイアウォールで細かくアプリケーション毎に設定する必要がなくなり、Vallumに集約してコントロールできます。
+
+<h3 id="アクセス要求の受け入れ"><a href="#アクセス要求の受け入れ" class="headerlink" title="アクセス要求の受け入れ"></a>アクセス要求の受け入れ</h3><p>macOS自身がサーバーPortをクライアントからの接続要求を受け入れる場合、macOS自身のアプリケーションからの接続要求についてはフックできません。アプリケーションがPortをオープンし、そのPortに外部のクライアントが接続しようとしたところでVallumは検出し、許可&#x2F;拒否をユーザーに尋ねます。</p>
+<img src="/new-technology/2021/09/04/vallum/popup.png" class="" width="360" title="alt">
+
+<h3 id="ログの確認"><a href="#ログの確認" class="headerlink" title="ログの確認"></a>ログの確認</h3><p>外部のクライアントから接続の際、ログを確認しながらルールを検証します。アクセスが来ていないのか、Vallumで拒否されているのか、はたまたmacOSのファイアウォールで拒否されているのかを切り分けします。</p>
+<p>コンソールを開きます。</p>
+<img src="/new-technology/2021/09/04/vallum/console.png" class="" width="1024" title="alt">
+
+<p>次にVallumのログをフィルタし、フィルタ条件を保存します。</p>
+<img src="/new-technology/2021/09/04/vallum/console1.png" class="" width="1024" title="alt">
+
+<ol>
+<li>コンソールの右上の検索窓で”flow”と入力し、Enterキーを押します。</li>
+<li>検索窓のプルダウン”いずれか”をクリックし、”カテゴリ”を選択します。</li>
+<li>これでVallumのログが絞り込まれます。</li>
+<li>最後に保存ボタンをクリックし、”Vallum log”など名前を付けて条件を保存します。</li>
+<li>ログを出力するにはコンソール上で開始ボタンをクリックします。</li>
+</ol>
+<h3 id="接続を受け入れる"><a href="#接続を受け入れる" class="headerlink" title="接続を受け入れる"></a>接続を受け入れる</h3><p>実際にAirDropの例でやってみます。スマホからmacOSにAirDropすると、Vallumはsharingdについてポップアップします。AirDropと表示されており分かりやすいですね。ちなみに、<mark class="label primary">Firewall Configuration</mark>の<mark class="label primary">Services and Ports</mark>でPort名称のカスタマイズができます。NetBIOS(137-139)やSMBの445などは”File Sharing”となっていますので、気になる人は変更してください。</p>
+<img src="/new-technology/2021/09/04/vallum/popup2.png" class="" width="360" title="alt">
+
+<p>許可、Passする際、Logを出力するようにチェックボックスにチェックを入れてください。これでコンソールを起動しログ出力させておけば、AirDropされる度にコンソールへログが出力されます。</p>
+<img src="/new-technology/2021/09/04/vallum/console2.png" class="" width="1024" title="alt">
+
+<p>AirDropは、IPv6のリンクローカルアドレスで通信しているようですね。これだとどの端末からアクセスされたのかはわかりづらいですが。。。</p>
+<h2 id="自宅Wi-Fi-x2F-有線LAN-x2F-VPNと外出時の制御"><a href="#自宅Wi-Fi-x2F-有線LAN-x2F-VPNと外出時の制御" class="headerlink" title="自宅Wi-Fi&#x2F;有線LAN&#x2F;VPNと外出時の制御"></a>自宅Wi-Fi&#x2F;有線LAN&#x2F;VPNと外出時の制御</h2><p>いよいよVallumの高度な設定に取り組みます。ここでは、自宅Wi-Fiに接続しているor有線LANに接続しているor自宅へのVPNに接続しているという条件でAirDropを許可し、それ以外の状態、自宅外のAPに接続している場合はAirDropを許可しないというものです。大まかなルールは以下のように記述します。</p>
+<ol>
+<li>AirDropなど個々のアプリケーションで受信を許可</li>
+<li>条件として、自宅Wi-FiまたはLANの物理インタフェースがActiveでない場合は、全てのアプリケーションを拒否</li>
+<li>VPNのインタフェースがActiveの場合、AirDropなど個々のアプリケーションで受信を許可</li>
+</ol>
+<p>1と3が重複感がありますが、VPNが入った場合の条件が複雑で今のVallumではこのような設定になります。2については、個々のルールで”quick”と指定したDHCPやDNSなどのネットワーク系通信以外は1で許可したものが2の条件（外出中）で全て拒否される事になります。それで3で外出中であってもVPNが有効な場合は再び許可する事になります。</p>
+<p>2の条件はINBOUND RULEの一覧を右クリックし<mark class="label primary">ADD New Rule</mark>を選択します。</p>
+<img src="/new-technology/2021/09/04/vallum/newrule1.png" class="" width="640" title="alt">
+
+<p>さらに、<mark class="label primary">Advanced</mark>をクリックします。</p>
+<img src="/new-technology/2021/09/04/vallum/newrule2.png" class="" width="640" title="alt">
+
+<ol>
+<li>Logの出力をチェックします。</li>
+<li><mark class="label primary">Condition</mark>のタブをクリックし、<mark class="label primary">Not Connected to hotspots</mark>の項目に自宅のWi-Fiのアクセスポイント名を入力します。</li>
+<li>有線接続時の条件のために、<mark class="label primary">Interfaces are not active</mark>にインタフェース名を入力します。有線接続し、<code>ifconfig</code>で実際にIPが割り当てられているインタフェースの名前を入力します。私の場合はLANはen5でした。</li>
+</ol>
+<p>この設定を加える事で自宅外の接続ではAirDropはできなくなります。</p>
+<p>簡単にテストするために、Wi-Fi接続からiPhoneなどへのテザリングに切り替え、そこでiPhoneからmacOSにAirDropすると以下のログがコンソールに出力されます。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Log: 🔴 block ⬇️ Rule:18 sharingd PID:445 UID:501 from fe80::xxxx:xxxx:xxxx:xxxx:50392 to fe80::xxxx:xxxx:xxxx:xxxx:8770</span><br></pre></td></tr></table></figure>
+
+<p>一旦は許可したAirDropが再び拒否されるようになりました。テザリングを停止し自宅Wi-Fiに戻した際にはこのログは出力されず、再びAirDropできるはずです。</p>
+<p>さて、最後にVPNです。</p>
+<ol>
+<li>AirDropを許可したルールを複製します。</li>
+</ol>
+<img src="/new-technology/2021/09/04/vallum/newrule3.png" class="" width="800" title="alt">
+
+<ol start="2">
+<li>複製したルールを選択、ドラッグし自宅外はDropするルールの下に移動します。</li>
+</ol>
+<img src="/new-technology/2021/09/04/vallum/newrule4.png" class="" width="800" title="alt">
+
+<ol start="3">
+<li>このルールをVPN接続中のみ有効にします。</li>
+</ol>
+<img src="/new-technology/2021/09/04/vallum/newrule5.png" class="" width="640" title="alt">
+
+<p>ルールのAdvancedを選び、Logの出力をチェック、<mark class="label primary">Interface is active</mark>にVPNのインタフェース名を入力します。これもVPN接続時に<code>ifconfig</code>でインタフェース名を確認できます。</p>
+<p>いよいよテストです。macOSをiPhoneへテザリング接続し、さらにVPNに接続します。iPhoneからmacOSにAirDropが行え、ログに以下の通り出力される事が確認できます。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Log: 🟢 pass ⬇️ Rule:19 sharingd PID:445 UID:501 from fe80::xxxx:xxxx:xxxx:xxxx:60433 to fe80::xxxx:xxxx:xxxx:xxxx:8770</span><br></pre></td></tr></table></figure>
+<p> ログは上記のように最後に選択されたルールのみが出力されます。</p>
+<p>NetBIOSやmDNSの拒否など外出中には基本は拒否設定としつつ、VPN接続中には一部のサービスを生かすという使い方ができます。</p>
+<h2 id="設定ファイルの保存"><a href="#設定ファイルの保存" class="headerlink" title="設定ファイルの保存"></a>設定ファイルの保存</h2><p>ルールはファイルに保存できます。<mark class="label primary">Firewall Configuration</mark>から<mark class="label primary">Import / Export</mark>ボタンをクリックし、Exportを選んでください。初期設定の<mark class="label primary">Run Assistant</mark>を選ぶと既存ルールが全てクリアされます。定期的にバックアップをお勧めします。</p>
+<p>なお、Vallum4に関するオンラインヘルプが用意されています。</p>
+<blockquote>
+<p>Vallum 4 Help<br> <a target="_blank" rel="noopener" href="https://help.vallumfirewall.com/index.php?chapter=introduction">https://help.vallumfirewall.com/index.php?chapter=introduction</a></p>
+</blockquote>
+<h2 id="その他機能"><a href="#その他機能" class="headerlink" title="その他機能"></a>その他機能</h2><h3 id="Flows-Monitor"><a href="#Flows-Monitor" class="headerlink" title="Flows Monitor"></a>Flows Monitor</h3><p>Flows Monitorを選択すると、現在通信しているプロセスの一覧が参照できます。</p>
+<h3 id="帯域制限ツール-Snail"><a href="#帯域制限ツール-Snail" class="headerlink" title="帯域制限ツール　Snail"></a>帯域制限ツール　Snail</h3><p>Vallumには、アプリケーション毎に帯域制限できるツール、Snailのライセンスが付属します。Snailは別途インストールする必要があり、Homebrewには登録されていません。詳細は以下を参照してください。</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.murusfirewall.com/snail/">https://www.murusfirewall.com/snail/</a></p>
+</blockquote>
+<p><small id="note1"><strong>[1]</strong><br>レピュテーションチェック　アプリケーションの信頼性を第三者となる企業によって評価したもの。セキュリティベンダーなどが独自の尺度でアプリケーションを評価したりアプリケーションの振る舞いによって安全か不審かを評価するもの。<br></small></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/new-technology/2021/08/15/xg-v185-mr1/" rel="prev" title="XG Firewall v18.5 MR1の更新">
+                  <i class="fa fa-chevron-left"></i> XG Firewall v18.5 MR1の更新
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/new-technology/2021/10/03/2500MbE/" rel="next" title="Plugable 2.5GbE USB アダプター">
+                  Plugable 2.5GbE USB アダプター <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">阿部　吉伸(Yoshinobu ABE)</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div><script src="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.umd.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.min.css" rel="stylesheet">
+
+<script>
+if (Cookies.get('PRVCY202112') != 'Agree') {
+  const notice = new SimpleGDPR({
+    title: 'Accept Cookies & Privacy Policy?',
+    message: 'このWebサイトでは、訪問や活動に関するデータがクッキー等によって収集されます。閲覧を継続される場合、\
+    プライバシーポリシーをご覧いただき同意(Agree)をお願いします',
+    link: null,
+    icons: true,
+    theme: 'light',
+    animation: 'fade',
+    float: 'bottom-right',
+      callback: () => {
+      notice.close();
+      Cookies.set('PRVCY202112', 'Agree', { expires: 365, path: '/'});
+      notice.destroy();
+      // Google Analytics 4
+      gtag('consent', 'update', {
+      'analytics_storage': 'granted'
+      });
+      gtag('js', new Date());
+      gtag('config', 'G-JMY6NSC2KK', { 'anonymize_ip': true });
+      },
+  });
+}
+</script>
+<div class="disclaimer1">
+このサイトの記事は、特別な記載がない限り <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja">クリエイティブ・コモンズ BY-NC-SA ライセンス</a>で保護されています</div>
+
+
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/yoshi0808" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="/new-technology/lib/animejs/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="/new-technology/lib/medium-zoom/dist/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/comments.js"></script><script src="/new-technology/js/utils.js"></script><script src="/new-technology/js/motion.js"></script><script src="/new-technology/js/schemes/muse.js"></script><script src="/new-technology/js/next-boot.js"></script>
+
+  <script src="/new-technology/lib/hexo-generator-searchdb/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"/new-technology/lib/mermaid/dist/mermaid.min.js","integrity":"sha256-3JloMMI/ZQx6ryuhhZTsQJQmGAkXeni6PkshX7UUO2s="}}</script>
+  <script src="/new-technology/js/third-party/tags/mermaid.js"></script>
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
