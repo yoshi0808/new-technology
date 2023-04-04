@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/03/25/Mellanox-ConnectXandWindows11/unifi1.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/03/25/Mellanox-ConnectXandWindows11/mellanox.png">
 <meta property="article:published_time" content="2023-03-24T15:00:01.000Z">
-<meta property="article:modified_time" content="2023-04-04T11:23:17.693Z">
+<meta property="article:modified_time" content="2023-04-04T12:49:36.414Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="SFP+">
 <meta property="article:tag" content="10GbE">
@@ -281,7 +281,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">編集日</span>
-      <time title="修正日：2023-04-04 20:23:17" itemprop="dateModified" datetime="2023-04-04T20:23:17+09:00">2023-04-04</time>
+      <time title="修正日：2023-04-04 21:49:36" itemprop="dateModified" datetime="2023-04-04T21:49:36+09:00">2023-04-04</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -314,7 +314,7 @@
 <span id="more"></span>
 
 <h2 id="安価なMellanox-Connect-Xカード"><a href="#安価なMellanox-Connect-Xカード" class="headerlink" title="安価なMellanox Connect-Xカード"></a>安価なMellanox Connect-Xカード</h2><p>すでに販売終了となったConnect X-3はeBayで5,000円弱で売られています。MellanoxのConnect Xシリーズは脆弱性の指摘も見かけず、安定しているNICでしょうか。intelに比べればマイナーですが、SFP＋で安価に入手可能となっており、ホームユーザーにとっても大変ありがたい存在です。<br>Connect X-3はWindows10までのドライバはNvidiaのサイトに掲載されていますがWindows11ではドライバの存在はありません。</p>
-<p>しかしながら、Windows11ではConnect Xを認識してWindowsとして用意されたドライバのインストールが行われ、すぐに使えます。</p>
+<p>しかしながら、Windows11ではConnect Xを認識してWindowsとして用意されたドライバのインストールが行われ、すぐに使えます。いわゆる、Windows11に標準で付属しているinboxドライバになります。逆にNVidiaサイトにあるWindows10用のドライバはWindows11ではエラーが発生し動きません。後述のNVidiaフォーラムの投稿をご確認ください。</p>
 <p>最近、2PortのMellanox Connect X-4 LxをeBayでちらほら見かけるようになってきました。販売終了した製品ですが、サポートはされています。</p>
 <p><strong>MCX4121A-ACAT</strong>という型番は、<strong>Mellanox ConnectX-4 LX 25GBE SFP28 2ポートPCIeイーサネット アダプター</strong>となっており、eBayで15,000円ほどで購入できます。SFP28はSFP+とモジュール接続口の互換性があります。SFP＋のダイレクトアタッチケーブル（DAC）やOM3ケーブルと共に使うSFP+短距離マルチモードファイバ（MM SR）モジュール等の10GbE SFP+で問題なく10Gbps通信できます。もちろん25GbEとしても使えますが、PCなどホスト端末に挿して使うには他の機器との速度差が大きすぎて使いにくいものです。intel製のNICは在庫不足から回復傾向にあるようですが、まだまだ高額です。</p>
 <p>詳しいスペックは以下のリンクを参照してください。PCIe3 x8となっています。</p>
@@ -332,7 +332,7 @@
 <h2 id="Windows11でのデバイスドライバ"><a href="#Windows11でのデバイスドライバ" class="headerlink" title="Windows11でのデバイスドライバ"></a>Windows11でのデバイスドライバ</h2><h3 id="Connect-X-3"><a href="#Connect-X-3" class="headerlink" title="Connect X-3"></a>Connect X-3</h3><p>Connect X-3をPCIeにセットしてWin11を起動します。デバイスドライバを見てみます。</p>
 <img src="/new-technology/2023/03/25/Mellanox-ConnectXandWindows11/x3.png" class="" width="480" title="alt">
 
-<p>2019年のドライバが自動的に取り込まれます。このドライバに脆弱性が出てしまえば、リスクがあり別の製品に買い替えが必要となりますが、脆弱性データベースでもなかなかMellanoxの名前を見ることはありません。</p>
+<p>2019年のinboxドライバが自動的に取り込まれます。このドライバに脆弱性が出てしまえば、リスクがあり別の製品に買い替えが必要となりますが、脆弱性データベースでもなかなかMellanoxの名前を見ることはありません。</p>
 <p>お約束ですが、ESXi上のUbuntuとのiperf3を実行してみます。MTUは1,500のデフォルト、スイッチはフローコントロールをオンにしています。<br>多重度3でUbuntuからダウンロードする方向（-Rオプション）に実行して以下の通りです。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[ ID] Interval           Transfer     Bitrate         Retr</span><br><span class="line">[  5]   0.00-10.05  sec  3.81 GBytes  3.26 Gbits/sec  615             sender</span><br><span class="line">[  5]   0.00-10.00  sec  3.81 GBytes  3.27 Gbits/sec                  receiver</span><br><span class="line">[  7]   0.00-10.05  sec  3.46 GBytes  2.96 Gbits/sec  423             sender</span><br><span class="line">[  7]   0.00-10.00  sec  3.46 GBytes  2.97 Gbits/sec                  receiver</span><br><span class="line">[  9]   0.00-10.05  sec  3.79 GBytes  3.24 Gbits/sec  623             sender</span><br><span class="line">[  9]   0.00-10.00  sec  3.78 GBytes  3.25 Gbits/sec                  receiver</span><br><span class="line">[SUM]   0.00-10.05  sec  11.1 GBytes  9.45 Gbits/sec  1661             sender</span><br><span class="line">[SUM]   0.00-10.00  sec  11.1 GBytes  9.49 Gbits/sec                  receiver</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
