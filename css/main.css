@@ -1447,6 +1447,8 @@ pre code {
   color: #999;
   font-size: 0.875em;
   padding: 20px 0;
+  transition: 0.2s ease-in-out;
+  transition-property: left, right;
 }
 .footer.footer-fixed {
   bottom: 0;
@@ -2550,6 +2552,9 @@ hr {
   .sidebar-active {
     padding-left: 320px;
   }
+  .sidebar-active .footer-fixed {
+    left: 320px;
+  }
 }
 .sidebar {
   left: -320px;
@@ -2588,7 +2593,7 @@ hr {
   vertical-align: middle;
 }
 .links-of-author a::before {
-  background: #ffff28;
+  background: #d254ff;
   display: inline-block;
   margin-right: 3px;
   transform: translateY(-2px);
