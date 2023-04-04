@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/</loc>
+    
+    <lastmod>2023-04-04</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://yoshi0808.github.io/new-technology/2023/03/25/Mellanox-ConnectXandWindows11/</loc>
     
     <lastmod>2023-04-04</lastmod>
@@ -14,15 +23,6 @@
     <loc>https://yoshi0808.github.io/new-technology/2022/04/02/nic-firmware/</loc>
     
     <lastmod>2023-03-05</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/</loc>
-    
-    <lastmod>2023-02-23</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
