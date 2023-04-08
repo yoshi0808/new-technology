@@ -45,7 +45,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/12/31/unifi-ap/wifi5.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/12/31/unifi-ap/wifi6.png">
 <meta property="article:published_time" content="2022-12-30T15:00:01.000Z">
-<meta property="article:modified_time" content="2022-12-31T22:48:13.000Z">
+<meta property="article:modified_time" content="2023-04-08T12:48:48.530Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="UniFi">
 <meta name="twitter:card" content="summary">
@@ -290,7 +290,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">編集日</span>
-      <time title="修正日：2023-01-01 07:48:13" itemprop="dateModified" datetime="2023-01-01T07:48:13+09:00">2023-01-01</time>
+      <time title="修正日：2023-04-08 21:48:48" itemprop="dateModified" datetime="2023-04-08T21:48:48+09:00">2023-04-08</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -374,7 +374,6 @@
 </tr>
 </tbody></table>
 <p>Wi-FiのスペックとしてはU6 Proで日本国内のやや高性能モデルに相当するでしょうか。アンテナ数を見ても、国内のWi-Fi機器と比較して特段優れている項目はありません。U6 Liteも一般的なスペックです。</p>
-<p>Ubiquitの日本のWebストアではU6 Extender Wi-Fi中継機という製品が発売されました。これは廊下などのコンセントに挿して使うタイプのもので、メッシュではなさそうです。UniFi製品は米国で使われている3ピンのコンセントですので日本のコンセントには直接挿せません。変換プラグを嚙ますのは美観を損ねる事になるのでこのまま日本で発売してしまったのはちょっと違和感があります。</p>
 <h2 id="UniFi-APの実速度"><a href="#UniFi-APの実速度" class="headerlink" title="UniFi APの実速度"></a>UniFi APの実速度</h2><p>iPhone11を使ってAPに1mの距離まで近づけて、iperf3を実行した時の結果は以下の通りです。</p>
 <blockquote>
 <p>U6 Pro<br> <img src="/new-technology/2022/12/31/unifi-ap/u6-pro3.png" class="" width="360" title="alt"></p>
@@ -404,7 +403,8 @@
 </blockquote>
 <p>U6 Proの方が電波の出力は低いものの、レイテンシは15msあたりで上限が整っています。一方、Atermは時々、20msを超えるスパイクが発生しています。U6 Proの速度が出る理由はレイテンシが低い事と想定されます。スマホやノートPCの一般的な操作では100Mbpsを超えたあたりから殆どその差については分からなくなってきますが、リモートワークのビデオ会議の安定性を考えるとレイテンシは意識したいところです。</p>
 <p>UniFi APはWi-Fi設定が非常に詳細まで行えることがメリットであり、電波が届かないなどの対策としての購入用途には向いていません。</p>
-<h2 id="UniFi-APの設置"><a href="#UniFi-APの設置" class="headerlink" title="UniFi APの設置"></a>UniFi APの設置</h2><p>電源を取るのはPoEアダプタまたはPoEスイッチからというのが独特です。これによってLANケーブルのみでデータ送受信と送電が行え、美観を損ねる事なく、壁の上部にAPを配置し、障害物を避けた効率の良い電波の発信が行えます。Wi-Fiはハードウェアスペックも関係ありますが、こういった物理的な配置も重要です。</p>
+<h2 id="UniFi-APの設置"><a href="#UniFi-APの設置" class="headerlink" title="UniFi APの設置"></a>UniFi APの設置</h2><p>電源を取るのはPoEアダプタまたはPoEスイッチからというのが独特です。これによってLANケーブルのみでデータ送受信と送電が行え、美観を損ねる事なく、壁の上部にAPを配置し、障害物を避けた効率の良い電波の発信が行えます。Wi-Fiはハードウェアスペックも関係ありますが、こういった物理的な配置も重要です。後述しますが、有線バックホールを使わずにPoEの電力だけを使い、メッシュにすることもできます。この場合、UniFi APは有線接続されている他のAPにメッシュで接続してくれます。</p>
+<p>有線バックホールの一例です。</p>
 <p>（U6 Liteを2階に設置）</p>
 <img src="/new-technology/2022/12/31/unifi-ap/u6-lite.png" class="" width="640" title="alt">
 
@@ -423,12 +423,13 @@
 <li>「<a href="/new-technology/2022/10/23/unifi-network-application2/" title="UniFi Network Applicationの運用">UniFi Network Applicationの運用</a>」</li>
 </ul>
 <p>ネットワークアプリケーションの<mark class="label primary">SETTINGS</mark>から<mark class="label primary">WiFi</mark>の画面を開くと以下の表示となります。</p>
-<img src="/new-technology/2022/12/31/unifi-ap/wifi1.png" class="" width="800" title="alt">
+<img src="/new-technology/2022/12/31/unifi-ap/wifi1.png" class="" width="640" title="alt">
 
 <p>画面上部のWiFiについては、既存のSSID一覧が表示されます。画面下部の<mark class="label primary">Global AP Settings</mark>では、複数台のAPに共通設定を指定します。</p>
-<p>メインとなる5GHzの無線設定では、一般的には80MHzを指定します。日本の製品ではアンテナ数で上り2、下り2として2x2という表現がされている事が多いでしょうか。スマホなど多くは80MHzになります。高機能なWiFiクライアントをお持ちの場合は160MHzも設定可能です（U6 Liteは80MHzが上限です）。</p>
+<p>メインとなる5GHzの無線設定では、DFSのこともあり、一般的には80MHzを指定します。日本の製品ではアンテナ数で上り2、下り2として2x2という表現がされている事が多いでしょうか。スマホなど多くは80MHzになります。高機能なWiFiクライアントをお持ちの場合は160MHzも設定可能です（U6 Liteは80MHzが上限です）。</p>
 <mark class="label primary">Transmit Power</mark>は環境に応じて、Auto、High、Medium、Low、Custom（固定数値指定）と設定できます。
 
+<p>有線バックホール無しでAPを設置する場合は、<mark class="label primary">Wireless Connectivity</mark>の<mark class="label primary">Wireless Meshing</mark>のチェックボックスをOnにします。私は普段は有線バックホールで運用していますが、U6-Proでは有線接続せずにメッシュ接続も行えました。</p>
 <p>続いて、SSIDの設定です。</p>
 <img src="/new-technology/2022/12/31/unifi-ap/wifi2.png" class="" width="800" title="alt">
 
@@ -519,19 +520,20 @@
 </tr>
 </tbody></table>
 <p>WiFi Schedulerは夜間など使わない時の時間を設定できます。私は夜間は弱い2.4GHzのみ利用し、日中使っている5GHzは止めています。</p>
-<h2 id="AP単位の設定"><a href="#AP単位の設定" class="headerlink" title="AP単位の設定"></a>AP単位の設定</h2><p>AP本体の設定を変更します。主にはIPアドレス、無線のチャンネルを指定します。</p>
+<h2 id="AP単位の設定"><a href="#AP単位の設定" class="headerlink" title="AP単位の設定"></a>AP単位の設定</h2><p>UniFiのDevice画面の<mark class="label primary">Settings</mark>から、AP本体の設定を変更します。主にはIPアドレス、無線のチャンネルを指定します。</p>
 <img src="/new-technology/2022/12/31/unifi-ap/u6-pro5-1.png" class="" width="360" title="alt">
 
-<p>APを2つ設置するならば、メインはDFSを受けないチャネル、サブは別のチャネルにするとお互い競合せずに安定した電波の受信ができます。</p>
+<p>５GHzについては、APを2つ設置するならば、メインはDFSを受けないチャネル、サブは別のチャネルにするとお互い競合せずに安定した電波の受信ができます。2.4GHzはChannel幅は20MHzとし、1、6、11という具合に５づつスライドさせてAP毎に電波が重ならないように設定します。こういったきめ細かい設定が行えるのもUniFi APの特徴です。</p>
 <p>IPアドレスはDHCP、固定が選べます。</p>
 <img src="/new-technology/2022/12/31/unifi-ap/u6-pro5-2.png" class="" width="360" title="alt">
 
-<p>このAP自体が属するマネジメント用のVLANを指定します。上記のグローバル設定ではSSID毎にVLANを設定できるので、APに接続するスイッチは、マネジメントVLANを含む全てのVLAN IDを含めるようにトランクポートとして設定する必要があります。</p>
-<p>設定の一例です。</p>
+<p>このAP自体が属するマネジメント用のVLANを指定します。Wi-Fi設定ではSSID毎にVLANを設定できるので、APに接続するスイッチは、マネジメントVLANを含む全てのVLAN IDを含めるようにトランクポートとして設定する必要があります。</p>
+<p>VLANを使った設定の一例です。</p>
+<p>デバイスの管理をデフォルトVLAN（かつネイティブVLAN）、一般端末をVLAN100、会社用・ゲストをVLAN500とした、よくある一般的なシナリオです。</p>
 <img src="/new-technology/2022/12/31/unifi-ap/network.drawio.png" class="" width="1024" title="alt">
 
-<p>マネジメントVLANはDefault（VLAN ID＝1）をネイティブVLAN（タグ無し）としています。自宅のPCやスマホなど一般端末はVLAN ID＝100、会社のPCやIoTなどのゲスト用端末はVLAN ID＝500とし、さらにClient Device IsolationをEnableにして互いの機器の通信を拒否します。スイッチ間のトランクポートは必ず通信するVLAN IDのタグを含めてあげる必要があります。</p>
-<h2 id="APのファームウェア"><a href="#APのファームウェア" class="headerlink" title="APのファームウェア"></a>APのファームウェア</h2><p>UniFi APのファームウェアは現在、6E対応について過渡期のようです。6Eを使わないにしても最新のファームウェアは、ローミングの切り替わりが安定しないように見えます。個人的にはU6 Liteは6.0.21、U6 Proは6.0.19が安定しているように見えます。もしお使いの端末でローミングが安定しないようであれば過去のファームウェアを確認してみてください。過去のファームウェアを適用するには過去記事「<a href="/new-technology/2022/10/23/unifi-network-application2/" title="UniFi Network Applicationの運用">UniFi Network Applicationの運用</a>」を参照してください。</p>
+<p>UniFIでは複数VLANのペアを作って、そのうちの１つをネイティブVLANとして指定します。この例ではマネジメントVLANをDefault（VLAN ID＝1）、かつ、ネイティブVLAN（タグ無し）としています。会社のPCやゲスト用端末はClient Device IsolationをEnableにして互いの機器の通信を拒否します。スイッチ間のトランクポートは必ず通信するVLAN IDのタグを含めてあげる必要があります。</p>
+<h2 id="APのファームウェア"><a href="#APのファームウェア" class="headerlink" title="APのファームウェア"></a>APのファームウェア</h2><p>UniFi APの最新のOfficialのファームウェアは、ローミングの切り替わりが安定しないように見えますが、現在リリース候補となっている、6.5.40は遅延の少ないローミングが成功しているように見えます。また、Wi-Fi6Eに対応したU6 Enterpriseもいよいよ発売されるようです。</p>
 <h2 id="通知機能"><a href="#通知機能" class="headerlink" title="通知機能"></a>通知機能</h2><p>通知はUniFiコンソールまたはUniFiネットワークアプリケーションの機能ですが、APに関して通知機能は以下の通りです。</p>
 <img src="/new-technology/2022/12/31/unifi-ap/wifi5.png" class="" width="800" title="alt">
 
