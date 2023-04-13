@@ -67,7 +67,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/verify6.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/ubuntu1.png">
 <meta property="article:published_time" content="2022-09-22T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-04-13T21:30:52.968Z">
+<meta property="article:modified_time" content="2023-04-13T21:50:24.798Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="UniFi">
 <meta name="twitter:card" content="summary">
@@ -312,7 +312,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">編集日</span>
-      <time title="修正日：2023-04-14 06:30:52" itemprop="dateModified" datetime="2023-04-14T06:30:52+09:00">2023-04-14</time>
+      <time title="修正日：2023-04-14 06:50:24" itemprop="dateModified" datetime="2023-04-14T06:50:24+09:00">2023-04-14</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -348,7 +348,7 @@
 <p>UniFiはAppleのiPhoneのように説明書が無くても使えることを目標にしているのでしょうか。難しいスイッチなどのコマンドラインを必要としませんが、マニュアルというものがありません。コミュニティにはUbiquitiのサポートスタッフも発言していますが、コミュニティが貴重な情報源でもあります。操作が不明な場合や不具合かなと思った場合は、まずコミュニティで検索することから始まります。</p>
 <h3 id="UniFi-Networkのリモートアクセス"><a href="#UniFi-Networkのリモートアクセス" class="headerlink" title="UniFi Networkのリモートアクセス"></a>UniFi Networkのリモートアクセス</h3><p>Requirementとして以下のドキュメントがあります。</p>
 <blockquote>
-<p>UniFi Network - Remote Access Requirements<br> <a target="_blank" rel="noopener" href="https://help.ui.com/hc/en-us/articles/115012240067-UniFi-Network-Remote-Access-Requirements">https://help.ui.com/hc/en-us/articles/115012240067-UniFi-Network-Remote-Access-Requirements</a></p>
+<p>UniFi Network - リモートアクセスの要件<br> <a target="_blank" rel="noopener" href="https://help.jp.ui.com/articles/115012240067/">https://help.jp.ui.com/articles/115012240067/</a></p>
 </blockquote>
 <p>説明は至ってシンプルです。UIシングルサインオンアカウント、インターネットに接続されているネットワークアプリケーションホストが必要とあります。<br>よくあるトラブルとしては、Port解放の問題、DNS、NTPへの接続が必要という項目があります。また、コミュニティのリリースポストを参照してほしいとあります。</p>
 <p>UniFiの環境は慣れるまでは理解するのが大変ですが、その世界観を理解できれば1つ1つは難しくありません。</p>
@@ -367,11 +367,11 @@
 <li>64 GB Disk</li>
 </ul>
 <p>UniFi Network Applicationに対してはユーザーからのWebサービス、スイッチからネットワークアプリケーションへの接続などがあり、いくつかのサーバーPortをオープンしておく必要があります。Ubuntuと言われるとWindows上のWSL2を思い浮かべますが、WindowsOS上にPort Forwardの設定を行う必要があり、通常のUbuntuより余計な手間が掛かるためWSL2はお勧めしません。</p>
-<p>UniFi Network ApplicationではMongoDB3.6&#x2F;Java8を使います。MongoDB3.6は2021年4月で既にEOLを迎えています。Java8は古いプロダクトではありますが、2030年まではサポートされることが言及されています。これらのミドルウェアの利用はアプリケーション内部の組み込み型モジュールとして考えるべきでもあり、セキュリティの観点からは可能な限りUbuntu上の公開ポートを制限すべきです。従い、UbuntuはUniFiネットワークアプリケーション専用として利用し、必要なPort以外は閉じます。</p>
+<p>UniFi Network ApplicationではMongoDB&#x2F;Javaを使います。これらのミドルウェアの利用はアプリケーション内部の組み込み型モジュールとして考えるべきでもあり、セキュリティの観点からは可能な限りUbuntu上の公開ポートを制限すべきです。従い、UbuntuはUniFiネットワークアプリケーション専用として利用し、必要なPort以外は閉じます。</p>
 <p>実際のインストールは有志が作成した素晴らしいシェルスクリプトが公開されており、悩むことなくセットアップは完了します。</p>
 <p>UniFi Network Applicationのバージョンアップはインストール同様にシェルスクリプトを動作させます。また、UniFi Network Applicationはロールバックに対応していないため、何か問題があった場合に旧環境に戻すにはアンインストール、インストールをするかESXiのレベルでスナップショットからの戻し、または仮想マシンごとのバックアップからの戻しをします。ESXiによるOSのロールバックは非常に手軽なため、万が一の際はOSレベルでのレストアが早く確実です。</p>
 <blockquote>
-<p>Oracle Java<br> <a target="_blank" rel="noopener" href="https://www.oracle.com/jp/java/technologies/java-se-support-roadmap.html">https://www.oracle.com/jp/java/technologies/java-se-support-roadmap.html</a><br> オラクルは今後も、 java.comで、個人ユーザー、開発ユーザー、およびその他のユーザーに、Java SE 8の無償の公開アップデートと自動アップデートを無期限に提供します。</p>
+<p>Oracle Java<br> <a target="_blank" rel="noopener" href="https://www.oracle.com/jp/java/technologies/java-se-support-roadmap.html">https://www.oracle.com/jp/java/technologies/java-se-support-roadmap.html</a></p>
 </blockquote>
 <blockquote>
 <p>MongoDB<br> <a target="_blank" rel="noopener" href="https://www.mongodb.com/support-policy/lifecycles">https://www.mongodb.com/support-policy/lifecycles</a></p>
@@ -397,7 +397,7 @@
 <blockquote>
 <p>UniFi - Setting Up a UniFi OS Console<br> <a target="_blank" rel="noopener" href="https://help.ui.com/hc/en-us/articles/4416276882327-UniFi-Setting-Up-a-UniFi-OS-Console">https://help.ui.com/hc/en-us/articles/4416276882327-UniFi-Setting-Up-a-UniFi-OS-Console</a></p>
 </blockquote>
-<h2 id="UniFi-Network-Applicationのインストール"><a href="#UniFi-Network-Applicationのインストール" class="headerlink" title="UniFi Network Applicationのインストール"></a>UniFi Network Applicationのインストール</h2><p>スクリプトの情報は、コミュニティにあります。<br><a target="_blank" rel="noopener" href="https://community.ui.com/questions/UniFi-Installation-Scripts-or-UniFi-Easy-Update-Script-or-UniFi-Lets-Encrypt-or-UniFi-Easy-Encrypt-/ccbc7530-dd61-40a7-82ec-22b17f027776">https://community.ui.com/questions/UniFi-Installation-Scripts-or-UniFi-Easy-Update-Script-or-UniFi-Lets-Encrypt-or-UniFi-Easy-Encrypt-/ccbc7530-dd61-40a7-82ec-22b17f027776</a></p>
+<h2 id="UniFi-Network-Applicationのインストール"><a href="#UniFi-Network-Applicationのインストール" class="headerlink" title="UniFi Network Applicationのインストール"></a>UniFi Network Applicationのインストール</h2><p>スクリプトの情報は、Ubiquiti本国のコミュニティにあります。<br><a target="_blank" rel="noopener" href="https://community.ui.com/questions/UniFi-Installation-Scripts-or-UniFi-Easy-Update-Script-or-UniFi-Lets-Encrypt-or-UniFi-Easy-Encrypt-/ccbc7530-dd61-40a7-82ec-22b17f027776">https://community.ui.com/questions/UniFi-Installation-Scripts-or-UniFi-Easy-Update-Script-or-UniFi-Lets-Encrypt-or-UniFi-Easy-Encrypt-/ccbc7530-dd61-40a7-82ec-22b17f027776</a></p>
 <p>セットアップで失敗した際にすぐに戻れるように、このタイミングでESXiのスナップショット、またはバックアップの取得をお勧めします。</p>
 <p>実行は3ステップです。Ubuntuの<mark class="label primary">端末</mark>から、以下のコマンドを実行します。</p>
 <ol>
