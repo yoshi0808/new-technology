@@ -37,7 +37,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/11/23/unifi-switch/module.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/11/23/unifi-switch/netapp9.png">
 <meta property="article:published_time" content="2022-11-22T15:00:00.000Z">
-<meta property="article:modified_time" content="2023-02-04T07:22:56.000Z">
+<meta property="article:modified_time" content="2023-04-13T21:31:16.603Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="SFP+">
 <meta property="article:tag" content="10GbE">
@@ -181,7 +181,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#UniFi%E3%82%B9%E3%82%A4%E3%83%83%E3%83%81%E3%81%AE%E7%89%B9%E5%BE%B4"><span class="nav-number">1.</span> <span class="nav-text">UniFiスイッチの特徴</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E8%A8%AD%E5%AE%9A"><span class="nav-number">2.</span> <span class="nav-text">基本設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%82%B9%E3%82%A4%E3%83%83%E3%83%81%E3%83%9D%E3%83%BC%E3%83%88%E7%A2%BA%E8%AA%8D"><span class="nav-number">3.</span> <span class="nav-text">スイッチポート確認</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%82%B9%E3%82%A4%E3%83%83%E3%83%81%E3%83%9D%E3%83%BC%E3%83%88%E8%A8%AD%E5%AE%9A"><span class="nav-number">4.</span> <span class="nav-text">スイッチポート設定</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Port%E3%81%AE%E8%A8%AD%E5%AE%9A%E5%A4%89%E6%9B%B4"><span class="nav-number">4.1.</span> <span class="nav-text">Portの設定変更</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VLAN%E3%82%92%E8%A8%AD%E5%AE%9A"><span class="nav-number">5.</span> <span class="nav-text">VLANを設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSH"><span class="nav-number">6.</span> <span class="nav-text">SSH</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%82%B9%E3%82%A4%E3%83%83%E3%83%81%E3%81%AE%E8%A9%B3%E7%B4%B0%E6%83%85%E5%A0%B1%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span class="nav-number">6.1.</span> <span class="nav-text">スイッチの詳細情報について</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#USW-Pro-Aggregation-L3%E3%82%B9%E3%82%A4%E3%83%83%E3%83%81"><span class="nav-number">6.2.</span> <span class="nav-text">USW-Pro-Aggregation(L3スイッチ)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#USW-Aggregation-SFP-8Port"><span class="nav-number">6.3.</span> <span class="nav-text">USW-Aggregation(SFP+ 8Port)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#L3%E3%82%B9%E3%82%A4%E3%83%83%E3%83%81%E3%81%AE%E5%88%B6%E7%B4%84"><span class="nav-number">7.</span> <span class="nav-text">L3スイッチの制約</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SFP%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB"><span class="nav-number">8.</span> <span class="nav-text">SFPモジュール</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PoE"><span class="nav-number">9.</span> <span class="nav-text">PoE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%BE%E3%81%A8%E3%82%81"><span class="nav-number">10.</span> <span class="nav-text">まとめ</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#UniFi%E3%82%B9%E3%82%A4%E3%83%83%E3%83%81%E3%81%AE%E7%89%B9%E5%BE%B4"><span class="nav-number">1.</span> <span class="nav-text">UniFiスイッチの特徴</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E8%A8%AD%E5%AE%9A"><span class="nav-number">2.</span> <span class="nav-text">基本設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%82%B9%E3%82%A4%E3%83%83%E3%83%81%E3%83%9D%E3%83%BC%E3%83%88%E7%A2%BA%E8%AA%8D"><span class="nav-number">3.</span> <span class="nav-text">スイッチポート確認</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%82%B9%E3%82%A4%E3%83%83%E3%83%81%E3%83%9D%E3%83%BC%E3%83%88%E8%A8%AD%E5%AE%9A"><span class="nav-number">4.</span> <span class="nav-text">スイッチポート設定</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Port%E3%81%AE%E8%A8%AD%E5%AE%9A%E5%A4%89%E6%9B%B4"><span class="nav-number">4.1.</span> <span class="nav-text">Portの設定変更</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VLAN%E3%82%92%E8%A8%AD%E5%AE%9A"><span class="nav-number">5.</span> <span class="nav-text">VLANを設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSH"><span class="nav-number">6.</span> <span class="nav-text">SSH</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%82%B9%E3%82%A4%E3%83%83%E3%83%81%E3%81%AE%E8%A9%B3%E7%B4%B0%E6%83%85%E5%A0%B1%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span class="nav-number">6.1.</span> <span class="nav-text">スイッチの詳細情報について</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#USW-Pro-Aggregation-L3%E3%82%B9%E3%82%A4%E3%83%83%E3%83%81"><span class="nav-number">6.2.</span> <span class="nav-text">USW-Pro-Aggregation(L3スイッチ)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#USW-Aggregation-SFP-8Port"><span class="nav-number">6.3.</span> <span class="nav-text">USW-Aggregation(SFP+ 8Port)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#L3%E3%82%B9%E3%82%A4%E3%83%83%E3%83%81%E3%81%AE%E5%88%B6%E7%B4%84"><span class="nav-number">7.</span> <span class="nav-text">L3スイッチの制約</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SFP%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB"><span class="nav-number">8.</span> <span class="nav-text">SFPモジュール</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PoE"><span class="nav-number">9.</span> <span class="nav-text">PoE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%BE%E3%81%A8%E3%82%81"><span class="nav-number">10.</span> <span class="nav-text">まとめ</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%AA%E3%82%BD%E3%83%BC%E3%82%B9"><span class="nav-number">11.</span> <span class="nav-text">リソース</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -284,7 +284,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">編集日</span>
-      <time title="修正日：2023-02-04 16:22:56" itemprop="dateModified" datetime="2023-02-04T16:22:56+09:00">2023-02-04</time>
+      <time title="修正日：2023-04-14 06:31:16" itemprop="dateModified" datetime="2023-04-14T06:31:16+09:00">2023-04-14</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -468,6 +468,13 @@
 
 <p>Port ManagementからPoEのOn&#x2F;Offが可能となっています。</p>
 <h2 id="まとめ"><a href="#まとめ" class="headerlink" title="まとめ"></a>まとめ</h2><p>これらのように、ネットワークスイッチをただ単に繋げるための道具ではなく、ITやネットワークを見える化するという目的においては非常に有用な機器になります。セキュリティ観点ではできることは限られていますが、ホームユーザーにとっても有用な機能は活用できると思われます。</p>
+<h2 id="リソース"><a href="#リソース" class="headerlink" title="リソース"></a>リソース</h2><p>以下の日本語ヘルプ、コミュニティがUniFiの構築には大いに参考になります。</p>
+<blockquote>
+<p>Ubiquiti コミュニティ<br> <a target="_blank" rel="noopener" href="https://www.facebook.com/groups/uijapan">https://www.facebook.com/groups/uijapan</a></p>
+</blockquote>
+<blockquote>
+<p>UI 日本語ヘルプ記事<br> <a target="_blank" rel="noopener" href="https://help.jp.ui.com/categories/6583256751383/">https://help.jp.ui.com/categories/6583256751383/</a></p>
+</blockquote>
 
     </div>
 

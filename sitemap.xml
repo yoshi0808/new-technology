@@ -2,9 +2,45 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://yoshi0808.github.io/new-technology/2022/11/23/unifi-switch/</loc>
+    
+    <lastmod>2023-04-13</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/2022/10/23/unifi-network-application2/</loc>
+    
+    <lastmod>2023-04-13</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/</loc>
+    
+    <lastmod>2023-04-13</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://yoshi0808.github.io/new-technology/2022/12/31/unifi-ap/</loc>
     
-    <lastmod>2023-04-08</lastmod>
+    <lastmod>2023-04-13</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/2022/08/27/ubiquiti-unifi/</loc>
+    
+    <lastmod>2023-04-13</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -101,15 +137,6 @@
   </url>
   
   <url>
-    <loc>https://yoshi0808.github.io/new-technology/2022/11/23/unifi-switch/</loc>
-    
-    <lastmod>2023-02-04</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://yoshi0808.github.io/new-technology/2021/12/04/qnap-hdp/</loc>
     
     <lastmod>2023-01-09</lastmod>
@@ -149,33 +176,6 @@
     <loc>https://yoshi0808.github.io/new-technology/2022/04/29/xg-v19/</loc>
     
     <lastmod>2022-11-26</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://yoshi0808.github.io/new-technology/2022/08/27/ubiquiti-unifi/</loc>
-    
-    <lastmod>2022-11-23</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://yoshi0808.github.io/new-technology/2022/10/23/unifi-network-application2/</loc>
-    
-    <lastmod>2022-10-23</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/</loc>
-    
-    <lastmod>2022-10-23</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -715,7 +715,7 @@
 
   <url>
     <loc>https://yoshi0808.github.io/new-technology</loc>
-    <lastmod>2023-04-08</lastmod>
+    <lastmod>2023-04-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -723,98 +723,98 @@
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/tags/ESXi/</loc>
-    <lastmod>2023-04-08</lastmod>
+    <lastmod>2023-04-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/tags/XG-Firewall/</loc>
-    <lastmod>2023-04-08</lastmod>
+    <lastmod>2023-04-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/tags/SFP/</loc>
-    <lastmod>2023-04-08</lastmod>
+    <lastmod>2023-04-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/tags/10GbE/</loc>
-    <lastmod>2023-04-08</lastmod>
+    <lastmod>2023-04-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/tags/QNAP/</loc>
-    <lastmod>2023-04-08</lastmod>
+    <lastmod>2023-04-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/tags/DeepL/</loc>
-    <lastmod>2023-04-08</lastmod>
+    <lastmod>2023-04-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/tags/bitwarden/</loc>
-    <lastmod>2023-04-08</lastmod>
+    <lastmod>2023-04-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/tags/IPv6/</loc>
-    <lastmod>2023-04-08</lastmod>
+    <lastmod>2023-04-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/tags/miband/</loc>
-    <lastmod>2023-04-08</lastmod>
+    <lastmod>2023-04-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/tags/Wi-Fi/</loc>
-    <lastmod>2023-04-08</lastmod>
+    <lastmod>2023-04-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/tags/scanwatch/</loc>
-    <lastmod>2023-04-08</lastmod>
+    <lastmod>2023-04-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/tags/UniFi/</loc>
-    <lastmod>2023-04-08</lastmod>
+    <lastmod>2023-04-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/tags/Ubuntu/</loc>
-    <lastmod>2023-04-08</lastmod>
+    <lastmod>2023-04-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/tags/yubikey/</loc>
-    <lastmod>2023-04-08</lastmod>
+    <lastmod>2023-04-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -823,56 +823,56 @@
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/categories/Network/</loc>
-    <lastmod>2023-04-08</lastmod>
+    <lastmod>2023-04-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/categories/Hardware/</loc>
-    <lastmod>2023-04-08</lastmod>
+    <lastmod>2023-04-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/categories/Security/</loc>
-    <lastmod>2023-04-08</lastmod>
+    <lastmod>2023-04-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/categories/Security/%E3%83%9B%E3%82%B9%E3%83%88%E5%85%AC%E9%96%8B/</loc>
-    <lastmod>2023-04-08</lastmod>
+    <lastmod>2023-04-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/categories/Software/</loc>
-    <lastmod>2023-04-08</lastmod>
+    <lastmod>2023-04-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/categories/SmartWatch/</loc>
-    <lastmod>2023-04-08</lastmod>
+    <lastmod>2023-04-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/categories/Security/VPN/</loc>
-    <lastmod>2023-04-08</lastmod>
+    <lastmod>2023-04-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/categories/Security/VPN/%E3%83%AF%E3%83%B3%E3%82%BF%E3%82%A4%E3%83%A0%E3%83%91%E3%82%B9%E3%83%AF%E3%83%BC%E3%83%89/</loc>
-    <lastmod>2023-04-08</lastmod>
+    <lastmod>2023-04-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
