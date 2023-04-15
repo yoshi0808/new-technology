@@ -24,14 +24,24 @@ categories:
 
 ローカル環境のみのアクセス（オンプレミス）、リモート（スマホアプリ）から管理可能なハイブリッドクラウド方式がありますが、ここではハイブリッドクラウド方式で進めます。クラウドはUbiquitが提供する無償のサービスです（※有償のUbiquitiクラウド管理の方式もあります）。基本的には機器のCPU、メモリ使用量、温度管理に加え、スマホへの通知やリモートによる機器のリスタート、アップグレード、高い利便性があります。
 
-UniFiはAppleのiPhoneのように説明書が無くても使えることを目標にしているのでしょうか。難しいスイッチなどのコマンドラインを必要としませんが、マニュアルというものがありません。コミュニティにはUbiquitiのサポートスタッフも発言していますが、コミュニティが貴重な情報源でもあります。操作が不明な場合や不具合かなと思った場合は、まずコミュニティで検索することから始まります。
+UniFiはAppleのiPhoneのように説明書が無くても使えることを目標にしているのでしょうか。難しいスイッチなどのコマンドラインを必要としませんが、マニュアルというものがありません。文末に示すコミュニティなどの情報を参考にしてください。徐々に日本語向けガイドも整備されてきています。
+
+この記事ではUbuntuに具体的にネットワークアプリケーションをセットアップする方法を記載していますが、最初に日本語のガイドを参照されることをお勧めします。より詳細の手順としてこの記事を参考にされることをお勧めします。Ubiquitiの公式ではUniFiコンソールを購入してセットアップする事が推奨されています。
+
+> UI Japan サポートセンター UniFiの導入
+ <https://help.jp.ui.com/articles/360012192813/>
+
+> UniFi Network - コンソールなしでUniFi Networkをセルフホスティングする（高度）
+ <https://help.jp.ui.com/articles/360012282453/>
+
+この記事では、公式で記載されている方法ではなく、有志が作成したスクリプトを用いてセットアップします。
 
 ### UniFi Networkのリモートアクセス
 
 Requirementとして以下のドキュメントがあります。
 
-> UniFi Network - Remote Access Requirements
- <https://help.ui.com/hc/en-us/articles/115012240067-UniFi-Network-Remote-Access-Requirements>
+> UniFi Network - リモートアクセスの要件
+ <https://help.jp.ui.com/articles/115012240067/>
 
 説明は至ってシンプルです。UIシングルサインオンアカウント、インターネットに接続されているネットワークアプリケーションホストが必要とあります。
 よくあるトラブルとしては、Port解放の問題、DNS、NTPへの接続が必要という項目があります。また、コミュニティのリリースポストを参照してほしいとあります。
@@ -61,7 +71,7 @@ UniFiの環境は慣れるまでは理解するのが大変ですが、その世
 
 UniFi Network Applicationに対してはユーザーからのWebサービス、スイッチからネットワークアプリケーションへの接続などがあり、いくつかのサーバーPortをオープンしておく必要があります。Ubuntuと言われるとWindows上のWSL2を思い浮かべますが、WindowsOS上にPort Forwardの設定を行う必要があり、通常のUbuntuより余計な手間が掛かるためWSL2はお勧めしません。
 
-UniFi Network ApplicationではMongoDB3.6/Java8を使います。MongoDB3.6は2021年4月で既にEOLを迎えています。Java8は古いプロダクトではありますが、2030年まではサポートされることが言及されています。これらのミドルウェアの利用はアプリケーション内部の組み込み型モジュールとして考えるべきでもあり、セキュリティの観点からは可能な限りUbuntu上の公開ポートを制限すべきです。従い、UbuntuはUniFiネットワークアプリケーション専用として利用し、必要なPort以外は閉じます。
+UniFi Network ApplicationではMongoDB/Javaを使います。これらのミドルウェアの利用はアプリケーション内部の組み込み型モジュールとして考えるべきでもあり、セキュリティの観点からは可能な限りUbuntu上の公開ポートを制限すべきです。従い、UbuntuはUniFiネットワークアプリケーション専用として利用し、必要なPort以外は閉じます。
 
 実際のインストールは有志が作成した素晴らしいシェルスクリプトが公開されており、悩むことなくセットアップは完了します。
 
@@ -69,7 +79,6 @@ UniFi Network Applicationのバージョンアップはインストール同様�
 
 > Oracle Java
  <https://www.oracle.com/jp/java/technologies/java-se-support-roadmap.html>
- オラクルは今後も、 java.comで、個人ユーザー、開発ユーザー、およびその他のユーザーに、Java SE 8の無償の公開アップデートと自動アップデートを無期限に提供します。
 
 > MongoDB
  <https://www.mongodb.com/support-policy/lifecycles>
@@ -122,7 +131,7 @@ ufwを有効化しただけでは外部へ接続する方向へは制限しま�
 
 ## UniFi Network Applicationのインストール
 
-スクリプトの情報は、コミュニティにあります。
+スクリプトの情報は、Ubiquiti本国のコミュニティにあります。
 <https://community.ui.com/questions/UniFi-Installation-Scripts-or-UniFi-Easy-Update-Script-or-UniFi-Lets-Encrypt-or-UniFi-Easy-Encrypt-/ccbc7530-dd61-40a7-82ec-22b17f027776>
 
 セットアップで失敗した際にすぐに戻れるように、このタイミングでESXiのスナップショット、またはバックアップの取得をお勧めします。
@@ -134,12 +143,12 @@ ufwを有効化しただけでは外部へ接続する方向へは制限しま�
 $ sudo -i
 ```
 
-2. 証明書などのダウンロードをします。
+1. 証明書などのダウンロードをします。
 ``` bash
 $ apt-get update; apt-get install ca-certificates wget -y
 ```
 
-3. ネットワークアプリケーションのセットアップを行います。
+1. ネットワークアプリケーションのセットアップを行います。
 ``` bash
 $ rm unifi-latest.sh &> /dev/null; wget https://get.glennr.nl/unifi/install/install_latest/unifi-latest.sh && bash unifi-latest.sh
 ```
@@ -364,6 +373,26 @@ UI VerifyアプリをダウンロードしAppを構成します。
 Ubuntuで今回設定したufwの設定を追加する場合、GUIによるツールを導入しておくと便利です。{% label primary @Ubuntu Software %}から"gufw"を探し、インストールします。
 {% asset_img ubuntu1.png 640 alt %}
 
+## SSH
+
+ここではUbuntuにSSHする説明は割愛しますが、Ubiquiti日本語ガイドにSSHについての記載がありますので参照してください。
+
+> UniFi - SSHでログイン（高度）
+ <https://help.jp.ui.com/articles/204909374/>
+
 ## セットアップの完了
 
 ここまででUniFiのセットアップは完了です。ESXiのスナップショットを取得していらした方はスナップショットの管理から「すべて削除」し、一旦、Ubuntu全体のバックアップを取得される事をお勧めします。次の記事「{% post_link unifi-network-application2 %}」で、UniFi Network Applicationの運用全般（設定のバックアップ、アップデート、通知）を紹介します。
+
+## リソース
+
+以下の日本語ヘルプ、コミュニティがUniFiの構築には大いに参考になります。
+
+> Ubiquiti コミュニティ（日本）
+ <https://www.facebook.com/groups/uijapan>
+
+> UI 日本語ヘルプ記事
+ <https://help.jp.ui.com/categories/6583256751383/>
+
+> Ubiquiti Community（米国中心）
+ <https://community.ui.com/>

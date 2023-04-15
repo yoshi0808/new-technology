@@ -13,6 +13,16 @@ categories:
 前回記事「{% post_link unifi-network-application %}」では、UniFi Network ApplicationをUbuntu上にセットアップし、UniFiネットワーク製品の登録（Adoption）までを行いました。この記事ではホームユーザーがUniFi製品を運用していくにあたり、必要な操作ができるようになることを目的としています。
 <!-- more -->
 
+## 日本語ガイド
+
+セットアップが完了し、運用開始するにあたり、日本の公式のガイドとして以下のリソースがあります。
+
+> UniFi - アップデート
+ <https://help.jp.ui.com/articles/7605005245975/>
+
+> 接続の課題などのFAQ
+ <https://help.jp.ui.com/articles/7258465146519/>
+
 ## UniFiデバイス一覧およびアップデート
 
 `https://UniFi Network Application Host:8443/`に接続すると左にカテゴリのアイコンが並びます。以下のように左の赤枠で囲った{% label primary @UNIFI DEVICES %}一覧では現在のAdoptされているUniFi機器の一覧が確認できます。
@@ -20,7 +30,7 @@ categories:
 {% asset_img u1.png 1024 alt %}
 
 バージョンアップの通知があれば、ここで{% label primary @Click to Update %}のように表示されますので、これをクリックしてデバイスのアップデートが行えます。
-リリースの情報についてはCommunityを参照することになります。
+リリースの情報については本国のCommunityを参照することになります。
 
 > UniFi リリース一覧
  <https://community.ui.com/releases/>
@@ -70,7 +80,6 @@ categories:
 ### WiFi
 
 WiFi設定では名前、所属するVLAN、チャンネルなど設定します。UniFiは集中型管理であるため、個々のAP毎に設定するよりはネットワーク全体でどのように管理するかを決めるモデルとなります。
-
 
 - Global AP Settings
  この設定で、複数APを立てることを想定し、全般設定を行います。
@@ -176,3 +185,22 @@ $ rm unifi-update.sh &> /dev/null; wget https://get.glennr.nl/unifi/update/unifi
 ```
 
 上記のCommunityでは、個別のバージョンのスクリプトシェルへのリンクもありますので、unifi-updates.shの代わりに、バージョンを指定したスクリプトでインストールすることもできます。ロールバックは対応していないとの情報があるので、私はESXiでのバックアップを保存するようにしています。
+
+日本語ガイドにもアップデートに関する言及があります。
+
+> UniFi Network - 他社製の非コンソールUniFi Networkアプリケーションをアップデートする（Linux - 高度）
+ <https://help.jp.ui.com/articles/220066768/>
+
+
+## リソース
+
+以下の日本語ヘルプ、コミュニティがUniFiの構築には大いに参考になります。
+
+> Ubiquiti コミュニティ（日本）
+ <https://www.facebook.com/groups/uijapan>
+
+> UI 日本語ヘルプ記事
+ <https://help.jp.ui.com/categories/6583256751383/>
+
+> Ubiquiti Community（米国中心）
+ <https://community.ui.com/>
