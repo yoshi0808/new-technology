@@ -45,7 +45,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/12/31/unifi-ap/wifi5.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/12/31/unifi-ap/wifi6.png">
 <meta property="article:published_time" content="2022-12-30T15:00:01.000Z">
-<meta property="article:modified_time" content="2023-04-13T21:30:16.325Z">
+<meta property="article:modified_time" content="2023-04-15T03:45:16.168Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="UniFi">
 <meta name="twitter:card" content="summary">
@@ -290,7 +290,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">編集日</span>
-      <time title="修正日：2023-04-14 06:30:16" itemprop="dateModified" datetime="2023-04-14T06:30:16+09:00">2023-04-14</time>
+      <time title="修正日：2023-04-15 12:45:16" itemprop="dateModified" datetime="2023-04-15T12:45:16+09:00">2023-04-15</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -375,6 +375,10 @@
 </tbody></table>
 <p>※U6 Proのスペック上は26dBmが上限ですが、日本国内で利用する場合は上限が23dBmとなります。</p>
 <p>Wi-FiのスペックとしてはU6 Proで日本国内のやや高性能モデルに相当するでしょうか。アンテナ数を見ても、国内のWi-Fi機器と比較して特段優れている項目はありません。U6 Liteも一般的なスペックです。</p>
+<p>上記以外にも、11axに対応した中継機である、U6 Extender、メッシュ接続を前提とした、U6 Meshアクセスポイントなどが販売されています。商品の詳細は日本のオンラインストアを参照してください。</p>
+<blockquote>
+<p>Ubiquiti オンラインストア<br> <a target="_blank" rel="noopener" href="https://jp.store.ui.com/collections/unifi-network-wireless">https://jp.store.ui.com/collections/unifi-network-wireless</a></p>
+</blockquote>
 <h2 id="UniFi-APの実速度"><a href="#UniFi-APの実速度" class="headerlink" title="UniFi APの実速度"></a>UniFi APの実速度</h2><p>iPhone11を使ってAPに1mの距離まで近づけて、iperf3を実行した時の結果は以下の通りです。</p>
 <blockquote>
 <p>U6 Pro<br> <img src="/new-technology/2022/12/31/unifi-ap/u6-pro3.png" class="" width="360" title="alt"></p>
@@ -404,7 +408,19 @@
 </blockquote>
 <p>U6 Proの方が電波の出力は低いものの、レイテンシは15msあたりで上限が整っています。一方、Atermは時々、20msを超えるスパイクが発生しています。U6 Proの速度が出る理由はレイテンシが低い事と想定されます。スマホやノートPCの一般的な操作では100Mbpsを超えたあたりから殆どその差については分からなくなってきますが、リモートワークのビデオ会議の安定性を考えるとレイテンシは意識したいところです。</p>
 <p>UniFi APはWi-Fi設定が非常に詳細まで行えることがメリットであり、電波が届かないなどの対策としての購入用途には向いていません。</p>
-<h2 id="UniFi-APの設置"><a href="#UniFi-APの設置" class="headerlink" title="UniFi APの設置"></a>UniFi APの設置</h2><p>電源を取るのはPoEアダプタまたはPoEスイッチからというのが独特です。これによってLANケーブルのみでデータ送受信と送電が行え、美観を損ねる事なく、壁の上部にAPを配置し、障害物を避けた効率の良い電波の発信が行えます。Wi-Fiはハードウェアスペックも関係ありますが、こういった物理的な配置も重要です。有線バックホールを使わずにPoEの電力だけを使い、メッシュにすることもできます。この場合、UniFi APは有線接続されている他のUniFi APにメッシュで接続してくれます。</p>
+<h2 id="UniFi-APの設置"><a href="#UniFi-APの設置" class="headerlink" title="UniFi APの設置"></a>UniFi APの設置</h2><p>具体的にAPのセットアップの前に一度日本語ガイドのページをご覧になることをお勧めします。<br>これは最近拡充されてきたリソースですが、本来は私がブログで書きたかった、メーカーに依存しない無線LANに必要な知見が整理されており、とても貴重な内容となっています。</p>
+<blockquote>
+<p>UniFi Network - ワイヤレスクライアントの接続性を最適化する<br> <a target="_blank" rel="noopener" href="https://help.jp.ui.com/articles/221029967/">https://help.jp.ui.com/articles/221029967/</a></p>
+</blockquote>
+<blockquote>
+<p>UniFi Network - ワイヤレスネットワーク速度の最適化<br> <a target="_blank" rel="noopener" href="https://help.jp.ui.com/articles/360012947634/">https://help.jp.ui.com/articles/360012947634/</a></p>
+</blockquote>
+<blockquote>
+<p>UniFi Network - 最適なワイヤレスメッシュネットワークにするための検討事項<br> <a target="_blank" rel="noopener" href="https://help.jp.ui.com/articles/115002262328/">https://help.jp.ui.com/articles/115002262328/</a></p>
+</blockquote>
+<p>私もどこかで自分なりの考えをまとめて記事にしたいとは考えています。</p>
+<p>さて、APの設置についてです。</p>
+<p>電源を取るのはPoEアダプタまたはPoEスイッチからというのが独特です。これによってLANケーブルのみでデータ送受信と送電が行え、美観を損ねる事なく、壁の上部にAPを配置し、障害物を避けた効率の良い電波の発信が行えます。Wi-Fiはハードウェアスペックも関係ありますが、こういった物理的な配置も重要です。有線バックホールを使わずにPoEの電力だけを使い、メッシュにすることもできます。この場合、UniFi APは有線接続されている他のUniFi APにメッシュで接続してくれます。</p>
 <p>有線バックホールの一例です。</p>
 <p>（U6 Liteを2階に設置）</p>
 <img src="/new-technology/2022/12/31/unifi-ap/u6-lite.png" class="" width="640" title="alt">
@@ -544,10 +560,13 @@
 <p>これらの機能はハイブリッドクラウド機能を持つUniFi製品の特徴ですが、これらが無償で利用できるというのは本当にありがたい存在です。</p>
 <h2 id="リソース"><a href="#リソース" class="headerlink" title="リソース"></a>リソース</h2><p>以下の日本語ヘルプ、コミュニティがUniFiの構築には大いに参考になります。</p>
 <blockquote>
-<p>Ubiquiti コミュニティ<br> <a target="_blank" rel="noopener" href="https://www.facebook.com/groups/uijapan">https://www.facebook.com/groups/uijapan</a></p>
+<p>Ubiquiti コミュニティ（日本）<br> <a target="_blank" rel="noopener" href="https://www.facebook.com/groups/uijapan">https://www.facebook.com/groups/uijapan</a></p>
 </blockquote>
 <blockquote>
 <p>UI 日本語ヘルプ記事<br> <a target="_blank" rel="noopener" href="https://help.jp.ui.com/categories/6583256751383/">https://help.jp.ui.com/categories/6583256751383/</a></p>
+</blockquote>
+<blockquote>
+<p>Ubiquiti Community（米国中心）<br> <a target="_blank" rel="noopener" href="https://community.ui.com/">https://community.ui.com/</a></p>
 </blockquote>
 
     </div>

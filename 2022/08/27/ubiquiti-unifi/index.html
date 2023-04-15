@@ -49,7 +49,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/08/27/ubiquiti-unifi/U6-Pro1.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/08/27/ubiquiti-unifi/poe.png">
 <meta property="article:published_time" content="2022-08-26T23:40:00.000Z">
-<meta property="article:modified_time" content="2023-04-13T21:30:04.747Z">
+<meta property="article:modified_time" content="2023-04-15T03:49:37.576Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="SFP+">
 <meta property="article:tag" content="10GbE">
@@ -297,7 +297,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">編集日</span>
-      <time title="修正日：2023-04-14 06:30:04" itemprop="dateModified" datetime="2023-04-14T06:30:04+09:00">2023-04-14</time>
+      <time title="修正日：2023-04-15 12:49:37" itemprop="dateModified" datetime="2023-04-15T12:49:37+09:00">2023-04-15</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -421,8 +421,8 @@
 <p>L3スイッチです。Enterpriseという割には小ぶりでリビングに似合いそうなスイッチです。SFP＋を2ポート、2.5GbE（1GbE、100Base）のRJ45ポートを8ポート持ちます。ファンの音は殆どわかりません。実際にフロントのLCDパネルでファンの回転数を引き上げられ、その際はさすがにファンの音はするものの、やがて自動運転ではかなりの抑えた風量に戻るようです。米国ではTVとかオーディオなど色々な専用セグメントが必要だったりするのでL3が必要なのでしょうか。これはPoEスイッチでもあり、UniFiの世界では小型スイッチやWi-FiがPoE、つまりLANケーブル1本で通信と給電とが行われます。家が小さい日本ではあまり馴染みがないテクノロジですが、アメリカのように大きい家ではLANケーブル1本で各部屋まで配線し、天井や壁にWi-Fiやスイッチを埋め込む形でLANを構築していく事が多いのでPoEが重宝されます。RJ45の8ポートが2.5GbEであると同時にPoEによる給電が可能です。かなりの発熱で筐体上部は50℃ほどあり、コンソールからは70℃以上の熱を示しています。この温度であればファンが回っても良さそうな雰囲気ですが、LCDパネル上のファン回転数は80rpmで静かです。普段の運用ではファンが回るイメージがありません。</p>
 <h4 id="Switch-Flex-Mini"><a href="#Switch-Flex-Mini" class="headerlink" title="Switch Flex Mini"></a>Switch Flex Mini</h4><img src="/new-technology/2022/08/27/ubiquiti-unifi/USW-Flex-Mini.png" class="" width="280" title="alt">
 
-<p>小型の1G RJ45を5ポート持つ小型スイッチです。4,794円と廉価です（最近の円安で値上がりしました）。UniFiではトランクポートとして設定する場合、複数のVLANを選択しグループ化しますが、トランクポートは全てのVLANが対象となる制約があります。一応L2対応になっています。洗練されたデザインで小型のこのスイッチは発熱が小さく安定しており気に入ってます。しかし、気に入っている割には無造作にマジックテープを裏面にべったり貼り付け、TVの後ろに貼り付けています。PoEの入力が可能なので、PoEスイッチから電源を取っていますが、はっきり言ってこのスイッチの電源をPoEで取ることに関してはメリットは殆ど感じられません。最初から小さい電源アダプタも付属していますので普通にコンセントから給電すれば済みます。100Base-TXのLANを持つテレビなどは目立たないこのスイッチに集約させ、多くの長いLANケーブルから解放されるのに便利です。3,700円でUniFiの世界をテストドライブしてみるのも良いかもしれません。</p>
-<h3 id="Wi-Fi"><a href="#Wi-Fi" class="headerlink" title="Wi-Fi"></a>Wi-Fi</h3><p>米国ではUniFiのWi-Fiシステムは非常に多くの製品が発売されていますが、日本で販売されている利用可能な製品はWi-Fi5、Wi-Fi6の有線接続を必須とする数製品に絞られます。日本のメーカーとは異なった魅力のあるアクセスポイント（AP）です。主流の11ax対応製品については、3製品あります。Lite、Pro、LR（ロングレンジ）になります。日本においては、発売予定という製品はあるものの、現時点ではワイヤレスメッシュとなる製品が発売されていません。つまり中継機の機能を持つ製品が日本では発売されていません。</p>
+<p>小型の1G RJ45を5ポート持つ小型スイッチです。4,794円と廉価です（最近の円安で値上がりしました）。UniFiではトランクポートとして設定する場合、複数のVLANを選択しグループ化しますが、トランクポートは全てのVLANが対象となる制約があります。一応L2対応になっています。洗練されたデザインで小型のこのスイッチは発熱が小さく安定しており気に入ってます。しかし、気に入っている割には無造作にマジックテープを裏面にべったり貼り付け、TVの後ろに貼り付けています。PoEの入力が可能なので、PoEスイッチから電源を取っています。最初から小さい電源アダプタも付属していますがケーブルの本数を減らしたい方はPoEは便利です。100Base-TXのLANを持つテレビなどは目立たないこのスイッチに集約させ、多くの長いLANケーブルから解放されるのに便利です。4,794円でUniFiの世界をテストドライブしてみるのも良いかもしれません。</p>
+<h3 id="Wi-Fi"><a href="#Wi-Fi" class="headerlink" title="Wi-Fi"></a>Wi-Fi</h3><p>米国ではUniFiのWi-Fiシステムは非常に多くの製品が発売されていますが、日本で販売されている利用可能な製品はWi-Fi5、Wi-Fi6の有線接続を必須とする数製品に絞られます。日本のメーカーとは異なった魅力のあるアクセスポイント（AP）です。主流の11ax対応製品については、3製品あります。Lite、Pro、LR（ロングレンジ）になります。中継機としてExtender、メッシュ用としてU6 Meshが存在します。</p>
 <img src="/new-technology/2022/08/27/ubiquiti-unifi/U6-Pro1.png" class="" width="280" title="alt">
 
 <p>基本的に壁に固定し、LANケーブルのPoEから電源を取ります。これまでのWi-Fiルータを棚やテーブルに置くという方法ではなく、電源コンセントの制約が無いため、自由度が高く、壁などに取り付けられます。APの設置は壁にねじ止めするのが本来の姿ですが、小心者の私は100均で売っている壁にメモを留めるようなピンを打ち付けてAPを固定しています。APを取り外した後も壁紙の補修液を塗り込めば壁の穴は目立ちません。</p>
@@ -440,13 +440,17 @@
 <li>「<a href="/new-technology/2022/09/23/unifi-network-application/" title="UniFi Network Applicationのセットアップ">UniFi Network Applicationのセットアップ</a>」</li>
 <li>「<a href="/new-technology/2022/10/23/unifi-network-application2/" title="UniFi Network Applicationの運用">UniFi Network Applicationの運用</a>」</li>
 <li>「<a href="/new-technology/2022/11/23/unifi-switch/" title="UniFiスイッチ">UniFiスイッチ</a>」</li>
+<li>「<a href="/new-technology/2022/12/31/unifi-ap/" title="UniFi Wi-Fiシステム">UniFi Wi-Fiシステム</a>」</li>
 </ul>
 <h2 id="リソース"><a href="#リソース" class="headerlink" title="リソース"></a>リソース</h2><p>以下の日本語ヘルプ、コミュニティがUniFiの構築には大いに参考になります。</p>
 <blockquote>
-<p>Ubiquiti コミュニティ<br> <a target="_blank" rel="noopener" href="https://www.facebook.com/groups/uijapan">https://www.facebook.com/groups/uijapan</a></p>
+<p>Ubiquiti コミュニティ（日本）<br> <a target="_blank" rel="noopener" href="https://www.facebook.com/groups/uijapan">https://www.facebook.com/groups/uijapan</a></p>
 </blockquote>
 <blockquote>
 <p>UI 日本語ヘルプ記事<br> <a target="_blank" rel="noopener" href="https://help.jp.ui.com/categories/6583256751383/">https://help.jp.ui.com/categories/6583256751383/</a></p>
+</blockquote>
+<blockquote>
+<p>Ubiquiti Community（米国中心）<br> <a target="_blank" rel="noopener" href="https://community.ui.com/">https://community.ui.com/</a></p>
 </blockquote>
 
     </div>
