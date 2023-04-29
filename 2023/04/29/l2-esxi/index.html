@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/icon-16x16.png">
+  <link rel="mask-icon" href="/new-technology/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/new-technology/css/main.css">
+
+
+
+<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="/new-technology/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
+
+    <meta name="description" content="この記事で実現すること  ネットワークの教本といえば、TCP&#x2F;IP、つまりレイヤ3が中心の解説が中心です。ここでは、普段なかなか目にすることのないL2ネットワークの基礎、 ESXiにおけるネットワークの設定について説明するものです。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="L2ネットワークとESXi">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2023/04/29/l2-esxi/index.html">
+<meta property="og:site_name" content="New technologies in our life">
+<meta property="og:description" content="この記事で実現すること  ネットワークの教本といえば、TCP&#x2F;IP、つまりレイヤ3が中心の解説が中心です。ここでは、普段なかなか目にすることのないL2ネットワークの基礎、 ESXiにおけるネットワークの設定について説明するものです。">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/04/29/l2-esxi/title.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/04/29/l2-esxi/sw3.drawio.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/04/29/l2-esxi/net1.drawio.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/04/29/l2-esxi/vm1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/04/29/l2-esxi/vsw1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/04/29/l2-esxi/vsw2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/04/29/l2-esxi/vsw3.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/04/29/l2-esxi/esxi3.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/04/29/l2-esxi/vsw4.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/04/29/l2-esxi/vsw3.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/04/29/l2-esxi/vsw5.png">
+<meta property="article:published_time" content="2023-04-28T15:00:00.000Z">
+<meta property="article:modified_time" content="2023-04-28T23:27:23.360Z">
+<meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
+<meta property="article:tag" content="ESXi">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2023/04/29/l2-esxi/title.png">
+
+
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2023/04/29/l2-esxi/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"ja","comments":true,"permalink":"https://yoshi0808.github.io/new-technology/2023/04/29/l2-esxi/","path":"2023/04/29/l2-esxi/","title":"L2ネットワークとESXi"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>L2ネットワークとESXi | New technologies in our life</title>
+  
+
+
+
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{&quot;token&quot;: &quot;0148b4d0442e42b483ddce684030bd2f&quot;}'></script>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JMY6NSC2KK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+  'ad_storage': 'denied',
+  'analytics_storage': 'denied'
+  });
+
+  dataLayer.push({
+  'event': 'default_consent'
+  });
+
+  if (Cookies.get('PRVCY202112') == 'Agree') {
+    gtag('consent', 'update', {
+    'analytics_storage': 'granted'
+    });
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'G-JMY6NSC2KK',{ 'anonymize_ip': true });
+</script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/new-technology/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/new-technology/atom.xml" title="New technologies in our life" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="ナビゲーションバーの切り替え" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/new-technology/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">New technologies in our life</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Device,Network,Code,etc...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="検索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/new-technology/" rel="section"><i class="fa fa-home fa-fw"></i>ホーム</a></li><li class="menu-item menu-item-about"><a href="/new-technology/about/" rel="section"><i class="fa fa-user fa-fw"></i>サイトポリシー</a></li><li class="menu-item menu-item-tags"><a href="/new-technology/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>タグ</a></li><li class="menu-item menu-item-categories"><a href="/new-technology/categories/" rel="section"><i class="fa fa-th fa-fw"></i>カテゴリ</a></li><li class="menu-item menu-item-archives"><a href="/new-technology/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>アーカイブ</a></li><li class="menu-item menu-item-privacy"><a href="/new-technology/privacypolicy/" rel="section"><i class="fa fa-check fa-fw"></i>プライバシーポリシー</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="検索…" spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          見出し
+        </li>
+        <li class="sidebar-nav-overview">
+          概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#L2%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E3%81%A8IP%E3%82%A2%E3%83%89%E3%83%AC%E3%82%B9"><span class="nav-number">1.</span> <span class="nav-text">L2ネットワークとIPアドレス</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%82%B9%E3%82%A4%E3%83%83%E3%83%81%E3%83%B3%E3%82%B0%E3%83%8F%E3%83%96"><span class="nav-number">2.</span> <span class="nav-text">スイッチングハブ</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%82%B9%E3%82%A4%E3%83%83%E3%83%81%E3%83%B3%E3%82%B0%E8%83%BD%E5%8A%9B"><span class="nav-number">2.1.</span> <span class="nav-text">スイッチング能力</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%82%B9%E3%83%9E%E3%83%BC%E3%83%88%E3%82%B9%E3%82%A4%E3%83%83%E3%83%81%E3%83%BB%E3%83%9E%E3%83%8D%E3%83%BC%E3%82%B8%E3%83%89%E3%82%B9%E3%82%A4%E3%83%83%E3%83%81"><span class="nav-number">2.2.</span> <span class="nav-text">スマートスイッチ・マネージドスイッチ</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#L2%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E3%81%A8MAC%E3%82%A2%E3%83%89%E3%83%AC%E3%82%B9"><span class="nav-number">2.3.</span> <span class="nav-text">L2ネットワークとMACアドレス</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi%E3%81%AEL2%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF"><span class="nav-number">3.</span> <span class="nav-text">ESXiのL2ネットワーク</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%AE%E6%83%B3%E3%83%9E%E3%82%B7%E3%83%B3%E3%81%AENIC"><span class="nav-number">3.1.</span> <span class="nav-text">仮想マシンのNIC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vSwitch"><span class="nav-number">3.2.</span> <span class="nav-text">vSwitch</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%89%B9%E6%AE%8A%E3%81%AA%E8%A8%AD%E5%AE%9A"><span class="nav-number">3.2.1.</span> <span class="nav-text">特殊な設定</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi%E3%81%AEVLAN"><span class="nav-number">4.</span> <span class="nav-text">ESXiのVLAN</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="阿部　吉伸(Yoshinobu ABE)"
+      src="/new-technology/images/yoshi.png">
+  <p class="site-author-name" itemprop="name">阿部　吉伸(Yoshinobu ABE)</p>
+  <div class="site-description" itemprop="description">IT</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/new-technology/archives/">
+          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-name">ポスト</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/new-technology/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">カテゴリ</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/new-technology/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">タグ</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yoshi0808" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yoshi0808" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yoshi0808.blog@gmail.com" title="E-Mail → mailto:yoshi0808.blog@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yoshi0808_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yoshi0808_" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="/new-technology/lib/@creativecommons/vocabulary/assets/license_badges/big/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="ja">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2023/04/29/l2-esxi/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/new-technology/images/yoshi.png">
+      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="New technologies in our life">
+      <meta itemprop="description" content="IT">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="L2ネットワークとESXi | New technologies in our life">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          L2ネットワークとESXi
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">投稿日</span>
+      
+
+      <time title="作成日：2023-04-29 00:00:00 / 修正日：08:27:23" itemprop="dateCreated datePublished" datetime="2023-04-29T00:00:00+09:00">2023-04-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">カテゴリ</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/Network/" itemprop="url" rel="index"><span itemprop="name">Network</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <img src="/new-technology/2023/04/29/l2-esxi/title.png" class="" title="alt">
+
+<p class="onepoint">この記事で実現すること</p>
+
+<p>ネットワークの教本といえば、TCP&#x2F;IP、つまりレイヤ3が中心の解説が中心です。ここでは、普段なかなか目にすることのないL2ネットワークの基礎、 ESXiにおけるネットワークの設定について説明するものです。</p>
+<span id="more"></span>
+
+<h2 id="L2ネットワークとIPアドレス"><a href="#L2ネットワークとIPアドレス" class="headerlink" title="L2ネットワークとIPアドレス"></a>L2ネットワークとIPアドレス</h2><p>個人向けのWi-Fiルーターなどを使い、PCやスマホ、またはNASや仮想環境などを使うようになれば、IPアドレスやDHCP、そして個々の端末が保有するMACアドレスというところは良く目にすることでしょう。Wi-Fiルーターと無線接続する端末だけだと、なかなかL2レイヤは気にすることは無いかもしれません。ネットワークを高度化して、ESXiなどの仮想環境を使い始めると、L2レイヤの知識が必要となってきます。何となくは理解して仮想環境を使われている方が多いかと思いますが、L2スイッチとVLAN、スタンドアロン（無償版）ESXiのvSwitchなどの具体的な設定などを確認していきます。</p>
+<h2 id="スイッチングハブ"><a href="#スイッチングハブ" class="headerlink" title="スイッチングハブ"></a>スイッチングハブ</h2><p>個人向けに販売されているスイッチングハブといえば、一般的にL2スイッチを指します。TCP&#x2F;IPのルーティングができるL3スイッチもありますが、高額です。L2スイッチも大まかには2種類あり、VLANの設定ができるタイプと、設定が出来ないタイプとの2種類あります。スイッチングハブのネーミングの理由としては、指定されたMACアドレスがあるポートにのみデータを転送する機能を持つものです。昔のハブは電気的に全てのポートにデータを送っており、さらに半二重通信（片方が送信している時は相手側は送信できない。Wi-Fiと同様）でしたが、今のスイッチングハブといえば、全二重で双方向通信が可能であり、複数端末の同時通信でデータ送受信の競合がないようになっています（半二重通信ができる製品もあります）。スイッチングハブではない昔ながらのハブはダムハブやリピーターハブと呼ばれましたが昨今ではむしろその製品を探すのが難しくなっています（ダムハブは隣の端末の通信を傍受できるのでパケットキャプチャとしての使い道はあります）。</p>
+<p>スイッチングハブをタイプ別と特徴で示すと以下の通りです。</p>
+<table>
+<thead>
+<tr>
+<th>タイプ</th>
+<th>説明</th>
+<th>特徴</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>アンマネージ</td>
+<td>電源OnしてLANケーブルを繋いですぐに使える製品。設定画面などは一切ない。</td>
+<td>安価</td>
+</tr>
+<tr>
+<td>スマートスイッチ</td>
+<td>管理画面があり、VLAN、MACアドレスフィルタやパケットの優先度設定などが可能</td>
+<td>個人向けには少ない</td>
+</tr>
+<tr>
+<td>マネージド</td>
+<td>VLAN、高度な管理（SNMP、Portミラーリング、コマンドライン）</td>
+<td>やや高額。L2スイッチではスマートスイッチとマネージドとの区別が付けづらくなってきている</td>
+</tr>
+<tr>
+<td>L3スイッチ</td>
+<td>DHCP機能、ネットワークアドレスを分離し、ルーティングが可能。マネージドスイッチの扱い。</td>
+<td>高額。ネットワークの知識が必要な難解なコマンドライン中心の製品が多い。</td>
+</tr>
+</tbody></table>
+<p>ホームユーザーとしては、こういった情報よりも、10GbEとか2.5GbEなどのポートの速度を優先したり、発熱を気にしてファンレスか否か、ファンがどれだけ静かなのかをポイントにしてスイッチングハブを購入されていることでしょう。単にネットを使うだけであればそれで充分で、普段はL2ネットワークの事を気にする必要はありません。</p>
+<p>リモートワークで家の機器と会社の機器とを分離したい場合、一般的にWi-Fiルーターではゲスト用ネットワーク（ゲスト用SSID）があるので、昔ほどVLANを必要としなくなっています。こういった単にネットを使うだけで何も管理できないスイッチをアンマネージスイッチと呼びます。</p>
+<h3 id="スイッチング能力"><a href="#スイッチング能力" class="headerlink" title="スイッチング能力"></a>スイッチング能力</h3><p>スイッチの性能の一つにスイッチング能力、別名、スイッチングファブリックというものがあります。比較サイトでも必ずスペックとして出ているものですが、この数値は、基本的に全てのポートが全二重でブロッキングせずにデータを送信できるものとして計算された数値となっています。8Portで全て10GbEなら以下の通りです。</p>
+<ul>
+<li>10Gbps×8(Port)×2（全二重）&#x3D; 160Gbps</li>
+</ul>
+<p>10GbEが4Port、1GbEが8Portの製品なら、96Gbpsという具合です。ですので、製品を比較して「こちらのハブのスループットが高そうだ」という事にはなりません。</p>
+<h3 id="スマートスイッチ・マネージドスイッチ"><a href="#スマートスイッチ・マネージドスイッチ" class="headerlink" title="スマートスイッチ・マネージドスイッチ"></a>スマートスイッチ・マネージドスイッチ</h3><p>全く管理画面が無いL2スイッチはIPアドレスを持ちませんが、スマートスイッチ・マネージドスイッチと呼ばれている製品はIPアドレスを持ちます。この”スマート”や”マネージド”というネーミングも実は明確な定義はありません。各社によって呼び名が少しづつ異なっており、はっきり言えばマーケティング用語です。Webの管理画面があってもVLANが無いL2スイッチもあります。</p>
+<p>IPアドレスを持っているとはいえ、スイッチ経由で通信をする際に、ルーターのようにスイッチのIPアドレスを経由する訳ではありません。以下のように見えないPort0番にAmazon Fire Stickをさらに小さくしたような組み込み機器で独立したOSが接続されていて、そこに最低限のネットワーク通信と管理のためのOSの機能を持っていると考えてください。スイッチングハブとしてパケットを転送している機能はハードウェアであるASIC(Application Specific Integrated Circuit)が担っており、この小さな機器は殆ど使われません。最近のWi-Fi機器もこういった形になっており、管理画面の遷移が遅いからといって転送能力が劣っているという訳でもありません。PCなどからスイッチへのpingを打つと、このPort0番に着信して応答を返す仕組みになります（pingの応答速度も一般的に遅いです）。</p>
+<img src="/new-technology/2023/04/29/l2-esxi/sw3.drawio.png" class="" width="360" title="alt">
+
+<p>日本では、全くITの知識が無い人向けに分かりやすくスイッチを提供するという事が主眼に置かれているため、アンマネージスイッチが主力製品として販売されていますが、値段なりの品質です。仮想環境やNASなど24時間の運用を前提で考えるのであれば、スイッチにもそれなりの品質を求めるべきです。アンマネージで不具合が出ると回収するしかありません。ファームウェアの更新ができるもの、かつ、きちんと定期的にアップデートが行われている製品を選定されることをお勧めします。</p>
+<h3 id="L2ネットワークとMACアドレス"><a href="#L2ネットワークとMACアドレス" class="headerlink" title="L2ネットワークとMACアドレス"></a>L2ネットワークとMACアドレス</h3><p>L2スイッチはMACアドレスを宛先として判断し、パケットを目的のポートに転送します。この世界ではIPアドレスはデータの中身として扱われ、宛先として使われることはありません。例えば、以下のPCとL2スイッチとの関係で確認してみます。</p>
+<img src="/new-technology/2023/04/29/l2-esxi/net1.drawio.png" class="" width="640" title="alt">
+
+<p>PC1からPC2にpingを打つこととします。</p>
+<pre class="mermaid">
+sequenceDiagram
+participant pc1 as PC1
+participant sw as SWitch
+participant pc2 as PC2
+
+Note over pc1: 1.PC2へのpingコマンド投入
+pc1 -&gt;&gt; sw : 2.ARP Request(PC2)をブロードキャスト
+Note over sw: 3.PC1のMACを自己学習
+sw -&gt;&gt; pc2 : 4.ARP Requestをブロードキャスト
+pc2 --&gt;&gt; sw : 5.ARP Reply(PC2のMAC)
+Note over sw: 6.PC2のMACを自己学習
+sw --&gt;&gt; pc1 : 7.ARP Reply(PC2のMAC)
+pc1 -&gt;&gt; sw : 8.ICMP Echo Request
+sw -&gt;&gt; pc2 : 9.ICMP Echo Request
+pc2 --&gt;&gt; sw : 10.ICMP Echo Reply
+sw --&gt;&gt; pc1 : 11.ICMP Echo Reply
+Note over pc1: 12.ping応答
+</pre>
+
+<p>このシーケンスの実行の結果は以下の通りです。</p>
+<p>PC1のarpテーブルは以下になります(Windowsでの実行を想定)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\yoshi&gt;arp -a</span><br><span class="line"></span><br><span class="line">インターフェイス: 192.168.100.129 --- 0x10</span><br><span class="line"> インターネット アドレス 物理アドレス           種類</span><br><span class="line">  192.168.100.161       04-69-f8-aa-bb-cc      動的</span><br><span class="line">  255.255.255.255       ff-ff-ff-ff-ff-ff     静的</span><br></pre></td></tr></table></figure>
+
+<p>PC2のARPテーブルは以下になります(macOSでの実行を想定)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ arp -a</span><br><span class="line">? (192.168.100.129) at 30:59:b7:00:11::22 on en0 ifscope [ethernet]</span><br></pre></td></tr></table></figure>
+
+<p>そして、スイッチ上のMACアドレステーブルは、MACアドレスと接続されているPortの組み合わせが登録されています（ここではUbiquiti社のPro Aggregationスイッチを使っています。各社、機種毎に取得方法は異なります）。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(UBNT) &gt;show mac-addr-table</span><br><span class="line"></span><br><span class="line">VLAN ID  MAC Address         Interface              IfIndex  Status</span><br><span class="line">-------  ------------------  ---------------------  -------  ------------</span><br><span class="line">1        30:59:B7:00:11:22   0/1                    1        Learned</span><br><span class="line">1        04:69:F8:AA:BB:CC   0/28                   28       Learned</span><br></pre></td></tr></table></figure>
+
+<p>VLANはデフォルトVLANが1の製品が大半です。MACアドレステーブルにはVLANのIDが必要ですが、詳細説明は割愛します（機種により実装の違いがあります）。</p>
+<p>さて、このようにして、PC同士はL3レイヤ（IPアドレス）からL2レイヤ（MACアドレス）への変換の情報をお互いに持ち、スイッチはMACアドレスとそれがどのPortに接続されているかを管理しています。</p>
+<p>スイッチ自身に管理画面がないと、スイッチの中身がどうなっているか分からないんですが、アンマネージスイッチでは管理IPアドレスを持たないだけで、しっかりとMACアドレステーブルの管理は行われています。</p>
+<p>ちなみに、MACアドレスは6バイトでコロン区切りかハイフン区切りとなっています。先頭の3バイトがVendorIDとなっていて、上記の例だと、<code>30:59:B7</code>はMicrosoft社であり、<code>04:69:F8</code>はApple社になります。</p>
+<p>ご自身のPCでも<code>arp -a</code>を実行してみてください。LANにあるさまざまな端末のIPアドレスとMACアドレスの一覧が確認できるはずです。</p>
+<blockquote>
+<p>Ubiquiti Switch Pro Aggregation<br> <a target="_blank" rel="noopener" href="https://jp.store.ui.com/collections/unifi-network-switching/products/unifi-switch-aggregation-pro">https://jp.store.ui.com/collections/unifi-network-switching/products/unifi-switch-aggregation-pro</a></p>
+</blockquote>
+<h2 id="ESXiのL2ネットワーク"><a href="#ESXiのL2ネットワーク" class="headerlink" title="ESXiのL2ネットワーク"></a>ESXiのL2ネットワーク</h2><p>ここではVSphere Hypervisor（無償版ESXi）についての説明になります。ESXiは仮想環境として端末を動作させる機能とvSwitchという仮想ネットワークスイッチの機能を持っています。実際は1つのネットワークカードに対して、複数の仮想マシンを動作させることが可能となっています。</p>
+<h3 id="仮想マシンのNIC"><a href="#仮想マシンのNIC" class="headerlink" title="仮想マシンのNIC"></a>仮想マシンのNIC</h3><p>仮想マシンの構成としての一例を挙げます。</p>
+<img src="/new-technology/2023/04/29/l2-esxi/vm1.png" class="" width="1024" title="alt">
+
+<p>この仮想マシンはUbuntuで、1つの仮想ネットワークアダプタを持っています。最もシンプルな構成です。MACアドレスの先頭3バイトは<code>00:0c:29</code>となっており、これはVMwareのVenderIDです。下位3バイトは仮想マシンの構成時に自動的に振られます。</p>
+<p>続いて、仮想ネットワークスイッチの説明です。</p>
+<img src="/new-technology/2023/04/29/l2-esxi/vsw1.png" class="" width="1024" title="alt">
+
+<p>この例では仮想スイッチ1つに物理アダプタを1つ加えています。ESXi本体のハードウェアに付属するネットワークカードが物理アダプタです。</p>
+<img src="/new-technology/2023/04/29/l2-esxi/vsw2.png" class="" width="640" title="alt">
+
+<p>この物理アダプタには当然ですが物理MACアドレスがあります。仮想ネットワークアダプタに到達するためには、この物理アダプタを経由する必要があります。しかし、ESXiのネットワークドライバのレベルで仮想ネットワークアダプタがNICの物理デバイスと接続されており、物理ネットワークアダプタ<code>80:61:5f:xx:xx:xx</code>は使わず、仮想MACアドレス<code>00:0c:29:4f:2e:05</code>が仮想マシンに接続されています。<code>80:61:5f:xx:xx:xx</code>は使われていないと書きましたが、ESXiを構成すると、vmnic0の物理MACアドレスはESXiのVMKernelのvmk0に使われるようになっています。ESXiの世界ではネットワークの障害時の切り替えなども考慮し、物理MACアドレスはあまり重要ではありません。</p>
+<p>過去の技術ですが、物理MACアドレスがデータを受け取って仮想MACアドレスに変換して受け渡す、いわゆるNATの技術も実際には存在します。しかし、今のESXiでは物理NICから実際の仮想MACアドレスのデータが流れていきます。</p>
+<p>一例として、私の保有しているスイッチでPort19のESXiの物理NICとESXiの仮想MACアドレステーブルを表示させると以下のようになっています。<br>（物理MACアドレスの値と一部のVLANの値は修正しています）<br>前述したように、先頭３バイトが<code>00:0C:29</code>のものが仮想マシンです。</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(UBNT) <span class="comment">#show mac-addr-table | include Interface|00:0C:29|80:61:5F</span></span><br><span class="line"></span><br><span class="line">VLAN ID  MAC Address         Interface              IfIndex  Status</span><br><span class="line">200      00:0C:29:4F:2E:05   0/19                   19       Learned</span><br><span class="line">200      00:0C:29:C8:1F:97   0/19                   19       Learned</span><br><span class="line">200      80:61:5F:00:00:03   0/19                   19       Learned</span><br></pre></td></tr></table></figure>
+
+<p>VLAN200の２つの仮想マシンが存在している事が分かります、スイッチはこのようにして仮想マシンのMACアドレス１つ１つを管理し、適切なスイッチポートに転送していることがわかります。</p>
+<p>ちなみに物理スイッチを多段接続した場合にも、1つのポートから先のスイッチ経由で複数の端末が接続されていれば同様に1つのポートに複数の端末のMACアドレスがテーブルに管理されます。</p>
+<h3 id="vSwitch"><a href="#vSwitch" class="headerlink" title="vSwitch"></a>vSwitch</h3><p>vSwitchでは物理NICを経由して仮想マシンと接続するためのポートグループが必要です。仮想マシンにネットワークアダプタを加える時にはこのポートグループが必要です。ESXiのセットアップ完了後は、<mark class="label primary">vSwitch0</mark>  がデフォルトのvSwitchとして作成されており、ポートグループとして、<mark class="label primary">Management Network</mark>および<mark class="label primary">VM Network</mark>の2つが作成されています。</p>
+<img src="/new-technology/2023/04/29/l2-esxi/vsw3.png" class="" width="480" title="alt">
+
+<mark class="label primary">Management Network</mark>は、ESXiのWebにログインしたり制御のためのポートグループです。このグループの中にデフォルトで<mark class="label primary">VMKernel NIC</mark>として<mark class="label primary">vmk0</mark>が自動作成されています。VMKernel NICはESXiのWebサービスを始めとする管理系のサービス提供のためのIPアドレスを持ちます。前述したL2スイッチの説明ではPort0として小さな組み込み機器としてOSが稼働していると表現しましたが、それと目的は同じです。VMKernelはvSwitchを制御するというよりは、ネットワークセグメント単位に持ち、ESXiを管理するためのIPアドレスとなります。
+
+<mark class="label primary">VM Network</mark>もポートグループです。仮想マシンが何もない初期状態では特に仮想IPアドレスも保有していません。仮想マシンを作成し、ネットワークアダプタを追加する際に、この<mark class="label primary">VM Network</mark>を選択することになります。そうすると自動的に仮想IPアドレスが振られます。もちろん、新規にポートグループを作成し、仮想マシンにネットワークアダプタを追加する事もできます。また、ポートグループという”グループ”の意味としては、複数の仮想マシンを同一のポートグループに追加できます。この際、MACアドレスが同じになったりはしません。
+
+<div class="note info"><p>ポートグループ1つで複数の仮想NICと接続できます。仮想マシン作成時、仮想MACアドレスは自動的に割り当てられます。物理NICを2つ以上保有する場合、障害対策と負荷分散ができます。負荷分散の際、ESXiのデフォルトでは、ポートグループ単位に複数の物理NICを使い負荷分散をします。</p>
+</div>
+
+<div class="note info"><p><mark class="label primary">Management Network</mark>と<mark class="label primary">VM Network</mark>のポートグループが分かれているのは、本来、マネジメントネットワークとクライアントやサーバーがある仮想マシンのネットワークとは分離すべきという考えに基づいています。</p>
+</div>
+
+<p>なお、仮想マシンをバックアップから戻した場合には、既存の仮想マシンと同一のMACアドレスで復元してしまうと通信が正しく行えなくなります。従って、仮想マシンの復元後、初期起動時には以下のダイアログが表示され、<mark class="label primary">コピーしました</mark>を選択すると、新しい仮想MACアドレスが割り当てられます。</p>
+<img src="/new-technology/2023/04/29/l2-esxi/esxi3.png" class="" width="640" title="alt">
+
+<h4 id="特殊な設定"><a href="#特殊な設定" class="headerlink" title="特殊な設定"></a>特殊な設定</h4><p>vSwitchには以下の2つの特殊な仮想マシンのための追加設定ができます。</p>
+<img src="/new-technology/2023/04/29/l2-esxi/vsw4.png" class="" width="480" title="alt">
+
+<ul>
+<li><mark class="label primary">無差別モードを許可</mark>
+<p> ファイアウォールやIPS&#x2F;IDS（Intrusion Prevention System&#x2F;Intrusion Detection System）などセキュリティ製品におけるブリッジモードのように、同一LAN内でパケットの検証をする際にはこれを<mark class="label primary">はい</mark>に変更します。セキュリティ製品の先に接続されている端末も同一のL2ネットワークとして全てパケットを転送してあげる動作です。自分宛のMACアドレスでなくとも受け取る挙動であり、仮想マシンはダムハブに見えるわけです。また、仮想マシンのネットワークキャプチャを行う場合に使えます。</p>
+</li>
+<li><mark class="label primary">偽装転送を許可/MAC変更を許可</mark>
+<p> 上記と同じようにセキュリティ製品（ゲートウェイ）がバックヤードにある端末のパケットを相互にやりとりするわけですから、自分自身のMACアドレスではないMACアドレスを持ったデータを送信する事になります。一般的にはセキュリティ上認めていないものですが、セキュリティ製品では<mark class="label primary">MAC変更を許可</mark>を<mark class="label primary">はい</mark>を、<mark class="label primary">偽装転送を許可</mark>を<mark class="label primary">はい</mark>にします。</p>
+</li>
+</ul>
+<p>これらはいずれもセキュリティ強化のためにデフォルトでは<mark class="label primary">いいえ</mark>になっています。<br>これらの機能の詳細はVMwareの以下のドキュメントを参照してください。</p>
+<blockquote>
+<p>vSphere 標準スイッチのセキュリティ強化<br> <a target="_blank" rel="noopener" href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.security.doc/GUID-3507432E-AFEA-4B6B-B404-17A020575358.html">https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.security.doc/GUID-3507432E-AFEA-4B6B-B404-17A020575358.html</a></p>
+</blockquote>
+<h2 id="ESXiのVLAN"><a href="#ESXiのVLAN" class="headerlink" title="ESXiのVLAN"></a>ESXiのVLAN</h2><p>無償版ESXiではVLAN設定が可能です。<br>ESXiにおけるデフォルトVLAN（タグ無し）はVLAN ID＝0となります。通常のスイッチはVLAND ID＝1のものが多いのですが、基本的にタグ無し同士の通信であれば問題になりません。デフォルトVLANを変更し、さらにそれをネイティブVLAN（タグ無し）にする時は少し考える必要がありますが、ホームユーザー向けではそこまで考えることも無いでしょう。</p>
+<table>
+<thead>
+<tr>
+<th>ESXiのVLANのタイプ</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>EST</td>
+<td>通常のタグ無し。物理スイッチのアクセスポートに接続する場合でスイッチ側でタグが外される事を期待。</td>
+</tr>
+<tr>
+<td>VST</td>
+<td>タグ付き（1〜4094）。物理スイッチからタグ付きで接続する場合。</td>
+</tr>
+<tr>
+<td>VGT</td>
+<td>タグ付き（4095）。仮想マシンに複数のタグ付きパケットを流す場合</td>
+</tr>
+</tbody></table>
+<p>3種類それぞれのネーミングがあります。</p>
+<p>EST（タグ無し）はVLANを意識しないモードです。<br>タグ無しでvSwitchのポートグループに渡されることを期待している設定です。物理スイッチがアクセスポートの場合は、タグが外されるのでvSwtichおよびポートグループでは特に何もしませんし、仮想マシンでも何も意識しません。</p>
+<p>VSTは、VLAN IDをポートグループに設定します。<br>例えば、ESXiのマネジメントネットワークはタグ無し、仮想マシンはユーザー側ネットワークとする場合にvSwitchで2つのセグメントのデータを受け入れ、VMKernelはタグ無しのまま、仮想マシンはポートグループでIDに200を指定します。この場合はVLAN200について、vSwitchでタグが外され仮想マシンにパケットが届きますので仮想マシンでVLANの意識はしません。</p>
+<p>VGTは物理スイッチにおけるトランクポートの役割と同等です。ポートグループに4095を設定します。仮想マシン自身がタグVLANを解釈できる場合に複数のVLANのタグ付きパケットを流し、仮想マシン側でタグを外すような使い方となります。また、VSTではESXiの仕様として1〜4094とありますが、一般的にタグありのVLANは2〜1005の間で作成しますし、個人向け環境のVLANはネットワークアドレスの第3オクテットの数字と合わせるのが無難です。<code>192.168.xxx.0/24</code><br>全てのVLANデータが流れて不要なものは仮想マシン側で破棄する事になるので負荷が高くなりやすく、物理スイッチからは必要なVLANのみのデータを流すことが求められます。</p>
+<img src="/new-technology/2023/04/29/l2-esxi/vsw3.png" class="" width="480" title="alt">
+
+<p>VSTの例ですが、Win10ProのVLAN IDを300とすると、ポートグループの設定でVLANの値を明示します。</p>
+<img src="/new-technology/2023/04/29/l2-esxi/vsw5.png" class="" width="640" title="alt">
+
+<p>このvSwitchの例で言えば、タグ300のパケットは、VGT（ID&#x3D;4095）、300と明示した2つの仮想マシンのみに転送されます。VLAN ID0のVM NetworkおよびManagement Networkにはタグ300のパケットは流れません。</p>
+<p>このように、vmnic0に接続されたvSwitchネットワークはvmk0のIPネットワークが<code>192.168.1.0/24</code>だとすれば、全ての仮想マシンが<code>192.168.1.0/24</code>のIPアドレスを持つのがシンプルな構成ですが、このようにタグVLANを組み合わせることで、物理NICの数が少なくても複数のVLAN、つまり複数のネットワークセグメントのデータを通すことができます。</p>
+<p>VGTの場合は、物理スイッチ側のMACアドレステーブルは以下のようになっています。仮想マシン自体がVLANのトランクポートを扱えるため、１つのMACアドレスに複数のVLANが割り当てられている事が分かります。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">VLAN ID  MAC Address         Interface              IfIndex  Status</span><br><span class="line">1        00:0C:29:EB:B3:CC   0/15                   15       Learned</span><br><span class="line">200      00:0C:29:EB:B3:CC   0/15                   15       Learned</span><br><span class="line">300      00:0C:29:EB:B3:CC   0/15                   15       Learned</span><br><span class="line">4040     00:0C:29:EB:B3:CC   0/15                   15       Learned</span><br></pre></td></tr></table></figure>
+
+<p>ESXiのVLANタグについては以下のドキュメントを参照してください。英語ですが3つのVLANについての解説ビデオもあります。</p>
+<blockquote>
+<p>VMware VLAN 構成<br> <a target="_blank" rel="noopener" href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.networking.doc/GUID-7225A28C-DAAB-4E90-AE8C-795A755FBE27.html?hWord=N4IghgNiBcIBwAYBMA6AjARRAXyA">https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.networking.doc/GUID-7225A28C-DAAB-4E90-AE8C-795A755FBE27.html?hWord=N4IghgNiBcIBwAYBMA6AjARRAXyA</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/new-technology/tags/ESXi/" rel="tag"><i class="fa fa-tag"></i> ESXi</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/new-technology/2023/03/25/Mellanox-ConnectXandWindows11/" rel="prev" title="Mellanox Connect XとWindows11">
+                  <i class="fa fa-chevron-left"></i> Mellanox Connect XとWindows11
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">阿部　吉伸(Yoshinobu ABE)</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div><script src="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.umd.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.min.css" rel="stylesheet">
+
+<script>
+if (Cookies.get('PRVCY202112') != 'Agree') {
+  const notice = new SimpleGDPR({
+    title: 'Accept Cookies & Privacy Policy?',
+    message: 'このWebサイトでは、訪問や活動に関するデータがクッキー等によって収集されます。閲覧を継続される場合、\
+    プライバシーポリシーをご覧いただき同意(Agree)をお願いします',
+    link: null,
+    icons: true,
+    theme: 'light',
+    animation: 'fade',
+    float: 'bottom-right',
+      callback: () => {
+      notice.close();
+      Cookies.set('PRVCY202112', 'Agree', { expires: 365, path: '/'});
+      notice.destroy();
+      // Google Analytics 4
+      gtag('consent', 'update', {
+      'analytics_storage': 'granted'
+      });
+      gtag('js', new Date());
+      gtag('config', 'G-JMY6NSC2KK', { 'anonymize_ip': true });
+      },
+  });
+}
+</script>
+<div class="disclaimer1">
+このサイトの記事は、特別な記載がない限り <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja">クリエイティブ・コモンズ BY-NC-SA ライセンス</a>で保護されています</div>
+
+
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/yoshi0808" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="/new-technology/lib/animejs/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="/new-technology/lib/medium-zoom/dist/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/comments.js"></script><script src="/new-technology/js/utils.js"></script><script src="/new-technology/js/motion.js"></script><script src="/new-technology/js/schemes/muse.js"></script><script src="/new-technology/js/next-boot.js"></script>
+
+  <script src="/new-technology/lib/hexo-generator-searchdb/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"/new-technology/lib/mermaid/dist/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/new-technology/js/third-party/tags/mermaid.js"></script>
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

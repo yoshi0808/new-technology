@@ -6,7 +6,7 @@
   <link href="https://yoshi0808.github.io/new-technology/atom.xml" rel="self"/>
   
   <link href="https://yoshi0808.github.io/new-technology/"/>
-  <updated>2023-04-04T12:49:36.414Z</updated>
+  <updated>2023-04-28T23:27:23.360Z</updated>
   <id>https://yoshi0808.github.io/new-technology/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>L2ネットワークとESXi</title>
+    <link href="https://yoshi0808.github.io/new-technology/2023/04/29/l2-esxi/"/>
+    <id>https://yoshi0808.github.io/new-technology/2023/04/29/l2-esxi/</id>
+    <published>2023-04-28T15:00:00.000Z</published>
+    <updated>2023-04-28T23:27:23.360Z</updated>
+    
+    <content type="html"><![CDATA[<img src="/new-technology/2023/04/29/l2-esxi/title.png" class="" title="alt"><p class="onepoint">この記事で実現すること</p><p>ネットワークの教本といえば、TCP&#x2F;IP、つまりレイヤ3が中心の解説が中心です。ここでは、普段なかなか目にすることのないL2ネットワークの基礎、 ESXiにおけるネットワークの設定について説明するものです。</p><span id="more"></span><h2 id="L2ネットワークとIPアドレス"><a href="#L2ネットワークとIPアドレス" class="headerlink" title="L2ネットワークとIPアドレス"></a>L2ネットワークとIPアドレス</h2><p>個人向けのWi-Fiルーターなどを使い、PCやスマホ、またはNASや仮想環境などを使うようになれば、IPアドレスやDHCP、そして個々の端末が保有するMACアドレスというところは良く目にすることでしょう。Wi-Fiルーターと無線接続する端末だけだと、なかなかL2レイヤは気にすることは無いかもしれません。ネットワークを高度化して、ESXiなどの仮想環境を使い始めると、L2レイヤの知識が必要となってきます。何となくは理解して仮想環境を使われている方が多いかと思いますが、L2スイッチとVLAN、スタンドアロン（無償版）ESXiのvSwitchなどの具体的な設定などを確認していきます。</p><h2 id="スイッチングハブ"><a href="#スイッチングハブ" class="headerlink" title="スイッチングハブ"></a>スイッチングハブ</h2><p>個人向けに販売されているスイッチングハブといえば、一般的にL2スイッチを指します。TCP&#x2F;IPのルーティングができるL3スイッチもありますが、高額です。L2スイッチも大まかには2種類あり、VLANの設定ができるタイプと、設定が出来ないタイプとの2種類あります。スイッチングハブのネーミングの理由としては、指定されたMACアドレスがあるポートにのみデータを転送する機能を持つものです。昔のハブは電気的に全てのポートにデータを送っており、さらに半二重通信（片方が送信している時は相手側は送信できない。Wi-Fiと同様）でしたが、今のスイッチングハブといえば、全二重で双方向通信が可能であり、複数端末の同時通信でデータ送受信の競合がないようになっています（半二重通信ができる製品もあります）。スイッチングハブではない昔ながらのハブはダムハブやリピーターハブと呼ばれましたが昨今ではむしろその製品を探すのが難しくなっています（ダムハブは隣の端末の通信を傍受できるのでパケットキャプチャとしての使い道はあります）。</p><p>スイッチングハブをタイプ別と特徴で示すと以下の通りです。</p><table><thead><tr><th>タイプ</th><th>説明</th><th>特徴</th></tr></thead><tbody><tr><td>アンマネージ</td><td>電源OnしてLANケーブルを繋いですぐに使える製品。設定画面などは一切ない。</td><td>安価</td></tr><tr><td>スマートスイッチ</td><td>管理画面があり、VLAN、MACアドレスフィルタやパケットの優先度設定などが可能</td><td>個人向けには少ない</td></tr><tr><td>マネージド</td><td>VLAN、高度な管理（SNMP、Portミラーリング、コマンドライン）</td><td>やや高額。L2スイッチではスマートスイッチとマネージドとの区別が付けづらくなってきている</td></tr><tr><td>L3スイッチ</td><td>DHCP機能、ネットワークアドレスを分離し、ルーティングが可能。マネージドスイッチの扱い。</td><td>高額。ネットワークの知識が必要な難解なコマンドライン中心の製品が多い。</td></tr></tbody></table><p>ホームユーザーとしては、こういった情報よりも、10GbEとか2.5GbEなどのポートの速度を優先したり、発熱を気にしてファンレスか否か、ファンがどれだけ静かなのかをポイントにしてスイッチングハブを購入されていることでしょう。単にネットを使うだけであればそれで充分で、普段はL2ネットワークの事を気にする必要はありません。</p><p>リモートワークで家の機器と会社の機器とを分離したい場合、一般的にWi-Fiルーターではゲスト用ネットワーク（ゲスト用SSID）があるので、昔ほどVLANを必要としなくなっています。こういった単にネットを使うだけで何も管理できないスイッチをアンマネージスイッチと呼びます。</p><h3 id="スイッチング能力"><a href="#スイッチング能力" class="headerlink" title="スイッチング能力"></a>スイッチング能力</h3><p>スイッチの性能の一つにスイッチング能力、別名、スイッチングファブリックというものがあります。比較サイトでも必ずスペックとして出ているものですが、この数値は、基本的に全てのポートが全二重でブロッキングせずにデータを送信できるものとして計算された数値となっています。8Portで全て10GbEなら以下の通りです。</p><ul><li>10Gbps×8(Port)×2（全二重）&#x3D; 160Gbps</li></ul><p>10GbEが4Port、1GbEが8Portの製品なら、96Gbpsという具合です。ですので、製品を比較して「こちらのハブのスループットが高そうだ」という事にはなりません。</p><h3 id="スマートスイッチ・マネージドスイッチ"><a href="#スマートスイッチ・マネージドスイッチ" class="headerlink" title="スマートスイッチ・マネージドスイッチ"></a>スマートスイッチ・マネージドスイッチ</h3><p>全く管理画面が無いL2スイッチはIPアドレスを持ちませんが、スマートスイッチ・マネージドスイッチと呼ばれている製品はIPアドレスを持ちます。この”スマート”や”マネージド”というネーミングも実は明確な定義はありません。各社によって呼び名が少しづつ異なっており、はっきり言えばマーケティング用語です。Webの管理画面があってもVLANが無いL2スイッチもあります。</p><p>IPアドレスを持っているとはいえ、スイッチ経由で通信をする際に、ルーターのようにスイッチのIPアドレスを経由する訳ではありません。以下のように見えないPort0番にAmazon Fire Stickをさらに小さくしたような組み込み機器で独立したOSが接続されていて、そこに最低限のネットワーク通信と管理のためのOSの機能を持っていると考えてください。スイッチングハブとしてパケットを転送している機能はハードウェアであるASIC(Application Specific Integrated Circuit)が担っており、この小さな機器は殆ど使われません。最近のWi-Fi機器もこういった形になっており、管理画面の遷移が遅いからといって転送能力が劣っているという訳でもありません。PCなどからスイッチへのpingを打つと、このPort0番に着信して応答を返す仕組みになります（pingの応答速度も一般的に遅いです）。</p><img src="/new-technology/2023/04/29/l2-esxi/sw3.drawio.png" class="" width="360" title="alt"><p>日本では、全くITの知識が無い人向けに分かりやすくスイッチを提供するという事が主眼に置かれているため、アンマネージスイッチが主力製品として販売されていますが、値段なりの品質です。仮想環境やNASなど24時間の運用を前提で考えるのであれば、スイッチにもそれなりの品質を求めるべきです。アンマネージで不具合が出ると回収するしかありません。ファームウェアの更新ができるもの、かつ、きちんと定期的にアップデートが行われている製品を選定されることをお勧めします。</p><h3 id="L2ネットワークとMACアドレス"><a href="#L2ネットワークとMACアドレス" class="headerlink" title="L2ネットワークとMACアドレス"></a>L2ネットワークとMACアドレス</h3><p>L2スイッチはMACアドレスを宛先として判断し、パケットを目的のポートに転送します。この世界ではIPアドレスはデータの中身として扱われ、宛先として使われることはありません。例えば、以下のPCとL2スイッチとの関係で確認してみます。</p><img src="/new-technology/2023/04/29/l2-esxi/net1.drawio.png" class="" width="640" title="alt"><p>PC1からPC2にpingを打つこととします。</p><pre class="mermaid">sequenceDiagramparticipant pc1 as PC1participant sw as SWitchparticipant pc2 as PC2Note over pc1: 1.PC2へのpingコマンド投入pc1 -&gt;&gt; sw : 2.ARP Request(PC2)をブロードキャストNote over sw: 3.PC1のMACを自己学習sw -&gt;&gt; pc2 : 4.ARP Requestをブロードキャストpc2 --&gt;&gt; sw : 5.ARP Reply(PC2のMAC)Note over sw: 6.PC2のMACを自己学習sw --&gt;&gt; pc1 : 7.ARP Reply(PC2のMAC)pc1 -&gt;&gt; sw : 8.ICMP Echo Requestsw -&gt;&gt; pc2 : 9.ICMP Echo Requestpc2 --&gt;&gt; sw : 10.ICMP Echo Replysw --&gt;&gt; pc1 : 11.ICMP Echo ReplyNote over pc1: 12.ping応答</pre><p>このシーケンスの実行の結果は以下の通りです。</p><p>PC1のarpテーブルは以下になります(Windowsでの実行を想定)</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\yoshi&gt;arp -a</span><br><span class="line"></span><br><span class="line">インターフェイス: 192.168.100.129 --- 0x10</span><br><span class="line"> インターネット アドレス 物理アドレス           種類</span><br><span class="line">  192.168.100.161       04-69-f8-aa-bb-cc      動的</span><br><span class="line">  255.255.255.255       ff-ff-ff-ff-ff-ff     静的</span><br></pre></td></tr></table></figure><p>PC2のARPテーブルは以下になります(macOSでの実行を想定)</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ arp -a</span><br><span class="line">? (192.168.100.129) at 30:59:b7:00:11::22 on en0 ifscope [ethernet]</span><br></pre></td></tr></table></figure><p>そして、スイッチ上のMACアドレステーブルは、MACアドレスと接続されているPortの組み合わせが登録されています（ここではUbiquiti社のPro Aggregationスイッチを使っています。各社、機種毎に取得方法は異なります）。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(UBNT) &gt;show mac-addr-table</span><br><span class="line"></span><br><span class="line">VLAN ID  MAC Address         Interface              IfIndex  Status</span><br><span class="line">-------  ------------------  ---------------------  -------  ------------</span><br><span class="line">1        30:59:B7:00:11:22   0/1                    1        Learned</span><br><span class="line">1        04:69:F8:AA:BB:CC   0/28                   28       Learned</span><br></pre></td></tr></table></figure><p>VLANはデフォルトVLANが1の製品が大半です。MACアドレステーブルにはVLANのIDが必要ですが、詳細説明は割愛します（機種により実装の違いがあります）。</p><p>さて、このようにして、PC同士はL3レイヤ（IPアドレス）からL2レイヤ（MACアドレス）への変換の情報をお互いに持ち、スイッチはMACアドレスとそれがどのPortに接続されているかを管理しています。</p><p>スイッチ自身に管理画面がないと、スイッチの中身がどうなっているか分からないんですが、アンマネージスイッチでは管理IPアドレスを持たないだけで、しっかりとMACアドレステーブルの管理は行われています。</p><p>ちなみに、MACアドレスは6バイトでコロン区切りかハイフン区切りとなっています。先頭の3バイトがVendorIDとなっていて、上記の例だと、<code>30:59:B7</code>はMicrosoft社であり、<code>04:69:F8</code>はApple社になります。</p><p>ご自身のPCでも<code>arp -a</code>を実行してみてください。LANにあるさまざまな端末のIPアドレスとMACアドレスの一覧が確認できるはずです。</p><blockquote><p>Ubiquiti Switch Pro Aggregation<br> <a href="https://jp.store.ui.com/collections/unifi-network-switching/products/unifi-switch-aggregation-pro">https://jp.store.ui.com/collections/unifi-network-switching/products/unifi-switch-aggregation-pro</a></p></blockquote><h2 id="ESXiのL2ネットワーク"><a href="#ESXiのL2ネットワーク" class="headerlink" title="ESXiのL2ネットワーク"></a>ESXiのL2ネットワーク</h2><p>ここではVSphere Hypervisor（無償版ESXi）についての説明になります。ESXiは仮想環境として端末を動作させる機能とvSwitchという仮想ネットワークスイッチの機能を持っています。実際は1つのネットワークカードに対して、複数の仮想マシンを動作させることが可能となっています。</p><h3 id="仮想マシンのNIC"><a href="#仮想マシンのNIC" class="headerlink" title="仮想マシンのNIC"></a>仮想マシンのNIC</h3><p>仮想マシンの構成としての一例を挙げます。</p><img src="/new-technology/2023/04/29/l2-esxi/vm1.png" class="" width="1024" title="alt"><p>この仮想マシンはUbuntuで、1つの仮想ネットワークアダプタを持っています。最もシンプルな構成です。MACアドレスの先頭3バイトは<code>00:0c:29</code>となっており、これはVMwareのVenderIDです。下位3バイトは仮想マシンの構成時に自動的に振られます。</p><p>続いて、仮想ネットワークスイッチの説明です。</p><img src="/new-technology/2023/04/29/l2-esxi/vsw1.png" class="" width="1024" title="alt"><p>この例では仮想スイッチ1つに物理アダプタを1つ加えています。ESXi本体のハードウェアに付属するネットワークカードが物理アダプタです。</p><img src="/new-technology/2023/04/29/l2-esxi/vsw2.png" class="" width="640" title="alt"><p>この物理アダプタには当然ですが物理MACアドレスがあります。仮想ネットワークアダプタに到達するためには、この物理アダプタを経由する必要があります。しかし、ESXiのネットワークドライバのレベルで仮想ネットワークアダプタがNICの物理デバイスと接続されており、物理ネットワークアダプタ<code>80:61:5f:xx:xx:xx</code>は使わず、仮想MACアドレス<code>00:0c:29:4f:2e:05</code>が仮想マシンに接続されています。<code>80:61:5f:xx:xx:xx</code>は使われていないと書きましたが、ESXiを構成すると、vmnic0の物理MACアドレスはESXiのVMKernelのvmk0に使われるようになっています。ESXiの世界ではネットワークの障害時の切り替えなども考慮し、物理MACアドレスはあまり重要ではありません。</p><p>過去の技術ですが、物理MACアドレスがデータを受け取って仮想MACアドレスに変換して受け渡す、いわゆるNATの技術も実際には存在します。しかし、今のESXiでは物理NICから実際の仮想MACアドレスのデータが流れていきます。</p><p>一例として、私の保有しているスイッチでPort19のESXiの物理NICとESXiの仮想MACアドレステーブルを表示させると以下のようになっています。<br>（物理MACアドレスの値と一部のVLANの値は修正しています）<br>前述したように、先頭３バイトが<code>00:0C:29</code>のものが仮想マシンです。</p> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(UBNT) <span class="comment">#show mac-addr-table | include Interface|00:0C:29|80:61:5F</span></span><br><span class="line"></span><br><span class="line">VLAN ID  MAC Address         Interface              IfIndex  Status</span><br><span class="line">200      00:0C:29:4F:2E:05   0/19                   19       Learned</span><br><span class="line">200      00:0C:29:C8:1F:97   0/19                   19       Learned</span><br><span class="line">200      80:61:5F:00:00:03   0/19                   19       Learned</span><br></pre></td></tr></table></figure><p>VLAN200の２つの仮想マシンが存在している事が分かります、スイッチはこのようにして仮想マシンのMACアドレス１つ１つを管理し、適切なスイッチポートに転送していることがわかります。</p><p>ちなみに物理スイッチを多段接続した場合にも、1つのポートから先のスイッチ経由で複数の端末が接続されていれば同様に1つのポートに複数の端末のMACアドレスがテーブルに管理されます。</p><h3 id="vSwitch"><a href="#vSwitch" class="headerlink" title="vSwitch"></a>vSwitch</h3><p>vSwitchでは物理NICを経由して仮想マシンと接続するためのポートグループが必要です。仮想マシンにネットワークアダプタを加える時にはこのポートグループが必要です。ESXiのセットアップ完了後は、<mark class="label primary">vSwitch0</mark>  がデフォルトのvSwitchとして作成されており、ポートグループとして、<mark class="label primary">Management Network</mark>および<mark class="label primary">VM Network</mark>の2つが作成されています。</p><img src="/new-technology/2023/04/29/l2-esxi/vsw3.png" class="" width="480" title="alt"><mark class="label primary">Management Network</mark>は、ESXiのWebにログインしたり制御のためのポートグループです。このグループの中にデフォルトで<mark class="label primary">VMKernel NIC</mark>として<mark class="label primary">vmk0</mark>が自動作成されています。VMKernel NICはESXiのWebサービスを始めとする管理系のサービス提供のためのIPアドレスを持ちます。前述したL2スイッチの説明ではPort0として小さな組み込み機器としてOSが稼働していると表現しましたが、それと目的は同じです。VMKernelはvSwitchを制御するというよりは、ネットワークセグメント単位に持ち、ESXiを管理するためのIPアドレスとなります。<mark class="label primary">VM Network</mark>もポートグループです。仮想マシンが何もない初期状態では特に仮想IPアドレスも保有していません。仮想マシンを作成し、ネットワークアダプタを追加する際に、この<mark class="label primary">VM Network</mark>を選択することになります。そうすると自動的に仮想IPアドレスが振られます。もちろん、新規にポートグループを作成し、仮想マシンにネットワークアダプタを追加する事もできます。また、ポートグループという”グループ”の意味としては、複数の仮想マシンを同一のポートグループに追加できます。この際、MACアドレスが同じになったりはしません。<div class="note info"><p>ポートグループ1つで複数の仮想NICと接続できます。仮想マシン作成時、仮想MACアドレスは自動的に割り当てられます。物理NICを2つ以上保有する場合、障害対策と負荷分散ができます。負荷分散の際、ESXiのデフォルトでは、ポートグループ単位に複数の物理NICを使い負荷分散をします。</p></div><div class="note info"><p><mark class="label primary">Management Network</mark>と<mark class="label primary">VM Network</mark>のポートグループが分かれているのは、本来、マネジメントネットワークとクライアントやサーバーがある仮想マシンのネットワークとは分離すべきという考えに基づいています。</p></div><p>なお、仮想マシンをバックアップから戻した場合には、既存の仮想マシンと同一のMACアドレスで復元してしまうと通信が正しく行えなくなります。従って、仮想マシンの復元後、初期起動時には以下のダイアログが表示され、<mark class="label primary">コピーしました</mark>を選択すると、新しい仮想MACアドレスが割り当てられます。</p><img src="/new-technology/2023/04/29/l2-esxi/esxi3.png" class="" width="640" title="alt"><h4 id="特殊な設定"><a href="#特殊な設定" class="headerlink" title="特殊な設定"></a>特殊な設定</h4><p>vSwitchには以下の2つの特殊な仮想マシンのための追加設定ができます。</p><img src="/new-technology/2023/04/29/l2-esxi/vsw4.png" class="" width="480" title="alt"><ul><li><mark class="label primary">無差別モードを許可</mark><p> ファイアウォールやIPS&#x2F;IDS（Intrusion Prevention System&#x2F;Intrusion Detection System）などセキュリティ製品におけるブリッジモードのように、同一LAN内でパケットの検証をする際にはこれを<mark class="label primary">はい</mark>に変更します。セキュリティ製品の先に接続されている端末も同一のL2ネットワークとして全てパケットを転送してあげる動作です。自分宛のMACアドレスでなくとも受け取る挙動であり、仮想マシンはダムハブに見えるわけです。また、仮想マシンのネットワークキャプチャを行う場合に使えます。</p></li><li><mark class="label primary">偽装転送を許可/MAC変更を許可</mark><p> 上記と同じようにセキュリティ製品（ゲートウェイ）がバックヤードにある端末のパケットを相互にやりとりするわけですから、自分自身のMACアドレスではないMACアドレスを持ったデータを送信する事になります。一般的にはセキュリティ上認めていないものですが、セキュリティ製品では<mark class="label primary">MAC変更を許可</mark>を<mark class="label primary">はい</mark>を、<mark class="label primary">偽装転送を許可</mark>を<mark class="label primary">はい</mark>にします。</p></li></ul><p>これらはいずれもセキュリティ強化のためにデフォルトでは<mark class="label primary">いいえ</mark>になっています。<br>これらの機能の詳細はVMwareの以下のドキュメントを参照してください。</p><blockquote><p>vSphere 標準スイッチのセキュリティ強化<br> <a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.security.doc/GUID-3507432E-AFEA-4B6B-B404-17A020575358.html">https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.security.doc/GUID-3507432E-AFEA-4B6B-B404-17A020575358.html</a></p></blockquote><h2 id="ESXiのVLAN"><a href="#ESXiのVLAN" class="headerlink" title="ESXiのVLAN"></a>ESXiのVLAN</h2><p>無償版ESXiではVLAN設定が可能です。<br>ESXiにおけるデフォルトVLAN（タグ無し）はVLAN ID＝0となります。通常のスイッチはVLAND ID＝1のものが多いのですが、基本的にタグ無し同士の通信であれば問題になりません。デフォルトVLANを変更し、さらにそれをネイティブVLAN（タグ無し）にする時は少し考える必要がありますが、ホームユーザー向けではそこまで考えることも無いでしょう。</p><table><thead><tr><th>ESXiのVLANのタイプ</th><th>説明</th></tr></thead><tbody><tr><td>EST</td><td>通常のタグ無し。物理スイッチのアクセスポートに接続する場合でスイッチ側でタグが外される事を期待。</td></tr><tr><td>VST</td><td>タグ付き（1〜4094）。物理スイッチからタグ付きで接続する場合。</td></tr><tr><td>VGT</td><td>タグ付き（4095）。仮想マシンに複数のタグ付きパケットを流す場合</td></tr></tbody></table><p>3種類それぞれのネーミングがあります。</p><p>EST（タグ無し）はVLANを意識しないモードです。<br>タグ無しでvSwitchのポートグループに渡されることを期待している設定です。物理スイッチがアクセスポートの場合は、タグが外されるのでvSwtichおよびポートグループでは特に何もしませんし、仮想マシンでも何も意識しません。</p><p>VSTは、VLAN IDをポートグループに設定します。<br>例えば、ESXiのマネジメントネットワークはタグ無し、仮想マシンはユーザー側ネットワークとする場合にvSwitchで2つのセグメントのデータを受け入れ、VMKernelはタグ無しのまま、仮想マシンはポートグループでIDに200を指定します。この場合はVLAN200について、vSwitchでタグが外され仮想マシンにパケットが届きますので仮想マシンでVLANの意識はしません。</p><p>VGTは物理スイッチにおけるトランクポートの役割と同等です。ポートグループに4095を設定します。仮想マシン自身がタグVLANを解釈できる場合に複数のVLANのタグ付きパケットを流し、仮想マシン側でタグを外すような使い方となります。また、VSTではESXiの仕様として1〜4094とありますが、一般的にタグありのVLANは2〜1005の間で作成しますし、個人向け環境のVLANはネットワークアドレスの第3オクテットの数字と合わせるのが無難です。<code>192.168.xxx.0/24</code><br>全てのVLANデータが流れて不要なものは仮想マシン側で破棄する事になるので負荷が高くなりやすく、物理スイッチからは必要なVLANのみのデータを流すことが求められます。</p><img src="/new-technology/2023/04/29/l2-esxi/vsw3.png" class="" width="480" title="alt"><p>VSTの例ですが、Win10ProのVLAN IDを300とすると、ポートグループの設定でVLANの値を明示します。</p><img src="/new-technology/2023/04/29/l2-esxi/vsw5.png" class="" width="640" title="alt"><p>このvSwitchの例で言えば、タグ300のパケットは、VGT（ID&#x3D;4095）、300と明示した2つの仮想マシンのみに転送されます。VLAN ID0のVM NetworkおよびManagement Networkにはタグ300のパケットは流れません。</p><p>このように、vmnic0に接続されたvSwitchネットワークはvmk0のIPネットワークが<code>192.168.1.0/24</code>だとすれば、全ての仮想マシンが<code>192.168.1.0/24</code>のIPアドレスを持つのがシンプルな構成ですが、このようにタグVLANを組み合わせることで、物理NICの数が少なくても複数のVLAN、つまり複数のネットワークセグメントのデータを通すことができます。</p><p>VGTの場合は、物理スイッチ側のMACアドレステーブルは以下のようになっています。仮想マシン自体がVLANのトランクポートを扱えるため、１つのMACアドレスに複数のVLANが割り当てられている事が分かります。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">VLAN ID  MAC Address         Interface              IfIndex  Status</span><br><span class="line">1        00:0C:29:EB:B3:CC   0/15                   15       Learned</span><br><span class="line">200      00:0C:29:EB:B3:CC   0/15                   15       Learned</span><br><span class="line">300      00:0C:29:EB:B3:CC   0/15                   15       Learned</span><br><span class="line">4040     00:0C:29:EB:B3:CC   0/15                   15       Learned</span><br></pre></td></tr></table></figure><p>ESXiのVLANタグについては以下のドキュメントを参照してください。英語ですが3つのVLANについての解説ビデオもあります。</p><blockquote><p>VMware VLAN 構成<br> <a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.networking.doc/GUID-7225A28C-DAAB-4E90-AE8C-795A755FBE27.html?hWord=N4IghgNiBcIBwAYBMA6AjARRAXyA">https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.networking.doc/GUID-7225A28C-DAAB-4E90-AE8C-795A755FBE27.html?hWord=N4IghgNiBcIBwAYBMA6AjARRAXyA</a></p></blockquote>]]></content>
+    
+    
+    <summary type="html">&lt;img src=&quot;/new-technology/2023/04/29/l2-esxi/title.png&quot; class=&quot;&quot; title=&quot;alt&quot;&gt;
+
+&lt;p class=&quot;onepoint&quot;&gt;この記事で実現すること&lt;/p&gt;
+
+&lt;p&gt;ネットワークの教本といえば、TCP&amp;#x2F;IP、つまりレイヤ3が中心の解説が中心です。ここでは、普段なかなか目にすることのないL2ネットワークの基礎、 ESXiにおけるネットワークの設定について説明するものです。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Network" scheme="https://yoshi0808.github.io/new-technology/categories/Network/"/>
+    
+    
+    <category term="ESXi" scheme="https://yoshi0808.github.io/new-technology/tags/ESXi/"/>
+    
+  </entry>
   
   <entry>
     <title>Mellanox Connect XとWindows11</title>
@@ -33,9 +58,9 @@
     
     
     
-    <category term="Network" scheme="https://yoshi0808.github.io/new-technology/categories/Network/"/>
-    
     <category term="Hardware" scheme="https://yoshi0808.github.io/new-technology/categories/Hardware/"/>
+    
+    <category term="Network" scheme="https://yoshi0808.github.io/new-technology/categories/Network/"/>
     
     
     <category term="SFP+" scheme="https://yoshi0808.github.io/new-technology/tags/SFP/"/>
@@ -84,9 +109,9 @@
     
     
     
-    <category term="Network" scheme="https://yoshi0808.github.io/new-technology/categories/Network/"/>
-    
     <category term="Hardware" scheme="https://yoshi0808.github.io/new-technology/categories/Hardware/"/>
+    
+    <category term="Network" scheme="https://yoshi0808.github.io/new-technology/categories/Network/"/>
     
     
     <category term="10GbE" scheme="https://yoshi0808.github.io/new-technology/tags/10GbE/"/>
@@ -109,9 +134,9 @@
     
     
     
-    <category term="Network" scheme="https://yoshi0808.github.io/new-technology/categories/Network/"/>
-    
     <category term="Hardware" scheme="https://yoshi0808.github.io/new-technology/categories/Hardware/"/>
+    
+    <category term="Network" scheme="https://yoshi0808.github.io/new-technology/categories/Network/"/>
     
     
     <category term="UniFi" scheme="https://yoshi0808.github.io/new-technology/tags/UniFi/"/>
@@ -158,9 +183,9 @@
     
     
     
-    <category term="Network" scheme="https://yoshi0808.github.io/new-technology/categories/Network/"/>
-    
     <category term="Hardware" scheme="https://yoshi0808.github.io/new-technology/categories/Hardware/"/>
+    
+    <category term="Network" scheme="https://yoshi0808.github.io/new-technology/categories/Network/"/>
     
     
     <category term="SFP+" scheme="https://yoshi0808.github.io/new-technology/tags/SFP/"/>
@@ -269,9 +294,9 @@
     
     
     
-    <category term="Network" scheme="https://yoshi0808.github.io/new-technology/categories/Network/"/>
-    
     <category term="Hardware" scheme="https://yoshi0808.github.io/new-technology/categories/Hardware/"/>
+    
+    <category term="Network" scheme="https://yoshi0808.github.io/new-technology/categories/Network/"/>
     
     
     <category term="SFP+" scheme="https://yoshi0808.github.io/new-technology/tags/SFP/"/>
@@ -300,9 +325,9 @@
     
     
     
-    <category term="Network" scheme="https://yoshi0808.github.io/new-technology/categories/Network/"/>
-    
     <category term="Hardware" scheme="https://yoshi0808.github.io/new-technology/categories/Hardware/"/>
+    
+    <category term="Network" scheme="https://yoshi0808.github.io/new-technology/categories/Network/"/>
     
     
     <category term="SFP+" scheme="https://yoshi0808.github.io/new-technology/tags/SFP/"/>
@@ -367,9 +392,9 @@
     
     
     
-    <category term="Network" scheme="https://yoshi0808.github.io/new-technology/categories/Network/"/>
-    
     <category term="Hardware" scheme="https://yoshi0808.github.io/new-technology/categories/Hardware/"/>
+    
+    <category term="Network" scheme="https://yoshi0808.github.io/new-technology/categories/Network/"/>
     
     
     <category term="SFP+" scheme="https://yoshi0808.github.io/new-technology/tags/SFP/"/>
@@ -419,9 +444,9 @@
     
     
     
-    <category term="Network" scheme="https://yoshi0808.github.io/new-technology/categories/Network/"/>
-    
     <category term="Hardware" scheme="https://yoshi0808.github.io/new-technology/categories/Hardware/"/>
+    
+    <category term="Network" scheme="https://yoshi0808.github.io/new-technology/categories/Network/"/>
     
     
     <category term="ESXi" scheme="https://yoshi0808.github.io/new-technology/tags/ESXi/"/>
@@ -470,9 +495,9 @@
     <category term="Hardware" scheme="https://yoshi0808.github.io/new-technology/categories/Hardware/"/>
     
     
-    <category term="ESXi" scheme="https://yoshi0808.github.io/new-technology/tags/ESXi/"/>
-    
     <category term="10GbE" scheme="https://yoshi0808.github.io/new-technology/tags/10GbE/"/>
+    
+    <category term="ESXi" scheme="https://yoshi0808.github.io/new-technology/tags/ESXi/"/>
     
   </entry>
   
@@ -494,30 +519,6 @@
     
     <category term="Security" scheme="https://yoshi0808.github.io/new-technology/categories/Security/"/>
     
-    
-  </entry>
-  
-  <entry>
-    <title>VMware ESXiを6.7から7.0にアップグレードする</title>
-    <link href="https://yoshi0808.github.io/new-technology/2021/12/25/esxi-upgrade/"/>
-    <id>https://yoshi0808.github.io/new-technology/2021/12/25/esxi-upgrade/</id>
-    <published>2021-12-24T22:15:25.000Z</published>
-    <updated>2023-02-08T11:46:38.000Z</updated>
-    
-    <content type="html"><![CDATA[<img src="/new-technology/2021/12/25/esxi-upgrade/title.png" class="" width="1024" title="alt"><p class="onepoint">この記事で実現すること</p><p>無償版ESXi（VMware vSphere Hypervisor）について、ESXi6.7からESXi7.0にアップグレードします。ここではUEFI（セキュアブート）で構成されているESXiを対象とし、できるだけ安全にアップグレードを行います。2023年2月8日時点では、ESXi8.0が発表されているものの、無償版としてのライセンスが公開されていないようです。</p><span id="more"></span><h2 id="ESXiの脆弱性を狙ったランサムウェアについて"><a href="#ESXiの脆弱性を狙ったランサムウェアについて" class="headerlink" title="ESXiの脆弱性を狙ったランサムウェアについて"></a>ESXiの脆弱性を狙ったランサムウェアについて</h2><p>JPCERT&#x2F;CCより、2023-02-07にESXiのランサムウェア攻撃についての情報が提供されています。</p><blockquote><p>VMware ESXiを標的としたランサムウェア攻撃について<br> <a href="https://www.jpcert.or.jp/newsflash/2023020601.html">https://www.jpcert.or.jp/newsflash/2023020601.html</a></p></blockquote><p>既知のOpenSLPのヒープオーバーフローの脆弱性（CVE-2021-21974）を悪用した攻撃とみられ、攻撃を受けるとファイルが暗号化され身代金の支払いを求めるメッセージが残されます。</p><p>VMware ESXi 7.0系 Update 1cより前のバージョン（ESXi70U1c-17325551パッチ未適用）<br>VMware ESXi 6.7系 ESXi670-202102001より前のバージョン（ESXi670-202102401-SGパッチ未適用）<br>VMware ESXi 6.5系 ESXi650-202102001より前のバージョン（ESXi650-202102101-SGパッチ未適用）<br>VMware Cloud Foundation 4系 4.2より前のバージョンに含まれるESXi<br>VMware Cloud Foundation 3系 KB82705未適用のバージョンに含まれるESXi</p><p>ESXi7.0未満は既にEOSLを迎えていますので、早急にアップグレードをお勧めします。</p><h2 id="ESXiのアップグレード"><a href="#ESXiのアップグレード" class="headerlink" title="ESXiのアップグレード"></a>ESXiのアップグレード</h2><p>まず正式なアップグレードに関するドキュメントがVMwareより提供されており、こちらでポイントを確認します。アップデートとアップグレードとは異なります。<br>ESXiのバージョン体系は、”x”.”y” update “z” ビルド番号 という並びで表現されます。</p><ul><li>アップグレードは、前2桁（x,y）を上げることを指します。</li><li>アップデートは、前2桁が変わりません。それ以降の数字があるケース、またはUpdate”z”などの形式があります。Update2を省略してU2、さらにU2a、U2cなど英数字が上がっていきます。</li></ul><p>アップデートによってこれまで動いていたハードウェアが動かなくなるという事は大々的にはおきません（ドライバーの更新によって認識しなくなったりうまく動作しないという一般的な理由はあります）。アップグレードではハードウェアのサポート対象の見直しが入ります。</p><blockquote><p>ESXiのアップグレード<br> <a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/vsphere-esxi-70-upgrade-guide.pdf">https://docs.vmware.com/jp/VMware-vSphere/7.0/vsphere-esxi-70-upgrade-guide.pdf</a></p></blockquote><p>例によってVMwareのマニュアルは法人向けにvCenter Serverを中心に記載されているのでポイントを無償版ESXiに絞ります。</p><ul><li>VMWare互換性ガイドでアップグレードが可能か確認する（P8）</li><li>バージョン6.5または6.7から7.0にバージョンアップ可能（P9）</li><li>ESXi7.0にアップグレードするとダウングレードできない（P15）</li><li>esxcliコマンドまたはISOブートからのアップグレードの2種類がある（P38,P64）</li><li>アップグレードには新たにESXi7.0向けの（無償版ESXiの）ライセンスを登録する（P80）</li><li>仮想マシンとVMware Toolsのアップグレード（P12）</li></ul><p>注意点は以下の通りです。</p><blockquote><p>esxcliコマンドを使用してアップグレードすると、古いバージョンのESXiは新しいVIBのインストールを実行するため、署名が保存されずセキュアブートは実行できません。ISOを使用してアップグレードすると、新しいVIBは署名を保存できます。（P80）</p></blockquote><p>上記の注意点の通り、UEFIのセキュアブートで稼働しているESXiのバージョンアップにはISOを使用してアップグレードすべきと読めます。一方、セキュアブートでなければ、<code>esxcli software profile update --depot=&lt;depot_location&gt; --profile=&lt;profile_name&gt; </code>のコマンドでアップグレード可能です。詳細は、「<a href="/new-technology/2020/06/14/esxi67-patch/" title="VMware ESXiにパッチを適用する">VMware ESXiにパッチを適用する</a>」の記事を参照してください。但し、ESXi7.0におけるハードウェア互換性が維持できるか慎重に確認するためには、ISOでのアップグレードを検討してください。</p><p>VMware互換性ガイドは個人向けのハードウェアが殆ど列挙されておらずチェックが困難なのが実態です。ハードウェアが準拠しているかどうかのチェックについては後述します。</p><p>また、上記マニュアルには注意点としての記載がありませんが、スナップショットを取得していない状態でアップグレードされる事をお勧めします。</p><p>この記事はESXi6.7からESXi7.0にアップグレードする例を記載しています。厳密なアップグレードパスについては以下を確認してください。</p><img src="/new-technology/2021/12/25/esxi-upgrade/upgradepath.png" class="" width="1024" title="alt"><blockquote><p>VMware Product Interoperability Matrix<br> <a href="https://interopmatrix.vmware.com/Upgrade?productId=1&amp;isHidePatch=true">https://interopmatrix.vmware.com/Upgrade?productId=1&amp;isHidePatch=true</a></p></blockquote><h2 id="仮想マシンのバックアップ（任意）"><a href="#仮想マシンのバックアップ（任意）" class="headerlink" title="仮想マシンのバックアップ（任意）"></a>仮想マシンのバックアップ（任意）</h2><p>バージョンアップの前には仮想マシンのバックアップを別の筐体またはメディアに取得される事をお勧めします。「<a href="/new-technology/2020/10/11/esxi-backup/" title="VMware ESXiの仮想マシンをバックアップする">VMware ESXiの仮想マシンをバックアップする</a>」の記事を参照してください。ghettoVCBを使ったバックアップでは、ESXiにsshした上で、次のコマンドで全ての仮想マシンのバックアップ取得が可能です。<code>/bin/sh ./ghettoVCB.sh -a</code></p><h2 id="アップグレード対象のESXi7-0を確認する"><a href="#アップグレード対象のESXi7-0を確認する" class="headerlink" title="アップグレード対象のESXi7.0を確認する"></a>アップグレード対象のESXi7.0を確認する</h2><p>ESXiのISOインストーラのダウンロードは、2023年2月8日時点ではESXi7.0 Update3gとなっています。</p><blockquote><p>VMware vSphere Hypervisor 7.0 Update3g ダウンロード センター(※VMware Customer Connectへログインが必要です)<br> <a href="https://customerconnect.vmware.com/jp/web/vmware/evalcenter?p=free-esxi7">https://customerconnect.vmware.com/jp/web/vmware/evalcenter?p=free-esxi7</a></p></blockquote><h2 id="ESXi7-0インストールメディア（USB）の作成"><a href="#ESXi7-0インストールメディア（USB）の作成" class="headerlink" title="ESXi7.0インストールメディア（USB）の作成"></a>ESXi7.0インストールメディア（USB）の作成</h2><p>ここではUSBメモリを用意し、ESXi7.0のインストーラーをセットアップします。<br>事前にハードウェア互換リストを元に互換性があるかチェックしたいところですが、実際に個人向けのハードウェアは殆ど列挙されていません。</p><blockquote><p>VMware Compatibility Guide<br> <a href="https://www.vmware.com/resources/compatibility/search.php">https://www.vmware.com/resources/compatibility/search.php</a></p></blockquote><p>運まかせでアップグレードを実行するのは勇気が要ります。また、ESXi7.0にアップグレードした後はダウングレードできません。そこで、<strong>32GBのUSBインストールメディア自身にESXi7.0をクリーンインストールし、検証する方法をお勧めします。</strong><br>つまり、USBメディアにインストールするISOイメージをセットアップし、マシンブートしセットアップを開始しますが、実際のセットアップはそのUSBをフォーマットしてUSB上にESXi7.0を新規でセットアップするというものです。フォーマットしてしまったらセットアップが動かなくなりそうですが、インストーラは最初にモジュールを全て読み込むのでこの方法が可能になります。これで既存の環境を壊さず、そのハードウェアにESXi7.0が導入できるかテストできます。もちろん、正式なセットアップをするためには再度ISOのインストーラーをUSBにコピーする必要があります。</p><h3 id="ESXi7-0-インストーラーのダウンロード"><a href="#ESXi7-0-インストーラーのダウンロード" class="headerlink" title="ESXi7.0 インストーラーのダウンロード"></a>ESXi7.0 インストーラーのダウンロード</h3><p>以下からISOをダウンロードします。</p><p><a href="https://customerconnect.vmware.com/jp/web/vmware/evalcenter?p=free-esxi7">https://customerconnect.vmware.com/jp/web/vmware/evalcenter?p=free-esxi7</a></p><p>ダウンロードは、”VMware vSphere Hypervisor (ESXi ISO) image”をダウンロードします。</p><p>また、製品のライセンスキーが表示されていますので、メモを取っておいてください。</p><h3 id="Rufusによるisoメディアの作成"><a href="#Rufusによるisoメディアの作成" class="headerlink" title="Rufusによるisoメディアの作成"></a>Rufusによるisoメディアの作成</h3><p>以下のサイトからRufusをWindowsでダウンロードし実行します。</p><blockquote><p>Rufus<br> <a href="https://rufus.ie/ja/">https://rufus.ie/ja/</a></p></blockquote><p> 以下のオプションでUSBメディアにESXi7.0のインストーラーを書き込みます。</p> <img src="/new-technology/2021/12/25/esxi-upgrade/rufus1.png" class="" width="480" title="alt"><p> UEFIのセキュアブートに対応させるためにはGPTとUEFIを選択してください。</p><h2 id="ESXi7-0のテストインストール"><a href="#ESXi7-0のテストインストール" class="headerlink" title="ESXi7.0のテストインストール"></a>ESXi7.0のテストインストール</h2><p>ESXi6.7がインストールされているハードウェアにUSBを挿しUSBブートします。</p><blockquote><p><a href="https://www.youtube.com/watch?v=eiZn54GPfzI">https://www.youtube.com/watch?v=eiZn54GPfzI</a></p></blockquote><img src="/new-technology/2021/12/25/esxi-upgrade/install.png" class="" width="1024" title="alt"><p>ビデオの45秒あたりのところで、どのディスクにインストールするか選択しますが、ここではUSBメモリを選択します。ここは少し緊張感が必要です。テストインストールですのでパスワードも簡単なものに、といきたいところですが、パスワード要件として小文字、大文字、数字、および特殊文字を含める必要があります。よってキーボードも日本語キーボードであればきちんとキーボードの種類も選択する必要があります。</p><div class="note danger"><p>誤って既存のESXi6.7がインストールされているドライブに新規インストールを選択してしまうと、既存の環境が全てフォーマットされてしまいます。</p></div><p>セットアップ終了後、再びUSBメモリからブートします。今度はセットアップではなく、ESXi7.0が起動します。ブートシーケンスが既存のSSD等から起動した場合はESXi6.7が起動してしまいます。一旦この状態で、PCをESXiに接続し、ブラウザからESXiにログインし、ストレージやネットワークが使えるか確認できます。当然ながらここには既存の仮想マシンは存在しません。</p><h2 id="ESXi7-0へのアップグレード"><a href="#ESXi7-0へのアップグレード" class="headerlink" title="ESXi7.0へのアップグレード"></a>ESXi7.0へのアップグレード</h2><p>再び、Rufusを使い、USBメディアにISOイメージを作成します。そして前述したビデオを参考に今度は既存のESXi6.7がインストールされているSSDに対してアップグレードを選択します。</p><blockquote><p><a href="https://www.youtube.com/watch?v=eiZn54GPfzI">https://www.youtube.com/watch?v=eiZn54GPfzI</a></p></blockquote><img src="/new-technology/2021/12/25/esxi-upgrade/install.png" class="" width="1024" title="alt"><p>今回はアップグレードが終了し、再起動する際にはUSBメディアは外してください。</p><p>無事再起動したら管理画面にログインします。<br>ESXi7.0はWebUIではビルド番号までは判明しません。sshでESXiに接続し、<code>esxcli system version get</code>を実行し確認します。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@esxi:~] esxcli system version get</span><br><span class="line">Product: VMware ESXi</span><br><span class="line">Version: 7.0.2</span><br><span class="line">Build: Releasebuild-20328353</span><br></pre></td></tr></table></figure><p>コマンドで確認する際は、Versionとビルド番号で見るのが確実です。VMwareのサイトではパッチは7.0を対象に検索し、あとはビルド番号で照会します。</p><h2 id="後処理"><a href="#後処理" class="headerlink" title="後処理"></a>後処理</h2><p>無事アップグレードが成功したら、以下の作業を行います。</p><ol><li>ESXi7.0のライセンス登録<br> ESXiにログイン後、左ペインメニューの<mark class="label primary">ホスト</mark>-<mark class="label primary">管理</mark>から<mark class="label primary">ライセンスタブ</mark>を選択し、<mark class="label primary">ライセンスの割り当て</mark>でダウンロード時に控えたライセンスキーを登録します。</li><li>ESXi7.0の最新パッチ適用<br> ESXiのパッチ適用については、「<a href="/new-technology/2020/06/14/esxi67-patch/" title="VMware ESXiにパッチを適用する">VMware ESXiにパッチを適用する</a>」を参照してください。</li><li>ESXi7.0の構成情報のバックアップ（任意）</li></ol><h2 id="仮想マシンのアップグレード（任意）"><a href="#仮想マシンのアップグレード（任意）" class="headerlink" title="仮想マシンのアップグレード（任意）"></a>仮想マシンのアップグレード（任意）</h2><p>ESXiのバージョンアップ後、仮想マシンのバージョンをアップグレードできます。</p><p>VMware ToolsのアップグレードはESXiをアップグレード後、仮想マシンを起動させた時にアップグレードが可能な場合、WebUIの当該仮想マシンの項目にメッセージが表示されます。</p><img src="/new-technology/2021/12/25/esxi-upgrade/vmwaretools.png" class="" width="640" title="alt"><p>アップグレードしたESXi7.0VMware Toolsよりも新しいバージョンがある場合は以下のように表示されます。</p><img src="/new-technology/2021/12/25/esxi-upgrade/vmwaretools2.png" class="" width="640" title="alt"><p>この場合はWebUIで左ペインの<mark class="label primary">仮想マシン</mark>で対象仮想マシンを選択し、<mark class="label primary">アクション</mark>メニュー→<mark class="label primary">ゲストOS</mark>から<mark class="label primary">VMware Toolsのアップグレード</mark>を実行します。</p><p>詳細は以下の内容を参照してください。</p><blockquote><p>VMware Tools のアップグレード<br> <a href="https://docs.vmware.com/jp/VMware-Tools/11.3.0/com.vmware.vsphere.vmwaretools.doc/GUID-A2491004-1C67-4E14-B47B-807E20C19108.html">https://docs.vmware.com/jp/VMware-Tools/11.3.0/com.vmware.vsphere.vmwaretools.doc/GUID-A2491004-1C67-4E14-B47B-807E20C19108.html</a></p></blockquote><p>VMware Toolsを最新にした後、仮想マシンハードウェアをアップグレードすることができます。ただし、下記のドキュメントに注意書きがある通り、新しいハードウェアバージョンの付属機能が必要な場合のみ実行することとあり、これはESXiのアップグレードに対して必須事項ではありません。</p><blockquote><p>仮想マシンの互換性の手動アップグレード<br> <a href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.vm_admin.doc/GUID-60768C2F-72E1-42E0-8A17-CA76849F2950.html">https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.vm_admin.doc/GUID-60768C2F-72E1-42E0-8A17-CA76849F2950.html</a></p></blockquote><div class="note warning"><ul><li>仮想マシン ハードウェアをアップグレードすると、一部のアプリケーションまたはオペレーティング システムが適切に動作しなくなることがあります。ハードウェア バージョンのアップグレードは、新しいハードウェア バージョンの付属機能が必要な場合のみ実行します。</li><li>Microsoft Windows 仮想マシンで VMware Tools をアップグレードする前に互換性をアップグレードすると、仮想マシンのネットワーク設定が失われることがあります。</li></ul></div><p>この操作は以下の通りWebUIで左ペインの<mark class="label primary">仮想マシン</mark>で対象仮想マシンを選択し、<mark class="label primary">アクション</mark>メニューから<mark class="label primary">仮想マシンの互換性のアップグレード</mark>を実行します。</p><img src="/new-technology/2021/12/25/esxi-upgrade/upgrade-vm.png" class="" width="800" title="alt"><h2 id="ESXi6-7のダウングレード（ご参考）"><a href="#ESXi6-7のダウングレード（ご参考）" class="headerlink" title="ESXi6.7のダウングレード（ご参考）"></a>ESXi6.7のダウングレード（ご参考）</h2><p>（この章は、ESXi6.7からESXi7.0Update2aへのアップグレード時にエラーが発生するケースがあり記載しています）</p><p>ESXi6.7のパッチバージョンがESXi670-202111001の場合、ESXi7.0Update2aへのアップグレードが行えません。</p><img src="/new-technology/2021/12/25/esxi-upgrade/err.png" class="" width="1024" title="alt"><p><code>VMW_bootbank_vmkusb_0.1-4vmw.670.3.159.18828794</code>と依存関係の問題があるとのことです。</p><p>対策としてESXi6.7のひとつ前のパッチリリースに戻すことを検討します。ESXiホストを再起動し、起動中にShift+’R’キーを押すことによって1つ前のバージョンに戻せます。</p><blockquote><p>VMware ESXi を前のバージョンに戻す (1033604)<br> <a href="https://kb.vmware.com/s/article/1033604?lang=ja">https://kb.vmware.com/s/article/1033604?lang=ja</a></p></blockquote><blockquote><p>Hypervisor のプログレス バーの読み込みが開始されたら、Shift+R を押します。(これはバーが表示されたロード後ではなく、ロード中に実行する必要があります。コマンドを実行するタイミングを逃さないよう、”system is preparing to boot” 表示中に Shift+R を繰り返し押すことをお勧めいたします)。</p></blockquote><p> 私の環境では以下のように表示されました。</p><img src="/new-technology/2021/12/25/esxi-upgrade/rollback.png" class="" width="1024" title="alt"><p>戻す対象のビルド番号は17700523と表示されています。これは、Patch Release ESXi670-202103001であり、2021年3月18日にリリースされているESXi6.7の一つ前のパッチリリースです。これはリリース日付が逆転しておらず、うまくいきそうです。ここでロールバックを実行します。</p>]]></content>
-    
-    
-    <summary type="html">&lt;img src=&quot;/new-technology/2021/12/25/esxi-upgrade/title.png&quot; class=&quot;&quot; width=&quot;1024&quot; title=&quot;alt&quot;&gt;
-&lt;p class=&quot;onepoint&quot;&gt;この記事で実現すること&lt;/p&gt;
-
-&lt;p&gt;無償版ESXi（VMware vSphere Hypervisor）について、ESXi6.7からESXi7.0にアップグレードします。ここではUEFI（セキュアブート）で構成されているESXiを対象とし、できるだけ安全にアップグレードを行います。2023年2月8日時点では、ESXi8.0が発表されているものの、無償版としてのライセンスが公開されていないようです。&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="Software" scheme="https://yoshi0808.github.io/new-technology/categories/Software/"/>
-    
-    
-    <category term="ESXi" scheme="https://yoshi0808.github.io/new-technology/tags/ESXi/"/>
     
   </entry>
   
