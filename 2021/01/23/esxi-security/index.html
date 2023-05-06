@@ -19,12 +19,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
 
-    <meta name="description" content="この記事で実現すること  VMwareから、”vSphereのセキュリティ”として、ESXi7版のドキュメンテーションがあります。350ページと膨大な量になります。この情報のうち大半はビジネスで利用するvCenter Serverを中心としたセキュリティ維持のための記載になりますが、個人向けESXiにポイントを絞り、どのようにセキュリティを高めるか確認していきます。  vSphereのセキュリ">
+    <meta name="description" content="この記事で実現すること  VMwareから、”vSphereのセキュリティ”のドキュメンテーションがあります。350ページと膨大な量になります。この情報のうち大半はビジネスで利用するvCenter Serverを中心としたセキュリティ維持のための記載になりますが、個人向けESXiにポイントを絞り、どのようにセキュリティを高めるか確認していきます。  vSphereのセキュリティ ESXi7.0">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ESXi(無償版)のセキュリティを高める">
 <meta property="og:url" content="https://yoshi0808.github.io/new-technology/2021/01/23/esxi-security/index.html">
 <meta property="og:site_name" content="New technologies in our life">
-<meta property="og:description" content="この記事で実現すること  VMwareから、”vSphereのセキュリティ”として、ESXi7版のドキュメンテーションがあります。350ページと膨大な量になります。この情報のうち大半はビジネスで利用するvCenter Serverを中心としたセキュリティ維持のための記載になりますが、個人向けESXiにポイントを絞り、どのようにセキュリティを高めるか確認していきます。  vSphereのセキュリ">
+<meta property="og:description" content="この記事で実現すること  VMwareから、”vSphereのセキュリティ”のドキュメンテーションがあります。350ページと膨大な量になります。この情報のうち大半はビジネスで利用するvCenter Serverを中心としたセキュリティ維持のための記載になりますが、個人向けESXiにポイントを絞り、どのようにセキュリティを高めるか確認していきます。  vSphereのセキュリティ ESXi7.0">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/01/23/esxi-security/vmware.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/01/23/esxi-security/esxi1.png">
@@ -32,7 +32,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/01/23/esxi-security/esxi3.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/01/23/esxi-security/esxi4.png">
 <meta property="article:published_time" content="2021-01-23T13:00:00.000Z">
-<meta property="article:modified_time" content="2023-02-07T11:54:51.000Z">
+<meta property="article:modified_time" content="2023-05-02T12:21:23.697Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="ESXi">
 <meta name="twitter:card" content="summary">
@@ -277,7 +277,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">編集日</span>
-      <time title="修正日：2023-02-07 20:54:51" itemprop="dateModified" datetime="2023-02-07T20:54:51+09:00">2023-02-07</time>
+      <time title="修正日：2023-05-02 21:21:23" itemprop="dateModified" datetime="2023-05-02T21:21:23+09:00">2023-05-02</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -303,9 +303,12 @@
 
 <p class="onepoint">この記事で実現すること</p>
 
-<p>VMwareから、”vSphereのセキュリティ”として、<strong>ESXi7版</strong>のドキュメンテーションがあります。350ページと膨大な量になります。この情報のうち大半はビジネスで利用するvCenter Serverを中心としたセキュリティ維持のための記載になりますが、個人向けESXiにポイントを絞り、どのようにセキュリティを高めるか確認していきます。</p>
+<p>VMwareから、”vSphereのセキュリティ”のドキュメンテーションがあります。350ページと膨大な量になります。この情報のうち大半はビジネスで利用するvCenter Serverを中心としたセキュリティ維持のための記載になりますが、個人向けESXiにポイントを絞り、どのようにセキュリティを高めるか確認していきます。</p>
 <blockquote>
 <p>vSphereのセキュリティ ESXi7.0<br> <a target="_blank" rel="noopener" href="https://docs.vmware.com/jp/VMware-vSphere/7.0/vsphere-esxi-vcenter-server-70-security-guide.pdf">https://docs.vmware.com/jp/VMware-vSphere/7.0/vsphere-esxi-vcenter-server-70-security-guide.pdf</a></p>
+</blockquote>
+<blockquote>
+<p>vSphereのセキュリティ ESXi8.0 Update1<br><a target="_blank" rel="noopener" href="https://docs.vmware.com/jp/VMware-vSphere/8.0/vsphere-esxi-vcenter-801-security-guide.pdf">https://docs.vmware.com/jp/VMware-vSphere/8.0/vsphere-esxi-vcenter-801-security-guide.pdf</a></p>
 </blockquote>
 <span id="more"></span>
 
@@ -334,7 +337,7 @@
 <li>デフォルトでは、ホストを管理するために必要でないポートは、すべて閉じられています。追加のサービスが必要な場合は、ポートを開きます。</li>
 <li>デフォルトでは、強度の低い暗号は無効になっており、クライアントからの通信はSSLで保護されます。チャネルの保護に使用するアルゴリズムは、SSLハンドシェイクによって異なります。ESXiで作成されたデフォルトの証明書は、署名アルゴリズムとして、RSA暗号化のPKCS#1 SHA-256を使用します。</li>
 <li>Webクライアントによるアクセスをサポートするため、内部ではESXiによってTomcat Webサービスが使用されています。このサービスは、管理と監視のためにWebクライアントで必要な機能のみを実行するように修正されています。そのため、ESXiは、さまざまな使用環境で報告されているTomcatのセキュリティ問題による脆弱性に対応できます。</li>
-<li>VMwareは、ESXiのセキュリティに影響する恐れのあるすべてのセキュリティ警告を監視し、必要に応じてセキュリティパッチを発行します。<br>FTPやTelnetなどのセキュリティ保護されていないサービスはインストールされません。これらのサービス用のポートはデフォルトで閉じられています。SSHやSFTPなど、よりセキュアなサービスを容易に使用できるため、これらの安全性の高いサービスを選択し、セキュリティ保護されていないサービスの使用は避けるようにしてください。たとえば、SSHを使用できずTelnetを使用する必要がある場合、SSLを使用したTelnetを使用し て仮想シリアル ポートにアクセスします。</li>
+<li>VMwareは、ESXiのセキュリティに影響する恐れのあるすべてのセキュリティ警告を監視し、必要に応じてセキュリティパッチを発行します。<br>FTPやTelnetなどのセキュリティ保護されていないサービスはインストールされません。これらのサービス用のポートはデフォルトで閉じられています。SSHやSFTPなど、よりセキュアなサービスを容易に使用できるため、これらの安全性の高いサービスを選択し、セキュリティ保護されていないサービスの使用は避けるようにしてください。たとえば、SSHを使用できずTelnetを使用する必要がある場合、SSLを使用したTelnetを使用して仮想シリアル ポートにアクセスします。</li>
 <li>セキュリティ保護されていないサービスを使用する必要があり、ホストに十分な保護を実装している場合は、明示的にポートを開くことで対応できます。</li>
 <li>ESXiシステムでUEFIセキュア ブートを使用することを検討します。「ESXiホストのUEFIセキュア ブート」を参照してください。</li>
 </ul>
@@ -358,7 +361,7 @@
 <p>For ESXi 5.x, 6.0, 6.5 and 6.7, the authorized_keys is located at: &#x2F;etc&#x2F;ssh&#x2F;keys-＜username＞&#x2F;authorized_keys</p>
 </blockquote>
 <p>つまり、rootユーザーですと、<code>/etc/ssh</code>配下に<code>keys-root</code>フォルダを作り、<code>authorized_keys</code>に公開鍵を記述せよという事です。</p>
-<div class="note info"><p>ESXi7では、”keys-root”フォルダおよびauthorized_keysファイルは最初から存在します（ESXi6.7では作成する必要がありました）。</p>
+<div class="note info"><p>ESXi7、ESXi8では、”keys-root”フォルダおよびauthorized_keysファイルは最初から存在します（ESXi6.7では作成する必要がありました）。</p>
 </div>
 
 <blockquote>
@@ -374,7 +377,7 @@
 <li>PCからESXi(192.168.x.x)の&#x2F;tmpに公開鍵をコピーします。ここではsshする前提なのでscpを使います。もちろん他の方法でも構いません。<br><code>scp id_rsa.pub root@192.168.x.x:/tmp</code></li>
 <li>ESXiにて&#x2F;tmpからAuthorized_keysに鍵をコピー（追記）します。<br> <code>cat /tmp/id_rsa.pub &gt;&gt; /etc/ssh/keys-root/authorized_keys </code></li>
 </ol>
-<p>有効にするためにはTSM-SSHを再起動します。TSM-SSHを再起動してもSSHセッションは切断しないようですがこれらの作業はリスクが高いものですので、他の端末から既に接続した状態にする、或いは他のユーザー（管理者権限）をESXiに作成し接続できている状態で作業される事をお勧めします。</p>
+<p>これらの作業はリスクが高いものですので、他の端末から既に接続した状態にする、或いは他のユーザー（管理者権限）をESXiに作成し接続できている状態で作業される事をお勧めします。</p>
 <p>結局のところ、<code>sshd_config</code>を修正できないのであればパスワード認証を禁止するなどの対応はできません。しかし、普段からrootのパスワードは利用せず、公開鍵認証を利用することでパスワードの漏洩は防ぐことができます。</p>
 <h2 id="ESXiに別の管理者ユーザーを作成する"><a href="#ESXiに別の管理者ユーザーを作成する" class="headerlink" title="ESXiに別の管理者ユーザーを作成する"></a>ESXiに別の管理者ユーザーを作成する</h2><p>”vSphereのセキュリティ”についてはこれまで説明したものが全てですが、root以外のユーザーを作成し、rootはできるだけ使わない事をお勧めします。これは一般論でありrootがよく知られたユーザー名だからです。「<a href="/new-technology/2020/10/11/esxi-backup/" title="VMware ESXiの仮想マシンをバックアップする">VMware ESXiの仮想マシンをバックアップする</a>」で説明したバックアップスクリプトのghettoVCBはrootユーザーを必須としているので、運用上、どうしてもrootユーザーでのログインは必要になってきます。しかし仮想マシンなどの操作がメインとなるWebクライアントについては別の管理者アカウントで操作すべきで、可能な限りrootユーザーの情報が漏洩しないようにrootを使う機会を減らすべきです。以下の手順で管理者アカウントを作成します。</p>
 <ol>
