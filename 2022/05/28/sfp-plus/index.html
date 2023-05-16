@@ -17,33 +17,36 @@
 <link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
   <link rel="stylesheet" href="/new-technology/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.16.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
 
-    <meta name="description" content="この記事で実現すること  リモートワークやインターネット回線の高速化に伴い、10Gネットワークが普及し、近ごろは10GBase-Tの発熱に対する声が聞かれるようになってきました。10Gネットワークにおいて従来のLANケーブルではなく光ファイバーで省電力化と低発熱を求める場合、SFP+が選択肢となります。実はあまり知られていない低遅延の効果も大きいため、10Gネットワークを前提にまとめてみました">
+    <meta name="description" content="この記事で実現すること  リモートワークやインターネット回線の高速化に伴い、10Gネットワークが普及し、10GBase-Tの発熱に対する声が聞かれます。10Gネットワークにおいては従来のLANケーブルではなく光ファイバーで省電力化と低発熱が実現できる、SFP+が選択肢となります。実はあまり知られていない低遅延の効果もあります。2023年4月以降段階的に各地で電気代が値上げされることになりました">
 <meta property="og:type" content="article">
 <meta property="og:title" content="10GネットワークとSFP+">
 <meta property="og:url" content="https://yoshi0808.github.io/new-technology/2022/05/28/sfp-plus/index.html">
 <meta property="og:site_name" content="New technologies in our life">
-<meta property="og:description" content="この記事で実現すること  リモートワークやインターネット回線の高速化に伴い、10Gネットワークが普及し、近ごろは10GBase-Tの発熱に対する声が聞かれるようになってきました。10Gネットワークにおいて従来のLANケーブルではなく光ファイバーで省電力化と低発熱を求める場合、SFP+が選択肢となります。実はあまり知られていない低遅延の効果も大きいため、10Gネットワークを前提にまとめてみました">
+<meta property="og:description" content="この記事で実現すること  リモートワークやインターネット回線の高速化に伴い、10Gネットワークが普及し、10GBase-Tの発熱に対する声が聞かれます。10Gネットワークにおいては従来のLANケーブルではなく光ファイバーで省電力化と低発熱が実現できる、SFP+が選択肢となります。実はあまり知られていない低遅延の効果もあります。2023年4月以降段階的に各地で電気代が値上げされることになりました">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/05/28/sfp-plus/title.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/05/28/sfp-plus/mmport.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/05/28/sfp-plus/sw.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/05/28/sfp-plus/dac.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/05/28/sfp-plus/aoc.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/05/28/sfp-plus/om3.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/05/28/sfp-plus/HKB-SCSC1-01L_MA.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/05/28/sfp-plus/mpo_main.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/05/28/sfp-plus/sc.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/05/28/sfp-plus/mpo.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/05/28/sfp-plus/fs1.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/05/28/sfp-plus/fs2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/05/28/sfp-plus/ubiquiti.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/05/28/sfp-plus/TM902C.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/05/28/sfp-plus/qnap.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/05/28/sfp-plus/connectx3.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/05/28/sfp-plus/win.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/05/28/sfp-plus/latch.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/05/28/sfp-plus/dac2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/05/28/sfp-plus/latch2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/05/28/sfp-plus/latch3.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/05/28/sfp-plus/lclc.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/05/28/sfp-plus/lclc2.png">
 <meta property="article:published_time" content="2022-05-27T15:00:00.000Z">
-<meta property="article:modified_time" content="2022-07-30T22:54:06.000Z">
+<meta property="article:modified_time" content="2023-05-16T13:02:41.580Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="SFP+">
 <meta property="article:tag" content="10GbE">
@@ -186,7 +189,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#10G%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E3%81%AE%E6%B6%88%E8%B2%BB%E9%9B%BB%E5%8A%9B%E3%81%A8%E7%99%BA%E7%86%B1"><span class="nav-number">1.</span> <span class="nav-text">10Gネットワークの消費電力と発熱</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SFP-x2F-SFP-%E3%81%A8%E3%81%AF"><span class="nav-number">2.</span> <span class="nav-text">SFP&#x2F;SFP+とは</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B7%9D%E9%9B%A2%E3%80%81%E3%82%B1%E3%83%BC%E3%83%96%E3%83%AB%E3%81%AE%E7%A8%AE%E9%A1%9E%E3%81%AB%E3%82%88%E3%82%8B%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E3%81%AE%E4%BD%BF%E3%81%84%E5%88%86%E3%81%91"><span class="nav-number">3.</span> <span class="nav-text">距離、ケーブルの種類によるモジュールの使い分け</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DAC"><span class="nav-number">3.1.</span> <span class="nav-text">DAC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10GBase-SR-OM3%E3%82%B1%E3%83%BC%E3%83%96%E3%83%AB"><span class="nav-number">3.2.</span> <span class="nav-text">10GBase-SR+OM3ケーブル</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10GBase-T%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E3%80%811000Base-T%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB"><span class="nav-number">3.3.</span> <span class="nav-text">10GBase-Tモジュール、1000Base-Tモジュール</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AOC%E3%82%B1%E3%83%BC%E3%83%96%E3%83%AB"><span class="nav-number">3.4.</span> <span class="nav-text">AOCケーブル</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%81%9D%E3%81%AE%E4%BB%96%E3%82%B1%E3%83%BC%E3%83%96%E3%83%AB%E3%80%81%E3%83%88%E3%83%A9%E3%83%B3%E3%82%B7%E3%83%BC%E3%83%90"><span class="nav-number">3.5.</span> <span class="nav-text">その他ケーブル、トランシーバ</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AE%E6%B6%88%E8%B2%BB%E9%9B%BB%E5%8A%9B"><span class="nav-number">3.6.</span> <span class="nav-text">ネットワークカードの消費電力</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SFP%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E3%81%AE%E4%BE%A1%E6%A0%BC"><span class="nav-number">4.</span> <span class="nav-text">SFPモジュールの価格</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SFP-%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E3%81%AE%E7%99%BA%E7%86%B1"><span class="nav-number">4.1.</span> <span class="nav-text">SFP+モジュールの発熱</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E3%82%AF%E3%83%A9%E3%82%A4%E3%82%A2%E3%83%B3%E3%83%88%E5%81%B4%E3%81%AE%E7%99%BA%E7%86%B1%E6%8A%91%E5%88%B6"><span class="nav-number">4.1.1.</span> <span class="nav-text">クライアント側の発熱抑制</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SFP-x2F-SFP-%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E3%81%AE%E6%8C%BF%E5%85%A5%E3%80%81%E5%8F%96%E3%82%8A%E5%A4%96%E3%81%97"><span class="nav-number">5.</span> <span class="nav-text">SFP&#x2F;SFP+モジュールの挿入、取り外し</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E3%82%AB%E3%83%BC%E3%83%89%E3%81%B8%E3%81%AESFP-%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E3%81%AE%E6%8C%BF%E5%85%A5"><span class="nav-number">6.</span> <span class="nav-text">ネットワークカードへのSFP+モジュールの挿入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OM3%E3%82%B1%E3%83%BC%E3%83%96%E3%83%AB%E3%82%92%E9%85%8D%E7%AE%A1%E3%81%AB%E9%80%9A%E3%81%99%E3%81%AB%E3%81%AF"><span class="nav-number">7.</span> <span class="nav-text">OM3ケーブルを配管に通すには</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%B1%E6%95%97%E4%BA%8B%E4%BE%8B"><span class="nav-number">8.</span> <span class="nav-text">失敗事例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%BE%E3%81%A8%E3%82%81"><span class="nav-number">9.</span> <span class="nav-text">まとめ</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#10G%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E3%81%AE%E6%B6%88%E8%B2%BB%E9%9B%BB%E5%8A%9B%E3%81%A8%E7%99%BA%E7%86%B1"><span class="nav-number">1.</span> <span class="nav-text">10Gネットワークの消費電力と発熱</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SFP-x2F-SFP-%E3%81%A8%E3%81%AF"><span class="nav-number">2.</span> <span class="nav-text">SFP&#x2F;SFP+とは</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B7%9D%E9%9B%A2%E3%80%81%E3%82%B1%E3%83%BC%E3%83%96%E3%83%AB%E3%81%AE%E7%A8%AE%E9%A1%9E%E3%81%AB%E3%82%88%E3%82%8B%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E3%81%AE%E4%BD%BF%E3%81%84%E5%88%86%E3%81%91"><span class="nav-number">3.</span> <span class="nav-text">距離、ケーブルの種類によるモジュールの使い分け</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DAC"><span class="nav-number">3.1.</span> <span class="nav-text">DAC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AOC"><span class="nav-number">3.2.</span> <span class="nav-text">AOC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MMF-10GBase-SR-OM3%E3%82%B1%E3%83%BC%E3%83%96%E3%83%AB"><span class="nav-number">3.3.</span> <span class="nav-text">MMF 10GBase-SR+OM3ケーブル</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10GBase-T%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E3%80%811000Base-T%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB"><span class="nav-number">3.4.</span> <span class="nav-text">10GBase-Tモジュール、1000Base-Tモジュール</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%81%9D%E3%81%AE%E4%BB%96%E3%82%B1%E3%83%BC%E3%83%96%E3%83%AB%E3%80%81%E3%83%88%E3%83%A9%E3%83%B3%E3%82%B7%E3%83%BC%E3%83%90"><span class="nav-number">3.5.</span> <span class="nav-text">その他ケーブル、トランシーバ</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E3%81%AE%E4%BA%92%E6%8F%9B%E6%80%A7%E3%83%BB%E3%83%99%E3%83%B3%E3%83%80%E3%83%BC%E3%83%AD%E3%83%83%E3%82%AF%E3%82%A4%E3%83%B3"><span class="nav-number">4.</span> <span class="nav-text">モジュールの互換性・ベンダーロックイン</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MMF%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E3%81%AE%E4%BA%92%E6%8F%9B%E6%80%A7"><span class="nav-number">4.1.</span> <span class="nav-text">MMFモジュールの互換性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MMF%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E3%81%AE%E3%83%99%E3%83%B3%E3%83%80%E3%83%AD%E3%83%83%E3%82%AF%E3%82%A4%E3%83%B3"><span class="nav-number">4.2.</span> <span class="nav-text">MMFモジュールのベンダロックイン</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DAC%E3%81%AE%E4%BA%92%E6%8F%9B%E6%80%A7"><span class="nav-number">4.3.</span> <span class="nav-text">DACの互換性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%81%9D%E3%81%AE%E4%BB%96%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E6%A9%9F%E5%99%A8%E3%81%A8%E6%8E%A5%E7%B6%9A%E3%81%99%E3%82%8BMMF%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E3%81%AE%E4%BA%92%E6%8F%9B%E6%80%A7"><span class="nav-number">4.4.</span> <span class="nav-text">その他ネットワーク機器と接続するMMFモジュールの互換性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SFP-%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E3%81%AE%E4%BE%A1%E6%A0%BC"><span class="nav-number">5.</span> <span class="nav-text">SFP+モジュールの価格</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SFP-%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E3%81%AE%E7%99%BA%E7%86%B1"><span class="nav-number">6.</span> <span class="nav-text">SFP+モジュールの発熱</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AE%E6%B6%88%E8%B2%BB%E9%9B%BB%E5%8A%9B"><span class="nav-number">7.</span> <span class="nav-text">ネットワークカードの消費電力</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%82%AF%E3%83%A9%E3%82%A4%E3%82%A2%E3%83%B3%E3%83%88%E5%81%B4%E3%81%AE%E7%99%BA%E7%86%B1%E6%8A%91%E5%88%B6"><span class="nav-number">7.1.</span> <span class="nav-text">クライアント側の発熱抑制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SFP-x2F-SFP-%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E3%81%AE%E6%8C%BF%E5%85%A5%E3%80%81%E5%8F%96%E3%82%8A%E5%A4%96%E3%81%97"><span class="nav-number">8.</span> <span class="nav-text">SFP&#x2F;SFP+モジュールの挿入、取り外し</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E3%82%AB%E3%83%BC%E3%83%89%E3%81%B8%E3%81%AESFP-%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E3%81%AE%E6%8C%BF%E5%85%A5"><span class="nav-number">9.</span> <span class="nav-text">ネットワークカードへのSFP+モジュールの挿入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OM3%E3%82%B1%E3%83%BC%E3%83%96%E3%83%AB%E3%82%92%E9%85%8D%E7%AE%A1%E3%81%AB%E9%80%9A%E3%81%99%E3%81%AB%E3%81%AF"><span class="nav-number">10.</span> <span class="nav-text">OM3ケーブルを配管に通すには</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%B1%E6%95%97%E4%BA%8B%E4%BE%8B%E3%81%A8%E3%82%B9%E3%82%A4%E3%83%83%E3%83%81%E3%81%AEDDM"><span class="nav-number">11.</span> <span class="nav-text">失敗事例とスイッチのDDM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8F%BE%E5%AE%9F%E7%9A%84%E3%81%AA%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AE%E9%81%B8%E5%AE%9A"><span class="nav-number">12.</span> <span class="nav-text">現実的なネットワークカードの選定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%82%B9%E3%82%A4%E3%83%83%E3%83%81%E3%81%AE%E9%81%B8%E5%AE%9A"><span class="nav-number">13.</span> <span class="nav-text">スイッチの選定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%BE%E3%81%A8%E3%82%81"><span class="nav-number">14.</span> <span class="nav-text">まとめ</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -201,7 +204,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/new-technology/archives/">
-          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-count">72</span>
           <span class="site-state-item-name">ポスト</span>
         </a>
       </div>
@@ -289,7 +292,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">編集日</span>
-      <time title="修正日：2022-07-31 07:54:06" itemprop="dateModified" datetime="2022-07-31T07:54:06+09:00">2022-07-31</time>
+      <time title="修正日：2023-05-16 22:02:41" itemprop="dateModified" datetime="2023-05-16T22:02:41+09:00">2023-05-16</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -314,16 +317,14 @@
     
     
     
-    <div class="post-body" itemprop="articleBody">
-        <img src="/new-technology/2022/05/28/sfp-plus/title.png" class="" width="1024" title="alt">
+    <div class="post-body" itemprop="articleBody"><img src="/new-technology/2022/05/28/sfp-plus/title.png" class="" width="1024" title="alt">
 
 <p class="onepoint">この記事で実現すること</p>
 
-<p>リモートワークやインターネット回線の高速化に伴い、10Gネットワークが普及し、近ごろは10GBase-Tの発熱に対する声が聞かれるようになってきました。10Gネットワークにおいて従来のLANケーブルではなく光ファイバーで省電力化と低発熱を求める場合、SFP+が選択肢となります。実はあまり知られていない低遅延の効果も大きいため、10Gネットワークを前提にまとめてみました。夏本番を迎える前に発熱対策を検討してはいかがでしょうか？</p>
+<p>リモートワークやインターネット回線の高速化に伴い、10Gネットワークが普及し、10GBase-Tの発熱に対する声が聞かれます。10Gネットワークにおいては従来のLANケーブルではなく光ファイバーで省電力化と低発熱が実現できる、SFP+が選択肢となります。実はあまり知られていない低遅延の効果もあります。2023年4月以降段階的に各地で電気代が値上げされることになりました。また、5月中旬というのに夏のような暑さが到来しています。毎年恒例ですが、発熱対策の気になる季節になってきました。この記事は1年前に投稿したものですが、最近の情勢を踏まえて1年ぶりにアップデートするもので、10Gネットワークを前提にSFP+についてまとめています。</p>
 <span id="more"></span>
 
-<h2 id="10Gネットワークの消費電力と発熱"><a href="#10Gネットワークの消費電力と発熱" class="headerlink" title="10Gネットワークの消費電力と発熱"></a>10Gネットワークの消費電力と発熱</h2><p>10GBase-Tの消費電力は1Portあたり3W程度で、単体で見るとさほど大きいものではありませんが、スイッチなどそれが4Port&#x2F;8Portとなると全体で30W程度の消費電力とPC程度のものになってきます。以前に紹介したQNAPの10Gを4Port持つQSW-M408-4Cスイッチングハブの電力を計測してみるとアイドル状態で11.3Wです。これにcat6ケーブルを用い10Gbpsで接続すると3W増加し14.3Wとなります。これだけだと大した消費電力とは思えません。</p>
-<p>しかし、10Gbase-Tのネットワーク機器が出す熱は軽く40度を超え、夏場は60度を超える場合もあります。そもそも10Gbpsという高速処理は負荷が高いのに加え、10GBase-Tに必要なエラー訂正とアナログ&#x2F;デジタル変換の負荷が高くなります。モジュールの消費電力に比例して温度も高くなる傾向があります。</p>
+<h2 id="10Gネットワークの消費電力と発熱"><a href="#10Gネットワークの消費電力と発熱" class="headerlink" title="10Gネットワークの消費電力と発熱"></a>10Gネットワークの消費電力と発熱</h2><p>10GBase-Tの消費電力は1Portあたり3W程度で、単体で見るとさほど大きいものではありませんが、スイッチなどそれが4Port&#x2F;8Portとなると全体で30W以上の消費電力となり、PC程度のものになってきます。<br>10Gbase-Tのネットワーク機器が出す熱は軽く40度を超え、夏場は60度を超える場合もあります。そもそも10Gbpsという高速処理は負荷が高いのに加え、10GBase-Tに必要なエラー訂正とアナログ&#x2F;デジタル変換の負荷が高くなります。モジュールの消費電力に比例して温度も高くなる傾向があります。</p>
 <p>発熱はスイッチやネットワークカード、PC本体などその周辺機器に悪影響を与えます。特に真夏で部屋の温度が40度近くに達する場合は、これらの高熱を出す機器も内部温度は70度近くに上がってしまい一気に故障する可能性が高くなります。ファンが付いているスイッチは大きいファンノイズが発生しますし、エアコンやファンでエアフローにも気を遣う必要が出てきます。一般的な建売戸建やマンションでクローゼットに回線引き込みがされ、各部屋へのCD管またはPF管が集約されている場合、そこにルーターやスイッチングハブを設置せざるを得ません。こうなると発熱対策、騒音対策が結構な問題になってきます。</p>
 <p>私の自宅の2階のクローゼットの中にある、インターネット配線設備（マルチメディアポート）の内部。家の中で最も熱が篭る場所に配置されています。。。</p>
 <img src="/new-technology/2022/05/28/sfp-plus/mmport.png" class="" width="1024" title="alt">
@@ -353,9 +354,9 @@
 </tbody></table>
 <p>1000Base-TのネットワークでFirewallやルータを挟むと10マイクロ秒のレイテンシが、HGW、ファイアウォールWAN、ファイアウォールLAN、クライアントへとそれぞれがパケット単位で時間を要し、ファイアウォール自身が高性能であっても「ファイアウォールが遅い」という話になります。また、大きなファイルをダウンロードしないから10Gネットワークが不要というわけではなく、一つひとつの処理をキビキビと動作させるためにSFP+の利用価値があります。通常1,500バイトのMTUを9,000バイトとしたジャンボフレームの設定で遅延を緩和できますが、抜本的改善としてSFP+を選択する効果は大きいです。</p>
 <p>SFPは主として光ケーブルを接続するためのインタフェースです。スイッチやネットワークカードにはSFPスロット（ポート）があり、SFPモジュール（トランシーバとも呼ばれます）を挿して使います。モジュールは光ケーブル、銅線のダイレクトアタッチケーブル、従来のLANケーブル（RJ-45端子）などを接続可能なインタフェースがあります。SFPはさまざまなモジュールを使い分けることにより、速度、距離、ケーブルの種類に対応できます。</p>
-<img src="/new-technology/2022/05/28/sfp-plus/sw.png" class="" width="640" title="alt">
+<img src="/new-technology/2022/05/28/sfp-plus/sw.png" class="" width="1024" title="alt">
 
-<p>QSW-M408-4Cスイッチのように、10GBase-TのPortとSFP+のPortが用意されている製品もありますが、SFP&#x2F;SFP+スロットしかないスイッチもあります。</p>
+<p>RJ45を持たず、SFP&#x2F;SFP+スロットしかないスイッチもあります。もちろん、前述したRJ45モジュールを接続して従来のツイストペアケーブルを使えます。</p>
 <h2 id="距離、ケーブルの種類によるモジュールの使い分け"><a href="#距離、ケーブルの種類によるモジュールの使い分け" class="headerlink" title="距離、ケーブルの種類によるモジュールの使い分け"></a>距離、ケーブルの種類によるモジュールの使い分け</h2><p>ホームユーザーが自宅でSFPモジュールを使い分けるには、既存ケーブルの有無、配線の距離、価格面の優位性を見ながら選択することになります。</p>
 <table>
 <thead>
@@ -369,7 +370,7 @@
 </tr>
 </thead>
 <tbody><tr>
-<td>パッシブダイレクトアタッチケーブル</td>
+<td>パッシブダイレクトアタッチケーブル(DAC)</td>
 <td>〜7m</td>
 <td>◎</td>
 <td>0.2w</td>
@@ -385,7 +386,7 @@
 <td>殆ど見かけない</td>
 </tr>
 <tr>
-<td>AOCケーブル</td>
+<td>アクティブオプティカルケーブル(AOC)</td>
 <td>〜100m</td>
 <td>◯</td>
 <td>0.5w〜2w</td>
@@ -414,17 +415,19 @@
 <td>◯</td>
 <td>2.5W〜3w</td>
 <td>強</td>
-<td>やや高額</td>
+<td>高発熱、やや高額</td>
 </tr>
 </tbody></table>
-<p>SFP+は対向機器の電源が入っていなくてもモジュールを挿すだけで電力を消費します。単体をスイッチに挿し、対向が接続していない状態でDACと1000Base-Tは0.1W程度の消費で誤差の範囲ですが、10GBase-SRは単体で0.5W消費します。10GBase-Tモジュールは1W程度消費します。</p>
-<p>端末、スイッチ間の距離が7m未満であればパッシブダイレクトアタッチケーブル（DAC）を最優先に選定します。DACと言えば、一般的にはパッシブのことを言います。特に電流を増幅させずそのままデータを送信するので発熱が極めて少ないですが、距離の制限があります。ホームユーザーが熱対策を考える場合、どうにかして7mの距離以内に端末・スイッチを配置する事が最優先となります。</p>
-<h3 id="DAC"><a href="#DAC" class="headerlink" title="DAC"></a>DAC</h3><img src="/new-technology/2022/05/28/sfp-plus/dac.png" class="" width="640" title="alt">
+<p>SFP&#x2F;SFP+は対向機器の電源が入っていなくてもモジュールを挿すだけで電力を消費します。単体をスイッチに挿し、対向が接続していない状態でDACと1000Base-Tは0.1W程度の消費で誤差の範囲ですが、10GBase-SRは単体で0.5W消費します。10GBase-Tモジュールは1W程度消費します。</p>
+<h3 id="DAC"><a href="#DAC" class="headerlink" title="DAC"></a>DAC</h3><img src="/new-technology/2022/05/28/sfp-plus/dac.png" class="" width="1024" title="alt">
 
-<p>金額も安価で1mのDACで1,600円程度です。このケーブルにはモジュールも両端に付いているので別途モジュールを購入する必要はありません。銅線（Copper）で、1mであればCat6の一般的なケーブルよりは細いですが、しなやかさは劣ります。7mまでの距離に応じて線の太さが太くなります。安価で発熱が殆どありません。</p>
-<p>業務用に使われるCiscoやHPなどの機器はベンダーロックインという排他的な仕組みがあり、うまく接続できない場合があります。最近の個人向けのintelやMellanoxなどのネットワークカードや、個人向けスイッチについてはベンダーロックインの話は聞いたことがありません。DACの難しいところは異なるベンダーの機器を接続する時にどちらかのベンダーの互換性を重視して購入することになる点です。NIC側の互換性をメインに考えるか、スイッチ側の互換性をメインに考えるか判断が必要です。SFPはMSA(マルチソースアグリーメント）によって業界で標準化されたトランシーバデバイスとして、可能な限り規格を統一されるように取り組まれています。しかしながら互換性が不十分な機器もあるようで、DACで動作しないケースもあり得ます。<br>スイッチやネットワークカードのベンダーはこの汎用品の利用について保証しませんが、ベンダー側もユーザーに応えるように、常日頃からファームウェアのアップデートなどが行われています。</p>
-<h3 id="10GBase-SR-OM3ケーブル"><a href="#10GBase-SR-OM3ケーブル" class="headerlink" title="10GBase-SR+OM3ケーブル"></a>10GBase-SR+OM3ケーブル</h3><p>7mを超える距離、例えば異なる部屋にLANを通す場合には、10GBase-SRモジュールとOM3光ケーブルを使います。SRとはShort Reach（短距離）の意味です。光ケーブルも発熱は少なく、マルチモードファイバは、かなりケーブルが細くしなやかです。ただし、UTPほどは強いものではなく、極端な折り曲げは通信エラーになりますし、通線ワイヤーを使い各部屋を通す場合には強い力でぐいぐいと引っ張るわけにもいきません。うっかり足を引っ掛けると断線します。ケーブルを絨毯の下に這わせたり、ドアの隙間を通したりするのは難しいでしょう。丁寧に扱う必要があります。</p>
-<img src="/new-technology/2022/05/28/sfp-plus/om3.png" class="" width="640" title="alt">
+<p>DACは1,500円&#x2F;mと安価であり、ケーブルにはモジュールも両端に付いているので別途モジュールを購入する必要はありません。DACのケーブル長はモジュールの端から端までの距離を示すため、50cmや1mのDACは思ったより短いという印象を持ちやすいです。</p>
+<p>パッシブDACは銅線（Copper）で、1mであればCat6の一般的なケーブルよりは細いですが、しなやかさは劣ります。7mまでの距離に応じて線の太さが太くなります。端末、スイッチ間の距離が7m未満であればパッシブダイレクトアタッチケーブル（DAC）を最優先に選定します。DACと言えば、一般的にはパッシブのことを言います。特に電流を増幅させずそのままデータを送信するので発熱が極めて少ないですが、距離の制限があります。ホームユーザーが熱対策を考える場合、どうにかして7mの距離以内に端末・スイッチを配置する事が最優先となります。アクティブDACは信号を増幅させる仕組みを使っていますが、現代では殆ど見かけません。</p>
+<h3 id="AOC"><a href="#AOC" class="headerlink" title="AOC"></a>AOC</h3><img src="/new-technology/2022/05/28/sfp-plus/aoc.png" class="" width="480" title="alt">
+
+<p>AOCケーブルは見た目はDACと同じで両端にモジュールが付いており、線の内部は光が使われます。短いケーブルはOM3ですが距離が長いAOCはOM4が使われます。ユーザーにシングルモード&#x2F;マルチモードのことやケーブルの種類を意識させず、ケーブルの距離だけを意識して選定するというソリューションですが、それなりに知識のある人がSFPを選定する事を考えると、SFPトランシーバとOM3、OM4ケーブルを個別に選定することが一般的で、購入先もなかなか見つからないかもしれません。</p>
+<h3 id="MMF-10GBase-SR-OM3ケーブル"><a href="#MMF-10GBase-SR-OM3ケーブル" class="headerlink" title="MMF 10GBase-SR+OM3ケーブル"></a>MMF 10GBase-SR+OM3ケーブル</h3><p>7mを超える距離、例えば異なる部屋にLANを通す場合には、10GBase-SRモジュールとOM3光ケーブルを使います。SRとはShort Reach（短距離）の意味です。光ケーブルも発熱は少なく、マルチモードファイバは、かなりケーブルが細くしなやかです。ただし、ツイストペアケーブルほどは強いものではなく、極端な折り曲げは通信エラーになりますし、通線ワイヤーを使い各部屋を通す場合には強い力でぐいぐいと引っ張るわけにもいきません。うっかり足を引っ掛けると断線しますし、ケーブルを絨毯の下に這わせたり、ドアの隙間を通したりするのは難しいでしょう。丁寧に扱う必要があります。</p>
+<img src="/new-technology/2022/05/28/sfp-plus/om3.png" class="" width="1024" title="alt">
 
 <p>SFP+の10Gbpsで利用するマルチモードファイバは、LC-LCという2対の組みをトランシーバに挿して使います。2本の光ファイバがセットになり、送信用（Tx)と受信用（RX)とに役割があります。また、速度によってケーブルの被覆の色が決められており、OM3、OM4はアクアジャケットになります。<strong>2本の線があるからマルチではなく</strong>、1本の線の中で複数の光の波形を通すのでマルチモードと呼ばれます。</p>
 <table>
@@ -479,68 +482,63 @@
 <td>ライム</td>
 </tr>
 </tbody></table>
-<p>10mのOM3で1,500円、10mのOM4で3,000円程度です。将来の拡張性のために、40Gbps、100Gbpsを150mの距離に対応しているOM4を選択しても良いように見えます。しかし今のところ25GbpsのスイッチではOM3のLC-LCケーブルが使えますが、40Gbpsはスイッチ側もQFSPインタフェースとなり、LC-LCではなくMPOケーブルとなります。また、古い規格のSCコネクタのケーブル（SC-SCケーブル）もありますが、現代の個人向け機器では殆ど使うことはありません。</p>
-<p>ケーブルの両端のモジュールはそれぞれ接続する機器のベンダーのものを選択します。例えばNASとスイッチとを接続する場合、NASのNICがMellanoxでスイッチがMikrotikであれば、両端のモジュールはそれぞれのベンダーのモジュールを購入します。DACで対応が難しいケースは短い距離でもこの方法で接続します。</p>
-<h3 id="10GBase-Tモジュール、1000Base-Tモジュール"><a href="#10GBase-Tモジュール、1000Base-Tモジュール" class="headerlink" title="10GBase-Tモジュール、1000Base-Tモジュール"></a>10GBase-Tモジュール、1000Base-Tモジュール</h3><p>既存のRJ45端子のLANケーブル（UTPケーブル）を接続するためのモジュールです。10GBase-Tの口を持っていないスイッチが多くあるため、このモジュールを利用し、既存の10GBase-T環境と接続することになります。10GBase-TモジュールはLANケーブルの長さが30mまでを限界としている製品が多いです。ケーブルが長くなれば電力量が増え3Wを超えてしまうためです。通信量と消費電力とは殆ど関係ありません。確かにIEEE802.3azという規格では無通信時は省電力にする仕組みを持っていますが、消費電力は距離によって変わります。最近、MarvellではなくBroadcomのチップを使った10GBase-Tモジュールも出てきており省電力で80mまで可能となっています。</p>
-<h3 id="AOCケーブル"><a href="#AOCケーブル" class="headerlink" title="AOCケーブル"></a>AOCケーブル</h3><p>OM3ケーブルはシングルファイバほどの扱いの丁寧さは不要ですが、もう少しだけ被覆の強度のあるものを選ぶとすればAOCケーブルを選択します。見た目はDACのようで両端にモジュールが付いており、線の内部は光が使われます。短いケーブルはOM3ですが距離が長いAOCはOM4が使われます。ただし、ユーザーの利便性から考えると一般的にはSFPトランシーバとOM3、OM4ケーブルの選定が一般的で、購入先もなかなか見つからないかもしれません。</p>
-<h3 id="その他ケーブル、トランシーバ"><a href="#その他ケーブル、トランシーバ" class="headerlink" title="その他ケーブル、トランシーバ"></a>その他ケーブル、トランシーバ</h3><p>サンワサプライ社（<a target="_blank" rel="noopener" href="https://www.sanwa.co.jp/">https://www.sanwa.co.jp/</a>）のHPから商品紹介を前提で画像が引用可能ということでしたので以下に紹介します。</p>
-<ul>
-<li><p>SC-SCケーブル（光ファイバケーブル（1m））HKB-SCSC1-01L</p>
- <img src="/new-technology/2022/05/28/sfp-plus/HKB-SCSC1-01L_MA.png" class="" width="300" title="alt">
-<p> 古い規格の光ファイバ端子です。GBICとも呼ばれます。これはSFP&#x2F;SFP+モジュールには接続できません。</p>
+<p>OM3は1,500円&#x2F;10m、2,500円&#x2F;20mです。OM4は2,200円&#x2F;10mです(販売会社によって若干のばらつきがあります)。ケーブルを自宅内に敷設するなら、将来の拡張性のために40Gbps&#x2F;100Gbpsを150mの距離に対応しているOM4を選択しても良いように見えます。しかし今のところ25GbpsのスイッチはSFP28インタフェースとなりOM3のLC-LCケーブルが使えますが、40Gbpsはスイッチ側がQFSPインタフェースとなり、LC-LCではなくMPOケーブルとなります。個人向けという意味では、PF管&#x2F;CD管を通す場合のMPOコネクタは幅・厚みがあることで、管を通すことが難しくなります。OM3のLC-LCであれば、（1ペアづつ地道に通線させ）直径2cmの管に3本〜4本程度のOM3ケーブルを通せます。</p>
+<h3 id="10GBase-Tモジュール、1000Base-Tモジュール"><a href="#10GBase-Tモジュール、1000Base-Tモジュール" class="headerlink" title="10GBase-Tモジュール、1000Base-Tモジュール"></a>10GBase-Tモジュール、1000Base-Tモジュール</h3><p>既存のRJ45端子のLANケーブル（UTPケーブル）を接続するためのモジュールです。10GBase-Tの口を持っていないSFP+のみのスイッチでは、このモジュールを利用し既存の10GBase-T環境と接続します。10GBase-TモジュールはLANケーブルの長さが30mまでを限界としている製品が多いです。ケーブルが長くなれば電力量が増え3Wを超えてしまうためです。通信量と消費電力とは殆ど関係ありません。確かにIEEE802.3azという規格では無通信時は省電力にする仕組みを持っていますが、<strong>消費電力は距離によって変わります</strong>。MarvellではなくBroadcomのチップを使った10GBase-Tモジュールも出てきており省電力で80mまで可能となっています。</p>
+<h3 id="その他ケーブル、トランシーバ"><a href="#その他ケーブル、トランシーバ" class="headerlink" title="その他ケーブル、トランシーバ"></a>その他ケーブル、トランシーバ</h3><ul>
+<li><p>SCケーブル</p>
+ <img src="/new-technology/2022/05/28/sfp-plus/sc.png" class="" width="600" title="alt">
+<p> 古い規格の光ファイバ端子です。GBICとも呼ばれます。これが対となりSC-SCケーブルというものになりますが、SFP&#x2F;SFP+モジュールには接続できません。</p>
 </li>
 <li><p>MPOケーブル</p>
- <img src="/new-technology/2022/05/28/sfp-plus/mpo_main.png" class="" width="300" title="alt">
-<p> 40GbpsのQFSPトランシーバ（QSFP-40G-SR4）に利用されます。</p>
+ <img src="/new-technology/2022/05/28/sfp-plus/mpo.png" class="" width="600" title="alt">
+<p> 40GbpsのQFSPトランシーバ（QSFP-40G-SR4）に利用されます。SFP&#x2F;SFP+&#x2F;SFP28とは互換性がありません。</p>
 </li>
 </ul>
-<h3 id="ネットワークカードの消費電力"><a href="#ネットワークカードの消費電力" class="headerlink" title="ネットワークカードの消費電力"></a>ネットワークカードの消費電力</h3><p>intel X710の4Portについて、10GBase-TのモデルとSFP+のモデルとで比較します。</p>
+<h2 id="モジュールの互換性・ベンダーロックイン"><a href="#モジュールの互換性・ベンダーロックイン" class="headerlink" title="モジュールの互換性・ベンダーロックイン"></a>モジュールの互換性・ベンダーロックイン</h2><p>SFP+を語るときに外せないテーマが、互換性の問題とベンダーロックインです。まず互換性の問題ですが、背景としてはSGMIIというCiscoが提唱した方式がデファクトスタンダードとなり、他のメーカーがSGMII対応に倣ってきたため、各社仕様が微妙に異なる状況となっており、互換性の問題で接続できないケースが発生します。また、ベンダーロックインはCisco&#x2F;HP&#x2F;intelなどのメーカーが設定しており、動作を担保するためにテスト済みのモジュール以外は使えないようになっています。SFPはMSA（マルチソースアグリーメント）によって業界で標準化されたトランシーバデバイスとして、可能な限り規格を統一されるように取り組まれています。</p>
+<h3 id="MMFモジュールの互換性"><a href="#MMFモジュールの互換性" class="headerlink" title="MMFモジュールの互換性"></a>MMFモジュールの互換性</h3><p>MMFモジュールの互換性については、Cisco&#x2F;intel&#x2F;Dell&#x2F;Mellanox&#x2F;HPというグループに分かれます。この互換性に基づきMMFモジュールを購入する必要があります。</p>
+<p>MMFモジュールの互換性グループ</p>
 <table>
 <thead>
 <tr>
-<th>型番</th>
-<th>接続方式</th>
-<th>通常消費電力</th>
-<th>最大消費電力</th>
+<th>メーカー</th>
+<th>企業属性</th>
+<th>その他互換性のあるメーカー</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>X710T4(旧型)</td>
-<td>UTP(RJ45)4Port 10Gbps</td>
-<td>23.7W</td>
-<td>28.9W</td>
+<td>Cisco</td>
+<td>ネットワーク</td>
+<td>Ubiquiti、Mikrotik、NETGEAR</td>
 </tr>
 <tr>
-<td>X710TL4</td>
-<td>UTP(RJ45)4Port 10Gbps</td>
-<td>13.6W</td>
-<td>14.2W</td>
+<td>HP</td>
+<td>サーバー</td>
+<td></td>
 </tr>
 <tr>
-<td>X710TL4</td>
-<td>UTP(RJ45)4Port 2.5Gbps</td>
-<td>9.5W</td>
-<td>9.9W</td>
+<td>DELL</td>
+<td>サーバー</td>
+<td></td>
 </tr>
 <tr>
-<td>X710DA4</td>
-<td>SFP+4Port 10GBase-SR</td>
-<td>6.2W</td>
-<td>6.6W</td>
+<td>intel</td>
+<td>半導体</td>
+<td></td>
 </tr>
 <tr>
-<td>X710DA4</td>
-<td>SFP+4Port DAC</td>
-<td>3.6W</td>
-<td>3.8W</td>
+<td>Mellanox</td>
+<td>半導体・ネットワーク</td>
+<td></td>
 </tr>
 </tbody></table>
-<p>10GBase-Tは従来のX710T4はものすごい消費電力でしたが、X710TL4となり随分と消費電力が抑制されています。2.5Gbpsであればさらに抑制することはできますが、速度が1&#x2F;4になったからといって、消費電力が1&#x2F;4に下がるわけではありません。X710(40Gbpsのチップ）のポテンシャルが無駄になっているということでしょうか。</p>
-<p>これに対してSFPは光の10GBase-SRは最大6.6Wとかなり抑制され、DACに至っては最大で3.8Wです。</p>
-<blockquote>
-<p>intel<br> <a target="_blank" rel="noopener" href="https://www.intel.com/content/dam/www/public/us/en/documents/product-briefs/ethernet-x710-t2l-t4l-brief.pdf">https://www.intel.com/content/dam/www/public/us/en/documents/product-briefs/ethernet-x710-t2l-t4l-brief.pdf</a><br> <a target="_blank" rel="noopener" href="https://www.intel.com/content/dam/www/public/us/en/documents/product-briefs/ethernet-x710-brief.pdf">https://www.intel.com/content/dam/www/public/us/en/documents/product-briefs/ethernet-x710-brief.pdf</a></p>
-</blockquote>
-<h2 id="SFPモジュールの価格"><a href="#SFPモジュールの価格" class="headerlink" title="SFPモジュールの価格"></a>SFPモジュールの価格</h2><p>それぞれのモジュールの価格帯は以下の通りです。</p>
+<p>ネットワーク業界においてデファクトスタンダードとなったCiscoのグループは、一般的にUbiquiti、NETGEAR、Mikrotikというネットワーク機器メーカーで互換性があります。<br>Dell&#x2F;HPはサーバーのメーカーです。intel&#x2F;Mellanoxは半導体メーカーです。全体を俯瞰してみると3社の関係性が見えてきます。Ciscoは最もシェアが大きいネットワークメーカーなので他のネットワークメーカーもその接続性が大事になります。また、サーバーメーカーは、自社のライザーカード&#x2F;メザニンカードという独自の拡張カードを提供し、その上にネットワークカードを載せていたため、そもそも他のサーバーメーカーとの互換性はありません。唯一、intel&#x2F;Mellanoxは彼らにとってHP&#x2F;DELLは大切なお客様なはずで互換性を持っても良いのでは無いかと思うところです。しかしながらNICとSFP+モジュールの関係においてはあまりサーバーのメーカーは関係がなく、半導体メーカーとしてのNICとSFP+はセットでサーバーメーカーに卸すため、半導体メーカーで相互に接続する事は求められなかったのでしょう。</p>
+<h3 id="MMFモジュールのベンダロックイン"><a href="#MMFモジュールのベンダロックイン" class="headerlink" title="MMFモジュールのベンダロックイン"></a>MMFモジュールのベンダロックイン</h3><p>それぞれの業界のトップシェアの会社（Cisco&#x2F;HP&#x2F;intel）はベンダーロックインの道を選びました。ベンダロックインはプリンタのように本体を安く販売し、インクで利益を上げるビジネスモデルです。NIC&#x2F;SFP+の場合は、同一のベンダーのSFP+モジュールでないと使えないというものです。ただ、個人的にはプロテクトというよりは、互換性のテスト済みか否かという点で牽制という意味合いが強いのでは無いかと思います（Ciscoはコマンドの設定で他社モジュールの利用を受容します）。昨今ではモジュールメーカーがこれらの互換性についてノウハウを持っており、上記のグループにおける互換性を守れば、大体は繋がるものです。</p>
+<p>但し、この互換性の維持はそう簡単では無いようで、ネットワーク機器でSFP+モジュールの互換性向上という名目で度々ファームウェアのアップデートが行われます。正しく動いているように見えても、ログでエラーが出力されているケースも多々あります。上記はあくまで目安としていただき、事前の下調べをお勧めします。</p>
+<p>SFP+ RJ45モジュールも内部的にはMMFモジュールと見せかけて動作させるようになっているので互換性についてはMMFモジュールと同様です。</p>
+<h3 id="DACの互換性"><a href="#DACの互換性" class="headerlink" title="DACの互換性"></a>DACの互換性</h3><p>DACについては、「Cisco、intelまたはその他色々なメーカー」という大まかな分類で売っていることが多いです。そして殆どのメーカーのNICにもネットワーク機器にも繋がるものですが、ネットワーク装置側が規格に対応していれば、という条件付きです。国内のネットワークメーカーなどではDACの種類を選ぶ機器もあるようです。まずはネットワーク機器を購入される前に<strong>ネットワーク機器のメーカー</strong>に相談されることをお勧めします。海外製品は口コミも多いので状況がよく把握できます。セキュリティ製品などは互換性が厳しくなっています。<br>稀なケースですが、互換性が不十分でDACで接続できない場合は、MMFモジュール＋OM3の方式で接続します。例えば、ホストのNICがintelでスイッチがCisco互換機であれば、両端のモジュールはそれぞれのベンダーのモジュールを購入します。</p>
+<p>DACでは（基本的には）ベンダーロックインというよりは繋がらないのはほぼ互換性の問題です。DACは既に両端にモジュールが付いていますから、異なるベンダーの機器を接続する時にどちらかのベンダーの互換性を重視して購入する事がポイントになります（ですので<strong>DACでベンダーロックインという事になるとネットワーク機器とサーバー（NIC）間の他社接続が出来ないわけで現実的にそれを好むベンダーは存在しない</strong>というものです）。残念ながらDACであっても互換性の問題は実際に存在しますので、NIC側の互換性をメインに考えるか、スイッチなどのネットワーク機器の互換性をメインに考えるか判断が必要です。</p>
+<h3 id="その他ネットワーク機器と接続するMMFモジュールの互換性"><a href="#その他ネットワーク機器と接続するMMFモジュールの互換性" class="headerlink" title="その他ネットワーク機器と接続するMMFモジュールの互換性"></a>その他ネットワーク機器と接続するMMFモジュールの互換性</h3><p>例えばQNAPというNASメーカーもスイッチは販売していますが、ネットワークの世界で見れば、マイナーなメーカーになります。またNETGEARなどは純正モジュールを販売しており、互換モジュールへの対応状況はメーカーサポートとしても言及が難しくなります。過去からの経緯に鑑み、Cisco互換モジュールを中心に選定しますが、メーカーサポート&#x2F;コミュニティ&#x2F;口コミを参考に購入していくことになります。</p>
+<h2 id="SFP-モジュールの価格"><a href="#SFP-モジュールの価格" class="headerlink" title="SFP+モジュールの価格"></a>SFP+モジュールの価格</h2><p>それぞれのモジュールの価格帯は以下の通りです。</p>
 <table>
 <thead>
 <tr>
@@ -550,11 +548,11 @@
 </thead>
 <tbody><tr>
 <td>DAC</td>
-<td>1,600円前後</td>
+<td>1,500円〜2,500円</td>
 </tr>
 <tr>
 <td>MMF+OM3</td>
-<td>MMF 3,000円前後(1つの値段)、OM3ケーブル 1,500円前後</td>
+<td>MMF 3,000円強(1つの値段)、OM3ケーブル 1,500円前後&#x2F;10m</td>
 </tr>
 <tr>
 <td>1000Base-T</td>
@@ -562,20 +560,23 @@
 </tr>
 <tr>
 <td>10GBase-T</td>
-<td>7,000円〜10,000円（1つの値段）</td>
+<td>10,000円（1つの値段）</td>
 </tr>
 </tbody></table>
-<p>FS社のモジュールは世界的に見てもよく利用されています。日本語のWebサイトがあり円建てで購入できます。日本Amazonでは10GTekやipolexのモジュールを購入できます。物によってはやや割高です。海外通販を利用する際、通常は2％程度の為替手数料を、PayPalに至っては通貨の追加設定をしないと4％の割高な為替手数料を適用されます。また、最近高騰している輸送コストでかえって割高になってしまいます。</p>
+<p>FS社のモジュールは世界的に見てもよく利用されています。日本語のWebサイトがあり円建てで購入できます。海外通販を利用する際、通常は2％程度の為替手数料を、PayPalに至っては通貨の追加設定をしないと4％の割高な為替手数料を適用されます。また、最近高騰している輸送コストでかえって割高になってしまいます。</p>
 <blockquote>
-<p>FS 10Gモジュール<br> <a target="_blank" rel="noopener" href="https://www.fs.com/jp/c/10g-modules-56">https://www.fs.com/jp/c/10g-modules-56</a></p>
+<p>FS 10Gモジュール<br> <a target="_blank" rel="noopener" href="https://www.fs.com/c/10g-sfp-2320">https://www.fs.com/c/10g-sfp-2320</a></p>
 </blockquote>
 <p>FSのWebサイトは法人向けがメインとあって、モジュールの注文画面ではCisco、Juniper、Aristaと有名な海外ベンダー名が列挙されています。<mark class="label primary">もっと＋</mark>ボタンをクリックするとNetgear、intel、Mellanoxなどの名前が出てきます。それでも該当するメーカーが無い場合は<mark class="label primary">カスタム</mark>のボタンをクリックすると、カスタムモジュールの注文画面に遷移し、さらに細かなベンダー一覧が表示されます。見つからない場合、<mark class="label primary">対応ブランド</mark>に「その他」を、<mark class="label primary">デバイスの型番</mark>に、メーカーと型番を記入すればOKです（FS社から教えてもらいました）。無償の技術サポートがあり質問もできます。法人を対象にビジネスされているでしょうし、個人ユーザーが色々聞くのも気が引けるかもしれませんが、きちんと回答してもらえます。</p>
-<img src="/new-technology/2022/05/28/sfp-plus/fs1.png" class="" width="640" title="alt">
+<img src="/new-technology/2022/05/28/sfp-plus/fs1.png" class="" width="480" title="alt">
 
 <p>DACについても互換性が心配な場合は、同様にベンダー名や機器名を記入し注文します。</p>
-<img src="/new-technology/2022/05/28/sfp-plus/fs2.png" class="" width="640" title="alt">
-
-<h3 id="SFP-モジュールの発熱"><a href="#SFP-モジュールの発熱" class="headerlink" title="SFP+モジュールの発熱"></a>SFP+モジュールの発熱</h3><p>室温26度の状況下でそれぞれのモジュールの温度を計測しました。計測するにあたり以下の機器を使いました。これでモジュールの表面にこの金属のセンサを当てて温度を測ります。</p>
+<p>FS社の製品は品質が高いと評価しています。しかしながら、あまり極端に「このメーカー専用のDAC」などの販売をしていては、ユーザーは「SFP+は原則互換性がなく、専門家のサポートが無ければ繋がらない」という誤認を与えてしまっているのではないかと思うところがあります。それでも、個人に対してしっかりサポートしてくれます。</p>
+<p>日本で購入できるグローバルなネットワーク機器メーカーのうち、UbiquitiのSFP+MMFモジュールは廉価です。トータルソリューションとなっており、スイッチとMMFモジュールの接続で悩むことはありません。</p>
+<blockquote>
+<p>Ubiquiti SFP アクセサリー<br> <a target="_blank" rel="noopener" href="https://jp.store.ui.com/collections/unifi-accessories/products/sfp-accessory">https://jp.store.ui.com/collections/unifi-accessories/products/sfp-accessory</a><br> <img src="/new-technology/2022/05/28/sfp-plus/ubiquiti.png" class="" width="1024" title="alt"></p>
+</blockquote>
+<h2 id="SFP-モジュールの発熱"><a href="#SFP-モジュールの発熱" class="headerlink" title="SFP+モジュールの発熱"></a>SFP+モジュールの発熱</h2><p>室温26度の状況下でそれぞれのモジュールの温度を計測しました。計測するにあたり以下の機器を使いました。これでモジュールの表面にこの金属のセンサを当てて温度を測ります。</p>
 <img src="/new-technology/2022/05/28/sfp-plus/TM902C.png" class="" width="480" title="alt">
 
 <p>併せてスイッチのコマンドラインからモジュールの温度が取得できるのでそれも加え比較します。</p>
@@ -702,27 +703,114 @@
 <p>60℃を超えるとハードウェア環境面としては相当に厳しいでしょうか。まずはエアフローが大事ということになります。特にファンレススイッチを使う場合、この時期は問題ありませんが、夏場はエアコンまたはサーキュレーターが必要そうです。次に、可能な限り10GBase-Tを使わずDACや10GBase-SRを使い、熱を抑える必要があります。クライアントの10GBase-Tの速度を2.5Gbpsに落とすのも効果的です。ファンレスのスイッチで10GBase-Tを多用すると、スイッチがスローダウンまたはシステムダウンする可能性があります。</p>
 <p>技術面でポイントをまとめると以下の通りです。</p>
 <ul>
-<li>10GBase-Tを多用する場合はファンレススイッチでは厳しい</li>
+<li>10GBase-Tを多用する場合はファンレススイッチでは厳しい（特に数十mの距離のツイストペアケーブルでは発熱が大きい）</li>
 <li>10Gネットワークを使う場合は可能な限りDACや10GBase-SRへの移行を</li>
-<li>爆熱と噂のMikroTikのS+RJ10はやはりすごい熱でした（QSW-M408-4Cとの組み合わせで55℃を記録）</li>
 <li>10GBase-TモジュールのBroadcomチップ対応のもの（80m対応）は熱対策には有効</li>
 <li>1000Base-Tのモジュールも意外と発熱する。リビングなど多くの100&#x2F;1000Mbps機器が揃う箇所にはSFPのスイッチはかえって不向き。4Portなどの小型ハブに逃した方が良い</li>
 </ul>
-<p>ここまでSFP+スイッチで温度を計測してきましたが、QNAP QSW-M408-4Cはどうでしょうか？</p>
-<img src="/new-technology/2022/05/28/sfp-plus/qnap.png" class="" width="640" title="alt">
+<p>個人ユーザーのニーズとしては静かなファンレスのスイッチを好む傾向にあり、メーカー側もファンレスや静かなスイッチを販売せざるを得ない傾向のように見えますが、今の10GBase-Tのファンレススイッチは空調がある場所が必要というのが結論です。メインのネットワークスイッチはSFP+を中心に使い、各部屋にOM3で繋いだ上で、ある程度の速度が必要なWi-Fi APやクライアント端末を2.5GbEのUTPで接続する方法が現実的です。24時間稼働するNASもPCIeがあるのであれば、SFP+のネットワークカードを使う事をお勧めします。</p>
+<h2 id="ネットワークカードの消費電力"><a href="#ネットワークカードの消費電力" class="headerlink" title="ネットワークカードの消費電力"></a>ネットワークカードの消費電力</h2><p>intel X710の4Portについて、10GBase-TのモデルとSFP+のモデルとで比較します。</p>
+<table>
+<thead>
+<tr>
+<th>型番</th>
+<th>接続方式</th>
+<th>通常消費電力</th>
+<th>最大消費電力</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>X710T4(旧型)</td>
+<td>UTP(RJ45)4Port 10Gbps</td>
+<td>23.7W</td>
+<td>28.9W</td>
+</tr>
+<tr>
+<td>X710TL4</td>
+<td>UTP(RJ45)4Port 10Gbps</td>
+<td>13.6W</td>
+<td>14.2W</td>
+</tr>
+<tr>
+<td>X710TL4</td>
+<td>UTP(RJ45)4Port 2.5Gbps</td>
+<td>9.5W</td>
+<td>9.9W</td>
+</tr>
+<tr>
+<td>X710DA4</td>
+<td>SFP+4Port 10GBase-SR</td>
+<td>6.2W</td>
+<td>6.6W</td>
+</tr>
+<tr>
+<td>X710DA4</td>
+<td>SFP+4Port DAC</td>
+<td>3.6W</td>
+<td>3.8W</td>
+</tr>
+</tbody></table>
+<p>10GBase-Tは従来のX710T4はものすごい消費電力でしたが、X710TL4となり随分と消費電力が抑制されています。2.5Gbpsであればさらに抑制することはできますが、速度が1&#x2F;4になったからといって、消費電力が1&#x2F;4に下がるわけではありません。X710（40Gbpsのチップ）のポテンシャルが無駄になっているということでしょうか。</p>
+<p>これに対してSFPは光の10GBase-SRは最大6.6Wとかなり抑制され、DACに至っては最大で3.8Wです。1Portあたり1w未満です。</p>
+<blockquote>
+<p>intel<br> <a target="_blank" rel="noopener" href="https://www.intel.com/content/dam/www/public/us/en/documents/product-briefs/ethernet-x710-brief.pdf">https://www.intel.com/content/dam/www/public/us/en/documents/product-briefs/ethernet-x710-brief.pdf</a></p>
+</blockquote>
+<p>Mellanoxは2PortのNICが多く出回っています。Connect X-4以降は100Gbpsのチップで高機能という理由もありますが、消費電力も増えるようです。</p>
+<table>
+<thead>
+<tr>
+<th>型番（いずれもパッシブケーブル接続）</th>
+<th>通常消費電力</th>
+<th>最大消費電力</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Connect X-3(MCX311A-XCAT)１Port</td>
+<td>3.47W</td>
+<td>4.84W</td>
+</tr>
+<tr>
+<td>Connect X-4(MCX4121A-ACAT)2Port  ※25GbE</td>
+<td>9.6W</td>
+<td>11.6W</td>
+</tr>
+<tr>
+<td>Connect X-5(MCX512A-ACAT)2Port ※25GbE</td>
+<td>9.5W</td>
+<td>11.8W</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>Mellanox Connect X-3<br> <img src="/new-technology/2022/05/28/sfp-plus/connectx3.png" class="" width="480" title="alt"></p>
+</blockquote>
+<blockquote>
+<p>Mellanox Connect X-4&#x2F;X-5<br> <a target="_blank" rel="noopener" href="https://docs.nvidia.com/networking/display/CX4LxEN/Specifications#Specifications-MCX4111A-ACATandMCX4111A-ACUTSpecifications">https://docs.nvidia.com/networking/display/CX4LxEN/Specifications#Specifications-MCX4111A-ACATandMCX4111A-ACUTSpecifications</a><br> <a target="_blank" rel="noopener" href="https://docs.nvidia.com/networking/display/ConnectX5EN/Specifications#Specifications-MCX512A-ACATandMCX512A-ACUTSpecifications">https://docs.nvidia.com/networking/display/ConnectX5EN/Specifications#Specifications-MCX512A-ACATandMCX512A-ACUTSpecifications</a></p>
+</blockquote>
+<p>Connect X-4&#x2F;X-5は25GbEのイメージが強いですが、SFP+として10GbEで使えます。</p>
+<h3 id="クライアント側の発熱抑制"><a href="#クライアント側の発熱抑制" class="headerlink" title="クライアント側の発熱抑制"></a>クライアント側の発熱抑制</h3><p>デスクトップPCを都度電源オフにせずスリープにされる方は、スイッチ側のSFPモジュールは通電している状態かもしれません。Windowsの省電力の設定で殆どリンクダウン状態にする事でより省電力、発熱を抑えられます。WakeOnLanを使わない方は設定を検討してはいかがでしょうか。</p>
+<img src="/new-technology/2022/05/28/sfp-plus/win.png" class="" width="400" title="alt">
 
-<p>筐体の下部は全般的に赤枠で囲った範囲において43℃、部分的に48℃に達する場所もあります。たった1本の10Gbase-TをRJ45ポートに接続しただけですが、これは夏場はエアコンのある部屋で運用しないと厳しいです。エアコンの無い環境における夏場の日中はサーキュレーターで風の流れを作ってあげないと相当に厳しいと思われます。個人ユーザーのニーズとしては静かなファンレスのスイッチを好む傾向にあり、メーカー側もファンレスや静かなスイッチを販売せざるを得ない傾向のように見えますが、今の10GBase-Tのファンレススイッチは設置場所を選ぶというのが結論です。</p>
-<p> SFPトランシーバはDDM(Digital Diagnostic Monitoring)の機能を持ち、スイッチのCLIで光の強さなども把握できます。ただ個人向けは短距離が基本なのでさほど気にすることも無いでしょうから今回は割愛します。</p>
-<h4 id="クライアント側の発熱抑制"><a href="#クライアント側の発熱抑制" class="headerlink" title="クライアント側の発熱抑制"></a>クライアント側の発熱抑制</h4><p>デスクトップPCを都度電源オフにせずスリープにされる方は、スイッチ側のSFPモジュールは通電している状態かもしれません。Windowsの省電力の設定で殆どリンクダウン状態にする事でより省電力、発熱を抑えられます。WakeOnLanを使わない方は設定を検討してはいかがでしょうか。<br> <img src="/new-technology/2022/05/28/sfp-plus/win.png" class="" width="480" title="alt"></p>
-<h2 id="SFP-x2F-SFP-モジュールの挿入、取り外し"><a href="#SFP-x2F-SFP-モジュールの挿入、取り外し" class="headerlink" title="SFP&#x2F;SFP+モジュールの挿入、取り外し"></a>SFP&#x2F;SFP+モジュールの挿入、取り外し</h2><p>モジュールの挿入は差し込むだけです。カチッと音がし、ロックされます。取り出すときはケーブルを抜き、ラッチを引き下げるとロックが外れます。<br> <img src="/new-technology/2022/05/28/sfp-plus/latch.png" class="" width="300" title="alt"></p>
+<h2 id="SFP-x2F-SFP-モジュールの挿入、取り外し"><a href="#SFP-x2F-SFP-モジュールの挿入、取り外し" class="headerlink" title="SFP&#x2F;SFP+モジュールの挿入、取り外し"></a>SFP&#x2F;SFP+モジュールの挿入、取り外し</h2><p>モジュールの挿入は差し込むだけです。カチッと音がし、ロックされます。取り出すときはケーブルを抜き、<strong>ラッチを引き下げる</strong>とロックが外れます。ラッチを下げないと抜けません。<strong>無理に引き抜こうとするとスイッチやNICが破損します</strong>。</p>
+<img src="/new-technology/2022/05/28/sfp-plus/latch.png" class="" width="400" title="alt">
+
 <p>このとき、光が出ている部分を覗き込むと目を痛める恐れがありますので注意してください。</p>
-<p>DACも同様に差し込むのは簡単です。取り外すときは、プルタブを指に引っ掛けて引き抜きます。Amazonの口コミを見ていただけるとわかりますが、メーカーによって引き抜きにくい製品があります。個体差やNICとの相性もあるのでしょうが、過去、10GTekのDACでMellanoxのカードとのロックが外れず焦った記憶があります。モジュールを片手の指で押さえて、もう片手の指でプルタブを引っ掛け引き抜くと確実です。無理に片手でプルタブを強く引っ張るとスイッチやNICが破損しますので注意してください。<br> <img src="/new-technology/2022/05/28/sfp-plus/dac2.png" class="" width="300" title="alt"></p>
-<h2 id="ネットワークカードへのSFP-モジュールの挿入"><a href="#ネットワークカードへのSFP-モジュールの挿入" class="headerlink" title="ネットワークカードへのSFP+モジュールの挿入"></a>ネットワークカードへのSFP+モジュールの挿入</h2><p>PCやNASのSFP+対応のネットワークカードにはSFP+モジュールを挿しますが、ネットワークカードからSFPポートへの電力供給は3W程度です。従い、DACやMMFトランシーバはもちろん問題ありませんが、10GBase-Tモジュールは電力を要するので基本的にネットワークカードには10GBase-Tモジュールを挿しません。もちろん動作はしますが、電力供給が不足する可能性が高く、また、発熱のためにネットワークカードが破損する可能性があります。</p>
+<p>DACも同様に差し込むのは簡単です。取り外すときは、プルタブを指に引っ掛けて引き抜きます。本来は簡単に引き抜けるようになっていますが、Amazonで販売している製品（10Gtek）のDAC、モジュールは特に引き抜きづらいものがあり注意が必要です。無理に片手でプルタブを強く引っ張るとスイッチやNICが破損しますので注意してください。引き抜きづらい製品を購入してしまった場合は、以下のようにモジュールの横を押さえてプルタブを引く事でラッチが外れやすくなります。</p>
+<img src="/new-technology/2022/05/28/sfp-plus/dac2.png" class="" width="400" title="alt">
+
+<p>10GtekのDACがどうしても抜けない時の対応方法です。<br>ラッチに細いマイナスドライバーや精密ドライバーを引っ掛けてラッチを引き下げる事で抜けるようになります。</p>
+<img src="/new-technology/2022/05/28/sfp-plus/latch2.png" class="" width="400" title="alt">
+
+<p>MMFモジュールのラッチもメーカーによって様々ですが、以下のようにラッチを精密ドライバーなどで引っ掛けて手前に引いてラッチを外したり、手前から奥に押し込むと外れるタイプもあります。いずれもバネで止まっているものであり大きな力は不要です。このようにドライバーを引っ掛けると行ってもテコの力でグッと強く押したり引いたりすると破損しますので注意してください。</p>
+<img src="/new-technology/2022/05/28/sfp-plus/latch3.png" class="" width="400" title="alt">
+
+<h2 id="ネットワークカードへのSFP-モジュールの挿入"><a href="#ネットワークカードへのSFP-モジュールの挿入" class="headerlink" title="ネットワークカードへのSFP+モジュールの挿入"></a>ネットワークカードへのSFP+モジュールの挿入</h2><p>PCやNASのSFP+対応のネットワークカードにはSFP+モジュールを挿しますが、ネットワークカードからSFPポートへの電力供給は最大3W程度です。従い、DACやMMFトランシーバはもちろん問題ありませんが、10GBase-Tモジュールは電力を要するので基本的にネットワークカードには10GBase-Tモジュールを挿しません。電力供給が不足する可能性が高く、2.5Gbpsに速度が落ちたり、安定しないなどの事象が発生します。また、発熱のためにネットワークカードが破損する可能性があります。</p>
 <h2 id="OM3ケーブルを配管に通すには"><a href="#OM3ケーブルを配管に通すには" class="headerlink" title="OM3ケーブルを配管に通すには"></a>OM3ケーブルを配管に通すには</h2><p>LC-LCをそのまま直径2cm程度の既存配管に通すのは難しいのですが、一旦端子部分を繋いでいるコネクタを外す事ができます。<br> <img src="/new-technology/2022/05/28/sfp-plus/lclc.png" class="" width="300" title="alt"></p>
 <p>私の場合、UTPケーブルの被覆を使い、コネクタ部分を被せるようにしてテープを巻いています。CD管&#x2F;PF管の内径の大きさの問題もありますが、LCのコネクタは長いので、CD管&#x2F;PF管が曲がる箇所を通過させるのが難しいところです。コネクタとコネクタの間を少し大きく取り、CD管が曲がっている場所も通りやすくします。通線ワイヤーとテープでしっかりと繋いで配管を通します。電話線など他の配線があって通せない場合は工事業者さんにお願いした方が良いでしょう（一旦電話線を抜いて光を通し、電話線を再配線すると楽ですが、電話線の敷設は資格が必要です）。最近、ショートノーズの新製品が出てきているので配管を通す場合はお勧めです。</p>
  <img src="/new-technology/2022/05/28/sfp-plus/lclc2.png" class="" width="300" title="alt">
 
-<h2 id="失敗事例"><a href="#失敗事例" class="headerlink" title="失敗事例"></a>失敗事例</h2><p>光ケーブルは弱いと書きましたが、既に配管にケーブルがあるにも関わらず追加でOM3を通そうとして途中の配管のカーブで詰まってしまい、諦めて戻したことがあります。UTPケーブルなら体重を掛けてぐいぐい引っ張るところですが、さすがにOM3のケーブルなので片手で引っ張る程度で手加減したつもりでしたが損傷していました。ケーブルに損傷がないかスイッチのCLIで見た結果が以下です。</p>
+<p>OM3については、Amazon Basicの製品で10m&#x2F;20mのものがあり、廉価でお勧めです。</p>
+<h2 id="失敗事例とスイッチのDDM"><a href="#失敗事例とスイッチのDDM" class="headerlink" title="失敗事例とスイッチのDDM"></a>失敗事例とスイッチのDDM</h2><p>光ケーブルは弱いと書きましたが、既に配管にケーブルがあるにも関わらず追加でOM3を通そうとして途中の配管のカーブで詰まってしまい、諦めて戻したことがあります。UTPケーブルなら体重を掛けてぐいぐい引っ張るところですが、さすがにOM3のケーブルなので片手で引っ張る程度で手加減したつもりでしたが損傷していました。SFPトランシーバはDDM(Digital Diagnostic Monitoring)の機能を持ち、スイッチのCLIで光の強さなども把握できます（スイッチがその機能を持つ必要があります）。</p>
+<p>ケーブルに損傷がないかスイッチのCLIで見た結果が以下です。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">(UBNT) &gt;show fiber-ports optics all</span><br><span class="line">                                                 Output   Input</span><br><span class="line">Port    Physical Port/  Temp  Voltage  Current   Power    Power     TX     LOS</span><br><span class="line">        Lane Number     [C]   [Volt]     [mA]    [dBm]    [dBm]     Fault</span><br><span class="line">------  --------------  ----  -------  -------   -------  -------   -----  ---</span><br><span class="line">0/1     0/1-Lane1       43.9    3.321      7.7    -2.947   -3.036   No     No</span><br><span class="line">0/4     0/4-Lane1       44.4    3.348      7.8    -2.818   -2.476   No     No</span><br><span class="line">0/16    0/16-Lane1      43.4    3.389      7.8    -3.011  -11.733   No     No</span><br><span class="line">0/21    0/21-Lane1       N/A      N/A      N/A       N/A      N/A   N/A    N/A</span><br><span class="line">0/22    0/22-Lane1       N/A      N/A      N/A       N/A      N/A   N/A    N/A</span><br><span class="line">0/23    0/23-Lane1       N/A      N/A      N/A       N/A      N/A   N/A    N/A</span><br><span class="line">0/24    0/24-Lane1       N/A      N/A      N/A       N/A      N/A   N/A    N/A</span><br><span class="line">0/28    0/28-Lane1      46.7    3.372      6.0    -3.010   -3.010   No     No</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <p>上記Port16が該当のケーブルなんですが、Input Powerが-11.733dBmとなっています。これはケーブルの品質が極めて悪化していることを示しています。光ケーブルの品質は以下の表が参考にすべき内容となっています。大昔よりEMC社が提示しているリストで、多くの方に目安として使われています。私のケースだと、-11.733dBmなので2Gbpsも危ういということがわかります。実際のiperf3の計測では4Gbps〜5Gbpsほどは出ていますが、このケーブルは廃棄するしかありませんでした。</p>
@@ -814,8 +902,17 @@
 <td></td>
 </tr>
 </tbody></table>
-<h2 id="まとめ"><a href="#まとめ" class="headerlink" title="まとめ"></a>まとめ</h2><p>もし、既存のネットワークにSFP+ポートを持ったスイッチングハブがあるのであれば是非SFP+にチャレンジしてみてください。低レイテンシ・低発熱のネットワークが構築できます。もちろん、スイッチを使わずNASとPCとをDACで直結するという方法もあります。ebayに目を向ければ＄50の10GネットワークカードのMellanox ConnectX-3があります。</p>
-<p>なお、SFPの注意点としてはNBase-T(2.5Gbps&#x2F;5Gbps)に対応していないスイッチも多く存在することです。スイッチが対応していなくても10GBase-TモジュールのNBase-Tサポートでカバーできる場合があります。SFP+のNBase-Tへの対応については「 <a href="/new-technology/2022/07/30/sfp-plus-nbaset/" title="SFP+の2.5GbE対応">SFP+の2.5GbE対応</a> 」を参照してください。</p>
+<h2 id="現実的なネットワークカードの選定"><a href="#現実的なネットワークカードの選定" class="headerlink" title="現実的なネットワークカードの選定"></a>現実的なネットワークカードの選定</h2><p>intelのNICは低電力でお勧めですが、インフレということもあり、X710の2Portで49,200円（秋葉原のオリオスペック）とそれなりの値段です。標準的なNICといえます。日本のAmazonではSFP+のNICを探すのは難しくなっています。X520が売れ残っている状況ですが、セキュリティリスクを理解した上で導入される事をお勧めします。既にEOSL（Discontinued）で最新ファームウェアのダウンロードもできませんし、NIC自体の脆弱性の状況も分かりません。<br><a target="_blank" rel="noopener" href="https://ark.intel.com/content/www/us/en/ark/products/series/42489/intel-ethernet-server-adapter-x520.html">https://ark.intel.com/content/www/us/en/ark/products/series/42489/intel-ethernet-server-adapter-x520.html</a></p>
+<p>intelはチップのみを販売していることもあって、intel純正のNIC以外に、他社製造のNICでチップがX710という廉価な製品も見かけます。この場合、一般的にネットワークドライバはintelのものを使えますが、ファームウェアはOEMとして個別に提供される場合があるので、購入前に販売者に確認される事をお勧めします。</p>
+<p>MellanoxのNICはeBayで揃えるのが一つの方法です。海外通販になりますし、発送元は大半が中国からです。返品不可の出品者が多く、少しハードルは高いです。一般的なセオリーですが、評価の高い出品者から購入するのが無難と言えます。<br>NAS、ESXi7、Windows10など動くとわかっている枯れたOSであれば5,000円未満となるConnect X-3を使ってみるのはアリです。既にEOSLを迎えているのですが最新ファームウェアもダウンロードできますし、Connect Xの脆弱性のレポートは無く比較的安心して使えるNICです。新しいOSを使う場合はConnect X-3は見送った方が良いです。VMware ESXi8やWindows11は対応しません。</p>
+<p>新しいOS向けにこれからSFP+を導入するならば、MellanoxのConnect X-4&#x2F;X-5が対象になります。Connect X-4（MCX4121A-ACAT）が$100、Connect X-5（MCX512A-ACAT）が$170です。将来的に25GbEも考えてみようかなと思う場合は、手元に置いておいても良いかもしれません。</p>
+<p>NICについては、Fibre Channel、InfiniBandとEthernetとは異なります。SFP+のNICを購入される時は、Ethernetのものを購入してください。</p>
+<h2 id="スイッチの選定"><a href="#スイッチの選定" class="headerlink" title="スイッチの選定"></a>スイッチの選定</h2><p>ワンルームでスイッチを利用するならファンレスを検討したいところです。一般的な使い方として、NASだけであれば2.5GbEが中心でSFP+までは不要かもしれません。しかしサーバーを立てて、細かいデータファイルやモジュールのバックアップを取るとなると10Gの速度が欲しくなるでしょう。ファンレスの10GbEならSFP+が最有力候補です。</p>
+<p>LDK〜のマンションや戸建てになれば、Wi-Fiアクセスポイント（AP）も２台は置きたくなりますし、AmazonアレクサやAppleTVなどのIoT機器も増えるでしょう。やがて監視カメラなどを繋げるようになると安定した有線接続も必要になります。<br>メインのスイッチはSFP+の口を多めのものに、そこにサーバー群を10G SFP+で接続、各部屋へ2.5Gbps&#x2F;1Gbpsのツイストペア接続、または10GbEのSFP+接続とし、各部屋のスイッチはWi-Fi AP、家電、IoT、監視カメラへと接続しやすい、マルチギガのスイッチまたはPoEスイッチを用意されると良いのではないかと思います。</p>
+<p>各部屋の配線全てを光ケーブルにする必要もありませんが、OM3を引いておけば、将来25GbEの対応は容易です。</p>
+<p>個人向けのWi-Fiルータは値段なりの機能・品質ですし、4Port程度の機器を繋ぐことができますが、高度なことは出来ません。リモートワークや今後のWi-Fiの進化などを踏まえ、VLANも用意した上でしっかりとしたネットワーク敷設を考えられるのであれば、ネットワークに特化したメーカーの製品を導入される事を検討されてはいかがでしょうか。メインスイッチはファン付きで信頼性のある安定した製品を選定されることをお勧めします。</p>
+<h2 id="まとめ"><a href="#まとめ" class="headerlink" title="まとめ"></a>まとめ</h2><p>もし、既存のネットワークで発熱、ファンの騒音、電気使用量が気になるのであれば是非SFP+にチャレンジしてみてください。低レイテンシ・低発熱のネットワークが構築できます。</p>
+<p>なお、SFPの注意点としてはNBase-T(2.5Gbps&#x2F;5Gbps)に対応していないスイッチも多く存在することです。一般的なRJ45のSFP+モジュールはNBase-Tへの対応を謳う製品もあり、リンクアップ出来る場合がありますが、モジュールが2.5GbEと認識できていてもスイッチ自体が10GbEと認識しており、速度のミスマッチにより十分な速度が出ません。2.5GbEに対応していないSFP+のスイッチであっても、ハックとして2.5GbEの機器と接続する方法は一応あります。SFP+のNBase-Tへの対応については「 <a href="/new-technology/2022/07/30/sfp-plus-nbaset/" title="SFP+の2.5GbE対応">SFP+の2.5GbE対応</a> 」を参照してください。</p>
 
     </div>
 
@@ -934,6 +1031,7 @@ if (Cookies.get('PRVCY202112') != 'Agree') {
 
   <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"/new-technology/lib/mermaid/dist/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
   <script src="/new-technology/js/third-party/tags/mermaid.js"></script>
+
 
 
 

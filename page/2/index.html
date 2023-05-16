@@ -17,7 +17,7 @@
 <link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
   <link rel="stylesheet" href="/new-technology/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.16.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
 
     <meta name="description" content="IT">
 <meta property="og:type" content="website">
@@ -179,7 +179,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/new-technology/archives/">
-          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-count">72</span>
           <span class="site-state-item-name">ポスト</span>
         </a>
       </div>
@@ -221,6 +221,96 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2022/09/23/ubuntu22-04lts/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/new-technology/images/yoshi.png">
+      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="New technologies in our life">
+      <meta itemprop="description" content="IT">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | New technologies in our life">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/new-technology/2022/09/23/ubuntu22-04lts/" class="post-title-link" itemprop="url">Ubuntu22.04LTSをESXiにセットアップする</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">投稿日</span>
+      
+
+      <time title="作成日：2022-09-23 00:00:00 / 修正日：09:58:38" itemprop="dateCreated datePublished" datetime="2022-09-23T00:00:00+09:00">2022-09-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">カテゴリ</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/Software/" itemprop="url" rel="index"><span itemprop="name">Software</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <img src="/new-technology/2022/09/23/ubuntu22-04lts/title.png" class="" width="1024" title="alt">
+
+<p class="onepoint">この記事で実現すること</p>
+
+<p>この記事では24時間稼働させるサーバーとして、intel&#x2F;AMDの<strong>ESXi</strong>上にUbuntuをセットアップするケースを想定しています。従来のSSHで接続するコマンドラインベースだけではなく、WindowsやmaOSから<strong>GUIで接続するUbuntu環境</strong>になります。長期サポートの最新バージョンであるUbuntu22.04LTSを仮想環境であるESXi7.0上に導入します。リモートデスクトップに相当するクライアントソフトウェアはESXiに付属する<strong>VMware Remote Console</strong>(VMRC)を使います。Ubuntu22.04LTSのEOLは2027年4月であり、十分に長い期間のサポートがあります。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/new-technology/2022/09/23/ubuntu22-04lts/#more" rel="contents">
+                続きを読む &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -369,7 +459,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">編集日</span>
-      <time title="修正日：2022-08-06 11:02:55" itemprop="dateModified" datetime="2022-08-06T11:02:55+09:00">2022-08-06</time>
+      <time title="修正日：2023-05-16 21:03:51" itemprop="dateModified" datetime="2023-05-16T21:03:51+09:00">2023-05-16</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -633,7 +723,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">編集日</span>
-      <time title="修正日：2022-07-31 07:54:06" itemprop="dateModified" datetime="2022-07-31T07:54:06+09:00">2022-07-31</time>
+      <time title="修正日：2023-05-16 22:02:41" itemprop="dateModified" datetime="2023-05-16T22:02:41+09:00">2023-05-16</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -663,7 +753,7 @@
 
 <p class="onepoint">この記事で実現すること</p>
 
-<p>リモートワークやインターネット回線の高速化に伴い、10Gネットワークが普及し、近ごろは10GBase-Tの発熱に対する声が聞かれるようになってきました。10Gネットワークにおいて従来のLANケーブルではなく光ファイバーで省電力化と低発熱を求める場合、SFP+が選択肢となります。実はあまり知られていない低遅延の効果も大きいため、10Gネットワークを前提にまとめてみました。夏本番を迎える前に発熱対策を検討してはいかがでしょうか？</p>
+<p>リモートワークやインターネット回線の高速化に伴い、10Gネットワークが普及し、10GBase-Tの発熱に対する声が聞かれます。10Gネットワークにおいては従来のLANケーブルではなく光ファイバーで省電力化と低発熱が実現できる、SFP+が選択肢となります。実はあまり知られていない低遅延の効果もあります。2023年4月以降段階的に各地で電気代が値上げされることになりました。また、5月中旬というのに夏のような暑さが到来しています。毎年恒例ですが、発熱対策の気になる季節になってきました。この記事は1年前に投稿したものですが、最近の情勢を踏まえて1年ぶりにアップデートするもので、10Gネットワークを前提にSFP+についてまとめています。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/new-technology/2022/05/28/sfp-plus/#more" rel="contents">
@@ -1071,94 +1161,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2022/01/29/parerentalcontrol/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/new-technology/images/yoshi.png">
-      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="New technologies in our life">
-      <meta itemprop="description" content="IT">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | New technologies in our life">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/new-technology/2022/01/29/parerentalcontrol/" class="post-title-link" itemprop="url">子供のスマホ・タブレットの使い方</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">投稿日</span>
-      
-
-      <time title="作成日：2022-01-29 09:30:00 / 修正日：09:49:37" itemprop="dateCreated datePublished" datetime="2022-01-29T09:30:00+09:00">2022-01-29</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">カテゴリ</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/new-technology/categories/Security/" itemprop="url" rel="index"><span itemprop="name">Security</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <img src="/new-technology/2022/01/29/parerentalcontrol/title.png" class="" width="1024" title="alt">
-
-<p>子供のスマホ・タブレットについては、未就学児・小学生低学年においては、親のものを使うケースが多いようです。そして、小学生の高学年以上ともなると子供のスマホ保有率も高まります。なお、本年4月より民法改正で18歳から大人になります。子供がスマホ・タブレットを使うリスクを踏まえた適切な利用の仕方を考えてみます。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/new-technology/2022/01/29/parerentalcontrol/#more" rel="contents">
-                続きを読む &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="前のページ" aria-label="前のページ" href="/new-technology/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/new-technology/">1</a><span class="page-number current">2</span><a class="page-number" href="/new-technology/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/new-technology/page/8/">8</a><a class="extend next" rel="next" title="次のページ" aria-label="次のページ" href="/new-technology/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1245,6 +1247,7 @@ if (Cookies.get('PRVCY202112') != 'Agree') {
 
   <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"/new-technology/lib/mermaid/dist/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
   <script src="/new-technology/js/third-party/tags/mermaid.js"></script>
+
 
 
 
