@@ -10,7 +10,7 @@ date: 2020-06-14 22:19:20
 {% asset_img title.png alt %}
 <p class="onepoint">この記事で実現すること</p>
 
-無償版ESXi（VMware vSphere Hypervisor）について、VMwareのサイトから製品パッチに関する情報を入手し、ESXi上でパッチを適用します。この記事ではESXi7.0を対象にしています。ESXi8.0については、8.0U1以降のパッチからは更新していきたいと考えています。
+無償版ESXi（VMware vSphere Hypervisor）について、VMwareのサイトから製品パッチに関する情報を入手し、ESXi上でパッチを適用します。この記事ではESXi7.0、8.0を対象にしています。
 
 <!-- more -->
 
@@ -22,10 +22,19 @@ SSHでESXiに接続し、コマンドラインでパッチを適用します。W
 
 ESXiのパッチ情報は以下を参照してください。当該ページの左ペインメニューには最新パッチの情報が掲載されていますので、最新のパッチ情報を辿ってください。また、過去のパッチの情報も提供されています。
 
+
+> VMware ESXi 8.0 Update 1a （2023-6-2発表）
+ <https://docs.vmware.com/en/VMware-vSphere/8.0/rn/vsphere-esxi-80u1a-release-notes/index.html>
+
+主に不具合修正となっています。主としてvSANの不具合の対応ということで個人向けにはあまり関連しそうなところはありませんが、Mellanoxカード（Connect X-4,5,6）に関するパラメータがリセットされる（デフォルト値以外は非推奨）という記載があります。
+
+
 > VMware ESXi 7.0 Update 3m（2023-5-3発表）
  <https://docs.vmware.com/en/VMware-vSphere/7.0/rn/vsphere-esxi-70u3m-release-notes.html>
 
-7.0Update 3lで埋め込まれた不具合の対策が主のようです。なので8.0Update1に対するパッチは無いようです。
+7.0Update 3lで埋め込まれた不具合の対策が主のようです。
+
+
 
 ## 製品パッチの情報を入手する
 
@@ -37,13 +46,13 @@ ESXiのセットアップ時にCustomer Connectへの登録を行い、個人向
 
 {% asset_img myvm3.png alt %}
 
-さらに、"ESXi"とバージョンの"7.0"を選択し"検索"ボタンをクリックすると、パッチの一覧が表示されます。以下は7.0U3mの画面です。
+さらに、"ESXi"とバージョンの"7.0"または"8.0"を選択し"検索"ボタンをクリックすると、パッチの一覧が表示されます。以下は7.0U3mの画面です。
 
 {% asset_img myvm2.png alt %}
 
 基本的にESXiは7.0のバージョンのまま修正パッチを適用する場合はこの7.0という2桁の数字は変わりません。この数字が変わる更新をアップグレードと呼びます。それ以外の小さい更新をパッチまたはアップデートと呼びます。但し、ESXi7.0の場合はUpdate2,Update3というグループがあり、さらにUpdate3k、Update3lという具合にグループ単位でパッチ毎に末尾の英字が大きくなっていきます。VMwareのパッチは累積パッチとなるため、最新のパッチを適用するだけでよく、古いパッチの適用は必要ありません。ここでは最新版のパッチをダウンロードします。
 
-## パッチ適用作業
+## 事前準備（ESXi7,8共通）
 
 ESXiにログインし、以下の作業を行います。
 - SSHを有効にします
@@ -68,7 +77,8 @@ ESXiにログインし、以下の作業を行います。
 4. パッチファイルのESXiへのアップロード
  ESXiの左ペインメニューの"ストレージ"を選択、メインのストレージ（一般的にはdatastore1）を選択し、"データストアブラウザ"をクリックします
  {% asset_img esxi3.png alt %}
- {% label primary@アップロード %}ボタンをクリックし、ダウンロードしたパッチファイルをZIPのままアップロードします。ここの例では{% label primary@ディレクトリの作成 %}ボタンでupdateフォルダを作成し、そこにアップロードします。
+ {% label primary@アップロード %}ボタンをクリックし、ダウンロードしたパッチファイルをZIPのままアップロードします。
+ ここの例では{% label primary@ディレクトリの作成 %}ボタンで**updateフォルダを作成**し、そこにアップロードします。
 
 5. SSHでESXiにログイン
  ログイン後、パッチをアップロードしたフォルダ（datastore1/update）に移動しアップロードしたパッチファイルが存在するか`ls`で確認します
@@ -89,13 +99,80 @@ ESXiにログインし、以下の作業を行います。
   [root@esxi:~] ls
  ```
 
-6. パッチ適用コマンドを入力します
+## ESXiのパッチ適用
+
+パッチ適用のコマンドは7.0、8.0とで違いはありません。ここでは直近バージョンからのパッチ適用のための具体的なコマンドを記載しています。
+
+### ESXi8.0のパッチ適用
+
+#### 現在稼働中のプロファイルを確認
+ 新しいドライバやバグフィックス、セキュリティパッチなど含めたprofileとして整合性が取れたvibのアップデートはprofile updateを実行します。ここでは、ESXi8.0Update1からUpdate1aにアップデートすることを例にします。
+
+ 現在の実行中のprofileを確認します。`esxcli software profile get`
+ ``` bash
+[root@localhost:~] esxcli software profile get
+ESXi-8.0U1-21495797-standard
+   Name: ESXi-8.0U1-21495797-standard
+   Vendor: VMware, Inc.
+   Creation Time: 2023-04-29T21:45:50
+   Modification Time: 2023-06-03T09:26:33
+   Stateless Ready: False
+ ```
+
+ 一般的にはバージョンの最後に"-standard"の文字が付いています。standard版がインストールされている事を示します。
+ 次に、パッチファイルに登録されているprofileを確認します（パッチはフルパス指定が必要です）。
+ ``` bash
+ [root@localhost:/vmfs/volumes/datastore1/update] esxcli software sources profile list -d /vmfs/volumes/dat
+astore1/update/VMware-ESXi-8.0U1a-21813344-depot.zip
+Name                           Vendor        Acceptance Level  Creation Time        Modification Time
+-----------------------------  ------------  ----------------  -------------------  -----------------
+ESXi-8.0U1a-21813344-standard  VMware, Inc.  PartnerSupported  2023-06-01T00:00:00  2023-06-01T00:00:00
+ESXi-8.0U1a-21813344-no-tools  VMware, Inc.  PartnerSupported  2023-06-01T00:00:00  2023-05-24T06:02:20
+```
+
+ VMWare Toolsを含まないProfileであるno-tools、VMWare Tools付きのstandard版となります。VMWare Toolsを使う一般的なユーザーはStandardを選択することになります。
+
+#### パッチ適用
+
+以下のようにパッチファイルのzipをフルパスで指定し、VMwareのパッチ情報にあるプロファイル名を指定しパッチを適用します。ここではstandardを指定します。
+
+``` bash
+[root@localhost:/vmfs/volumes/datastore1/update] esxcli software profile update -d /vmfs/volumes/datastore
+1/update/VMware-ESXi-8.0U1a-21813344-depot.zip -p ESXi-8.0U1a-21813344-standard
+```
+
+`esxcli software profile update`の実行後しばらくしてから、結果が表示されます。
+
+```
+Update Result
+   Message: The update completed successfully, but the system needs to be rebooted for the changes to be effective.
+   Reboot Required: true
+```
+
+#### 再起動と結果確認
+
+コマンドプロンプトから、`reboot`としてESXiを再起動します。
+
+再起動完了後、ESXiにログインします。左ペインメニューの"ホスト"をクリックし、バージョンの表記に今回パッチを当てたビルド番号が表示されている事を確認してください。今回はU1aとなっているはずです。
+
+{% asset_img esxi6.png 1024 alt %}
+
+または、sshでESXiに接続し、`vmware -v`を実行し確認します。
+
+ ``` bash
+[root@localhost:~] vmware -v
+VMware ESXi 8.0.1 build-21813344
+ ```
+
+### ESXi7.0のパッチ適用
+
+#### 現在稼働中のプロファイルを確認
  新しいドライバやバグフィックス、セキュリティパッチなど含めたprofileとして整合性が取れたvibのアップデートはprofile updateを実行します。ここでは、ESXi7.0Update3lからUpdate3mにアップデートすることを例にします。
 
  現在の実行中のprofileを確認します。`esxcli software profile get`
  ``` bash
-[root@esxi2:/vmfs/volumes/6215b59a-6031d17a-ea0d-80615f0db1ce/update] esxcli software profile get
-(Updated) ESXi-7.0U3l-21424296-standard
+ [root@esxi2:/vmfs/volumes/6215b59a-6031d17a-ea0d-80615f0db1ce/update] esxcli software profile get
+ (Updated) ESXi-7.0U3l-21424296-standard
    Name: (Updated) ESXi-7.0U3l-21424296-standard
    Vendor: VMware, Inc.
    Creation Time: 2023-04-29T08:54:44
@@ -106,41 +183,49 @@ ESXiにログインし、以下の作業を行います。
  一般的にはバージョンの最後に"-standard"の文字が付いています。standard版がインストールされている事を示します。
  次に、パッチファイルに登録されているprofileを確認します（パッチはフルパス指定が必要です）。
  ``` bash
-[root@esxi2:/vmfs/volumes/6215b59a-6031d17a-ea0d-80615f0db1ce/update] esxcli software sources profile list -d /vmfs/volumes/datastore1/update/VMware-ESXi-7.0U3m-21686933-depot.zip
-Name                           Vendor        Acceptance Level  Creation Time        Modification Time
------------------------------  ------------  ----------------  -------------------  -----------------
-ESXi-7.0U3m-21686933-standard  VMware, Inc.  PartnerSupported  2023-05-03T00:00:00  2023-05-03T00:00:00
-ESXi-7.0U3m-21686933-no-tools  VMware, Inc.  PartnerSupported  2023-05-03T00:00:00  2023-04-28T16:03:19
+ [root@esxi2:/vmfs/volumes/6215b59a-6031d17a-ea0d-80615f0db1ce/update] esxcli software sources profile list -d /vmfs/volumes/datastore1/update/VMware-ESXi-7.0U3m-21686933-depot.zip
+ Name                           Vendor        Acceptance Level  Creation Time        Modification Time
+ -----------------------------  ------------  ----------------  -------------------  -----------------
+ ESXi-7.0U3m-21686933-standard  VMware, Inc.  PartnerSupported  2023-05-03T00:00:00  2023-05-03T00:00:00
+ ESXi-7.0U3m-21686933-no-tools  VMware, Inc.  PartnerSupported  2023-05-03T00:00:00  2023-04-28T16:03:19
  ```
 
-VMWare Toolsを含まないProfileであるno-tools、VMWare Tools付きのstandard版となります。VMWare Toolsを使う一般的なユーザーはNo Tools版を選択しないので除外します。
+ VMWare Toolsを含まないProfileであるno-tools、VMWare Tools付きのstandard版となります。VMWare Toolsを使う一般的なユーザーはNo Tools版を選択しないので除外します。
+
+#### パッチ適用
 
 以下のようにパッチファイルのzipをフルパスで指定し、VMwareのパッチ情報にあるプロファイル名を指定しパッチを適用します。ここではstandardを指定します。
- ``` bash
-  [root@esxi:~] esxcli software profile update -d /vmfs/volumes/datastore1/update/VMware-ESXi-7.0U3m-21686933-depot.zip -p ESXi-7.0U3m-21686933-standard
- ```
- 1. `esxcli software profile update`の実行後しばらくしてから、結果が表示されます。
- ```
+
+``` bash
+ [root@esxi:~] esxcli software profile update -d /vmfs/volumes/datastore1/update/VMware-ESXi-7.0U3m-21686933-depot.zip -p ESXi-7.0U3m-21686933-standard
+```
+
+`esxcli software profile update`の実行後しばらくしてから、結果が表示されます。
+
+```
 Update Result
    Message: The update completed successfully, but the system needs to be rebooted for the changes to be effective.
    Reboot Required: true
- ```
+```
 
-1. コマンドプロンプトから、`reboot`としてESXiを再起動します。
+#### 再起動と結果確認
 
-2. 再起動完了後、ESXiにログインします。左ペインメニューの"ホスト"をクリックし、バージョンの表記に今回パッチを当てたビルド番号が表示されている事を確認してください。今回はU3mとなっているはずです。
+コマンドプロンプトから、`reboot`としてESXiを再起動します。
 
- - ESXi7.0
-  {% asset_img esxi5.png 1024 alt %}
+再起動完了後、ESXiにログインします。左ペインメニューの"ホスト"をクリックし、バージョンの表記に今回パッチを当てたビルド番号が表示されている事を確認してください。今回はU3mとなっているはずです。
 
-  または、sshでESXiに接続し、`vmware -v`を実行し確認します。
+{% asset_img esxi5.png 1024 alt %}
+
+または、sshでESXiに接続し、`vmware -v`を実行し確認します。
 
  ``` bash
 [root@esxi2:~] vmware -v
 VMware ESXi 7.0.3 build-21686933
  ```
 
-4. 最後にこれまで実施してきたメンテナンス準備とは反対の作業をします。メンテナンスモードの終了・SSHの無効化・仮想マシンの起動と続けます。
+## 事後作業（ESXi7,8共通）
+
+これまで実施してきたメンテナンス準備とは反対の作業をします。メンテナンスモードの終了・SSHの無効化・仮想マシンの起動と続けます。
 
 ## パッチのロールバック
 

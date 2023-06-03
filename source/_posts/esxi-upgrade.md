@@ -9,7 +9,7 @@ categories:
 {% asset_img title.png 1024 alt %}
 <p class="onepoint">この記事で実現すること</p>
 
-無償版ESXi（VMware vSphere Hypervisor）について、ESXi6.7からESXi7.0にアップグレードします。ここではUEFI（セキュアブート）で構成されているESXiを対象とし、できるだけ安全にアップグレードを行います。2023年2月8日時点では、ESXi8.0が発表されているものの、無償版としてのライセンスが公開されていないようです。
+無償版ESXi（VMware vSphere Hypervisor）について、ESXi6.7からESXi7.0にアップグレードします。ここではUEFI（セキュアブート）で構成されているESXiを対象とし、できるだけ安全にアップグレードを行います。
 
 <!-- more -->
 
