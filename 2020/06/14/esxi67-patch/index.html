@@ -19,12 +19,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.16.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
 
-    <meta name="description" content="この記事で実現すること  無償版ESXi（VMware vSphere Hypervisor）について、VMwareのサイトから製品パッチに関する情報を入手し、ESXi上でパッチを適用します。この記事ではESXi7.0を対象にしています。ESXi8.0については、8.0U1以降のパッチからは更新していきたいと考えています。">
+    <meta name="description" content="この記事で実現すること  無償版ESXi（VMware vSphere Hypervisor）について、VMwareのサイトから製品パッチに関する情報を入手し、ESXi上でパッチを適用します。この記事ではESXi7.0、8.0を対象にしています。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="VMware ESXiにパッチを適用する">
 <meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/index.html">
 <meta property="og:site_name" content="New technologies in our life">
-<meta property="og:description" content="この記事で実現すること  無償版ESXi（VMware vSphere Hypervisor）について、VMwareのサイトから製品パッチに関する情報を入手し、ESXi上でパッチを適用します。この記事ではESXi7.0を対象にしています。ESXi8.0については、8.0U1以降のパッチからは更新していきたいと考えています。">
+<meta property="og:description" content="この記事で実現すること  無償版ESXi（VMware vSphere Hypervisor）について、VMwareのサイトから製品パッチに関する情報を入手し、ESXi上でパッチを適用します。この記事ではESXi7.0、8.0を対象にしています。">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/title.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/myvm3.png">
@@ -32,10 +32,11 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/esxi1.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/esxi2.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/esxi3.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/esxi6.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/esxi5.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/rollback.png">
 <meta property="article:published_time" content="2020-06-14T13:19:20.000Z">
-<meta property="article:modified_time" content="2023-05-06T10:45:19.802Z">
+<meta property="article:modified_time" content="2023-06-03T00:48:13.906Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="ESXi">
 <meta name="twitter:card" content="summary">
@@ -177,7 +178,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%91%E3%83%83%E3%83%81%E9%81%A9%E7%94%A8%E3%81%AB%E5%BF%85%E8%A6%81%E3%81%AA%E3%82%82%E3%81%AE"><span class="nav-number">1.</span> <span class="nav-text">パッチ適用に必要なもの</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VMware%E3%81%AE%E3%83%91%E3%83%83%E3%83%81%E6%83%85%E5%A0%B1"><span class="nav-number">2.</span> <span class="nav-text">VMwareのパッチ情報</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A3%BD%E5%93%81%E3%83%91%E3%83%83%E3%83%81%E3%81%AE%E6%83%85%E5%A0%B1%E3%82%92%E5%85%A5%E6%89%8B%E3%81%99%E3%82%8B"><span class="nav-number">3.</span> <span class="nav-text">製品パッチの情報を入手する</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%91%E3%83%83%E3%83%81%E9%81%A9%E7%94%A8%E4%BD%9C%E6%A5%AD"><span class="nav-number">4.</span> <span class="nav-text">パッチ適用作業</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%91%E3%83%83%E3%83%81%E3%81%AE%E3%83%AD%E3%83%BC%E3%83%AB%E3%83%90%E3%83%83%E3%82%AF"><span class="nav-number">5.</span> <span class="nav-text">パッチのロールバック</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A7%8B%E6%88%90%E6%83%85%E5%A0%B1%E3%81%AE%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%EF%BC%88%E4%BB%BB%E6%84%8F%EF%BC%89"><span class="nav-number">6.</span> <span class="nav-text">構成情報のバックアップ（任意）</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%91%E3%83%83%E3%83%81%E9%81%A9%E7%94%A8%E3%81%AB%E5%BF%85%E8%A6%81%E3%81%AA%E3%82%82%E3%81%AE"><span class="nav-number">1.</span> <span class="nav-text">パッチ適用に必要なもの</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VMware%E3%81%AE%E3%83%91%E3%83%83%E3%83%81%E6%83%85%E5%A0%B1"><span class="nav-number">2.</span> <span class="nav-text">VMwareのパッチ情報</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A3%BD%E5%93%81%E3%83%91%E3%83%83%E3%83%81%E3%81%AE%E6%83%85%E5%A0%B1%E3%82%92%E5%85%A5%E6%89%8B%E3%81%99%E3%82%8B"><span class="nav-number">3.</span> <span class="nav-text">製品パッチの情報を入手する</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E5%89%8D%E6%BA%96%E5%82%99%EF%BC%88ESXi7-8%E5%85%B1%E9%80%9A%EF%BC%89"><span class="nav-number">4.</span> <span class="nav-text">事前準備（ESXi7,8共通）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi%E3%81%AE%E3%83%91%E3%83%83%E3%83%81%E9%81%A9%E7%94%A8"><span class="nav-number">5.</span> <span class="nav-text">ESXiのパッチ適用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ESXi8-0%E3%81%AE%E3%83%91%E3%83%83%E3%83%81%E9%81%A9%E7%94%A8"><span class="nav-number">5.1.</span> <span class="nav-text">ESXi8.0のパッチ適用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%8F%BE%E5%9C%A8%E7%A8%BC%E5%83%8D%E4%B8%AD%E3%81%AE%E3%83%97%E3%83%AD%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E7%A2%BA%E8%AA%8D"><span class="nav-number">5.1.1.</span> <span class="nav-text">現在稼働中のプロファイルを確認</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E3%83%91%E3%83%83%E3%83%81%E9%81%A9%E7%94%A8"><span class="nav-number">5.1.2.</span> <span class="nav-text">パッチ適用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%8D%E8%B5%B7%E5%8B%95%E3%81%A8%E7%B5%90%E6%9E%9C%E7%A2%BA%E8%AA%8D"><span class="nav-number">5.1.3.</span> <span class="nav-text">再起動と結果確認</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ESXi7-0%E3%81%AE%E3%83%91%E3%83%83%E3%83%81%E9%81%A9%E7%94%A8"><span class="nav-number">5.2.</span> <span class="nav-text">ESXi7.0のパッチ適用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%8F%BE%E5%9C%A8%E7%A8%BC%E5%83%8D%E4%B8%AD%E3%81%AE%E3%83%97%E3%83%AD%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E7%A2%BA%E8%AA%8D-1"><span class="nav-number">5.2.1.</span> <span class="nav-text">現在稼働中のプロファイルを確認</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E3%83%91%E3%83%83%E3%83%81%E9%81%A9%E7%94%A8-1"><span class="nav-number">5.2.2.</span> <span class="nav-text">パッチ適用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%8D%E8%B5%B7%E5%8B%95%E3%81%A8%E7%B5%90%E6%9E%9C%E7%A2%BA%E8%AA%8D-1"><span class="nav-number">5.2.3.</span> <span class="nav-text">再起動と結果確認</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E5%BE%8C%E4%BD%9C%E6%A5%AD%EF%BC%88ESXi7-8%E5%85%B1%E9%80%9A%EF%BC%89"><span class="nav-number">6.</span> <span class="nav-text">事後作業（ESXi7,8共通）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%91%E3%83%83%E3%83%81%E3%81%AE%E3%83%AD%E3%83%BC%E3%83%AB%E3%83%90%E3%83%83%E3%82%AF"><span class="nav-number">7.</span> <span class="nav-text">パッチのロールバック</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A7%8B%E6%88%90%E6%83%85%E5%A0%B1%E3%81%AE%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%EF%BC%88%E4%BB%BB%E6%84%8F%EF%BC%89"><span class="nav-number">8.</span> <span class="nav-text">構成情報のバックアップ（任意）</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -280,7 +281,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">編集日</span>
-      <time title="修正日：2023-05-06 19:45:19" itemprop="dateModified" datetime="2023-05-06T19:45:19+09:00">2023-05-06</time>
+      <time title="修正日：2023-06-03 09:48:13" itemprop="dateModified" datetime="2023-06-03T09:48:13+09:00">2023-06-03</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -304,15 +305,19 @@
     <div class="post-body" itemprop="articleBody"><img src="/new-technology/2020/06/14/esxi67-patch/title.png" class="" title="alt">
 <p class="onepoint">この記事で実現すること</p>
 
-<p>無償版ESXi（VMware vSphere Hypervisor）について、VMwareのサイトから製品パッチに関する情報を入手し、ESXi上でパッチを適用します。この記事ではESXi7.0を対象にしています。ESXi8.0については、8.0U1以降のパッチからは更新していきたいと考えています。</p>
+<p>無償版ESXi（VMware vSphere Hypervisor）について、VMwareのサイトから製品パッチに関する情報を入手し、ESXi上でパッチを適用します。この記事ではESXi7.0、8.0を対象にしています。</p>
 <span id="more"></span>
 
 <h2 id="パッチ適用に必要なもの"><a href="#パッチ適用に必要なもの" class="headerlink" title="パッチ適用に必要なもの"></a>パッチ適用に必要なもの</h2><p>SSHでESXiに接続し、コマンドラインでパッチを適用します。Windows10ではOpenSSHがサポートされていますので、<mark class="label primary">オプション機能を追加する</mark>から<mark class="label primary">OpenSSHクライアント</mark>を有効にし、コマンドラインから<code>ssh  root@ESXiのIPアドレス</code>で接続可能です。Windows11ではOpenSSHがデフォルトで導入されています。</p>
 <h2 id="VMwareのパッチ情報"><a href="#VMwareのパッチ情報" class="headerlink" title="VMwareのパッチ情報"></a>VMwareのパッチ情報</h2><p>ESXiのパッチ情報は以下を参照してください。当該ページの左ペインメニューには最新パッチの情報が掲載されていますので、最新のパッチ情報を辿ってください。また、過去のパッチの情報も提供されています。</p>
 <blockquote>
+<p>VMware ESXi 8.0 Update 1a （2023-6-2発表）<br> <a target="_blank" rel="noopener" href="https://docs.vmware.com/en/VMware-vSphere/8.0/rn/vsphere-esxi-80u1a-release-notes/index.html">https://docs.vmware.com/en/VMware-vSphere/8.0/rn/vsphere-esxi-80u1a-release-notes/index.html</a></p>
+</blockquote>
+<p>主に不具合修正となっています。主としてvSANの不具合の対応ということで個人向けにはあまり関連しそうなところはありませんが、Mellanoxカード（Connect X-4,5,6）に関するパラメータがリセットされる（デフォルト値以外は非推奨）という記載があります。</p>
+<blockquote>
 <p>VMware ESXi 7.0 Update 3m（2023-5-3発表）<br> <a target="_blank" rel="noopener" href="https://docs.vmware.com/en/VMware-vSphere/7.0/rn/vsphere-esxi-70u3m-release-notes.html">https://docs.vmware.com/en/VMware-vSphere/7.0/rn/vsphere-esxi-70u3m-release-notes.html</a></p>
 </blockquote>
-<p>7.0Update 3lで埋め込まれた不具合の対策が主のようです。なので8.0Update1に対するパッチは無いようです。</p>
+<p>7.0Update 3lで埋め込まれた不具合の対策が主のようです。</p>
 <h2 id="製品パッチの情報を入手する"><a href="#製品パッチの情報を入手する" class="headerlink" title="製品パッチの情報を入手する"></a>製品パッチの情報を入手する</h2><p>ESXiのセットアップ時にCustomer Connectへの登録を行い、個人向けvSphere Hypervisorのライセンス（無償）を入手されている事を前提にしています。</p>
 <p><strong>VMware Customer Connect</strong>にサインインし、<mark class="label primary">製品とエンタイトルメント　アカウント</mark>メニューから、”製品パッチ”を選択します。</p>
 <blockquote>
@@ -320,11 +325,11 @@
 </blockquote>
 <img src="/new-technology/2020/06/14/esxi67-patch/myvm3.png" class="" title="alt">
 
-<p>さらに、”ESXi”とバージョンの”7.0”を選択し”検索”ボタンをクリックすると、パッチの一覧が表示されます。以下は7.0U3mの画面です。</p>
+<p>さらに、”ESXi”とバージョンの”7.0”または”8.0”を選択し”検索”ボタンをクリックすると、パッチの一覧が表示されます。以下は7.0U3mの画面です。</p>
 <img src="/new-technology/2020/06/14/esxi67-patch/myvm2.png" class="" title="alt">
 
 <p>基本的にESXiは7.0のバージョンのまま修正パッチを適用する場合はこの7.0という2桁の数字は変わりません。この数字が変わる更新をアップグレードと呼びます。それ以外の小さい更新をパッチまたはアップデートと呼びます。但し、ESXi7.0の場合はUpdate2,Update3というグループがあり、さらにUpdate3k、Update3lという具合にグループ単位でパッチ毎に末尾の英字が大きくなっていきます。VMwareのパッチは累積パッチとなるため、最新のパッチを適用するだけでよく、古いパッチの適用は必要ありません。ここでは最新版のパッチをダウンロードします。</p>
-<h2 id="パッチ適用作業"><a href="#パッチ適用作業" class="headerlink" title="パッチ適用作業"></a>パッチ適用作業</h2><p>ESXiにログインし、以下の作業を行います。</p>
+<h2 id="事前準備（ESXi7-8共通）"><a href="#事前準備（ESXi7-8共通）" class="headerlink" title="事前準備（ESXi7,8共通）"></a>事前準備（ESXi7,8共通）</h2><p>ESXiにログインし、以下の作業を行います。</p>
 <ul>
 <li>SSHを有効にします</li>
 <li>仮想マシンを全てシャットダウンします</li>
@@ -347,36 +352,48 @@
 </li>
 <li><p>パッチファイルのESXiへのアップロード<br> ESXiの左ペインメニューの”ストレージ”を選択、メインのストレージ（一般的にはdatastore1）を選択し、”データストアブラウザ”をクリックします</p>
  <img src="/new-technology/2020/06/14/esxi67-patch/esxi3.png" class="" title="alt">
- <mark class="label primary">アップロード</mark>ボタンをクリックし、ダウンロードしたパッチファイルをZIPのままアップロードします。ここの例では<mark class="label primary">ディレクトリの作成</mark>ボタンでupdateフォルダを作成し、そこにアップロードします。
+ <mark class="label primary">アップロード</mark>ボタンをクリックし、ダウンロードしたパッチファイルをZIPのままアップロードします。
+<p> ここの例では<mark class="label primary">ディレクトリの作成</mark>ボタンで<strong>updateフォルダを作成</strong>し、そこにアップロードします。</p>
 </li>
 <li><p>SSHでESXiにログイン<br> ログイン後、パッチをアップロードしたフォルダ（datastore1&#x2F;update）に移動しアップロードしたパッチファイルが存在するか<code>ls</code>で確認します</p>
- <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">The time and <span class="built_in">date</span> of this login have been sent to the system logs.</span><br><span class="line"></span><br><span class="line">WARNING:</span><br><span class="line">  All commands run on the ESXi shell are logged and may be included <span class="keyword">in</span></span><br><span class="line">  support bundles. Do not provide passwords directly on the <span class="built_in">command</span> line.</span><br><span class="line">  Most tools can prompt <span class="keyword">for</span> secrets or accept them from standard input.</span><br><span class="line"></span><br><span class="line">VMware offers supported, powerful system administration tools.  Please</span><br><span class="line">see www.vmware.com/go/sysadmintools <span class="keyword">for</span> details.</span><br><span class="line"></span><br><span class="line">The ESXi Shell can be disabled by an administrative user. See the</span><br><span class="line">vSphere Security documentation <span class="keyword">for</span> more information.</span><br><span class="line">[root@esxi:~] <span class="built_in">cd</span> /vmfs/volumes/datastore1/update</span><br><span class="line">[root@esxi:~] <span class="built_in">ls</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>パッチ適用コマンドを入力します<br> 新しいドライバやバグフィックス、セキュリティパッチなど含めたprofileとして整合性が取れたvibのアップデートはprofile updateを実行します。ここでは、ESXi7.0Update3lからUpdate3mにアップデートすることを例にします。</p>
-</li>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">The time and <span class="built_in">date</span> of this login have been sent to the system logs.</span><br><span class="line"></span><br><span class="line">WARNING:</span><br><span class="line">  All commands run on the ESXi shell are logged and may be included <span class="keyword">in</span></span><br><span class="line">  support bundles. Do not provide passwords directly on the <span class="built_in">command</span> line.</span><br><span class="line">  Most tools can prompt <span class="keyword">for</span> secrets or accept them from standard input.</span><br><span class="line"></span><br><span class="line">VMware offers supported, powerful system administration tools.  Please</span><br><span class="line">see www.vmware.com/go/sysadmintools <span class="keyword">for</span> details.</span><br><span class="line"></span><br><span class="line">The ESXi Shell can be disabled by an administrative user. See the</span><br><span class="line">vSphere Security documentation <span class="keyword">for</span> more information.</span><br><span class="line">[root@esxi:~] <span class="built_in">cd</span> /vmfs/volumes/datastore1/update</span><br><span class="line">[root@esxi:~] <span class="built_in">ls</span></span><br></pre></td></tr></table></figure></li>
 </ol>
-<p> 現在の実行中のprofileを確認します。<code>esxcli software profile get</code><br> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@esxi2:/vmfs/volumes/6215b59a-6031d17a-ea0d-80615f0db1ce/update] esxcli software profile get</span><br><span class="line">(Updated) ESXi-7.0U3l-21424296-standard</span><br><span class="line">   Name: (Updated) ESXi-7.0U3l-21424296-standard</span><br><span class="line">   Vendor: VMware, Inc.</span><br><span class="line">   Creation Time: 2023-04-29T08:54:44</span><br><span class="line">   Modification Time: 2023-05-06T10:28:12</span><br><span class="line">   Stateless Ready: True</span><br></pre></td></tr></table></figure></p>
+<h2 id="ESXiのパッチ適用"><a href="#ESXiのパッチ適用" class="headerlink" title="ESXiのパッチ適用"></a>ESXiのパッチ適用</h2><p>パッチ適用のコマンドは7.0、8.0とで違いはありません。ここでは直近バージョンからのパッチ適用のための具体的なコマンドを記載しています。</p>
+<h3 id="ESXi8-0のパッチ適用"><a href="#ESXi8-0のパッチ適用" class="headerlink" title="ESXi8.0のパッチ適用"></a>ESXi8.0のパッチ適用</h3><h4 id="現在稼働中のプロファイルを確認"><a href="#現在稼働中のプロファイルを確認" class="headerlink" title="現在稼働中のプロファイルを確認"></a>現在稼働中のプロファイルを確認</h4><p> 新しいドライバやバグフィックス、セキュリティパッチなど含めたprofileとして整合性が取れたvibのアップデートはprofile updateを実行します。ここでは、ESXi8.0Update1からUpdate1aにアップデートすることを例にします。</p>
+<p> 現在の実行中のprofileを確認します。<code>esxcli software profile get</code><br> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost:~] esxcli software profile get</span><br><span class="line">ESXi-8.0U1-21495797-standard</span><br><span class="line">   Name: ESXi-8.0U1-21495797-standard</span><br><span class="line">   Vendor: VMware, Inc.</span><br><span class="line">   Creation Time: 2023-04-29T21:45:50</span><br><span class="line">   Modification Time: 2023-06-03T09:26:33</span><br><span class="line">   Stateless Ready: False</span><br></pre></td></tr></table></figure></p>
+<p> 一般的にはバージョンの最後に”-standard”の文字が付いています。standard版がインストールされている事を示します。<br> 次に、パッチファイルに登録されているprofileを確認します（パッチはフルパス指定が必要です）。<br> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"> [root@localhost:/vmfs/volumes/datastore1/update] esxcli software sources profile list -d /vmfs/volumes/dat</span><br><span class="line">astore1/update/VMware-ESXi-8.0U1a-21813344-depot.zip</span><br><span class="line">Name                           Vendor        Acceptance Level  Creation Time        Modification Time</span><br><span class="line">-----------------------------  ------------  ----------------  -------------------  -----------------</span><br><span class="line">ESXi-8.0U1a-21813344-standard  VMware, Inc.  PartnerSupported  2023-06-01T00:00:00  2023-06-01T00:00:00</span><br><span class="line">ESXi-8.0U1a-21813344-no-tools  VMware, Inc.  PartnerSupported  2023-06-01T00:00:00  2023-05-24T06:02:20</span><br></pre></td></tr></table></figure></p>
+<p> VMWare Toolsを含まないProfileであるno-tools、VMWare Tools付きのstandard版となります。VMWare Toolsを使う一般的なユーザーはStandardを選択することになります。</p>
+<h4 id="パッチ適用"><a href="#パッチ適用" class="headerlink" title="パッチ適用"></a>パッチ適用</h4><p>以下のようにパッチファイルのzipをフルパスで指定し、VMwareのパッチ情報にあるプロファイル名を指定しパッチを適用します。ここではstandardを指定します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost:/vmfs/volumes/datastore1/update] esxcli software profile update -d /vmfs/volumes/datastore</span><br><span class="line">1/update/VMware-ESXi-8.0U1a-21813344-depot.zip -p ESXi-8.0U1a-21813344-standard</span><br></pre></td></tr></table></figure>
+
+<p><code>esxcli software profile update</code>の実行後しばらくしてから、結果が表示されます。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Update Result</span><br><span class="line">   Message: The update completed successfully, but the system needs to be rebooted for the changes to be effective.</span><br><span class="line">   Reboot Required: true</span><br></pre></td></tr></table></figure>
+
+<h4 id="再起動と結果確認"><a href="#再起動と結果確認" class="headerlink" title="再起動と結果確認"></a>再起動と結果確認</h4><p>コマンドプロンプトから、<code>reboot</code>としてESXiを再起動します。</p>
+<p>再起動完了後、ESXiにログインします。左ペインメニューの”ホスト”をクリックし、バージョンの表記に今回パッチを当てたビルド番号が表示されている事を確認してください。今回はU1aとなっているはずです。</p>
+<img src="/new-technology/2020/06/14/esxi67-patch/esxi6.png" class="" width="1024" title="alt">
+
+<p>または、sshでESXiに接続し、<code>vmware -v</code>を実行し確認します。</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost:~] vmware -v</span><br><span class="line">VMware ESXi 8.0.1 build-21813344</span><br></pre></td></tr></table></figure>
+
+<h3 id="ESXi7-0のパッチ適用"><a href="#ESXi7-0のパッチ適用" class="headerlink" title="ESXi7.0のパッチ適用"></a>ESXi7.0のパッチ適用</h3><h4 id="現在稼働中のプロファイルを確認-1"><a href="#現在稼働中のプロファイルを確認-1" class="headerlink" title="現在稼働中のプロファイルを確認"></a>現在稼働中のプロファイルを確認</h4><p> 新しいドライバやバグフィックス、セキュリティパッチなど含めたprofileとして整合性が取れたvibのアップデートはprofile updateを実行します。ここでは、ESXi7.0Update3lからUpdate3mにアップデートすることを例にします。</p>
+<p> 現在の実行中のprofileを確認します。<code>esxcli software profile get</code><br> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@esxi2:/vmfs/volumes/6215b59a-6031d17a-ea0d-80615f0db1ce/update] esxcli software profile get</span><br><span class="line">(Updated) ESXi-7.0U3l-21424296-standard</span><br><span class="line">  Name: (Updated) ESXi-7.0U3l-21424296-standard</span><br><span class="line">  Vendor: VMware, Inc.</span><br><span class="line">  Creation Time: 2023-04-29T08:54:44</span><br><span class="line">  Modification Time: 2023-05-06T10:28:12</span><br><span class="line">  Stateless Ready: True</span><br></pre></td></tr></table></figure></p>
 <p> 一般的にはバージョンの最後に”-standard”の文字が付いています。standard版がインストールされている事を示します。<br> 次に、パッチファイルに登録されているprofileを確認します（パッチはフルパス指定が必要です）。<br> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@esxi2:/vmfs/volumes/6215b59a-6031d17a-ea0d-80615f0db1ce/update] esxcli software sources profile list -d /vmfs/volumes/datastore1/update/VMware-ESXi-7.0U3m-21686933-depot.zip</span><br><span class="line">Name                           Vendor        Acceptance Level  Creation Time        Modification Time</span><br><span class="line">-----------------------------  ------------  ----------------  -------------------  -----------------</span><br><span class="line">ESXi-7.0U3m-21686933-standard  VMware, Inc.  PartnerSupported  2023-05-03T00:00:00  2023-05-03T00:00:00</span><br><span class="line">ESXi-7.0U3m-21686933-no-tools  VMware, Inc.  PartnerSupported  2023-05-03T00:00:00  2023-04-28T16:03:19</span><br></pre></td></tr></table></figure></p>
-<p>VMWare Toolsを含まないProfileであるno-tools、VMWare Tools付きのstandard版となります。VMWare Toolsを使う一般的なユーザーはNo Tools版を選択しないので除外します。</p>
-<p>以下のようにパッチファイルのzipをフルパスで指定し、VMwareのパッチ情報にあるプロファイル名を指定しパッチを適用します。ここではstandardを指定します。<br> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@esxi:~] esxcli software profile update -d /vmfs/volumes/datastore1/update/VMware-ESXi-7.0U3m-21686933-depot.zip -p ESXi-7.0U3m-21686933-standard</span><br></pre></td></tr></table></figure></p>
-<ol>
-<li><p><code>esxcli software profile update</code>の実行後しばらくしてから、結果が表示されます。</p>
- <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Update Result</span><br><span class="line">   Message: The update completed successfully, but the system needs to be rebooted for the changes to be effective.</span><br><span class="line">   Reboot Required: true</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>コマンドプロンプトから、<code>reboot</code>としてESXiを再起動します。</p>
-</li>
-<li><p>再起動完了後、ESXiにログインします。左ペインメニューの”ホスト”をクリックし、バージョンの表記に今回パッチを当てたビルド番号が表示されている事を確認してください。今回はU3mとなっているはずです。</p>
-</li>
-</ol>
-<ul>
-<li>ESXi7.0  <img src="/new-technology/2020/06/14/esxi67-patch/esxi5.png" class="" width="1024" title="alt"></li>
-</ul>
-<p>  または、sshでESXiに接続し、<code>vmware -v</code>を実行し確認します。</p>
+<p> VMWare Toolsを含まないProfileであるno-tools、VMWare Tools付きのstandard版となります。VMWare Toolsを使う一般的なユーザーはNo Tools版を選択しないので除外します。</p>
+<h4 id="パッチ適用-1"><a href="#パッチ適用-1" class="headerlink" title="パッチ適用"></a>パッチ適用</h4><p>以下のようにパッチファイルのzipをフルパスで指定し、VMwareのパッチ情報にあるプロファイル名を指定しパッチを適用します。ここではstandardを指定します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@esxi:~] esxcli software profile update -d /vmfs/volumes/datastore1/update/VMware-ESXi-7.0U3m-21686933-depot.zip -p ESXi-7.0U3m-21686933-standard</span><br></pre></td></tr></table></figure>
+
+<p><code>esxcli software profile update</code>の実行後しばらくしてから、結果が表示されます。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Update Result</span><br><span class="line">   Message: The update completed successfully, but the system needs to be rebooted for the changes to be effective.</span><br><span class="line">   Reboot Required: true</span><br></pre></td></tr></table></figure>
+
+<h4 id="再起動と結果確認-1"><a href="#再起動と結果確認-1" class="headerlink" title="再起動と結果確認"></a>再起動と結果確認</h4><p>コマンドプロンプトから、<code>reboot</code>としてESXiを再起動します。</p>
+<p>再起動完了後、ESXiにログインします。左ペインメニューの”ホスト”をクリックし、バージョンの表記に今回パッチを当てたビルド番号が表示されている事を確認してください。今回はU3mとなっているはずです。</p>
+<img src="/new-technology/2020/06/14/esxi67-patch/esxi5.png" class="" width="1024" title="alt">
+
+<p>または、sshでESXiに接続し、<code>vmware -v</code>を実行し確認します。</p>
  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@esxi2:~] vmware -v</span><br><span class="line">VMware ESXi 7.0.3 build-21686933</span><br></pre></td></tr></table></figure>
 
-<ol start="4">
-<li>最後にこれまで実施してきたメンテナンス準備とは反対の作業をします。メンテナンスモードの終了・SSHの無効化・仮想マシンの起動と続けます。</li>
-</ol>
+<h2 id="事後作業（ESXi7-8共通）"><a href="#事後作業（ESXi7-8共通）" class="headerlink" title="事後作業（ESXi7,8共通）"></a>事後作業（ESXi7,8共通）</h2><p>これまで実施してきたメンテナンス準備とは反対の作業をします。メンテナンスモードの終了・SSHの無効化・仮想マシンの起動と続けます。</p>
 <h2 id="パッチのロールバック"><a href="#パッチのロールバック" class="headerlink" title="パッチのロールバック"></a>パッチのロールバック</h2><p>あまり考えたくはありませんが、パッチ適用後、うまく動作しないなどの場合にはロールバックします。ESXiはひとつ前のバージョンに戻せます（アップグレードの場合は戻せない場合があります）。<br>ESXiホストを再起動し、起動中にShift+’R’キーを押します。</p>
 <blockquote>
 <p>VMware ESXi を前のバージョンに戻す (1033604)<br> <a target="_blank" rel="noopener" href="https://kb.vmware.com/s/article/1033604?lang=ja">https://kb.vmware.com/s/article/1033604?lang=ja</a></p>

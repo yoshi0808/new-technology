@@ -31,7 +31,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/02/29/esxi/setup_esxi.drawio.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/02/29/esxi/install.png">
 <meta property="article:published_time" content="2020-02-29T04:23:22.000Z">
-<meta property="article:modified_time" content="2022-12-10T12:17:11.000Z">
+<meta property="article:modified_time" content="2023-06-03T01:07:47.939Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="ESXi">
 <meta property="article:tag" content="XG Firewall">
@@ -277,7 +277,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">編集日</span>
-      <time title="修正日：2022-12-10 21:17:11" itemprop="dateModified" datetime="2022-12-10T21:17:11+09:00">2022-12-10</time>
+      <time title="修正日：2023-06-03 10:07:47" itemprop="dateModified" datetime="2023-06-03T10:07:47+09:00">2023-06-03</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -304,7 +304,7 @@
 <span id="more"></span>
 
 <h2 id="ESXiについて"><a href="#ESXiについて" class="headerlink" title="ESXiについて"></a>ESXiについて</h2><p> 無償版の仮想環境ESXiは<mark class="label primary">vSphere Hypervisor</mark>という名前が付けられています。Sophos Firewallの導入に必須ではありませんが、XG自体をバックアップすることやバージョンアップの際にその状態を一時保存するスナップショットなどとても便利なので、仮想環境を構築しその上に仮想ホストとしてXGをインストールします。vSphereという製品群、その中の1つの無償版バージョンとして、”vSphere Hypervisor”があります。ESXiは製品名というよりは直接ハードウェアを制御するVMWareの仮想化ソフトウェア、これに対する一般用語としては”ハイパーバイザー”です。そして、ESXi（ハイパーバイザー）上で稼働する実際のOSをVirtual Machine（VM:仮想マシン）と呼びます。</p>
-<p>（2022-11-23追記）<br>ESXiの最新Versionは2022-10-11に発表された8.0となっています。まだ無償版としてのライセンスが提供されていないようです。もう少し成熟してから無償版のライセンスが提供開始になるのでしょうか。まだ状況は不明瞭であり、この記事ではESXi7を対象にしています。新しいバージョンでは新しいハードウェアに適合する一方、古いCPUやネットワークカードなどは切り捨てられる傾向があります。</p>
+<p>（2022-11-23追記）<br>ESXiの最新Versionは2022-10-11に発表された8.0となっています。</p>
 <p>このホームユーザー向け（無償版）ESXi（vSphere Hypervisor）に関するドキュメントは、<strong>VMWareのサイト</strong>を参照してください。</p>
 <blockquote>
 <p>VMware vSphere Hypervisor<br> <a target="_blank" rel="noopener" href="https://www.vmware.com/jp/products/vsphere-hypervisor.html">https://www.vmware.com/jp/products/vsphere-hypervisor.html</a></p>
@@ -313,7 +313,7 @@
 <blockquote>
 <p>VMware Compatibility Guide<br> <a target="_blank" rel="noopener" href="https://www.vmware.com/resources/compatibility/search.php">https://www.vmware.com/resources/compatibility/search.php</a></p>
 </blockquote>
-<p>CPU、ネットワークカード、ストレージに至るまでintel製の互換性が高いというより他はなく、明確な機器をリストアップすることが困難です。<br>CPUとネットワークカードはintel製を選択されるのが無難です。ストレージに関しては、SATAのSSDであれば大半のメーカーのものは認識するようですが、NVMeについては過渡期で多くのトラブルの声がブログや掲示板等で確認できます。</p>
+<p>CPUはAMDのRyzenが無難であり、Eコア&#x2F;Pコアを持つintel CPUはうまくセットアップできないという口コミもあり、コミュニティなどの情報を確認することが必要です。ネットワークカードはintel&#x2F;Mellanox(現NVidea)の互換性が高いというより他はなく、明確な機器をリストアップすることが困難です。<br>CPUとネットワークカードはintel製を選択されるのが無難です。ストレージに関しては、SATAのSSDであれば大半のメーカーのものは認識するようですが、NVMeについてはSamsung 970EVO Plus、WD-Blueなどを選択されるのが無難です。</p>
 <h2 id="インストールメディアの準備"><a href="#インストールメディアの準備" class="headerlink" title="インストールメディアの準備"></a>インストールメディアの準備</h2><ol>
 <li>ESXiをインストールする予定の2つのNICを持ったPC1台と、ISOファイルをインストールするための最低8GB、推奨32GB以上のUSBメディアを用意してください。</li>
 <li>ESXiのダウンロードにはVMwareのアカウント（無償）が必要です。VMWareのサイトでアカウント作成、製品（vSphere Hypervisor）をダウンロードします。</li>
@@ -321,11 +321,22 @@
 <blockquote>
 <p>vSphere Hypervisor 7.0<br>  <a target="_blank" rel="noopener" href="https://my.vmware.com/jp/web/vmware/evalcenter?p=free-esxi7">https://my.vmware.com/jp/web/vmware/evalcenter?p=free-esxi7</a></p>
 </blockquote>
+<blockquote>
+<p>vSphere Hypervisor 8.0<br>  <a target="_blank" rel="noopener" href="https://my.vmware.com/jp/web/vmware/evalcenter?p=free-esxi8">https://my.vmware.com/jp/web/vmware/evalcenter?p=free-esxi8</a></p>
+</blockquote>
 <div class="link-grid"><div class="link-grid-container">
 <object class="link-grid-image" data="vSphere-Client.png"></object>
-<p>vSphere Hypervisor 7.0</p><p>(https://my.vmware.com/jp/web/vmware/evalcenter?p=free-esxi7)このダウンロード センターには、技術資料、インストール デモ、および vSphere Hypervisor のトレーニングが用意されています。</p>
+<p>vSphere Hypervisor 7.0</p><p>(https://my.vmware.com/jp/web/vmware/evalcenter?p=free-esxi7)このダウンロード センターには、技術資料、インストール デモ、およびvSphere Hypervisorのトレーニングが用意されています。</p>
 <a target="_blank" rel="noopener" href="https://my.vmware.com/jp/web/vmware/evalcenter?p=free-esxi7"></a>
 </div></div>
+
+<div class="link-grid"><div class="link-grid-container">
+<object class="link-grid-image" data="vSphere-Client.png"></object>
+<p>vSphere Hypervisor 8.0</p><p>(https://my.vmware.com/jp/web/vmware/evalcenter?p=free-esxi8)このダウンロード センターには、技術資料、インストール デモ、およびvSphere Hypervisorのトレーニングが用意されています。</p>
+<a target="_blank" rel="noopener" href="https://my.vmware.com/jp/web/vmware/evalcenter?p=free-esxi8"></a>
+</div></div>
+
+
 
 <ol>
 <li>以下のYouTube動画を参考にメディアを作成します。USBメディア作成に用いるRufusは64bit版のWindows OSが必要です。<blockquote>

@@ -19,12 +19,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.16.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
 
-    <meta name="description" content="この記事で実現すること  無償版ESXi（VMware vSphere Hypervisor）について、ESXi6.7からESXi7.0にアップグレードします。ここではUEFI（セキュアブート）で構成されているESXiを対象とし、できるだけ安全にアップグレードを行います。2023年2月8日時点では、ESXi8.0が発表されているものの、無償版としてのライセンスが公開されていないようです。">
+    <meta name="description" content="この記事で実現すること  無償版ESXi（VMware vSphere Hypervisor）について、ESXi6.7からESXi7.0にアップグレードします。ここではUEFI（セキュアブート）で構成されているESXiを対象とし、できるだけ安全にアップグレードを行います。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="VMware ESXiを6.7から7.0にアップグレードする">
 <meta property="og:url" content="https://yoshi0808.github.io/new-technology/2021/12/25/esxi-upgrade/index.html">
 <meta property="og:site_name" content="New technologies in our life">
-<meta property="og:description" content="この記事で実現すること  無償版ESXi（VMware vSphere Hypervisor）について、ESXi6.7からESXi7.0にアップグレードします。ここではUEFI（セキュアブート）で構成されているESXiを対象とし、できるだけ安全にアップグレードを行います。2023年2月8日時点では、ESXi8.0が発表されているものの、無償版としてのライセンスが公開されていないようです。">
+<meta property="og:description" content="この記事で実現すること  無償版ESXi（VMware vSphere Hypervisor）について、ESXi6.7からESXi7.0にアップグレードします。ここではUEFI（セキュアブート）で構成されているESXiを対象とし、できるだけ安全にアップグレードを行います。">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/12/25/esxi-upgrade/title.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/12/25/esxi-upgrade/upgradepath.png">
@@ -37,7 +37,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/12/25/esxi-upgrade/err.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/12/25/esxi-upgrade/rollback.png">
 <meta property="article:published_time" content="2021-12-24T22:15:25.000Z">
-<meta property="article:modified_time" content="2023-02-08T11:46:38.000Z">
+<meta property="article:modified_time" content="2023-06-03T00:51:44.108Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="ESXi">
 <meta name="twitter:card" content="summary">
@@ -282,7 +282,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">編集日</span>
-      <time title="修正日：2023-02-08 20:46:38" itemprop="dateModified" datetime="2023-02-08T20:46:38+09:00">2023-02-08</time>
+      <time title="修正日：2023-06-03 09:51:44" itemprop="dateModified" datetime="2023-06-03T09:51:44+09:00">2023-06-03</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -306,7 +306,7 @@
     <div class="post-body" itemprop="articleBody"><img src="/new-technology/2021/12/25/esxi-upgrade/title.png" class="" width="1024" title="alt">
 <p class="onepoint">この記事で実現すること</p>
 
-<p>無償版ESXi（VMware vSphere Hypervisor）について、ESXi6.7からESXi7.0にアップグレードします。ここではUEFI（セキュアブート）で構成されているESXiを対象とし、できるだけ安全にアップグレードを行います。2023年2月8日時点では、ESXi8.0が発表されているものの、無償版としてのライセンスが公開されていないようです。</p>
+<p>無償版ESXi（VMware vSphere Hypervisor）について、ESXi6.7からESXi7.0にアップグレードします。ここではUEFI（セキュアブート）で構成されているESXiを対象とし、できるだけ安全にアップグレードを行います。</p>
 <span id="more"></span>
 
 <h2 id="ESXiの脆弱性を狙ったランサムウェアについて"><a href="#ESXiの脆弱性を狙ったランサムウェアについて" class="headerlink" title="ESXiの脆弱性を狙ったランサムウェアについて"></a>ESXiの脆弱性を狙ったランサムウェアについて</h2><p>JPCERT&#x2F;CCより、2023-02-07にESXiのランサムウェア攻撃についての情報が提供されています。</p>
