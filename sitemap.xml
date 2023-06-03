@@ -2,6 +2,42 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://yoshi0808.github.io/new-technology/2022/11/23/unifi-switch/</loc>
+    
+    <lastmod>2023-06-03</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/2022/10/23/unifi-network-application2/</loc>
+    
+    <lastmod>2023-06-03</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/</loc>
+    
+    <lastmod>2023-06-03</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/2022/08/27/ubiquiti-unifi/</loc>
+    
+    <lastmod>2023-06-03</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://yoshi0808.github.io/new-technology/2020/02/29/esxi/</loc>
     
     <lastmod>2023-06-03</lastmod>
@@ -92,43 +128,7 @@
   </url>
   
   <url>
-    <loc>https://yoshi0808.github.io/new-technology/2022/08/27/ubiquiti-unifi/</loc>
-    
-    <lastmod>2023-04-15</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://yoshi0808.github.io/new-technology/2022/12/31/unifi-ap/</loc>
-    
-    <lastmod>2023-04-15</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://yoshi0808.github.io/new-technology/2022/11/23/unifi-switch/</loc>
-    
-    <lastmod>2023-04-15</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/</loc>
-    
-    <lastmod>2023-04-15</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://yoshi0808.github.io/new-technology/2022/10/23/unifi-network-application2/</loc>
     
     <lastmod>2023-04-15</lastmod>
     

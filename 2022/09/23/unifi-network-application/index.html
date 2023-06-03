@@ -67,7 +67,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/verify6.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/09/23/unifi-network-application/ubuntu1.png">
 <meta property="article:published_time" content="2022-09-22T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-04-15T03:29:08.572Z">
+<meta property="article:modified_time" content="2023-06-03T01:44:56.083Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="UniFi">
 <meta name="twitter:card" content="summary">
@@ -312,7 +312,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">編集日</span>
-      <time title="修正日：2023-04-15 12:29:08" itemprop="dateModified" datetime="2023-04-15T12:29:08+09:00">2023-04-15</time>
+      <time title="修正日：2023-06-03 10:44:56" itemprop="dateModified" datetime="2023-06-03T10:44:56+09:00">2023-06-03</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -374,7 +374,7 @@
 <li>64 GB Disk</li>
 </ul>
 <p>UniFi Network Applicationに対してはユーザーからのWebサービス、スイッチからネットワークアプリケーションへの接続などがあり、いくつかのサーバーPortをオープンしておく必要があります。Ubuntuと言われるとWindows上のWSL2を思い浮かべますが、WindowsOS上にPort Forwardの設定を行う必要があり、通常のUbuntuより余計な手間が掛かるためWSL2はお勧めしません。</p>
-<p>UniFi Network ApplicationではMongoDB&#x2F;Javaを使います。これらのミドルウェアの利用はアプリケーション内部の組み込み型モジュールとして考えるべきでもあり、セキュリティの観点からは可能な限りUbuntu上の公開ポートを制限すべきです。従い、UbuntuはUniFiネットワークアプリケーション専用として利用し、必要なPort以外は閉じます。</p>
+<p>UniFi Network ApplicationではMongoDB&#x2F;Java11を使います。これらのミドルウェアの利用はアプリケーション内部の組み込み型モジュールとして考えるべきでもあり、セキュリティの観点からは可能な限りUbuntu上の公開ポートを制限すべきです。従い、UbuntuはUniFiネットワークアプリケーション専用として利用し、必要なPort以外は閉じます。</p>
 <p>実際のインストールは有志が作成した素晴らしいシェルスクリプトが公開されており、悩むことなくセットアップは完了します。</p>
 <p>UniFi Network Applicationのバージョンアップはインストール同様にシェルスクリプトを動作させます。また、UniFi Network Applicationはロールバックに対応していないため、何か問題があった場合に旧環境に戻すにはアンインストール、インストールをするかESXiのレベルでスナップショットからの戻し、または仮想マシンごとのバックアップからの戻しをします。ESXiによるOSのロールバックは非常に手軽なため、万が一の際はOSレベルでのレストアが早く確実です。</p>
 <blockquote>
@@ -481,7 +481,7 @@
 <p>左側の丸い二重丸のアイコン（UniFiAPのシンボルです）からは、新しいUniFi機器のAdoptが可能な状態になっています。</p>
 <img src="/new-technology/2022/09/23/unifi-network-application/unifi14.png" class="" width="480" title="alt">
 
-<p>Ubuntuを再起動後してみてください。再度ブラウザでUniFi管理画面にログインできること、UbuntuにSSH可能である事を確認しましょう。</p>
+<p>Ubuntuを再起動後してみてください。再度ブラウザでUniFi管理画面にログインできること、UbuntuにSSH可能である事を確認しましょう。<br>7.4.156からは日本語UIが使えるようになりました。</p>
 <p>これでUniFiネットワークアプリケーションの設定は一旦完了です。もちろんこの段階で検出したスイッチを採用（Adopt）できますが、管理の主体はスマホアプリで可能なため、スマホアプリをインストールしていきましょう。</p>
 <h2 id="UniFi-ネットワーク-スマホアプリ"><a href="#UniFi-ネットワーク-スマホアプリ" class="headerlink" title="UniFi ネットワーク スマホアプリ"></a>UniFi ネットワーク スマホアプリ</h2><p>UniFiの使い勝手の良さはスマホアプリにあります。スマホアプリからUniFiネットワークアプリケーションを制御します。普段はスマホアプリがあれば大抵は事足ります。アプリストアから”UniFi Network&#x2F;Ubiquiti Inc”を見つけスマホにアプリをインストールします。</p>
 <ul>

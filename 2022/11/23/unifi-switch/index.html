@@ -33,11 +33,13 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/11/23/unifi-switch/netapp5.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/11/23/unifi-switch/netapp7.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/11/23/unifi-switch/netapp8.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/11/23/unifi-switch/netapp10.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/11/23/unifi-switch/netapp6.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/11/23/unifi-switch/netapp11.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/11/23/unifi-switch/module.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/11/23/unifi-switch/netapp9.png">
 <meta property="article:published_time" content="2022-11-22T15:00:00.000Z">
-<meta property="article:modified_time" content="2023-04-15T03:33:51.850Z">
+<meta property="article:modified_time" content="2023-06-03T02:09:30.618Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="SFP+">
 <meta property="article:tag" content="10GbE">
@@ -284,7 +286,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">編集日</span>
-      <time title="修正日：2023-04-15 12:33:51" itemprop="dateModified" datetime="2023-04-15T12:33:51+09:00">2023-04-15</time>
+      <time title="修正日：2023-06-03 11:09:30" itemprop="dateModified" datetime="2023-06-03T11:09:30+09:00">2023-06-03</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -412,13 +414,24 @@
 <img src="/new-technology/2022/11/23/unifi-switch/netapp8.png" class="" width="360" title="alt">
 
 <p>こういったネットワーク構成全般の変更を行うと、全てのスイッチに対してコンフィグの転送が行われ、スイッチの再構成が実行されます。</p>
-<p>トランクポートとして使うのであれば予め作成した複数のネットワークを束ねたProfileを作成した上でそれを指定します。<br>Profile作成時には指定する複数のネットワークのうちどれか1つをネイティブVLANとしてタグ無しに設定します。昨今、デフォルトVLANを変えることがセキュリティ上優位であるとも思えないので、私は管理用VLANは無条件にデフォルトVLAN（VLAN ID&#x3D;1）で管理するようにしています。</p>
+<p>トランクポートとして使う場合は２つの方法があります。</p>
+<ol>
+<li>予め作成した複数のネットワークを束ねたProfileを作成した上でそれを指定します。</li>
+<li>仮想ネットワークバインディングで許可するVLANまたはブロックするVLANを指定します。</li>
+</ol>
+<p>Profile作成時には指定する複数のネットワークのうちどれか1つをネイティブVLANとしてタグ無しに設定します。昨今、デフォルトVLANを変えることがセキュリティ上優位であるとも思えないので、私は管理用VLANは無条件にデフォルトVLAN（VLAN ID&#x3D;1）で管理するようにしています。</p>
+<p>ネットワークアプリケーションv7.4から導入された仮想ネットワークバインディングは、従前のように、トランクポートのネットワークの組み合わせをわざわざProfileで作成しなくて済むというメリットがあります。</p>
+<img src="/new-technology/2022/11/23/unifi-switch/netapp10.png" class="" width="1024" title="alt">
+<p>許可する、ブロックするのはどちらを使っても構いません。個人のように普段使うVLANがおおよそ決まっていて、WANなど特殊なものだけを除外する場合はブロックする方法を選択した方が簡単でしょうか。</p>
+<p>Profileを使う方式では、このようにネイティブVLANがどのネットワークか定め、タグ付きのVLANを追加で選択していきます。</p>
 <img src="/new-technology/2022/11/23/unifi-switch/netapp6.png" class="" width="1024" title="alt">
-<p>ProfileではこのようにネイティブVLANがどのネットワークか定め、タグ付きのVLANを追加で選択していきます。この例では、 UniFi-APはデフォルトVLANで接続し、AP同士の制御用パケットは全てデフォルトVLAN配下に流れます。また、タグ付きネットワークでVLAN-XXX（一般端末向け）とGuestがありますが、UniFi-APは複数のネットワークに属することができますので1つのAPで複数のネットワークに対してWi-Fiサービス提供できるようになります。</p>
+
+<p>Profileを作成後、スイッチポートの設定にて、<mark class="label primary">イーサネットポートプロファイル</mark>のチェックボックスをオンにしてリストボックスからProfileを指定します。</p>
+<img src="/new-technology/2022/11/23/unifi-switch/netapp11.png" class="" width="480" title="alt">
+
+<p>この例では、 UniFi-APはデフォルトVLANで接続し、AP同士の制御用パケットは全てデフォルトVLAN配下に流れます。また、タグ付きネットワークでVLAN-XXX（一般端末向け）とGuestがありますが、UniFi-APは複数のネットワークに属することができますので1つのAPで複数のネットワークに対してWi-Fiサービス提供できるようになります。</p>
 <p>ネットワーク機器のLANをデフォルトVLAN、かつ、ネイティブVLAN（タグ無し）としているのは何らかのトラブル時に復旧させやすいという点もあります。</p>
-<p>なお、SFP＋のインタフェースを持つFirewallなどの機器からホームゲートウェイ(HGW)などRJ45を持つ機器に接続するときにはインタフェースの変換が必要となります。スイッチを2Port、LANとは異なるVLANネットワークにし、RJ45 SFP+モジュールを使うことでインタフェースの変換に使うのもVLANの一つの活用方法です。上記の例ではHGWという名前のVLANを作成し、auひかりから提供されるHGWのRJ45ポートから、スイッチのPort26（RJ45モジュール）へ、FirewallのWAN（SFP＋）をスイッチのPort22へ接続し、実質メディアコンバーターとして使っています。</p>
 <p>SFP+のネットワークカード（NIC）に10GbEのRJ45モジュールを使う事はお勧めしません。電力不足によりリンクアップしなかったり2.5Gbpsでリンクアップするなどの事象が発生する場合があります。また、モジュールの発熱によるNICの故障の原因になります。</p>
-<p>スイッチを最初にAdoptした時はPortのプロファイルは”All”となっています。これはネイティブVLANおよび全てのタグ付きVLANを転送するモードです。VLANを設定しないならProfileはALLのままで使っても構いません。</p>
 <h2 id="SSH"><a href="#SSH" class="headerlink" title="SSH"></a>SSH</h2><p>UniFiスイッチは廉価なSwitch Flex Miniを除き、大半のスイッチはSSH接続が可能です。ネットワークアプリケーションで設定したID&#x2F;パスワードでも接続できますし、公開鍵認証でも接続可能です。スイッチにSSHすると Linuxのインタフェースのように見えます。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">$ ssh xxx</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">BusyBox v1.25.1 () built-in shell (ash)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  ___ ___      .__________.__</span><br><span class="line"> |   |   |____ |__\_  ____/__|</span><br><span class="line"> |   |   /    \|  ||  __) |  |   (c) 2010-2022</span><br><span class="line"> |   |  |   |  \  ||  \   |  |   Ubiquiti Inc.</span><br><span class="line"> |______|___|  /__||__/   |__|</span><br><span class="line">            |_/                  https://www.ui.com</span><br><span class="line"></span><br><span class="line">      Welcome to UniFi USW-Aggregation!</span><br><span class="line"></span><br><span class="line">********************************* NOTICE **********************************</span><br><span class="line">* By logging <span class="keyword">in</span> to, accessing, or using any Ubiquiti product, you are     *</span><br><span class="line">* signifying that you have <span class="built_in">read</span> our Terms of Service (ToS) and End User   *</span><br><span class="line">* License Agreement (EULA), understand their terms, and agree to be       *</span><br><span class="line">* fully bound to them. The use of SSH (Secure Shell) can potentially      *</span><br><span class="line">* harm Ubiquiti devices and result <span class="keyword">in</span> lost access to them and their data. *</span><br><span class="line">* By proceeding, you acknowledge that the use of SSH to modify device(s)  *</span><br><span class="line">* outside of their normal operational scope, or <span class="keyword">in</span> any manner             *</span><br><span class="line">* inconsistent with the ToS or EULA, will permanently and irrevocably     *</span><br><span class="line">* void any applicable warranty.                                           *</span><br><span class="line">***************************************************************************</span><br><span class="line"></span><br><span class="line">USW-Aggregation-US.6.3.13<span class="comment"># cd /var/log</span></span><br><span class="line">USW-Aggregation-US.6.3.13<span class="comment"># vi messages</span></span><br><span class="line">USW-Aggregation-US.6.3.13<span class="comment"># ping 192.168.x.100</span></span><br><span class="line">PING 192.168.x.100 (192.168.x.100): 56 data bytes</span><br><span class="line">64 bytes from 192.168.x.100: <span class="built_in">seq</span>=0 ttl=64 time=0.000 ms</span><br><span class="line">64 bytes from 192.168.x.100: <span class="built_in">seq</span>=1 ttl=64 time=10.000 ms</span><br><span class="line">64 bytes from 192.168.x.100: <span class="built_in">seq</span>=2 ttl=64 time=10.001 ms</span><br><span class="line">64 bytes from 192.168.x.100: <span class="built_in">seq</span>=3 ttl=64 time=10.000 ms</span><br><span class="line">64 bytes from 192.168.x.100: <span class="built_in">seq</span>=4 ttl=64 time=10.001 ms</span><br></pre></td></tr></table></figure>
 
