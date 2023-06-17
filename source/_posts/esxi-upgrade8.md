@@ -1,6 +1,6 @@
 ---
 title: VMware ESXiを8.0にアップグレードする
-date: 2023-5-30 07:15:25
+date: 2023-6-18 07:00:00
 tags:
   - ESXi
 categories:
@@ -20,7 +20,7 @@ ESXiのバージョン体系は、"x"."y" update "z" ビルド番号 という�
 - アップグレードは、前2桁（x,y）を上げることを指します。
 - アップデートは、前2桁が変わりません。それ以降の数字があるケース、またはUpdate"z"などの形式があります。Update2を省略してU2、さらにU2a、U2cなど英数字が上がっていきます。
 
-アップデートによってこれまで動いていたハードウェアが動かなくなるという事は大々的にはおきません（ドライバーの更新によって認識しなくなったりうまく動作しないという一般的な理由はあります）。アップグレードではハードウェアのサポート対象の見直しが入ります。
+**アップデート**によってこれまで動いていたハードウェアが動かなくなるという事は大々的にはおきません（ドライバーの更新によって認識しなくなったりうまく動作しないという一般的な理由はあります）。**アップグレード**ではハードウェアのサポート対象の見直しが入ります。
 
 > ESXiのアップグレード
  <https://docs.vmware.com/jp/VMware-vSphere/8.0/vsphere-esxi-80-upgrade-guide.pdf>
@@ -59,7 +59,7 @@ ESXi8にアップグレードする例を記載しています。厳密なアッ
 
 ## アップグレード対象のESXi8.0を確認する
 
-ESXiのISOインストーラのダウンロードは、2023年4月30日時点ではESXi8.0 Update1となっています。
+ESXiのISOインストーラのダウンロードは、2023年6月1日時点ではESXi8.0 Update1（8.0U1a）となっています。
 
 >VMware vSphere Hypervisor 8.0 ダウンロード センター(※VMware Customer Connectへログインが必要です)
  <https://customerconnect.vmware.com/jp/evalcenter?p=free-esxi8>
@@ -72,7 +72,7 @@ ESXiのISOインストーラのダウンロードは、2023年4月30日時点で
 > VMware Compatibility Guide
  <https://www.vmware.com/resources/compatibility/search.php>
 
-以前は検証のためにUSB上にESXi7.0を新規でセットアップできましたが、 ESXi8からはUSBにセットアップできなくなっています。バックアップをしっかりと確保される事をお勧めします。
+以前は検証のためにUSB上にESXi7.0をセットアップできましたが、 ESXi8からはUSBへのテストセットアップできなくなっています。ハードウェアが準拠せずアップグレード後起動しない、NICが利用できない可能性があるため、仮想マシンのバックアップを確保される事をお勧めします。なお、個人向けのハードウェアで関係するところは、Mellanox Connect X-3がサポート対象外となりました。Mellanoxユーザーとしては、Connect X-4/X-5を使う事になるでしょう。
 
 ### ESXi8.0 インストーラーのダウンロード
 
@@ -156,3 +156,26 @@ VMware Toolsを最新にした後、仮想マシンハードウェアをアッ�
 この操作は以下の通りWebUIで左ペインの{% label primary@仮想マシン %}で対象仮想マシンを選択し、{% label primary@アクション %}メニューから{% label primary@仮想マシンの互換性のアップグレード %}を実行します。
 
 {% asset_img upgrade-vm.png 800 alt %}
+
+## 構成情報のバックアップ（任意）
+
+今後、パッチ適用を重ねていきますが、ある時点にロールバックしたいと思った時に、ホスト構成バックアップから戻す必要が出てきます。パッチを当てる度に構成情報のバックアップを取得されることをお勧めします。
+
+参考にするドキュメントはこちらです。
+
+> ESXi ホストの構成のバックアップ方法 (2042141)
+ <https://kb.vmware.com/s/article/2042141?lang=ja>
+
+1. SSHでESXiに接続します。
+2. ストレージの確実な同期のためのコマンド`vim-cmd hostsvc/firmware/sync_config`を実行します。
+3. バックアップコマンド`vim-cmd hostsvc/firmware/backup_config`を実行します。
+4. 画面にダウンロードパスが表示されるのでそのURLにブラウザから接続し構成情報をダウンロードします。
+
+``` bash
+[root@esxi:~] vim-cmd hostsvc/firmware/sync_config
+[root@esxi:~] vim-cmd hostsvc/firmware/backup_config
+Bundle can be downloaded at : http://*/downloads/52ce000f-cad4-20c0-078d-a111fa1ad82x/configBundle-esxi.local.tgz
+[root@esxi:~]
+```
+
+先頭に`http://*/`とありますが、ここはESXiのホスト名またはIPアドレスを指定しブラウザからアクセスします。例えば、`http://192.168.1.1/downloads〜`という具合です。万が一レストアが必要になってしまった場合はバックアップを取得したバージョンのパッチを適用の上、メンテナンスモードに移行してから`vim-cmd hostsvc/firmware/restore_config /your_backup_location/configBundle-esxi.local.tgz`で戻します。バックアップを取得してから既にハードウェア構成が変わっていたりする場合は戻せない場合があります。仮想マシンはデータストアブラウザから再登録する必要があります。詳細は上記VMwareのドキュメントを参照してください。

@@ -150,7 +150,6 @@ XG v18 MR-4以降はIPSecの接続に関する詳細設定がXG本体で行え�
 
 もし、DDNSを上記のDDNS提供業者ではなく、別のものを用意するものに変更するのであれば、scxファイルのddns名の箇所を任意のホスト名に修正できます。
 以下のように、"gateway"で始まる行にホスト名またはIPアドレスが記述されているので、この行を目的のホスト名に変更します。
-私の場合、QNAPのNASのDDNSがありますので、この例だと以下のように書き換えます。
 
 ```
   "gateway" : "xxxx.myfirewall.co",
@@ -159,7 +158,7 @@ XG v18 MR-4以降はIPSecの接続に関する詳細設定がXG本体で行え�
 →
 
 ```
-  "gateway" : "xxxx.myqnapcloud.com",
+  "gateway" : "xxxx.myhost.domain",
 ```
 
 {% asset_img install.png alt %}
