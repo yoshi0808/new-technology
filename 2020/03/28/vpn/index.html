@@ -44,7 +44,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/28/vpn/vpn3.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/03/28/vpn/vpn4.png">
 <meta property="article:published_time" content="2020-03-28T02:41:42.000Z">
-<meta property="article:modified_time" content="2021-10-16T12:04:15.000Z">
+<meta property="article:modified_time" content="2023-06-17T23:17:05.237Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -212,7 +212,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/new-technology/tags/">
-        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">タグ</span></a>
       </div>
   </nav>
@@ -289,7 +289,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">編集日</span>
-      <time title="修正日：2021-10-16 21:04:15" itemprop="dateModified" datetime="2021-10-16T21:04:15+09:00">2021-10-16</time>
+      <time title="修正日：2023-06-18 08:17:05" itemprop="dateModified" datetime="2023-06-18T08:17:05+09:00">2023-06-18</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -410,11 +410,11 @@
 </ul>
 <p>上記設定し、<mark class="label primary">接続のエクスポート</mark>ボタンをクリックし、接続設定ファイルをダウンロードしてください（拡張子tar.gz）。このなかにさらに拡張子scxというファイルがありそれを使います。</p>
 <h2 id="クライアントのセットアップ"><a href="#クライアントのセットアップ" class="headerlink" title="クライアントのセットアップ"></a>クライアントのセットアップ</h2><p>クライアントへのセットアップは、Windowsの場合は、SophosConnect.msiをインストールします。macOSの場合は、SophosConnect.pkgをインストールします。プログラム実行後、右上のメニューから、<mark class="label primary">Import Connection</mark>をクリックし、先ほどダウンロードした接続設定ファイル（拡張子scx）を読み込んでください。</p>
-<p>もし、DDNSを上記のDDNS提供業者ではなく、別のものを用意するものに変更するのであれば、scxファイルのddns名の箇所を任意のホスト名に修正できます。<br>以下のように、”gateway”で始まる行にホスト名またはIPアドレスが記述されているので、この行を目的のホスト名に変更します。<br>私の場合、QNAPのNASのDDNSがありますので、この例だと以下のように書き換えます。</p>
+<p>もし、DDNSを上記のDDNS提供業者ではなく、別のものを用意するものに変更するのであれば、scxファイルのddns名の箇所を任意のホスト名に修正できます。<br>以下のように、”gateway”で始まる行にホスト名またはIPアドレスが記述されているので、この行を目的のホスト名に変更します。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;gateway&quot; : &quot;xxxx.myfirewall.co&quot;,</span><br></pre></td></tr></table></figure>
 
 <p>→</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;gateway&quot; : &quot;xxxx.myqnapcloud.com&quot;,</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;gateway&quot; : &quot;xxxx.myhost.domain&quot;,</span><br></pre></td></tr></table></figure>
 
 <img src="/new-technology/2020/03/28/vpn/install.png" class="" title="alt">
 

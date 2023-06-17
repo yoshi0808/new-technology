@@ -31,7 +31,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/10/03/2500MbE/1gbe.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/10/03/2500MbE/systemrepo.png">
 <meta property="article:published_time" content="2021-10-03T04:00:00.000Z">
-<meta property="article:modified_time" content="2022-06-02T12:24:49.000Z">
+<meta property="article:modified_time" content="2023-06-17T23:12:59.341Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2021/10/03/2500MbE/title.png">
@@ -198,7 +198,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/new-technology/tags/">
-        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">タグ</span></a>
       </div>
   </nav>
@@ -275,7 +275,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">編集日</span>
-      <time title="修正日：2022-06-02 21:24:49" itemprop="dateModified" datetime="2022-06-02T21:24:49+09:00">2022-06-02</time>
+      <time title="修正日：2023-06-18 08:12:59" itemprop="dateModified" datetime="2023-06-18T08:12:59+09:00">2023-06-18</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -336,11 +336,6 @@
 <p><a target="_blank" rel="noopener" href="https://www.planex.co.jp/products/usbc-lan2500r/">https://www.planex.co.jp/products/usbc-lan2500r/</a></p>
 </blockquote>
 <p>2.5Gbpsも要らない、そんなサイズの大きなファイルを移動したり使う事もないというのは普通の感覚ですが、Webブラウザのようにマルチスレッドを用いた通信と画面描画とが完全に最適化されている場合は、それこそ100Mbpsでも十分に機能します。しかし使いたいアプリケーションは必ずしも最適化されているわけでもなく、4K動画を変換しながら再生するなどの処理はとても重いためネットワーク速度もより高速なものが好ましいです。数Mバイト単位のデータを極めて短時間に頻繁に読み込むまたは書き出すアプリケーションがあれば、通信とストレージのデータ処理の遅延が都度発生します。それぞれがシーケンシャルに処理されるアプリケーションは高速化しづらい面があります。例えばmacOSのバックアップソフトであるTimeMachineは、読み取り・差分確認・圧縮・暗号化・書き込みと1つ1つのシーケンシャルの処理の遅延が最終的に数時間にわたり動作し続けるする事になります。これらの1つのオーバーヘッドの要素である通信部分を比較的廉価な投資で速度面の解決ができる点はメリットがあります。</p>
-<p>もちろん、5Gbps、10Gbpsのチップを乗せたUSBアダプターでも良いのですが、5Gbpsは速度・発熱において効率の良いチップが見当たりません。QNAPが出している5GbEのUSBアダプター”QNAP QNA-UC5G1T USB 5GbE Adapter Review”によるとiperf3のテストでは3.4Gbps程度の能力のようです。私の持っているAquantiaのAQC108チップとほぼ変わりません。10Gbpsのチップはたくさんありますが、発熱・ファンが必要で大型となり、気軽にUSBアダプターとして持ちはこべるものではありません。</p>
-<blockquote>
-<p>QNAP QNA-UC5G1T USB 5GbE Adapter Review<br> <a target="_blank" rel="noopener" href="https://www.servethehome.com/qnap-qna-uc5g1t-usb-5gbe-adapter-review/">https://www.servethehome.com/qnap-qna-uc5g1t-usb-5gbe-adapter-review/</a></p>
-</blockquote>
-<p>やはりキーポイントとしては、Realtek社のRTL8156Bチップセットなんでしょうか。末尾に”B”がないチップは発熱量が大きいのでご注意ください。</p>
 <div class="note warning"><p>2Gbps〜10Gbpsのインターネットサービスが提供されている場合で、回線会社から提供されているホームゲートウェイは必ずしも2.5GbE、5GbEと直接接続できるとは限りません。この場合は10GbEの口を持つPCかスイッチを用意する必要があります。</p>
 </div>
 
@@ -396,8 +391,8 @@
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/new-technology/2021/12/04/qnap-hdp/" rel="next" title="無償版ESXiのVMをQNAP NASにバックアップ">
-                  無償版ESXiのVMをQNAP NASにバックアップ <i class="fa fa-chevron-right"></i>
+                <a href="/new-technology/2021/12/11/xg-v185-mr2/" rel="next" title="Sophos Firewall v18.5 MR-2">
+                  Sophos Firewall v18.5 MR-2 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>

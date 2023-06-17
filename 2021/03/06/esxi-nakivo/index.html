@@ -39,7 +39,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/03/06/esxi-nakivo/nakivo8.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/03/06/esxi-nakivo/esxi.png">
 <meta property="article:published_time" content="2021-03-05T15:26:19.000Z">
-<meta property="article:modified_time" content="2021-10-23T23:33:51.000Z">
+<meta property="article:modified_time" content="2023-06-17T23:16:04.113Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="ESXi">
 <meta property="article:tag" content="XG Firewall">
@@ -208,7 +208,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/new-technology/tags/">
-        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">タグ</span></a>
       </div>
   </nav>
@@ -285,7 +285,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">編集日</span>
-      <time title="修正日：2021-10-24 08:33:51" itemprop="dateModified" datetime="2021-10-24T08:33:51+09:00">2021-10-24</time>
+      <time title="修正日：2023-06-18 08:16:04" itemprop="dateModified" datetime="2023-06-18T08:16:04+09:00">2023-06-18</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -313,7 +313,7 @@
 <p>無償版ESXi6.7（VMware vSphere Hypervisor6.7）はvStorage APIが使えないため、有名なESXiのバックアップ製品は大半が利用できません。vStorage APIを使わないGUI製品であるNakivo Backup Free Editionを用いてXG Firewallなどの仮想マシンがバックアップできます。GUIによる設定、定期的なバックアップ、差分バックアップをサポートします。</p>
 <span id="more"></span>
 
-<h2 id="無償版ESXiのバックアップ環境"><a href="#無償版ESXiのバックアップ環境" class="headerlink" title="無償版ESXiのバックアップ環境"></a>無償版ESXiのバックアップ環境</h2><p>「<a href="/new-technology/2020/10/11/esxi-backup/" title="VMware ESXiの仮想マシンをバックアップする">VMware ESXiの仮想マシンをバックアップする</a>」の記事では、無償版ESXiのバックアップについて説明していますが、コマンドラインベースであることやUEFIシステムによってCronで定期的なバックアップが行えない制約がありました。一方、GUIによるバックアップ製品は多くの製品があります。「ずっと無償」などの言葉が並んでいますが、無償というのはバックアップ製品が無償という事であり、無償ESXiのバックアップは取れず、色々捜しつつもGUI製品には殆どめぐり合えないというのが実態です。昨年夏に私が利用しているNASのQNAPでも無償のESXiバックアップ製品が発表という事で少しときめいたのですが、Inventoryには仮想マシンが表示されるものの結局はvStorage APIが必要であり、バックアップは行えませんでした。</p>
+<h2 id="無償版ESXiのバックアップ環境"><a href="#無償版ESXiのバックアップ環境" class="headerlink" title="無償版ESXiのバックアップ環境"></a>無償版ESXiのバックアップ環境</h2><p>「<a href="/new-technology/2020/10/11/esxi-backup/" title="VMware ESXiの仮想マシンをバックアップする">VMware ESXiの仮想マシンをバックアップする</a>」の記事では、無償版ESXiのバックアップについて説明していますが、コマンドラインベースであることやUEFIシステムによってCronで定期的なバックアップが行えない制約がありました。一方、GUIによるバックアップ製品は多くの製品があります。「ずっと無償」などの言葉が並んでいますが、無償というのはバックアップ製品が無償という事であり、無償ESXiのバックアップは取れず、色々捜しつつもGUI製品には殆どめぐり合えないというのが実態です。</p>
 <h2 id="Nakivo-Backupの無償の意味"><a href="#Nakivo-Backupの無償の意味" class="headerlink" title="Nakivo Backupの無償の意味"></a>Nakivo Backupの無償の意味</h2><p><strong>Nakivo backup Free Edition</strong>は無償のオープンシステムではなく、あくまでビジネス向けに収益をあげるモデルです。無償ライセンスは1年単位となっています。10以下の仮想マシンのバックアップなど制約はありますが、個人向けには十分な内容です。しかし、あくまで無償版はお試しという位置付けであり実際は個人向けでも正式なライセンスを購入してほしいようです。製品をダウンロードすると、米国の営業担当から電話がかかってきました<span class="github-emoji" alias="frowning" style="" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f626.png?v8">&#x1f626;</span>。私はメールでやりとりし、とりあえず1年間はこの無償版を使いますよという事になりましたが<sup><a href="#note1"><strong>[1]</strong></a></sup>、次回は有償版のライセンスにて更新するかどうするかは少し値段の面で悩んでいるところです。ライセンス費用も公開されていますが、マザーボードに物理接続されたCPUあたり＄99&#x2F;年という事です。ビジネス用途であれば極めて安価ですが、個人向けとしては悩みどころの価格帯です。また、ghettoVCBで事足りているというのもあります。</p>
 <p>他の無償製品に目を向けてみると、<strong>Unitrends Free</strong>で無償版ESXiの仮想マシンがバックアップ可能ですが、これはエージェントモデルで、仮想マシンそのものにエージェントをインストールし、エージェントが自分自身のOSのバックアップを取得する事になります。これはLinuxやWindowsの仮想マシンには使えますが、XG Firewallなど他のモジュールインストールを認めていない仮想マシンはバックアップする事はできません。</p>
 <blockquote>
@@ -324,9 +324,8 @@
 <li>Windows</li>
 <li>Linux</li>
 <li>Esxiの仮想マシンとして</li>
-<li>NAS(ASUSTOR,NETGEAR,QNAP,Synology,WesternDigital)</li>
+<li>NAS(Synologyなど)</li>
 </ul>
-<p>私はQNAP上にインストールしています。ESXiの仮想マシン自体にインストールする事も可能ですが、バックアップデータ自体はNASをはじめとする別筐体のストレージにバックアップされる事をお勧めします。</p>
 <h2 id="ダウンロードおよびインストール"><a href="#ダウンロードおよびインストール" class="headerlink" title="ダウンロードおよびインストール"></a>ダウンロードおよびインストール</h2><p>上記のNakivoサイトからダウンロードしてください。</p>
 <img src="/new-technology/2021/03/06/esxi-nakivo/nakivo1.png" class="" title="alt">
 <p>ダウンロードにはビジネスで利用しているメールアドレスが必要になります。昔はgmailやicloudメールが使えましたが、現在は認められないようで会社勤めの方であれば会社のメールアカウントを入力必要です。私は会社のメアドを登録するのは躊躇して登録していませんが、エンジニアの方であれば、一般的には自己啓発という名目もあり構わないと考えられるでしょうか。<br>インストール自体は難しいものではありません。以下のURLから各環境に応じた手順でセットアップを行います。</p>

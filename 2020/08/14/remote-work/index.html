@@ -28,7 +28,7 @@
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/08/14/remote-work/title.png">
 <meta property="article:published_time" content="2020-08-14T11:19:00.000Z">
-<meta property="article:modified_time" content="2022-08-18T10:28:26.000Z">
+<meta property="article:modified_time" content="2023-06-17T23:14:36.736Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="Wi-Fi">
 <meta name="twitter:card" content="summary">
@@ -196,7 +196,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/new-technology/tags/">
-        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">タグ</span></a>
       </div>
   </nav>
@@ -273,7 +273,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">編集日</span>
-      <time title="修正日：2022-08-18 19:28:26" itemprop="dateModified" datetime="2022-08-18T19:28:26+09:00">2022-08-18</time>
+      <time title="修正日：2023-06-18 08:14:36" itemprop="dateModified" datetime="2023-06-18T08:14:36+09:00">2023-06-18</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -402,18 +402,17 @@
 <p>macOS、Linuxでも「ウィルス対策ソフトは本当に必要か？」という議論を見かけますがほとんどのケースで必要と考えています。対策ソフトで完璧に防ぐ事は困難ですが、自身の不注意から最悪のシナリオに繋がるケースから守ってくれる事もあります。「全てのOS、利用しているアプリケーションの脆弱性に伴うパッチを公開初日に確実に適用する自信がある」かつ「信頼できない未確認のサイトにアクセスしない」とわかっている場合のみウィルス対策ソフトは不要です（パッチ未公開の攻撃はホームユーザーにとって防御が困難です）。IoTはウィルス対策ソフトが導入できない代わりに「パッチの自動更新が必須」でありインターネットへアクセス可能な範囲を絞るべきです。<br>ウィルス対策ソフトで確実に防御できるわけではありません。対策ソフトにも優劣がありますし限界があります。申し上げたいのは稼働させられるウィルス対策ソフトを使っていなかった、つまり<strong>本人の過失</strong>とならないように稼働させる事をお勧めするものです。</p>
 <p>では、WindowsDefenderを導入しておけば絶対安全か？と言われればそうではありません。デフォルトでWindowsにインストールされているウィルス対策ソフトで防御されてしまうレベルの攻撃では全く意味がない事を攻撃者は理解しているからです。繰り返しになりますがウィルス対策ソフトは稼働させた上でデータのバックアップや頻繁なパッチ適用をお勧めします。</p>
 <p>また、音声で留意する点は、Google Home、Apple HomePod、Amazon Echo（Alexa）の存在です。これはどのタイミングで音声をキャプチャされているか分かりませんので十分気を付ける必要があります。</p>
-<h2 id="（4）ネットワークチェックツールの利用"><a href="#（4）ネットワークチェックツールの利用" class="headerlink" title="（4）ネットワークチェックツールの利用"></a>（4）ネットワークチェックツールの利用</h2><h3 id="簡易なネットワーク脆弱性チェック"><a href="#簡易なネットワーク脆弱性チェック" class="headerlink" title="簡易なネットワーク脆弱性チェック"></a>簡易なネットワーク脆弱性チェック</h3><p>上述したbitdefender社から、<strong>Home Scanner</strong>という無償ツールが公開されています。これは彼らの製品であるbitdefender BOXと呼ばれるFirewallを売るためのチェックツールでもあります。ネットワーク上の端末やIoT機器に脆弱性のリスクがあると警告してくれます。実際の対策内容は”bitdefender BOXの導入を”となるわけですが、私の環境ですと、きちんとファームウェアの更新された無線機器1台とQNAPのhttpで脆弱性ありとの診断結果でした。QNAPではhttpを使っており、httpsに強制リダイレクトされるデザインなのですが、どういう点での脆弱性の可能性を指摘しているのかは一切不明で実態の把握しようがありませんでした。初級者〜中級者向けにはこのツールを使い、まずは当該機器のファームウェア更新の有無を確認するために活用できるでしょう。また、忘れがちのIoT機器に気づくきっかけとなります。前述した「家庭内で安全快適に在宅勤務を行うためのリファレンスガイド」ではトレンドマイクロ社の「オンラインスキャンfor Home Network」が紹介されています。これは家庭向けIDS(Intrusion Detection System)といったところの機能です。仕組み上、ネットワーク全体の速度としての遅延が発生しますので、このブログでお勧めしている <a href="/new-technology/2020/02/23/XG-Firewall/" title="Sophos Firewallの導入">Sophos Firewallの導入</a> ほど手間を掛けられないが安心は得たいという事であれば検討してみる価値はあります。</p>
+<h2 id="（4）ネットワークチェックツールの利用"><a href="#（4）ネットワークチェックツールの利用" class="headerlink" title="（4）ネットワークチェックツールの利用"></a>（4）ネットワークチェックツールの利用</h2><h3 id="簡易なネットワーク脆弱性チェック"><a href="#簡易なネットワーク脆弱性チェック" class="headerlink" title="簡易なネットワーク脆弱性チェック"></a>簡易なネットワーク脆弱性チェック</h3><p>上述したbitdefender社から、<strong>Home Scanner</strong>という無償ツールが公開されています。これは彼らの製品であるbitdefender BOXと呼ばれるFirewallを売るためのチェックツールでもあります。ネットワーク上の端末やIoT機器に脆弱性のリスクがあると警告してくれます。実際の対策内容は”bitdefender BOXの導入を”となります。初級者〜中級者向けにはこのツールを使い、まずは当該機器のファームウェア更新の有無を確認するために活用できるでしょう。また、忘れがちのIoT機器に気づくきっかけとなります。前述した「家庭内で安全快適に在宅勤務を行うためのリファレンスガイド」ではトレンドマイクロ社の「オンラインスキャンfor Home Network」が紹介されています。これは家庭向けIDS(Intrusion Detection System)といったところの機能です。仕組み上、ネットワーク全体の速度としての遅延が発生しますので、このブログでお勧めしている <a href="/new-technology/2020/02/23/XG-Firewall/" title="Sophos Firewallの導入">Sophos Firewallの導入</a> ほど手間を掛けられないが安心は得たいという事であれば検討してみる価値はあります。</p>
 <blockquote>
 <p>bitdefender Home Scanner<br> <a target="_blank" rel="noopener" href="https://www.bitdefender.com/solutions/home-scanner.html">https://www.bitdefender.com/solutions/home-scanner.html</a></p>
 </blockquote>
-<h3 id="脆弱性検証ツール「Nessus」"><a href="#脆弱性検証ツール「Nessus」" class="headerlink" title="脆弱性検証ツール「Nessus」"></a>脆弱性検証ツール「Nessus」</h3><p>上級者向けには、ビジネスでは有名どころのTenable社の<strong>Nessus</strong>が候補に挙げられます。Nessusは16IPを上限に検査できるNessus Essential（無償）が提供されています。しょっちゅう稼働させるプロダクトではありませんので、ノートPCにインストールしておき、普段はサービスを停止させておくと便利です。前出のNASのQNAPに対しNessusのBasicスキャンをかけてみると<del>リスク＝Mediumとして、アクセス権がなくともNFSのディレクトリ名が参照可能（これは許容）の結果でした。</del> <sup><strong><a href="#note1">[1]</a></strong></sup>、 Windowsで利用しているSMB（Port445）については、送受信するデータに署名が行われていないので中間者攻撃が可能（リスク＝Medium）との結果でした。対策が難しい場合にはある程度のリスクを受容し、NASに接続する端末を絞るなどNAS自身が持つFirewallで回避策を用意する事が有効です。</p>
+<h3 id="脆弱性検証ツール「Nessus」"><a href="#脆弱性検証ツール「Nessus」" class="headerlink" title="脆弱性検証ツール「Nessus」"></a>脆弱性検証ツール「Nessus」</h3><p>上級者向けには、ビジネスでは有名どころのTenable社の<strong>Nessus</strong>が候補に挙げられます。Nessusは16IPを上限に検査できるNessus Essential（無償）が提供されています。しょっちゅう稼働させるプロダクトではありませんので、ノートPCにインストールしておき、普段はサービスを停止させておくと便利です。</p>
 <blockquote>
 <p>Nessus<br> <a target="_blank" rel="noopener" href="https://jp.tenable.com/products/nessus">https://jp.tenable.com/products/nessus</a></p>
 </blockquote>
 <h3 id="OSのファイアーウォール設定"><a href="#OSのファイアーウォール設定" class="headerlink" title="OSのファイアーウォール設定"></a>OSのファイアーウォール設定</h3><p>私見ですが、自宅のネットワーク環境を安易に信頼しない事です。Windowsはパブリックネットワーク、macOSではOSが持つFirewallを有効にする事を検討してください。パブリックネットワークの設定でもプリンターは使えますし、さほど不便はありません。FirewallでSSLインスペクションが使えないIoTやAndroid端末もネットワークの他のホストとは通信させず可能な限り分離させています。もちろん絶対に通信させてはいけないという事ではなく、あらかじめ利用がわかっているものはもちろん明示的に許可をします。あくまで使わないものは遮断しておくのが安全です。私はAppleのAirDropはとても便利なので明示的に許可しています。</p>
 <p>（2020-09-30追記）<br>iOS14では設定に<mark class="label primary">ローカルネットワーク</mark>という項目が追加されました。悪意のあるスマホアプリがネットワーク上の機器に不正アクセスするリスクが懸念されますが、ネットワーク内にある他の端末にアクセス可能なアプリを最低限度に抑える事ができるようになりました。こちらも是非設定される事をお勧めします。</p>
 <h2 id="可用性のために検討すること"><a href="#可用性のために検討すること" class="headerlink" title="可用性のために検討すること"></a>可用性のために検討すること</h2><p>会議の時に自宅が停電というリスクを考えると、デスクトップPCよりはノートPCのほうが可用性が高いです。また、Wi-Fiルーターが停止した場合の予備機を考えるよりは、スマホのテザリングでしのぐ方が現実的ですのであらかじめスマホとPCにそれぞれ設定される事をお勧めします。</p>
-<p><small id="note1"><strong>[1]</strong><br>2020-09-04発表のQTS4.4.3.1421で解消（Fixed a vulnerability concerning world-readable NFS shared folders.）<br></small></p>
 
     </div>
 

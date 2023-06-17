@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/icon-16x16.png">
+  <link rel="mask-icon" href="/new-technology/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/new-technology/css/main.css">
+
+
+
+<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="/new-technology/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.17.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
+
+    <meta name="description" content="この記事で実現すること  無償版ESXi（VMware vSphere Hypervisor）について、ESXi8.0U1にアップグレードします。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VMware ESXiを8.0にアップグレードする">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2023/06/18/esxi-upgrade8/index.html">
+<meta property="og:site_name" content="New technologies in our life">
+<meta property="og:description" content="この記事で実現すること  無償版ESXi（VMware vSphere Hypervisor）について、ESXi8.0U1にアップグレードします。">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/06/18/esxi-upgrade8/title.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/06/18/esxi-upgrade8/upgradepath.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/06/18/esxi-upgrade8/rufus1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/06/18/esxi-upgrade8/install.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/06/18/esxi-upgrade8/vmwaretools2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/06/18/esxi-upgrade8/upgrade-vm.png">
+<meta property="article:published_time" content="2023-06-17T22:00:00.000Z">
+<meta property="article:modified_time" content="2023-06-17T22:22:18.360Z">
+<meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
+<meta property="article:tag" content="ESXi">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2023/06/18/esxi-upgrade8/title.png">
+
+
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2023/06/18/esxi-upgrade8/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"ja","comments":true,"permalink":"https://yoshi0808.github.io/new-technology/2023/06/18/esxi-upgrade8/","path":"2023/06/18/esxi-upgrade8/","title":"VMware ESXiを8.0にアップグレードする"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>VMware ESXiを8.0にアップグレードする | New technologies in our life</title>
+  
+
+
+
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{&quot;token&quot;: &quot;0148b4d0442e42b483ddce684030bd2f&quot;}'></script>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JMY6NSC2KK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+  'ad_storage': 'denied',
+  'analytics_storage': 'denied'
+  });
+
+  dataLayer.push({
+  'event': 'default_consent'
+  });
+
+  if (Cookies.get('PRVCY202112') == 'Agree') {
+    gtag('consent', 'update', {
+    'analytics_storage': 'granted'
+    });
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'G-JMY6NSC2KK',{ 'anonymize_ip': true });
+</script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/new-technology/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/new-technology/atom.xml" title="New technologies in our life" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="ナビゲーションバーの切り替え" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/new-technology/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">New technologies in our life</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Device,Network,Code,etc...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="検索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/new-technology/" rel="section"><i class="fa fa-home fa-fw"></i>ホーム</a></li><li class="menu-item menu-item-about"><a href="/new-technology/about/" rel="section"><i class="fa fa-user fa-fw"></i>サイトポリシー</a></li><li class="menu-item menu-item-tags"><a href="/new-technology/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>タグ</a></li><li class="menu-item menu-item-categories"><a href="/new-technology/categories/" rel="section"><i class="fa fa-th fa-fw"></i>カテゴリ</a></li><li class="menu-item menu-item-archives"><a href="/new-technology/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>アーカイブ</a></li><li class="menu-item menu-item-privacy"><a href="/new-technology/privacypolicy/" rel="section"><i class="fa fa-check fa-fw"></i>プライバシーポリシー</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="検索…" spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          見出し
+        </li>
+        <li class="sidebar-nav-overview">
+          概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi%E3%81%AE%E3%82%A2%E3%83%83%E3%83%97%E3%82%B0%E3%83%AC%E3%83%BC%E3%83%89"><span class="nav-number">1.</span> <span class="nav-text">ESXiのアップグレード</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%AE%E6%83%B3%E3%83%9E%E3%82%B7%E3%83%B3%E3%81%AE%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%EF%BC%88%E4%BB%BB%E6%84%8F%EF%BC%89"><span class="nav-number">2.</span> <span class="nav-text">仮想マシンのバックアップ（任意）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%82%A2%E3%83%83%E3%83%97%E3%82%B0%E3%83%AC%E3%83%BC%E3%83%89%E5%AF%BE%E8%B1%A1%E3%81%AEESXi8-0%E3%82%92%E7%A2%BA%E8%AA%8D%E3%81%99%E3%82%8B"><span class="nav-number">3.</span> <span class="nav-text">アップグレード対象のESXi8.0を確認する</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi8-0%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E3%83%A1%E3%83%87%E3%82%A3%E3%82%A2%EF%BC%88USB%EF%BC%89%E3%81%AE%E4%BD%9C%E6%88%90"><span class="nav-number">4.</span> <span class="nav-text">ESXi8.0インストールメディア（USB）の作成</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ESXi8-0-%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%A9%E3%83%BC%E3%81%AE%E3%83%80%E3%82%A6%E3%83%B3%E3%83%AD%E3%83%BC%E3%83%89"><span class="nav-number">4.1.</span> <span class="nav-text">ESXi8.0 インストーラーのダウンロード</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Rufus%E3%81%AB%E3%82%88%E3%82%8Biso%E3%83%A1%E3%83%87%E3%82%A3%E3%82%A2%E3%81%AE%E4%BD%9C%E6%88%90"><span class="nav-number">4.2.</span> <span class="nav-text">Rufusによるisoメディアの作成</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi8-0%E3%81%B8%E3%81%AE%E3%82%A2%E3%83%83%E3%83%97%E3%82%B0%E3%83%AC%E3%83%BC%E3%83%89"><span class="nav-number">5.</span> <span class="nav-text">ESXi8.0へのアップグレード</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%8C%E5%87%A6%E7%90%86"><span class="nav-number">6.</span> <span class="nav-text">後処理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%AE%E6%83%B3%E3%83%9E%E3%82%B7%E3%83%B3%E3%81%AE%E3%82%A2%E3%83%83%E3%83%97%E3%82%B0%E3%83%AC%E3%83%BC%E3%83%89%EF%BC%88%E4%BB%BB%E6%84%8F%EF%BC%89"><span class="nav-number">7.</span> <span class="nav-text">仮想マシンのアップグレード（任意）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A7%8B%E6%88%90%E6%83%85%E5%A0%B1%E3%81%AE%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%EF%BC%88%E4%BB%BB%E6%84%8F%EF%BC%89"><span class="nav-number">8.</span> <span class="nav-text">構成情報のバックアップ（任意）</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="阿部　吉伸(Yoshinobu ABE)"
+      src="/new-technology/images/yoshi.png">
+  <p class="site-author-name" itemprop="name">阿部　吉伸(Yoshinobu ABE)</p>
+  <div class="site-description" itemprop="description">IT</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/new-technology/archives/">
+          <span class="site-state-item-count">72</span>
+          <span class="site-state-item-name">ポスト</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/new-technology/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">カテゴリ</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/new-technology/tags/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">タグ</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yoshi0808" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yoshi0808" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yoshi0808.blog@gmail.com" title="E-Mail → mailto:yoshi0808.blog@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yoshi0808_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yoshi0808_" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="/new-technology/lib/@creativecommons/vocabulary/assets/license_badges/big/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="ja">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2023/06/18/esxi-upgrade8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/new-technology/images/yoshi.png">
+      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="New technologies in our life">
+      <meta itemprop="description" content="IT">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="VMware ESXiを8.0にアップグレードする | New technologies in our life">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          VMware ESXiを8.0にアップグレードする
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">投稿日</span>
+      
+
+      <time title="作成日：2023-06-18 07:00:00 / 修正日：07:22:18" itemprop="dateCreated datePublished" datetime="2023-06-18T07:00:00+09:00">2023-06-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">カテゴリ</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/Software/" itemprop="url" rel="index"><span itemprop="name">Software</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><img src="/new-technology/2023/06/18/esxi-upgrade8/title.png" class="" width="1024" title="alt">
+<p class="onepoint">この記事で実現すること</p>
+
+<p>無償版ESXi（VMware vSphere Hypervisor）について、ESXi8.0U1にアップグレードします。</p>
+<span id="more"></span>
+
+<h2 id="ESXiのアップグレード"><a href="#ESXiのアップグレード" class="headerlink" title="ESXiのアップグレード"></a>ESXiのアップグレード</h2><p>まず正式なアップグレードに関するドキュメントがVMwareより提供されており、こちらでポイントを確認します。アップデートとアップグレードとは異なります。<br>ESXiのバージョン体系は、”x”.”y” update “z” ビルド番号 という並びで表現されます。</p>
+<ul>
+<li>アップグレードは、前2桁（x,y）を上げることを指します。</li>
+<li>アップデートは、前2桁が変わりません。それ以降の数字があるケース、またはUpdate”z”などの形式があります。Update2を省略してU2、さらにU2a、U2cなど英数字が上がっていきます。</li>
+</ul>
+<p><strong>アップデート</strong>によってこれまで動いていたハードウェアが動かなくなるという事は大々的にはおきません（ドライバーの更新によって認識しなくなったりうまく動作しないという一般的な理由はあります）。<strong>アップグレード</strong>ではハードウェアのサポート対象の見直しが入ります。</p>
+<blockquote>
+<p>ESXiのアップグレード<br> <a target="_blank" rel="noopener" href="https://docs.vmware.com/jp/VMware-vSphere/8.0/vsphere-esxi-80-upgrade-guide.pdf">https://docs.vmware.com/jp/VMware-vSphere/8.0/vsphere-esxi-80-upgrade-guide.pdf</a></p>
+</blockquote>
+<p>例によってVMwareのマニュアルは法人向けにvCenter Serverを中心に記載されているのでポイントを無償版ESXiに絞ります。</p>
+<ul>
+<li>VMWare互換性ガイドでアップグレードが可能か確認する（P8）</li>
+<li>ESXi8のハードウェア要件（P17）</li>
+<li>アップグレード後はDiskのパーティション要件にてロールバック不可（P19）</li>
+<li>esxcliコマンドまたはISOブートからのアップグレードの2種類がある（P37,P70）</li>
+<li>アップグレードには新たにESXi8.0向けの（無償版ESXiの）ライセンスを登録する（P87）</li>
+<li>仮想マシンとVMware Toolsのアップグレード（P11）</li>
+</ul>
+<p>注意点は以下の通りです。</p>
+<blockquote>
+<p>esxcliコマンドを使用してアップグレードすると、古いバージョンのESXiは新しいVIBのインストールを実行するため、署名が保存されずセキュアブートは実行できません。ISOを使用してアップグレードすると、新しいVIBは署名を保存できます。（P88）</p>
+</blockquote>
+<p>上記の注意点の通り、UEFIのセキュアブートで稼働しているESXiのバージョンアップにはISOを使用してアップグレードすべきと読めます。一方、セキュアブートでなければ、<code>esxcli software profile update --depot=&lt;depot_location&gt; --profile=&lt;profile_name&gt; </code>のコマンドでアップグレード可能です。詳細は、「<a href="/new-technology/2020/06/14/esxi67-patch/" title="VMware ESXiにパッチを適用する">VMware ESXiにパッチを適用する</a>」の記事を参照してください。但し、ESXi8.0におけるハードウェア互換性が維持できるか慎重に確認するためには、ISOでのアップグレードを検討してください。</p>
+<p>VMware互換性ガイドは個人向けのハードウェアが殆ど列挙されておらずチェックが困難なのが実態です。ハードウェアが準拠しているかどうかのチェックについては後述します。</p>
+<p>また、上記マニュアルには注意点としての記載がありませんが、スナップショットを取得していない状態でアップグレードされる事をお勧めします。</p>
+<p>ESXi8にアップグレードする例を記載しています。厳密なアップグレードパスについては以下を確認してください。</p>
+<img src="/new-technology/2023/06/18/esxi-upgrade8/upgradepath.png" class="" width="1024" title="alt">
+
+<p><a target="_blank" rel="noopener" href="https://interopmatrix.vmware.com/Upgrade?productId=1363">https://interopmatrix.vmware.com/Upgrade?productId=1363</a></p>
+<blockquote>
+<p>vCenter Server Back-in-time release<br> <a target="_blank" rel="noopener" href="https://kb.vmware.com/s/article/67077#vCenterServer_7.0.x_to_8.0_upgrade_matrix">https://kb.vmware.com/s/article/67077#vCenterServer_7.0.x_to_8.0_upgrade_matrix</a></p>
+</blockquote>
+<h2 id="仮想マシンのバックアップ（任意）"><a href="#仮想マシンのバックアップ（任意）" class="headerlink" title="仮想マシンのバックアップ（任意）"></a>仮想マシンのバックアップ（任意）</h2><p>バージョンアップの前には仮想マシンのバックアップを別の筐体またはメディアに取得される事をお勧めします。「<a href="/new-technology/2020/10/11/esxi-backup/" title="VMware ESXiの仮想マシンをバックアップする">VMware ESXiの仮想マシンをバックアップする</a>」の記事を参照してください。ghettoVCBを使ったバックアップでは、ESXiにsshした上で、次のコマンドで全ての仮想マシンのバックアップ取得が可能です。<code>/bin/sh ./ghettoVCB.sh -a</code></p>
+<h2 id="アップグレード対象のESXi8-0を確認する"><a href="#アップグレード対象のESXi8-0を確認する" class="headerlink" title="アップグレード対象のESXi8.0を確認する"></a>アップグレード対象のESXi8.0を確認する</h2><p>ESXiのISOインストーラのダウンロードは、2023年6月1日時点ではESXi8.0 Update1（8.0U1a）となっています。</p>
+<blockquote>
+<p>VMware vSphere Hypervisor 8.0 ダウンロード センター(※VMware Customer Connectへログインが必要です)<br> <a target="_blank" rel="noopener" href="https://customerconnect.vmware.com/jp/evalcenter?p=free-esxi8">https://customerconnect.vmware.com/jp/evalcenter?p=free-esxi8</a></p>
+</blockquote>
+<h2 id="ESXi8-0インストールメディア（USB）の作成"><a href="#ESXi8-0インストールメディア（USB）の作成" class="headerlink" title="ESXi8.0インストールメディア（USB）の作成"></a>ESXi8.0インストールメディア（USB）の作成</h2><p>ここではUSBメモリを用意し、ESXi8.0のインストーラーをセットアップします。<br>事前にハードウェア互換リストを元に互換性があるかチェックしたいところですが、実際に個人向けのハードウェアは殆ど列挙されていません。</p>
+<blockquote>
+<p>VMware Compatibility Guide<br> <a target="_blank" rel="noopener" href="https://www.vmware.com/resources/compatibility/search.php">https://www.vmware.com/resources/compatibility/search.php</a></p>
+</blockquote>
+<p>以前は検証のためにUSB上にESXi7.0をセットアップできましたが、 ESXi8からはUSBへのテストセットアップできなくなっています。ハードウェアが準拠せずアップグレード後起動しない、NICが利用できない可能性があるため、仮想マシンのバックアップを確保される事をお勧めします。なお、個人向けのハードウェアで関係するところは、Mellanox Connect X-3がサポート対象外となりました。Mellanoxユーザーとしては、Connect X-4&#x2F;X-5を使う事になるでしょう。</p>
+<h3 id="ESXi8-0-インストーラーのダウンロード"><a href="#ESXi8-0-インストーラーのダウンロード" class="headerlink" title="ESXi8.0 インストーラーのダウンロード"></a>ESXi8.0 インストーラーのダウンロード</h3><p>以下からISOをダウンロードします。</p>
+<p><a target="_blank" rel="noopener" href="https://customerconnect.vmware.com/jp/web/vmware/evalcenter?p=free-esxi8">https://customerconnect.vmware.com/jp/web/vmware/evalcenter?p=free-esxi8</a></p>
+<p>ダウンロードは、”VMware vSphere Hypervisor (ESXi ISO) image”をダウンロードします。</p>
+<p>また、製品のライセンスキーが表示されていますので、メモを取っておいてください。</p>
+<h3 id="Rufusによるisoメディアの作成"><a href="#Rufusによるisoメディアの作成" class="headerlink" title="Rufusによるisoメディアの作成"></a>Rufusによるisoメディアの作成</h3><p>以下のサイトからRufusをWindowsでダウンロードし実行します。</p>
+<blockquote>
+<p>Rufus<br> <a target="_blank" rel="noopener" href="https://rufus.ie/ja/">https://rufus.ie/ja/</a></p>
+</blockquote>
+<p> 以下のオプションでUSBメディアにESXi8のインストーラーを書き込みます。</p>
+ <img src="/new-technology/2023/06/18/esxi-upgrade8/rufus1.png" class="" width="480" title="alt">
+<p> UEFIのセキュアブートに対応させるためにはGPTとUEFIを選択してください。</p>
+<h2 id="ESXi8-0へのアップグレード"><a href="#ESXi8-0へのアップグレード" class="headerlink" title="ESXi8.0へのアップグレード"></a>ESXi8.0へのアップグレード</h2><p>以下の動画を参考にしてください。特に難しいものはありません。途中、新規インストールかアップグレードか選択する箇所があります。この動画では新規インストールを選択していますが、アップグレードを選んでください。</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=eiZn54GPfzI">https://www.youtube.com/watch?v=eiZn54GPfzI</a></p>
+</blockquote>
+<img src="/new-technology/2023/06/18/esxi-upgrade8/install.png" class="" width="1024" title="alt">
+
+<p>アップグレードが終了し、再起動する際にはUSBメディアは外してください。</p>
+<p>無事再起動したら管理画面にログインします。<br>sshでESXiに接続し、<code>esxcli system version get</code>を実行し確認します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost:~] esxcli system version get</span><br><span class="line">   Product: VMware ESXi</span><br><span class="line">   Version: 8.0.1</span><br><span class="line">   Build: Releasebuild-21495797</span><br><span class="line">   Update: 1</span><br><span class="line">   Patch: 0</span><br><span class="line">[root@localhost:~]</span><br></pre></td></tr></table></figure>
+
+<p>管理画面でもESXi8になっていることは確認できますし、<code>vmware -l</code>コマンドでも確認できますが、Versionとビルド番号で見るには上記コマンドを使います。</p>
+<h2 id="後処理"><a href="#後処理" class="headerlink" title="後処理"></a>後処理</h2><p>無事アップグレードが成功したら、以下の作業を行います。</p>
+<ol>
+<li>ESXi8.0のライセンス登録<br> ESXiにログイン後、左ペインメニューの<mark class="label primary">ホスト</mark>-<mark class="label primary">管理</mark>から<mark class="label primary">ライセンスタブ</mark>を選択し、<mark class="label primary">ライセンスの割り当て</mark>でダウンロード時に控えたライセンスキーを登録します。</li>
+<li>ESXi8.0の最新パッチ適用<br> ESXiのパッチ適用については、「<a href="/new-technology/2020/06/14/esxi67-patch/" title="VMware ESXiにパッチを適用する">VMware ESXiにパッチを適用する</a>」を参照してください。</li>
+<li>ESXi8.0の構成情報のバックアップ（任意）</li>
+</ol>
+<h2 id="仮想マシンのアップグレード（任意）"><a href="#仮想マシンのアップグレード（任意）" class="headerlink" title="仮想マシンのアップグレード（任意）"></a>仮想マシンのアップグレード（任意）</h2><p>ESXiのバージョンアップ後、仮想マシンのバージョンをアップグレードできます。</p>
+<p>アップグレードしたESXi8.0VMware Toolsよりも新しいバージョンがある場合は以下のように表示されます。</p>
+<img src="/new-technology/2023/06/18/esxi-upgrade8/vmwaretools2.png" class="" width="640" title="alt">
+
+<p>この場合はWebUIで左ペインの<mark class="label primary">仮想マシン</mark>で対象仮想マシンを選択し、<mark class="label primary">アクション</mark>メニュー→<mark class="label primary">ゲストOS</mark>から<mark class="label primary">VMware Toolsのアップグレード</mark>を実行します。</p>
+<p>詳細は以下の内容を参照してください。</p>
+<blockquote>
+<p>VMware Tools のアップグレード<br> <a target="_blank" rel="noopener" href="https://docs.vmware.com/jp/VMware-Tools/11.3.0/com.vmware.vsphere.vmwaretools.doc/GUID-A2491004-1C67-4E14-B47B-807E20C19108.html">https://docs.vmware.com/jp/VMware-Tools/11.3.0/com.vmware.vsphere.vmwaretools.doc/GUID-A2491004-1C67-4E14-B47B-807E20C19108.html</a></p>
+</blockquote>
+<p>VMware Toolsを最新にした後、仮想マシンハードウェアをアップグレードすることができます。ただし、下記のドキュメントに注意書きがある通り、新しいハードウェアバージョンの付属機能が必要な場合のみ実行することとあり、これはESXiのアップグレードに対して必須事項ではありません。</p>
+<blockquote>
+<p>仮想マシンの互換性の手動アップグレード<br> <a target="_blank" rel="noopener" href="https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.vm_admin.doc/GUID-60768C2F-72E1-42E0-8A17-CA76849F2950.html">https://docs.vmware.com/jp/VMware-vSphere/7.0/com.vmware.vsphere.vm_admin.doc/GUID-60768C2F-72E1-42E0-8A17-CA76849F2950.html</a></p>
+</blockquote>
+<div class="note warning"><ul>
+<li>仮想マシン ハードウェアをアップグレードすると、一部のアプリケーションまたはオペレーティング システムが適切に動作しなくなることがあります。ハードウェア バージョンのアップグレードは、新しいハードウェア バージョンの付属機能が必要な場合のみ実行します。</li>
+<li>Microsoft Windows 仮想マシンで VMware Tools をアップグレードする前に互換性をアップグレードすると、仮想マシンのネットワーク設定が失われることがあります。</li>
+</ul>
+</div>
+
+<p>この操作は以下の通りWebUIで左ペインの<mark class="label primary">仮想マシン</mark>で対象仮想マシンを選択し、<mark class="label primary">アクション</mark>メニューから<mark class="label primary">仮想マシンの互換性のアップグレード</mark>を実行します。</p>
+<img src="/new-technology/2023/06/18/esxi-upgrade8/upgrade-vm.png" class="" width="800" title="alt">
+
+<h2 id="構成情報のバックアップ（任意）"><a href="#構成情報のバックアップ（任意）" class="headerlink" title="構成情報のバックアップ（任意）"></a>構成情報のバックアップ（任意）</h2><p>今後、パッチ適用を重ねていきますが、ある時点にロールバックしたいと思った時に、ホスト構成バックアップから戻す必要が出てきます。パッチを当てる度に構成情報のバックアップを取得されることをお勧めします。</p>
+<p>参考にするドキュメントはこちらです。</p>
+<blockquote>
+<p>ESXi ホストの構成のバックアップ方法 (2042141)<br> <a target="_blank" rel="noopener" href="https://kb.vmware.com/s/article/2042141?lang=ja">https://kb.vmware.com/s/article/2042141?lang=ja</a></p>
+</blockquote>
+<ol>
+<li>SSHでESXiに接続します。</li>
+<li>ストレージの確実な同期のためのコマンド<code>vim-cmd hostsvc/firmware/sync_config</code>を実行します。</li>
+<li>バックアップコマンド<code>vim-cmd hostsvc/firmware/backup_config</code>を実行します。</li>
+<li>画面にダウンロードパスが表示されるのでそのURLにブラウザから接続し構成情報をダウンロードします。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@esxi:~] vim-cmd hostsvc/firmware/sync_config</span><br><span class="line">[root@esxi:~] vim-cmd hostsvc/firmware/backup_config</span><br><span class="line">Bundle can be downloaded at : http://*/downloads/52ce000f-cad4-20c0-078d-a111fa1ad82x/configBundle-esxi.local.tgz</span><br><span class="line">[root@esxi:~]</span><br></pre></td></tr></table></figure>
+
+<p>先頭に<code>http://*/</code>とありますが、ここはESXiのホスト名またはIPアドレスを指定しブラウザからアクセスします。例えば、<code>http://192.168.1.1/downloads〜</code>という具合です。万が一レストアが必要になってしまった場合はバックアップを取得したバージョンのパッチを適用の上、メンテナンスモードに移行してから<code>vim-cmd hostsvc/firmware/restore_config /your_backup_location/configBundle-esxi.local.tgz</code>で戻します。バックアップを取得してから既にハードウェア構成が変わっていたりする場合は戻せない場合があります。仮想マシンはデータストアブラウザから再登録する必要があります。詳細は上記VMwareのドキュメントを参照してください。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/new-technology/tags/ESXi/" rel="tag"><i class="fa fa-tag"></i> ESXi</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/new-technology/2023/05/16/xg-v195mr2/" rel="prev" title="Sophos Firewall v19.5 MR-2">
+                  <i class="fa fa-chevron-left"></i> Sophos Firewall v19.5 MR-2
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">阿部　吉伸(Yoshinobu ABE)</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div><script src="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.umd.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.min.css" rel="stylesheet">
+
+<script>
+if (Cookies.get('PRVCY202112') != 'Agree') {
+  const notice = new SimpleGDPR({
+    title: 'Accept Cookies & Privacy Policy?',
+    message: 'このWebサイトでは、訪問や活動に関するデータがクッキー等によって収集されます。閲覧を継続される場合、\
+    プライバシーポリシーをご覧いただき同意(Agree)をお願いします',
+    link: null,
+    icons: true,
+    theme: 'light',
+    animation: 'fade',
+    float: 'bottom-right',
+      callback: () => {
+      notice.close();
+      Cookies.set('PRVCY202112', 'Agree', { expires: 365, path: '/'});
+      notice.destroy();
+      // Google Analytics 4
+      gtag('consent', 'update', {
+      'analytics_storage': 'granted'
+      });
+      gtag('js', new Date());
+      gtag('config', 'G-JMY6NSC2KK', { 'anonymize_ip': true });
+      },
+  });
+}
+</script>
+<div class="disclaimer1">
+このサイトの記事は、特別な記載がない限り <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja">クリエイティブ・コモンズ BY-NC-SA ライセンス</a>で保護されています</div>
+
+
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/yoshi0808" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="/new-technology/lib/animejs/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="/new-technology/lib/medium-zoom/dist/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/comments.js"></script><script src="/new-technology/js/utils.js"></script><script src="/new-technology/js/motion.js"></script><script src="/new-technology/js/schemes/muse.js"></script><script src="/new-technology/js/next-boot.js"></script>
+
+  <script src="/new-technology/lib/hexo-generator-searchdb/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"/new-technology/lib/mermaid/dist/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/new-technology/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

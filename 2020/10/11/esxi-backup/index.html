@@ -19,24 +19,21 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.17.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
 
-    <meta name="description" content="この記事で実現すること  無償版ESXi6.7（VMware vSphere Hypervisor6.7）にセットアップしたXG Firewallなどの仮想マシンをバックアップ、レストアします。">
+    <meta name="description" content="この記事で実現すること  無償版ESXiの仮想マシンをバックアップ、レストアします。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="VMware ESXiの仮想マシンをバックアップする">
 <meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/10/11/esxi-backup/index.html">
 <meta property="og:site_name" content="New technologies in our life">
-<meta property="og:description" content="この記事で実現すること  無償版ESXi6.7（VMware vSphere Hypervisor6.7）にセットアップしたXG Firewallなどの仮想マシンをバックアップ、レストアします。">
+<meta property="og:description" content="この記事で実現すること  無償版ESXiの仮想マシンをバックアップ、レストアします。">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/10/11/esxi-backup/backup.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/10/11/esxi-backup/qnap1.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/10/11/esxi-backup/qnap2.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/10/11/esxi-backup/qnap3.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/10/11/esxi-backup/qnap2.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/10/11/esxi-backup/qnap4.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/10/11/esxi-backup/syno1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/10/11/esxi-backup/syno2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/10/11/esxi-backup/syno3.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/10/11/esxi-backup/esxi1.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/10/11/esxi-backup/esxi2.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/10/11/esxi-backup/esxi3.png">
 <meta property="article:published_time" content="2020-10-11T02:45:41.000Z">
-<meta property="article:modified_time" content="2021-12-03T23:28:49.000Z">
+<meta property="article:modified_time" content="2023-06-17T23:03:01.414Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="ESXi">
 <meta property="article:tag" content="XG Firewall">
@@ -179,7 +176,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi%E3%81%AE%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E3%82%BD%E3%83%95%E3%83%88%E3%82%A6%E3%82%A7%E3%82%A2"><span class="nav-number">1.</span> <span class="nav-text">ESXiのバックアップソフトウェア</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ghettoVCB%E3%81%A7%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E3%81%99%E3%82%8B"><span class="nav-number">2.</span> <span class="nav-text">ghettoVCBでバックアップする</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi%E3%81%AE%E3%82%B9%E3%83%8A%E3%83%83%E3%83%97%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88"><span class="nav-number">3.</span> <span class="nav-text">ESXiのスナップショット</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ghettoVCB%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span class="nav-number">4.</span> <span class="nav-text">ghettoVCBについて</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E5%85%88%E3%81%AE%E6%BA%96%E5%82%99"><span class="nav-number">5.</span> <span class="nav-text">バックアップ先の準備</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#NAS%E4%B8%8A%E3%81%A7%E3%81%AENFS%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">5.1.</span> <span class="nav-text">NAS上でのNFSの設定</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#NFSv3%E3%81%AE%E5%A0%B4%E5%90%88"><span class="nav-number">5.1.1.</span> <span class="nav-text">NFSv3の場合</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NFSv4%E3%81%AE%E5%A0%B4%E5%90%88"><span class="nav-number">5.1.2.</span> <span class="nav-text">NFSv4の場合</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi%E3%81%8B%E3%82%89NFS%E3%82%B5%E3%83%BC%E3%83%90%E3%83%BC%E3%81%AB%E6%8E%A5%E7%B6%9A%E3%81%99%E3%82%8B"><span class="nav-number">6.</span> <span class="nav-text">ESXiからNFSサーバーに接続する</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi%E3%81%A7%E3%81%AE%E4%BA%8B%E5%89%8D%E6%BA%96%E5%82%99"><span class="nav-number">7.</span> <span class="nav-text">ESXiでの事前準備</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ghettoVCB%E3%81%AE%E5%B1%95%E9%96%8B"><span class="nav-number">7.1.</span> <span class="nav-text">ghettoVCBの展開</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E3%81%99%E3%82%8B"><span class="nav-number">8.</span> <span class="nav-text">バックアップする</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">8.1.</span> <span class="nav-text">バックアップの設定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E3%81%AE%E5%AE%9F%E8%A1%8C"><span class="nav-number">8.2.</span> <span class="nav-text">バックアップの実行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E7%B5%90%E6%9E%9C%E3%81%AE%E7%A2%BA%E8%AA%8D"><span class="nav-number">8.3.</span> <span class="nav-text">バックアップ結果の確認</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi%E3%81%AE%E3%81%A1%E3%82%87%E3%81%A3%E3%81%A8%E7%89%B9%E6%AE%8A%E3%81%AA%E7%82%B9"><span class="nav-number">9.</span> <span class="nav-text">ESXiのちょっと特殊な点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%AC%E3%82%B9%E3%83%88%E3%82%A2%E3%81%99%E3%82%8B"><span class="nav-number">10.</span> <span class="nav-text">レストアする</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%AC%E3%82%B9%E3%83%88%E3%82%A2%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">10.1.</span> <span class="nav-text">レストアの設定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%AC%E3%82%B9%E3%83%88%E3%82%A2%E3%81%AE%E5%AE%9F%E8%A1%8C"><span class="nav-number">10.2.</span> <span class="nav-text">レストアの実行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%AC%E3%82%B9%E3%83%88%E3%82%A2%E7%B5%90%E6%9E%9C%E3%81%AE%E7%A2%BA%E8%AA%8D"><span class="nav-number">10.3.</span> <span class="nav-text">レストア結果の確認</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi%E3%81%AE%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E3%82%BD%E3%83%95%E3%83%88%E3%82%A6%E3%82%A7%E3%82%A2"><span class="nav-number">1.</span> <span class="nav-text">ESXiのバックアップソフトウェア</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ghettoVCB%E3%81%A7%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E3%81%99%E3%82%8B"><span class="nav-number">2.</span> <span class="nav-text">ghettoVCBでバックアップする</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi%E3%81%AE%E3%82%B9%E3%83%8A%E3%83%83%E3%83%97%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88"><span class="nav-number">3.</span> <span class="nav-text">ESXiのスナップショット</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ghettoVCB%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span class="nav-number">4.</span> <span class="nav-text">ghettoVCBについて</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E5%85%88%E3%81%AE%E6%BA%96%E5%82%99"><span class="nav-number">5.</span> <span class="nav-text">バックアップ先の準備</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#NAS%E4%B8%8A%E3%81%A7%E3%81%AENFS%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">5.1.</span> <span class="nav-text">NAS上でのNFSの設定</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi%E3%81%8B%E3%82%89NFS%E3%82%B5%E3%83%BC%E3%83%90%E3%83%BC%E3%81%AB%E6%8E%A5%E7%B6%9A%E3%81%99%E3%82%8B"><span class="nav-number">6.</span> <span class="nav-text">ESXiからNFSサーバーに接続する</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi%E3%81%A7%E3%81%AE%E4%BA%8B%E5%89%8D%E6%BA%96%E5%82%99"><span class="nav-number">7.</span> <span class="nav-text">ESXiでの事前準備</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ghettoVCB%E3%81%AE%E5%B1%95%E9%96%8B"><span class="nav-number">7.1.</span> <span class="nav-text">ghettoVCBの展開</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E3%81%99%E3%82%8B"><span class="nav-number">8.</span> <span class="nav-text">バックアップする</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">8.1.</span> <span class="nav-text">バックアップの設定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E3%81%AE%E5%AE%9F%E8%A1%8C"><span class="nav-number">8.2.</span> <span class="nav-text">バックアップの実行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E7%B5%90%E6%9E%9C%E3%81%AE%E7%A2%BA%E8%AA%8D"><span class="nav-number">8.3.</span> <span class="nav-text">バックアップ結果の確認</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi%E3%81%AE%E3%81%A1%E3%82%87%E3%81%A3%E3%81%A8%E7%89%B9%E6%AE%8A%E3%81%AA%E7%82%B9"><span class="nav-number">9.</span> <span class="nav-text">ESXiのちょっと特殊な点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%AC%E3%82%B9%E3%83%88%E3%82%A2%E3%81%99%E3%82%8B"><span class="nav-number">10.</span> <span class="nav-text">レストアする</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%AC%E3%82%B9%E3%83%88%E3%82%A2%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">10.1.</span> <span class="nav-text">レストアの設定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%AC%E3%82%B9%E3%83%88%E3%82%A2%E3%81%AE%E5%AE%9F%E8%A1%8C"><span class="nav-number">10.2.</span> <span class="nav-text">レストアの実行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%AC%E3%82%B9%E3%83%88%E3%82%A2%E7%B5%90%E6%9E%9C%E3%81%AE%E7%A2%BA%E8%AA%8D"><span class="nav-number">10.3.</span> <span class="nav-text">レストア結果の確認</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -205,7 +202,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/new-technology/tags/">
-        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">タグ</span></a>
       </div>
   </nav>
@@ -282,7 +279,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">編集日</span>
-      <time title="修正日：2021-12-04 08:28:49" itemprop="dateModified" datetime="2021-12-04T08:28:49+09:00">2021-12-04</time>
+      <time title="修正日：2023-06-18 08:03:01" itemprop="dateModified" datetime="2023-06-18T08:03:01+09:00">2023-06-18</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -307,18 +304,18 @@
 
 <p class="onepoint">この記事で実現すること</p>
 
-<p>無償版ESXi6.7（VMware vSphere Hypervisor6.7）にセットアップしたXG Firewallなどの仮想マシンをバックアップ、レストアします。</p>
+<p>無償版ESXiの仮想マシンをバックアップ、レストアします。</p>
 <span id="more"></span>
 
 <h2 id="ESXiのバックアップソフトウェア"><a href="#ESXiのバックアップソフトウェア" class="headerlink" title="ESXiのバックアップソフトウェア"></a>ESXiのバックアップソフトウェア</h2><p>無償版ESXiの仮想マシン（VM)をバックアップするには以下の3つの選択肢があります。</p>
 <ol>
 <li>ghettoVCBバックアップスクリプト（この記事で説明しています）</li>
 <li>Nakivo Backup Free Edition<br> 「<a href="/new-technology/2021/03/06/esxi-nakivo/" title="無償版ESXiの高度なバックアップ">無償版ESXiの高度なバックアップ</a>」を参照してください。</li>
-<li>NASのアプリケーションによるバックアップ<br> このブログではQNAPのNASについて説明しています。「<a href="/new-technology/2021/12/04/qnap-hdp/" title="無償版ESXiのVMをQNAP NASにバックアップ">無償版ESXiのVMをQNAP NASにバックアップ</a>」を参照してください。</li>
+<li>NASのアプリケーションによるバックアップ</li>
 </ol>
 <h2 id="ghettoVCBでバックアップする"><a href="#ghettoVCBでバックアップする" class="headerlink" title="ghettoVCBでバックアップする"></a>ghettoVCBでバックアップする</h2><p>このブログで紹介している<strong>Sophos Firewall</strong>は、ESXi上にセットアップする事をお勧めしています。その理由としては仮想マシンは比較的バックアップが取得しやすく、万が一のトラブル発生時に速やかに復元（レストア）しやすい事が理由でもあります。もちろん、Sophos Firewallには設定ファイルをバックアップする機能が存在しますが、バージョンアップやデバイスの入れ替え等何らかのきっかけでうまく稼働しなくなるリスクがあります。Firewall自体がOSとして起動するため、バックアップソフトウェアをインストールできません。このghettoVCBはESXi上で動作させるコマンドラインのスクリプトですが、利用は難しくありません。</p>
 <h2 id="ESXiのスナップショット"><a href="#ESXiのスナップショット" class="headerlink" title="ESXiのスナップショット"></a>ESXiのスナップショット</h2><p>ESXiはスナップショットという機能を持っており、その時点の稼働状態について保存可能です。動画の一瞬を絵として切り取るという表現が適切でしょうか、これは一瞬で完了し、いつでもロールバックが可能です。複数の世代を持て使い勝手はとても良好です。ビジネスの世界では本番環境にパッチを当てる際などの最終確認フェーズで活用されます。つまり、万が一の時にはロールバックする事で速やかに以前の状態に戻す事が可能です。但し、このスナップショットを取ったまま長時間運用する事をVMWareは推奨していません。スナップショットを取得した後のメモリを含む稼働状況の差分をDiskに記録していく必要があり、これがパフォーマンスに悪影響を及ぼすためです。従い、スナップショットは恒久的なバックアップの役割にはなりません。</p>
-<h2 id="ghettoVCBについて"><a href="#ghettoVCBについて" class="headerlink" title="ghettoVCBについて"></a>ghettoVCBについて</h2><p>このghettoVCBはWilliam Lam氏が作成したMITライセンス（フリーソフト）のソフトウェアで、VMWareの正式な製品ではありません。但し、フリーのESXi向けにはデファクトスタンダードとも言えるスクリプトです。ソフトウェアはGitHub上にあります。以下のGitHubから<mark class="label primary">Codeボタン</mark>→<mark class="label primary">Download ZIP</mark>と進み、<mark class="label primary">ghettoVCB-master.zip</mark>をダウンロードしてください。私はESXi6.7の環境で動作検証していますが、このブログを記載している途中の2020-10-10に”Adding support for ESXi 7.0 update 1”と更新が入りましたので、新しいESXiのバージョンにも積極的に対応されているようです。</p>
+<h2 id="ghettoVCBについて"><a href="#ghettoVCBについて" class="headerlink" title="ghettoVCBについて"></a>ghettoVCBについて</h2><p>このghettoVCBはWilliam Lam氏が作成したMITライセンス（フリーソフト）のソフトウェアで、VMWareの正式な製品ではありません。但し、フリーのESXi向けにはデファクトスタンダードとも言えるスクリプトです。ソフトウェアはGitHub上にあります。以下のGitHubから<mark class="label primary">Codeボタン</mark>→<mark class="label primary">Download ZIP</mark>と進み、<mark class="label primary">ghettoVCB-master.zip</mark>をダウンロードしてください。私はESXi7、ESXi8の環境で動作検証しています。</p>
 <div class="link-grid"><div class="link-grid-container">
 <object class="link-grid-image" data="602199.jpeg"></object>
 <p>ghettoVCB</p><p>(https://github.com/lamw/ghettoVCB )The ghettoVCB script performs backups of virtual machines residing on ESX(i) 3.x, 4.x, 5.x & 6.x servers</p>
@@ -329,37 +326,35 @@
 <p><a target="_blank" rel="noopener" href="https://github.com/lamw/ghettoVCB">https://github.com/lamw/ghettoVCB</a></p>
 </blockquote>
 <p>このghettoVCBは前述したスナップショットを活用し、システムを止める事なくスナップショットを取り、バックアップを行ってくれるため非常に便利です。またバックアップを複数世代持つ事が可能です。単一のファイルとしてバックアップされるため、非常に取り扱いがしやすいのも特徴です。</p>
-<p>ESXiをバックアップする製品はたくさん存在するのですが、基本はESXiの有償版が前提です。バックアップに使用されるvStorage APIは無償のESXi向けにはロックが掛かっており使えません。GUIによる製品も全く無いわけではありませんが、イチオシはghettoVCBになります。William Lam氏のホームページは以下を参照してください。</p>
+<p>ESXiをバックアップする製品はたくさん存在するのですが、基本はESXiの有償版が前提です。バックアップに使用されるvStorage APIは無償のESXi向けにはロックが掛かっており使えません。無償版ESXiにおける仮想マシンの基本的なバックアップはghettoVCBになります。William Lam氏のホームページは以下を参照してください。</p>
 <blockquote>
 <p><a target="_blank" rel="noopener" href="https://www.virtuallyghetto.com/">https://www.virtuallyghetto.com</a></p>
 </blockquote>
-<h2 id="バックアップ先の準備"><a href="#バックアップ先の準備" class="headerlink" title="バックアップ先の準備"></a>バックアップ先の準備</h2><p>ESXi上のディスクにバックアップを取得し、作成されたファイルをESXiのデータストアブラウザからダウンロードしたり、SCPを使いPCなどにファイルコピーする事は最もシンプルな方法です。しかし、NASがあると非常に便利です。最近のNASはNFSによるファイル共有が使えるので、予めNASに設定したNFSドライブをESXiからマウントし、その領域にghettoVCBでバックアップを取得するのがお勧めです。QNAP・SynologyというNASの2大メーカーは、NFSおよびブロックベースのiSCSIにも対応しています。速度的にはNFSよりブロックベースのiSCSIの方が若干早いのとNAS上のVMFSフォーマットされたディスク上では複製した仮想マシンを立ち上げられます（ネットワーク越しとなるため遅いですが）。万が一のサルベージ（復旧作業）はNFSやファイルベースのiSCSIの方がNASからファイルを確認できる事、NFSは特に扱いがシンプルなため、まずはNFSのファイル共有がお勧めです。なお、ESXiに別のディスクを接続しバックアップを取得する場合は以下のNFSの設定については不要です。</p>
+<h2 id="バックアップ先の準備"><a href="#バックアップ先の準備" class="headerlink" title="バックアップ先の準備"></a>バックアップ先の準備</h2><p>ESXi上のディスクにバックアップを取得し、作成されたファイルをESXiのデータストアブラウザからダウンロードしたり、SCPを使いPCなどにファイルコピーする事は最もシンプルな方法です。しかし、NASがあると非常に便利です。最近のNASはNFSによるファイル共有が使えるので、予めNASに設定したNFSドライブをESXiからマウントし、その領域にghettoVCBでバックアップを取得するのがお勧めです。SynologyなどのNASメーカーは、NFSおよびブロックベースのiSCSIにも対応しています。万が一のサルベージ（復旧作業）はNFSやファイルベースのiSCSIの方がNASからファイルを確認できる事、NFSは特に扱いがシンプルなため、まずはNFSのファイル共有がお勧めです。なお、ESXiに別のディスクを接続しバックアップを取得する場合は以下のNFSの設定については不要です。</p>
 <h3 id="NAS上でのNFSの設定"><a href="#NAS上でのNFSの設定" class="headerlink" title="NAS上でのNFSの設定"></a>NAS上でのNFSの設定</h3><p>まず、ESXiでサポートされるNFSのバージョンは3および4となります。v3はシンプルにクライアントのIPアドレスで認証し、v4はIPアドレスに加えユーザー単位の認証が可能です。</p>
-<p>ここではQNAPを実例に設定を記載します。</p>
+<p>ここではSynologyのDisk Station Manager7.1を実例にNFSv4.1の設定を記載します。</p>
 <ol>
-<li><mark class="label primary">コントロールパネル</mark>から、<mark class="label primary">ネットワークサービスとファイルサービス</mark>を選択し、NFSv3またはNFSv4を有効にします。
-<img src="/new-technology/2020/10/11/esxi-backup/qnap1.png" class="" title="alt"></li>
+<li><mark class="label primary">コントロールパネル</mark>の、<mark class="label primary">ファイルサービス</mark>からNFSを選択し、NFSv4.1を有効にします。
+<img src="/new-technology/2020/10/11/esxi-backup/syno1.png" class="" title="alt">
+</li>
+<li><p>認証するバックアップ専用のユーザー（一般ユーザー）を作成します。</p>
+</li>
+<li><p>バックアップを取得する共有フォルダを作成し、バックアップ専用ユーザーにアクセス権を付与します。<mark class="label primary">コントロールパネル</mark>の、<mark class="label primary">共有フォルダ</mark>でバックアップを取得する共有フォルダを選択し、共有フォルダの権限を設定します。</p>
+</li>
+<li><mark class="label primary">共有フォルダ</mark>の設定では、さらにNFS権限のルールで、接続を許可するネットワークアドレス、Squashは「なし」を選択します。</li>
 </ol>
-<h4 id="NFSv3の場合"><a href="#NFSv3の場合" class="headerlink" title="NFSv3の場合"></a>NFSv3の場合</h4><ol>
-<li>バックアップを取得する共有フォルダを作成します。<mark class="label primary">コントロールパネル</mark>の、<mark class="label primary">権限設定</mark>でバックアップを取得する共有フォルダを選択し、共有フォルダの権限画面を設定します<img src="/new-technology/2020/10/11/esxi-backup/qnap2.png" class="" title="alt"></li>
-<li>NFSについて設定します。ユーザーはguest扱いで接続します。<img src="/new-technology/2020/10/11/esxi-backup/qnap3.png" class="" title="alt"></li>
-</ol>
-<h4 id="NFSv4の場合"><a href="#NFSv4の場合" class="headerlink" title="NFSv4の場合"></a>NFSv4の場合</h4><ol>
-<li>認証するバックアップ専用のユーザー（一般ユーザー）を作成します。</li>
-<li>バックアップを取得する共有フォルダを作成し、管理者とバックアップ専用ユーザーにアクセス権を付与します。<mark class="label primary">コントロールパネル</mark>の、<mark class="label primary">権限設定</mark>でバックアップを取得する共有フォルダを選択し、共有フォルダの権限を設定します。<img src="/new-technology/2020/10/11/esxi-backup/qnap2.png" class="" title="alt"></li>
-</ol>
-<p> ここでは、bkupという一般ユーザーでbackupという共有フォルダのアクセス権を設定しています。bkupユーザーはこのbackupフォルダのみにアクセス権を与えており、他のフォルダにはアクセスしない設定にします。</p>
-<ol start="3">
-<li>NFSv4ではESXiのrootで接続された場合を含め、権限を一般ユーザーに格下げする、Squashオプションに”ALL_SQUASH”を設定します。<img src="/new-technology/2020/10/11/esxi-backup/qnap4.png" class="" title="alt"></li>
-</ol>
-<p> QNAP以外のNASでも若干設定内容は異なりますが、大きく違いはありません。</p>
-<div class="note info"><p>NASのセキュリティ強化のため、NFSv4で新規作成したユーザーに対し、NFS以外のNASアクセス権の解除およびWebサービスのログイン時に2要素認証を必須（通常Webサービスにログインしないので実質無効化）とする設定をお勧めします。</p>
+<img src="/new-technology/2020/10/11/esxi-backup/syno2.png" class="" title="alt">
+
+<div class="note info"><p>NASのセキュリティ強化のため、NFSv4.1で新規作成したユーザーに対し、NFS以外のNASアクセス権の解除およびWebサービスなどのログインは実質無効化する設定をお勧めします。</p>
 </div>
 
-<h2 id="ESXiからNFSサーバーに接続する"><a href="#ESXiからNFSサーバーに接続する" class="headerlink" title="ESXiからNFSサーバーに接続する"></a>ESXiからNFSサーバーに接続する</h2><p>ESXi側からNFSでファイルをマウントするのは簡単です。ESXiの左ペインメニューの<mark class="label primary">ストレージ</mark>から、<mark class="label primary">新しいデータストア</mark>を選択します。次に<mark class="label primary">NFSデータストアのマウント</mark>を選びます。以下のダイアログが表示されますので、ESXiで使うボリューム名を決め、NFSサーバーのIPアドレス、マウント名、NFSv4であればユーザーIDとパスワードを入力します。NFSv3の場合は、ユーザーIDとパスワードを入力する場所はありません。</p>
+<h2 id="ESXiからNFSサーバーに接続する"><a href="#ESXiからNFSサーバーに接続する" class="headerlink" title="ESXiからNFSサーバーに接続する"></a>ESXiからNFSサーバーに接続する</h2><p>ESXi側からNFSでファイルをマウントするのは簡単です。ESXiの左ペインメニューの<mark class="label primary">ストレージ</mark>から、<mark class="label primary">新しいデータストア</mark>を選択します。次に<mark class="label primary">NFSデータストアのマウント</mark>を選びます。以下のダイアログが表示されますので、ESXiで使うボリューム名を決め、NFSサーバーのIPアドレス、マウント名、NFSv4.1であればユーザーIDとパスワードを入力します。NFSv3の場合は、ユーザーIDとパスワードを入力する場所はありません。</p>
+<img src="/new-technology/2020/10/11/esxi-backup/syno3.png" class="" title="alt">
+
+<p>赤枠で囲ったNASのマウントパスをESXiの<mark class="label primary">NASシェア</mark>の項目に記述します。</p>
 <img src="/new-technology/2020/10/11/esxi-backup/esxi1.png" class="" title="alt">
 
-<p>これで、ESXiでは、”&#x2F;vmfs&#x2F;volumes&#x2F;NFSデータストア名”としてnfsサーバーのフォルダがマウントされます。nfsサーバーを”¥¥YourNAS”、ESXiのデータストア名を”your-nfs”とするならば、¥¥YourNAS¥backup¥の中身が&#x2F;vmfs&#x2F;volumes&#x2F;your-nfs&#x2F;に対応します。</p>
+<p>これで、ESXiでは、”&#x2F;vmfs&#x2F;volumes&#x2F;NFSデータストア名”としてnfsサーバーのフォルダがマウントされます。</p>
 <h2 id="ESXiでの事前準備"><a href="#ESXiでの事前準備" class="headerlink" title="ESXiでの事前準備"></a>ESXiでの事前準備</h2><ol>
 <li>ESXiにSSHで接続する必要があるため、ESXiの左ペインメニューの<mark class="label primary">ホスト→管理</mark>から<mark class="label primary">サービス</mark>タブをクリックし、<mark class="label primary">TSM</mark>および<mark class="label primary">TSM-SSH</mark>を起動します。</li>
 <li>ESXiのストレージ、nfsボリュームを選択し、データストアブラウザを開きます。アップロードボタンをクリックし、ダウンロード済みの<mark class="label primary">ghettoVCB-master.zip</mark>をアップロードします。</li>
@@ -385,16 +380,16 @@
 <h3 id="バックアップ結果の確認"><a href="#バックアップ結果の確認" class="headerlink" title="バックアップ結果の確認"></a>バックアップ結果の確認</h3><p>実際にバックアップが作成されたフォルダを確認すると以下のようになっています。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@esxi:/vmfs/volumes/your-nfs/backups/XGFirewall/XGFirewall-2020-10-10_13-29-16] <span class="built_in">ls</span> -al</span><br><span class="line">total 29407336</span><br><span class="line">drwxr-xr-x    2 root     root          4096 Oct 10 13:30 .</span><br><span class="line">drwxr-xr-x    5 root     root          4096 Oct 10 13:30 ..</span><br><span class="line">-rw-r--r--    1 root     root            30 Oct 10 13:30 STATUS.ok</span><br><span class="line">-rw-------    1 root     root       2621952 Oct 10 13:30 XGFirewall-0-ctk.vmdk</span><br><span class="line">-rw-------    1 root     root     42949672960 Oct 10 13:30 XGFirewall-0-flat.vmdk</span><br><span class="line">-rw-------    1 root     root           612 Oct 10 13:30 XGFirewall-0.vmdk</span><br><span class="line">-rwxr-xr-x    1 root     root          3712 Oct 10 13:29 XGFirewall.vmx</span><br></pre></td></tr></table></figure>
 
-<p>環境によってファイル名は少し異なります。仮想マシンは、-flat.vmdkが本体です。私の場合は、別のバックアップソフトで差分バックアップを有効にしているため別にファイル名が”-ctk.vmdk”というものもあります。これはvSphereの機能であるCBT（Changed Block Tracking）を用いて更新のあったブロックのみを差分バックアップする機能で、これを使うとvmdkが2つ作成されます。このCBTはghettoVCBには無関係ですが混乱を避けるために参考までに記載しました。</p>
+<p>環境によってファイル名は少し異なります。仮想マシンは、-flat.vmdkが本体です。私の場合は、別のバックアップソフトで差分バックアップを有効にしているため別にファイル名が”-ctk.vmdk”というものもあります。これはvSphereの機能であるCBT（Changed Block Tracking）を用いて更新のあったブロックのみを差分バックアップする機能で、これを使うとvmdkが2つ作成されます。このCBTはghettoVCBには必須項目ではありませんが、混乱を避けるために参考までに記載しました。</p>
 <p>ファイルのサイズを確認すると、<code>XGFirewall-0-flat.vmdk</code>は40GByteとなっています。これはそもそもの仮想マシンを作成した時に設定したサイズが示されています。ghettoVCBはデフォルトのthinモードでバックアップするため、thickで構成された仮想マシンよりは実際の消費されているディスク量は小さく済みます。実際に消費されたディスクは以下の通り確認できます。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@esxi:/vmfs/volumes/your-nfs/backups/XGFirewall/XGFirewall-2020-10-10_13-29-16] <span class="built_in">du</span> -h</span><br><span class="line">28.0G	.</span><br></pre></td></tr></table></figure>
 
 <p>つまり、シンプロビジョニング（通称シンプロ）はこうやってディスク領域を節約する仕組みになっているわけです。</p>
-<p>私の環境ではNFSサーバーはQNAPのTVS473eというモデルでウェスタンデジタル社のHDDを4台RAID10で使っており、NICはAquantia AQC107です。ESXi側のNICはintel X550T2で、共に10GbpsのNICです。XGの仮想マシン（28GByte）をバックアップするのに1分40秒ですのでまずまずの速度でしょうか。参考までに、殆どアプリの入っていないWin10だと、4分20秒程度でした。<br>デフォルトでは3世代バックアップを取得するようになっていますが、その他カスタマイズする箇所については、英語版の<strong>公式マニュアル</strong>を参照してください。</p>
+<p>デフォルトでは3世代バックアップを取得するようになっていますが、その他カスタマイズする箇所については、英語版の<strong>公式マニュアル</strong>を参照してください。</p>
 <blockquote>
 <p>vmware -ghettoVCB.sh - Free alternative for backing up VM’s for ESX(i) 3.5, 4.x, 5.x, 6.x &amp; 7.x-<br> <a target="_blank" rel="noopener" href="https://communities.vmware.com/docs/DOC-8760">https://communities.vmware.com/docs/DOC-8760</a></p>
 </blockquote>
-<h2 id="ESXiのちょっと特殊な点"><a href="#ESXiのちょっと特殊な点" class="headerlink" title="ESXiのちょっと特殊な点"></a>ESXiのちょっと特殊な点</h2><p>このシェルを実行する時に、頭に<code>/bin/sh</code>を加えました。単体でghettoVCB.shを実行すると<code>-sh: ./ghettoVCB.sh: Operation not permitted</code>と実行できません。ghettoVCB.shには、実行権も最初から付与されています。スクリプトの先頭にShebang（#!&#x2F;bin&#x2F;sh）が無いのでそれが原因かと思い加えても動作しません。これは、ESXiがUEFIのセキュアブートだとこのような挙動になるようです。スクリプトでバックアップができるようになると、Cronに登録して定期的に実行したくなりますが、改ざん防止のためそれも不可能なようです。ESXiのセキュアブートをしないように変更すれば可能ですが、XGを載せたFirewallの役割から考えると非常に悩ましいところです。冒頭に前述した無償ソフトウェアについての記事「<a href="/new-technology/2021/03/06/esxi-nakivo/" title="無償版ESXiの高度なバックアップ">無償版ESXiの高度なバックアップ</a>」や「<a href="/new-technology/2021/12/04/qnap-hdp/" title="無償版ESXiのVMをQNAP NASにバックアップ">無償版ESXiのVMをQNAP NASにバックアップ</a>」を参照してください。</p>
+<h2 id="ESXiのちょっと特殊な点"><a href="#ESXiのちょっと特殊な点" class="headerlink" title="ESXiのちょっと特殊な点"></a>ESXiのちょっと特殊な点</h2><p>このシェルを実行する時に、頭に<code>/bin/sh</code>を加えました。単体でghettoVCB.shを実行すると<code>-sh: ./ghettoVCB.sh: Operation not permitted</code>と実行できません。ghettoVCB.shには、実行権も最初から付与されています。スクリプトの先頭にShebang（#!&#x2F;bin&#x2F;sh）が無いのでそれが原因かと思い加えても動作しません。これは、ESXiがUEFIのセキュアブートだとこのような挙動になるようです。スクリプトでバックアップができるようになると、Cronに登録して定期的に実行したくなりますが、改ざん防止のためそれも不可能なようです。ESXiのセキュアブートをしないように変更すれば可能ですが、XGを載せたFirewallの役割から考えると非常に悩ましいところです。冒頭に前述した無償ソフトウェアについての記事「<a href="/new-technology/2021/03/06/esxi-nakivo/" title="無償版ESXiの高度なバックアップ">無償版ESXiの高度なバックアップ</a>」を参照してください。</p>
 <h2 id="レストアする"><a href="#レストアする" class="headerlink" title="レストアする"></a>レストアする</h2><p>さて、バックアップから戻す場合です。ESXiのハードウェア毎故障してしまってもバックアップがあれば安全です。戻し方には2つあります。</p>
 <ol>
 <li>バックアップを取得した仮想マシンと同じ場所に戻す</li>
@@ -413,21 +408,11 @@
 
 <h3 id="レストア結果の確認"><a href="#レストア結果の確認" class="headerlink" title="レストア結果の確認"></a>レストア結果の確認</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">################## Restoring VM: XGFW18  #####################</span></span><br><span class="line">Start time: Sun Oct 11 04:14:58 UTC 2020</span><br><span class="line">Restoring VM from: <span class="string">&quot;/vmfs/volumes/your-nfs/backups/XGFirewall/XGFirewall-2020-10-10_13-29-16&quot;</span></span><br><span class="line">Restoring VM to Datastore: <span class="string">&quot;/vmfs/volumes/your-datastore/XGFW18&quot;</span> using Disk Format: <span class="string">&quot;zeroedthick&quot;</span></span><br><span class="line">Creating VM directory: <span class="string">&quot;/vmfs/volumes/your-datastore/XGFW18/XGFW18&quot;</span> ...</span><br><span class="line">Copying <span class="string">&quot;XGFW.vmx&quot;</span> file ...</span><br><span class="line">Restoring VM<span class="string">&#x27;s VMDK(s) ...</span></span><br><span class="line"><span class="string">Updating VMDK entry in &quot;XGFW18.vmx&quot; file ...</span></span><br><span class="line"><span class="string">Option --adaptertype is deprecated and hence will be ignored</span></span><br><span class="line"><span class="string">Destination disk format: VMFS zeroedthick</span></span><br><span class="line"><span class="string">Cloning disk &#x27;</span>/vmfs/volumes/your-nfs/backups/XGFirewall/XGFW-2020-10-10_13-29-16/XGFirewall-0.vmdk<span class="string">&#x27;...</span></span><br><span class="line"><span class="string">Clone: 100% done.</span></span><br><span class="line"><span class="string">Registering XGFW18 ...</span></span><br><span class="line"><span class="string">10</span></span><br><span class="line"><span class="string">End time: Sun Oct 11 04:26:17 UTC 2020</span></span><br><span class="line"><span class="string">################## Completed restore for XGFW18! #####################</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Start time: Sun Oct 11 04:14:58 UTC 2020</span></span><br><span class="line"><span class="string">End   time: Sun Oct 11 04:26:17 UTC 2020</span></span><br><span class="line"><span class="string">Duration  : 11.32 Minutes</span></span><br></pre></td></tr></table></figure>
 
-<p>これでESXiのメニューを確認すると既に左ペインの仮想マシンに新しくレストアした”XGFW18”がインベントリ登録まで完了し停止状態となっています。すぐに起動といきたいところですが、今稼働中のXGとIPアドレスなど全てが重複しますので、事前に修正する箇所があります。</p>
-<img src="/new-technology/2020/10/11/esxi-backup/esxi2.png" class="" title="alt">
-
-<ol>
-<li>ネットワーク部分ですが、ESXiの左ペインのネットワークから新しいポートグループをLANとWANとの2つ作成し、それぞれ物理NICのvmnicと関連付けます。</li>
-<li>ネットワークアダプタ1（LAN）、2（WAN）とも新しいポートグループに置き換えます。</li>
-<li>既存のXGが起動中の場合は、IPアドレスが重複する事、そもそも1つのライセンスで複数起動は認められていませんので、停止します。</li>
-<li>既存のXGが停止してから、新しいXGFW18を起動します。初回起動時には以下のダイアログが表示されますので、<mark class="label primary">コピーしました</mark>を選択し<mark class="label primary">回答</mark>します。バックアップした仮想マシンを既に削除している場合は、<mark class="label primary">移動しました</mark>を選択します。</li>
-</ol>
+<p>これでESXiのメニューを確認すると既に左ペインの仮想マシンに新しくレストアした”XGFW18”がインベントリ登録まで完了し停止状態となっています。すぐに起動といきたいところですが、今稼働中の仮想マシンとIPアドレスなど全てが重複しますので、事前に修正する必要があります。</p>
+<p>レストアした仮想マシンを起動します。初回起動時には以下のダイアログが表示されますので、<mark class="label primary">コピーしました</mark>を選択し<mark class="label primary">回答</mark>します。バックアップした仮想マシンを既に削除している場合は、<mark class="label primary">移動しました</mark>を選択します。</p>
 <img src="/new-technology/2020/10/11/esxi-backup/esxi3.png" class="" title="alt">
 
-<p>これでバックアップされたXGが復元されました。ただし前述した通り、MACアドレスが初期化されていますので、ホームゲートウェイから割り当てられたIPアドレスが変わっています。また、LANで利用しているL2スイッチでMACアドレスフィルタなどACLを使っている場合も通信できなくなりますので、ご注意ください。<br>レストアの処理時間は11分20秒と少し時間が掛かるようですが、頻繁に行う作業ではないため、許容範囲ではないでしょうか。</p>
-<div class="note warning"><p>復元された新しいXGをメインとして利用していく場合は、古い仮想マシンについて自動起動をオフにし、同時起動しないようにご注意ください。</p>
-</div>
-
+<p>これでバックアップされた仮想マシンが復元されました。ただし前述した通り、MACアドレスが初期化されていますので、ホームゲートウェイから割り当てられたIPアドレスが変わっています。また、LANで利用しているL2スイッチでMACアドレスフィルタなどACLを使っている場合も通信できなくなりますので、ご注意ください。</p>
 <p>レストアに関する詳細は、<strong>公式マニュアル</strong>を参照してください。</p>
 <blockquote>
 <p>vmware -Ghetto Tech Preview - ghettoVCB-restore.sh - Restoring VM’s backed up from ghettoVCB to ESX(i) 3.5, 4.x &amp; 5.x-<br> <a target="_blank" rel="noopener" href="https://communities.vmware.com/docs/DOC-10595">https://communities.vmware.com/docs/DOC-10595</a></p>
