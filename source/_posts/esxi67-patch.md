@@ -26,15 +26,12 @@ ESXiのパッチ情報は以下を参照してください。当該ページの�
 > VMware ESXi 8.0 Update 1a （2023-6-2発表）
  <https://docs.vmware.com/en/VMware-vSphere/8.0/rn/vsphere-esxi-80u1a-release-notes/index.html>
 
-主に不具合修正となっています。主としてvSANの不具合の対応ということで個人向けにはあまり関連しそうなところはありませんが、Mellanoxカード（Connect X-4,5,6）に関するパラメータがリセットされる（デフォルト値以外は非推奨）という記載があります。
+　主に不具合修正となっています。主としてvSANの不具合の対応ということで個人向けにはあまり関連しそうなところはありませんが、Mellanoxカード（Connect X-4,5,6）に関するパラメータがリセットされる（デフォルト値以外は非推奨）という記載があります。
 
+> VMware ESXi 7.0 Update 3n（2023-7-6発表）
+ <https://docs.vmware.com/en/VMware-vSphere/7.0/rn/vsphere-esxi-70u3n-release-notes.html>
 
-> VMware ESXi 7.0 Update 3m（2023-5-3発表）
- <https://docs.vmware.com/en/VMware-vSphere/7.0/rn/vsphere-esxi-70u3m-release-notes.html>
-
-7.0Update 3lで埋め込まれた不具合の対策が主のようです。
-
-
+ NICにおいてハードウェアラージ受信 オフロード (LRO) 機能の不具合を修正するなどの記載があります。
 
 ## 製品パッチの情報を入手する
 
@@ -167,27 +164,28 @@ VMware ESXi 8.0.1 build-21813344
 ### ESXi7.0のパッチ適用
 
 #### 現在稼働中のプロファイルを確認
- 新しいドライバやバグフィックス、セキュリティパッチなど含めたprofileとして整合性が取れたvibのアップデートはprofile updateを実行します。ここでは、ESXi7.0Update3lからUpdate3mにアップデートすることを例にします。
+ 新しいドライバやバグフィックス、セキュリティパッチなど含めたprofileとして整合性が取れたvibのアップデートはprofile updateを実行します。ここでは、ESXi7.0Update3mからUpdate3nにアップデートすることを例にします。
 
  現在の実行中のprofileを確認します。`esxcli software profile get`
  ``` bash
- [root@esxi2:/vmfs/volumes/6215b59a-6031d17a-ea0d-80615f0db1ce/update] esxcli software profile get
- (Updated) ESXi-7.0U3l-21424296-standard
-   Name: (Updated) ESXi-7.0U3l-21424296-standard
+ [root@esxi2:/vmfs/volumes/datastore1/update] esxcli software profile get
+(Updated) ESXi-7.0U3m-21686933-standard
+   Name: (Updated) ESXi-7.0U3m-21686933-standard
    Vendor: VMware, Inc.
-   Creation Time: 2023-04-29T08:54:44
-   Modification Time: 2023-05-06T10:28:12
+   Creation Time: 2023-06-18T09:50:05
+   Modification Time: 2023-07-07T09:43:39
    Stateless Ready: True
+   Description:
  ```
 
  一般的にはバージョンの最後に"-standard"の文字が付いています。standard版がインストールされている事を示します。
  次に、パッチファイルに登録されているprofileを確認します（パッチはフルパス指定が必要です）。
  ``` bash
- [root@esxi2:/vmfs/volumes/6215b59a-6031d17a-ea0d-80615f0db1ce/update] esxcli software sources profile list -d /vmfs/volumes/datastore1/update/VMware-ESXi-7.0U3m-21686933-depot.zip
- Name                           Vendor        Acceptance Level  Creation Time        Modification Time
- -----------------------------  ------------  ----------------  -------------------  -----------------
- ESXi-7.0U3m-21686933-standard  VMware, Inc.  PartnerSupported  2023-05-03T00:00:00  2023-05-03T00:00:00
- ESXi-7.0U3m-21686933-no-tools  VMware, Inc.  PartnerSupported  2023-05-03T00:00:00  2023-04-28T16:03:19
+[root@esxi2:/vmfs/volumes/datastore1/update] esxcli software sources profile list -d /vmfs/volumes/datastore1/update/VMware-ESXi-7.0U3n-21930508-depot.zip
+Name                           Vendor        Acceptance Level  Creation Time        Modification Time
+-----------------------------  ------------  ----------------  -------------------  -----------------
+ESXi-7.0U3n-21930508-standard  VMware, Inc.  PartnerSupported  2023-07-06T00:00:00  2023-07-06T00:00:00
+ESXi-7.0U3n-21930508-no-tools  VMware, Inc.  PartnerSupported  2023-07-06T00:00:00  2023-06-15T12:39:40
  ```
 
  VMWare Toolsを含まないProfileであるno-tools、VMWare Tools付きのstandard版となります。VMWare Toolsを使う一般的なユーザーはNo Tools版を選択しないので除外します。
@@ -197,7 +195,7 @@ VMware ESXi 8.0.1 build-21813344
 以下のようにパッチファイルのzipをフルパスで指定し、VMwareのパッチ情報にあるプロファイル名を指定しパッチを適用します。ここではstandardを指定します。
 
 ``` bash
- [root@esxi:~] esxcli software profile update -d /vmfs/volumes/datastore1/update/VMware-ESXi-7.0U3m-21686933-depot.zip -p ESXi-7.0U3m-21686933-standard
+ [root@esxi:~] esxcli software profile update -d /vmfs/volumes/datastore1/update/VMware-ESXi-7.0U3n-21930508-depot.zip -p ESXi-7.0U3n-21930508-standard
 ```
 
 `esxcli software profile update`の実行後しばらくしてから、結果が表示されます。
@@ -212,7 +210,7 @@ Update Result
 
 コマンドプロンプトから、`reboot`としてESXiを再起動します。
 
-再起動完了後、ESXiにログインします。左ペインメニューの"ホスト"をクリックし、バージョンの表記に今回パッチを当てたビルド番号が表示されている事を確認してください。今回はU3mとなっているはずです。
+再起動完了後、ESXiにログインします。左ペインメニューの"ホスト"をクリックし、バージョンの表記に今回パッチを当てたビルド番号が表示されている事を確認してください。今回はU3nとなっているはずです。
 
 {% asset_img esxi5.png 1024 alt %}
 
@@ -220,7 +218,7 @@ Update Result
 
  ``` bash
 [root@esxi2:~] vmware -v
-VMware ESXi 7.0.3 build-21686933
+VMware ESXi 7.0.3 build-21930508
  ```
 
 ## 事後作業（ESXi7,8共通）

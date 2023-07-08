@@ -4,6 +4,7 @@ date: 2023-03-25T09:00:01+09:00
 tags:
 - SFP+
 - 10GbE
+- 25GbE
 categories:
 - [Hardware]
 - [Network]

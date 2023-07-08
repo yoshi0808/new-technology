@@ -81,21 +81,12 @@ UEFIについては、以下の項目を設定しました。
 
 しかし、最終的にはセキュアブートでインストールされませんでした。
 
-ESXiは事後にもセキュアブートに変更できるのですが、うまくいきません。
-
-```
-[root@esxi:~] /usr/lib/vmware/secureboot/bin/secureBoot.py -c
-Secure boot can be enabled: All vib signatures verified. All tardisks validated. All acceptance levels validated
-[root@esxi:~]
-
-[root@esxi:~] esxcli system settings encryption set --require-secure-boot=T
-Unable to change the encryption mode and policy. Verify that the current host configuration can satisfy the new requirement.
-[root@esxi:~]
-```
-
-コマンドの前半では、セキュアブートに移行できるかのチェックではOKということですが、実際のセキュアブートへの変更ではエラーとなってしまいます。VMware Communityでも見かける内容ですが明確な答えは無いようです。これはマザーボードとESXiとの相性と考えられますが、今後もウォッチしていきたいと思います。
+VMware Communityでも見かける内容ですが明確な答えは無いようです。これはマザーボードとESXiとの相性と考えられますが、今後もウォッチしていきたいと思います。
 
 > <https://communities.vmware.com/t5/ESXi-Discussions/Enabling-Secure-Boot-not-possible/m-p/2864968>
+
+（2023-7-6更新）
+事後にある手順を経てESXi8.0でセキュアブートでセットアップすることができました。セキュアブートの手順はこちらの記事「{% post_link building-setup-esxi7 %}」を参照してください。
 
 ### インストール
 
