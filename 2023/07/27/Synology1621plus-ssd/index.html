@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/icon-16x16.png">
+  <link rel="mask-icon" href="/new-technology/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/new-technology/css/main.css">
+
+
+
+<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="/new-technology/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.17.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
+
+    <meta name="description" content="この記事で実現すること  サイバー攻撃の話題が相変わらず賑やかな状況下、これまで使っていたNASのソフトウェアの安定性やセキュリティ面の不安があり、安定感のあるSynologyのNASにリプレースしました。昨今SSDが安くなってきた事もあり、節電兼ねてALL SSDのNASをセットアップしてみました。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Synology DS1621+（DSM7.2）とSSD">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2023/07/27/Synology1621plus-ssd/index.html">
+<meta property="og:site_name" content="New technologies in our life">
+<meta property="og:description" content="この記事で実現すること  サイバー攻撃の話題が相変わらず賑やかな状況下、これまで使っていたNASのソフトウェアの安定性やセキュリティ面の不安があり、安定感のあるSynologyのNASにリプレースしました。昨今SSDが安くなってきた事もあり、節電兼ねてALL SSDのNASをセットアップしてみました。">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/07/27/Synology1621plus-ssd/synology-title.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/07/27/Synology1621plus-ssd/870evo.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/07/27/Synology1621plus-ssd/mellanox.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/07/27/Synology1621plus-ssd/memory.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/07/27/Synology1621plus-ssd/volume.drawio.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/07/27/Synology1621plus-ssd/synology1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/07/27/Synology1621plus-ssd/wchecker1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/07/27/Synology1621plus-ssd/wchecker2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/07/27/Synology1621plus-ssd/DiskMark25gbE.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/07/27/Synology1621plus-ssd/DiskMark10gbE.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/07/27/Synology1621plus-ssd/DiskMark25GbE-PacketSign.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/07/27/Synology1621plus-ssd/syslog.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/07/27/Synology1621plus-ssd/syslog2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/07/27/Synology1621plus-ssd/analyzer.png">
+<meta property="article:published_time" content="2023-07-27T02:00:00.000Z">
+<meta property="article:modified_time" content="2023-07-27T11:37:57.655Z">
+<meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
+<meta property="article:tag" content="10GbE">
+<meta property="article:tag" content="25GbE">
+<meta property="article:tag" content="Synology">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2023/07/27/Synology1621plus-ssd/synology-title.png">
+
+
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2023/07/27/Synology1621plus-ssd/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"ja","comments":true,"permalink":"https://yoshi0808.github.io/new-technology/2023/07/27/Synology1621plus-ssd/","path":"2023/07/27/Synology1621plus-ssd/","title":"Synology DS1621+（DSM7.2）とSSD"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Synology DS1621+（DSM7.2）とSSD | New technologies in our life</title>
+  
+
+
+
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{&quot;token&quot;: &quot;0148b4d0442e42b483ddce684030bd2f&quot;}'></script>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JMY6NSC2KK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+  'ad_storage': 'denied',
+  'analytics_storage': 'denied'
+  });
+
+  dataLayer.push({
+  'event': 'default_consent'
+  });
+
+  if (Cookies.get('PRVCY202112') == 'Agree') {
+    gtag('consent', 'update', {
+    'analytics_storage': 'granted'
+    });
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'G-JMY6NSC2KK',{ 'anonymize_ip': true });
+</script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/new-technology/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/new-technology/atom.xml" title="New technologies in our life" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="ナビゲーションバーの切り替え" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/new-technology/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">New technologies in our life</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Device,Network,Code,etc...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="検索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/new-technology/" rel="section"><i class="fa fa-home fa-fw"></i>ホーム</a></li><li class="menu-item menu-item-about"><a href="/new-technology/about/" rel="section"><i class="fa fa-user fa-fw"></i>サイトポリシー</a></li><li class="menu-item menu-item-tags"><a href="/new-technology/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>タグ</a></li><li class="menu-item menu-item-categories"><a href="/new-technology/categories/" rel="section"><i class="fa fa-th fa-fw"></i>カテゴリ</a></li><li class="menu-item menu-item-archives"><a href="/new-technology/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>アーカイブ</a></li><li class="menu-item menu-item-privacy"><a href="/new-technology/privacypolicy/" rel="section"><i class="fa fa-check fa-fw"></i>プライバシーポリシー</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="検索…" spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          見出し
+        </li>
+        <li class="sidebar-nav-overview">
+          概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E6%8F%90%EF%BC%88%E7%A7%81%E3%81%AE%E4%BD%BF%E3%81%84%E6%96%B9%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">前提（私の使い方）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Synology%E6%A9%9F%E7%A8%AE%E9%81%B8%E5%AE%9A"><span class="nav-number">2.</span> <span class="nav-text">Synology機種選定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSD"><span class="nav-number">3.</span> <span class="nav-text">SSD</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NIC"><span class="nav-number">4.</span> <span class="nav-text">NIC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%8F%E3%83%BC%E3%83%89%E3%82%A6%E3%82%A7%E3%82%A2%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><span class="nav-number">5.</span> <span class="nav-text">ハードウェアインストール</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%A1%E3%83%A2%E3%83%AA"><span class="nav-number">5.1.</span> <span class="nav-text">メモリ</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DiskStationManager%EF%BC%88DSM%EF%BC%89%E3%82%BB%E3%83%83%E3%83%88%E3%82%A2%E3%83%83%E3%83%97"><span class="nav-number">6.</span> <span class="nav-text">DiskStationManager（DSM）セットアップ</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B6%88%E8%B2%BB%E9%9B%BB%E5%8A%9B"><span class="nav-number">7.</span> <span class="nav-text">消費電力</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF"><span class="nav-number">8.</span> <span class="nav-text">ネットワーク</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Disk%E9%80%9F%E5%BA%A6"><span class="nav-number">9.</span> <span class="nav-text">Disk速度</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#25GbE-SFP28-%E3%81%A7%E8%A8%88%E6%B8%AC"><span class="nav-number">9.1.</span> <span class="nav-text">25GbE(SFP28)で計測</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10GbE-SFP-%E3%81%A7%E8%A8%88%E6%B8%AC"><span class="nav-number">9.2.</span> <span class="nav-text">10GbE(SFP+)で計測</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#25GbE-SFP28-%E3%81%AB%E3%83%91%E3%82%B1%E3%83%83%E3%83%88%E7%BD%B2%E5%90%8D%E3%82%92%E4%BB%98%E3%81%91%E3%81%A6%E8%A8%88%E6%B8%AC"><span class="nav-number">9.3.</span> <span class="nav-text">25GbE(SFP28)にパケット署名を付けて計測</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%9D%E3%81%AE%E4%BB%96%E3%80%81%E7%B4%A0%E6%99%B4%E3%82%89%E3%81%97%E3%81%84%E6%A9%9F%E8%83%BD"><span class="nav-number">10.</span> <span class="nav-text">その他、素晴らしい機能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%BE%E3%81%A8%E3%82%81"><span class="nav-number">11.</span> <span class="nav-text">まとめ</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="阿部　吉伸(Yoshinobu ABE)"
+      src="/new-technology/images/yoshi.png">
+  <p class="site-author-name" itemprop="name">阿部　吉伸(Yoshinobu ABE)</p>
+  <div class="site-description" itemprop="description">IT</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/new-technology/archives/">
+          <span class="site-state-item-count">74</span>
+          <span class="site-state-item-name">ポスト</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/new-technology/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">カテゴリ</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/new-technology/tags/">
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">タグ</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yoshi0808" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yoshi0808" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yoshi0808.blog@gmail.com" title="E-Mail → mailto:yoshi0808.blog@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yoshi0808_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yoshi0808_" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="/new-technology/lib/@creativecommons/vocabulary/assets/license_badges/big/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="ja">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2023/07/27/Synology1621plus-ssd/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/new-technology/images/yoshi.png">
+      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="New technologies in our life">
+      <meta itemprop="description" content="IT">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Synology DS1621+（DSM7.2）とSSD | New technologies in our life">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Synology DS1621+（DSM7.2）とSSD
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">投稿日</span>
+      
+
+      <time title="作成日：2023-07-27 11:00:00 / 修正日：20:37:57" itemprop="dateCreated datePublished" datetime="2023-07-27T11:00:00+09:00">2023-07-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">カテゴリ</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/Hardware/" itemprop="url" rel="index"><span itemprop="name">Hardware</span></a>
+        </span>
+          、
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/Network/" itemprop="url" rel="index"><span itemprop="name">Network</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><img src="/new-technology/2023/07/27/Synology1621plus-ssd/synology-title.png" class="" width="1024" title="alt">
+
+<p class="onepoint">この記事で実現すること</p>
+
+<p>サイバー攻撃の話題が相変わらず賑やかな状況下、これまで使っていたNASのソフトウェアの安定性やセキュリティ面の不安があり、安定感のあるSynologyのNASにリプレースしました。昨今SSDが安くなってきた事もあり、節電兼ねてALL SSDのNASをセットアップしてみました。</p>
+<span id="more"></span>
+
+<h2 id="前提（私の使い方）"><a href="#前提（私の使い方）" class="headerlink" title="前提（私の使い方）"></a>前提（私の使い方）</h2><p>私のNASの用途は、写真や動画のバックアップ、複数のPCで使う文書・PDFなどの同期兼バックアップ、仮想マシンやモジュールのバックアップ用途です。このブログなどはプライベートなものではないので、自宅で保存するよりGitHubのパブリッククラウドに置いておくほうがより現実的ではありますが、操作ミスで消えるリスクも鑑みNASにバックアップを取得しています。</p>
+<p>今のところ、TVや映画などの動画を保存する用途にはしていないので、容量だけでいえば1ベイか2ベイのNASで10TBあれば十分です。特殊要素があるとすれば、仮想マシンのバックアップを頻繁に取得するので、できるだけバックアップ速度を求めます。そういう意味では10GbEのネットワークは必須です。</p>
+<p>NASでは仮想マシンを稼働させる事もできますが、私の用途としてはESXiを一般的なPCにセットアップし、複数の仮想マシンを稼働させているので、NASはストレージがメインです。Windowsファイル共有（SMB）、NFS、iSCSI、せいぜいsyslog、SQLデータベースあたりまで使うといったところです。Ubuntuは個人向けにウィルス対策ソフトが存在しないので、Ubuntuのブラウザでインターネットにアクセスする事は殆どなく、モジュールのダウンロードは（ウィルス対策ソフトが有効な）macOSかWindowsでダウンロードしたものをSMBで共有してUbuntuで利用することが殆どです。</p>
+<p>NASの使い方は利用者によって様々でしょうから、あくまで一例ということでご覧ください。</p>
+<h2 id="Synology機種選定"><a href="#Synology機種選定" class="headerlink" title="Synology機種選定"></a>Synology機種選定</h2><p>6ベイ〜8ベイ程度のNASでそろそろ新モデルが出るかなと思い、年初くらいからウォッチしていましたが、発表されたのはDS1823xs+で、30万円と高額でした。周辺機器の互換性としてEnterpriseクラスの製品が中心で、個人向けとしては少し不向きだなと感じました。メモリは厳格に互換性を重視しつつも、SSDは必ずしも互換性のドライブでなくても良いかと考えていましたが、Enterpriseクラスの厳格性で10万円超えクラスの製品レベルを求められるとコスト面でかなり厳しいと感じました。現行モデルとの比較は以下の通りです。最初からSFP+のネットワークカードを増設する前提で、それなりにCPUパワーのある機種の比較です。10GbE以上の場合、どこまでスループットが出るかという期待も含めての選定です。</p>
+<table>
+<thead>
+<tr>
+<th>機種</th>
+<th>CPU</th>
+<th>CPU TDP</th>
+<th>製造プロセス</th>
+<th>ベイ</th>
+<th>実売価格</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>DS1823xs+</td>
+<td>AMD Ryzen V1780B クアッド コア 3.35 GHz</td>
+<td>45W</td>
+<td>14nm</td>
+<td>8</td>
+<td>30万円</td>
+</tr>
+<tr>
+<td>DS1821+</td>
+<td>AMD Ryzen V1500B クアッド コア 2.2 GHz</td>
+<td>16W</td>
+<td>14nm</td>
+<td>8</td>
+<td>16万円</td>
+</tr>
+<tr>
+<td>DS1621+</td>
+<td>AMD Ryzen V1500B クアッド コア 2.2 GHz</td>
+<td>16W</td>
+<td>14nm</td>
+<td>6</td>
+<td>12.5万円</td>
+</tr>
+</tbody></table>
+<p>意外にも、最新機種のDS1823xs+の製造プロセスは14nmで現行モデルと変わりません。DS1621+&#x2F;DS1821+の現行モデルは発売後2年半が経過しています。それなりに長期間使うことになるNASはEOSLを気にする必要があります。ただし、2012年モデルでもセキュリティパッチはきちんと提供されているので、Synologyのソフトウェア保守に対する考え方は非常にしっかりとしています。2018年に発表されたDS1618+（CPU:intel Atom C3538）は発売後5年でDiscontinuedになっていますが、あくまで製造中止であって、サポートはフルに提供されています。さらに、DS1621+&#x2F;DS1821+は新発表されたDS1823xs+とCPU世代が同じなので、長期的なサポート継続が行われると考えられます。</p>
+<p>ちなみに、V1500BやV1780Bは2つの10GbEチップを内蔵しているんですね。ただし、DS1621+&#x2F;DS1821+には10GbEの口はありません。DS1823xs+は1つの10GbE(RJ45)があるのでその10GbEを活用しているということでしょうか。</p>
+<p>ということで、Synologyはソフトウェアが秀逸である反面、少し高いというイメージを持っていたのですが、実売価格として廉価なDS1621+を購入することにしました。メモリが4GBなので、純正ECCメモリ（1.5万円）4GBを追加し8GBとしました。</p>
+<p>Synologyの保守に関する注意点としては、購入後の保証期間が過ぎたハードウェアの有償修理は行われないという点です。特殊なハードウェアだと電源やファンなど代替品というのも簡単には見つからないのでそこだけが留意する点でしょうか。故障が気になる方は延長保証を検討する必要があります。私は故障した場合は「さだめ」と割り切って新しいハードウェアを買う理由が見つかるので延長保証にはしていません笑</p>
+<blockquote>
+<p>Synology 製品サポート状況<br> <a target="_blank" rel="noopener" href="https://www.synology.com/ja-jp/products/status">https://www.synology.com/ja-jp/products/status</a></p>
+</blockquote>
+<h2 id="SSD"><a href="#SSD" class="headerlink" title="SSD"></a>SSD</h2><img src="/new-technology/2023/07/27/Synology1621plus-ssd/870evo.png" class="" width="320" title="alt">
+
+<p>Synologyとしては公式には互換性確認が取れていないSamsungの870EVO 4TB(MZ-77E4T0B&#x2F;IT)が28,000円程度だったこともあり、6つ購入しました（最初に1台購入し、動作確認の上で追加を5台買いました）。仕様は以下の通りTLCで速度、耐久性を重要視しました。</p>
+<ul>
+<li>インターフェース (転送速度・規格値）：SATA 3.0(6Gbps) ※SATA 2.0(3Gbps)およびSATA 1.0(1.5Gbps)互換フォームファクタ：7mm厚2.5インチHDD互換［搭載デバイス］NANDフラッシュ：Samsung 3bit MLC (TLC) V-NANDコントローラ：Samsung MKXコントローラキャッシュメモリ：2GB LPDDR4［パフォーマンス］シーケンシャル：読み出し560 MB&#x2F;s、書き込み：530 MB&#x2F;s</li>
+<li>5年間または最大2,400TBWの限定保証</li>
+</ul>
+<p>4TBのSSDといえば、つい昨年は8万円くらいしていたと記憶していますが、廉価になるスピードも早いですね。世の中では半導体が不足していると言われる一方で、個人向けPCの販売不振によって、SSDなどのパーツが余剰在庫で値崩れしていると聞きますので、SSD全般に関しては今はお得な時期と言えるでしょう。</p>
+<p>DS1621+にはM.2-2280のNVMeキャッシュも搭載可能ですが、SSD RAID5の分散であればキャッシュを必要としない程度に十分な速度が出るものと見込んでいます。キャッシュだけだと見かけのベンチマークは良い数字が出るでしょうが、安定して読み込み・書き込み速度を出すにはSSDでシンプルな構成が一番と考えます。</p>
+<p>なお、このストレージのセットアップ時には互換性の無いDiskである警告メッセージが表示されます。また、Synologyアカウントのページには以下の記載があります。</p>
+<blockquote>
+<p>以下の状況ではテクニカル サポート サービスは提供されません。<br> Synology互換性リストに記載されていないデバイス（ドライブ、メモリモジュール、PCIeカードなど）を使用する。</p>
+</blockquote>
+<p>一度セットアップした後は警告メッセージは表示されていません。</p>
+<p>NASというグループではなく、ConsumerというクラスでSynologyの互換性について検索すると、850EVO、860EVOが一覧に表示されます。何れ870EVOがサポート対象になるのを願うことにします。</p>
+<blockquote>
+<p>Synology 製品互換リスト（機種指定なし）<br> <a target="_blank" rel="noopener" href="https://www.synology.com/ja-jp/compatibility?search_by=category&amp;category=hdds_no_ssd_trim&amp;filter_brand=Samsung&amp;filter_class=Consumer&amp;display_brand=other">https://www.synology.com/ja-jp/compatibility?search_by=category&amp;category=hdds_no_ssd_trim&amp;filter_brand=Samsung&amp;filter_class=Consumer&amp;display_brand=other</a></p>
+</blockquote>
+<p>なお、Synologyの互換性試験を軽んじているわけではありませんし、なるべくは互換性のあるものを使おうと考えてはいます。ただし、DS1621+に関してSSDはサードパーティ製で認められたものはなく、SynologyのEnterpriseドライブのみで4TBだと価格が15万円&#x2F;個なので、これは個人で購入するのは困難でしょう。<br>メモリやSSDキャッシュ用途であれば流石に互換性を重視した製品選定をしますが。。。</p>
+<h2 id="NIC"><a href="#NIC" class="headerlink" title="NIC"></a>NIC</h2><img src="/new-technology/2023/07/27/Synology1621plus-ssd/mellanox.png" class="" width="640" title="alt">
+
+<p>このブログでは定番のMellanox Connect X4(MCX4121A-ACAT)を選定しました。ebayで1枚$70〜$80（日本円で約1万円）程度です。Synologyで正式に互換性検証されたものは、intel X710-T4がありますが、Connect X4は互換性リストにはありません。1つ昔のモデルのDS1618+はConnect X3には対応しているようです。Connect X4がダメなら純正のSFP28カードを購入するつもりでした。</p>
+<p>前出の互換性リストを見ると、Mellanox Connect X4に対応しているSynology NASもそれなりの数があるようです。</p>
+<blockquote>
+<p>Synology 製品互換リスト<br> <a target="_blank" rel="noopener" href="https://www.synology.com/ja-jp/compatibility?search_by=category&amp;category=network_interface_cards&amp;display_brand=other">https://www.synology.com/ja-jp/compatibility?search_by=category&amp;category=network_interface_cards&amp;display_brand=other</a></p>
+</blockquote>
+<h2 id="ハードウェアインストール"><a href="#ハードウェアインストール" class="headerlink" title="ハードウェアインストール"></a>ハードウェアインストール</h2><h3 id="メモリ"><a href="#メモリ" class="headerlink" title="メモリ"></a>メモリ</h3><p>筐体の底の部分に蓋があり、それを外すとメモリモジュールを挿すところがあります。シール付きの別売りモジュール（4GByte）を装着したところです。</p>
+<img src="/new-technology/2023/07/27/Synology1621plus-ssd/memory.png" class="" width="640" title="alt">
+
+<h2 id="DiskStationManager（DSM）セットアップ"><a href="#DiskStationManager（DSM）セットアップ" class="headerlink" title="DiskStationManager（DSM）セットアップ"></a>DiskStationManager（DSM）セットアップ</h2><p>DS1621+は今更珍しいハードウェアでも無いですし、DSMのセットアップ情報も世の中に多くあるので、手順については省略します。最初はLAN1にRJ45のCat6ケーブルを接続しセットアップしました。インターネットに接続されている環境で無事DSM7.2のセットアップが完了しました。</p>
+<p>論理Disk（ストレージプール）は初心者向けのSynology Hybrid RAID、または通常のRAIDを選択できますが、速度を重視し、RAID5としました。ダウンタイムを気にしてRAID6にするほど安全第一という事もなく、かといって、RAID0にして故障の際に大掛かりなリカバリのリスクを抱えたくも無いということで無難な選択です。6台のSSDすべてを1つの論理DISKとしてパリティの分散によって障害リスクの抑制、高速化を目指すことにします。</p>
+<p>以前のNASでは、こういった論理ボリュームを作成後、利用するアプリケーションや目的毎のデータサイズによってストレージプールの中にそれぞれのボリュームを作成していました。例えば、macOSのバックアップであるTimeMachineなどでは、決められたディスクサイズの中で最新世代のバックアップを確保する仕組みとなっており、ディスクの容量を事前に決めておかないと（クオータ）、肥大し続ける事になります。PCで言えばパーティションのようなものですね。<br>また、別の目的では仮想マシンのバックアップなどは世代管理も含めて、どれだけのDisk容量を確保すべきかある程度運用しないとわかりません。意外と圧縮が効いて無駄にボリュームの空きができてしまう事はよくある課題です。また、複数ボリュームを作成するとスループットは落ちます。</p>
+<p>NASはこの辺りの事前の計画がとても難しいのですが、DSM7では単一ボリュームに共有フォルダを作成する時にフォルダのサイズ制限を設定できます。これができればわざわざ複数ボリュームを悩みながら作成する事も不要です。これが実現できるのはSynologyがアピールするBtrfs（バターエフエス）ファイルシステムのおかげです。Btrfsではスナップショットを取得してバックアップする際、バックアップ中にファイルが更新されて一貫性が失われないとのことです。ファイルシステムもデータベースの仕組みに近くなっていくんでしょうか。</p>
+<blockquote>
+<p>Synology ナレッジセンター</p>
+</blockquote>
+<p> <a target="_blank" rel="noopener" href="https://kb.synology.com/ja-jp/DSM/help/DSM/AdminCenter/file_share_create?version=7#sharedfolderquota">https://kb.synology.com/ja-jp/DSM/help/DSM/AdminCenter/file_share_create?version=7#sharedfolderquota</a><br> <div class="note info"><p>ストレージがBtrfsファイル システムを使用している場合に限り、共有スペースに共有スペースの割り当てを有効にするオプションをできますます。</p>
+</div></p>
+<p>ESXiの仮想マシンのバックアップのために、 SynologyのActive Backup for Businessを使うつもりですので、これは64ビットOSとBtrfsが必須となります。Disk構成は以下のようになりました。</p>
+<img src="/new-technology/2023/07/27/Synology1621plus-ssd/volume.drawio.png" class="" width="480" title="alt">
+
+<img src="/new-technology/2023/07/27/Synology1621plus-ssd/synology1.png" class="" width="800" title="alt">
+
+<h2 id="消費電力"><a href="#消費電力" class="headerlink" title="消費電力"></a>消費電力</h2><p>SSD6台、Mellanox Connect X4を装着した状態で、ワットチェッカーで計測してみました。以下の通り、おおよそ33W-35W程度で安定しています。なかなかの省電力です。以前に利用していたNASは4台のHDDという事もあり、70W-100W程度でかなり発熱も大きかったのがかなり改善されました。</p>
+<ul>
+<li><p>Synology（SSDx6、Mellanox Connect X4）<br> （33W-35W）</p>
+ <img src="/new-technology/2023/07/27/Synology1621plus-ssd/wchecker1.png" class="" width="360" title="alt">
+</li>
+<li><p>旧NAS（HDDx4、Mellanox Connect X3）<br> （70W-100W）</p>
+ <img src="/new-technology/2023/07/27/Synology1621plus-ssd/wchecker2.png" class="" width="360" title="alt"></li>
+</ul>
+<h2 id="ネットワーク"><a href="#ネットワーク" class="headerlink" title="ネットワーク"></a>ネットワーク</h2><p>セットアップ終了後、無事Connect X4はNASに以下のように認識されていました。</p>
+<blockquote>
+<p><code>25000 Mbps, 全二重, MTU 1500</code></p>
+</blockquote>
+<p>2つのPortがあるので、1つは25GbE、もう1つは10GbEとして使ってみます。</p>
+<p>お決まりのiperf3の計測です。Connect X4をSFP28でスイッチに接続します。クライアントはWindows11でこちらもConnect X4です。<br>Synologyのコミュニティから提供されているSynoCli Monitor Toolsというパッケージがあり、これをインストールして使ってみます。<br>この組み合わせでは上り、下り共に19〜21Gbps程度であり、及第点という感じでした。</p>
+<p>Windows -&gt; Synology（多重度2）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[ ID] Interval           Transfer     Bitrate</span><br><span class="line">[SUM]   0.00-10.00  sec  22.3 GBytes  19.1 Gbits/sec                  sender</span><br><span class="line">[SUM]   0.00-10.00  sec  22.3 GBytes  19.1 Gbits/sec                  receiver</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>Synology NASとESXi上のUbuntuのiPerf3の結果は上り、下り共に十分なパフォーマンスが出ています。</p>
+<p>Synology -&gt; Ubuntu</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[ ID] Interval           Transfer     Bitrate</span><br><span class="line">[  5]   0.00-1.00   sec  2.33 GBytes  20.0 Gbits/sec</span><br><span class="line">[  5]   1.00-2.00   sec  2.59 GBytes  22.3 Gbits/sec</span><br><span class="line">[  5]   2.00-3.00   sec  2.72 GBytes  23.4 Gbits/sec</span><br><span class="line">[  5]   3.00-4.00   sec  2.59 GBytes  22.2 Gbits/sec</span><br><span class="line">[  5]   4.00-5.00   sec  2.71 GBytes  23.3 Gbits/sec</span><br><span class="line">[  5]   5.00-6.00   sec  2.72 GBytes  23.4 Gbits/sec</span><br><span class="line">[  5]   6.00-7.00   sec  2.73 GBytes  23.4 Gbits/sec</span><br><span class="line">[  5]   7.00-8.00   sec  2.70 GBytes  23.2 Gbits/sec</span><br><span class="line">[  5]   8.00-9.00   sec  2.70 GBytes  23.2 Gbits/sec</span><br><span class="line">[  5]   9.00-10.00  sec  2.69 GBytes  23.1 Gbits/sec</span><br><span class="line">- - - - - - - - - - - - - - - - - - - - - - - - -</span><br><span class="line">[ ID] Interval           Transfer     Bitrate         Retr</span><br><span class="line">[  5]   0.00-10.00  sec  26.5 GBytes  22.7 Gbits/sec   22             sender</span><br><span class="line">[  5]   0.00-10.00  sec  26.5 GBytes  22.7 Gbits/sec                  receiver</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="Disk速度"><a href="#Disk速度" class="headerlink" title="Disk速度"></a>Disk速度</h2><p>定番のCrystal Diskmarkのベンチマークを実施します。</p>
+<h3 id="25GbE-SFP28-で計測"><a href="#25GbE-SFP28-で計測" class="headerlink" title="25GbE(SFP28)で計測"></a>25GbE(SFP28)で計測</h3><img src="/new-technology/2023/07/27/Synology1621plus-ssd/DiskMark25gbE.png" class="" width="480" title="alt">
+
+<p>読み込みは17Gbps、書き込みは14.3Gbpsと、かなり高いスループットが出ています。11Gbps-12Gbps程度であれば省電力を優先し10Gbpsで使おうと考えていましたが、迷いどころです。私が速度を重視するメインの使い道はESXiの仮想マシンのバックアップですので、それはまた別の機会に計測してみます。</p>
+<h3 id="10GbE-SFP-で計測"><a href="#10GbE-SFP-で計測" class="headerlink" title="10GbE(SFP+)で計測"></a>10GbE(SFP+)で計測</h3> <img src="/new-technology/2023/07/27/Synology1621plus-ssd/DiskMark10gbE.png" class="" width="480" title="alt">
+
+<p> 10GbEの場合は、読み込み、書き込みともにワイヤレートが出ており、バランスの良い組み合わせでしょうか。NICをSFP+の10GbEにして、もう5W程度省電力を狙うというのも良いですね。</p>
+<h3 id="25GbE-SFP28-にパケット署名を付けて計測"><a href="#25GbE-SFP28-にパケット署名を付けて計測" class="headerlink" title="25GbE(SFP28)にパケット署名を付けて計測"></a>25GbE(SFP28)にパケット署名を付けて計測</h3> <img src="/new-technology/2023/07/27/Synology1621plus-ssd/DiskMark25GbE-PacketSign.png" class="" width="480" title="alt">
+
+<p>ビジネスではセキュリティの観点からほぼ必須と指摘されるSMBのパケット署名ですが、意外と落ち込まないですね。これも実運用するには十分な速度が出ています。</p>
+<h2 id="その他、素晴らしい機能"><a href="#その他、素晴らしい機能" class="headerlink" title="その他、素晴らしい機能"></a>その他、素晴らしい機能</h2><p>以前のNASからリプレースして便利に感じた機能をいくつか挙げてみます。</p>
+<ul>
+<li>2要素認証（TouchID、Windows Hello）<br> DSMに2要素認証でログインする場合は、圧倒的に便利です。パスワードレスでTouchID、Windows Helloのみの認証にもできます。<br> なお、YubiKeyのFIDO2も使えますが、PINもあって少し不便に感じます。YubiKeyはDSMへのSSHを公開鍵認証で使っています。iOSアプリのSecure SignInは自宅にいない場合に公衆回線を通じて2要素認証のためのサインインの通知が来るのは良いのですが、許可をタップするとNASへ直接接続しようとするようで、自宅のWi-Fiに接続していない場合は認証がうまく動作しません。これはいずれ機能アップして修正されることを期待します。SynologyのNASはTailScaleのアプリがインストールできるので、これを組み合わせる事で対応できるかもしれません。</li>
+</ul>
+<blockquote>
+<p>tailscale<br>  <a target="_blank" rel="noopener" href="https://tailscale.com/">https://tailscale.com</a></p>
+</blockquote>
+<ul>
+<li>ログセンター（Syslog）<br> グラフィカルで分かりやすいです。ネットワーク機器のログを集めるのに使っています。このおかげでSyslogのために別の仮想マシンを用意する必要は無さそうです。以前のNASではフィルタ機能が十分でなく、使っていませんでした。Synologyでは演算子を使っていろいろな条件で絞り込みができます。個人でのログ確認には必要十分です。<img src="/new-technology/2023/07/27/Synology1621plus-ssd/syslog.png" class="" width="800" title="alt"></li>
+</ul>
+<p> 絞り込みも優秀で、ホスト名を入力させるのではなく、すでにログ出力されているホスト名から選択できます。<br>  <img src="/new-technology/2023/07/27/Synology1621plus-ssd/syslog2.png" class="" width="800" title="alt"></p>
+<ul>
+<li><p>ストレージアナライザー</p>
+ <img src="/new-technology/2023/07/27/Synology1621plus-ssd/analyzer.png" class="" width="1024" title="alt">  
+<p> ファイルサイズの大きいもの順に確認できたり、重複ファイルを確認、削除できます。データの見える化ができて、とても便利です。</p>
+</li>
+<li><p>ファイアウォール<br> これはアプリケーションの自動ブロックと連動していて、このブロックが働いた時、つまり明らかな不正ログインの懸念がある場合のみ通知されます。ですので、普段から通知されることはありません。以前のNASでは許可していないサービスにIPレベルでパケットが到達した段階でエラーとカウントして膨大な件数の拒否カウントが定期的に通知されており、結局通知を止めていたのですが、こちらは現実的なファイアウォール機能となっています。</p>
+<blockquote>
+<p>さまざまなサービスとパッケージが自動ブロックをサポートします。例：DSM、SSH、Telnet、rsync、ネットワーク バックアップ、共有フォルダの同期、FTP、SMB、WebDAV、File Station、Audio Station、Video Station、Download Station、Mail Server、Mail Station、MailPlus、MailPlus Server、VPN Server、Synology Drive Server、および Synology モバイル アプリ。</p>
+</blockquote>
+</li>
+<li><p>Synology Drive<br>　NASでは一般的な機能で、複数クライアント端末とファイル同期を取るソリューションです。以前のNASでは小さいモジュールがたくさん存在するフォルダ、特にGitで使うようなソースコードや小さいモジュールのファイルは、<em>conflict</em>(0)のような競合ファイルがたくさん発生してしまい、全く使えずにいました。GitHubへのプッシュする際に大量の誤ったプッシュ候補のファイルが表示されてしまい、泣く泣く変更したファイルをロールバックする羽目になりました。他の端末との同時更新などの競合がある訳ではなかったのですが、それ以来、一般的な文書のみに使っていました。今回、SynologyのNASになってからはまだ日が浅いですが、このような小さいモジュール群も安定して複製してくれ、複数端末で同期が取れています。</p>
+</li>
+<li><p>DSM画面のレスポンスが良いこと<br>　どのアプリケーションを稼働させても、ウィンドウがもたつくことはありません。</p>
+</li>
+</ul>
+<h2 id="まとめ"><a href="#まとめ" class="headerlink" title="まとめ"></a>まとめ</h2><p>SSDが安くなったおかげで、今回は廉価にNASのリプレースが出来ました。SSDキャッシュはベンチマークこそ良い成績が出ますが、実際の運用においてはなかなか効果を感じづらいところがあります。NVMeではなくSATAなので大きな期待はしていませんでしたが、かなりの速度が出ることを確認できました。私の利用方法は少し特殊と考えられますが、Synologyのソフトウェアが素晴らしいことで、NASを利用している時のストレスが本当に減りました。<br>前述したSyslogや重複ファイルのチェックなど、本当にユーザーフレンドリーで使いやすく他社のNASから乗り換えた時にはこのDSM7.2を使うと、その使い勝手の良さに驚かれるでしょう。またストレージの消費量もかなり低く抑えられています。最近、SynologyはエントリーモデルにおいてもBtrfsに対応するようになったので廉価でも高性能なNASとして利用できそうです。今はNASのバックアップを外付けのHDDにしていますが、あまりに使い勝手が良いので廉価なビジネスモデルにリモートコピーでバックアップを取得するのでも良いかなと思い始めています。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/new-technology/tags/10GbE/" rel="tag"><i class="fa fa-tag"></i> 10GbE</a>
+              <a href="/new-technology/tags/25GbE/" rel="tag"><i class="fa fa-tag"></i> 25GbE</a>
+              <a href="/new-technology/tags/Synology/" rel="tag"><i class="fa fa-tag"></i> Synology</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/new-technology/2023/07/07/building-setup-esxi8/" rel="prev" title="ESXi8.0をRyzen5 5600Gで構築">
+                  <i class="fa fa-chevron-left"></i> ESXi8.0をRyzen5 5600Gで構築
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2020 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">阿部　吉伸(Yoshinobu ABE)</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div><script src="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.umd.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.min.css" rel="stylesheet">
+
+<script>
+if (Cookies.get('PRVCY202112') != 'Agree') {
+  const notice = new SimpleGDPR({
+    title: 'Accept Cookies & Privacy Policy?',
+    message: 'このWebサイトでは、訪問や活動に関するデータがクッキー等によって収集されます。閲覧を継続される場合、\
+    プライバシーポリシーをご覧いただき同意(Agree)をお願いします',
+    link: null,
+    icons: true,
+    theme: 'light',
+    animation: 'fade',
+    float: 'bottom-right',
+      callback: () => {
+      notice.close();
+      Cookies.set('PRVCY202112', 'Agree', { expires: 365, path: '/'});
+      notice.destroy();
+      // Google Analytics 4
+      gtag('consent', 'update', {
+      'analytics_storage': 'granted'
+      });
+      gtag('js', new Date());
+      gtag('config', 'G-JMY6NSC2KK', { 'anonymize_ip': true });
+      },
+  });
+}
+</script>
+<div class="disclaimer1">
+このサイトの記事は、特別な記載がない限り <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja">クリエイティブ・コモンズ BY-NC-SA ライセンス</a>で保護されています</div>
+
+
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/yoshi0808" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="/new-technology/lib/animejs/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="/new-technology/lib/medium-zoom/dist/medium-zoom.min.js" integrity="sha256-7PhEpEWEW0XXQ0k6kQrPKwuoIomz8R8IYyuU1Qew4P8=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/comments.js"></script><script src="/new-technology/js/utils.js"></script><script src="/new-technology/js/motion.js"></script><script src="/new-technology/js/schemes/muse.js"></script><script src="/new-technology/js/next-boot.js"></script>
+
+  <script src="/new-technology/lib/hexo-generator-searchdb/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"/new-technology/lib/mermaid/dist/mermaid.min.js","integrity":"sha256-JFptYy4KzJ5OQP+Q9fubNf3cxpPPmZKqUOovyEONKrQ="}}</script>
+  <script src="/new-technology/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
