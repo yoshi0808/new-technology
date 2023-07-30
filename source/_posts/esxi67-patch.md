@@ -22,11 +22,10 @@ SSHでESXiに接続し、コマンドラインでパッチを適用します。W
 
 ESXiのパッチ情報は以下を参照してください。当該ページの左ペインメニューには最新パッチの情報が掲載されていますので、最新のパッチ情報を辿ってください。また、過去のパッチの情報も提供されています。
 
+> VMware ESXi 8.0 Update 1c （2023-7-27発表）
+ <https://docs.vmware.com/en/VMware-vSphere/8.0/rn/vsphere-esxi-80u1c-release-notes/index.html>
 
-> VMware ESXi 8.0 Update 1a （2023-6-2発表）
- <https://docs.vmware.com/en/VMware-vSphere/8.0/rn/vsphere-esxi-80u1a-release-notes/index.html>
-
-　主に不具合修正となっています。主としてvSANの不具合の対応ということで個人向けにはあまり関連しそうなところはありませんが、Mellanoxカード（Connect X-4,5,6）に関するパラメータがリセットされる（デフォルト値以外は非推奨）という記載があります。
+　セキュリティパッチと不具合修正となっています。再びMellanoxカード（Connect X-4,5,6）に関する修正もあります。構成やパフォーマンス、メモリ周り、iSCSIなど幅広く修正が入っています。これらを見るとまだまだESXi8.0は安定に向けた取り組み中というステータスに見えます。
 
 > VMware ESXi 7.0 Update 3n（2023-7-6発表）
  <https://docs.vmware.com/en/VMware-vSphere/7.0/rn/vsphere-esxi-70u3n-release-notes.html>
@@ -103,39 +102,39 @@ ESXiにログインし、以下の作業を行います。
 ### ESXi8.0のパッチ適用
 
 #### 現在稼働中のプロファイルを確認
- 新しいドライバやバグフィックス、セキュリティパッチなど含めたprofileとして整合性が取れたvibのアップデートはprofile updateを実行します。ここでは、ESXi8.0Update1からUpdate1aにアップデートすることを例にします。
+ 新しいドライバやバグフィックス、セキュリティパッチなど含めたprofileとして整合性が取れたvibのアップデートはprofile updateを実行します。ここでは、ESXi8.0Update1aからUpdate1cにアップデートすることを例にします。
 
  現在の実行中のprofileを確認します。`esxcli software profile get`
  ``` bash
 [root@localhost:~] esxcli software profile get
-ESXi-8.0U1-21495797-standard
-   Name: ESXi-8.0U1-21495797-standard
+(Updated) ESXi-8.0U1a-21813344-standard
+   Name: (Updated) ESXi-8.0U1a-21813344-standard
    Vendor: VMware, Inc.
-   Creation Time: 2023-04-29T21:45:50
-   Modification Time: 2023-06-03T09:26:33
+   Creation Time: 2023-06-25T00:29:51
+   Modification Time: 2023-07-30T00:28:24
    Stateless Ready: False
  ```
 
  一般的にはバージョンの最後に"-standard"の文字が付いています。standard版がインストールされている事を示します。
  次に、パッチファイルに登録されているprofileを確認します（パッチはフルパス指定が必要です）。
  ``` bash
- [root@localhost:/vmfs/volumes/datastore1/update] esxcli software sources profile list -d /vmfs/volumes/dat
-astore1/update/VMware-ESXi-8.0U1a-21813344-depot.zip
-Name                           Vendor        Acceptance Level  Creation Time        Modification Time
------------------------------  ------------  ----------------  -------------------  -----------------
-ESXi-8.0U1a-21813344-standard  VMware, Inc.  PartnerSupported  2023-06-01T00:00:00  2023-06-01T00:00:00
-ESXi-8.0U1a-21813344-no-tools  VMware, Inc.  PartnerSupported  2023-06-01T00:00:00  2023-05-24T06:02:20
+ [root@localhost:/vmfs/volumes/datastore1/update] esxcli software sources profile list -d /vmfs/volumes/datastore1/update/VMware-ESXi-8.0U1c-22088125-depot.zip
+Name                            Vendor        Acceptance Level  Creation Time        Modification Time
+------------------------------  ------------  ----------------  -------------------  -----------------
+ESXi-8.0U1sc-22082334-standard  VMware, Inc.  PartnerSupported  2023-07-27T00:00:00  2023-07-27T00:00:00
+ESXi-8.0U1sc-22082334-no-tools  VMware, Inc.  PartnerSupported  2023-07-27T00:00:00  2023-07-14T01:55:09
+ESXi-8.0U1c-22088125-standard   VMware, Inc.  PartnerSupported  2023-07-27T00:00:00  2023-07-27T00:00:00
+ESXi-8.0U1c-22088125-no-tools   VMware, Inc.  PartnerSupported  2023-07-27T00:00:00  2023-07-15T02:41:02
 ```
-
- VMWare Toolsを含まないProfileであるno-tools、VMWare Tools付きのstandard版となります。VMWare Toolsを使う一般的なユーザーはStandardを選択することになります。
+今回は、セキュリティパッチのみと不具合＋セキュリティパッチとの2種類あるケースですね。
+ダウンタイムが許されない重要なシステムであればドライバなどは除き、セキュリティパッチのみを当てることもありますが、ホームユーザー一般としては、VMWare Toolsと不具合＋セキュリティパッチ（ESXi-8.0U1c-22088125-standard）を適用することになります。
 
 #### パッチ適用
 
 以下のようにパッチファイルのzipをフルパスで指定し、VMwareのパッチ情報にあるプロファイル名を指定しパッチを適用します。ここではstandardを指定します。
 
 ``` bash
-[root@localhost:/vmfs/volumes/datastore1/update] esxcli software profile update -d /vmfs/volumes/datastore
-1/update/VMware-ESXi-8.0U1a-21813344-depot.zip -p ESXi-8.0U1a-21813344-standard
+[root@localhost:/vmfs/volumes/datastore1/update] esxcli software profile update -d /vmfs/volumes/datastore1/update/VMware-ESXi-8.0U1c-22088125-depot.zip -p ESXi-8.0U1c-22088125-standard
 ```
 
 `esxcli software profile update`の実行後しばらくしてから、結果が表示されます。
@@ -150,7 +149,7 @@ Update Result
 
 コマンドプロンプトから、`reboot`としてESXiを再起動します。
 
-再起動完了後、ESXiにログインします。左ペインメニューの"ホスト"をクリックし、バージョンの表記に今回パッチを当てたビルド番号が表示されている事を確認してください。今回はU1aとなっているはずです。
+再起動完了後、ESXiにログインします。左ペインメニューの"ホスト"をクリックし、バージョンの表記に今回パッチを当てたビルド番号が表示されている事を確認してください。今回はU1cとなっているはずです。
 
 {% asset_img esxi6.png 1024 alt %}
 
@@ -158,8 +157,10 @@ Update Result
 
  ``` bash
 [root@localhost:~] vmware -v
-VMware ESXi 8.0.1 build-21813344
+VMware ESXi 8.0.1 build-22088125
  ```
+
+なお、このブログで紹介しているMellanoxカードのファームウェアアップデートのためのnmst、MFTツールが導入されている場合で古いモジュールがインストールされている場合、依存関係でU1cに更新できませんでした。この場合は、Mellanox（NVidia）のサイトから最新のnmstおよびMFTモジュールを再度インストールした上で、Updateすることで無事ESXi8.0Update1cのパッチを適用することができました。Mellanoxのファームウェアアップデートの方法については、「{% post_link nic-firmware  %}」を参照してください。
 
 ### ESXi7.0のパッチ適用
 
