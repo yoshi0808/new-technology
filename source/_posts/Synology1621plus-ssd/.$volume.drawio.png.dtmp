@@ -1,0 +1,43 @@
+<mxfile host="Electron" modified="2023-07-21T23:30:12.331Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.6.1 Chrome/112.0.5615.204 Electron/24.6.1 Safari/537.36" etag="5nbZtixjEn_xubDMxx27" version="21.6.1" type="device">
+  <diagram name="ページ1" id="fh3C4bedhfWZ88lOQrnI">
+    <mxGraphModel dx="1026" dy="687" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="VkCn2RglgPXx9zSh9COO-1" value="SSD 1&lt;br&gt;（4TB）" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;labelBackgroundColor=none;fillColor=#A8DADC;strokeColor=#457B9D;fontColor=#1D3557;" vertex="1" parent="1">
+          <mxGeometry x="130" y="250" width="60" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="VkCn2RglgPXx9zSh9COO-2" value="SSD 2（4TB）" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;labelBackgroundColor=none;fillColor=#A8DADC;strokeColor=#457B9D;fontColor=#1D3557;" vertex="1" parent="1">
+          <mxGeometry x="210" y="250" width="60" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="VkCn2RglgPXx9zSh9COO-3" value="SSD 3（4TB）" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;labelBackgroundColor=none;fillColor=#A8DADC;strokeColor=#457B9D;fontColor=#1D3557;" vertex="1" parent="1">
+          <mxGeometry x="290" y="250" width="60" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="VkCn2RglgPXx9zSh9COO-4" value="SSD 4（4TB）" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;labelBackgroundColor=none;fillColor=#A8DADC;strokeColor=#457B9D;fontColor=#1D3557;" vertex="1" parent="1">
+          <mxGeometry x="370" y="250" width="60" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="VkCn2RglgPXx9zSh9COO-5" value="SSD 5（4TB）" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;labelBackgroundColor=none;fillColor=#A8DADC;strokeColor=#457B9D;fontColor=#1D3557;" vertex="1" parent="1">
+          <mxGeometry x="450" y="250" width="60" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="VkCn2RglgPXx9zSh9COO-6" value="SSD 6（4TB）" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;labelBackgroundColor=none;fillColor=#A8DADC;strokeColor=#457B9D;fontColor=#1D3557;" vertex="1" parent="1">
+          <mxGeometry x="530" y="250" width="60" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="VkCn2RglgPXx9zSh9COO-7" value="ストレージプール（RAID5）/18.1TB" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#457B9D;fontColor=#1D3557;fillColor=#A8DADC;labelBackgroundColor=none;" vertex="1" parent="1">
+          <mxGeometry x="120" y="340" width="490" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="VkCn2RglgPXx9zSh9COO-8" value="単一ボリューム（Btrfsファイルシステム）/17. 4TB" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#457B9D;fontColor=#1D3557;fillColor=#A8DADC;labelBackgroundColor=none;" vertex="1" parent="1">
+          <mxGeometry x="120" y="400" width="490" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="VkCn2RglgPXx9zSh9COO-9" value="フォルダ1" style="shape=document;whiteSpace=wrap;html=1;boundedLbl=1;strokeColor=#457B9D;fontColor=#1D3557;fillColor=#A8DADC;labelBackgroundColor=none;" vertex="1" parent="1">
+          <mxGeometry x="130" y="505" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="VkCn2RglgPXx9zSh9COO-10" value="フォルダ2" style="shape=document;whiteSpace=wrap;html=1;boundedLbl=1;strokeColor=#457B9D;fontColor=#1D3557;fillColor=#A8DADC;labelBackgroundColor=none;" vertex="1" parent="1">
+          <mxGeometry x="294" y="505" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="VkCn2RglgPXx9zSh9COO-11" value="フォルダ3" style="shape=document;whiteSpace=wrap;html=1;boundedLbl=1;strokeColor=#457B9D;fontColor=#1D3557;fillColor=#A8DADC;labelBackgroundColor=none;" vertex="1" parent="1">
+          <mxGeometry x="470" y="505" width="120" height="80" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
