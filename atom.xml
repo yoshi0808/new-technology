@@ -6,7 +6,7 @@
   <link href="https://yoshi0808.github.io/new-technology/atom.xml" rel="self"/>
   
   <link href="https://yoshi0808.github.io/new-technology/"/>
-  <updated>2023-07-27T11:37:57.655Z</updated>
+  <updated>2023-08-20T00:14:19.627Z</updated>
   <id>https://yoshi0808.github.io/new-technology/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Sophos Firewall v19.5 MR-3</title>
+    <link href="https://yoshi0808.github.io/new-technology/2023/08/20/xg-v195mr3/"/>
+    <id>https://yoshi0808.github.io/new-technology/2023/08/20/xg-v195mr3/</id>
+    <published>2023-08-19T15:00:00.000Z</published>
+    <updated>2023-08-20T00:14:19.627Z</updated>
+    
+    <content type="html"><![CDATA[<img src="/new-technology/2023/08/20/xg-v195mr3/title.png" class="" title="alt"><h2 id="Sophos-Firewall-v19-5-MR3"><a href="#Sophos-Firewall-v19-5-MR3" class="headerlink" title="Sophos Firewall v19.5 MR3"></a>Sophos Firewall v19.5 MR3</h2><p>Sophos Firewall v19.5 MR3が2023年8月2日に発表されました。</p><span id="more"></span><h2 id="主なエンハンスの内容"><a href="#主なエンハンスの内容" class="headerlink" title="主なエンハンスの内容"></a>主なエンハンスの内容</h2><p>MR3では65以上のパフォーマンスおよび安定化・セキュリティ向上に対応しています。また、今後、リモートアクセス製品であるZTNAのセキュアアクセスに対応させる予定とのこと。<br>私の所感としては、これまでのSophos FirewallのVPNではそれなりに便利に活用していますが、ZTNAで透過的にリモートアプリケーションが利用できるようになるとの事であれば期待が持てます。但し、ZTNAの導入にはSophos Centralが必要であること（無料）、ZTNAの価格についてホームユーザーの扱いがどうなるかはまだ判明しないように見えます。<br>システム構成としてはActive Directoryとの統合連携など法人向けには必須の要件が含まれているので、少しホームユーザーからは少し遠い存在になってしまうかもしれません。</p><p>v19.5 MR3の詳細な説明はRelease Notesを参照してください。</p><blockquote><p><a href="https://docs.sophos.com/releasenotes/index.html?productGroupID=nsg&amp;productID=xg&amp;versionID=19.5">https://docs.sophos.com/releasenotes/index.html?productGroupID=nsg&amp;productID=xg&amp;versionID=19.5</a></p></blockquote><p>Ipsec-VPNでSSL&#x2F;TLSインスペクションが動作しないという不具合の改善も含まれています。</p><h2 id="Sophos-Firewallのアップデート"><a href="#Sophos-Firewallのアップデート" class="headerlink" title="Sophos Firewallのアップデート"></a>Sophos Firewallのアップデート</h2><p>XGの管理画面にログイン後、左ペインメニューの<mark class="label primary">バックアップ＆ファームウェア</mark>の<mark class="label primary">ファームウェアの確認</mark>に通知が来る場合があります(以下はMR-2の画面です)。</p><img src="/new-technology/2023/08/20/xg-v195mr3/notice.png" class="" width="480" title="alt"><p>また、アップデートの案内が来ていなくても、MySophosにログインし、バージョンアップの差分モジュールをダウンロードします。</p><ol><li>Sophosのサイトの上部の「ソフォスについて」のプルダウンメニューから、<mark class="label primary">ライセンスとアカウント</mark>をクリックします。<blockquote><p><a href="https://www.sophos.com/ja-jp.aspx">https://www.sophos.com/ja-jp.aspx</a></p></blockquote></li><li>Sophos IDをお持ちでなければIDを作成します。</li><li>ログイン後、<mark class="label primary">Network Protection</mark>をクリックします。</li><li><mark class="label primary">Firmware Updates</mark>をクリックします。</li><li>「製品名&#x2F;OSを使った検索」で”Firewall”を選択し、その後現れるプルダウンは”Software”を選択します。</li><li><mark class="label primary">Show Available Downloads</mark>ボタンをクリックします。</li></ol><img src="/new-technology/2023/08/20/xg-v195mr3/mysophos.png" class="" width="800" title="alt"><ol><li>上記画面で”SW-19.5.3_MR-3.SFW-652.sig”というアップデータが表示されますのでダウンロードします。</li><li>MY Sophosはここで終了してXGの管理画面にログインし、左ペインメニューの<mark class="label primary">バックアップ＆ファームウェア</mark>の<mark class="label primary">ファームウェアのタブメニュー</mark>から以下の画面に赤丸で囲った矢印のアイコンをクリックし、ダウンロードしたモジュールをアップロードします。</li></ol><img src="/new-technology/2023/08/20/xg-v195mr3/verup.png" class="" width="800" title="alt"><p>アップロード＆再起動ボタンをクリックし、v19.5 MR3へのアップグレードを完了させます。</p><img src="/new-technology/2023/08/20/xg-v195mr3/upgrade.png" class="" width="800" title="alt"><div class="note info"><p>仮想環境（ESXi）上にFirewallをインストールされている方はアップグレードの前に、「<a href="/new-technology/2020/10/11/esxi-backup/" title="VMware ESXiの仮想マシンをバックアップする">VMware ESXiの仮想マシンをバックアップする</a>」を参考に、バックアップを確保される事をお勧めします。</p></div>]]></content>
+    
+    
+    <summary type="html">&lt;img src=&quot;/new-technology/2023/08/20/xg-v195mr3/title.png&quot; class=&quot;&quot; title=&quot;alt&quot;&gt;
+
+&lt;h2 id=&quot;Sophos-Firewall-v19-5-MR3&quot;&gt;&lt;a href=&quot;#Sophos-Firewall-v19-5-MR3&quot; class=&quot;headerlink&quot; title=&quot;Sophos Firewall v19.5 MR3&quot;&gt;&lt;/a&gt;Sophos Firewall v19.5 MR3&lt;/h2&gt;&lt;p&gt;Sophos Firewall v19.5 MR3が2023年8月2日に発表されました。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Security" scheme="https://yoshi0808.github.io/new-technology/categories/Security/"/>
+    
+    
+    <category term="XG Firewall" scheme="https://yoshi0808.github.io/new-technology/tags/XG-Firewall/"/>
+    
+  </entry>
   
   <entry>
     <title>Synology DS1621+（DSM7.2）とSSD</title>
@@ -505,29 +528,6 @@
     <category term="SFP+" scheme="https://yoshi0808.github.io/new-technology/tags/SFP/"/>
     
     <category term="10GbE" scheme="https://yoshi0808.github.io/new-technology/tags/10GbE/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Sophos Firewall v19</title>
-    <link href="https://yoshi0808.github.io/new-technology/2022/04/29/xg-v19/"/>
-    <id>https://yoshi0808.github.io/new-technology/2022/04/29/xg-v19/</id>
-    <published>2022-04-28T15:00:00.000Z</published>
-    <updated>2022-11-26T00:04:23.000Z</updated>
-    
-    <content type="html"><![CDATA[<img src="/new-technology/2022/04/29/xg-v19/title.png" class="" title="alt"><h2 id="Sophos-Firewall-v19"><a href="#Sophos-Firewall-v19" class="headerlink" title="Sophos Firewall v19"></a>Sophos Firewall v19</h2><p>Sophos Firewall v19が2022年4月21日に発表されました。</p><span id="more"></span><h2 id="主なエンハンスの内容"><a href="#主なエンハンスの内容" class="headerlink" title="主なエンハンスの内容"></a>主なエンハンスの内容</h2><ul><li>SD-WAN（Software Defined-Wide Area Network）の強化</li><li>IPSecに関する高速化（Xstream FastPath acceleration）</li><li>SSLーVPNを含むVPNのエンハンス</li><li>Sophos Assistant機能の追加</li></ul><p>v19の詳細な説明はSophos Communityを参照してください。</p><blockquote><p><a href="https://community.sophos.com/sophos-xg-firewall/b/blog/posts/sophos-firewall-os-v19-is-now-available">https://community.sophos.com/sophos-xg-firewall/b/blog/posts/sophos-firewall-os-v19-is-now-available</a></p></blockquote><h2 id="Sophos-Firewallのアップデート"><a href="#Sophos-Firewallのアップデート" class="headerlink" title="Sophos Firewallのアップデート"></a>Sophos Firewallのアップデート</h2><p>XGの管理画面にログイン後、左ペインメニューの<mark class="label primary">バックアップ＆ファームウェア</mark>の<mark class="label primary">ファームウェアの確認</mark>ではただちに全てのユーザーにアップデートの案内が来るわけでは無いので、アップデートにはMySophosにログインし、バージョンアップの差分モジュールをダウンロードします。</p><ol><li>Sophosのサイトの右上のプルダウンメニューから、<mark class="label primary">ライセンスとアカウント</mark>をクリックします。<blockquote><p><a href="https://www.sophos.com/ja-jp.aspx">https://www.sophos.com/ja-jp.aspx</a></p></blockquote></li><li>Sophos IDをお持ちでなければIDを作成します。</li><li>ログイン後、<mark class="label primary">Network Protection</mark>をクリックします。</li><li><mark class="label primary">ファームウェアの更新</mark>をクリックします。</li><li>「製品名&#x2F;OSを使った検索」で”ファイアーウォール”を選択し、その後現れるプルダウンは”ソフトウェア”を選択します。</li><li><mark class="label primary">選択可能なダウンロードを表示</mark>ボタンをクリックします。</li></ol><img src="/new-technology/2022/04/29/xg-v19/mysophos.png" class="" width="800" title="alt"><ol><li>上記画面で”SW-19.0.0_GA.SFW-317.sig”というアップデータが表示されますのでダウンロードします。</li><li>MY Sophosはここで終了してXGの管理画面にログインし、左ペインメニューの<mark class="label primary">バックアップ＆ファームウェア</mark>の<mark class="label primary">ファームウェアのタブメニュー</mark>から以下の画面に赤丸で囲った矢印のアイコンをクリックし、ダウンロードしたモジュールをアップロードします。</li></ol><img src="/new-technology/2022/04/29/xg-v19/verup.png" class="" width="800" title="alt"><p>アップロード＆再起動ボタンをクリックし、v19へのアップグレードを完了させます。</p><img src="/new-technology/2022/04/29/xg-v19/upgrade.png" class="" width="800" title="alt"><div class="note info"><p>仮想環境（ESXi）上にFirewallをインストールされている方はアップグレードの前に、「<a href="/new-technology/2020/10/11/esxi-backup/" title="VMware ESXiの仮想マシンをバックアップする">VMware ESXiの仮想マシンをバックアップする</a>」を参考に、バックアップを確保される事をお勧めします。</p></div><h2 id="VPNの設定"><a href="#VPNの設定" class="headerlink" title="VPNの設定"></a>VPNの設定</h2><p>VPNも内部的にはバージョンアップはされていますが、ホームユーザーが利用するIPSec VPNやSSLーVPNについて設定ファイルの変更はなく、過去からの物がそのまま利用できます。どちらかといえば、企業向けのサービスとして、サイト間VPNの機能強化を主眼に置いたものになります。管理画面のメニューにおいても、<mark class="label primary">リモートアクセスVPN</mark>と<mark class="label primary">サイト間VPN</mark>とメニューが分かれるようになりました。</p><h2 id="Sophos-Assistant"><a href="#Sophos-Assistant" class="headerlink" title="Sophos Assistant"></a>Sophos Assistant</h2><p>Sophos Assistantという管理画面操作のアシスタント機能が追加になりました。例えば、サーバーとしてインターネット側からの接続を受け入れる場合は、DNATという機能を使うことになりますが、以下のように「Full configuration: Create DNAT and firewall rules for web servers」という項目を選択すると、まず最初にWebサーバーのIPを定義するところから始めるように促してくれます。</p><img src="/new-technology/2022/04/29/xg-v19/sa1.png" class="" width="640" title="alt"><img src="/new-technology/2022/04/29/xg-v19/sa2.png" class="" width="1024" title="alt"><p>ある程度わかっている人が久々に操作する時には役に立つ機能と思われます。時間があるときに色々調べてみると知らなかった機能など気づきがあるかもしれません。</p><h2 id="Amazon-Virtual-Private-Cloud-Amazon-VPC-の対応"><a href="#Amazon-Virtual-Private-Cloud-Amazon-VPC-の対応" class="headerlink" title="Amazon Virtual Private Cloud (Amazon VPC) の対応"></a>Amazon Virtual Private Cloud (Amazon VPC) の対応</h2><p>v19より、AWSのプライベートクラウドに接続する機能が加わっています。自宅オンプレとAWSクラウドとをシームレスにネットワークを接続するハイブリッドクラウドに興味のある方はウォッチしてみてください。</p><blockquote><p>Amazon Web Services VPC support in SFOS v19<br> <a href="https://news.sophos.com/en-us/2022/04/07/amazon-web-services-vpc-support-in-sfos-v19/">https://news.sophos.com/en-us/2022/04/07/amazon-web-services-vpc-support-in-sfos-v19/</a></p></blockquote>]]></content>
-    
-    
-    <summary type="html">&lt;img src=&quot;/new-technology/2022/04/29/xg-v19/title.png&quot; class=&quot;&quot; title=&quot;alt&quot;&gt;
-
-&lt;h2 id=&quot;Sophos-Firewall-v19&quot;&gt;&lt;a href=&quot;#Sophos-Firewall-v19&quot; class=&quot;headerlink&quot; title=&quot;Sophos Firewall v19&quot;&gt;&lt;/a&gt;Sophos Firewall v19&lt;/h2&gt;&lt;p&gt;Sophos Firewall v19が2022年4月21日に発表されました。&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="Security" scheme="https://yoshi0808.github.io/new-technology/categories/Security/"/>
-    
-    
-    <category term="XG Firewall" scheme="https://yoshi0808.github.io/new-technology/tags/XG-Firewall/"/>
     
   </entry>
   
