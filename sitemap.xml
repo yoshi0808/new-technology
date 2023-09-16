@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://yoshi0808.github.io/new-technology/2020/10/11/esxi-backup/</loc>
+    
+    <lastmod>2023-09-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://yoshi0808.github.io/new-technology/2023/09/16/Synology-abb/</loc>
     
     <lastmod>2023-09-16</lastmod>
@@ -138,15 +147,6 @@
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/2021/10/03/2500MbE/</loc>
-    
-    <lastmod>2023-06-17</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://yoshi0808.github.io/new-technology/2020/10/11/esxi-backup/</loc>
     
     <lastmod>2023-06-17</lastmod>
     
@@ -774,13 +774,6 @@
   </url>
   
   <url>
-    <loc>https://yoshi0808.github.io/new-technology/tags/ESXi/</loc>
-    <lastmod>2023-09-16</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://yoshi0808.github.io/new-technology/tags/SFP/</loc>
     <lastmod>2023-09-16</lastmod>
     <changefreq>weekly</changefreq>
@@ -802,6 +795,13 @@
   </url>
   
   <url>
+    <loc>https://yoshi0808.github.io/new-technology/tags/DeepL/</loc>
+    <lastmod>2023-09-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://yoshi0808.github.io/new-technology/tags/Synology/</loc>
     <lastmod>2023-09-16</lastmod>
     <changefreq>weekly</changefreq>
@@ -809,7 +809,7 @@
   </url>
   
   <url>
-    <loc>https://yoshi0808.github.io/new-technology/tags/DeepL/</loc>
+    <loc>https://yoshi0808.github.io/new-technology/tags/ESXi/</loc>
     <lastmod>2023-09-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -851,14 +851,14 @@
   </url>
   
   <url>
-    <loc>https://yoshi0808.github.io/new-technology/tags/Ubuntu/</loc>
+    <loc>https://yoshi0808.github.io/new-technology/tags/UniFi/</loc>
     <lastmod>2023-09-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://yoshi0808.github.io/new-technology/tags/UniFi/</loc>
+    <loc>https://yoshi0808.github.io/new-technology/tags/Ubuntu/</loc>
     <lastmod>2023-09-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -888,14 +888,14 @@
   </url>
   
   <url>
-    <loc>https://yoshi0808.github.io/new-technology/categories/Software/</loc>
+    <loc>https://yoshi0808.github.io/new-technology/categories/Network/</loc>
     <lastmod>2023-09-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://yoshi0808.github.io/new-technology/categories/Network/</loc>
+    <loc>https://yoshi0808.github.io/new-technology/categories/Software/</loc>
     <lastmod>2023-09-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>

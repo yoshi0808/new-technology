@@ -37,18 +37,18 @@
     
     
     
-    <category term="Software" scheme="https://yoshi0808.github.io/new-technology/categories/Software/"/>
-    
     <category term="Network" scheme="https://yoshi0808.github.io/new-technology/categories/Network/"/>
     
+    <category term="Software" scheme="https://yoshi0808.github.io/new-technology/categories/Software/"/>
     
-    <category term="ESXi" scheme="https://yoshi0808.github.io/new-technology/tags/ESXi/"/>
     
     <category term="10GbE" scheme="https://yoshi0808.github.io/new-technology/tags/10GbE/"/>
     
     <category term="25GbE" scheme="https://yoshi0808.github.io/new-technology/tags/25GbE/"/>
     
     <category term="Synology" scheme="https://yoshi0808.github.io/new-technology/tags/Synology/"/>
+    
+    <category term="ESXi" scheme="https://yoshi0808.github.io/new-technology/tags/ESXi/"/>
     
   </entry>
   
@@ -125,9 +125,9 @@
     <category term="Hardware" scheme="https://yoshi0808.github.io/new-technology/categories/Hardware/"/>
     
     
-    <category term="ESXi" scheme="https://yoshi0808.github.io/new-technology/tags/ESXi/"/>
-    
     <category term="25GbE" scheme="https://yoshi0808.github.io/new-technology/tags/25GbE/"/>
+    
+    <category term="ESXi" scheme="https://yoshi0808.github.io/new-technology/tags/ESXi/"/>
     
   </entry>
   

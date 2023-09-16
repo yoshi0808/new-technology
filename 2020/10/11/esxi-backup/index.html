@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/10/11/esxi-backup/esxi1.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/10/11/esxi-backup/esxi3.png">
 <meta property="article:published_time" content="2020-10-11T02:45:41.000Z">
-<meta property="article:modified_time" content="2023-06-17T23:03:01.414Z">
+<meta property="article:modified_time" content="2023-09-16T01:56:37.673Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta property="article:tag" content="ESXi">
@@ -279,7 +279,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">編集日</span>
-      <time title="修正日：2023-06-18 08:03:01" itemprop="dateModified" datetime="2023-06-18T08:03:01+09:00">2023-06-18</time>
+      <time title="修正日：2023-09-16 10:56:37" itemprop="dateModified" datetime="2023-09-16T10:56:37+09:00">2023-09-16</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -310,8 +310,8 @@
 <h2 id="ESXiのバックアップソフトウェア"><a href="#ESXiのバックアップソフトウェア" class="headerlink" title="ESXiのバックアップソフトウェア"></a>ESXiのバックアップソフトウェア</h2><p>無償版ESXiの仮想マシン（VM)をバックアップするには以下の3つの選択肢があります。</p>
 <ol>
 <li>ghettoVCBバックアップスクリプト（この記事で説明しています）</li>
+<li>Synology NASによるバックアップ<br>「<a href="/new-technology/2023/09/16/Synology-abb/" title="Synology NASでESXi仮想マシンのバックアップを取得する">Synology NASでESXi仮想マシンのバックアップを取得する</a>」を参照してください。</li>
 <li>Nakivo Backup Free Edition<br> 「<a href="/new-technology/2021/03/06/esxi-nakivo/" title="無償版ESXiの高度なバックアップ">無償版ESXiの高度なバックアップ</a>」を参照してください。</li>
-<li>NASのアプリケーションによるバックアップ</li>
 </ol>
 <h2 id="ghettoVCBでバックアップする"><a href="#ghettoVCBでバックアップする" class="headerlink" title="ghettoVCBでバックアップする"></a>ghettoVCBでバックアップする</h2><p>このブログで紹介している<strong>Sophos Firewall</strong>は、ESXi上にセットアップする事をお勧めしています。その理由としては仮想マシンは比較的バックアップが取得しやすく、万が一のトラブル発生時に速やかに復元（レストア）しやすい事が理由でもあります。もちろん、Sophos Firewallには設定ファイルをバックアップする機能が存在しますが、バージョンアップやデバイスの入れ替え等何らかのきっかけでうまく稼働しなくなるリスクがあります。Firewall自体がOSとして起動するため、バックアップソフトウェアをインストールできません。このghettoVCBはESXi上で動作させるコマンドラインのスクリプトですが、利用は難しくありません。</p>
 <h2 id="ESXiのスナップショット"><a href="#ESXiのスナップショット" class="headerlink" title="ESXiのスナップショット"></a>ESXiのスナップショット</h2><p>ESXiはスナップショットという機能を持っており、その時点の稼働状態について保存可能です。動画の一瞬を絵として切り取るという表現が適切でしょうか、これは一瞬で完了し、いつでもロールバックが可能です。複数の世代を持て使い勝手はとても良好です。ビジネスの世界では本番環境にパッチを当てる際などの最終確認フェーズで活用されます。つまり、万が一の時にはロールバックする事で速やかに以前の状態に戻す事が可能です。但し、このスナップショットを取ったまま長時間運用する事をVMWareは推奨していません。スナップショットを取得した後のメモリを含む稼働状況の差分をDiskに記録していく必要があり、これがパフォーマンスに悪影響を及ぼすためです。従い、スナップショットは恒久的なバックアップの役割にはなりません。</p>
