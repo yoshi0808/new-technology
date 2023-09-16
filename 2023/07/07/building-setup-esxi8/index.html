@@ -31,7 +31,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/07/07/building-setup-esxi8/ubuntu1.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/07/07/building-setup-esxi8/esxi3.png">
 <meta property="article:published_time" content="2023-07-07T00:58:48.000Z">
-<meta property="article:modified_time" content="2023-07-07T09:58:27.553Z">
+<meta property="article:modified_time" content="2023-09-04T09:32:46.503Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="ESXi">
 <meta property="article:tag" content="25GbE">
@@ -189,7 +189,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/new-technology/archives/">
-          <span class="site-state-item-count">75</span>
+          <span class="site-state-item-count">76</span>
           <span class="site-state-item-name">ポスト</span>
         </a>
       </div>
@@ -269,9 +269,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">投稿日</span>
-      
 
-      <time title="作成日：2023-07-07 09:58:48 / 修正日：18:58:27" itemprop="dateCreated datePublished" datetime="2023-07-07T09:58:48+09:00">2023-07-07</time>
+      <time title="作成日：2023-07-07 09:58:48" itemprop="dateCreated datePublished" datetime="2023-07-07T09:58:48+09:00">2023-07-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">編集日</span>
+      <time title="修正日：2023-09-04 18:32:46" itemprop="dateModified" datetime="2023-09-04T18:32:46+09:00">2023-09-04</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -301,7 +307,7 @@
 <blockquote>
 <p>パソコン工房<br> <a target="_blank" rel="noopener" href="https://www.pc-koubou.jp/">https://www.pc-koubou.jp</a></p>
 </blockquote>
-<h2 id="ハードウェア構成"><a href="#ハードウェア構成" class="headerlink" title="ハードウェア構成"></a>ハードウェア構成</h2><p>注文したPCは以下の構成でした。<br>【OS】Windows 11 Home<br>　【プロセッサー】AMD Ryzen 5 5600Gプロセッサー (3.9-4.4GHz&#x2F;6コア&#x2F;12スレッド&#x2F;16MBキャッシュ&#x2F;TDP 65W)<br>　【CPU冷却グリス】【熱伝導率： 9W&#x2F;m K】 シルバーグリスArctic Silver 5塗布サービス<br>　【CPUクーラー】静音CPUクーラー Wraith Stealth[トップフロー]<br>　【グラフィックアクセラレーター】Radeon Graphics(CPU統合グラフィックス）<br>　【メインメモリ】16GB(8GB×2)[DDR4-3200 &#x2F; デュアルチャンネル］<br>　【1stストレージ［OSインストール］】500GB SSD &#x2F; NVMe M.2[PCIe 3.0×4]<br>　【チップセット】AMD B550チップセット<br>　【サウンド機能】High Definition Audio subsystem<br>　【内蔵ネットワークカード】有線：1000BASE-T ※無線機能はついておりません<br>　【光学ドライブ】DVDスーパーマルチドライブ［LG GH24NSxx]<br>　【電源】400W[80PLUS BRONZE認証］&#x2F; TFX電源<br>　【ケース】スリムタイプMicroATXケースHEC 7KJC[フロントUSB3.0]ブラック                           |</p>
+<h2 id="ハードウェア構成"><a href="#ハードウェア構成" class="headerlink" title="ハードウェア構成"></a>ハードウェア構成</h2><p>注文したPCは以下の構成でした。<br>【OS】Windows 11 Home<br>　【プロセッサー】AMD Ryzen 5 5600Gプロセッサー (3.9-4.4GHz&#x2F;6コア&#x2F;12スレッド&#x2F;16MBキャッシュ&#x2F;TDP 65W)<br>　【CPU冷却グリス】【熱伝導率： 9W&#x2F;m K】 シルバーグリスArctic Silver 5塗布サービス<br>　【CPUクーラー】静音CPUクーラー Wraith Stealth[トップフロー]<br>　【グラフィックアクセラレーター】Radeon Graphics(CPU統合グラフィックス）<br>　【メインメモリ】16GB(8GB×2)[DDR4-3200 &#x2F; デュアルチャンネル］<br>　【1stストレージ［OSインストール］】500GB SSD &#x2F; NVMe M.2[PCIe 3.0×4]<br>　【チップセット】AMD B550チップセット<br>　【サウンド機能】High Definition Audio subsystem<br>　【内蔵ネットワークカード】有線：1000BASE-T ※無線機能はついておりません<br>　【光学ドライブ】DVDスーパーマルチドライブ［LG GH24NSxx]<br>　【電源】400W[80PLUS BRONZE認証］&#x2F; TFX電源<br>　【ケース】スリムタイプMicroATXケースHEC 7KJC[フロントUSB3.0]ブラック</p>
 <p>さて、PCが届いてから、ハードウェアを確認したところ、NVMeはウェスタンデジタルのBlueが組み込まれていました。また、マザーボードはASRock社のものです。そういえば、前回のESXi7.0のセットアップでは、セキュアブートは断念していました。Win11 Homeがセットアップされているモデルでしたが、WDのBlue（SN570）が入っていた事もあり、ふつふつとESXi8.0をインストールしたいと思い始め、ESXi8をクリーンインストールする事にしました。</p>
 <h3 id="ストレージ"><a href="#ストレージ" class="headerlink" title="ストレージ"></a>ストレージ</h3><p>前回は、VMware Commmunityで鉄板だった970EVO Plusでした。ESXiではSamsungが確実という印象でしたが、980 Pro NVMeでは、ファームウェアの不具合で故障率が高いという報告が上がっています。ESXiはNVMeストレージの種類を選ぶため事前調査が必要ですが、今回、何となくうまく行くだろう感があってBlue（SN570）にESXi8をセットアップしました。結果、全く問題ありませんでした。なぜかESXiの事例としてあまり出てこないのが不思議です。。。</p>
 <p>うまく行かなければ、William Lam氏のNVMeに関する情報で、SabrentのRocket Plus NVMeを試そうと思っていたところでした。<br><a target="_blank" rel="noopener" href="https://williamlam.com/2023/02/quick-tip-additional-nvme-vendors-sk-hynix-sabrent-for-esxi-homelab.html">https://williamlam.com/2023/02/quick-tip-additional-nvme-vendors-sk-hynix-sabrent-for-esxi-homelab.html</a></p>
