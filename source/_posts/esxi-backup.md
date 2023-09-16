@@ -20,9 +20,10 @@ date: 2020-10-11 11:45:41
 無償版ESXiの仮想マシン（VM)をバックアップするには以下の3つの選択肢があります。
 
 1. ghettoVCBバックアップスクリプト（この記事で説明しています）
-2. Nakivo Backup Free Edition
+2. Synology NASによるバックアップ
+「{% post_link Synology-abb %}」を参照してください。
+1. Nakivo Backup Free Edition
  「{% post_link esxi-nakivo %}」を参照してください。
-3. NASのアプリケーションによるバックアップ
 
 ## ghettoVCBでバックアップする
 
