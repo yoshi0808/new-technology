@@ -73,7 +73,11 @@ categories:
 
 ## インストール
 
-これまで同様、Rufusで32GBのUSBメモリにISOファイルを登録しUSBブートからESXi8.0Update1をセットアップします。
+これまで同様、Rufusで32GBのUSBメモリにISOファイルを登録しUSBブートからESXi8.0Update1aをセットアップします。
+なお、セットアップされる場合はVMWareのサイトで最新のバージョンを確認下さい。
+
+VMWare ESXi8.0
+<https://customerconnect.vmware.com/jp/evalcenter?p=free-esxi8>
 
 {% asset_img esxi1.png 800 alt %}
 メーカーはiiyamaなのに、なんでMouseComputerなんだろう。。。

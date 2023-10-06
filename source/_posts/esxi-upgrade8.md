@@ -9,7 +9,7 @@ categories:
 {% asset_img title.png 1024 alt %}
 <p class="onepoint">この記事で実現すること</p>
 
-無償版ESXi（VMware vSphere Hypervisor）について、ESXi8.0U1にアップグレードします。
+無償版ESXi（VMware vSphere Hypervisor）について、ESXi8.0U1にアップグレードします。最新のESXiは8.0U2となっています。
 
 <!-- more -->
 
@@ -44,7 +44,7 @@ VMware互換性ガイドは個人向けのハードウェアが殆ど列挙さ�
 また、上記マニュアルには注意点としての記載がありませんが、スナップショットを取得していない状態でアップグレードされる事をお勧めします。
 
 ESXi8にアップグレードする例を記載しています。厳密なアップグレードパスについては以下を確認してください。
-{% asset_img upgradepath.png 1024 alt %}
+{% asset_img upgradepath.png 640 alt %}
 
 <https://interopmatrix.vmware.com/Upgrade?productId=1363>
 
@@ -59,7 +59,7 @@ ESXi8にアップグレードする例を記載しています。厳密なアッ
 
 ## アップグレード対象のESXi8.0を確認する
 
-ESXiのISOインストーラのダウンロードは、2023年6月1日時点ではESXi8.0 Update1（8.0U1a）となっています。
+ESXiのISOインストーラのダウンロードは、2023年9月23日時点ではESXi8.0 Update2となっています。
 
 >VMware vSphere Hypervisor 8.0 ダウンロード センター(※VMware Customer Connectへログインが必要です)
  <https://customerconnect.vmware.com/jp/evalcenter?p=free-esxi8>
