@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.0.0">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
@@ -327,7 +327,7 @@
 <blockquote>
 <p>esxcliコマンドを使用してアップグレードすると、古いバージョンのESXiは新しいVIBのインストールを実行するため、署名が保存されずセキュアブートは実行できません。ISOを使用してアップグレードすると、新しいVIBは署名を保存できます。（P88）</p>
 </blockquote>
-<p>上記の注意点の通り、UEFIのセキュアブートで稼働しているESXiのバージョンアップにはISOを使用してアップグレードすべきと読めます。一方、セキュアブートでなければ、<code>esxcli software profile update --depot=&lt;depot_location&gt; --profile=&lt;profile_name&gt; </code>のコマンドでアップグレード可能です。詳細は、「<a href="/new-technology/2020/06/14/esxi67-patch/" title="VMware ESXiにパッチを適用する">VMware ESXiにパッチを適用する</a>」の記事を参照してください。但し、ESXi8.0におけるハードウェア互換性が維持できるか慎重に確認するためには、ISOでのアップグレードを検討してください。</p>
+<p>上記の注意点の通り、UEFIのセキュアブートで稼働しているESXiのバージョンアップにはISOを使用してアップグレードすべきと読めます。一方、セキュアブートでなければ、<code>esxcli software profile update --depot=&lt;depot_location&gt; --profile=&lt;profile_name&gt; </code>のコマンドでアップグレード可能です。詳細は、「<a href="/2020/06/14/esxi67-patch/" title="VMware ESXiにパッチを適用する">VMware ESXiにパッチを適用する</a>」の記事を参照してください。但し、ESXi8.0におけるハードウェア互換性が維持できるか慎重に確認するためには、ISOでのアップグレードを検討してください。</p>
 <p>VMware互換性ガイドは個人向けのハードウェアが殆ど列挙されておらずチェックが困難なのが実態です。ハードウェアが準拠しているかどうかのチェックについては後述します。</p>
 <p>また、上記マニュアルには注意点としての記載がありませんが、スナップショットを取得していない状態でアップグレードされる事をお勧めします。</p>
 <p>ESXi8にアップグレードする例を記載しています。厳密なアップグレードパスについては以下を確認してください。</p>
@@ -337,7 +337,7 @@
 <blockquote>
 <p>vCenter Server Back-in-time release<br> <a target="_blank" rel="noopener" href="https://kb.vmware.com/s/article/67077#vCenterServer_7.0.x_to_8.0_upgrade_matrix">https://kb.vmware.com/s/article/67077#vCenterServer_7.0.x_to_8.0_upgrade_matrix</a></p>
 </blockquote>
-<h2 id="仮想マシンのバックアップ（任意）"><a href="#仮想マシンのバックアップ（任意）" class="headerlink" title="仮想マシンのバックアップ（任意）"></a>仮想マシンのバックアップ（任意）</h2><p>バージョンアップの前には仮想マシンのバックアップを別の筐体またはメディアに取得される事をお勧めします。「<a href="/new-technology/2020/10/11/esxi-backup/" title="VMware ESXiの仮想マシンをバックアップする">VMware ESXiの仮想マシンをバックアップする</a>」の記事を参照してください。ghettoVCBを使ったバックアップでは、ESXiにsshした上で、次のコマンドで全ての仮想マシンのバックアップ取得が可能です。<code>/bin/sh ./ghettoVCB.sh -a</code></p>
+<h2 id="仮想マシンのバックアップ（任意）"><a href="#仮想マシンのバックアップ（任意）" class="headerlink" title="仮想マシンのバックアップ（任意）"></a>仮想マシンのバックアップ（任意）</h2><p>バージョンアップの前には仮想マシンのバックアップを別の筐体またはメディアに取得される事をお勧めします。「<a href="/2020/10/11/esxi-backup/" title="VMware ESXiの仮想マシンをバックアップする">VMware ESXiの仮想マシンをバックアップする</a>」の記事を参照してください。ghettoVCBを使ったバックアップでは、ESXiにsshした上で、次のコマンドで全ての仮想マシンのバックアップ取得が可能です。<code>/bin/sh ./ghettoVCB.sh -a</code></p>
 <h2 id="アップグレード対象のESXi8-0を確認する"><a href="#アップグレード対象のESXi8-0を確認する" class="headerlink" title="アップグレード対象のESXi8.0を確認する"></a>アップグレード対象のESXi8.0を確認する</h2><p>ESXiのISOインストーラのダウンロードは、2023年9月23日時点ではESXi8.0 Update2となっています。</p>
 <blockquote>
 <p>VMware vSphere Hypervisor 8.0 ダウンロード センター(※VMware Customer Connectへログインが必要です)<br> <a target="_blank" rel="noopener" href="https://customerconnect.vmware.com/jp/evalcenter?p=free-esxi8">https://customerconnect.vmware.com/jp/evalcenter?p=free-esxi8</a></p>
@@ -372,7 +372,7 @@
 <h2 id="後処理"><a href="#後処理" class="headerlink" title="後処理"></a>後処理</h2><p>無事アップグレードが成功したら、以下の作業を行います。</p>
 <ol>
 <li>ESXi8.0のライセンス登録<br> ESXiにログイン後、左ペインメニューの<mark class="label primary">ホスト</mark>-<mark class="label primary">管理</mark>から<mark class="label primary">ライセンスタブ</mark>を選択し、<mark class="label primary">ライセンスの割り当て</mark>でダウンロード時に控えたライセンスキーを登録します。</li>
-<li>ESXi8.0の最新パッチ適用<br> ESXiのパッチ適用については、「<a href="/new-technology/2020/06/14/esxi67-patch/" title="VMware ESXiにパッチを適用する">VMware ESXiにパッチを適用する</a>」を参照してください。</li>
+<li>ESXi8.0の最新パッチ適用<br> ESXiのパッチ適用については、「<a href="/2020/06/14/esxi67-patch/" title="VMware ESXiにパッチを適用する">VMware ESXiにパッチを適用する</a>」を参照してください。</li>
 <li>ESXi8.0の構成情報のバックアップ（任意）</li>
 </ol>
 <h2 id="仮想マシンのアップグレード（任意）"><a href="#仮想マシンのアップグレード（任意）" class="headerlink" title="仮想マシンのアップグレード（任意）"></a>仮想マシンのアップグレード（任意）</h2><p>ESXiのバージョンアップ後、仮想マシンのバージョンをアップグレードできます。</p>

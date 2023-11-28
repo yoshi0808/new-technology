@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.0.0">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
@@ -301,7 +301,7 @@
     
     <div class="post-body" itemprop="articleBody"><img src="/new-technology/2022/03/25/xg-v185-mr3/title.png" class="" title="alt">
 
-<h2 id="Sophos-Firewall-v18-5-MR-3"><a href="#Sophos-Firewall-v18-5-MR-3" class="headerlink" title="Sophos Firewall v18.5 MR-3"></a>Sophos Firewall v18.5 MR-3</h2><p>Sophos Firewall v18.5 MR3が2022年3月24日に発表されました。主としては不具合の解消がメインです。また、v18.5を含みSophos Firewallの脆弱性の情報が提供されています。なお、XG Firewallの最新パッチについては、「<a href="/new-technology/2020/10/11/esxi-backup/" title="VMware ESXiの仮想マシンをバックアップする">VMware ESXiの仮想マシンをバックアップする</a>」の関連リンクを参照してください。</p>
+<h2 id="Sophos-Firewall-v18-5-MR-3"><a href="#Sophos-Firewall-v18-5-MR-3" class="headerlink" title="Sophos Firewall v18.5 MR-3"></a>Sophos Firewall v18.5 MR-3</h2><p>Sophos Firewall v18.5 MR3が2022年3月24日に発表されました。主としては不具合の解消がメインです。また、v18.5を含みSophos Firewallの脆弱性の情報が提供されています。なお、XG Firewallの最新パッチについては、「<a href="/2020/10/11/esxi-backup/" title="VMware ESXiの仮想マシンをバックアップする">VMware ESXiの仮想マシンをバックアップする</a>」の関連リンクを参照してください。</p>
 <span id="more"></span>
 
 <h2 id="主なエンハンスの内容"><a href="#主なエンハンスの内容" class="headerlink" title="主なエンハンスの内容"></a>主なエンハンスの内容</h2><ul>
@@ -336,14 +336,14 @@
 <p>アップロード＆再起動ボタンをクリックし、MR3へのアップグレードを完了させます。</p>
 <img src="/new-technology/2022/03/25/xg-v185-mr3/upgrade.png" class="" width="800" title="alt">
 
-<div class="note info"><p>仮想環境（ESXi）上にFirewallをインストールされている方はアップグレードの前に、「<a href="/new-technology/2020/10/11/esxi-backup/" title="VMware ESXiの仮想マシンをバックアップする">VMware ESXiの仮想マシンをバックアップする</a>」を参考に、バックアップを確保される事をお勧めします。</p>
+<div class="note info"><p>仮想環境（ESXi）上にFirewallをインストールされている方はアップグレードの前に、「<a href="/2020/10/11/esxi-backup/" title="VMware ESXiの仮想マシンをバックアップする">VMware ESXiの仮想マシンをバックアップする</a>」を参考に、バックアップを確保される事をお勧めします。</p>
 </div>
 
 <h2 id="Sophos-FirewallのCVE-2022-1040"><a href="#Sophos-FirewallのCVE-2022-1040" class="headerlink" title="Sophos FirewallのCVE-2022-1040"></a>Sophos FirewallのCVE-2022-1040</h2><p>Sophosからは、Resolved RCE in Sophos Firewallという記事で2022-03-25に発表されています。これは、リモートコード実行を可能にする認証バイパスの脆弱性であり、SophosファイアウォールのユーザーポータルとWebadminで影響を受けます。</p>
 <blockquote>
 <p>Sophos Resolved RCE in Sophos Firewall (CVE-2022-1040)<br> <a target="_blank" rel="noopener" href="https://www.sophos.com/en-us/security-advisories/sophos-sa-20220325-sfos-rce">https://www.sophos.com/en-us/security-advisories/sophos-sa-20220325-sfos-rce</a></p>
 </blockquote>
-<p>ただし、このブログで掲載している過去記事、「<a href="/new-technology/2020/06/24/protect-xg/" title="XG Firewall自身を防御する">XG Firewall自身を防御する</a>」で記載の通り、ローカルサービスACLにてWANからのWebadminおよびユーザーポータルからのアクセスが行えない状況にしてあれば、まず安全と言えます。Sophosではこういった脆弱性対策のためにHotFix機能を持っていて、速やかにパッチが自動更新されます。</p>
+<p>ただし、このブログで掲載している過去記事、「<a href="/2020/06/24/protect-xg/" title="XG Firewall自身を防御する">XG Firewall自身を防御する</a>」で記載の通り、ローカルサービスACLにてWANからのWebadminおよびユーザーポータルからのアクセスが行えない状況にしてあれば、まず安全と言えます。Sophosではこういった脆弱性対策のためにHotFix機能を持っていて、速やかにパッチが自動更新されます。</p>
 <img src="/new-technology/2022/03/25/xg-v185-mr3/acl.png" class="" width="800" title="alt">
 <p>※SSL-VPNを利用されている方はWANの項目にチェックが入る事は問題ありません。</p>
 <img src="/new-technology/2022/03/25/xg-v185-mr3/hotfix.png" class="" width="640" title="alt">

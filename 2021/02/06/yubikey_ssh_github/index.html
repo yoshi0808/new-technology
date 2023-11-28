@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.0.0">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
@@ -318,7 +318,7 @@
 <p>細かいことを言えば、WebAuthnはパスワードを必要としない認証のはずで、GitHubのような2要素認証は定義からすると少し違うような気がします。Microsoftアカウントは、YubiKeyを事前登録する事で、アカウントやパスワードを一切入力せず、YubiKeyのタッチだけでログインできます。公開鍵認証のお手本ですね。<br>他には、パスワード管理ソフトのbitwardenのプレミアムアカウント（年$10と格安です）では、2要素目の認証にWebAuthnを使えます。</p>
 <img src="/new-technology/2021/02/06/yubikey_ssh_github/bitwarden.png" class="" width="480" title="alt">
 
-<p>bitwardenに関する詳細は、「<a href="/new-technology/2020/08/30/bitwarden/" title="パスワード管理ソフトのbitwardenを活用する">パスワード管理ソフトのbitwardenを活用する</a>」の記事を参照してください。</p>
+<p>bitwardenに関する詳細は、「<a href="/2020/08/30/bitwarden/" title="パスワード管理ソフトのbitwardenを活用する">パスワード管理ソフトのbitwardenを活用する</a>」の記事を参照してください。</p>
 <p>Yubikeyの小さいパッケージには”Get started yubico.com&#x2F;start”と清々しいシンプルな記載があります。そして、このURLにアクセスすると、使えるWebサイト、サービスの一覧が表示されます。そして、そのサイトでの使い方が説明されているだけです。</p>
 <p>Google、Facebookなどのサイトで”Touch to Sign”の2要素認証を楽しんでみてください。一度認証してしまえば、Cookieに認証情報を保存してしまうため、次からは認証不要で使うという方が大半でしょうから、楽しいのは最初だけかもしれません<span class="github-emoji" alias="grin" style="" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f601.png?v8">&#x1f601;</span></p>
 <p>また、YubiKeyが本物かどうかのテストができます。</p>
@@ -445,7 +445,7 @@
 <p>PINを入力して公開鍵認証で接続できました。秘密鍵はYubiKey内部で生成されているため、漏洩する事はありません。</p>
 <p>簡単にYubiKeyを利用してSSHに接続するためには、<code>~/.ssh/config</code>に設定を加えます。接続先ホストに対してライブラリを明示します。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Host ubuntu</span><br><span class="line"> HostName 192.168.x.x</span><br><span class="line"> User usr1</span><br><span class="line"> <span class="comment">#PKCS11Provider /usr/local/opt/opensc/lib/opensc-pkcs11.so</span></span><br><span class="line"> PKCS11Provider /usr/local/lib/libykcs11.dylib</span><br><span class="line"> IdentitiesOnly <span class="built_in">yes</span></span><br><span class="line"></span><br><span class="line">Host github.com</span><br><span class="line"> <span class="comment">#PKCS11Provider /usr/local/opt/opensc/lib/opensc-pkcs11.so</span></span><br><span class="line"> PKCS11Provider /usr/local/lib/libykcs11.dylib</span><br><span class="line"> IdentitiesOnly <span class="built_in">yes</span></span><br></pre></td></tr></table></figure>
-<p>「<a href="/new-technology/2021/01/23/esxi-security/" title="ESXi(無償版)のセキュリティを高める">ESXi(無償版)のセキュリティを高める</a>」の記事で触れましたが、これらの設定を行う事で、ESXiへのSSHでYubiKeyを使った公開鍵認証が可能になります。</p>
+<p>「<a href="/2021/01/23/esxi-security/" title="ESXi(無償版)のセキュリティを高める">ESXi(無償版)のセキュリティを高める</a>」の記事で触れましたが、これらの設定を行う事で、ESXiへのSSHでYubiKeyを使った公開鍵認証が可能になります。</p>
 <h2 id="GitHubへのSSH接続"><a href="#GitHubへのSSH接続" class="headerlink" title="GitHubへのSSH接続"></a>GitHubへのSSH接続</h2><p>開発者の方であればGitHubへの接続もYubiKeyで行いたいかもしれません。私はGitHub上にブログを構築しており、普段はTerminalのコマンドラインでデプロイしています。これは2要素認証は行えませんからGitHub上でパーソナルアクセストークンを発行し、それを利用します。パーソナルアクセストークンはアプリケーション専用パスワードという事になります。それなりの文字長なので安全性は高いですが、2要素認証よりは劣ります。もしあなたが趣味としてのホームユーザーではなく開発者であり、さらに安全性を高める必要があれば、パーソナルアクセストークンをやめて、SSH接続を検討してみてください。なお、この設定には制限事項があるので後述します。</p>
 <p>GitHubのSSH接続に関するリソースを掲載します。以下でGitHubにログインし、公開鍵を登録します。</p>
 <blockquote>
@@ -468,7 +468,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">[xxxx@MB-Air:~]</span><br><span class="line">$ yubico-piv-tool -s 9a -a generate -o public.pem -k</span><br><span class="line">Enter management key:</span><br><span class="line">Successfully generated a new private key.</span><br><span class="line"></span><br><span class="line">[xxxx@MB-Air:~]</span><br><span class="line">$ yubico-piv-tool -a verify-pin -a selfsign-certificate -s 9a -S <span class="string">&quot;/CN=SSH key/&quot;</span> -i public.pem -o cert.pem</span><br><span class="line">Enter PIN:</span><br><span class="line">Successfully verified PIN.</span><br><span class="line">Successfully generated a new self signed certificate.</span><br><span class="line"></span><br><span class="line">[xxxx@MB-Air:~]</span><br><span class="line">$ yubico-piv-tool -a import-certificate -s 9a -i cert.pem -k</span><br><span class="line">Enter management key:</span><br><span class="line">Successfully imported a new certificate.</span><br><span class="line"></span><br><span class="line">$ ssh-keygen -D /usr/local/lib/libykcs11.dylib -e &gt; id_rsa.pub</span><br><span class="line"></span><br><span class="line">$ ssh -I /usr/local/lib/libykcs11.dylib usr1@192.168.x.x</span><br><span class="line">Enter PIN <span class="keyword">for</span> <span class="string">&#x27;YubiKey PIV #XXXXXXXX&#x27;</span>:</span><br></pre></td></tr></table></figure>
 
 <p>上記では公開鍵id_rsa.pubをサーバー側に配置している手順は省略しています。</p>
-<h2 id="YubikeyでSSH設定してみた感想"><a href="#YubikeyでSSH設定してみた感想" class="headerlink" title="YubikeyでSSH設定してみた感想"></a>YubikeyでSSH設定してみた感想</h2><p>WebAuthnや2要素認証以上にYubiKeyを使いこなそうとすると、プロダクトが新旧あり混乱しやすく難易度も上がります。一番便利だなと感じているのはbitwardenへのローカルのログインで使うスタティックパスワードだったりします。さらにGnuPGを使ったGitHubへのコミット時の署名をYubiKeyで行う事もできますが、GnuPGの理解も必要となりもっと複雑です。今回制約となったGitHub DesktopなどのSSH認証時の課題はGnuPGを使う事で完全に解決します。続きは「<a href="/new-technology/2021/02/13/yubikey_gpg/" title="GPG ToolsでYubiKeyを使う">GPG ToolsでYubiKeyを使う</a>」にその方法を記載しています。</p>
+<h2 id="YubikeyでSSH設定してみた感想"><a href="#YubikeyでSSH設定してみた感想" class="headerlink" title="YubikeyでSSH設定してみた感想"></a>YubikeyでSSH設定してみた感想</h2><p>WebAuthnや2要素認証以上にYubiKeyを使いこなそうとすると、プロダクトが新旧あり混乱しやすく難易度も上がります。一番便利だなと感じているのはbitwardenへのローカルのログインで使うスタティックパスワードだったりします。さらにGnuPGを使ったGitHubへのコミット時の署名をYubiKeyで行う事もできますが、GnuPGの理解も必要となりもっと複雑です。今回制約となったGitHub DesktopなどのSSH認証時の課題はGnuPGを使う事で完全に解決します。続きは「<a href="/2021/02/13/yubikey_gpg/" title="GPG ToolsでYubiKeyを使う">GPG ToolsでYubiKeyを使う</a>」にその方法を記載しています。</p>
 
     </div>
 

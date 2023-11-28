@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.0.0">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
@@ -313,7 +313,7 @@
 <p>無償版ESXi6.7（VMware vSphere Hypervisor6.7）はvStorage APIが使えないため、有名なESXiのバックアップ製品は大半が利用できません。vStorage APIを使わないGUI製品であるNakivo Backup Free Editionを用いてXG Firewallなどの仮想マシンがバックアップできます。GUIによる設定、定期的なバックアップ、差分バックアップをサポートします。</p>
 <span id="more"></span>
 
-<h2 id="無償版ESXiのバックアップ環境"><a href="#無償版ESXiのバックアップ環境" class="headerlink" title="無償版ESXiのバックアップ環境"></a>無償版ESXiのバックアップ環境</h2><p>「<a href="/new-technology/2020/10/11/esxi-backup/" title="VMware ESXiの仮想マシンをバックアップする">VMware ESXiの仮想マシンをバックアップする</a>」の記事では、無償版ESXiのバックアップについて説明していますが、コマンドラインベースであることやUEFIシステムによってCronで定期的なバックアップが行えない制約がありました。一方、GUIによるバックアップ製品は多くの製品があります。「ずっと無償」などの言葉が並んでいますが、無償というのはバックアップ製品が無償という事であり、無償ESXiのバックアップは取れず、色々捜しつつもGUI製品には殆どめぐり合えないというのが実態です。</p>
+<h2 id="無償版ESXiのバックアップ環境"><a href="#無償版ESXiのバックアップ環境" class="headerlink" title="無償版ESXiのバックアップ環境"></a>無償版ESXiのバックアップ環境</h2><p>「<a href="/2020/10/11/esxi-backup/" title="VMware ESXiの仮想マシンをバックアップする">VMware ESXiの仮想マシンをバックアップする</a>」の記事では、無償版ESXiのバックアップについて説明していますが、コマンドラインベースであることやUEFIシステムによってCronで定期的なバックアップが行えない制約がありました。一方、GUIによるバックアップ製品は多くの製品があります。「ずっと無償」などの言葉が並んでいますが、無償というのはバックアップ製品が無償という事であり、無償ESXiのバックアップは取れず、色々捜しつつもGUI製品には殆どめぐり合えないというのが実態です。</p>
 <h2 id="Nakivo-Backupの無償の意味"><a href="#Nakivo-Backupの無償の意味" class="headerlink" title="Nakivo Backupの無償の意味"></a>Nakivo Backupの無償の意味</h2><p><strong>Nakivo backup Free Edition</strong>は無償のオープンシステムではなく、あくまでビジネス向けに収益をあげるモデルです。無償ライセンスは1年単位となっています。10以下の仮想マシンのバックアップなど制約はありますが、個人向けには十分な内容です。しかし、あくまで無償版はお試しという位置付けであり実際は個人向けでも正式なライセンスを購入してほしいようです。製品をダウンロードすると、米国の営業担当から電話がかかってきました<span class="github-emoji" alias="frowning" style="" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f626.png?v8">&#x1f626;</span>。私はメールでやりとりし、とりあえず1年間はこの無償版を使いますよという事になりましたが<sup><a href="#note1"><strong>[1]</strong></a></sup>、次回は有償版のライセンスにて更新するかどうするかは少し値段の面で悩んでいるところです。ライセンス費用も公開されていますが、マザーボードに物理接続されたCPUあたり＄99&#x2F;年という事です。ビジネス用途であれば極めて安価ですが、個人向けとしては悩みどころの価格帯です。また、ghettoVCBで事足りているというのもあります。</p>
 <p>他の無償製品に目を向けてみると、<strong>Unitrends Free</strong>で無償版ESXiの仮想マシンがバックアップ可能ですが、これはエージェントモデルで、仮想マシンそのものにエージェントをインストールし、エージェントが自分自身のOSのバックアップを取得する事になります。これはLinuxやWindowsの仮想マシンには使えますが、XG Firewallなど他のモジュールインストールを認めていない仮想マシンはバックアップする事はできません。</p>
 <blockquote>
@@ -344,7 +344,7 @@
 <img src="/new-technology/2021/03/06/esxi-nakivo/transporter.png" class="" width="480" title="alt">
 
 <p>セットアップ完了後、Nakivo BackupをインストールしたマシンのTCP4443ポートにブラウザから接続します。</p>
-<h2 id="Nakivo-BackupからESXiのインベントリ確認"><a href="#Nakivo-BackupからESXiのインベントリ確認" class="headerlink" title="Nakivo BackupからESXiのインベントリ確認"></a>Nakivo BackupからESXiのインベントリ確認</h2><p>Nakivo BackupからFree版のESXiに接続するにはESXiのHTTPS(Port443)、SSH(Port22)に接続できる必要があります。ESXiのSSHの有効化については「<a href="/new-technology/2020/10/11/esxi-backup/" title="VMware ESXiの仮想マシンをバックアップする">VMware ESXiの仮想マシンをバックアップする</a>」の記事を参照してください。また、SSHの認証はパスワード認証となり、公開鍵認証は使えません。</p>
+<h2 id="Nakivo-BackupからESXiのインベントリ確認"><a href="#Nakivo-BackupからESXiのインベントリ確認" class="headerlink" title="Nakivo BackupからESXiのインベントリ確認"></a>Nakivo BackupからESXiのインベントリ確認</h2><p>Nakivo BackupからFree版のESXiに接続するにはESXiのHTTPS(Port443)、SSH(Port22)に接続できる必要があります。ESXiのSSHの有効化については「<a href="/2020/10/11/esxi-backup/" title="VMware ESXiの仮想マシンをバックアップする">VMware ESXiの仮想マシンをバックアップする</a>」の記事を参照してください。また、SSHの認証はパスワード認証となり、公開鍵認証は使えません。</p>
 <p><code>https:nakivo-host:4443</code>に接続しログインします</p>
 <img src="/new-technology/2021/03/06/esxi-nakivo/nakivo2.png" class="" title="alt">
 
@@ -354,7 +354,7 @@
 <p>初期セットアップとして、左ペインメニューの<mark class="label primary">Settings</mark>からESXiに接続し仮想マシンの一覧を取得します</p>
 <img src="/new-technology/2021/03/06/esxi-nakivo/nakivo4.png" class="" width="640" title="alt">
 
-<p>テストドライブとしてはrootで接続確認を行うでしょうけれども、恒久的にこのプロダクトを利用される場合は、「<a href="/new-technology/2021/01/23/esxi-security/" title="ESXi(無償版)のセキュリティを高める">ESXi(無償版)のセキュリティを高める</a>」の記事で示したように、SSHを開けたままにする事になるので、ESXiへのSSH接続可能なIPアドレスを制限する事、nakivo用の専用ユーザーアカウントをESXiに作成する事をお勧めします。接続が無事行えるとInventoryに仮想マシンの一覧が表示されます。</p>
+<p>テストドライブとしてはrootで接続確認を行うでしょうけれども、恒久的にこのプロダクトを利用される場合は、「<a href="/2021/01/23/esxi-security/" title="ESXi(無償版)のセキュリティを高める">ESXi(無償版)のセキュリティを高める</a>」の記事で示したように、SSHを開けたままにする事になるので、ESXiへのSSH接続可能なIPアドレスを制限する事、nakivo用の専用ユーザーアカウントをESXiに作成する事をお勧めします。接続が無事行えるとInventoryに仮想マシンの一覧が表示されます。</p>
 <h2 id="Backup実行とスケジューリング"><a href="#Backup実行とスケジューリング" class="headerlink" title="Backup実行とスケジューリング"></a>Backup実行とスケジューリング</h2><p>ダッシュボードからジョブの設定を行います。左ペインの<mark class="label primary">Dashboard</mark>から<mark class="label primary">VMWare backup job</mark>ー<mark class="label primary">Create</mark>ー<mark class="label primary">VMWare vSphere backup job</mark>をクリックします。</p>
 <img src="/new-technology/2021/03/06/esxi-nakivo/nakivo5.png" class="" title="alt">
 

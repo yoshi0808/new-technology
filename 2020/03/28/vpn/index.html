@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.0.0">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
@@ -320,7 +320,7 @@
 <span id="more"></span>
 
 <h2 id="XG-FirewallのVPN"><a href="#XG-FirewallのVPN" class="headerlink" title="XG FirewallのVPN"></a>XG FirewallのVPN</h2><p>XGのVPNはプロトコルが何種類かあります。一般的なSSL-VPN,L2TP,PPTP、そしてSophosConnectというIPSecベースのものがあります。IPSecは一般的に安全性が高く、安定しているため、ここではIPSecのVPN導入について説明します。なお、この記事ではXG（VPNサーバ）側の設定およびPC（クライアント）に関する設定について記載しますが、最終的にはスマホ対応、2要素認証まで設定する事を目標にします。</p>
-<div class="note warning"><p>XGにおけるIPSec-VPNはIPv4のみ対応しています。<br>プロバイダとの接続形態がDS-Liteおよびv6プラスの場合、NATまたは利用ポート制限のため、IPSecによるVPNは利用できません。<br>v6プラスの場合、SSL-VPNを利用する事で利用できる見込みがあります。XGにおけるSSL-VPNについては、「<a href="/new-technology/2021/05/30/ssl-vpn/" title="XG Firewall SSL-VPN">XG Firewall SSL-VPN</a>」を参照してください。</p>
+<div class="note warning"><p>XGにおけるIPSec-VPNはIPv4のみ対応しています。<br>プロバイダとの接続形態がDS-Liteおよびv6プラスの場合、NATまたは利用ポート制限のため、IPSecによるVPNは利用できません。<br>v6プラスの場合、SSL-VPNを利用する事で利用できる見込みがあります。XGにおけるSSL-VPNについては、「<a href="/2021/05/30/ssl-vpn/" title="XG Firewall SSL-VPN">XG Firewall SSL-VPN</a>」を参照してください。</p>
 </div>
 
 <h2 id="IPSec-VPNについて"><a href="#IPSec-VPNについて" class="headerlink" title="IPSec VPNについて"></a>IPSec VPNについて</h2><p>IPSec VPNの設定にあたり、インターネットに接続されているホームゲートウェイから、VPNのパケットについては内部のXGのWANインターフェースに転送しなくてはなりません。一般的に市販されているルーターにも装備されていますが、この方法には2通りあります。</p>
@@ -362,7 +362,7 @@
 <img src="/new-technology/2020/03/28/vpn/vpn2.png" class="" title="alt">
 
 <p>適用ボタンをクリックすると、”これにより、同じローカルピアとリモートピア間で設定したすべての接続の事前共有鍵が更新されます。続行してもよいですか？”と表示されます。OKをクリックすれば、VPNが有効になります。</p>
-<h2 id="XG側のFirewallルールの確認"><a href="#XG側のFirewallルールの確認" class="headerlink" title="XG側のFirewallルールの確認"></a>XG側のFirewallルールの確認</h2><p>上記で設定したVPNがFirewallのルールに登録されている事を確認します。VPNとWANの接続を優先に考え設定します。「<a href="/new-technology/2020/03/14/rule-policy2/" title="XG Firewall v18のルールを作成する">XG Firewall v18のルールを作成する</a>」では、デフォルトのルール”To_Internet”を作成しました。ルールについて、以下の図のように<mark class="label primary">送信元ゾーン</mark>が、LANとVPNとなっている事を確認してください。</p>
+<h2 id="XG側のFirewallルールの確認"><a href="#XG側のFirewallルールの確認" class="headerlink" title="XG側のFirewallルールの確認"></a>XG側のFirewallルールの確認</h2><p>上記で設定したVPNがFirewallのルールに登録されている事を確認します。VPNとWANの接続を優先に考え設定します。「<a href="/2020/03/14/rule-policy2/" title="XG Firewall v18のルールを作成する">XG Firewall v18のルールを作成する</a>」では、デフォルトのルール”To_Internet”を作成しました。ルールについて、以下の図のように<mark class="label primary">送信元ゾーン</mark>が、LANとVPNとなっている事を確認してください。</p>
 <img src="/new-technology/2020/03/28/vpn/rule1.png" class="" title="alt">
 
 <p>続いて、VPNからLANへのルールを作成します。NATは使わず全てのトラフィックを通過させるものです。以下の通り、送信元ゾーンはVPN、宛先ゾーンはLANのルールを設定します。</p>
@@ -425,7 +425,7 @@
 
 <p>VPN経由でインターネットに接続し、ブラウザからアクセスできること、IPアドレスがプロバイダから貸与されたアドレスになっているか確認します。また、LANの機器との接続が行える事も確認してください。接続業者によっては、IPSecで利用するESP,UDPプロトコルを通さないところもあります。</p>
 <p>なお、ここまで説明してきた通り、LANとVPNのネットワークセグメントは異なりますので、ブロードキャストで相手を見つけるようなアプリケーションはVPNからLANに対する接続は行えません。</p>
-<p>公衆回線経由でXGにIPSecで接続できたら、続いて2要素認証の設定に続きます。「<a href="/new-technology/2020/03/28/vpnotp/" title="XG Firewall VPNに2要素認証を設定する">XG Firewall VPNに2要素認証を設定する</a>」を参照してください。</p>
+<p>公衆回線経由でXGにIPSecで接続できたら、続いて2要素認証の設定に続きます。「<a href="/2020/03/28/vpnotp/" title="XG Firewall VPNに2要素認証を設定する">XG Firewall VPNに2要素認証を設定する</a>」を参照してください。</p>
 <h2 id="SSL-TLSインスペクションの設定（任意設定）"><a href="#SSL-TLSインスペクションの設定（任意設定）" class="headerlink" title="SSL&#x2F;TLSインスペクションの設定（任意設定）"></a>SSL&#x2F;TLSインスペクションの設定（任意設定）</h2><p>ここまでの設定でVPNの設定は終了ですが、VPNについてもSSL&#x2F;TLSインスペクションが有効となるように設定をお勧めします。一旦はVPNのネットワークからインターネットにアクセスする場合は、全てがSSL&#x2F;TLSインスペクションの対象とし、ファイアウォールルールを修正します。</p>
 <ol>
 <li><p>最初にVPNのネットワークアドレスを左ペインの<mark class="label primary">ホストとサービス</mark>から<mark class="label primary">IPホスト</mark>を登録します。<img src="/new-technology/2020/03/28/vpn/vpn3.png" class="" title="alt"></p>
@@ -441,9 +441,9 @@
 </ol>
 <p>ここまでの設定でIPSec-VPNの設定は一段落です。SSL&#x2F;TLSインスペクションの設定および動作確認については、下記の記事を参照して下さい。</p>
 <ul>
-<li><a href="/new-technology/2020/03/20/ssl-inspection/" title="SSLインスペクションについて">SSLインスペクションについて</a></li>
-<li><a href="/new-technology/2020/03/20/ssl-inspection1/" title="XG Firewall v18のSSL&#x2F;TLSインスペクションの設定">XG Firewall v18のSSL&#x2F;TLSインスペクションの設定</a></li>
-<li><a href="/new-technology/2020/03/21/ssl-inspection2/" title="XG Firewall v18のSSLインスペクションの動作確認と調整">XG Firewall v18のSSLインスペクションの動作確認と調整</a></li>
+<li><a href="/2020/03/20/ssl-inspection/" title="SSLインスペクションについて">SSLインスペクションについて</a></li>
+<li><a href="/2020/03/20/ssl-inspection1/" title="XG Firewall v18のSSL&#x2F;TLSインスペクションの設定">XG Firewall v18のSSL&#x2F;TLSインスペクションの設定</a></li>
+<li><a href="/2020/03/21/ssl-inspection2/" title="XG Firewall v18のSSLインスペクションの動作確認と調整">XG Firewall v18のSSLインスペクションの動作確認と調整</a></li>
 </ul>
 
     </div>

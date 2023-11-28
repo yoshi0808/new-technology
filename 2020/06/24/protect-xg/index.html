@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.0.0">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
@@ -307,7 +307,7 @@
 
 </blockquote>
 
-<p>「<a href="/new-technology/2020/05/09/best-practice/" title="XG Firewall v18の設定におけるベストプラクティス">XG Firewall v18の設定におけるベストプラクティス</a>」で記載した通り、ルールやポリシーについてのベストプラクティスを記載していますが、将来Sophosから詳細なベストプラクティスガイドが公開されるとの事です。今回公開されたものはルールやポリシーではなく、運用について記述されたものであり、どのようにしてFirewallを守るかに言及されています。IPSの設定については、過去記事をアップデートしています。</p>
+<p>「<a href="/2020/05/09/best-practice/" title="XG Firewall v18の設定におけるベストプラクティス">XG Firewall v18の設定におけるベストプラクティス</a>」で記載した通り、ルールやポリシーについてのベストプラクティスを記載していますが、将来Sophosから詳細なベストプラクティスガイドが公開されるとの事です。今回公開されたものはルールやポリシーではなく、運用について記述されたものであり、どのようにしてFirewallを守るかに言及されています。IPSの設定については、過去記事をアップデートしています。</p>
 <blockquote>
 <p>Sophos XG Firewall: Best practices for securing your firewall<br> <a target="_blank" rel="noopener" href="https://community.sophos.com/products/xg-firewall/f/recommended-reads/121461/sophos-xg-firewall-best-practices-for-securing-your-firewall">https://community.sophos.com/products/xg-firewall/f/recommended-reads/121461/sophos-xg-firewall-best-practices-for-securing-your-firewall</a></p>
 </blockquote>
@@ -327,7 +327,7 @@
 <h3 id="管理者ID"><a href="#管理者ID" class="headerlink" title="管理者ID"></a>管理者ID</h3><p>XGの左ペインメニューの<mark class="label primary">管理</mark>の”管理の設定”で以下のように管理者のログイン失敗時のブロック、パスワードの複雑性の登録を行います。新しい管理者アカウントを作成し、2要素認証の設定は可能ですが、デフォルト管理者のadminアカウントは無効に設定できません。業務上利用する場合は担当者が変わる場合など意味がありますが、ホームユーザーが利用する場合は定期的なパスワード変更も不要であり、2要素認証の設定は現時点ではあまり魅力はありません。adminアカウントの無効化対応を期待します。</p>
 <img src="/new-technology/2020/06/24/protect-xg/admin.png" class="" title="alt">
 
-<p>「<a href="/new-technology/2020/04/03/Notifications/" title="XG Firewallの通知設定を行う">XG Firewallの通知設定を行う</a>」で記載した通り、通知設定を行う事でログイン失敗の状況も迅速にキャッチが可能です。</p>
+<p>「<a href="/2020/04/03/Notifications/" title="XG Firewallの通知設定を行う">XG Firewallの通知設定を行う</a>」で記載した通り、通知設定を行う事でログイン失敗の状況も迅速にキャッチが可能です。</p>
 <h3 id="HotFixの自動インストール"><a href="#HotFixの自動インストール" class="headerlink" title="HotFixの自動インストール"></a>HotFixの自動インストール</h3><p>XGに脆弱性が見つかった場合に、過去の事例では極めて迅速にパッチが自動適用されます。具体的には下記の図のように、左ペインメニューの<mark class="label primary">バックアップ＆ファームウェア</mark>の”ファームウェア”タブの画面にある、”ホットフィックスの自動インストールを許可する”にチェックが付いている事を確認してください。</p>
 <img src="/new-technology/2020/06/24/protect-xg/hotfix.png" class="" title="alt">
 

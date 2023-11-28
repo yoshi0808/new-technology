@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.0.0">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
@@ -335,7 +335,7 @@
 <p>しかし、X520とX540の新しいファームウェアのダウンロードについては見つかりませんでした。私の見落としでなければ、最新版のファームウェアの提示が無いというのはこれから新規導入する場合、リスクが大きく感じます。</p>
 <h2 id="Melanoxのサポート終了NIC"><a href="#Melanoxのサポート終了NIC" class="headerlink" title="Melanoxのサポート終了NIC"></a>Melanoxのサポート終了NIC</h2><p>Mellanoxにおいても”Products End-of-Life Policy”というものがあり、販売終了から5年経過し、End of Supportとなるようです。<br>以前にはEOSの製品一覧が記載されているExcelファイルが置いてあったんですが、最近は無くなってしまいました。</p>
 <p>最近は$40で購入できるMCX311A-XCATなどは2020年3月31日に販売終了となっています。<br>Mellanoxの場合はVMwareの互換リストから外れているConnect X-3についてもWebにはファームウェアの情報が掲載されているので、いつでも最新のファームウェアに更新できます。</p>
-<h2 id="intelのNICファームウェア更新"><a href="#intelのNICファームウェア更新" class="headerlink" title="intelのNICファームウェア更新"></a>intelのNICファームウェア更新</h2><p>intelの純正のNICであればそのカード名称でintelのサイトを検索しファームウェアを更新します。また、3rdベンダーがintelチップを採用し製造したNICだとintelのチップの名称でファームウェアをダウンロードする必要があります。「<a href="/new-technology/2022/02/27/building-setup-esxi7/" title="ESXI7.0をRyzen7 5700Gで構築">ESXI7.0をRyzen7 5700Gで構築</a>」では、私は3rdベンダーが製造したintel X710を搭載したNICを購入したと書きましたが、このようなケースではintelが提供するファームウェアを適用可能なのか、それとも3rdベンダーが提供するファームウェアがあるのか事前に確認する必要があります。X710のSFP＋を4Portというのは低消費電力・低発熱で魅力的ですが、前述した脆弱性について既に確認していたため、ファームウェアのアップデートに言及できるベンダーのものを選定しました。販売者の中には「できるはずだがお勧めしない」という回答もありました。3rdベンダーの場合は、ファームウェアアップデートの設定ファイルの書き換えが必要な場合もあります（私の購入したNICはこの修正が不要でした）。</p>
+<h2 id="intelのNICファームウェア更新"><a href="#intelのNICファームウェア更新" class="headerlink" title="intelのNICファームウェア更新"></a>intelのNICファームウェア更新</h2><p>intelの純正のNICであればそのカード名称でintelのサイトを検索しファームウェアを更新します。また、3rdベンダーがintelチップを採用し製造したNICだとintelのチップの名称でファームウェアをダウンロードする必要があります。「<a href="/2022/02/27/building-setup-esxi7/" title="ESXI7.0をRyzen7 5700Gで構築">ESXI7.0をRyzen7 5700Gで構築</a>」では、私は3rdベンダーが製造したintel X710を搭載したNICを購入したと書きましたが、このようなケースではintelが提供するファームウェアを適用可能なのか、それとも3rdベンダーが提供するファームウェアがあるのか事前に確認する必要があります。X710のSFP＋を4Portというのは低消費電力・低発熱で魅力的ですが、前述した脆弱性について既に確認していたため、ファームウェアのアップデートに言及できるベンダーのものを選定しました。販売者の中には「できるはずだがお勧めしない」という回答もありました。3rdベンダーの場合は、ファームウェアアップデートの設定ファイルの書き換えが必要な場合もあります（私の購入したNICはこの修正が不要でした）。</p>
 <p>導入はシンプルでnvmupdateというファームウェア更新ツールとセットになったNICのファームウェアをintelのサイトからダウンロードし、ESXiにSSHで接続し実行するだけです。留意点としては、誤った種類のファームウェア適用によりNICが使えなくなってしまった場合は自己責任であり、リスクはあります。</p>
 <p>導入手順を説明します。intelのサイトで”nvm update”を検索します。するとX550シリーズ、700シリーズ、E810シリーズとnvmupdateについて表示されるのでお使いのチップに相当するモジュールをダウンロードしてください。intel純正のカードであればカード名で検索も可能です。</p>
 <ul>

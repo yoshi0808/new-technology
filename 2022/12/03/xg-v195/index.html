@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.0.0">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
@@ -333,7 +333,7 @@
 <p>アップロード＆再起動ボタンをクリックし、v19.5へのアップグレードを完了させます。</p>
 
 
-<div class="note info"><p>仮想環境（ESXi）上にFirewallをインストールされている方はアップグレードの前に、「<a href="/new-technology/2020/10/11/esxi-backup/" title="VMware ESXiの仮想マシンをバックアップする">VMware ESXiの仮想マシンをバックアップする</a>」を参考に、バックアップを確保される事をお勧めします。</p>
+<div class="note info"><p>仮想環境（ESXi）上にFirewallをインストールされている方はアップグレードの前に、「<a href="/2020/10/11/esxi-backup/" title="VMware ESXiの仮想マシンをバックアップする">VMware ESXiの仮想マシンをバックアップする</a>」を参考に、バックアップを確保される事をお勧めします。</p>
 </div>
 
 <p>Relase Notesを見るとセキュリティ観点ではOpenSSL (CVE-2022-1292)の脆弱性対応が行われています。他にもかなりの数の不具合が修正されていますが、コメントがサラッとしており、どういう事象なのかまでは判明しないものが多いようです。</p>
@@ -343,7 +343,7 @@
 <p>Sophos Firewall v19.5 GA Resolves Security Vulnerabilities<br> <a target="_blank" rel="noopener" href="https://www.sophos.com/en-us/security-advisories/sophos-sa-20221201-sfos-19-5-0">https://www.sophos.com/en-us/security-advisories/sophos-sa-20221201-sfos-19-5-0</a></p>
 </blockquote>
 <p>大幅に機能が更新されていないにも関わらず、v19からv19.5となり、リリースノートでの表現も控え目で何が変わったのか良くわかりませんでしたが結局のところ脆弱性の対応が中心ということですね。</p>
-<p>私は「<a href="/new-technology/2020/06/24/protect-xg/" title="XG Firewall自身を防御する">XG Firewall自身を防御する</a>」の記事で、そもそもFirewall自身を守るためのセキュアな設定が必要と記載しており、パッチやバージョンアップを速やかに実施することも必要ですが、セキュアな環境のために追加の設定をお勧めしています。</p>
+<p>私は「<a href="/2020/06/24/protect-xg/" title="XG Firewall自身を防御する">XG Firewall自身を防御する</a>」の記事で、そもそもFirewall自身を守るためのセキュアな設定が必要と記載しており、パッチやバージョンアップを速やかに実施することも必要ですが、セキュアな環境のために追加の設定をお勧めしています。</p>
 <p>過去からの経緯を見ていると、v18で大きくアーキテクチャが変更になったものの、管理画面を中心とした機能は大きな変更が行われていません。過去からの脆弱性、特にUI周りのクロスサイトスクリプティング、およびDBアクセス機能におけるSQLインジェクションのサニタイズが不十分であり、指摘されては都度修正しているという活動を繰り返しているように見えます。<br>ユーザー側の自主的な防御として、余計な機能はインターネット向けには提供しない事をお勧めします。つまりSophos Firewallの管理画面や入力項目を持つユーザーポータルはLANからのアクセスのみに限定すべきで、WAN、DMZはもちろん、可能であればVPNからもアクセス不可にしておく事をお勧めします。今回のエンハンスでSQLインジェクションなどが全て撲滅されたかどうかは不明です。</p>
 <img src="/new-technology/2022/12/03/xg-v195/manage.png" class="" width="1024" title="alt">
 

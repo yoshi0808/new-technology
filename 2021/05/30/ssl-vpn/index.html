@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.0.0">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
@@ -389,13 +389,13 @@
 <li>VPNセッションのためのIPv6 ULAを決める</li>
 </ol>
 <p>XGのSSL-VPNはUDPがTCPの3倍ほど高速ですが、公衆Wi-Fiを使う場合、<strong>安全・安心・確実に接続するにはHTTPS(443&#x2F;TCP)を使う事が手堅いです</strong>。自宅がv6プラスの方はプロバイダーから自宅まで通す事のできるポートの範囲を選定する事になります。</p>
-<p>LANのIPv6は、「<a href="/new-technology/2020/04/29/xg-ipv6-2/" title="Sophos FirewallでIPv6の設定を行う（後半）">Sophos FirewallでIPv6の設定を行う（後半）</a>」の記事で設定したように、ULAの48ビットPrefixにサブネットの16ビットを加えて64ビットPrefixを決定しました。今回のVPNはサブネットの16ビットの値を変える事で別のセグメントを割り当てます。</p>
+<p>LANのIPv6は、「<a href="/2020/04/29/xg-ipv6-2/" title="Sophos FirewallでIPv6の設定を行う（後半）">Sophos FirewallでIPv6の設定を行う（後半）</a>」の記事で設定したように、ULAの48ビットPrefixにサブネットの16ビットを加えて64ビットPrefixを決定しました。今回のVPNはサブネットの16ビットの値を変える事で別のセグメントを割り当てます。</p>
 <h2 id="サーバー（XG）側の設定"><a href="#サーバー（XG）側の設定" class="headerlink" title="サーバー（XG）側の設定"></a>サーバー（XG）側の設定</h2><h3 id="SSL-VPNの設定"><a href="#SSL-VPNの設定" class="headerlink" title="SSL VPNの設定"></a>SSL VPNの設定</h3><p>XGの管理画面の左ペイン<mark class="label primary">VPN</mark>を選択すると、右上に<mark class="label primary">VPN設定を表示</mark>という項目があるのでこれをクリックします。さらに<mark class="label primary">SSL VPN</mark>と<mark class="label primary">L2TP</mark>のタブがありますので、SSLVPNを選択します。</p>
 <img src="/new-technology/2021/05/30/ssl-vpn/vpn-conf.png" class="" width="1024" title="alt">
 
 <p>前の章で事前に決めた設定内容を加えていきます。</p>
 <ul>
-<li>赤枠で囲ったTCP&#x2F;UDPの別はTCPとポート番号、そして、<mark class="label primary">ホスト名の上書き</mark>というところはNo-IPなどのダイナミックDNSホスト名を入力します。設定可能なダイナミックDNSについては、「<a href="/new-technology/2020/03/28/vpn/" title="XG Firewall VPNについて">XG Firewall VPNについて</a>」の記事を参照してください。</li>
+<li>赤枠で囲ったTCP&#x2F;UDPの別はTCPとポート番号、そして、<mark class="label primary">ホスト名の上書き</mark>というところはNo-IPなどのダイナミックDNSホスト名を入力します。設定可能なダイナミックDNSについては、「<a href="/2020/03/28/vpn/" title="XG Firewall VPNについて">XG Firewall VPNについて</a>」の記事を参照してください。</li>
 <li>IPv4のVPNネットワークの範囲は、LANやその他競合しないと思われるプライベートIP群から設定します。デフォルトの10.xでも構いませんが、あまり使われない、<code>192.168.200.x/24</code>近辺を使ってはいかがでしょうか。</li>
 <li>VPNクライアントが参照するDNSはXGのDNSですので、XGのLAN側IPアドレスを入力します。</li>
 <li>IPv6は利用しているULAの別のサブネットを設定します。<code>fd00:beef:cafe:2::/64</code>をLANで使っているとすれば、<code>fd00:beef:cafe:12::/64</code>という具合です。</li>
@@ -479,7 +479,7 @@
 <p>これら2つのクライアントは、Homebrewからもインストール可能です。<br><code>brew install openvpn-connect --cask</code><br><code>brew install tunnelblick --cask</code></p>
 <p>Tunnelblickは前述した接続キャンセル時の応答性も機敏です（RST送信と即座のUI応答）。</p>
 <h2 id="VPNクライアント（その他）"><a href="#VPNクライアント（その他）" class="headerlink" title="VPNクライアント（その他）"></a>VPNクライアント（その他）</h2><p>スマホ、Linux向けにも、OPENVPN Connectがあります。設定ファイルの取り込みは、クラウド経由やメールの添付などの方法でアプリに渡します。</p>
-<h2 id="ワンタイムパスワード"><a href="#ワンタイムパスワード" class="headerlink" title="ワンタイムパスワード"></a>ワンタイムパスワード</h2><p>XGではSSL-VPNにおいても2要素認証の設定が可能ですので設定される事をお勧めします。「<a href="/new-technology/2020/03/28/vpnotp/" title="XG Firewall VPNに2要素認証を設定する">XG Firewall VPNに2要素認証を設定する</a>」の記事を参照してください。XGにおけるVPN-SSLのワンタイムパスワードはパスワードの文字列に続けてOTPの数字6文字を入力する事で2要素認証を行います。パスワードが”abcdef”でOTPが”123456”ならば、パスワードに”abcdef123456”を入力します。</p>
+<h2 id="ワンタイムパスワード"><a href="#ワンタイムパスワード" class="headerlink" title="ワンタイムパスワード"></a>ワンタイムパスワード</h2><p>XGではSSL-VPNにおいても2要素認証の設定が可能ですので設定される事をお勧めします。「<a href="/2020/03/28/vpnotp/" title="XG Firewall VPNに2要素認証を設定する">XG Firewall VPNに2要素認証を設定する</a>」の記事を参照してください。XGにおけるVPN-SSLのワンタイムパスワードはパスワードの文字列に続けてOTPの数字6文字を入力する事で2要素認証を行います。パスワードが”abcdef”でOTPが”123456”ならば、パスワードに”abcdef123456”を入力します。</p>
 <p> <small id="note1"><strong>[1]</strong><br>IPSecによるサイト間接続VPNはIPv6に対応しています。クライアントからのリモートアクセスとしてのIPSecはIPv6未対応です。<br></small></p>
 
     </div>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.0.0">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
@@ -301,7 +301,7 @@
     
     <div class="post-body" itemprop="articleBody"><img src="/new-technology/2020/10/25/xg-v18-mr3/XG.png" class="" title="alt">
 
-<h2 id="XG-Firewall-v18-MR-3"><a href="#XG-Firewall-v18-MR-3" class="headerlink" title="XG Firewall v18 MR-3"></a>XG Firewall v18 MR-3</h2><p>XG Firewall v18のMR-3が2020年10月12日に発表されました。変更点について記載します。なお、XG Firewallの最新パッチについては、「<a href="/new-technology/2020/10/11/esxi-backup/" title="VMware ESXiの仮想マシンをバックアップする">VMware ESXiの仮想マシンをバックアップする</a>」の関連リンクを参照してください。</p>
+<h2 id="XG-Firewall-v18-MR-3"><a href="#XG-Firewall-v18-MR-3" class="headerlink" title="XG Firewall v18 MR-3"></a>XG Firewall v18 MR-3</h2><p>XG Firewall v18のMR-3が2020年10月12日に発表されました。変更点について記載します。なお、XG Firewallの最新パッチについては、「<a href="/2020/10/11/esxi-backup/" title="VMware ESXiの仮想マシンをバックアップする">VMware ESXiの仮想マシンをバックアップする</a>」の関連リンクを参照してください。</p>
 <span id="more"></span>
 
 <h2 id="主なエンハンスの内容"><a href="#主なエンハンスの内容" class="headerlink" title="主なエンハンスの内容"></a>主なエンハンスの内容</h2><ul>
@@ -310,7 +310,7 @@
 <li>その他の不具合の修正</li>
 </ul>
 <h3 id="XGのアップデート"><a href="#XGのアップデート" class="headerlink" title="XGのアップデート"></a>XGのアップデート</h3><p>XGのv17からのアップデートは、 v17.5 MR13&#x2F; MR14&#x2F; MR14-1が対象となっています。XGのv18であればMR-3へのアップデートは可能です。<br>XGの管理画面にログイン後、左ペインメニューの<mark class="label primary">バックアップ＆ファームウェア</mark>の<mark class="label primary">ファームウェアの確認</mark>ではただちに全てのユーザーにアップデートの案内が来るわけでは無いようなので、アップデートにはMySophosにログインし、バージョンアップの差分モジュールをダウンロードします。</p>
-<p>(2020-12-22 追記)<br>XG v18 MR-3はMR-4の発表によりダウンロードできなくなりました。最新パッチについては、「<a href="/new-technology/2020/12/17/xg-v18-mr4/" title="XG Firewall v18 MR4の更新">XG Firewall v18 MR4の更新</a>」を参照してください。MR-3で導入されたセキュア・ストレージ・マスターキーはMR-4でも引き続き設定が必要なものですので、この記事については残しておきます。</p>
+<p>(2020-12-22 追記)<br>XG v18 MR-3はMR-4の発表によりダウンロードできなくなりました。最新パッチについては、「<a href="/2020/12/17/xg-v18-mr4/" title="XG Firewall v18 MR4の更新">XG Firewall v18 MR4の更新</a>」を参照してください。MR-3で導入されたセキュア・ストレージ・マスターキーはMR-4でも引き続き設定が必要なものですので、この記事については残しておきます。</p>
 <ol>
 <li>Sophosのサイトの右上のメニューから、<mark class="label primary">マイアカウント</mark>をクリックします。</li>
 <li>Sophos IDをお持ちでなければIDを作成します。</li>
@@ -328,7 +328,7 @@
 <img src="/new-technology/2020/10/25/xg-v18-mr3/verup.png" class="" title="alt">
 
 <p>アップロード＆再起動ボタンをクリックし、MR-3へのアップグレードを完了させます。</p>
-<div class="note info no-icon"><p>仮想環境（ESXi）上にXGをインストールされている方はアップグレードの前に、「<a href="/new-technology/2020/10/11/esxi-backup/" title="VMware ESXiの仮想マシンをバックアップする">VMware ESXiの仮想マシンをバックアップする</a>」を参考に、XGのバックアップを確保される事をお勧めします。</p>
+<div class="note info no-icon"><p>仮想環境（ESXi）上にXGをインストールされている方はアップグレードの前に、「<a href="/2020/10/11/esxi-backup/" title="VMware ESXiの仮想マシンをバックアップする">VMware ESXiの仮想マシンをバックアップする</a>」を参考に、XGのバックアップを確保される事をお勧めします。</p>
 </div>
 
 <h2 id="セキュア・ストレージ・マスターキー"><a href="#セキュア・ストレージ・マスターキー" class="headerlink" title="セキュア・ストレージ・マスターキー"></a>セキュア・ストレージ・マスターキー</h2><p>XGが再起動し、ログイン後、新たに追加されたセキュア・ストレージ・マスターキーの作成を求められます。</p>
@@ -340,7 +340,7 @@
 <p>登録を終えると、マスターキーがセットされたとのメッセージが表示されて対応は完了です。</p>
 <img src="/new-technology/2020/10/25/xg-v18-mr3/key3.png" class="" title="alt">
 
-<p>マスターキーの情報は「<a href="/new-technology/2020/08/30/bitwarden/" title="パスワード管理ソフトのbitwardenを活用する">パスワード管理ソフトのbitwardenを活用する</a>」を参考に、暗号化された安全な場所へ保管されることをお勧めします。</p>
+<p>マスターキーの情報は「<a href="/2020/08/30/bitwarden/" title="パスワード管理ソフトのbitwardenを活用する">パスワード管理ソフトのbitwardenを活用する</a>」を参考に、暗号化された安全な場所へ保管されることをお勧めします。</p>
 
     </div>
 

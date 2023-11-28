@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.0.0">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
@@ -317,7 +317,7 @@ XG Firewall v18において、LAN内のホストをインターネットへ公�
 
 <p>設定においては、上記の2つのサブネット（XGのWAN側、LAN側）があり、ホームゲートウェイ側からXGのWANインタフェースに対するポートフォワード、そしてXGからLAN内にあるホストへのポートフォワードとの2段階のポート転送が必要です。</p>
 <div class="note danger"><p>ご注意</p>
-<p>この記事はあくまで技術的にホストを公開する方法について記述していますが、昨今のサイバー攻撃はランサムウェアが猛威を奮っています。個人が行うサイバー攻撃対策ではとうてい太刀打ちできませんので、リスクを認識の上で設定してください。なお、インターネットから自宅のリソースへのアクセスは2要素認証付きのVPNによる接続をお勧めします。「<a href="/new-technology/2020/03/28/vpn/" title="XG Firewall VPNについて">XG Firewall VPNについて</a>」の記事を参照してください。</p>
+<p>この記事はあくまで技術的にホストを公開する方法について記述していますが、昨今のサイバー攻撃はランサムウェアが猛威を奮っています。個人が行うサイバー攻撃対策ではとうてい太刀打ちできませんので、リスクを認識の上で設定してください。なお、インターネットから自宅のリソースへのアクセスは2要素認証付きのVPNによる接続をお勧めします。「<a href="/2020/03/28/vpn/" title="XG Firewall VPNについて">XG Firewall VPNについて</a>」の記事を参照してください。</p>
 </div>
 
 
@@ -365,7 +365,7 @@ XG Firewall v18において、LAN内のホストをインターネットへ公�
 <p>以上のように、それなりに理解出来るものが記載されています。しかし理解が進まないのは、<mark class="label primary">宛先ネットワーク</mark>の<mark class="label primary">#Port2</mark>、つまりXGのWAN側IPアドレスが記述されている点です。宛先として直感ではLAN側のインタフェースである、<mark class="label primary">#Port1</mark>のように感じます。まして、転送したいWebサーバーのホスト名が記載されている項目はここにはありません。実際のHTTPSのアクセスである、Webサーバーに転送するという項目は<mark class="label primary">NATルール</mark>で記載されています。XG Firewll v18におけるDNATはポリシールールとNAT変換ルールはそれぞれ独立しているのです。</p>
 <ul>
 <li>Loopback NAT（不要）<br> これはヘアピンNATとも呼ばれますが、内部ネットワークからパブリックIPアドレスを用いて再び内部ネットワークにある公開サーバーへアクセスしたい場合に使います。XGがWANの外に出ていこうとするトラフィックを無理やり内部の公開サーバーに振り向ける動作です。前述したとおり内部のホストには、DNSに登録したプライベートIPでアクセスするので不要です。</li>
-<li>Reflexiv NAT（不要）<br> これは普通に内部ホストからWAN向けのNATを伴う変換ルールです。インストール直後のSNAT（ソースNAT　※送信元アドレスを書き換える一般的なNAT）のルールが最初から存在している事、「<a href="/new-technology/2020/03/14/rule-policy2/" title="XG Firewall v18のルールを作成する">XG Firewall v18のルールを作成する</a>」において、<mark class="label primary">To Internet</mark>というSNATのルールを作成しているので改めての作成は不要です。</li>
+<li>Reflexiv NAT（不要）<br> これは普通に内部ホストからWAN向けのNATを伴う変換ルールです。インストール直後のSNAT（ソースNAT　※送信元アドレスを書き換える一般的なNAT）のルールが最初から存在している事、「<a href="/2020/03/14/rule-policy2/" title="XG Firewall v18のルールを作成する">XG Firewall v18のルールを作成する</a>」において、<mark class="label primary">To Internet</mark>というSNATのルールを作成しているので改めての作成は不要です。</li>
 </ul>
 <h2 id="インターネットの接続可能な範囲を絞る"><a href="#インターネットの接続可能な範囲を絞る" class="headerlink" title="インターネットの接続可能な範囲を絞る"></a>インターネットの接続可能な範囲を絞る</h2><p>公開するホストが国内からのアクセス用途に限定できるならば、少しFirewallらしい設定を加えてみましょう。ウィザードの4画面目で、任意とした外部の送信元ネットワークを活用します。もし、このWebサーバに対して日本国内からのアクセスに限れば、海外からの攻撃を防ぐ事ができます。この場合は、作成済みのDNATルールの<mark class="label primary">送信元ネットワークとデバイス</mark>の<mark class="label primary">任意</mark>を外し、<mark class="label primary">Japan</mark>を加えてください。</p>
 
