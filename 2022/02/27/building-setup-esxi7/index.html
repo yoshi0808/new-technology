@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.0.0">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
@@ -196,7 +196,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/new-technology/archives/">
-          <span class="site-state-item-count">78</span>
+          <span class="site-state-item-count">79</span>
           <span class="site-state-item-name">ポスト</span>
         </a>
       </div>
@@ -397,7 +397,7 @@
 <blockquote>
 <p><a target="_blank" rel="noopener" href="https://communities.vmware.com/t5/ESXi-Discussions/Enabling-Secure-Boot-not-possible/m-p/2864968">https://communities.vmware.com/t5/ESXi-Discussions/Enabling-Secure-Boot-not-possible/m-p/2864968</a></p>
 </blockquote>
-<p>（2023-7-6更新）<br>事後にある手順を経てESXi8.0でセキュアブートでセットアップすることができました。セキュアブートの手順はこちらの記事「<a href="/2022/02/27/building-setup-esxi7/" title="ESXI7.0をRyzen7 5700Gで構築">ESXI7.0をRyzen7 5700Gで構築</a>」を参照してください。</p>
+<p>（2023-7-6更新）<br>事後にある手順を経てESXi8.0でセキュアブートでセットアップすることができました。セキュアブートの手順はこちらの記事「<a href="/new-technology/2022/02/27/building-setup-esxi7/" title="ESXI7.0をRyzen7 5700Gで構築">ESXI7.0をRyzen7 5700Gで構築</a>」を参照してください。</p>
 <h3 id="インストール"><a href="#インストール" class="headerlink" title="インストール"></a>インストール</h3><p>これまで同様、Rufusで32GBのUSBメモリにISOファイルを登録しUSBブートからセットアップしています。64Gbyteのメモリを認識し、NICも4つ認識されました。</p>
 <img src="/new-technology/2022/02/27/building-setup-esxi7/esxi1.png" class="" width="800" title="alt">
 
@@ -451,7 +451,7 @@
 </blockquote>
 <p> <a target="_blank" rel="noopener" href="https://wiki.mikrotik.com/wiki/S%2BRJ10_general_guidance">https://wiki.mikrotik.com/wiki/S%2BRJ10_general_guidance</a></p>
 <p>MikroTikのS+RJ10は高発熱で有名なモジュールですが、他の10GBase-T SFP+モジュールも相当な温度になります。トランシーバーの作りに問題があるわけではなく、そもそも10GBase-T（RJ-45）はかなりの発熱になってしまい、スイッチングハブであっても内部は相当な熱を持ちます。</p>
-<p>SFP+の詳細な情報については「 <a href="/2022/05/28/sfp-plus/" title="10GネットワークとSFP+">10GネットワークとSFP+</a> 」にまとめてあります。</p>
+<p>SFP+の詳細な情報については「 <a href="/new-technology/2022/05/28/sfp-plus/" title="10GネットワークとSFP+">10GネットワークとSFP+</a> 」にまとめてあります。</p>
 <p>Mellanoxの現行モデルはやはり在庫を殆ど見かけない状況ですが、Nvidia（Mellanox）のサイトではESXi7.0&#x2F;8.0のドライバはConnect X-4以上を対象にしています。</p>
 <img src="/new-technology/2022/02/27/building-setup-esxi7/mellanox.png" class="" width="1024" title="alt">
 
@@ -460,7 +460,7 @@
 </blockquote>
 <h2 id="intel-X710の注意点について"><a href="#intel-X710の注意点について" class="headerlink" title="intel X710の注意点について"></a>intel X710の注意点について</h2><p>X710は省電力で安定した動作をしますが、過去に何度もファームウェアの脆弱性が指摘されています。今の半導体不足の外部環境下において、もはやintel純正を購入することは困難ですが、サードパーティ製のNICでX710のチップが乗ったものを購入する場合であっても、ファームウェアの更新が必要になってきます。ESXiにおけるネットワークカードのファームウェアの更新方法も整理していますので、以下の記事を参照してください。</p>
 <ul>
-<li><a href="/2022/04/02/nic-firmware/" title="ESXiでネットワークカードのファームウェアを更新する">ESXiでネットワークカードのファームウェアを更新する</a></li>
+<li><a href="/new-technology/2022/04/02/nic-firmware/" title="ESXiでネットワークカードのファームウェアを更新する">ESXiでネットワークカードのファームウェアを更新する</a></li>
 </ul>
 
     </div>

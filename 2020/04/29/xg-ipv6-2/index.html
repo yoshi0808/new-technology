@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.0.0">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
@@ -196,7 +196,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/new-technology/archives/">
-          <span class="site-state-item-count">78</span>
+          <span class="site-state-item-count">79</span>
           <span class="site-state-item-name">ポスト</span>
         </a>
       </div>
@@ -329,7 +329,7 @@ Sophos Firewall配下のクライアントにIPv6アドレスを配布し、IPv6
 <p>仮想環境の場合、ESXiを例に挙げると、以下のようにLAN側物理MACアドレス（当方の環境では、vmnic1）にMACアドレスがあります。</p>
 <img src="/new-technology/2020/04/29/xg-ipv6-2/mac2.png" class="" title="alt">
 
-<p>ULAの生成は以下の通り過去記事にありますので、上記MACアドレスをコピーし、過去記事「<a href="/2020/04/18/ipv6/" title="IPv6のUnique Local Addressを生成する">IPv6のUnique Local Addressを生成する</a>」を参考にULAを求めて下さい。<br>結果として、以下のような情報が得られるので、First IPv6 Addressの<code>fd</code>から始まるULAを控えてください。</p>
+<p>ULAの生成は以下の通り過去記事にありますので、上記MACアドレスをコピーし、過去記事「<a href="/new-technology/2020/04/18/ipv6/" title="IPv6のUnique Local Addressを生成する">IPv6のUnique Local Addressを生成する</a>」を参考にULAを求めて下さい。<br>結果として、以下のような情報が得られるので、First IPv6 Addressの<code>fd</code>から始まるULAを控えてください。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">First IPv6 Address-&gt; fd00:beef:cafe::1/64</span><br></pre></td></tr></table></figure>
 
 <h3 id="LAN側にULAを設定"><a href="#LAN側にULAを設定" class="headerlink" title="LAN側にULAを設定"></a>LAN側にULAを設定</h3><p>XGの左ペインメニューの<mark class="label primary">ネットワーク</mark>の<mark class="label primary">インターフェース</mark>にある、<mark class="label primary">IPv6設定</mark>のチェックボックスをチェックします。次に、<mark class="label primary">IPv6　プレフィックス</mark>の項目に生成したULAを貼り付け、<code>/64</code>の部分を削除してください。画面を見てもらえると解りますが、IPv6のサブネット<mark class="label primary">/64</mark>は画面上で固定表示されています。</p>
@@ -375,7 +375,7 @@ Sophos Firewall配下のクライアントにIPv6アドレスを配布し、IPv6
 <img src="/new-technology/2020/04/29/xg-ipv6-2/rule1.png" class="" title="alt">
 
 <h3 id="ファイアウォールルールの追加"><a href="#ファイアウォールルールの追加" class="headerlink" title="ファイアウォールルールの追加"></a>ファイアウォールルールの追加</h3><mark class="label primary">ファイアウォールルールの追加</mark>から<mark class="label primary">新しいファイアウォールルール</mark>をクリックします。
-<p>ここでの設定内容は、「<a href="/2020/03/14/rule-policy2/" title="XG Firewall v18のルールを作成する">XG Firewall v18のルールを作成する</a>」でIPv4について設定した内容と変わりません。”To Internet”というルールを作りましたが、同じ内容になります。</p>
+<p>ここでの設定内容は、「<a href="/new-technology/2020/03/14/rule-policy2/" title="XG Firewall v18のルールを作成する">XG Firewall v18のルールを作成する</a>」でIPv4について設定した内容と変わりません。”To Internet”というルールを作りましたが、同じ内容になります。</p>
 <ul>
 <li>ルール名はここでは”To_Internet_IPv6”とします。</li>
 <li>送信元ゾーンには、”LAN”を設定します。VPNを使う方は”VPN”も加えてください。宛先ゾーンは”WAN”を指定します。</li>
@@ -406,11 +406,11 @@ Sophos Firewall配下のクライアントにIPv6アドレスを配布し、IPv6
 <h2 id="SSL-TLSインスペクションの設定"><a href="#SSL-TLSインスペクションの設定" class="headerlink" title="SSL&#x2F;TLSインスペクションの設定"></a>SSL&#x2F;TLSインスペクションの設定</h2><p>IPv6のSSL&#x2F;TLSインスペクションの設定を行います。まずは、IPv4で対応した時と同じように、SSL&#x2F;TLSインスペクションの対象範囲のIPホストを登録します。XGの左ペインメニューの<mark class="label primary">ホストとサービス</mark>から、<mark class="label primary">IPホスト</mark>のタブで、<mark class="label primary">追加</mark>ボタンをクリックします。</p>
 <img src="/new-technology/2020/04/29/xg-ipv6-2/host.png" class="" title="alt">
 
-<p>上記の通り、SSL&#x2F;TLSインスペクションのためのIPv6の範囲を”CA_Client_IPv6”として登録します。16進数のアドレス表記ですが、ここでもIPv4のアドレス体系に合わせておくと、ログを確認した時の視認性が上がります。続いて、XGの左ペインメニューの<mark class="label primary">ルールとポリシー</mark>から<mark class="label primary">SSL/TLSインスペクションルール</mark>に進み、”IPv6”をクリックします。「<a href="/2020/03/20/ssl-inspection1/" title="XG Firewall v18のSSL&#x2F;TLSインスペクションの設定">XG Firewall v18のSSL&#x2F;TLSインスペクションの設定</a>」で、このSSL&#x2F;TLSインスペクションルールを一度作成しています。ここにIPv6の設定を加える事になります。</p>
+<p>上記の通り、SSL&#x2F;TLSインスペクションのためのIPv6の範囲を”CA_Client_IPv6”として登録します。16進数のアドレス表記ですが、ここでもIPv4のアドレス体系に合わせておくと、ログを確認した時の視認性が上がります。続いて、XGの左ペインメニューの<mark class="label primary">ルールとポリシー</mark>から<mark class="label primary">SSL/TLSインスペクションルール</mark>に進み、”IPv6”をクリックします。「<a href="/new-technology/2020/03/20/ssl-inspection1/" title="XG Firewall v18のSSL&#x2F;TLSインスペクションの設定">XG Firewall v18のSSL&#x2F;TLSインスペクションの設定</a>」で、このSSL&#x2F;TLSインスペクションルールを一度作成しています。ここにIPv6の設定を加える事になります。</p>
 <img src="/new-technology/2020/04/29/xg-ipv6-2/rule2.png" class="" title="alt">
 
 <p>上記のように、<mark class="label primary">送信元ネットワークとデバイス</mark>に、今回作成した、IPv6のホスト群である、”CA_Client_IPv6”を選択して追加します。</p>
-<p>これでIPv6に関する設定は完了です。IPv6についても、SSL&#x2F;TLSインスペクションの対象となり、IPSなど多くのコンテンツフィルタが可能となりました。一度IPv4でXGのルート証明書を端末にインストールしてあれば、再度インストールする必要はありません。SSL&#x2F;TLSインスペクションのための端末へのインストールについては、「<a href="/2020/03/20/ssl-inspection1/" title="XG Firewall v18のSSL&#x2F;TLSインスペクションの設定">XG Firewall v18のSSL&#x2F;TLSインスペクションの設定</a>」を参照してください。</p>
+<p>これでIPv6に関する設定は完了です。IPv6についても、SSL&#x2F;TLSインスペクションの対象となり、IPSなど多くのコンテンツフィルタが可能となりました。一度IPv4でXGのルート証明書を端末にインストールしてあれば、再度インストールする必要はありません。SSL&#x2F;TLSインスペクションのための端末へのインストールについては、「<a href="/new-technology/2020/03/20/ssl-inspection1/" title="XG Firewall v18のSSL&#x2F;TLSインスペクションの設定">XG Firewall v18のSSL&#x2F;TLSインスペクションの設定</a>」を参照してください。</p>
 <h2 id="動作確認"><a href="#動作確認" class="headerlink" title="動作確認"></a>動作確認</h2><p>IPv6サイトをブラウザ等で閲覧後、XGのログのログビューアを開き、プルダウンから、<mark class="label primary">SSL/TLSインスペクション</mark>を選択します。</p>
 <img src="/new-technology/2020/04/29/xg-ipv6-2/rule3.png" class="" title="alt">
 

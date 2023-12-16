@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.0.0">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
@@ -186,7 +186,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/new-technology/archives/">
-          <span class="site-state-item-count">78</span>
+          <span class="site-state-item-count">79</span>
           <span class="site-state-item-name">ポスト</span>
         </a>
       </div>
@@ -313,7 +313,7 @@ XG FirewallのWebフィルタ・アプリケーションフィルタについて
 <li>ダイナミックカテゴリ（ActiveX・Applets・Cookies・HTTP Upload）</li>
 </ul>
 <p>これらの事から、Webフィルタはカテゴリの分類という主目的はあるものの、ブラウザを対象としたフィルタの機能である事がわかります。</p>
-<h2 id="SNIとフィルタとの関係"><a href="#SNIとフィルタとの関係" class="headerlink" title="SNIとフィルタとの関係"></a>SNIとフィルタとの関係</h2><p>SNIとは、Server Name Indicationの略です。SSL&#x2F;TLS通信において、クライアントからサーバ証明書を要求する時に<strong>サーバ名（SNI）を暗号化せずサーバーに渡します</strong>。XGはこのSNIを見てWebフィルタを行っていますので、接続しようとしているドメインやサーバー単位にアクセス許可・不許可の判断が可能になります。しかし<strong>フォルダ構成やMIMEタイプ、引数やダウンロードするデータを検査するには、SSLインスペクションが必要です</strong>。もちろん、ドメイン単位の制御でIoT機器はある程度の防御が可能と言えますが、防御を最大限に高めるにはSSLインスペクションが必要です。「<a href="/2020/03/21/ssl-inspection2/" title="XG Firewall v18のSSLインスペクションの動作確認と調整">XG Firewall v18のSSLインスペクションの動作確認と調整</a> 」で記載した通り、ZIP化されたマルウェアはSSLインスペクションが行えなければ検知は出来ません。</p>
+<h2 id="SNIとフィルタとの関係"><a href="#SNIとフィルタとの関係" class="headerlink" title="SNIとフィルタとの関係"></a>SNIとフィルタとの関係</h2><p>SNIとは、Server Name Indicationの略です。SSL&#x2F;TLS通信において、クライアントからサーバ証明書を要求する時に<strong>サーバ名（SNI）を暗号化せずサーバーに渡します</strong>。XGはこのSNIを見てWebフィルタを行っていますので、接続しようとしているドメインやサーバー単位にアクセス許可・不許可の判断が可能になります。しかし<strong>フォルダ構成やMIMEタイプ、引数やダウンロードするデータを検査するには、SSLインスペクションが必要です</strong>。もちろん、ドメイン単位の制御でIoT機器はある程度の防御が可能と言えますが、防御を最大限に高めるにはSSLインスペクションが必要です。「<a href="/new-technology/2020/03/21/ssl-inspection2/" title="XG Firewall v18のSSLインスペクションの動作確認と調整">XG Firewall v18のSSLインスペクションの動作確認と調整</a> 」で記載した通り、ZIP化されたマルウェアはSSLインスペクションが行えなければ検知は出来ません。</p>
 <h2 id="アプリケーションフィルタについて"><a href="#アプリケーションフィルタについて" class="headerlink" title="アプリケーションフィルタについて"></a>アプリケーションフィルタについて</h2><p>XGのアプリケーションフィルタは、XGの左ペインメニューの<mark class="label primary">アプリケーション</mark>から確認できます。ブラウザーではないインターネットに接続するアプリケーションを対象にしています。ここの挙動の確認は非常に難しいものがあります。例えば、MicrosoftのOneDriveを題材にテストしてみましょう。SSLインスペクションが行えるWindows端末とSSLインスペクションが行えないAndroid端末を用いて検証します。</p>
 <p>OneDriveのURLは、現時点で、<code>https://onedrive.live.com/</code>です。Webフィルタで当該ドメインのフィルタを行うと、想定通りブラウザーからOneDriveにはアクセス出来ません。これはSNIで判断できるため、SSLインスペクションの有無に関わらずアクセス不可が実現できます。</p>
 <img src="/new-technology/2020/05/06/web-application-filter/onedrive.png" class="" title="alt">
@@ -368,7 +368,7 @@ XG FirewallのWebフィルタ・アプリケーションフィルタについて
 <div class="note info"><p>Webフィルタ・アプリケーションフィルタを完全に動作させるには、SSLインスペクションが必要です。</p>
 </div>
 
-<p>このアプリケーションは止めておきたいというニーズに対して、都度メンテナンスしていくのはとても大変です。従い、高リスクのアプリケーションは拒否する設定をします。具体的な設定については、「<a href="/2020/05/09/best-practice/" title="XG Firewall v18の設定におけるベストプラクティス">XG Firewall v18の設定におけるベストプラクティス</a>」を参照してください。</p>
+<p>このアプリケーションは止めておきたいというニーズに対して、都度メンテナンスしていくのはとても大変です。従い、高リスクのアプリケーションは拒否する設定をします。具体的な設定については、「<a href="/new-technology/2020/05/09/best-practice/" title="XG Firewall v18の設定におけるベストプラクティス">XG Firewall v18の設定におけるベストプラクティス</a>」を参照してください。</p>
 <p>XGを運営しているプロダクトチームは、こういったトラフィックの中身を見ながら制御するポリシーを作るのですから、極めて大変な作業です。特にクラウドアプリケーションは予告なくURLやAPIが変更されるでしょうから、そのメンテナンスコストは計り知れません。</p>
 
     </div>

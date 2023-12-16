@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.0.0">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
@@ -224,7 +224,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/new-technology/archives/">
-          <span class="site-state-item-count">78</span>
+          <span class="site-state-item-count">79</span>
           <span class="site-state-item-name">ポスト</span>
         </a>
       </div>
@@ -340,9 +340,9 @@
 <p>米国Ubiquiti（ユビキティ）社のUniFi製品であるネットワークスイッチ、Wi-Fiアクセスポイントを利用するには、管理コンソールとしてUniFi OS ConsoleまたはUniFi Network Applicationが必要となります。UniFi Network ApplicationはUbiquitiより無償提供されており、管理・運用においてはUniFiクラウドサービスと連携します。一般的にはこのようなサービスはサブスクリプション費用が必要ですが、この費用も掛かりません。UniFi製品はネットワークの見える化に特化しているため、管理コンソールの24時間稼働が理想です。最初からハード組み込みのセキュリティ機器（UniFi Security Gateway等）やUniFi Cloud Keyを購入すればすぐにUniFi製品を使い始めることができますが、これらのハードウェアを購入しなくとも、ネットワークやLinuxの知識がある人はUniFi Network Applicationをセットアップし、使い始めることができます。</p>
 <span id="more"></span>
 
-<h2 id="UniFi-Network-Applicationのセットアップの前提"><a href="#UniFi-Network-Applicationのセットアップの前提" class="headerlink" title="UniFi Network Applicationのセットアップの前提"></a>UniFi Network Applicationのセットアップの前提</h2><p>「<a href="/2022/08/27/ubiquiti-unifi/" title="Ubiquiti UniFiの世界">Ubiquiti UniFiの世界</a>」ではUniFiの機能全般を説明しました。UniFi Network Applicationをセットアップする以前に製品の情報やアップデートの情報は全てUbiquitiの提供するCommunityから入手します。英語のコミュニティサイトではSOHOなどのユーザーはUDM Proなどのセキュリティゲートウェイに、スイッチ、APを組み合わせているケースが多く見られます。スイッチユーザーは、もう少し大きな規模のユーザーがネットワークアプリケーションをLinuxで構築しているユーザーが多いように見えます。実際に顧客にサービスを提供しているSIerやエンジニアの参加もあります。コミュニティの情報・不具合などの割合から見ると、ネットワークアプリケーションの機能とスイッチの情報が圧倒的に多いように見え、セキュリティゲートウェイの質問やセキュリティそのものに関する技術的な内容は少ないように見えます。</p>
+<h2 id="UniFi-Network-Applicationのセットアップの前提"><a href="#UniFi-Network-Applicationのセットアップの前提" class="headerlink" title="UniFi Network Applicationのセットアップの前提"></a>UniFi Network Applicationのセットアップの前提</h2><p>「<a href="/new-technology/2022/08/27/ubiquiti-unifi/" title="Ubiquiti UniFiの世界">Ubiquiti UniFiの世界</a>」ではUniFiの機能全般を説明しました。UniFi Network Applicationをセットアップする以前に製品の情報やアップデートの情報は全てUbiquitiの提供するCommunityから入手します。英語のコミュニティサイトではSOHOなどのユーザーはUDM Proなどのセキュリティゲートウェイに、スイッチ、APを組み合わせているケースが多く見られます。スイッチユーザーは、もう少し大きな規模のユーザーがネットワークアプリケーションをLinuxで構築しているユーザーが多いように見えます。実際に顧客にサービスを提供しているSIerやエンジニアの参加もあります。コミュニティの情報・不具合などの割合から見ると、ネットワークアプリケーションの機能とスイッチの情報が圧倒的に多いように見え、セキュリティゲートウェイの質問やセキュリティそのものに関する技術的な内容は少ないように見えます。</p>
 <p>手っ取り早くUniFi機器を稼働させるには、Windows、macOSのUniFi Network Applicationをセットアップし、動作させることです。</p>
-<p>基本的には24時間稼働させ、スイッチ&#x2F;APからリアルタイムで情報を収集したり、スイッチ&#x2F;APに必要な動作を指示するのがConsole&#x2F;Network Applicationの役目です。Linux上（Debian&#x2F;Ubuntu）にセットアップされるケースが多いようです。わざわざLinuxのセットアップをするのは手間だと思えますが、運用を継続することを考えると、Linuxへのセットアップがお勧めです。また、バックアップや設定変更で動作しなくなった時のロールバックを考えると仮想環境（ESXi）にセットアップされることをお勧めします。Ubuntuの最新バージョンであるUbuntu22.04LTSはサポート期間が2027年までと十分長い期間があります。UniFiのためのUbuntuのセットアップ記事は「<a href="/2022/09/23/ubuntu22-04lts/" title="Ubuntu22.04LTSをESXiにセットアップする">Ubuntu22.04LTSをESXiにセットアップする</a>」を参照してください。</p>
+<p>基本的には24時間稼働させ、スイッチ&#x2F;APからリアルタイムで情報を収集したり、スイッチ&#x2F;APに必要な動作を指示するのがConsole&#x2F;Network Applicationの役目です。Linux上（Debian&#x2F;Ubuntu）にセットアップされるケースが多いようです。わざわざLinuxのセットアップをするのは手間だと思えますが、運用を継続することを考えると、Linuxへのセットアップがお勧めです。また、バックアップや設定変更で動作しなくなった時のロールバックを考えると仮想環境（ESXi）にセットアップされることをお勧めします。Ubuntuの最新バージョンであるUbuntu22.04LTSはサポート期間が2027年までと十分長い期間があります。UniFiのためのUbuntuのセットアップ記事は「<a href="/new-technology/2022/09/23/ubuntu22-04lts/" title="Ubuntu22.04LTSをESXiにセットアップする">Ubuntu22.04LTSをESXiにセットアップする</a>」を参照してください。</p>
 <p>ローカル環境のみのアクセス（オンプレミス）、リモート（スマホアプリ）から管理可能なハイブリッドクラウド方式がありますが、ここではハイブリッドクラウド方式で進めます。クラウドはUbiquitが提供する無償のサービスです（※有償のUbiquitiクラウド管理の方式もあります）。基本的には機器のCPU、メモリ使用量、温度管理に加え、スマホへの通知やリモートによる機器のリスタート、アップグレード、高い利便性があります。</p>
 <p>UniFiはAppleのiPhoneのように説明書が無くても使えることを目標にしているのでしょうか。難しいスイッチなどのコマンドラインを必要としませんが、マニュアルというものがありません。文末に示すコミュニティなどの情報を参考にしてください。徐々に日本語向けガイドも整備されてきています。</p>
 <p>この記事ではUbuntuに具体的にネットワークアプリケーションをセットアップする方法を記載していますが、最初に日本語のガイドを参照されることをお勧めします。より詳細の手順としてこの記事を参考にされることをお勧めします。Ubiquitiの公式ではUniFiコンソールを購入してセットアップする事が推奨されています。</p>
@@ -383,7 +383,7 @@
 <blockquote>
 <p>MongoDB<br> <a target="_blank" rel="noopener" href="https://www.mongodb.com/support-policy/lifecycles">https://www.mongodb.com/support-policy/lifecycles</a></p>
 </blockquote>
-<h2 id="Ubuntuの事前準備"><a href="#Ubuntuの事前準備" class="headerlink" title="Ubuntuの事前準備"></a>Ubuntuの事前準備</h2><p>ここでは「<a href="/2022/09/23/ubuntu22-04lts/" title="Ubuntu22.04LTSをESXiにセットアップする">Ubuntu22.04LTSをESXiにセットアップする</a>」で記載したようにUbuntuがESXi上にセットアップされ、ESXiのUbuntuにVMware Remote Consoleで接続して操作する事を前提としています。ESXiのWebUIにログインし、Ubuntuの仮想マシンに対してVMRCで接続するか、ブラウザから、<code>vmrc://ユーザー名@esxiのホスト名/?moid=[仮想マシンのID]</code>で接続します（VMRCウィンドウが起動します）。クライアントへのVMRCのインストールはESXiのWebUIからダウンロードできます。</p>
+<h2 id="Ubuntuの事前準備"><a href="#Ubuntuの事前準備" class="headerlink" title="Ubuntuの事前準備"></a>Ubuntuの事前準備</h2><p>ここでは「<a href="/new-technology/2022/09/23/ubuntu22-04lts/" title="Ubuntu22.04LTSをESXiにセットアップする">Ubuntu22.04LTSをESXiにセットアップする</a>」で記載したようにUbuntuがESXi上にセットアップされ、ESXiのUbuntuにVMware Remote Consoleで接続して操作する事を前提としています。ESXiのWebUIにログインし、Ubuntuの仮想マシンに対してVMRCで接続するか、ブラウザから、<code>vmrc://ユーザー名@esxiのホスト名/?moid=[仮想マシンのID]</code>で接続します（VMRCウィンドウが起動します）。クライアントへのVMRCのインストールはESXiのWebUIからダウンロードできます。</p>
 <h3 id="Ubuntuの固定IPアドレスの設定"><a href="#Ubuntuの固定IPアドレスの設定" class="headerlink" title="Ubuntuの固定IPアドレスの設定"></a>Ubuntuの固定IPアドレスの設定</h3><p>UniFiの機器から、或いはWeb Consoleとして常に同一のIPアドレスに接続するために固定IPアドレス、またはDHCPの配布でmacアドレスを元に常に同じIPアドレスを配布するように設定します。Ubuntu上で固定IPにするには、<mark class="label primary">設定</mark>画面の<mark class="label primary">ネットワーク</mark>で固定IPを設定します。</p>
 <img src="/new-technology/2022/09/23/unifi-network-application/unifi15.png" class="" width="640" title="alt">
 
@@ -563,7 +563,7 @@
 <blockquote>
 <p>UniFi - SSHでログイン（高度）<br> <a target="_blank" rel="noopener" href="https://help.jp.ui.com/articles/204909374/">https://help.jp.ui.com/articles/204909374/</a></p>
 </blockquote>
-<h2 id="セットアップの完了"><a href="#セットアップの完了" class="headerlink" title="セットアップの完了"></a>セットアップの完了</h2><p>ここまででUniFiのセットアップは完了です。ESXiのスナップショットを取得していらした方はスナップショットの管理から「すべて削除」し、一旦、Ubuntu全体のバックアップを取得される事をお勧めします。次の記事「<a href="/2022/10/23/unifi-network-application2/" title="UniFi Network Applicationの運用">UniFi Network Applicationの運用</a>」で、UniFi Network Applicationの運用全般（設定のバックアップ、アップデート、通知）を紹介します。</p>
+<h2 id="セットアップの完了"><a href="#セットアップの完了" class="headerlink" title="セットアップの完了"></a>セットアップの完了</h2><p>ここまででUniFiのセットアップは完了です。ESXiのスナップショットを取得していらした方はスナップショットの管理から「すべて削除」し、一旦、Ubuntu全体のバックアップを取得される事をお勧めします。次の記事「<a href="/new-technology/2022/10/23/unifi-network-application2/" title="UniFi Network Applicationの運用">UniFi Network Applicationの運用</a>」で、UniFi Network Applicationの運用全般（設定のバックアップ、アップデート、通知）を紹介します。</p>
 <h2 id="リソース"><a href="#リソース" class="headerlink" title="リソース"></a>リソース</h2><p>以下の日本語ヘルプ、コミュニティがUniFiの構築には大いに参考になります。</p>
 <blockquote>
 <p>Ubiquiti コミュニティ（日本）<br> <a target="_blank" rel="noopener" href="https://www.facebook.com/groups/uijapan">https://www.facebook.com/groups/uijapan</a></p>

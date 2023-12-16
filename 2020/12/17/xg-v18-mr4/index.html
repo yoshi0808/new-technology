@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.0.0">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
@@ -187,7 +187,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/new-technology/archives/">
-          <span class="site-state-item-count">78</span>
+          <span class="site-state-item-count">79</span>
           <span class="site-state-item-name">ポスト</span>
         </a>
       </div>
@@ -298,7 +298,7 @@
     
     <div class="post-body" itemprop="articleBody"><img src="/new-technology/2020/12/17/xg-v18-mr4/XG.png" class="" title="alt">
 
-<h2 id="XG-Firewall-v18-MR-4"><a href="#XG-Firewall-v18-MR-4" class="headerlink" title="XG Firewall v18 MR-4"></a>XG Firewall v18 MR-4</h2><p>XG Firewall v18のMR-4が2020年12月15日に発表されました。なお、XG Firewallの最新パッチについては、「<a href="/2020/10/11/esxi-backup/" title="VMware ESXiの仮想マシンをバックアップする">VMware ESXiの仮想マシンをバックアップする</a>」の関連リンクを参照してください。</p>
+<h2 id="XG-Firewall-v18-MR-4"><a href="#XG-Firewall-v18-MR-4" class="headerlink" title="XG Firewall v18 MR-4"></a>XG Firewall v18 MR-4</h2><p>XG Firewall v18のMR-4が2020年12月15日に発表されました。なお、XG Firewallの最新パッチについては、「<a href="/new-technology/2020/10/11/esxi-backup/" title="VMware ESXiの仮想マシンをバックアップする">VMware ESXiの仮想マシンをバックアップする</a>」の関連リンクを参照してください。</p>
 <span id="more"></span>
 
 <h2 id="主なエンハンスの内容"><a href="#主なエンハンスの内容" class="headerlink" title="主なエンハンスの内容"></a>主なエンハンスの内容</h2><ul>
@@ -333,9 +333,9 @@
 
 <p>アップロード＆再起動ボタンをクリックし、MR-4へのアップグレードを完了させます。</p>
 <h3 id="MR-4で注意する点"><a href="#MR-4で注意する点" class="headerlink" title="MR-4で注意する点"></a>MR-4で注意する点</h3><p>XGv18のいつのバージョンからか気付きませんでしたが、IPSec VPNのiOSの構成ファイルのダウンロード（ユーザーポータル画面からダウンロード）ができなくなっていました。今回のバージョンではVPNについて、scadmin（IPSec構成ファイル作成ツール）を使わず構成ファイルが作成できるような感じでしたので早速検証したところ、「Install」ボタンをクリックすると再びユーザーポータルのログインページに飛ばされてしまいファイルをダウンロードする事すらできなくなっていました（MR-5では修正されています）。</p>
-<p>幸いにも、iOSからIPSec VPNでXG Firewallに接続する方法は、代替策があるのでVPN構成ファイルをダウンロードせずとも対応は可能です。<br>「<a href="/2020/03/31/vpn-iphone/" title="XG Firewall VPNにスマホから接続する">XG Firewall VPNにスマホから接続する</a>」の記事については代替策について追記しておきました。</p>
-<p>（2021-1-2追記）v18 MR4にアップデートしてからXGのアラート通知が来ていない事に気がつきました。MR4では、左ペインメニューの<mark class="label primary">管理</mark>の<mark class="label primary">通知の設定</mark>画面で「証明書」という項目が追加されており、プルダウンから証明書を選択するようになっています。gmailのような外部メールを利用して通知するケースでは、証明書に”Application Certificate”を選択してください。「<a href="/2020/04/03/Notifications/" title="XG Firewallの通知設定を行う">XG Firewallの通知設定を行う</a>」にも追記しています。</p>
-<div class="note info"><p>仮想環境（ESXi）上にXGをインストールされている方はアップグレードの前に、「<a href="/2020/10/11/esxi-backup/" title="VMware ESXiの仮想マシンをバックアップする">VMware ESXiの仮想マシンをバックアップする</a>」を参考に、XGのバックアップを確保される事をお勧めします。</p>
+<p>幸いにも、iOSからIPSec VPNでXG Firewallに接続する方法は、代替策があるのでVPN構成ファイルをダウンロードせずとも対応は可能です。<br>「<a href="/new-technology/2020/03/31/vpn-iphone/" title="XG Firewall VPNにスマホから接続する">XG Firewall VPNにスマホから接続する</a>」の記事については代替策について追記しておきました。</p>
+<p>（2021-1-2追記）v18 MR4にアップデートしてからXGのアラート通知が来ていない事に気がつきました。MR4では、左ペインメニューの<mark class="label primary">管理</mark>の<mark class="label primary">通知の設定</mark>画面で「証明書」という項目が追加されており、プルダウンから証明書を選択するようになっています。gmailのような外部メールを利用して通知するケースでは、証明書に”Application Certificate”を選択してください。「<a href="/new-technology/2020/04/03/Notifications/" title="XG Firewallの通知設定を行う">XG Firewallの通知設定を行う</a>」にも追記しています。</p>
+<div class="note info"><p>仮想環境（ESXi）上にXGをインストールされている方はアップグレードの前に、「<a href="/new-technology/2020/10/11/esxi-backup/" title="VMware ESXiの仮想マシンをバックアップする">VMware ESXiの仮想マシンをバックアップする</a>」を参考に、XGのバックアップを確保される事をお勧めします。</p>
 </div>
 
     </div>

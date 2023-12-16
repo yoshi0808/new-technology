@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.0.0">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
@@ -194,7 +194,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/new-technology/archives/">
-          <span class="site-state-item-count">78</span>
+          <span class="site-state-item-count">79</span>
           <span class="site-state-item-name">ポスト</span>
         </a>
       </div>
@@ -308,7 +308,7 @@ XG Firewall v18のSSL/TLSインスペクションを使い、暗号化されたS
 <span id="more"></span>
 
 <h2 id="XG-Firewall-v18のメリット"><a href="#XG-Firewall-v18のメリット" class="headerlink" title="XG Firewall v18のメリット"></a>XG Firewall v18のメリット</h2><p>XGでは暗号化された通信を高速に解読し、ウィルスやマルウェアのダウンロードをPCやスマホが受信する前に防ぐ事が可能となります。また、利用を認めていないアプリケーションのデータのやりとりを未然に防ぐ事も可能です。v18では、全く新しい<mark class="label primary">XStreamアーキテクチャ</mark>によって、この解読（SSL&#x2F;TLSインスペクション）の速度が大幅に向上しました。</p>
-<h2 id="SSL-TLSインスペクションの対象ホストを決める"><a href="#SSL-TLSインスペクションの対象ホストを決める" class="headerlink" title="SSL&#x2F;TLSインスペクションの対象ホストを決める"></a>SSL&#x2F;TLSインスペクションの対象ホストを決める</h2><p>「<a href="/2020/03/20/ssl-inspection/" title="SSLインスペクションについて">SSLインスペクションについて</a>」に記載した通り、SSL&#x2F;TLSインスペクションを行うためには、PC等のクライアントにXGのCA証明書をインストールする事が必須となります。従いSSL&#x2F;TLSインスペクションの対象のグループ、家電やAndroidなどのSSL&#x2F;TLSインスペクションを使えないグループとに分類します。この2つのグループはIPアドレスの範囲で分割するのが最も簡単な方法です。例えば、SSL&#x2F;TLSインスペクショングループはスタティックでIPを割り当て、非SSL&#x2F;TLSインスペクショングループはDHCPで動的なIPアドレスを配布する方法があります。<strong>XGのDHCPサーバーはMACアドレスを元に固定IPをスタティックに割り振る事が可能です</strong>。</p>
+<h2 id="SSL-TLSインスペクションの対象ホストを決める"><a href="#SSL-TLSインスペクションの対象ホストを決める" class="headerlink" title="SSL&#x2F;TLSインスペクションの対象ホストを決める"></a>SSL&#x2F;TLSインスペクションの対象ホストを決める</h2><p>「<a href="/new-technology/2020/03/20/ssl-inspection/" title="SSLインスペクションについて">SSLインスペクションについて</a>」に記載した通り、SSL&#x2F;TLSインスペクションを行うためには、PC等のクライアントにXGのCA証明書をインストールする事が必須となります。従いSSL&#x2F;TLSインスペクションの対象のグループ、家電やAndroidなどのSSL&#x2F;TLSインスペクションを使えないグループとに分類します。この2つのグループはIPアドレスの範囲で分割するのが最も簡単な方法です。例えば、SSL&#x2F;TLSインスペクショングループはスタティックでIPを割り当て、非SSL&#x2F;TLSインスペクショングループはDHCPで動的なIPアドレスを配布する方法があります。<strong>XGのDHCPサーバーはMACアドレスを元に固定IPをスタティックに割り振る事が可能です</strong>。</p>
 <h3 id="SSL-TLSインスペクションの対象をDHCPに登録する"><a href="#SSL-TLSインスペクションの対象をDHCPに登録する" class="headerlink" title="SSL&#x2F;TLSインスペクションの対象をDHCPに登録する"></a>SSL&#x2F;TLSインスペクションの対象をDHCPに登録する</h3><p>左ペインのネットワークからDHCPのタブをクリックし、<mark class="label primary">Default DHCP Server</mark>をクリックします。そこには、”スタティックIP_MACマッピング”があるので、DHCPで自動リースをしている以外のIPアドレスをスタティックに割り振って登録してください。管理の一例としては以下の通りです。</p>
 <ul>
 <li>証明書を登録できないIoTなどをDHCPで<code>192.168.2.101</code>〜<code>192.168.2.128</code>を動的割り当て</li>
@@ -317,7 +317,7 @@ XG Firewall v18のSSL/TLSインスペクションを使い、暗号化されたS
 <p>ここはユーザーの「決め」ですが、上記で証明書がインストール出来るグループを”IPホスト”としてXGに登録しましょう。左ペインの<mark class="label primary">ホストとサービス</mark>から、IPホストのタブをクリックし追加ボタンをクリックします。以下の通り、ホストのIPの範囲を示す名前を入力し、IPの範囲を入力して保存ボタンをクリックします。ここでは、<mark class="label primary">CA_Client_IPv4</mark>として登録する事にします。</p>
 <img src="/new-technology/2020/03/20/ssl-inspection1/host1.png" class="" title="alt">
 
-<h2 id="ファイアウォールルールの設定"><a href="#ファイアウォールルールの設定" class="headerlink" title="ファイアウォールルールの設定"></a>ファイアウォールルールの設定</h2><p>左ペインのルールとポリシーからルールとポリシーを選択します。「<a href="/2020/03/14/rule-policy2/" title="XG Firewall v18のルールを作成する">XG Firewall v18のルールを作成する</a>」にて、デフォルトのルール”To_Internet”を作成しました。<mark class="label primary">Traffic to WAN</mark>のグループ配下に”To_Internet”ルールがある事を確認してください。このファイアウォールルールはLANおよびVPNからWANへの接続を許可するシンプルなものですが、今回これは修正しません。XG v18では、SSL&#x2F;TLSインスペクションとファイアウォールルールは互いに独立していて、別メニューで設定する事になります。</p>
+<h2 id="ファイアウォールルールの設定"><a href="#ファイアウォールルールの設定" class="headerlink" title="ファイアウォールルールの設定"></a>ファイアウォールルールの設定</h2><p>左ペインのルールとポリシーからルールとポリシーを選択します。「<a href="/new-technology/2020/03/14/rule-policy2/" title="XG Firewall v18のルールを作成する">XG Firewall v18のルールを作成する</a>」にて、デフォルトのルール”To_Internet”を作成しました。<mark class="label primary">Traffic to WAN</mark>のグループ配下に”To_Internet”ルールがある事を確認してください。このファイアウォールルールはLANおよびVPNからWANへの接続を許可するシンプルなものですが、今回これは修正しません。XG v18では、SSL&#x2F;TLSインスペクションとファイアウォールルールは互いに独立していて、別メニューで設定する事になります。</p>
 <h2 id="SSL-TLSインスペクションルールの設定"><a href="#SSL-TLSインスペクションルールの設定" class="headerlink" title="SSL&#x2F;TLSインスペクションルールの設定"></a>SSL&#x2F;TLSインスペクションルールの設定</h2><p>ここで、SSL&#x2F;TLSインスペクショングループと非SSL&#x2F;TLSインスペクショングループとの明確化を行います。左ペインのルールとポリシーからSSL&#x2F;TLSインスペクションルールをクリックします。</p>
 <ol>
 <li>画面右側の追加ボタンをクリックします</li>

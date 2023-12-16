@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.0.0">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
@@ -190,7 +190,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/new-technology/archives/">
-          <span class="site-state-item-count">78</span>
+          <span class="site-state-item-count">79</span>
           <span class="site-state-item-name">ポスト</span>
         </a>
       </div>
@@ -340,7 +340,7 @@ PC（Windows、macOS）からXG FirewallのIPSec VPNへ接続しているユー�
 <p>再び、XGの管理画面にadminでログインします。左ペインの<mark class="label primary">認証</mark>から<mark class="label primary">ワンタイムパスワード</mark>に進むと、<mark class="label primary">シークレット</mark>が生成されている事がわかります。</p>
 <img src="/new-technology/2020/03/28/vpnotp/otp2.png" class="" title="alt">
 
-<p>これで、IPsecVPNにはワンタイムパスワードが必須となりました。以前作成したSophosConnectクライアントの接続設定ファイルについて、再設定が必要になります。「<a href="/2020/03/28/vpn/" title="XG Firewall VPNについて">XG Firewall VPNについて</a>」ではVPNのセットアップを行い、クライアントソフトウェアをダウンロードしましたが、2要素認証の設定を加える必要があります。</p>
+<p>これで、IPsecVPNにはワンタイムパスワードが必須となりました。以前作成したSophosConnectクライアントの接続設定ファイルについて、再設定が必要になります。「<a href="/new-technology/2020/03/28/vpn/" title="XG Firewall VPNについて">XG Firewall VPNについて</a>」ではVPNのセットアップを行い、クライアントソフトウェアをダウンロードしましたが、2要素認証の設定を加える必要があります。</p>
 <h2 id="XG-v18-MR-3以前の設定ファイル"><a href="#XG-v18-MR-3以前の設定ファイル" class="headerlink" title="XG v18 MR-3以前の設定ファイル"></a>XG v18 MR-3以前の設定ファイル</h2><h3 id="scadminツールで設定ファイルを作成"><a href="#scadminツールで設定ファイルを作成" class="headerlink" title="scadminツールで設定ファイルを作成"></a>scadminツールで設定ファイルを作成</h3><p>こちらは少し古い方法です。v18MR-3以前の場合は、SophosConnectクライアントではなく、もう1つの設定ファイル作成ツールである、scadminツールをWindowsにインストールします。このアプリケーションはmacOS版がありませんので、Windowsで設定ファイルを作成する事になります。出力された設定ファイルは、Windows、mac共に共通で利用出来ますので、それをSophosConnectクライアントに取り込みます。scadmin.msiをインストールし起動します。OPENボタンを押して、以前に生成された接続設定ファイル（拡張子tgb）ファイルを開きます。</p>
 <img src="/new-technology/2020/03/28/vpnotp/otp4.png" class="" title="alt">
 

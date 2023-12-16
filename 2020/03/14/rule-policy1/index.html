@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.0.0">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
@@ -188,7 +188,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/new-technology/archives/">
-          <span class="site-state-item-count">78</span>
+          <span class="site-state-item-count">79</span>
           <span class="site-state-item-name">ポスト</span>
         </a>
       </div>
@@ -328,7 +328,7 @@ XG Firewall v18のルールとポリシーの基本的な機能を紹介しま�
 <li>DPIエンジンでなくWEBプロキシを使用する</li>
 <li>Webプロキシでのフィルタリング中にHTTPSを復号化する</li>
 </ul>
-<p>これは前バージョンのv17まではPort443のみをProxyとしてhttpsの解析を行っていました。v18の目玉機能であるDPIエンジンはPortに依存しないため、複数Portを検査できる方法、つまりWEBプロキシは利用しない事が前提になります。SSL&#x2F;TLSインスペクションの詳しい説明については、「<a href="/2020/03/20/ssl-inspection/" title="SSLインスペクションについて">SSLインスペクションについて</a>」を参照してください。</p>
+<p>これは前バージョンのv17まではPort443のみをProxyとしてhttpsの解析を行っていました。v18の目玉機能であるDPIエンジンはPortに依存しないため、複数Portを検査できる方法、つまりWEBプロキシは利用しない事が前提になります。SSL&#x2F;TLSインスペクションの詳しい説明については、「<a href="/new-technology/2020/03/20/ssl-inspection/" title="SSLインスペクションについて">SSLインスペクションについて</a>」を参照してください。</p>
 <p>ここまで、”Default Network Policy”について設定されている内容を説明しました。もちろんこのルールを修正する事は可能ですが、このデフォルトルールは最後のルールとし、それより優先度の高い”上部に位置する”ルールを追加していくのが通常です。”上部に位置するルール”で許可するものを細かく設定し、最後のルールは”拒否”にする方法ももちろん可能です（業務系ファイアウォールは原則拒否で、必要なもののみ許可設定を行います）。</p>
 <h2 id="ファイアウォールルールの組み立て方"><a href="#ファイアウォールルールの組み立て方" class="headerlink" title="ファイアウォールルールの組み立て方"></a>ファイアウォールルールの組み立て方</h2><p>上記で説明してきた通り、レイヤ7のファイアウォールはHTTPSプロトコルを通すという前提で、コンテンツの中身についてどのように制御するかを設定していく事になります。最初から存在しているDefault Network Policyはいくつもの上位ルールを通り抜けてきて最後に処理するルールです。以下にXGで対応可能なファイアウォールルールの組み立て方の一例について記載します。これは端末ごとにルールを決めていくやり方で、比較的シンプルな方法です。基本的に上位のルールはより絞り、下位のルールは甘めになります。</p>
 <ol>

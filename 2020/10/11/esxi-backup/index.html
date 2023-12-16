@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.0.0">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
@@ -191,7 +191,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/new-technology/archives/">
-          <span class="site-state-item-count">78</span>
+          <span class="site-state-item-count">79</span>
           <span class="site-state-item-name">ポスト</span>
         </a>
       </div>
@@ -310,8 +310,8 @@
 <h2 id="ESXiのバックアップソフトウェア"><a href="#ESXiのバックアップソフトウェア" class="headerlink" title="ESXiのバックアップソフトウェア"></a>ESXiのバックアップソフトウェア</h2><p>無償版ESXiの仮想マシン（VM)をバックアップするには以下の3つの選択肢があります。</p>
 <ol>
 <li>ghettoVCBバックアップスクリプト（この記事で説明しています）</li>
-<li>Synology NASによるバックアップ<br>「<a href="/2023/09/16/Synology-abb/" title="Synology NASでESXi仮想マシンのバックアップを取得する">Synology NASでESXi仮想マシンのバックアップを取得する</a>」を参照してください。</li>
-<li>Nakivo Backup Free Edition<br> 「<a href="/2021/03/06/esxi-nakivo/" title="無償版ESXiの高度なバックアップ">無償版ESXiの高度なバックアップ</a>」を参照してください。</li>
+<li>Synology NASによるバックアップ<br>「<a href="/new-technology/2023/09/16/Synology-abb/" title="Synology NASでESXi仮想マシンのバックアップを取得する">Synology NASでESXi仮想マシンのバックアップを取得する</a>」を参照してください。</li>
+<li>Nakivo Backup Free Edition<br> 「<a href="/new-technology/2021/03/06/esxi-nakivo/" title="無償版ESXiの高度なバックアップ">無償版ESXiの高度なバックアップ</a>」を参照してください。</li>
 </ol>
 <h2 id="ghettoVCBでバックアップする"><a href="#ghettoVCBでバックアップする" class="headerlink" title="ghettoVCBでバックアップする"></a>ghettoVCBでバックアップする</h2><p>このブログで紹介している<strong>Sophos Firewall</strong>は、ESXi上にセットアップする事をお勧めしています。その理由としては仮想マシンは比較的バックアップが取得しやすく、万が一のトラブル発生時に速やかに復元（レストア）しやすい事が理由でもあります。もちろん、Sophos Firewallには設定ファイルをバックアップする機能が存在しますが、バージョンアップやデバイスの入れ替え等何らかのきっかけでうまく稼働しなくなるリスクがあります。Firewall自体がOSとして起動するため、バックアップソフトウェアをインストールできません。このghettoVCBはESXi上で動作させるコマンドラインのスクリプトですが、利用は難しくありません。</p>
 <h2 id="ESXiのスナップショット"><a href="#ESXiのスナップショット" class="headerlink" title="ESXiのスナップショット"></a>ESXiのスナップショット</h2><p>ESXiはスナップショットという機能を持っており、その時点の稼働状態について保存可能です。動画の一瞬を絵として切り取るという表現が適切でしょうか、これは一瞬で完了し、いつでもロールバックが可能です。複数の世代を持て使い勝手はとても良好です。ビジネスの世界では本番環境にパッチを当てる際などの最終確認フェーズで活用されます。つまり、万が一の時にはロールバックする事で速やかに以前の状態に戻す事が可能です。但し、このスナップショットを取ったまま長時間運用する事をVMWareは推奨していません。スナップショットを取得した後のメモリを含む稼働状況の差分をDiskに記録していく必要があり、これがパフォーマンスに悪影響を及ぼすためです。従い、スナップショットは恒久的なバックアップの役割にはなりません。</p>
@@ -389,7 +389,7 @@
 <blockquote>
 <p>vmware -ghettoVCB.sh - Free alternative for backing up VM’s for ESX(i) 3.5, 4.x, 5.x, 6.x &amp; 7.x-<br> <a target="_blank" rel="noopener" href="https://communities.vmware.com/docs/DOC-8760">https://communities.vmware.com/docs/DOC-8760</a></p>
 </blockquote>
-<h2 id="ESXiのちょっと特殊な点"><a href="#ESXiのちょっと特殊な点" class="headerlink" title="ESXiのちょっと特殊な点"></a>ESXiのちょっと特殊な点</h2><p>このシェルを実行する時に、頭に<code>/bin/sh</code>を加えました。単体でghettoVCB.shを実行すると<code>-sh: ./ghettoVCB.sh: Operation not permitted</code>と実行できません。ghettoVCB.shには、実行権も最初から付与されています。スクリプトの先頭にShebang（#!&#x2F;bin&#x2F;sh）が無いのでそれが原因かと思い加えても動作しません。これは、ESXiがUEFIのセキュアブートだとこのような挙動になるようです。スクリプトでバックアップができるようになると、Cronに登録して定期的に実行したくなりますが、改ざん防止のためそれも不可能なようです。ESXiのセキュアブートをしないように変更すれば可能ですが、XGを載せたFirewallの役割から考えると非常に悩ましいところです。冒頭に前述した無償ソフトウェアについての記事「<a href="/2021/03/06/esxi-nakivo/" title="無償版ESXiの高度なバックアップ">無償版ESXiの高度なバックアップ</a>」を参照してください。</p>
+<h2 id="ESXiのちょっと特殊な点"><a href="#ESXiのちょっと特殊な点" class="headerlink" title="ESXiのちょっと特殊な点"></a>ESXiのちょっと特殊な点</h2><p>このシェルを実行する時に、頭に<code>/bin/sh</code>を加えました。単体でghettoVCB.shを実行すると<code>-sh: ./ghettoVCB.sh: Operation not permitted</code>と実行できません。ghettoVCB.shには、実行権も最初から付与されています。スクリプトの先頭にShebang（#!&#x2F;bin&#x2F;sh）が無いのでそれが原因かと思い加えても動作しません。これは、ESXiがUEFIのセキュアブートだとこのような挙動になるようです。スクリプトでバックアップができるようになると、Cronに登録して定期的に実行したくなりますが、改ざん防止のためそれも不可能なようです。ESXiのセキュアブートをしないように変更すれば可能ですが、XGを載せたFirewallの役割から考えると非常に悩ましいところです。冒頭に前述した無償ソフトウェアについての記事「<a href="/new-technology/2021/03/06/esxi-nakivo/" title="無償版ESXiの高度なバックアップ">無償版ESXiの高度なバックアップ</a>」を参照してください。</p>
 <h2 id="レストアする"><a href="#レストアする" class="headerlink" title="レストアする"></a>レストアする</h2><p>さて、バックアップから戻す場合です。ESXiのハードウェア毎故障してしまってもバックアップがあれば安全です。戻し方には2つあります。</p>
 <ol>
 <li>バックアップを取得した仮想マシンと同じ場所に戻す</li>

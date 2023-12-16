@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.0.0">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
@@ -186,7 +186,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/new-technology/archives/">
-          <span class="site-state-item-count">78</span>
+          <span class="site-state-item-count">79</span>
           <span class="site-state-item-name">ポスト</span>
         </a>
       </div>
@@ -315,7 +315,7 @@ XG Firewall v18を使ったインターネットアクセスのための、デ�
 <li>その他のセキュリティ機能でアプリケーションコントロールを選択します<br> 最もリスクが高いアプリケーションを拒否する”Block very high risk(Risk Level 5) apps”を選択します</li>
 <li>IPSは一般的なルール”lantowan_general”を選択します</li>
 </ul>
-<p>保存ボタンをクリックするとルールの追加が行われます。Webポリシーが”Default Policy”で広告が禁止されていればブラウザではエラー画面が表示されます。またサイトのカテゴリ（ギャンブル、アダルト）などもDefault Policyの設定内容によって、どのようにアクセスが止まるのか確認をしてください。XG画面の右上に<mark class="label primary">ログビューア</mark>があるので、”ファイアウォールルール”、”アプリケーションフィルタ”、”Webフィルタ”のログを確認してください。許可・拒否のログを確認しながら、さらに新しいルールを加えるなど、カスタマイズを進めてください。Webフィルタについての解説は、「<a href="/2020/03/14/customize-policy/" title="XG Firewall v18のポリシーをカスタマイズする">XG Firewall v18のポリシーをカスタマイズする</a>」、「<a href="/2020/05/06/web-application-filter/" title="XG FirewallのWebとアプリケーションフィルタについて">XG FirewallのWebとアプリケーションフィルタについて</a>」を参照してください。なお、SSL&#x2F;TLSインスペクションの設定が有効になるまでは、アプリケーションフィルタやWebフィルタも完全には動作しません。Windows、macOS、iOSにはSSL&#x2F;TLSインスペクションを設定される事をお勧めします。SSL&#x2F;TLSインスペクションについては「<a href="/2020/03/20/ssl-inspection/" title="SSLインスペクションについて">SSLインスペクションについて</a>」を参照してください。</p>
+<p>保存ボタンをクリックするとルールの追加が行われます。Webポリシーが”Default Policy”で広告が禁止されていればブラウザではエラー画面が表示されます。またサイトのカテゴリ（ギャンブル、アダルト）などもDefault Policyの設定内容によって、どのようにアクセスが止まるのか確認をしてください。XG画面の右上に<mark class="label primary">ログビューア</mark>があるので、”ファイアウォールルール”、”アプリケーションフィルタ”、”Webフィルタ”のログを確認してください。許可・拒否のログを確認しながら、さらに新しいルールを加えるなど、カスタマイズを進めてください。Webフィルタについての解説は、「<a href="/new-technology/2020/03/14/customize-policy/" title="XG Firewall v18のポリシーをカスタマイズする">XG Firewall v18のポリシーをカスタマイズする</a>」、「<a href="/new-technology/2020/05/06/web-application-filter/" title="XG FirewallのWebとアプリケーションフィルタについて">XG FirewallのWebとアプリケーションフィルタについて</a>」を参照してください。なお、SSL&#x2F;TLSインスペクションの設定が有効になるまでは、アプリケーションフィルタやWebフィルタも完全には動作しません。Windows、macOS、iOSにはSSL&#x2F;TLSインスペクションを設定される事をお勧めします。SSL&#x2F;TLSインスペクションについては「<a href="/new-technology/2020/03/20/ssl-inspection/" title="SSLインスペクションについて">SSLインスペクションについて</a>」を参照してください。</p>
 <h2 id="宛先ネットワークの留意点"><a href="#宛先ネットワークの留意点" class="headerlink" title="宛先ネットワークの留意点"></a>宛先ネットワークの留意点</h2><p>宛先ネットワークの指定は、ドメインで絞るなど使い方によっては非常に便利です。しかし、昨今では目的のサービスがAWS上にホストされていたりCDN（Content Delivery Network）に登録されているケースもあり、ドメインで絞る事が難しい場合もあります。FirewallのログにはIPアドレスが表示されていても、どのドメインに対してのアクセスなのかは判別が難しく少し煩雑な対応を必要とするケースがあります。</p>
 <h2 id="3つのルール"><a href="#3つのルール" class="headerlink" title="3つのルール"></a>3つのルール</h2><p>ルールとポリシーのメニューには、”ファイアウォールルール”と”SSL&#x2F;TLSインスペクションルール”、NATに関する”NATルール”の3つの設定があります。最初からビルトインされている”Default SNAT IPv4”というNATルールは、プライベートIPアドレスからWANへ出ていく時に、パブリックIPへと変換するためのNATの仕組みが記述されています。具体的には、NATルールの<mark class="label primary">インターフェースの一致条件</mark>において、”Port2”から出ていくパケットはSNATの”MASQ”が必要と記述されています。</p>
 <p>XG v17まではファイアウォールのルール1つ1つに対して、NATを行うか否かを設定していました。v18では、ファイアウォールルールとNATルールとは切り離されました。v18ではLANからWAN、VPNからWANなどのインタフェースやIPアドレス単位でNATの設定を行います。v17からv18にバージョンアップした際はマイグレーションプロセスによって、ファイアウォールルールとリンクされたNATが1つづつ作成されます。ホームユーザーにおいては、よほど複雑な環境でなければNATのルールはVPN+LANからWANへの1つで十分です。</p>

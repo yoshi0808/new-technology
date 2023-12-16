@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.0.0">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
@@ -198,7 +198,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/new-technology/archives/">
-          <span class="site-state-item-count">78</span>
+          <span class="site-state-item-count">79</span>
           <span class="site-state-item-name">ポスト</span>
         </a>
       </div>
@@ -326,9 +326,9 @@
 <p>ホームユーザー向けとして自宅内のネットワークを10GbEかつSFP+を選択する場合は、いくつかの魅力的なネットワークスイッチが候補に上がります。<br>発熱対策のために各部屋にSFP+でOM3などの光ケーブルを通す場合は、個人向けのネットワークスイッチではPortが不足してしまうのが実態です。<br>機器の価格帯が個人向け、かつ消去法でいくとMikroTikかUniFiが選択肢に上がります。円安で昔ほどは安いと思えなくなりましたが、SFP+スイッチは廉価です。</p>
 <h2 id="基本設定"><a href="#基本設定" class="headerlink" title="基本設定"></a>基本設定</h2><p>基本設定です。UniFiスイッチを新規導入する際には、ネットワークアプリケーションに登録（採用）する必要があります。初期セットアップについては、以下の記事を参照してください。UniFi製品群の標準の考え方ではセキュリティゲートウェイをインターネットルーターの役割として配置し、そこに各UniFi製品群をぶら下げることになります。私はSophos Firewallを利用しており、UniFiセキュリティゲートウェイは不要としているため、集中管理のためのUniFiネットワークアプリケーションを導入しています。</p>
 <ul>
-<li><a href="/2022/08/27/ubiquiti-unifi/" title="Ubiquiti UniFiの世界">Ubiquiti UniFiの世界</a></li>
-<li><a href="/2022/09/23/unifi-network-application/" title="UniFi Network Applicationのセットアップ">UniFi Network Applicationのセットアップ</a></li>
-<li><a href="/2022/10/23/unifi-network-application2/" title="UniFi Network Applicationの運用">UniFi Network Applicationの運用</a></li>
+<li><a href="/new-technology/2022/08/27/ubiquiti-unifi/" title="Ubiquiti UniFiの世界">Ubiquiti UniFiの世界</a></li>
+<li><a href="/new-technology/2022/09/23/unifi-network-application/" title="UniFi Network Applicationのセットアップ">UniFi Network Applicationのセットアップ</a></li>
+<li><a href="/new-technology/2022/10/23/unifi-network-application2/" title="UniFi Network Applicationの運用">UniFi Network Applicationの運用</a></li>
 </ul>
 <p>UniFiスイッチが採用（Adoption）されると、ネットワークアプリケーションから管理できるようになります。</p>
 <p>スイッチ毎の<mark class="label primary">Settings</mark>では、<mark class="label primary">Service</mark>で基本設定を、<mark class="label primary">Network</mark>でIPアドレスを設定できます。</p>
@@ -408,7 +408,7 @@
 </tr>
 </tbody></table>
 <p>ミラーPortはトラブル時の確認のために使います。トラブルのあるPort番号を指定し、ミラーに設定することで同じデータが流れます。ノートPCなどを接続し、WireSharkなどを使いパケット解析します。</p>
-<p>SFP+の製品であっても、USW-AggregationスイッチやUSW-Enterprise-8-PoEのSFP+ポートは2.5GbEに対応していません。過去記事「<a href="/2022/07/30/sfp-plus-nbaset/" title="SFP+の2.5GbE対応">SFP+の2.5GbE対応</a>」で書いたように、10GbEを2.5GbEとして偽装させる特殊なSFP+モジュールが必要になります（もっとも、USW-Enterprise-8-PoEは2.5GbEのRJ45ポートを備えているので運用上困ることはありませんが）。</p>
+<p>SFP+の製品であっても、USW-AggregationスイッチやUSW-Enterprise-8-PoEのSFP+ポートは2.5GbEに対応していません。過去記事「<a href="/new-technology/2022/07/30/sfp-plus-nbaset/" title="SFP+の2.5GbE対応">SFP+の2.5GbE対応</a>」で書いたように、10GbEを2.5GbEとして偽装させる特殊なSFP+モジュールが必要になります（もっとも、USW-Enterprise-8-PoEは2.5GbEのRJ45ポートを備えているので運用上困ることはありませんが）。</p>
 <h2 id="VLANを設定"><a href="#VLANを設定" class="headerlink" title="VLANを設定"></a>VLANを設定</h2><p>VLANを作成するにはネットワークアプリケーションの<mark class="label primary">SETTINGS</mark>から<mark class="label primary">NETWORKS</mark>を選択し、<mark class="label primary">Create New Network</mark>をクリックします。</p>
 <p>L3スイッチではなく、単にVLANを作成したい場合は、ここで<mark class="label primary">VLAN-only Network</mark>のチェックボックスをONにし、VLAN IDを決定します。</p>
 <img src="/new-technology/2022/11/23/unifi-switch/netapp8.png" class="" width="360" title="alt">

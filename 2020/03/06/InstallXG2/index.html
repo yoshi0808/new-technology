@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.0.0">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
@@ -192,7 +192,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/new-technology/archives/">
-          <span class="site-state-item-count">78</span>
+          <span class="site-state-item-count">79</span>
           <span class="site-state-item-name">ポスト</span>
         </a>
       </div>
@@ -306,7 +306,7 @@ ESXiに環境構築済みの仮想マシンに対し、Sophos Firewallのイン�
 
 <span id="more"></span>
 
-<h2 id="Sophos-Firewallのインストール概要"><a href="#Sophos-Firewallのインストール概要" class="headerlink" title="Sophos Firewallのインストール概要"></a>Sophos Firewallのインストール概要</h2><p>「<a href="/2020/03/01/esxi-conf/" title="VMware vSphere Hypervisor（ESXi）の設定">VMware vSphere Hypervisor（ESXi）の設定</a>」、「<a href="/2020/03/06/InstallXG/" title="Sophos Firewall のインストール（事前準備）">Sophos Firewall のインストール（事前準備）</a>」で、ネットワークアドレスを決めました。Firewallのインストール概要は以下の通りです。</p>
+<h2 id="Sophos-Firewallのインストール概要"><a href="#Sophos-Firewallのインストール概要" class="headerlink" title="Sophos Firewallのインストール概要"></a>Sophos Firewallのインストール概要</h2><p>「<a href="/new-technology/2020/03/01/esxi-conf/" title="VMware vSphere Hypervisor（ESXi）の設定">VMware vSphere Hypervisor（ESXi）の設定</a>」、「<a href="/new-technology/2020/03/06/InstallXG/" title="Sophos Firewall のインストール（事前準備）">Sophos Firewall のインストール（事前準備）</a>」で、ネットワークアドレスを決めました。Firewallのインストール概要は以下の通りです。</p>
 <ul>
 <li>Sophos Firewall(FW)のLAN側ネットワークアドレスは製品のデフォルトである<code>172.16.16.0/24</code>を使うか、自身で決めたESXiが属するネットワークアドレス<code>192.168.1.0/24</code>（例）を使う事になります。ここではFWのWAN側を<code>192.168.0.0/24</code>のネットワーク、FWのLAN側を<code>192.168.1.0/24</code>として説明します。</li>
 <li>ESXiの導入設定では、デフォルトのvSwitch0をLANとし、vSwitch1を追加しWANとしました。</li>
@@ -376,8 +376,8 @@ ESXiに環境構築済みの仮想マシンに対し、Sophos Firewallのイン�
 <p>登録を終えると、マスターキーがセットされたとのメッセージが表示されて対応は完了です。</p>
 
 
-<p>マスターキーの情報は暗号化された安全な場所へ保管されることをお勧めします。参考までに「<a href="/2020/08/30/bitwarden/" title="パスワード管理ソフトのbitwardenを活用する">パスワード管理ソフトのbitwardenを活用する</a>」を参照してください。</p>
-<h2 id="パッチ適用"><a href="#パッチ適用" class="headerlink" title="パッチ適用"></a>パッチ適用</h2><p>インストール完了後、パッチがある場合は速やかにパッチ提供されることをお勧めします。v18.5をインストールされた場合、2022-03-26時点において最新版はMR3となります。「<a href="/2022/03/25/xg-v185-mr3/" title="Sophos Firewall v18.5 MR-3">Sophos Firewall v18.5 MR-3</a>」の記事を参照してください。</p>
+<p>マスターキーの情報は暗号化された安全な場所へ保管されることをお勧めします。参考までに「<a href="/new-technology/2020/08/30/bitwarden/" title="パスワード管理ソフトのbitwardenを活用する">パスワード管理ソフトのbitwardenを活用する</a>」を参照してください。</p>
+<h2 id="パッチ適用"><a href="#パッチ適用" class="headerlink" title="パッチ適用"></a>パッチ適用</h2><p>インストール完了後、パッチがある場合は速やかにパッチ提供されることをお勧めします。v18.5をインストールされた場合、2022-03-26時点において最新版はMR3となります。「<a href="/new-technology/2022/03/25/xg-v185-mr3/" title="Sophos Firewall v18.5 MR-3">Sophos Firewall v18.5 MR-3</a>」の記事を参照してください。</p>
 
     </div>
 
