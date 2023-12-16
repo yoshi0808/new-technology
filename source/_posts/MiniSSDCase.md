@@ -68,7 +68,7 @@ MacBookのAmorphousDiskMarkでベンチマークを計測してみます。
 
 {% asset_img temp.png 480 alt %}
 
-51度は指でケースを触れてだいたいhexo3秒程度我慢できるくらいでしょうか。
+51度は指でケースを触れてだいたい3秒程度我慢できるくらいでしょうか。
 
 ## iPhoneでのProRes撮影
 
