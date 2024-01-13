@@ -2,6 +2,7 @@
 title: iPhoneに繋がるミニSSDケース
 date: 2023-12-16T11:40:54+09:00
 tags:
+- M.2 NVMe
 categories:
 - [Hardware]
 ---
