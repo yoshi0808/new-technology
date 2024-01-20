@@ -621,6 +621,7 @@ ssb>  rsa4096/C234567890123456 2021-01-31 [A] [有効期限: 2026-01-30]
 - GPGの主鍵のパスワードを記録しました
 - USBに主鍵、副鍵、および失効証明書のコピーを保管し、オフラインで保管する準備をしました
 - ホームディレクトリに公開鍵のコピーを保存しました
+- 鍵の生成で使った＄KEYIDの値を記録しました
 
 #### クリーンアップ
 
@@ -636,8 +637,20 @@ $ unset GNUPGHOME
 
 #### 公開鍵のインポートと信頼
 
+
 ``` bash
 $ gpg --import ~/public_key.pgp
+
+gpg: 鍵1234567890123456: "Your Name" 新しい署名を3個
+gpg: 鍵1234567890123456: "Your Name" 新しい副鍵を3個
+gpg:           処理数の合計: 1
+gpg:             新しい副鍵: 3
+gpg:             新しい署名: 3
+
+```
+`$ export KEYID=1234567890123456`←実際に上記で生成された鍵（キー）を指定します。
+
+``` bash
 $ gpg --edit-key $KEYID
 
 gpg> trust
@@ -831,13 +844,13 @@ PIV方式とは異なりGUI方式によりPINの入力も行える事、また�
 ## （任意）YubiKeyタッチ認証
 
 GPGで認証、署名、暗号化を行おうとしている時に、YubiKeyへのタッチを必要とさせる設定ができます。GPGのPIN入力はキャッシュしている時間がありますが、これを設定すると、GPGのアクションの前には必ずYubiKeyにタッチする必要があります。より慎重さを求める方に向いています。デフォルトではOffになっていますが、これをOnにする場合は以下のコマンドを投入します。YubiKeyがタッチを待っている間はランプが点滅します（12秒程度応答しないとギブアップします）。これはNeoなどYubiKeyの種類によっては設定できません。
-認証　`$ ykman openpgp set-touch aut on`
-署名　`$ ykman openpgp set-touch sig on`
-暗号化　`$ ykman openpgp set-touch enc on`
+認証　`$ ykman openpgp keys set-touch aut on`
+署名　`$ ykman openpgp keys set-touch sig on`
+暗号化　`$ ykman openpgp keys set-touch enc on`
 Offにする場合は以下のコマンドになります。
-認証　`$ ykman openpgp set-touch aut off`
-署名　`$ ykman openpgp set-touch sig off`
-暗号化　`$ ykman openpgp set-touch enc off`
+認証　`$ ykman openpgp keys set-touch aut off`
+署名　`$ ykman openpgp keys set-touch sig off`
+暗号化　`$ ykman openpgp keys set-touch enc off`
 
 Onの代わりに15秒キャッシュする"CACHED"という項目も設定できます。詳しくは`ykman openpgp set-touch -h`を参照します。
 
@@ -856,25 +869,9 @@ Onの代わりに15秒キャッシュする"CACHED"という項目も設定で�
 > [GPG Tools -GPGMail: Fails to sign after switch from S/MIME-
  <https://gpgtools.tenderapp.com/discussions/nightly/110-gpgmail-fails-to-sign-after-switch-from-smime>
 
-## （補足）libgcryptの脆弱性
+## 副鍵の有効期限到来による再作成
 
-（2021-05-23　追記）
-本件は、2021-5-21発表のGPG Suite 2021.1において、下記の脆弱性については影響ありません。
-
-先日（1月末）に、gpgのライブラリであるlibgcryptに脆弱性があるとの速報**CVE-2021-3345**が流れました。対象バージョンは1.9.0ですが、今回GPG Toolsから導入しているlibgcryptのバージョンは1.8.7となっており、この脆弱性の影響は受けません。
-
-``` bash
-$ gpg --version
-gpg (GnuPG/MacGPG2) 2.2.27
-libgcrypt 1.8.7
-```
-
-長年gpgを開発されているヴェルナー・コッホさんからの不具合に関する説明は以下の通りです。内容を一部抜粋すると、”1.8LTSブランチを使用している場合は影響を受けません。1.8.5以上であることを確認してください。”との事です。
-
-> CVE-2021-3345
- <https://nvd.nist.gov/vuln/detail/CVE-2021-3345>
->  [Security fix] Libgcrypt 1.9.1 relased
- <https://lists.gnupg.org/pipermail/gnupg-announce/2021q1/000456.html>
+ここでは主鍵の有効期限を無制限、副鍵は有効期限ありで作成しました。副鍵の有効期限が2週間程度に近づいた場合、GPGから警告の通知ダイアログが表示される場合があります。この場合はUSBにバックアップを取得した秘密鍵など一式を再び一時フォルダに戻した上で、既存の副鍵を削除、新たな副鍵を新たな期限で作成し、一度初期化したYubiKeyに再度上記の手順で再登録する事になります。SSHの公開鍵は変わりますので、再度サーバーへの配布が必要となります。
 
 <small id="note1">**[1]**
 もし暗号化USBを導入するのであれば、Finderで暗号化する方法、VeraCryptを使う方法があります
