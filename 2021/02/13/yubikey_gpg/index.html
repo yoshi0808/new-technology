@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/02/13/yubikey_gpg/ssh.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/02/13/yubikey_gpg/automator1.png">
 <meta property="article:published_time" content="2021-02-12T15:58:00.000Z">
-<meta property="article:modified_time" content="2024-01-21T02:20:37.402Z">
+<meta property="article:modified_time" content="2024-01-21T05:45:55.793Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="yubikey">
 <meta name="twitter:card" content="summary">
@@ -278,7 +278,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">編集日</span>
-      <time title="修正日：2024-01-21 11:20:37" itemprop="dateModified" datetime="2024-01-21T11:20:37+09:00">2024-01-21</time>
+      <time title="修正日：2024-01-21 14:45:55" itemprop="dateModified" datetime="2024-01-21T14:45:55+09:00">2024-01-21</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -444,7 +444,7 @@ C --&gt;F[Authenticate]
 <p><code>ssh-add -L</code> で公開鍵を取得します。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ssh-add -L</span><br><span class="line">ssh-rsa AAAAB4NzaC1yc2EAAAADAQABAAACAz[...]zreOKM+HwpkHzcy9DQcVG2Nw== cardno:000612345678</span><br></pre></td></tr></table></figure>
 
-<p>Yubikeyの公開鍵の末尾にはカード番号の記載があります。SSH公開鍵を接続先のサーバーのauthorized_keysに登録します。また、macOS側の<code>~/.ssh/config</code>は設定不要です。</p>
+<p>Yubikeyの公開鍵の末尾にはカード番号の記載があります。SSH公開鍵を接続先のサーバーのauthorized_keysに登録します。また、macOS側の<code>~/.ssh/config</code>にはGPGのための追加設定が不要です。</p>
 <p>ターミナルから接続テストしてみましょう。PinEntryダイアログが表示され、PIN入力後、公開鍵認証で接続されます。</p>
 <h3 id="GPGの公開鍵とSSH公開鍵とをGitHubに登録"><a href="#GPGの公開鍵とSSH公開鍵とをGitHubに登録" class="headerlink" title="GPGの公開鍵とSSH公開鍵とをGitHubに登録"></a>GPGの公開鍵とSSH公開鍵とをGitHubに登録</h3><p>ホームディレクトリに作成した<strong>PGP公開鍵</strong>と<strong>SSH公開鍵</strong>との2つをGitHubに登録します。<br>GitHubサイトにログイン後、<mark class="label primary">Account</mark>の”Settings”を選び、左メニューの<mark class="label primary">SSH and GPG keys</mark>をクリックします。<mark class="label primary">New SSH key</mark>と<mark class="label primary">New GPG key</mark>というボタンをクリックしそれぞれを登録します。</p>
 <p>まずは、SSHが行える事を確認しましょう。</p>
