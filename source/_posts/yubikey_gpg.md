@@ -19,10 +19,8 @@ GPGは昔からあるオープンソースの暗号・署名の主要なコン�
 
 ## ソフトウェア構成
 
-GPGは基本的にはコマンドラインベースのプロダクトですが、macOSユーザーであれば、GPG Tools(GPG Suite)をお勧めします。GUIで暗号化・復号化できるのは便利です。但し、Appleメールの拡張機能でGPGを使う場合、3,000円程度の有償となります。Homebrewであれば、gpg-suite、gpg-suite-no-mail（有償のメール機能が無いもの）が該当します。**GPG Suite**を直接ダウンロードする方法もあります。~~しかし、このブログを書いている2月10日時点ではYubikeyを使うようなカードインタフェースがうまく動作しません。これは不具合としてGPG Toolsサポートに報告<https://gpgtools.tenderapp.com/discussions/feedback/16266-signing-with-a-yubikey-fails-until-i-run-gpg-card-status>があります。という事で現時点ではナイトリービルドGPG Suite 2020.2 (2989n)<https://releases.gpgtools.org/nightlies/>を使う事になります。~~
+GPGは基本的にはコマンドラインベースのプロダクトですが、macOSユーザーであれば、GPG Tools(GPG Suite)をお勧めします。GUIで暗号化・復号化できるのは便利です。但し、Appleメールの拡張機能でGPGを使う場合、3,000円程度の有償となります。Homebrewであれば、gpg-suite、gpg-suite-no-mail（有償のメール機能が無いもの）が該当します。**GPG Suite**を直接ダウンロードする方法もあります。
 
-（2021-5-23　追記）
-2021-5-21発表のGPG Suite 2021.1で上記の不具合は解消しています。
 > GPG Suite
  <https://gpgtools.org/>
 
@@ -100,7 +98,7 @@ drduh/YubiKey-Guide | https://github.com/drduh/YubiKey-Guide |(https://github.co
 
 必要なソフトウェア（GPG Suite・ykman）がインストールされている事、秘密鍵のバックアップのため、macOSで認識可能となるようフォーマット済みのUSBが用意できている前提としています。鍵の生成は出来るだけ安全な環境下で実施するために、ネットワークから切り離し、ウィルス対策ソフト以外のソフトウェアを可能な限り終了させてから作業します。また鍵の作成時にはYubiKeyの接続は必要ありません。
 
-私はmacOSのCatalina(10.15.7)、シェルはデフォルトのZshを利用しています。また、コマンドラインエディタはvim(vi)を利用していますが、他のエディタでも構いません。GPGのコマンドインタフェースがかなり特殊な事もあって、まずはアドリブ無しにこの手順をなぞっていただく事をお勧めします。変更可能な部分は主鍵および副鍵の有効期限および鍵の種類です。鍵の種類としては特に拘りがなければRSAをお勧めします。
+私は古くはmacOSのCatalina(10.15.7)、Sonoma(14.2.1)で動作確認しています。また、コマンドラインエディタはvim(vi)を利用していますが、他のエディタでも構いません。GPGのコマンドインタフェースがかなり特殊な事もあって、まずはアドリブ無しにこの手順をなぞっていただく事をお勧めします。変更可能な部分は主鍵および副鍵の有効期限および鍵の種類です。鍵の種類としては特に拘りがなければRSAをお勧めします。
 
 {% note info  %}
 
@@ -440,6 +438,8 @@ USBはアンマウントします（しばらく使わないので保存）
 
 #### 公開鍵をホームディクレトリのpublic_key.pgpとしてエクスポート
 
+この公開鍵はGPGの実運用で使うものになります。後でホームディレクトリの公開鍵を再度GPGに取り込み、鍵の管理をすることになります。
+
 ``` bash
 $ gpg --armor --output ~/public_key.pgp --export $KEYID
 
@@ -635,23 +635,23 @@ $ unset GNUPGHOME
 
 クリーンアップが終了したらネットワークに接続できます。秘密鍵はもうmacOSの中に残っていません。秘密鍵は取り外したUSBと接続されているYubiKeyの中にあります。
 
-#### 公開鍵のインポートと信頼
-
+#### 公開鍵のGPGへのインポートと信頼
 
 ``` bash
 $ gpg --import ~/public_key.pgp
 
-gpg: 鍵1234567890123456: "Your Name" 新しい署名を3個
-gpg: 鍵1234567890123456: "Your Name" 新しい副鍵を3個
+gpg: keybox'/Users/yoshi/.gnupg/pubring.kbx'が作成されました
+gpg: 鍵1234567890123456: 公開鍵"XXXXXX"をインポートしました
 gpg:           処理数の合計: 1
-gpg:             新しい副鍵: 3
-gpg:             新しい署名: 3
+gpg:             インポート: 1
+gpg: marginals needed: 3  completes needed: 1  trust model: pgp
+gpg: 深さ: 0  有効性:   1  署名:   0  信用: 0-, 0q, 0n, 0m, 0f, 1u
 
 ```
-`$ export KEYID=1234567890123456`←実際に上記で生成された鍵（キー）を指定します。
+以下の`鍵1234567890123456`は実際に上記で生成された鍵（キー）を指定します。
 
 ``` bash
-$ gpg --edit-key $KEYID
+$ gpg --edit-key 鍵1234567890123456
 
 gpg> trust
 pub  rsa4096/1234567890123456
@@ -796,7 +796,7 @@ $ ssh-add -L
 ssh-rsa AAAAB4NzaC1yc2EAAAADAQABAAACAz[...]zreOKM+HwpkHzcy9DQcVG2Nw== cardno:000612345678
 ```
 
-Yubikeyの公開鍵の末尾にはカード番号の記載があります。SSH公開鍵を接続先のサーバーのauthorized_keysに登録します。また、macOS側の`~/.ssh/config`は設定不要です。
+Yubikeyの公開鍵の末尾にはカード番号の記載があります。SSH公開鍵を接続先のサーバーのauthorized_keysに登録します。また、macOS側の`~/.ssh/config`にはGPGのための追加設定が不要です。
 
 ターミナルから接続テストしてみましょう。PinEntryダイアログが表示され、PIN入力後、公開鍵認証で接続されます。
 
@@ -852,7 +852,7 @@ Offにする場合は以下のコマンドになります。
 署名　`$ ykman openpgp keys set-touch sig off`
 暗号化　`$ ykman openpgp keys set-touch enc off`
 
-Onの代わりに15秒キャッシュする"CACHED"という項目も設定できます。詳しくは`ykman openpgp set-touch -h`を参照します。
+Onの代わりに15秒キャッシュする"CACHED"という項目も設定できます。詳しくは`ykman openpgp keys set-touch -h`を参照します。
 
 {% note info  %}
 
@@ -871,7 +871,7 @@ Onの代わりに15秒キャッシュする"CACHED"という項目も設定で�
 
 ## 副鍵の有効期限到来による再作成
 
-ここでは主鍵の有効期限を無制限、副鍵は有効期限ありで作成しました。副鍵の有効期限が2週間程度に近づいた場合、GPGから警告の通知ダイアログが表示される場合があります。この場合はUSBにバックアップを取得した秘密鍵など一式を再び一時フォルダに戻した上で、既存の副鍵を削除、新たな副鍵を新たな期限で作成し、一度初期化したYubiKeyに再度上記の手順で再登録する事になります。SSHの公開鍵は変わりますので、再度サーバーへの配布が必要となります。
+ここでは主鍵の有効期限を無制限、副鍵は有効期限ありで作成しました。副鍵の有効期限が2週間程度に近づいた場合、GPGから警告の通知ダイアログが表示される場合があります。この場合はUSBにバックアップした秘密鍵など一式を再び一時フォルダに戻した上で、既存の副鍵期限延長、または新たな副鍵を新たな期限で作成し、一度初期化したYubiKeyに再度上記の手順で再登録する事になります。SSHの公開鍵は変わりますので、再度サーバーへの配布が必要となります。
 
 <small id="note1">**[1]**
 もし暗号化USBを導入するのであれば、Finderで暗号化する方法、VeraCryptを使う方法があります
