@@ -31,10 +31,10 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/07/07/building-setup-esxi8/ubuntu1.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/07/07/building-setup-esxi8/esxi3.png">
 <meta property="article:published_time" content="2023-07-07T00:58:48.000Z">
-<meta property="article:modified_time" content="2023-09-23T00:59:59.303Z">
+<meta property="article:modified_time" content="2024-01-30T05:33:58.738Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
-<meta property="article:tag" content="25GbE">
 <meta property="article:tag" content="ESXi">
+<meta property="article:tag" content="25GbE">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2023/07/07/building-setup-esxi8/esxi1.png">
 
@@ -174,7 +174,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi8%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AE%E3%83%8F%E3%83%BC%E3%83%89%E3%82%A6%E3%82%A7%E3%82%A2%E9%81%B8%E5%AE%9A%E6%A4%9C%E8%A8%8E"><span class="nav-number">1.</span> <span class="nav-text">ESXi8のためのハードウェア選定検討</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%8F%E3%83%BC%E3%83%89%E3%82%A6%E3%82%A7%E3%82%A2%E6%A7%8B%E6%88%90"><span class="nav-number">2.</span> <span class="nav-text">ハードウェア構成</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%82%B9%E3%83%88%E3%83%AC%E3%83%BC%E3%82%B8"><span class="nav-number">2.1.</span> <span class="nav-text">ストレージ</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E3%82%AB%E3%83%BC%E3%83%89"><span class="nav-number">2.2.</span> <span class="nav-text">ネットワークカード</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UEFI%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">2.3.</span> <span class="nav-text">UEFIの設定</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><span class="nav-number">3.</span> <span class="nav-text">インストール</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF"><span class="nav-number">4.</span> <span class="nav-text">ネットワーク</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8BNIC%E3%81%AE%E3%83%95%E3%83%AD%E3%83%BC%E3%82%B3%E3%83%B3%E3%83%88%E3%83%AD%E3%83%BC%E3%83%AB%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span class="nav-number">5.</span> <span class="nav-text">ESXiにおけるNICのフローコントロールについて</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%BE%E3%81%A8%E3%82%81"><span class="nav-number">6.</span> <span class="nav-text">まとめ</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%94%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A0%85"><span class="nav-number">1.</span> <span class="nav-text">ご注意事項</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi8%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AE%E3%83%8F%E3%83%BC%E3%83%89%E3%82%A6%E3%82%A7%E3%82%A2%E9%81%B8%E5%AE%9A%E6%A4%9C%E8%A8%8E"><span class="nav-number">2.</span> <span class="nav-text">ESXi8のためのハードウェア選定検討</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%8F%E3%83%BC%E3%83%89%E3%82%A6%E3%82%A7%E3%82%A2%E6%A7%8B%E6%88%90"><span class="nav-number">3.</span> <span class="nav-text">ハードウェア構成</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%82%B9%E3%83%88%E3%83%AC%E3%83%BC%E3%82%B8"><span class="nav-number">3.1.</span> <span class="nav-text">ストレージ</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E3%82%AB%E3%83%BC%E3%83%89"><span class="nav-number">3.2.</span> <span class="nav-text">ネットワークカード</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UEFI%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">3.3.</span> <span class="nav-text">UEFIの設定</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><span class="nav-number">4.</span> <span class="nav-text">インストール</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF"><span class="nav-number">5.</span> <span class="nav-text">ネットワーク</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8BNIC%E3%81%AE%E3%83%95%E3%83%AD%E3%83%BC%E3%82%B3%E3%83%B3%E3%83%88%E3%83%AD%E3%83%BC%E3%83%AB%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span class="nav-number">6.</span> <span class="nav-text">ESXiにおけるNICのフローコントロールについて</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%BE%E3%81%A8%E3%82%81"><span class="nav-number">7.</span> <span class="nav-text">まとめ</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -189,7 +189,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/new-technology/archives/">
-          <span class="site-state-item-count">80</span>
+          <span class="site-state-item-count">81</span>
           <span class="site-state-item-name">ポスト</span>
         </a>
       </div>
@@ -277,7 +277,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">編集日</span>
-      <time title="修正日：2023-09-23 09:59:59" itemprop="dateModified" datetime="2023-09-23T09:59:59+09:00">2023-09-23</time>
+      <time title="修正日：2024-01-30 14:33:58" itemprop="dateModified" datetime="2024-01-30T14:33:58+09:00">2024-01-30</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -303,6 +303,7 @@
 <p>1年半前に、「<a href="/new-technology/2022/02/27/building-setup-esxi7/" title="ESXI7.0をRyzen7 5700Gで構築">ESXI7.0をRyzen7 5700Gで構築</a>」の記事で、Ryzen7 5700GでESXi7のセットアップをしました。今回はESXi8.0の動作確認も含めてRyzen5 5600Gでセットアップしました。</p>
 <span id="more"></span>
 
+<h2 id="ご注意事項"><a href="#ご注意事項" class="headerlink" title="ご注意事項"></a>ご注意事項</h2><p>2024&#x2F;1&#x2F;22に発表されたVMWareブログによりますと、スタンドアロン製品の提供を終了し、サブスクリプションモデルに変更されることとなりました。この無償版ESXiは今後提供停止となりますが、サポートは継続されるとの事です。<br>無償版ESXiの利用にあたっては、まずこちらの記事「<a href="/new-technology/2024/01/30/EOS-Free-esxi/" title="VMWare 無償版ESXiの提供終了について">VMWare 無償版ESXiの提供終了について</a>」を参照されることをお勧めします。</p>
 <h2 id="ESXi8のためのハードウェア選定検討"><a href="#ESXi8のためのハードウェア選定検討" class="headerlink" title="ESXi8のためのハードウェア選定検討"></a>ESXi8のためのハードウェア選定検討</h2><p>実は最初からESXi8をセットアップするつもりはなく、WindowsPCを新調するつもりでした。私はゲームはやらないので、せいぜい4Kのビデオが見られれば十分というPCの使い方をしており、ビデオカードを購入する事は殆どありません。パソコン工房で「STYLE-S0P5-R55G-EZX」という5600Gを積んだ機種が8万円台と安かった事もあり、あまり深くは考えずに注文しました。</p>
 <blockquote>
 <p>パソコン工房<br> <a target="_blank" rel="noopener" href="https://www.pc-koubou.jp/">https://www.pc-koubou.jp</a></p>
@@ -375,8 +376,8 @@
 
     <footer class="post-footer">
           <div class="post-tags">
-              <a href="/new-technology/tags/25GbE/" rel="tag"><i class="fa fa-tag"></i> 25GbE</a>
               <a href="/new-technology/tags/ESXi/" rel="tag"><i class="fa fa-tag"></i> ESXi</a>
+              <a href="/new-technology/tags/25GbE/" rel="tag"><i class="fa fa-tag"></i> 25GbE</a>
           </div>
 
         

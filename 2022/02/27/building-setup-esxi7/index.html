@@ -38,10 +38,10 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/02/27/building-setup-esxi7/wchecker.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2022/02/27/building-setup-esxi7/mellanox.png">
 <meta property="article:published_time" content="2022-02-26T18:58:48.000Z">
-<meta property="article:modified_time" content="2023-07-06T10:07:38.834Z">
+<meta property="article:modified_time" content="2024-01-30T05:33:26.958Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
-<meta property="article:tag" content="10GbE">
 <meta property="article:tag" content="ESXi">
+<meta property="article:tag" content="10GbE">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2022/02/27/building-setup-esxi7/B550SH2.png">
 
@@ -181,7 +181,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi7%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AE%E3%83%8F%E3%83%BC%E3%83%89%E3%82%A6%E3%82%A7%E3%82%A2%E9%81%B8%E5%AE%9A%E6%A4%9C%E8%A8%8E"><span class="nav-number">1.</span> <span class="nav-text">ESXi7のためのハードウェア選定検討</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%8F%E3%83%BC%E3%83%89%E3%82%A6%E3%82%A7%E3%82%A2%E6%A7%8B%E6%88%90"><span class="nav-number">2.</span> <span class="nav-text">ハードウェア構成</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CPU"><span class="nav-number">2.1.</span> <span class="nav-text">CPU</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%9E%E3%82%B6%E3%83%BC%E3%83%9C%E3%83%BC%E3%83%89"><span class="nav-number">2.2.</span> <span class="nav-text">マザーボード</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%A1%E3%83%A2%E3%83%AA"><span class="nav-number">2.3.</span> <span class="nav-text">メモリ</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%82%B9%E3%83%88%E3%83%AC%E3%83%BC%E3%82%B8"><span class="nav-number">2.4.</span> <span class="nav-text">ストレージ</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E3%82%AB%E3%83%BC%E3%83%89"><span class="nav-number">2.5.</span> <span class="nav-text">ネットワークカード</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi7-0u3c%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><span class="nav-number">3.</span> <span class="nav-text">ESXi7.0u3cのインストール</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#UEFI%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">3.1.</span> <span class="nav-text">UEFIの設定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><span class="nav-number">3.2.</span> <span class="nav-text">インストール</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A7%E3%83%9E%E3%82%B7%E3%83%B3%E3%81%8B%E3%82%89vm%E3%81%AE%E7%A7%BB%E8%A1%8C"><span class="nav-number">3.3.</span> <span class="nav-text">旧マシンからvmの移行</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%82%B9%E3%83%88%E3%83%AC%E3%83%BC%E3%82%B8%E3%81%AE%E3%83%91%E3%83%95%E3%82%A9%E3%83%BC%E3%83%9E%E3%83%B3%E3%82%B9"><span class="nav-number">4.</span> <span class="nav-text">ストレージのパフォーマンス</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E3%81%AE%E3%83%91%E3%83%95%E3%82%A9%E3%83%BC%E3%83%9E%E3%83%B3%E3%82%B9"><span class="nav-number">5.</span> <span class="nav-text">ネットワークのパフォーマンス</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9B%BB%E5%8A%9B%E3%83%81%E3%82%A7%E3%83%83%E3%82%AF"><span class="nav-number">6.</span> <span class="nav-text">電力チェック</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SFP-%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span class="nav-number">7.</span> <span class="nav-text">SFP+について</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#intel-X710%E3%81%AE%E6%B3%A8%E6%84%8F%E7%82%B9%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span class="nav-number">8.</span> <span class="nav-text">intel X710の注意点について</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%94%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A0%85"><span class="nav-number">1.</span> <span class="nav-text">ご注意事項</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi7%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AE%E3%83%8F%E3%83%BC%E3%83%89%E3%82%A6%E3%82%A7%E3%82%A2%E9%81%B8%E5%AE%9A%E6%A4%9C%E8%A8%8E"><span class="nav-number">2.</span> <span class="nav-text">ESXi7のためのハードウェア選定検討</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%8F%E3%83%BC%E3%83%89%E3%82%A6%E3%82%A7%E3%82%A2%E6%A7%8B%E6%88%90"><span class="nav-number">3.</span> <span class="nav-text">ハードウェア構成</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CPU"><span class="nav-number">3.1.</span> <span class="nav-text">CPU</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%9E%E3%82%B6%E3%83%BC%E3%83%9C%E3%83%BC%E3%83%89"><span class="nav-number">3.2.</span> <span class="nav-text">マザーボード</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%A1%E3%83%A2%E3%83%AA"><span class="nav-number">3.3.</span> <span class="nav-text">メモリ</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%82%B9%E3%83%88%E3%83%AC%E3%83%BC%E3%82%B8"><span class="nav-number">3.4.</span> <span class="nav-text">ストレージ</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E3%82%AB%E3%83%BC%E3%83%89"><span class="nav-number">3.5.</span> <span class="nav-text">ネットワークカード</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi7-0u3c%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><span class="nav-number">4.</span> <span class="nav-text">ESXi7.0u3cのインストール</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#UEFI%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">4.1.</span> <span class="nav-text">UEFIの設定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><span class="nav-number">4.2.</span> <span class="nav-text">インストール</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A7%E3%83%9E%E3%82%B7%E3%83%B3%E3%81%8B%E3%82%89vm%E3%81%AE%E7%A7%BB%E8%A1%8C"><span class="nav-number">4.3.</span> <span class="nav-text">旧マシンからvmの移行</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%82%B9%E3%83%88%E3%83%AC%E3%83%BC%E3%82%B8%E3%81%AE%E3%83%91%E3%83%95%E3%82%A9%E3%83%BC%E3%83%9E%E3%83%B3%E3%82%B9"><span class="nav-number">5.</span> <span class="nav-text">ストレージのパフォーマンス</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E3%81%AE%E3%83%91%E3%83%95%E3%82%A9%E3%83%BC%E3%83%9E%E3%83%B3%E3%82%B9"><span class="nav-number">6.</span> <span class="nav-text">ネットワークのパフォーマンス</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9B%BB%E5%8A%9B%E3%83%81%E3%82%A7%E3%83%83%E3%82%AF"><span class="nav-number">7.</span> <span class="nav-text">電力チェック</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SFP-%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span class="nav-number">8.</span> <span class="nav-text">SFP+について</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#intel-X710%E3%81%AE%E6%B3%A8%E6%84%8F%E7%82%B9%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span class="nav-number">9.</span> <span class="nav-text">intel X710の注意点について</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -196,7 +196,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/new-technology/archives/">
-          <span class="site-state-item-count">80</span>
+          <span class="site-state-item-count">81</span>
           <span class="site-state-item-name">ポスト</span>
         </a>
       </div>
@@ -284,7 +284,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">編集日</span>
-      <time title="修正日：2023-07-06 19:07:38" itemprop="dateModified" datetime="2023-07-06T19:07:38+09:00">2023-07-06</time>
+      <time title="修正日：2024-01-30 14:33:26" itemprop="dateModified" datetime="2024-01-30T14:33:26+09:00">2024-01-30</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -310,6 +310,7 @@
 <p>最近、改めて無償版ESXi7.0向けのハードウェアをRyzen CPUをベースにセットアップし直したので参考までに掲載します。vmの動作などは全く問題ありませんが、ESXi自身のセキュアブートだけはうまくいきませんでした。参考になればと思い記録を残します。</p>
 <span id="more"></span>
 
+<h2 id="ご注意事項"><a href="#ご注意事項" class="headerlink" title="ご注意事項"></a>ご注意事項</h2><p>2024&#x2F;1&#x2F;22に発表されたVMWareブログによりますと、スタンドアロン製品の提供を終了し、サブスクリプションモデルに変更されることとなりました。この無償版ESXiは今後提供停止となりますが、サポートは継続されるとの事です。<br>無償版ESXiの利用にあたっては、まずこちらの記事「<a href="/new-technology/2024/01/30/EOS-Free-esxi/" title="VMWare 無償版ESXiの提供終了について">VMWare 無償版ESXiの提供終了について</a>」を参照されることをお勧めします。</p>
 <h2 id="ESXi7のためのハードウェア選定検討"><a href="#ESXi7のためのハードウェア選定検討" class="headerlink" title="ESXi7のためのハードウェア選定検討"></a>ESXi7のためのハードウェア選定検討</h2><p>ハードウェア選定については以下のポリシーとしました。私はパワーユーザーではなく、1つの仮想マシン（vm)に大きな能力を求めていませんが、LinuxやFirewallなどを中心にvmの数だけは増えていきそうな気がします。これまで使っていたハードウェアは10GBase-TのNICも含めてかなり熱を出していたのでもう少し省電力を求めて探しました。</p>
 <ul>
 <li>CPUは多くのvmを動かすことが想定されるが省電力を意識したい</li>
@@ -397,7 +398,7 @@
 <blockquote>
 <p><a target="_blank" rel="noopener" href="https://communities.vmware.com/t5/ESXi-Discussions/Enabling-Secure-Boot-not-possible/m-p/2864968">https://communities.vmware.com/t5/ESXi-Discussions/Enabling-Secure-Boot-not-possible/m-p/2864968</a></p>
 </blockquote>
-<p>（2023-7-6更新）<br>事後にある手順を経てESXi8.0でセキュアブートでセットアップすることができました。セキュアブートの手順はこちらの記事「<a href="/new-technology/2022/02/27/building-setup-esxi7/" title="ESXI7.0をRyzen7 5700Gで構築">ESXI7.0をRyzen7 5700Gで構築</a>」を参照してください。</p>
+<p>（2023-7-6更新）<br>事後にある手順を経てESXi8.0でセキュアブートでセットアップすることができました。セキュアブートの手順はこちらの記事「<a href="/new-technology/2023/07/07/building-setup-esxi8/" title="ESXi8.0をRyzen5 5600Gで構築">ESXi8.0をRyzen5 5600Gで構築</a>」を参照してください。</p>
 <h3 id="インストール"><a href="#インストール" class="headerlink" title="インストール"></a>インストール</h3><p>これまで同様、Rufusで32GBのUSBメモリにISOファイルを登録しUSBブートからセットアップしています。64Gbyteのメモリを認識し、NICも4つ認識されました。</p>
 <img src="/new-technology/2022/02/27/building-setup-esxi7/esxi1.png" class="" width="800" title="alt">
 
@@ -471,8 +472,8 @@
 
     <footer class="post-footer">
           <div class="post-tags">
-              <a href="/new-technology/tags/10GbE/" rel="tag"><i class="fa fa-tag"></i> 10GbE</a>
               <a href="/new-technology/tags/ESXi/" rel="tag"><i class="fa fa-tag"></i> ESXi</a>
+              <a href="/new-technology/tags/10GbE/" rel="tag"><i class="fa fa-tag"></i> 10GbE</a>
           </div>
 
         
