@@ -36,7 +36,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/02/14/EOS-Free-esxi2/xo3.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/02/14/EOS-Free-esxi2/xo4.png">
 <meta property="article:published_time" content="2024-02-14T05:09:13.000Z">
-<meta property="article:modified_time" content="2024-02-14T14:39:05.109Z">
+<meta property="article:modified_time" content="2024-02-14T22:00:16.542Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="ESXi">
 <meta name="twitter:card" content="summary">
@@ -273,9 +273,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">投稿日</span>
-      
 
-      <time title="作成日：2024-02-14 14:09:13 / 修正日：23:39:05" itemprop="dateCreated datePublished" datetime="2024-02-14T14:09:13+09:00">2024-02-14</time>
+      <time title="作成日：2024-02-14 14:09:13" itemprop="dateCreated datePublished" datetime="2024-02-14T14:09:13+09:00">2024-02-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">編集日</span>
+      <time title="修正日：2024-02-15 07:00:16" itemprop="dateModified" datetime="2024-02-15T07:00:16+09:00">2024-02-15</time>
     </span>
 
   
@@ -349,7 +355,7 @@
 <img src="/new-technology/2024/02/14/EOS-Free-esxi2/xo4.png" class="" width="1024" title="alt">
 
 <p>XCP-NG本体は特に難しいところもなくインストールができます。8.2.1はまだセキュアブートのセットアップはできません。VM自体はセキュアブートの設定ができます。また、Xen Orchestraの管理ツール自体は別ノードからアクセスする方が好ましく、最初からノード単位のフェールオーバーなどを考えて作られています。現在私のセットアップではXen OrchestraをESXiで、昔使っていたintelのPCにXCP-NGをセットアップしています。</p>
-<p>XCP-NGの最新バージョンは現在8.2.1ですが、Ryzen環境で動作させると致命的に遅く、Communityの情報を見ながら、intelマシンに再インストールするなど、少し回り道してしまいました。8.3はまだベータ版ですが、そこではRyzen版の速度改善が見込めるようなのでこちらはまた少し時間を置いてから検証を開始するつもりです。</p>
+<p>XCP-NGの最新バージョンは現在8.2.1ですが、Ryzen環境で動作させると応答速度やネットワーク速度が遅く、Communityの情報を見ながら、古いintel core i7マシン（Intel(R) Core(TM) i7-8700 CPU @ 3.20GHz）に再インストールするなど、少し回り道してしまいました。8.3はまだベータ版ですが、そこではRyzen版の速度改善が見込めるようなのでこちらはまた少し時間を置いてから検証を開始するつもりです。なお、P-Core&#x2F;E-CoreのCPUは仮想環境でどのようにCPUが使われるのか読めないと考えられ、難しさを感じています。</p>
 <p>XCP-NGはスナップショットやバックアップが少し古い時代を感じさせるところがあります。稼働中のVMをバックアップした後にレストアすると、OSをブートするところから始まります。つまり、メモリの内容が廃棄されてしまいます。オープンしていたファイルがどうなるのか、恐らくロールバックされるとは思いますが、検証をしっかりと行いたい箇所ではあります。</p>
 <p>XO自体のリポジトリはGitHubにあり、かなり細かい単位でMasterブランチ（メインのソースコードの配置場所）がCommitされていきます。どこかでそれらの更新部分を取り込むには改めてXOのソースコードのコンパイルから必要になります。但し、これは簡単なスクリプトで手間をかけずに対処可能です。</p>
 <p>私がXCP-NGに期待しているのはシステムの安定度です。ESXiも本当に安定していて、これまでハードウェアの故障以外でハングしたりすることは全くありませんでした。また、Xen Orchestraは、企業で数十台の仮想サーバを管理することを想定して作られており、管理のしやすさを感じます。</p>
