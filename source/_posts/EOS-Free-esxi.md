@@ -12,6 +12,8 @@ VMWareのKBで以下のタイトルの文書が2024/1/22に公開されていま
 > VMware End Of Availability of Perpetual Licensing and SaaS Services (96168) 
  <https://kb.vmware.com/s/article/96168?lang=en_US>
 
+第2報については、「{% post_link EOS-Free-esxi2 %}」を参照してください。
+
 <!-- more -->
 
 VMWareはスタンドアロン製品の提供を終了し、サブスクリプションモデルに変更されるとのこと。無償版ESXiは対象外ではという期待もありましたが、上記のKBを補足する形のブログとして以下が公開されています。
