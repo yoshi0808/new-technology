@@ -30,13 +30,14 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/02/14/EOS-Free-esxi2/proxmox1.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/02/14/EOS-Free-esxi2/proxmox2.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/02/14/EOS-Free-esxi2/proxmox3.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/02/14/EOS-Free-esxi2/proxmox4.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/02/14/EOS-Free-esxi2/xcpng.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/02/14/EOS-Free-esxi2/xo1.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/02/14/EOS-Free-esxi2/xo2.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/02/14/EOS-Free-esxi2/xo3.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/02/14/EOS-Free-esxi2/xo4.png">
 <meta property="article:published_time" content="2024-02-14T05:09:13.000Z">
-<meta property="article:modified_time" content="2024-02-14T22:00:16.542Z">
+<meta property="article:modified_time" content="2024-02-17T06:17:34.618Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="ESXi">
 <meta name="twitter:card" content="summary">
@@ -281,7 +282,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">編集日</span>
-      <time title="修正日：2024-02-15 07:00:16" itemprop="dateModified" datetime="2024-02-15T07:00:16+09:00">2024-02-15</time>
+      <time title="修正日：2024-02-17 15:17:34" itemprop="dateModified" datetime="2024-02-17T15:17:34+09:00">2024-02-17</time>
     </span>
 
   
@@ -312,7 +313,7 @@
 
 <p>1月30日に書いた記事「<a href="/new-technology/2024/01/30/EOS-Free-esxi/" title="VMWare 無償版ESXiの提供終了について">VMWare 無償版ESXiの提供終了について</a>」では、今後もESXiを新規利用またはアップグレードされる方はISOファイルのダウンロードとライセンスの取得をお勧めしていましたが、あまりに期間も短くお役に立てなかったかもしれません。</p>
 <p>これにはもはや抗うことはできないようです。</p>
-<h2 id="ESXiの代替の検討"><a href="#ESXiの代替の検討" class="headerlink" title="ESXiの代替の検討"></a>ESXiの代替の検討</h2><p>既に稼働済みの無償版ESXiは定期的なオンライン認証などがあるわけではないので当面の間利用は継続できますが、移行について検討しなければなりません。</p>
+<h2 id="ESXiの代替の検討"><a href="#ESXiの代替の検討" class="headerlink" title="ESXiの代替の検討"></a>ESXiの代替の検討</h2><p>既に稼働済みの無償版ESXiは定期的なオンライン認証などがあるわけではないので当面の間利用は継続できますが、有償のESXiを使うつもりでなければ、移行について検討しなければなりません。</p>
 <h2 id="Proxmox-VE"><a href="#Proxmox-VE" class="headerlink" title="Proxmox VE"></a>Proxmox VE</h2><img src="/new-technology/2024/02/14/EOS-Free-esxi2/proxmox.png" class="" width="400" title="alt">
 
 <p>ProxmoxはLinuxユーザー、個人を中心に人気のあるプロダクトです。大学や団体の利用実績もあります。ドイツの2名の開発者からスタートした企業です。ESXiは比較的ネットワークカードやNVMeの種類を選びましたから、手軽に始められる仮想環境としてはまずはProxmoxが挙げられます。</p>
@@ -325,8 +326,14 @@
 <p>モニタ類も非常に見やすいです。</p>
 <img src="/new-technology/2024/02/14/EOS-Free-esxi2/proxmox2.png" class="" width="800" title="alt">
 
-<p>Proxmoxにはバックアップサーバーという製品もありますが、Proxmox VE単独でバックアップのスケジューリングができます。これは無償版ESXiと比べて良い点です。SynologyNASのNFS4.1をマップしてバックアップしています。私のセットアップではまだGmail宛の通知がうまくいっていません。</p>
+<p>Proxmoxにはバックアップサーバーという製品もありますが、Proxmox VE単独でバックアップのスケジューリングができます。これは無償版ESXiと比べて良い点です。SynologyNASのNFS4.1に接続してバックアップしています。</p>
 <img src="/new-technology/2024/02/14/EOS-Free-esxi2/proxmox3.png" class="" width="640" title="alt">
+
+<p>通知は下記のように行われます。</p>
+<img src="/new-technology/2024/02/14/EOS-Free-esxi2/proxmox4.png" class="" width="640" title="alt">
+
+<p>バックアップ速度は4Gbps強です。差分のバックアップ（ブロック変更のみ）は無さそうですね。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">100: 2024-02-17 14:43:09 INFO: transferred 32.00 GiB <span class="keyword">in</span> 63 seconds (520.2 MiB/s)</span><br><span class="line">100: 2024-02-17 14:43:10 INFO: archive file size: 10.06GB</span><br></pre></td></tr></table></figure>
 
 <p>スナップショットもESXi同等にメモリの状態まで確保できます（ZFSファイルシステムで実行）。</p>
 <p>少し気になる点としては無償で利用するには開発用リポジトリを使うことになり、有償のリポジトリはより安全にテストされたものが利用できる仕組みです。GUIでもモジュールは更新できますが、更新の単位は<code>apt update</code>と同様の感覚です。リモートワークなどに利用しているVMがあるのであればその点は留意する必要があります。</p>
