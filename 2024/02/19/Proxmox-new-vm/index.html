@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/icon-16x16.png">
+  <link rel="mask-icon" href="/new-technology/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/new-technology/css/main.css">
+
+
+
+<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-yIDrPSXHZdOZhAqiBP7CKzIwMQmRCJ8UeB8Jo17YC4o=" crossorigin="anonymous">
+  <link rel="stylesheet" href="/new-technology/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.19.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
+
+    <meta name="description" content="この記事で実現すること  仮想環境のProxmox VEで仮想マシン（VM）の新規作成を行います。例示としてこの記事ではUbuntuのセットアップを行います。ネットワークインターフェースと仮想マシンとの関係も見ていきます。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ProxmoxVEのVM新規作成">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2024/02/19/Proxmox-new-vm/index.html">
+<meta property="og:site_name" content="New technologies in our life">
+<meta property="og:description" content="この記事で実現すること  仮想環境のProxmox VEで仮想マシン（VM）の新規作成を行います。例示としてこの記事ではUbuntuのセットアップを行います。ネットワークインターフェースと仮想マシンとの関係も見ていきます。">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/02/19/Proxmox-new-vm/Title.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/02/19/Proxmox-new-vm/proxmox1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/02/19/Proxmox-new-vm/proxmox2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/02/19/Proxmox-new-vm/proxmox3.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/02/19/Proxmox-new-vm/proxmox4.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/02/19/Proxmox-new-vm/proxmox6.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/02/19/Proxmox-new-vm/proxmox7.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/02/19/Proxmox-new-vm/proxmox8.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/02/19/Proxmox-new-vm/proxmox9.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/02/19/Proxmox-new-vm/proxmox10.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/02/19/Proxmox-new-vm/proxmox12.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/02/19/Proxmox-new-vm/proxmox13.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/02/19/Proxmox-new-vm/proxmox14.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/02/19/Proxmox-new-vm/proxmox15.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/02/19/Proxmox-new-vm/proxmox16.png">
+<meta property="article:published_time" content="2024-02-19T00:04:44.000Z">
+<meta property="article:modified_time" content="2024-02-19T13:54:06.178Z">
+<meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
+<meta property="article:tag" content="proxmox">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2024/02/19/Proxmox-new-vm/Title.png">
+
+
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2024/02/19/Proxmox-new-vm/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"ja","comments":true,"permalink":"https://yoshi0808.github.io/new-technology/2024/02/19/Proxmox-new-vm/","path":"2024/02/19/Proxmox-new-vm/","title":"ProxmoxVEのVM新規作成"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>ProxmoxVEのVM新規作成 | New technologies in our life</title>
+  
+
+
+
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{&quot;token&quot;: &quot;0148b4d0442e42b483ddce684030bd2f&quot;}'></script>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JMY6NSC2KK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+  'ad_storage': 'denied',
+  'analytics_storage': 'denied'
+  });
+
+  dataLayer.push({
+  'event': 'default_consent'
+  });
+
+  if (Cookies.get('PRVCY202112') == 'Agree') {
+    gtag('consent', 'update', {
+    'analytics_storage': 'granted'
+    });
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'G-JMY6NSC2KK',{ 'anonymize_ip': true });
+</script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/new-technology/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/new-technology/atom.xml" title="New technologies in our life" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="ナビゲーションバーの切り替え" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/new-technology/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">New technologies in our life</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Device,Network,Code,etc...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="検索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/new-technology/" rel="section"><i class="fa fa-home fa-fw"></i>ホーム</a></li><li class="menu-item menu-item-about"><a href="/new-technology/about/" rel="section"><i class="fa fa-user fa-fw"></i>サイトポリシー</a></li><li class="menu-item menu-item-tags"><a href="/new-technology/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>タグ</a></li><li class="menu-item menu-item-categories"><a href="/new-technology/categories/" rel="section"><i class="fa fa-th fa-fw"></i>カテゴリ</a></li><li class="menu-item menu-item-archives"><a href="/new-technology/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>アーカイブ</a></li><li class="menu-item menu-item-privacy"><a href="/new-technology/privacypolicy/" rel="section"><i class="fa fa-check fa-fw"></i>プライバシーポリシー</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="検索…" spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          見出し
+        </li>
+        <li class="sidebar-nav-overview">
+          概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Proxmox-VE%E3%81%AE%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E6%A7%8B%E6%88%90"><span class="nav-number">1.</span> <span class="nav-text">Proxmox VEのネットワーク構成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ISO%E3%81%AE%E4%BF%9D%E5%AD%98%E5%85%88"><span class="nav-number">2.</span> <span class="nav-text">ISOの保存先</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VM%E3%81%AE%E6%96%B0%E8%A6%8F%E4%BD%9C%E6%88%90"><span class="nav-number">3.</span> <span class="nav-text">VMの新規作成</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#OS%E3%81%AE%E7%A8%AE%E9%A1%9E"><span class="nav-number">3.1.</span> <span class="nav-text">OSの種類</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0"><span class="nav-number">3.2.</span> <span class="nav-text">システム</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%87%E3%82%A3%E3%82%B9%E3%82%AF"><span class="nav-number">3.3.</span> <span class="nav-text">ディスク</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CPU"><span class="nav-number">3.4.</span> <span class="nav-text">CPU</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%A1%E3%83%A2%E3%83%AA"><span class="nav-number">3.5.</span> <span class="nav-text">メモリ</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF"><span class="nav-number">3.6.</span> <span class="nav-text">ネットワーク</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A2%BA%E8%AA%8D"><span class="nav-number">3.7.</span> <span class="nav-text">確認</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%EF%BC%88%E4%BB%BB%E6%84%8F%EF%BC%89%E4%BB%AE%E6%83%B3%E3%83%9E%E3%82%B7%E3%83%B3%E3%81%A7%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E3%81%AE%E8%BF%BD%E5%8A%A0"><span class="nav-number">4.</span> <span class="nav-text">（任意）仮想マシンでネットワークの追加</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VM%E3%81%AE%E8%B5%B7%E5%8B%95"><span class="nav-number">5.</span> <span class="nav-text">VMの起動</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VM%E3%81%AE%E7%A2%BA%E8%AA%8D%E3%81%A8%E5%BE%8C%E5%B7%A5%E7%A8%8B"><span class="nav-number">6.</span> <span class="nav-text">VMの確認と後工程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%9D%E3%81%AE%E4%BB%96"><span class="nav-number">7.</span> <span class="nav-text">その他</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="阿部　吉伸(Yoshinobu ABE)"
+      src="/new-technology/images/yoshi.png">
+  <p class="site-author-name" itemprop="name">阿部　吉伸(Yoshinobu ABE)</p>
+  <div class="site-description" itemprop="description">IT</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/new-technology/archives/">
+          <span class="site-state-item-count">84</span>
+          <span class="site-state-item-name">ポスト</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/new-technology/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">カテゴリ</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/new-technology/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">タグ</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yoshi0808" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yoshi0808" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yoshi0808.blog@gmail.com" title="E-Mail → mailto:yoshi0808.blog@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yoshi0808_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yoshi0808_" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="/new-technology/lib/@creativecommons/vocabulary/assets/license_badges/big/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="ja">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2024/02/19/Proxmox-new-vm/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/new-technology/images/yoshi.png">
+      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="New technologies in our life">
+      <meta itemprop="description" content="IT">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="ProxmoxVEのVM新規作成 | New technologies in our life">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ProxmoxVEのVM新規作成
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">投稿日</span>
+      
+
+      <time title="作成日：2024-02-19 09:04:44 / 修正日：22:54:06" itemprop="dateCreated datePublished" datetime="2024-02-19T09:04:44+09:00">2024-02-19</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><img src="/new-technology/2024/02/19/Proxmox-new-vm/Title.png" class="" title="alt">
+
+<p class="onepoint">この記事で実現すること</p>
+
+<p>仮想環境のProxmox VEで仮想マシン（VM）の新規作成を行います。例示としてこの記事ではUbuntuのセットアップを行います。ネットワークインターフェースと仮想マシンとの関係も見ていきます。</p>
+<span id="more"></span>
+
+<h2 id="Proxmox-VEのネットワーク構成"><a href="#Proxmox-VEのネットワーク構成" class="headerlink" title="Proxmox VEのネットワーク構成"></a>Proxmox VEのネットワーク構成</h2><p>新規VMのセットアップにはディスク、メモリ、ネットワークを定義することになりますが、VMの新規作成の前にネットワークインタフェースについて見ていきます。</p>
+<p>以下は私の環境の例です。intel X710の4PortとRealtekのオンボードNIC（未使用）の５つが存在します。</p>
+<img src="/new-technology/2024/02/19/Proxmox-new-vm/proxmox1.png" class="" width="1024" title="alt">
+
+<p>X710の4Portは”enp1s0f0”が1Port目、”enp1s0f3”が4Port目となっています。これが物理ネットワークインタフェースです。<br>これに加えて、インストール直後は、vmbr0というネットワークブリッジが作成されており、ここではセットアップ時に決めたIPアドレスが設定されているはずです。vmbr1以降は私が手動で作成しています。</p>
+<p>仮想環境においてはL2ネットワークが重要であり、VMは仮想MACアドレスを保有します。ProxmoxのインタフェースではこのネットワークブリッジがNICの物理MACアドレス以外の仮想マシンのMACアドレスも受け取ることになり、いわば、無差別モード（プロミスキャスモード）で動作します。</p>
+<p>仮想マシンに対してL2レイヤのブリッジ（取り次ぐ）を行うために、<mark class="label primary">Linux Bridge</mark>が必要となります。<br>Proxomoxにおいては命名規約は厳格であり、自由な名前は付けられません。ブリッジにしてもVLANにしても命名規則に従う必要があります。</p>
+<p>ここでは仮想マシンの仮想MACアドレスは作成しません。VMを作成するタイミングで自動生成されることになります。L3レイヤ、つまりIPアドレスに関してProxmoxは意識しません。VMの中のOS任せであり、これはESXiなどの他のハイパーバイザーと考え方は同じです。</p>
+<p>個人的には、物理ネットワークカードのMACアドレスが表示されないのは少しわかりづらく感じます。物理ネットワーク（ネットデバイス）にはコメント欄があるので、そこにMACアドレスを記入しておけば運用面はなんとかなりそうです。</p>
+<h2 id="ISOの保存先"><a href="#ISOの保存先" class="headerlink" title="ISOの保存先"></a>ISOの保存先</h2><p>VMを新規作成する上で、OSのインストールのために予めISOファイルをコピーしておく必要があります。Proxmoxの左ペインから、<mark class="label primary">local(ホスト名)</mark>を選択します（私の環境ではホスト名がpve1という名前です）。</p>
+<img src="/new-technology/2024/02/19/Proxmox-new-vm/proxmox2.png" class="" width="800" title="alt">
+
+
+<p>ここに<mark class="label primary">ISOイメージ</mark>とあるので、選択します。ここで、<mark class="label primary">アップロード</mark>ボタンをクリックし、ローカルの端末からISOファイルをアップロードします。今回は、Ubuntu22.04デスクトップをインストールするためにファイルアップロードします。<br>Ubuntuのダウンロードやセットアップの内容については、以前にESXiにUbuntuをインストールする記事を投稿しています。「<a href="/new-technology/2022/09/23/ubuntu22-04lts/" title="Ubuntu22.04LTSをESXiにセットアップする">Ubuntu22.04LTSをESXiにセットアップする</a>」を参照してください。</p>
+<h2 id="VMの新規作成"><a href="#VMの新規作成" class="headerlink" title="VMの新規作成"></a>VMの新規作成</h2><p>ここでは２つのネットワークインタフェースを持つUbuntu22をセットアップします。<br>Proxmoxの右上にある青いボタン<mark class="label primary">VMを作成</mark>をクリックします。いよいよ仮想マシンの作成に入ります。</p>
+<img src="/new-technology/2024/02/19/Proxmox-new-vm/proxmox3.png" class="" width="480" title="alt">
+
+<p>ホスト名としての名前を入力します。ここでは、”xo”としました。VM IDは100から付番されていきます。また<mark class="label primary">ブート時に起動</mark>するか否かを決定します。</p>
+<h3 id="OSの種類"><a href="#OSの種類" class="headerlink" title="OSの種類"></a>OSの種類</h3><img src="/new-technology/2024/02/19/Proxmox-new-vm/proxmox4.png" class="" width="480" title="alt">
+
+<p>Linuxを選択します。UbuntuやDebianなどをバージョン毎に選ぶのかと思いましたが、種類は多くありません。<mark class="label primary">Kernel6.x-2.6</mark>または<mark class="label primary">Kernel2.4</mark>の2種類です。<mark class="label primary">Kernel6.x-2.6</mark>を選択します。今回は関係ありませんが、Windows11もインストールできるようですね。また、懐かしいSolarisも選択可能となっています。昔は Solarisでもコードを書きましたが、まだマルチスレッドが一般的に利用されておらず、スレッドセーフという言葉も当時は一般的ではなくてマニュアルには「スレッド安全」と書かれていたのが印象的です。<br>さて、ISOファイルを選択して次に進みます。</p>
+<h3 id="システム"><a href="#システム" class="headerlink" title="システム"></a>システム</h3><img src="/new-technology/2024/02/19/Proxmox-new-vm/proxmox6.png" class="" width="480" title="alt">
+
+<p>ここでは、旧ブートのBIOS（SeaBIOS）かUEFIを選択します。UbuntuはUEFIに対応しているのでよほどのことがなければUEFIを選びます。<mark class="label primary">TPM追加</mark>は好みで選んでください。また、<mark class="label primary">Qemuエージェント</mark>のチェックボックスは最初、Offのままにしておきます（後で設定します）。ゲストにインストールするヘルパーデーモンであり、稼働状況をホストが把握するためや、ホストから安全にシャットダウンするなどのアクションができるようになります。ESXiではVMWareToolsに相当するモジュールです。</p>
+<h3 id="ディスク"><a href="#ディスク" class="headerlink" title="ディスク"></a>ディスク</h3><img src="/new-technology/2024/02/19/Proxmox-new-vm/proxmox7.png" class="" width="480" title="alt">
+
+<p>ディスクサイズを設定します。追加のボリュームを加える場合もここで設定します。</p>
+<h3 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h3><img src="/new-technology/2024/02/19/Proxmox-new-vm/proxmox8.png" class="" width="480" title="alt">
+
+<p>CPUの種別、CPUのコア数を指定します。Extra CPU Flagsとしていくつかの脆弱性に対応させるためのチェックがあります。私はRyzen５5600GにProxmoxをインストールしているので下記のオプションとしました。<br>CPUの種別は特定されたものがあればそれを、無ければ一般的に<mark class="label primary">x86-64-v2-AES</mark>を選びます。Intel&#x2F;AMDをクラスタで混在させないならそのCPUの最も古いものに合わせておくのが良いようです。詳細はヘルプのCPU TYPEを確認してください。</p>
+<blockquote>
+<p>If you don’t care about live migration or have a homogeneous cluster where all nodes have the same CPU and same microcode version, set the CPU type to host, as in theory this will give your guests maximum performance.</p>
+</blockquote>
+<blockquote>
+<p>If you care about live migration and security, and you have only Intel CPUs or only AMD CPUs, choose the lowest generation CPU model of your cluster.</p>
+</blockquote>
+<blockquote>
+<p>If you care about live migration without security, or have mixed Intel&#x2F;AMD cluster, choose the lowest compatible virtual QEMU CPU type.</p>
+</blockquote>
+<h3 id="メモリ"><a href="#メモリ" class="headerlink" title="メモリ"></a>メモリ</h3><img src="/new-technology/2024/02/19/Proxmox-new-vm/proxmox9.png" class="" width="480" title="alt">
+
+<p>VMで利用するメモリの量を設定します。</p>
+<h3 id="ネットワーク"><a href="#ネットワーク" class="headerlink" title="ネットワーク"></a>ネットワーク</h3><img src="/new-technology/2024/02/19/Proxmox-new-vm/proxmox10.png" class="" width="480" title="alt">
+
+<p>特に変更することはなく、NICのモデルは、<mark class="label primary">VirtIO(準仮想化)</mark>を選んでおきます。おっと、ここではNICを追加することができませんね。後で2枚目のNICを追加することになるのでしょうか。まずはメインの<mark class="label primary">vmbr0</mark>ブリッジを選択しておきます。</p>
+<h3 id="確認"><a href="#確認" class="headerlink" title="確認"></a>確認</h3><p>最後に確認画面で完了します。</p>
+<h2 id="（任意）仮想マシンでネットワークの追加"><a href="#（任意）仮想マシンでネットワークの追加" class="headerlink" title="（任意）仮想マシンでネットワークの追加"></a>（任意）仮想マシンでネットワークの追加</h2><p>2枚目のNICをVMに追加する場合、仮想マシンが作成されたら、以下のようにハードウェアからネットワークの追加を行います。</p>
+<img src="/new-technology/2024/02/19/Proxmox-new-vm/proxmox12.png" class="" width="1024" title="alt">
+
+<h2 id="VMの起動"><a href="#VMの起動" class="headerlink" title="VMの起動"></a>VMの起動</h2><p>左ペインでVMを選択した状態で、画面上部の<mark class="label primary">▶︎開始</mark>をクリックします。</p>
+<p>さて、無事にコンソールから起動してきました。</p>
+<img src="/new-technology/2024/02/19/Proxmox-new-vm/proxmox13.png" class="" width="1024" title="alt">
+
+<p>前述した通り、この記事ではUbuntuのセットアップ手順については省略します。キーボードを含め、特に問題が発生するようなところは無いと思われます。ProxoxのVMの<mark class="label primary">コンソール</mark>のプルダウンから、<mark class="label primary">VNC</mark>を選ぶと大きな画面でセットアップを進められます。</p>
+<blockquote>
+<a href="/new-technology/2022/09/23/ubuntu22-04lts/" title="Ubuntu22.04LTSをESXiにセットアップする">Ubuntu22.04LTSをESXiにセットアップする</a>
+</blockquote>
+<p>セットアップしているところでVMのサマリー画面を見ていると結構面白いですね。1vCPUと2GBのメモリでは少々足りないようです。</p>
+<img src="/new-technology/2024/02/19/Proxmox-new-vm/proxmox14.png" class="" width="1024" title="alt">
+
+<p>もちろん後からCPUとメモリは変更できます。4vCPU&#x2F;4GBのメモリでもFirefoxを起動し、Fast.comに接続すると結構しんどそうです（1.5Gbps）。Ryzen7 5700GのESXiでは2vCPU&#x2F;2GBで2.4Gbps、XCP-ngでは古いCore <a href="mailto:&#x69;&#x37;&#45;&#56;&#55;&#x30;&#48;&#64;&#x33;&#46;&#50;&#48;&#x47;&#x48;&#122;">&#x69;&#x37;&#45;&#56;&#55;&#x30;&#48;&#64;&#x33;&#46;&#50;&#48;&#x47;&#x48;&#122;</a>で2vCPU&#x2F;2GBで2.8Gbpsなので最適化という意味では若干改善の余地があるような気もします。これがCLIベースのSpeedtestだと3者共に殆ど結果が変わらないので何か描画などに関してオーバーヘッドがあるのかなという気がしています。</p>
+<p>また、ゲストエージェントが未設定という表示もされています。</p>
+<h2 id="VMの確認と後工程"><a href="#VMの確認と後工程" class="headerlink" title="VMの確認と後工程"></a>VMの確認と後工程</h2><p>Ubuntuのセットアップが終了して再起動後、さらにUbuntuモジュールの更新処理が行われていきます。<br>それがひと段落したら、ゲストエージェントをインストールします。Ubuntu上の端末アプリケーションを起動し、以下のコマンドを入力します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt install qemu-guest-agent</span><br></pre></td></tr></table></figure>
+
+<p>これでゲストエージェントのインストールは完了です。一旦、VMをシャットダウンします。<br>続いて、VMのオプションから、<mark class="label primary">QEMU Guest Agent</mark>を有効にします。</p>
+<img src="/new-technology/2024/02/19/Proxmox-new-vm/proxmox15.png" class="" width="1024" title="alt">
+
+<p>再度、Ubuntuを起動し、サマリ情報を参照すると、以下のようにIPアドレスの情報が取得できています。当たり前ですが、IPv6も確認できます。</p>
+<img src="/new-technology/2024/02/19/Proxmox-new-vm/proxmox16.png" class="" width="800" title="alt">
+
+<mark class="label primary">More</mark>ボタンをクリックすると、2枚目のNICのIPアドレスも確認できます。
+
+<p>これでProxmoxに関して、一通りセットアップからVMの作成までを終えました。CPUタイプのあたりは少し最適化に向けて試行錯誤は必要そうですが、とても簡単にVMが作成できることがわかりました。</p>
+<h2 id="その他"><a href="#その他" class="headerlink" title="その他"></a>その他</h2><ul>
+<li>SSHでログインし、<code>/.ssh</code>にauthorized_keyがありますので、そこに公開鍵をAppendしておけば公開鍵認証が可能です。</li>
+<li>あまり人にお勧めはできませんが、ProxmoxにSSHし、intel X710のファームウェアをアップデートしました（v9.4）。intelのサイトからダウンロードし、Linux用を利用しました。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/new-technology/tags/proxmox/" rel="tag"><i class="fa fa-tag"></i> proxmox</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/new-technology/2024/02/17/ProxmoxVE/" rel="prev" title="ProxmoxVEのインストール">
+                  <i class="fa fa-angle-left"></i> ProxmoxVEのインストール
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2020 – 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">阿部　吉伸(Yoshinobu ABE)</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div><script src="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.umd.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.min.css" rel="stylesheet">
+
+<script>
+if (Cookies.get('PRVCY202112') != 'Agree') {
+  const notice = new SimpleGDPR({
+    title: 'Accept Cookies & Privacy Policy?',
+    message: 'このWebサイトでは、訪問や活動に関するデータがクッキー等によって収集されます。閲覧を継続される場合、\
+    プライバシーポリシーをご覧いただき同意(Agree)をお願いします',
+    link: null,
+    icons: true,
+    theme: 'light',
+    animation: 'fade',
+    float: 'bottom-right',
+      callback: () => {
+      notice.close();
+      Cookies.set('PRVCY202112', 'Agree', { expires: 365, path: '/'});
+      notice.destroy();
+      // Google Analytics 4
+      gtag('consent', 'update', {
+      'analytics_storage': 'granted'
+      });
+      gtag('js', new Date());
+      gtag('config', 'G-JMY6NSC2KK', { 'anonymize_ip': true });
+      },
+  });
+}
+</script>
+<div class="disclaimer1">
+このサイトの記事は、特別な記載がない限り <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja">クリエイティブ・コモンズ BY-NC-SA ライセンス</a>で保護されています</div>
+
+
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/yoshi0808" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="/new-technology/lib/animejs/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="/new-technology/lib/medium-zoom/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/comments.js"></script><script src="/new-technology/js/utils.js"></script><script src="/new-technology/js/motion.js"></script><script src="/new-technology/js/schemes/muse.js"></script><script src="/new-technology/js/next-boot.js"></script>
+
+  <script src="/new-technology/lib/hexo-generator-searchdb/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"/new-technology/lib/mermaid/dist/mermaid.min.js","integrity":"sha256-mm3Re3y7xlvh+yCD+l/Zs1d+PU0AEad93MkWvljfm/s="}}</script>
+  <script src="/new-technology/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
