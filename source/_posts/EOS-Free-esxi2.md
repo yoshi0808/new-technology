@@ -70,17 +70,20 @@ Proxmox自体、セキュアブートでインストールでき、VMもセキ�
 
 設定はややLinux寄りです。結局はLinuxのコマンドをGUIにうまく形を変えているとも言えます。ESXiで慣れていると少しギャップがあります。ESXiのVMWare Remote Consoleは素晴らしい製品でしたが、そこまでは行かずとも、別ウィンドウでVNCから暗号化通信でコンソールにアクセスするなど操作性はとても良く、先進的であると感じさせます。
 
+取り急ぎ、ProxmoxVE8.1のセットアップとVMの新規作成に関する記事を投稿しました。Proxmoxを試してみたい方は参考にしてみてください。
 
-## XCP-NG（XEN Orchestra）
+- {% post_link ProxmoxVE %}
+- {% post_link Proxmox-new-vm %}
+
+## XCP-ng（XEN Orchestra）
 
 {% asset_img xcpng.png 800 alt %}
 
 新しいプロダクトではありませんが、Citrixが提供しているXen Serverから派生したオープンソースシステムでVatesという会社が提供しています。2012年にフランスで設立されています。おそらく規模は小さい会社のように見えます。こちらは企業中心、またホームラボでも利用されています。
 仮想化という概念では素晴らしいものをXenから継承しており、本格的なHypervisorです。ProxmoxはHypervisorとも言えますが、VMが明確に独立しておらずDMAなどのメモリへのアクセスはかなり自由です。一方、XCP-NGは厳格にセパレートされておりセキュリティが高く、安定度も高い物と考えられます。その犠牲になるのは速度ですが、XEN Orchestraという有償のGUI管理ツールはわかりやすいため、ESXiユーザーはこちらの方が気にいるかもしれません。
 
-> XCP-NG
+> XCP-ng
  <https://xcp-ng.org/#easy-to-install>
-
 
 Xen OrchestraのGUIツールは有償ですが、個人が使うためのソースコードが提供されており、自身でコンパイルして利用する分には無償です。有償のプロダクトはXOA（Xen Orchestra Apliance）、ソースコードからビルドしたものはXOと呼ばれ区別されています。
 
@@ -120,4 +123,4 @@ XCP-NG、Xen Orchestraへの理解を深めるには、ローレンスシステ�
 >Understanding How The XCP-NG & Xen Orchestra Open Source Virtualization Platform Works
  <https://www.youtube.com/watch?v=CEUFHudLO1g&t=447s>
 
-今後、Xen Orchestraのセットアップ手順などを整理していきたいと考えています。
+今後、Xen Orchestraのセットアップ手順などを整理していきたいと考えています。手持ちの予備マシンをProxmoxで使ってしまったのでマシン調達から始めますのでしばらく時間がかかりそうです。
