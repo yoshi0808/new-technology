@@ -39,7 +39,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/02/17/ProxmoxVE/proxmox9.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/02/17/ProxmoxVE/proxmox10.png">
 <meta property="article:published_time" content="2024-02-17T13:52:00.000Z">
-<meta property="article:modified_time" content="2024-02-19T21:59:23.196Z">
+<meta property="article:modified_time" content="2024-02-20T14:05:33.844Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="proxmox">
 <meta name="twitter:card" content="summary">
@@ -284,7 +284,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">編集日</span>
-      <time title="修正日：2024-02-20 06:59:23" itemprop="dateModified" datetime="2024-02-20T06:59:23+09:00">2024-02-20</time>
+      <time title="修正日：2024-02-20 23:05:33" itemprop="dateModified" datetime="2024-02-20T23:05:33+09:00">2024-02-20</time>
     </span>
 
   
@@ -375,8 +375,12 @@
 <h2 id="初期設定"><a href="#初期設定" class="headerlink" title="初期設定"></a>初期設定</h2><p>まずインストール時に決めたパスワードでログインします。ここで言語設定も変更しておきます。</p>
 <img src="/new-technology/2024/02/17/ProxmoxVE/proxmox5.png" class="" width="400" title="alt">
 
-<p>最初に「有効なサブスクリプションがありません」というダイアログが出ます。これは無償で使う場合は必ず表示されます。<br>早速、「サブスクリプション無しのリポジトリ」に切り替えます。</p>
-<p>以下の画面から左上のホストを選択し、画面中央の<mark class="label primary">リポジトリ</mark>を選択します。<br>右下部分の<mark class="label primary">Enterprise</mark>の文字が含まれる2つのリポジトリを<mark class="label primary">Disable</mark>ボタンをクリックして無効化します。</p>
+<p>最初に「有効なサブスクリプションがありません」というダイアログが出ます。これは無償で使う場合は今後も必ず表示されます。<br>早速、「サブスクリプション無しのリポジトリ」に切り替えます。</p>
+<p>以下の画面から左上のホスト（インストール時のホスト名）を選択し、画面中央の<mark class="label primary">リポジトリ</mark>を選択します。</p>
+<ol>
+<li><mark class="label primary">追加</mark>ボタンから、<mark class="label primary">No-Subscription</mark>をプルダウンから選び追加します。</li>
+<li>右下部分の<mark class="label primary">Enterprise</mark>の文字が含まれる2つのリポジトリを<mark class="label primary">Disable</mark>ボタンをクリックして無効化します。</li>
+</ol>
 <img src="/new-technology/2024/02/17/ProxmoxVE/proxmox6.png" class="" width="1024" title="alt">
 
 <h2 id="任意-定期的なジョブ結果を通知するメール設定"><a href="#任意-定期的なジョブ結果を通知するメール設定" class="headerlink" title="(任意)定期的なジョブ結果を通知するメール設定"></a>(任意)定期的なジョブ結果を通知するメール設定</h2><p>以下の画面からSMTPを選択します。</p>
