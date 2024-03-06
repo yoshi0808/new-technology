@@ -199,7 +199,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/new-technology/archives/">
-          <span class="site-state-item-count">85</span>
+          <span class="site-state-item-count">86</span>
           <span class="site-state-item-name">ポスト</span>
         </a>
       </div>
@@ -366,7 +366,7 @@
 <p>セットアップしているところでVMのサマリー画面を見ていると結構面白いですね。1vCPUと2GBのメモリでは少々足りないようです。</p>
 <img src="/new-technology/2024/02/19/Proxmox-new-vm/proxmox14.png" class="" width="1024" title="alt">
 
-<p>もちろん後からCPUとメモリは変更できます。4vCPU&#x2F;4GBのメモリでもFirefoxを起動し、Fast.comに接続すると結構しんどそうです（1.5Gbps）。Ryzen7 5700GのESXiでは2vCPU&#x2F;2GBで2.4Gbps、XCP-ngでは古いCore <a href="mailto:&#105;&#x37;&#45;&#56;&#x37;&#x30;&#x30;&#x40;&#51;&#46;&#50;&#x30;&#x47;&#x48;&#x7a;">&#105;&#x37;&#45;&#56;&#x37;&#x30;&#x30;&#x40;&#51;&#46;&#50;&#x30;&#x47;&#x48;&#x7a;</a>で2vCPU&#x2F;2GBで2.8Gbpsなので最適化という意味では若干改善の余地があるような気もします。これがCLIベースのSpeedtestだと3者共に殆ど結果が変わらないので何か描画などに関してオーバーヘッドがあるのかなという気がしています。</p>
+<p>もちろん後からCPUとメモリは変更できます。4vCPU&#x2F;4GBのメモリでもFirefoxを起動し、Fast.comに接続すると結構しんどそうです（1.5Gbps）。Ryzen7 5700GのESXiでは2vCPU&#x2F;2GBで2.4Gbps、XCP-ngでは古いCore <a href="mailto:&#105;&#x37;&#x2d;&#56;&#55;&#48;&#x30;&#x40;&#51;&#x2e;&#50;&#48;&#x47;&#x48;&#122;">&#105;&#x37;&#x2d;&#56;&#55;&#48;&#x30;&#x40;&#51;&#x2e;&#50;&#48;&#x47;&#x48;&#122;</a>で2vCPU&#x2F;2GBで2.8Gbpsなので最適化という意味では若干改善の余地があるような気もします。これがCLIベースのSpeedtestだと3者共に殆ど結果が変わらないので何か描画などに関してオーバーヘッドがあるのかなという気がしています。</p>
 <p>また、ゲストエージェントが未設定という表示もされています。</p>
 <h2 id="VMの確認と後工程"><a href="#VMの確認と後工程" class="headerlink" title="VMの確認と後工程"></a>VMの確認と後工程</h2><p>Ubuntuのセットアップが終了して再起動後、さらにUbuntuモジュールの更新処理が行われていきます。<br>それがひと段落したら、ゲストエージェントをインストールします。Ubuntu上の端末アプリケーションを起動し、以下のコマンドを入力します。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt install qemu-guest-agent</span><br></pre></td></tr></table></figure>

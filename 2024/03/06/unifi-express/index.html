@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/icon-16x16.png">
+  <link rel="mask-icon" href="/new-technology/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/new-technology/css/main.css">
+
+
+
+<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-yIDrPSXHZdOZhAqiBP7CKzIwMQmRCJ8UeB8Jo17YC4o=" crossorigin="anonymous">
+  <link rel="stylesheet" href="/new-technology/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.19.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
+
+    <meta name="description" content="この記事で実現すること  この記事ではUniFiネットワークの導入未経験の方を対象に、UniFiの新しい小型ゲートウェイUniFi Expressの具体的なセットアップおよび性能確認、機能紹介を目的としています。検証のため製品提供を受けていますのでこの記事はPR要素を含みます。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UniFi Express">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2024/03/06/unifi-express/index.html">
+<meta property="og:site_name" content="New technologies in our life">
+<meta property="og:description" content="この記事で実現すること  この記事ではUniFiネットワークの導入未経験の方を対象に、UniFiの新しい小型ゲートウェイUniFi Expressの具体的なセットアップおよび性能確認、機能紹介を目的としています。検証のため製品提供を受けていますのでこの記事はPR要素を含みます。">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/03/06/unifi-express/Title.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/03/06/unifi-express/0.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/03/06/unifi-express/diaglam.drawio.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/03/06/unifi-express/1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/03/06/unifi-express/2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/03/06/unifi-express/3.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/03/06/unifi-express/4.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/03/06/unifi-express/5.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/03/06/unifi-express/6.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/03/06/unifi-express/7.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/03/06/unifi-express/8.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/03/06/unifi-express/9.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/03/06/unifi-express/10.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/03/06/unifi-express/11.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/03/06/unifi-express/12.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/03/06/unifi-express/13.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/03/06/unifi-express/14.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/03/06/unifi-express/15.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/03/06/unifi-express/16.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/03/06/unifi-express/16-1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/03/06/unifi-express/17.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/03/06/unifi-express/18.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/03/06/unifi-express/19.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/03/06/unifi-express/20.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/03/06/unifi-express/21.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/03/06/unifi-express/21-1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/03/06/unifi-express/22.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/03/06/unifi-express/23.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/03/06/unifi-express/24.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/03/06/unifi-express/25.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/03/06/unifi-express/27.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/03/06/unifi-express/28.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/03/06/unifi-express/29.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/03/06/unifi-express/30.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/03/06/unifi-express/31.png">
+<meta property="article:published_time" content="2024-03-06T01:20:08.000Z">
+<meta property="article:modified_time" content="2024-03-06T10:20:11.061Z">
+<meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
+<meta property="article:tag" content="UniFi">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2024/03/06/unifi-express/Title.png">
+
+
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2024/03/06/unifi-express/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"ja","comments":true,"permalink":"https://yoshi0808.github.io/new-technology/2024/03/06/unifi-express/","path":"2024/03/06/unifi-express/","title":"UniFi Express"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>UniFi Express | New technologies in our life</title>
+  
+
+
+
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{&quot;token&quot;: &quot;0148b4d0442e42b483ddce684030bd2f&quot;}'></script>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JMY6NSC2KK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+  'ad_storage': 'denied',
+  'analytics_storage': 'denied'
+  });
+
+  dataLayer.push({
+  'event': 'default_consent'
+  });
+
+  if (Cookies.get('PRVCY202112') == 'Agree') {
+    gtag('consent', 'update', {
+    'analytics_storage': 'granted'
+    });
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'G-JMY6NSC2KK',{ 'anonymize_ip': true });
+</script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/new-technology/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/new-technology/atom.xml" title="New technologies in our life" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="ナビゲーションバーの切り替え" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/new-technology/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">New technologies in our life</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Device,Network,Code,etc...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="検索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/new-technology/" rel="section"><i class="fa fa-home fa-fw"></i>ホーム</a></li><li class="menu-item menu-item-about"><a href="/new-technology/about/" rel="section"><i class="fa fa-user fa-fw"></i>サイトポリシー</a></li><li class="menu-item menu-item-tags"><a href="/new-technology/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>タグ</a></li><li class="menu-item menu-item-categories"><a href="/new-technology/categories/" rel="section"><i class="fa fa-th fa-fw"></i>カテゴリ</a></li><li class="menu-item menu-item-archives"><a href="/new-technology/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>アーカイブ</a></li><li class="menu-item menu-item-privacy"><a href="/new-technology/privacypolicy/" rel="section"><i class="fa fa-check fa-fw"></i>プライバシーポリシー</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="検索…" spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          見出し
+        </li>
+        <li class="sidebar-nav-overview">
+          概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B5%8C%E7%B7%AF"><span class="nav-number">1.</span> <span class="nav-text">経緯</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UniFi-Express"><span class="nav-number">2.</span> <span class="nav-text">UniFi Express</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%93%E3%81%AE%E8%A8%98%E4%BA%8B%E3%81%A7%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%BF%E3%83%BC%E3%83%8D%E3%83%83%E3%83%88%E3%81%AE%E6%A7%8B%E6%88%90"><span class="nav-number">3.</span> <span class="nav-text">この記事でのインターネットの構成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%82%BB%E3%83%83%E3%83%88%E3%82%A2%E3%83%83%E3%83%97"><span class="nav-number">4.</span> <span class="nav-text">セットアップ</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%9F%E5%BA%A6%E3%83%81%E3%82%A7%E3%83%83%E3%82%AF"><span class="nav-number">5.</span> <span class="nav-text">速度チェック</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%82%BB%E3%83%83%E3%83%88%E3%82%A2%E3%83%83%E3%83%97%E3%81%AE%E8%A3%9C%E8%B6%B3"><span class="nav-number">6.</span> <span class="nav-text">セットアップの補足</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#au%E3%81%B2%E3%81%8B%E3%82%8A%E3%81%AEIPv6"><span class="nav-number">7.</span> <span class="nav-text">auひかりのIPv6</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HGW%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">7.1.</span> <span class="nav-text">HGWの設定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Express-WAN%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">7.2.</span> <span class="nav-text">Express WANの設定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Express-LAN%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">7.3.</span> <span class="nav-text">Express LANの設定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A5%E7%B6%9A%E3%83%86%E3%82%B9%E3%83%88"><span class="nav-number">7.4.</span> <span class="nav-text">接続テスト</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Express%E3%81%AE%E6%A9%9F%E8%83%BD-%E8%A8%AD%E5%AE%9A"><span class="nav-number">8.</span> <span class="nav-text">Expressの機能&#x2F;設定</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%97%E3%83%83%E3%82%B7%E3%83%A5%E9%80%9A%E7%9F%A5"><span class="nav-number">8.1.</span> <span class="nav-text">プッシュ通知</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%83%E5%91%8A%E3%83%96%E3%83%AD%E3%83%83%E3%82%AF"><span class="nav-number">8.2.</span> <span class="nav-text">広告ブロック</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Teleport-VPN"><span class="nav-number">9.</span> <span class="nav-text">Teleport(VPN)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Local-DNS"><span class="nav-number">9.1.</span> <span class="nav-text">Local DNS</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A3%9C%E8%B6%B3%E8%AA%AC%E6%98%8E"><span class="nav-number">10.</span> <span class="nav-text">補足説明</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="阿部　吉伸(Yoshinobu ABE)"
+      src="/new-technology/images/yoshi.png">
+  <p class="site-author-name" itemprop="name">阿部　吉伸(Yoshinobu ABE)</p>
+  <div class="site-description" itemprop="description">IT</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/new-technology/archives/">
+          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-name">ポスト</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/new-technology/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">カテゴリ</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/new-technology/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">タグ</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yoshi0808" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yoshi0808" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yoshi0808.blog@gmail.com" title="E-Mail → mailto:yoshi0808.blog@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yoshi0808_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yoshi0808_" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="/new-technology/lib/@creativecommons/vocabulary/assets/license_badges/big/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="ja">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2024/03/06/unifi-express/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/new-technology/images/yoshi.png">
+      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="New technologies in our life">
+      <meta itemprop="description" content="IT">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="UniFi Express | New technologies in our life">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          UniFi Express
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">投稿日</span>
+      
+
+      <time title="作成日：2024-03-06 10:20:08 / 修正日：19:20:11" itemprop="dateCreated datePublished" datetime="2024-03-06T10:20:08+09:00">2024-03-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">カテゴリ</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/Hardware/" itemprop="url" rel="index"><span itemprop="name">Hardware</span></a>
+        </span>
+          、
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/Network/" itemprop="url" rel="index"><span itemprop="name">Network</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><img src="/new-technology/2024/03/06/unifi-express/Title.png" class="" width="1024" title="alt">
+<p class="onepoint">この記事で実現すること</p>
+
+<p>この記事ではUniFiネットワークの導入未経験の方を対象に、UniFiの新しい小型ゲートウェイUniFi Expressの具体的なセットアップおよび性能確認、機能紹介を目的としています。検証のため製品提供を受けていますのでこの記事はPR要素を含みます。</p>
+<span id="more"></span>
+
+<h2 id="経緯"><a href="#経緯" class="headerlink" title="経緯"></a>経緯</h2><p>普段からUbiquiti製品を使っている私は、いつもUbiquitiの皆さまには製品サポートなどで大変お世話になっています。一方、FacebookのUbiquiti日本公式コミュニティではユーザーの質問などに微力ながらサポートするように心がけています。いつものようにUbiquitiのご担当者さまから製品設定についてアドバイス頂いていた折、新製品「UniFi Express」の検証はいかがですか？と打診があり、快く引き受けさせていただきました。普段はアクセスポイント（AP）、スイッチは使っていますが、他社製セキュリティゲートウェイがお気に入りでなかなかUniFiのゲートウェイを使う機会がありませんでした。</p>
+<p>UniFiは簡単な操作で分かりやすさを目的としている一方で、パワーユーザーの高度な要求に応えていることもあり、一旦ネットワークの世界の深みに入るといきなり難易度が増す事になります。</p>
+<p>Expressは従来の機能豊富なUniFiゲートウェイから負荷が掛かるIPSなどの処理を省き、できるだけシンプルな形でUniFiのゲートウェイをUniFi初心者にも簡単に使えるようにしたゲートウェイです。</p>
+<p>3月となり、新生活が始まる時期でもあります。引っ越しされて新しい住環境にネットワークを敷設される場合は、小型の置き場所に困らないExpressは使い勝手が良いと思われます。</p>
+<h2 id="UniFi-Express"><a href="#UniFi-Express" class="headerlink" title="UniFi Express"></a>UniFi Express</h2><p>製品の説明ページは以下になります。</p>
+<img src="/new-technology/2024/03/06/unifi-express/0.png" class="" width="1024" title="alt">
+
+<blockquote>
+<p>UniFi Express<br> <a target="_blank" rel="noopener" href="https://www.ui.com/us/ja/cloud-gateways/wifi-integrated/express">https://www.ui.com/us/ja/cloud-gateways/wifi-integrated/express</a></p>
+</blockquote>
+<h2 id="この記事でのインターネットの構成"><a href="#この記事でのインターネットの構成" class="headerlink" title="この記事でのインターネットの構成"></a>この記事でのインターネットの構成</h2><p>私はauひかりホーム（10ギガ）を導入しており、貸与されたホームゲートウェイ（HGW）があります。その後ろにExpressを配置する形式となります。</p>
+<img src="/new-technology/2024/03/06/unifi-express/diaglam.drawio.png" class="" width="240" title="alt">
+
+<h2 id="セットアップ"><a href="#セットアップ" class="headerlink" title="セットアップ"></a>セットアップ</h2><p>Expressはスマホだけでセットアップ可能です。むしろPCのブラウザを使うよりスマホアプリで行う方が便利です。<br>UniFiの製品は説明書というものがありません。いや、あるにはあるのですが、セットアップ方法＝アプリを使う事となっています。</p>
+<img src="/new-technology/2024/03/06/unifi-express/1.png" class="" width="480" title="alt">
+
+<p>セットアップに関する説明書は注意書きを除けばこれが全て（That’s all!）です。</p>
+<p>製品と付属品です。本体、電源ケーブル、30cmのLANケーブルが付属します。</p>
+<img src="/new-technology/2024/03/06/unifi-express/2.png" class="" width="800" title="alt">
+
+<p>唯一の説明書通りに電源ケーブル、LANポートは2つあります（LAN、WAN）ので、WAN側（地球儀のマークがある方）に接続します。</p>
+<img src="/new-technology/2024/03/06/unifi-express/3.png" class="" width="800" title="alt">
+
+<p>私の環境ではこの壁に接続したLANの接続口の先にHGWがあります。</p>
+<p>さて、説明書のQRコードをiPhoneのカメラで読み込み、アプリをダウンロードしましょう。</p>
+<img src="/new-technology/2024/03/06/unifi-express/4.png" class="" width="360" title="alt">
+
+<p>※上記の写真のiPhoneはWi-Fiに接続されていますがこれは既存環境のWi-Fiに接続されているものです。</p>
+<img src="/new-technology/2024/03/06/unifi-express/5.png" class="" width="360" title="alt">
+
+<p>私の場合、既にUbiquitiのアカウントを保有しアプリにログインできていることや既存のUniFiコンソールに接続されている状態ですが、スマホがBluetooth経由でExpressを見つけると画面にセットアップ開始を促します。</p>
+<img src="/new-technology/2024/03/06/unifi-express/6.png" class="" width="360" title="alt">
+<p>既存環境があるので選択制となっていますが、「新しいシステムを設定」を選びます。Expressが最初の1台の場合、この画面は出てこないと思われます。</p>
+<p>また、今回の例では既に既存アカウントでアプリにログインしている状態ですが、全く新規の場合は、Ubiquitiのアカウントを新規作成します。</p>
+<img src="/new-technology/2024/03/06/unifi-express/7.png" class="" width="360" title="alt">
+
+<p>今回、唯一セットアップしたと思える場所がここだけです。SSIDは既に”UniFi”となっており（変更可能）、ここでWi-Fiパスワードを指定します。</p>
+<img src="/new-technology/2024/03/06/unifi-express/8.png" class="" width="360" title="alt">
+<p>ここからは眺めているだけです。</p>
+<img src="/new-technology/2024/03/06/unifi-express/9.png" class="" width="360" title="alt">
+<img src="/new-technology/2024/03/06/unifi-express/10.png" class="" width="360" title="alt">
+<img src="/new-technology/2024/03/06/unifi-express/11.png" class="" width="360" title="alt">
+
+<p>ここで「Wi-Fiネットワークに参加」ボタンをタップします。UniFiアプリはSSID「UniFi」と設定したパスワードをiOSの設定アプリに送り込み自動的にWi-Fi接続が完了します。</p>
+<p>これだけでもうiPhoneはインターネットにアクセスできるようになっています。顧客体験を重要視するUbiquitiらしい仕掛けです。</p>
+<p>さて、アプリの表記では、HGWのDHCPによって割り当てられた<code>192.168.0.2</code>というExpressのWAN側IPアドレス、および、LAN側のIPアドレス<code>192.168.1.1</code>が振られています。</p>
+<img src="/new-technology/2024/03/06/unifi-express/12.png" class="" width="360" title="alt">
+
+<p>Wi-Fiを見てみましょう、ExpressはWi-Fiチャンネルを含めて自動という言葉を多く見かけます。5GHzはデフォルトでは40MHzとなっていますが、80MHzに変更できるのでここで変更しておきましょう（最大160MHzにできます）。これ以外の自動は2つあって、Wi-Fiチャンネルおよび出力が自動となっています。日本のWi-Fiの電波出力の上限はざっくり説明すると200mW（23dBm）であり、その上限を超えないような設定となっています。クライアントの接続状況によって適切に電波の出力が調整され省エネにも有効です。</p>
+<img src="/new-technology/2024/03/06/unifi-express/13.png" class="" width="360" title="alt">
+
+<p>設定からコンソールを見てみましょう。</p>
+<img src="/new-technology/2024/03/06/unifi-express/14.png" class="" width="360" title="alt">
+<p>右下の歯車アイコンをタップ→コンソールをタップします。</p>
+<p>ExpressはUniFi OSというOSで動作しており、その中のNetworkApplication（UNA）というアプリが動作しています。基本的にはOSをアップデートすることで内包されているUNAも自動的にアップデートされます。</p>
+<img src="/new-technology/2024/03/06/unifi-express/15.png" class="" width="360" title="alt">
+
+<p>最新のUniFiOSにアップデートします。<br>このExpressは、UniFi OSはv3.2.5(Official)となりました。UNAはv8.0.28です。</p>
+<p>今回は初回操作なので手動でアップデートすることにしましたが、毎日夜中3時に自動でアップデートチェックが行われ、自動でアップデートされます。また、Release Channelについては、”Official”(通常）、”Release Candidate”（リリース候補）、あとはUIアカウントのページから”Early Access”(ベータ版）を有効にすれば、3つのバージョンを選択できます。</p>
+<blockquote>
+<p>UI Account<br> <a target="_blank" rel="noopener" href="https://account.ui.com/profile">https://account.ui.com/profile</a></p>
+</blockquote>
+<p>慣れるまではOfficialにしておくのがお勧めです。<br>Early Accessは事前確認する利用条件にある通り、守秘義務が存在します。許可なくその内容を第三者に開示してはいけません。安定しない場合も多く、広くユーザーに互換性を確認してもらうためのものです。</p>
+<p>さて、ここまでで初期セットアップは完了です。</p>
+<h2 id="速度チェック"><a href="#速度チェック" class="headerlink" title="速度チェック"></a>速度チェック</h2><p>気になるSpeedtestです。まずはiPhoneでWi-Fiのテストです。</p>
+<img src="/new-technology/2024/03/06/unifi-express/16.png" class="" width="360" title="alt">
+
+<p>MTUも何も調整することなく、全くノーマルな状態での実行ですが、十分過ぎる速度です。本体の発熱も少なく、ほんのり暖かい程度です。<br>5GHzで160MHzの帯域を使うのであれば、以下の速度が出ます。</p>
+<img src="/new-technology/2024/03/06/unifi-express/16-1.png" class="" width="360" title="alt">
+
+<p>有線とWi-Fiとは一般的に速度差があるので、ネットワーク機器はフローコントロールを有効にするのが普通で、遅いWi-Fiに合わせて有線側を”待たせる”仕組みが必要ですが、ここまで有線とWi-Fiとの速度差が無いとフローコントロールを有効にする必要がありません。<br>実際問題、フローコントロール無しでパケットのドロップが少ないのであればそれが一番効率よく通信でき、速度が出ます。<br>上記のSpeedtestはフローコントロール無しでの結果です。</p>
+<p>Zero wait DFSという機能があり、DFSを回避できる機能もあるようですが、私の環境でタイミング良くレーダーが発生するわけでもなく、この検証は行えませんでした。</p>
+<p>続いてLANケーブルでPCに繋いでみます。MinisforumのUM790Proは最近人気のミニPCですが、Expressはそれより1回り小さいです。</p>
+<img src="/new-technology/2024/03/06/unifi-express/17.png" class="" width="640" title="alt">
+
+<p>1Gbpsの帯域をしっかりと使えています。小型ながら性能は大したものです。</p>
+<h2 id="セットアップの補足"><a href="#セットアップの補足" class="headerlink" title="セットアップの補足"></a>セットアップの補足</h2><p>私の環境（auひかり）ではとても簡単にセットアップが完了しました。なお、Expressは現在、Officialリリースにおいてインターネットマルチフィード社が提供するtransix IPv4接続 (DS-Lite) への対応はされていますが、その他のIPv4 over IPv6の対応は現時点でサポート外となっています。</p>
+<p>日本国内の大半がIPv4 over IPv6というわけでもなく、CATVやマンションが提供するLANなども鑑みると、シンプルにExpressを活用できる場所はたくさんあります。</p>
+<p>Expressに関するガイドを以下に記載します。</p>
+<ul>
+<li><p>ネットワークが不安定、Lineなどでやり取りができなくなる。<br> 以下のガイドにMSS Clampingの設定で解決するという投稿がありますので確認ください。<br> Facebook Ubiquiti日本公式コミュニティ<br> <a target="_blank" rel="noopener" href="https://www.facebook.com/groups/uijapan/learning_content/?filter=167949146143924&amp;post=3507234616157550">https://www.facebook.com/groups/uijapan/learning_content/?filter=167949146143924&amp;post=3507234616157550</a><br> この設定についてはExpressにブラウザでログインし、WANのMSS Clampingの値をCustomの1414等に設定する必要があります。具体的な設定はISPにより異なります。</p>
+</li>
+<li><p>IPv6 IPoE transix IPv4 (DS-Lite)の設定手順｜Ubiquiti UniFi<br> <a target="_blank" rel="noopener" href="https://note.com/ui_japan/n/n3154ff641db5">https://note.com/ui_japan/n/n3154ff641db5</a></p>
+</li>
+</ul>
+<p>インターネットマルチフィードのDS-Liteは以下のISPが対象となります。</p>
+<ul>
+<li>株式会社インターネットイニシアティブ<br> IIJ IPv6 FiberAccess&#x2F;Fサービス タイプIPoE</li>
+<li>株式会社インターネットイニシアティブ<br> IIJmioひかり</li>
+<li>株式会社インターネットイニシアティブ<br> IIJmio FiberAccess&#x2F;NF</li>
+<li>株式会社インターリンク<br> ZOOT NATIVE</li>
+<li>エキサイト株式会社<br> excite MEC光</li>
+<li>エキサイト株式会社<br> BB.excite光Fit</li>
+<li>エキサイト株式会社<br> BB.exciteコネクトIPoE接続プラン</li>
+<li>スターティア株式会社<br> マネージドゲート2</li>
+<li>メディアウェイブシステムズ株式会社<br> Hybrid64 (ハイブリッド・ろくよん）</li>
+<li>メディアウェイブシステムズ株式会社<br> メディアひかり</li>
+</ul>
+<p>（引用： <a target="_blank" rel="noopener" href="https://www.mfeed.ad.jp/transix/customers/">https://www.mfeed.ad.jp/transix/customers/</a>）</p>
+<p>PPPoEやIPv4 over IPv6など、既存インフラの課題を頑張って解決する接続方式よりも、普通にIPv4、IPv6それぞれデュアルスタックで接続できるISPを選択するのが一番シンプルだと個人的には思います。PPPoEで、MTUからTCPヘッダおよびIPヘッダを除いたMSS1460バイトを1414バイトに詰め直すというのは、CPU負荷を高める原因となります。また、IPv4 over IPv6の接続では、IPアドレスとポートを他のユーザーと共有するため、固定IPアドレスが使用できず、割り当てられたポートしか開放できません。</p>
+<h2 id="auひかりのIPv6"><a href="#auひかりのIPv6" class="headerlink" title="auひかりのIPv6"></a>auひかりのIPv6</h2><h3 id="HGWの設定"><a href="#HGWの設定" class="headerlink" title="HGWの設定"></a>HGWの設定</h3><p>さて、いくらExpressが簡単と言っても、Ubiquiti製品を選びたいというユーザーはやはりIPv6は使いたいと思われているでしょう。グローバルの一般的なIPv6の割り当て方法がUniFiにはあります。auひかりのユーザーはとても簡単にIPv6に接続できます。ここは少しだけ設定が必要です。なお、ここでのHGWの設定はあくまで戸建向けの光回線での実例です。</p>
+<p>auひかりのHGWにブラウザでログインし<mark class="label primary">DHCPv6サーバ設定</mark>をタップします。</p>
+<img src="/new-technology/2024/03/06/unifi-express/18.png" class="" width="360" title="alt">
+
+<p>続いて、IPv6アドレスの割り当て方法を選択します。</p>
+<img src="/new-technology/2024/03/06/unifi-express/19.png" class="" width="360" title="alt">
+
+<p>Express向けにはいくつかの組み合わせが可能ですが、設定が3つあるうち設定2または3を選びます。<br>設定2ではIPv6アドレス＋ゲートウェイ＋DNSをDHCPv6で、PrefixをRAおよびDHCPv6で配布する方法です。DNS情報はDHCPv6で渡すのでRAオプションのDNSアドレス通知は使いません。設定3はRAでPrefixを配布しません。他のゲートウェイがある場合、一番無難なのは設定2ですがここでは詳細の説明は割愛します。</p>
+<p>最後に画面上部にある保存ボタンをタップして設定を保存してから、HGWはログアウトします。</p>
+<h3 id="Express-WANの設定"><a href="#Express-WANの設定" class="headerlink" title="Express WANの設定"></a>Express WANの設定</h3><p>スマホアプリの右下の鍵マークアイコンの設定から<mark class="label primary">インターネット</mark>→<mark class="label primary">Primary(WAN1)</mark>→<mark class="label primary">高度な設定</mark>→<mark class="label primary">手動</mark>→<mark class="label primary">IPv6接続先</mark>のトグルを有効に、<mark class="label primary">DHCPv6</mark>を選択し、<mark class="label primary">プレフィックス委任サイズ</mark>を<strong>64</strong>にします。</p>
+<img src="/new-technology/2024/03/06/unifi-express/20.png" class="" width="360" title="alt">
+
+<img src="/new-technology/2024/03/06/unifi-express/21.png" class="" width="360" title="alt">
+
+<p>あれ？と思った方、そうなんです。auひかりの委任は64ビット（サブネット1つだけ）なんです（ひかり電話を契約していても）。実はExpress以前に自分の使っている他社製ゲートウェイで確認したところ、&#x2F;64しか委任で貰えないようなんです。その製品のサポート担当者からは64ビットのような特殊な委任はサポート外と一刀両断されました。そりゃそうですよね。委任するというくらいなんだから最低でも60ビット（&#x2F;64を15個）など複数のサブネットがあるのが普通です。auひかりには「複数のIPv6サブネットの委任をできるようにお願いします」とは昨年秋に伝えましたが。。。</p>
+<p>いずれにしても今回はExpressの世界、本格的な複数サブネット（VLAN）はまた今度にするとして、まずはシンプルなネットワークを作ることに専念しましょう。</p>
+<p>ちなみに、HGWのLAN側IPv6アドレスは以下が割り当てられていました。</p>
+<img src="/new-technology/2024/03/06/unifi-express/21-1.png" class="" width="360" title="alt">
+
+<p><code>240f:xxxx:xxxx:1::/64</code>ではない別のPrefix1つが割り当てられることになります。</p>
+<h3 id="Express-LANの設定"><a href="#Express-LANの設定" class="headerlink" title="Express LANの設定"></a>Express LANの設定</h3><p>ExpressのLANのIPv6設定はブラウザ経由でなくてはなりません。<br>EXpressにブラウザでログインします。<br><code>https://unifi/</code> または<code>https://192.168.1.1</code></p>
+<img src="/new-technology/2024/03/06/unifi-express/22.png" class="" width="360" title="alt">
+
+<p>ログイン後、画面右上の歯車アイコンをタップし、LANの設定に入ります。<br>スマホのキャプチャでは視認性が悪いので、ここではPC画面で項目の説明をします。</p>
+<img src="/new-technology/2024/03/06/unifi-express/23.png" class="" width="640" title="alt">
+
+<p>IPv6のタブを選択し、<mark class="label primary">Prefix Delegation</mark>を選びます。<br>基本的には上記の画面キャプチャの通り、<mark class="label primary">WAN1</mark>インタフェースを選択します。</p>
+<mark class="label primary">Client Address Assignment</mark>は趣味の範疇ですが、Expressが決定するアドレスにするならDHCPv6を、クライアントに任せるならSLAACを選びます。最近はSLAACでもMACアドレスベースに生成するのではなく、一時アドレスとしてクライアント側がIPアドレスを都度生成するので、IPアドレスを追跡できなくなりセキュリティ上は良いと言われています。但し、自身の管理としてログからは端末を判別しづらくなります。
+
+<p>これで設定はOKです。</p>
+<h3 id="接続テスト"><a href="#接続テスト" class="headerlink" title="接続テスト"></a>接続テスト</h3><p>IPv6確認テストサイトで確認しましょう。</p>
+<img src="/new-technology/2024/03/06/unifi-express/24.png" class="" width="800" title="alt">
+
+<p>問題なくIPv6で到達できているようです。HGWのPrefixは<code>240f:xxx:xxx:1::/64</code>でしたが、今回のPrefixは<code>240f:xxx:xxx:2::/64</code>となっており、パブリックIPv6アドレスがExpressに委任され、Expressからクライアントに配布されています。</p>
+<blockquote>
+<p>test-ipv6<br> <a target="_blank" rel="noopener" href="https://test-ipv6.com/">https://test-ipv6.com</a></p>
+</blockquote>
+<p>これで一通りのセットアップは完了しました。UniFiスマホアプリは外出時に公衆回線からUbiquitiのクラウド経由でExpressに接続可能です。HGWのポート開放は必要ありません。後述するTeleportの技術を使っていてUbiquitiクラウドが接続管理、認証、通知などの役割を担ってくれます。これは無償のハイブリッドクラウド環境ですが、これこそがUbiqiutiが好まれる理由の1つです。</p>
+<h2 id="Expressの機能-設定"><a href="#Expressの機能-設定" class="headerlink" title="Expressの機能&#x2F;設定"></a>Expressの機能&#x2F;設定</h2><p>必要な機能をPickupして見ていきます（多機能でとても全ては紹介しきれません）。トラフィック識別や、広告ブロックのフィルタリング状況はネットワークの見える化としてUbiquiti製品の特徴です。説明不要でグラフィカルで分かりやすいでしょうから、ここでは説明を割愛します。</p>
+<p>管理画面ログイン後、左上のOSセッティングから<mark class="label primary">Console Settings</mark>に進みます。</p>
+<img src="/new-technology/2024/03/06/unifi-express/25.png" class="" width="800" title="alt">
+
+<p>詳細の確認やトラブル対応の対策にSSHは事前に有効にしておきましょう。UNAにもSSHの設定がありますが、そちらはExpressが管理する配下のデバイスが対象であり今回は設定しません。</p>
+<p>サポートとのやり取りで「サポートファイルが必要」となれば、画面最下部の<mark class="label primary">Download Support File</mark>から詳細ログをダウンロードし、UI Japanに送ることになります。</p>
+<h3 id="プッシュ通知"><a href="#プッシュ通知" class="headerlink" title="プッシュ通知"></a>プッシュ通知</h3><p>任意設定ですが、アプリの歯車アイコンから<mark class="label primary">プッシュ通知</mark>を有効にしておくといくつかの通知を受けられます。</p>
+<img src="/new-technology/2024/03/06/unifi-express/27.png" class="" width="360" title="alt">
+
+<p>障害などの重要なものはデフォルトで含まれています。それ以外にも、VPNの接続があったら通知する、レーダーを受信すると通知するなどいくつかの追加選択が可能です。</p>
+<h3 id="広告ブロック"><a href="#広告ブロック" class="headerlink" title="広告ブロック"></a>広告ブロック</h3><p>UNAの設定（歯車アイコン）から、<mark class="label primary">セキュリティ</mark>を選択します。<br>ここでは<mark class="label primary">広告ブロック</mark>にチェックしておきます。広告ブロックはExpressにおいては、1つのネットワークのみ選択可能です。IPv6を有効にしていても広告は綺麗に消えますのでかなり有効です。<br>DNSシールドはDNSによる名前解決時にDoH（DNS over HTTPS）を使い、GoogleまたはCloudflareで名前解決するものです。TLS&#x2F;SSLで暗号化されているので、プロバイダや途中の経路において、どこにアクセスしているのか判らないようにする目的があります。日本のISPはDDoS対策のために独自のDNSフィルタを実施していることや、その情報を売却するなどの行為が厳しいために日本においてはDNSシールドの重要性はあまり無いものと考えられます。<br>なお、このDNSフィルタを使っていても、広告ブロックは有効です。Expressは広告ドメインを対象にDNSで排除します。</p>
+<p>通常は、以下のクエリを返します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ nslookup www.googleadservices.com</span><br><span class="line">Server:		240f:xxxx:xxxx:2::1</span><br><span class="line">Address:	240f:xxxx:xxxx:2::1<span class="comment">#53</span></span><br><span class="line"></span><br><span class="line">Non-authoritative answer:</span><br><span class="line">Name:	www.googleadservices.com</span><br><span class="line">Address: 172.217.xxx.xxx</span><br></pre></td></tr></table></figure>
+
+<p>DNSフィルタを有効にすると。。。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ nslookup www.googleadservices.com.</span><br><span class="line">Server:		240f:xxxx:xxxx:2::1</span><br><span class="line">Address:	240f:xxxx:xxxx:2::1<span class="comment">#53</span></span><br><span class="line"></span><br><span class="line">Name:	www.googleadservices.com</span><br><span class="line">Address: 0.0.0.0</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>0.0.0.0を返すのでアクセスできなくなります。<br>控えめな広告であれば私は許容できるのですが、日本特有というか酷い内容の広告は徹底して除外したいものです。今のところExpressは綺麗に広告をカットしてくれています。</p>
+<h2 id="Teleport-VPN"><a href="#Teleport-VPN" class="headerlink" title="Teleport(VPN)"></a>Teleport(VPN)</h2><p>UniFiアプリの設定（歯車アイコン）からWiFimanをインストールし、起動すると右下にTeleportというアイコンがあります。それをタップします。</p>
+<img src="/new-technology/2024/03/06/unifi-express/28.png" class="" width="360" title="alt">
+
+<p>上記画面が表示されたら<strong>On</strong>をタップし接続開始するだけです。接続開始するまで10秒強掛かりますが、ポート開放無しにここまで自動でやってくれます。Teleport経由のSpeedtestは40Mbps弱で速いとは言えませんが、とてもお手軽です。</p>
+<h3 id="Local-DNS"><a href="#Local-DNS" class="headerlink" title="Local DNS"></a>Local DNS</h3><p>さて、上記で自宅にVPNで接続できるようになりました。自宅に接続するというのは、そもそもNASやサーバーがある事が前提です。自宅内はローカルのDNS、hosts、NetBIOSでの名前解決を、外からはパブリックのIPをダイナミックDNSで管理し運用されていらっしゃる方も多いでしょう。<br>例えば私はSynologyのDDNSを取り敢えず利用する事にはしていますが、実際に公衆回線からパブリックIPを通して接続はしていません。単純にローカルDNSで、xxxx.synology.meというSynologyから与えられたホスト名＋ドメイン名（FQDN）で自宅ではアクセスしています（Synologyのスマホアプリもその名前（FQDN）を使います）。これはTLS&#x2F;SSL証明書とも関係ありますし、あまり自由な名前にできません。アプリのプッシュ通知による2要素認証もありますし、証明書のエラーになっていては自宅に接続できても使い物になりません。<br>UniFiには、Local DNS機能が存在しており、固定IPと名前とをセットで登録できます。</p>
+<img src="/new-technology/2024/03/06/unifi-express/29.png" class="" width="1024" title="alt">
+
+<p>上記の右の赤枠のように、FQDNとプライベートの固定IPアドレスを設定しておきます。NASがDHCPでExpressにIPを要求すると、この固定IPアドレスとローカルDNSへの登録が自動で行われます。</p>
+<img src="/new-technology/2024/03/06/unifi-express/30.png" class="" width="360" title="alt">
+
+<p>自宅、外出時のFQDNを統一できることで2要素認証のプッシュ通知、パスワードマネージャーからのID&#x2F;パスワード入力も極めてスムーズです。<br>Express1台でここまで便利に使えるようになります。</p>
+<img src="/new-technology/2024/03/06/unifi-express/31.png" class="" width="1024" title="alt">
+<blockquote>
+<p>UI Japan Store Express<br><a target="_blank" rel="noopener" href="https://jp.store.ui.com/collections/unifi-network-unifi-os-consoles/products/ux">https://jp.store.ui.com/collections/unifi-network-unifi-os-consoles/products/ux</a></p>
+</blockquote>
+<p>価格は26,900円です。</p>
+<h2 id="補足説明"><a href="#補足説明" class="headerlink" title="補足説明"></a>補足説明</h2><p>私のHGWはBL3000HMという機種です。</p>
+<ul>
+<li><a href="/new-technology/2023/01/28/bl3000hm/" title="auひかり BL3000HM">auひかり BL3000HM</a></li>
+</ul>
+<blockquote>
+<p>Ubiquiti Japan ホームページ<br> <a target="_blank" rel="noopener" href="https://note.com/ui_japan">https://note.com/ui_japan</a></p>
+</blockquote>
+<blockquote>
+<p>Ubiquiti ヘルプセンター<br> <a target="_blank" rel="noopener" href="https://help.jp.ui.com/categories/6583256751383/">https://help.jp.ui.com/categories/6583256751383/</a></p>
+</blockquote>
+<blockquote>
+<p>Ubiquiti コミュニティ（日本）<br> <a target="_blank" rel="noopener" href="https://www.facebook.com/groups/uijapan">https://www.facebook.com/groups/uijapan</a></p>
+</blockquote>
+<blockquote>
+<p>Ubiquiti Community（米国中心）<br> <a target="_blank" rel="noopener" href="https://community.ui.com/">https://community.ui.com/</a></p>
+</blockquote>
+<p>（製品提供：Ubiquiti Japan株式会社）</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/new-technology/tags/UniFi/" rel="tag"><i class="fa fa-tag"></i> UniFi</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/new-technology/2024/03/04/EOS-Free-esxi3/" rel="prev" title="VMWare 無償版ESXiの提供終了について（最終報）">
+                  <i class="fa fa-angle-left"></i> VMWare 無償版ESXiの提供終了について（最終報）
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2020 – 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">阿部　吉伸(Yoshinobu ABE)</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div><script src="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.umd.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.min.css" rel="stylesheet">
+
+<script>
+if (Cookies.get('PRVCY202112') != 'Agree') {
+  const notice = new SimpleGDPR({
+    title: 'Accept Cookies & Privacy Policy?',
+    message: 'このWebサイトでは、訪問や活動に関するデータがクッキー等によって収集されます。閲覧を継続される場合、\
+    プライバシーポリシーをご覧いただき同意(Agree)をお願いします',
+    link: null,
+    icons: true,
+    theme: 'light',
+    animation: 'fade',
+    float: 'bottom-right',
+      callback: () => {
+      notice.close();
+      Cookies.set('PRVCY202112', 'Agree', { expires: 365, path: '/'});
+      notice.destroy();
+      // Google Analytics 4
+      gtag('consent', 'update', {
+      'analytics_storage': 'granted'
+      });
+      gtag('js', new Date());
+      gtag('config', 'G-JMY6NSC2KK', { 'anonymize_ip': true });
+      },
+  });
+}
+</script>
+<div class="disclaimer1">
+このサイトの記事は、特別な記載がない限り <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja">クリエイティブ・コモンズ BY-NC-SA ライセンス</a>で保護されています</div>
+
+
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/yoshi0808" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="/new-technology/lib/animejs/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="/new-technology/lib/medium-zoom/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/comments.js"></script><script src="/new-technology/js/utils.js"></script><script src="/new-technology/js/motion.js"></script><script src="/new-technology/js/schemes/muse.js"></script><script src="/new-technology/js/next-boot.js"></script>
+
+  <script src="/new-technology/lib/hexo-generator-searchdb/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"/new-technology/lib/mermaid/dist/mermaid.min.js","integrity":"sha256-mm3Re3y7xlvh+yCD+l/Zs1d+PU0AEad93MkWvljfm/s="}}</script>
+  <script src="/new-technology/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
