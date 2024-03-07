@@ -12,7 +12,7 @@ VMWareのKBで以下のタイトルの文書が2024/1/22に公開されていま
 > VMware End Of Availability of Perpetual Licensing and SaaS Services (96168) 
  <https://kb.vmware.com/s/article/96168?lang=en_US>
 
-第2報については、「{% post_link EOS-Free-esxi2 %}」を参照してください。
+最終報については、「{% post_link EOS-Free-esxi3 %}」を参照してください。
 
 <!-- more -->
 
