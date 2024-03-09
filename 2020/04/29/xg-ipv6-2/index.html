@@ -38,7 +38,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/04/29/xg-ipv6-2/rule2.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/04/29/xg-ipv6-2/rule3.png">
 <meta property="article:published_time" content="2020-04-29T11:13:18.000Z">
-<meta property="article:modified_time" content="2022-08-06T01:42:20.000Z">
+<meta property="article:modified_time" content="2024-03-09T00:11:25.909Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta property="article:tag" content="IPv6">
@@ -284,7 +284,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">編集日</span>
-      <time title="修正日：2022-08-06 10:42:20" itemprop="dateModified" datetime="2022-08-06T10:42:20+09:00">2022-08-06</time>
+      <time title="修正日：2024-03-09 09:11:25" itemprop="dateModified" datetime="2024-03-09T09:11:25+09:00">2024-03-09</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -353,12 +353,12 @@ Sophos Firewall配下のクライアントにIPv6アドレスを配布し、IPv6
 <li><mark class="label primary">スタティックIPのDUIDマッピング</mark>は後ほど入力します。一旦は空のままにしておいてください。</li>
 <li><mark class="label primary">DNSサーバー</mark>は、FirewallのLAN側IPv6アドレスを指定して下さい。内部ホストの名前解決のために必要です。</li>
 </ul>
-<h4 id="RAの設定"><a href="#RAの設定" class="headerlink" title="RAの設定"></a>RAの設定</h4><p> クライアントにDNSの通知を行うため、RAの設定を行います。DHCPで明示的にIPv6アドレスを指定しないクライアントはRAにより自身のIPv6アドレスを自動生成しつつ、ゲートウェイ、DNSの情報を受け取ります。RAでは、マネージドフラグ（Mフラグ）、アザーフラグ（Oフラグ）という言葉が登場します。</p>
+<h4 id="RAの設定"><a href="#RAの設定" class="headerlink" title="RAの設定"></a>RAの設定</h4><p> クライアントにデフォルトゲートウェイの通知を行うため、RAの設定を行います。DHCPで明示的にIPv6アドレスを指定しないクライアントはRAにより自身のIPv6アドレスを自動生成しつつ、ゲートウェイの情報を受け取ります。RAでは、マネージドフラグ（Mフラグ）、アザーフラグ（Oフラグ）という言葉が登場します。</p>
 <ul>
 <li><strong>Mフラグ</strong>　DHCPv6によって明示的に割り当てたステートフルなIPv6アドレス（ON）にする（※IPv4のDHCPと同じ）か、RAによってPrefixが通知され、クライアントは自分のMACアドレスから生成するステートレスIPアドレスにする（OFF）かを決めます</li>
-<li><strong>Oフラグ</strong>　IPアドレス以外の情報をDHCPv6サーバやRAから取得する（ON）、取得せず手動設定（OFF）</li>
+<li><strong>Oフラグ</strong>　IPアドレス以外の情報をDHCPv6サーバやRAから取得する（ON）、取得しない（OFF）</li>
 </ul>
-<p>IPv6において最近のトレンドとしては、DHCPv6を使わずRAのみとする（Mフラグ＝OFF、Oフラグ＝ON）が定番です。長いIPv6アドレスの管理は大変なので、この設定が一番楽な管理方法です。しかし、私のXGに関する記事ではSSL&#x2F;TLSインスペクションを最も重要視しています。MACアドレスをベースにクライアントでIPv6アドレスが生成されると、FirewallでCA証明書が登録されている端末か否かの判断が行えません。よってMフラグ＝ONとし、FirewallがIPv6アドレスを管理する、ステートフルなIPv6アドレスとする必要があります。OフラグがOFFの場合はDNSの情報は手動設定であり、ステートフルなプロトコルを受け付け出来ないという解釈です。</p>
+<p>IPv6において最近のトレンドとしては、IPv6の取得にDHCPv6を使わずRAから構成する（Mフラグ＝OFF、Oフラグ＝ON）が定番です。長いIPv6アドレスの管理は大変なので、この設定が一番楽な管理方法です。しかし、私のXGに関する記事ではSSL&#x2F;TLSインスペクションを最も重要視しています。クライアントでIPv6アドレスが生成されると、FirewallでCA証明書が登録されている端末か否かの判断が行えません。よってMフラグ＝ONとし、FirewallがIPv6アドレスを管理する、ステートフルなIPv6アドレスとする必要があります。OフラグがOFFの場合はDNSの情報は手動設定であり（但しサーバー、クライアント共にRDNSSに対応していれば可能）、DHCPv6は無用という解釈です。</p>
 <p>Sophos Firewallでの結論としては、<strong>ステートフルなDHCPv6で全てを管理するため、Mフラグ＝ON、Oフラグ＝ONとなります</strong>。やや管理者寄りの理論です<sup><b><a href="#note2">[2]</a></b></sup>。また、IPv6では上述した通り、一時IPv6アドレスというものが存在します（XG上では自律）。これを認めると、クライアントが再起動の度にIPアドレスが変わり、SSL&#x2F;TLSインスペクションを迂回されてしまいますからこの一時アドレスの設定もOFFにします。XGの左ペインメニューの<mark class="label primary">ネットワーク</mark>から、<mark class="label primary">IPv6ルーターアドバタイズ</mark>を選択し、”追加”ボタンをクリックし、以下の図のように登録していきます。</p>
 <img src="/new-technology/2020/04/29/xg-ipv6-2/ra1.png" class="" title="alt">
 
