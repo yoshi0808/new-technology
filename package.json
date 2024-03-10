@@ -12,7 +12,7 @@
     "version": "6.3.0"
   },
   "dependencies": {
-    "@next-theme/plugins": "^8.19.1",
+    "@next-theme/plugins": "^8.19.2",
     "hexo": "^6.3.0",
     "hexo-deployer-git": "^4.0.0",
     "hexo-filter-emoji": "^2.2.2",
@@ -26,17 +26,17 @@
     "hexo-renderer-ejs": "^2.0.0",
     "hexo-renderer-less": "^4.0.0",
     "hexo-renderer-marked": "^6.2.0",
-    "hexo-renderer-stylus": "^3.0.0",
+    "hexo-renderer-stylus": "^3.0.1",
     "hexo-server": "^3.0.0",
     "hexo-tag-qrcode": "^1.0.0",
-    "hexo-theme-next": "^8.19.1",
-    "hexo-util": "^3.1.0"
+    "hexo-theme-next": "^8.19.2",
+    "hexo-util": "^3.2.0"
   },
   "devDependencies": {
-    "textlint": "^13.4.1",
-    "textlint-rule-preset-ja-spacing": "^2.3.0",
-    "textlint-rule-preset-ja-technical-writing": "^9.0.0",
-    "textlint-rule-preset-jtf-style": "^2.3.13",
+    "textlint": "^14.0.3",
+    "textlint-rule-preset-ja-spacing": "^2.3.1",
+    "textlint-rule-preset-ja-technical-writing": "^10.0.1",
+    "textlint-rule-preset-jtf-style": "^2.3.14",
     "textlint-rule-spellcheck-tech-word": "^5.0.0"
   }
 }
