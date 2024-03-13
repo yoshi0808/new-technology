@@ -29,15 +29,18 @@ SSHでESXiに接続し、コマンドラインでパッチを適用します。W
 
 ESXiのパッチ情報は以下を参照してください。当該ページの左ペインメニューには最新パッチの情報が掲載されていますので、最新のパッチ情報を辿ってください。また、過去のパッチの情報も提供されています。
 
-> VMware ESXi 8.0 Update 2b （2023-03-01リリースノート発表）
+> VMware ESXi 8.0 Update 2b （2024-03-01リリースノート発表）
  <https://docs.vmware.com/en/VMware-vSphere/8.0/rn/vsphere-esxi-80u2b-release-notes/index.html>
 
 セキュリティパッチと不具合修正があります。久しぶりのパッチだけに不具合修正もかなり多い状況です。セキュリティ対応も含め適用をお勧めします。久しぶりということで忘れがちですが、アップデートで稀に動作しなくなるデバイスが発生するケースもありますので事前の仮想マシンのバックアップをお勧めします。
 
-参考までに、ESXi7.0は昨年の9月からまだパッチは出ていないようです。
+ESXi7.0は2024-03-05に提供されています。
 
-> VMware ESXi 7.0 Update 3o（2023-9-28発表）
- <https://docs.vmware.com/en/VMware-vSphere/7.0/rn/vsphere-esxi-70u3o-release-notes/index.html>
+> VMware ESXi 7.0 Update 3p（2024-3-5発表）
+ <https://docs.vmware.com/en/VMware-vSphere/7.0/rn/vsphere-esxi-70u3p-release-notes/index.html>
+
+ この記事ではESXi7.0のパッチ適用の詳細は説明していません。ESXi8.0のものを参考に最新パッチをダウンロードし適用してください。
+CVE-2024-22252, CVE-2024-22253, CVE-2024-22254, CVE-2024-22255への対応となります。
 
 ## 製品パッチの情報を入手する
 
