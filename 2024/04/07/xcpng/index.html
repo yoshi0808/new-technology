@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/icon-16x16.png">
+  <link rel="mask-icon" href="/new-technology/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/new-technology/css/main.css">
+
+
+
+<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+  <link rel="stylesheet" href="/new-technology/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
+
+    <meta name="description" content="この記事で実現すること ESXi代替としての仮想環境ソフトウェアのXCP-ng、またそのオペレーションをGUIで支援するXen Orchestraの概要およびセットアップを行います。Xen Orchestraは有償ソフトウェアですが、オープンシステムとして提供されており、コンパイル、ビルドすることで無償で利用できます。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="XCP-ngとXen Orchestra">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2024/04/07/xcpng/index.html">
+<meta property="og:site_name" content="New technologies in our life">
+<meta property="og:description" content="この記事で実現すること ESXi代替としての仮想環境ソフトウェアのXCP-ng、またそのオペレーションをGUIで支援するXen Orchestraの概要およびセットアップを行います。Xen Orchestraは有償ソフトウェアですが、オープンシステムとして提供されており、コンパイル、ビルドすることで無償で利用できます。">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/04/07/xcpng/title.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/04/07/xcpng/XCP-ng1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/04/07/xcpng/xoa.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/04/07/xcpng/xo-xcp.drawio.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/04/07/xcpng/xo1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/04/07/xcpng/xo2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/04/07/xcpng/xo3.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/04/07/xcpng/usb.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/04/07/xcpng/xcp1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/04/07/xcpng/xcp2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/04/07/xcpng/xcp3.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/04/07/xcpng/xcp4.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/04/07/xcpng/xcp5.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/04/07/xcpng/xcp6.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/04/07/xcpng/xcp7.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/04/07/xcpng/xcp8.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/04/07/xcpng/xcp9.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/04/07/xcpng/xcp10.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/04/07/xcpng/xcp11.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/04/07/xcpng/xcp12.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/04/07/xcpng/xcp13.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/04/07/xcpng/xcp14.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/04/07/xcpng/xcp15.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/04/07/xcpng/xcp16.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/04/07/xcpng/xcp17.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/04/07/xcpng/xo4.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/04/07/xcpng/xo5.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/04/07/xcpng/xo6.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/04/07/xcpng/xo7.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/04/07/xcpng/xo8.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/04/07/xcpng/xo9.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/04/07/xcpng/xo10.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/04/07/xcpng/xo11.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/04/07/xcpng/xo14.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/04/07/xcpng/xo12.png">
+<meta property="article:published_time" content="2024-04-06T15:00:00.000Z">
+<meta property="article:modified_time" content="2024-04-07T08:26:26.357Z">
+<meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
+<meta property="article:tag" content="XCP-ng">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2024/04/07/xcpng/title.png">
+
+
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2024/04/07/xcpng/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"ja","comments":true,"permalink":"https://yoshi0808.github.io/new-technology/2024/04/07/xcpng/","path":"2024/04/07/xcpng/","title":"XCP-ngとXen Orchestra"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>XCP-ngとXen Orchestra | New technologies in our life</title>
+  
+
+
+
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{&quot;token&quot;: &quot;0148b4d0442e42b483ddce684030bd2f&quot;}'></script>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JMY6NSC2KK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+  'ad_storage': 'denied',
+  'analytics_storage': 'denied'
+  });
+
+  dataLayer.push({
+  'event': 'default_consent'
+  });
+
+  if (Cookies.get('PRVCY202112') == 'Agree') {
+    gtag('consent', 'update', {
+    'analytics_storage': 'granted'
+    });
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'G-JMY6NSC2KK',{ 'anonymize_ip': true });
+</script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/new-technology/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/new-technology/atom.xml" title="New technologies in our life" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="ナビゲーションバーの切り替え" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/new-technology/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">New technologies in our life</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Device,Network,Code,etc...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="検索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/new-technology/" rel="section"><i class="fa fa-home fa-fw"></i>ホーム</a></li><li class="menu-item menu-item-about"><a href="/new-technology/about/" rel="section"><i class="fa fa-user fa-fw"></i>サイトポリシー</a></li><li class="menu-item menu-item-tags"><a href="/new-technology/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>タグ</a></li><li class="menu-item menu-item-categories"><a href="/new-technology/categories/" rel="section"><i class="fa fa-th fa-fw"></i>カテゴリ</a></li><li class="menu-item menu-item-archives"><a href="/new-technology/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>アーカイブ</a></li><li class="menu-item menu-item-privacy"><a href="/new-technology/privacypolicy/" rel="section"><i class="fa fa-check fa-fw"></i>プライバシーポリシー</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="検索…" spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          見出し
+        </li>
+        <li class="sidebar-nav-overview">
+          概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi%E4%BB%A3%E6%9B%BF%E3%81%A8%E3%81%97%E3%81%A6%E3%81%AEXCP-ng"><span class="nav-number">1.</span> <span class="nav-text">ESXi代替としてのXCP-ng</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8F%BE%E6%99%82%E7%82%B9%E3%81%A7%E6%9C%AA%E8%A7%A3%E6%B1%BA%E3%81%AE%E4%BA%8B%E9%A0%85"><span class="nav-number">2.</span> <span class="nav-text">現時点で未解決の事項</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Ryzen-CPU%E3%81%A8%E4%B8%BB%E8%A6%81Linux%E3%83%87%E3%82%A3%E3%82%B9%E3%83%88%E3%83%AA%E3%83%93%E3%83%A5%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3"><span class="nav-number">2.1.</span> <span class="nav-text">Ryzen CPUと主要Linuxディストリビューション</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#VM%E3%81%AEUEFI"><span class="nav-number">2.2.</span> <span class="nav-text">VMのUEFI</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XCP-ng%E3%81%AE%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E3%82%84%E9%96%A2%E9%80%A3%E3%83%97%E3%83%AD%E3%83%80%E3%82%AF%E3%83%88"><span class="nav-number">3.</span> <span class="nav-text">XCP-ngのモジュールや関連プロダクト</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Xen-Orchestra"><span class="nav-number">4.</span> <span class="nav-text">Xen Orchestra</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#XO%E3%81%AE%E6%93%8D%E4%BD%9C%E3%82%A4%E3%83%A1%E3%83%BC%E3%82%B8"><span class="nav-number">4.1.</span> <span class="nav-text">XOの操作イメージ</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XCP-ng%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><span class="nav-number">5.</span> <span class="nav-text">XCP-ngのインストール</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Xen-Orchestra%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><span class="nav-number">6.</span> <span class="nav-text">Xen Orchestraのインストール</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8B%E5%89%8D%E6%BA%96%E5%82%99"><span class="nav-number">6.1.</span> <span class="nav-text">事前準備</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#root%E3%81%AB%E3%81%AA%E3%82%8B"><span class="nav-number">6.1.1.</span> <span class="nav-text">rootになる</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#git%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><span class="nav-number">6.1.2.</span> <span class="nav-text">gitのインストール</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#XenOrchestraInstallerUpdater%E3%81%AE%E3%83%80%E3%82%A6%E3%83%B3%E3%83%AD%E3%83%BC%E3%83%89%E3%80%81XO%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><span class="nav-number">6.2.</span> <span class="nav-text">XenOrchestraInstallerUpdaterのダウンロード、XOのインストール</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#XO%E3%81%AE%E5%88%9D%E6%9C%9F%E8%A8%AD%E5%AE%9A"><span class="nav-number">6.3.</span> <span class="nav-text">XOの初期設定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%A6%E3%83%BC%E3%82%B6%E3%83%BC%E3%81%AE%E4%BD%9C%E6%88%90%E3%81%A8%E3%83%87%E3%83%95%E3%82%A9%E3%83%AB%E3%83%88%E3%82%A2%E3%82%AB%E3%82%A6%E3%83%B3%E3%83%88%E3%81%AE%E5%89%8A%E9%99%A4"><span class="nav-number">6.4.</span> <span class="nav-text">ユーザーの作成とデフォルトアカウントの削除</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Xen-Orchestra%E3%81%8B%E3%82%89XCP-ng%E3%81%B8%E3%81%AE%E6%8E%A5%E7%B6%9A"><span class="nav-number">7.</span> <span class="nav-text">Xen OrchestraからXCP-ngへの接続</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XCP-ng%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E3%81%AE%E7%A2%BA%E8%AA%8D"><span class="nav-number">8.</span> <span class="nav-text">XCP-ngネットワークの確認</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ISO%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E9%85%8D%E7%BD%AE%E3%81%99%E3%82%8BSR%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">9.</span> <span class="nav-text">ISOファイルを配置するSRの設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XO%E3%81%AE%E3%82%A2%E3%83%83%E3%83%97%E3%83%87%E3%83%BC%E3%83%88"><span class="nav-number">10.</span> <span class="nav-text">XOのアップデート</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XCP-ng%E3%81%AE%E7%8B%AC%E8%87%AA%E7%94%A8%E8%AA%9E"><span class="nav-number">11.</span> <span class="nav-text">XCP-ngの独自用語</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="阿部　吉伸(Yoshinobu ABE)"
+      src="/new-technology/images/yoshi.png">
+  <p class="site-author-name" itemprop="name">阿部　吉伸(Yoshinobu ABE)</p>
+  <div class="site-description" itemprop="description">IT</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/new-technology/archives/">
+          <span class="site-state-item-count">88</span>
+          <span class="site-state-item-name">ポスト</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/new-technology/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">カテゴリ</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/new-technology/tags/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">タグ</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yoshi0808" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yoshi0808" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yoshi0808.blog@gmail.com" title="E-Mail → mailto:yoshi0808.blog@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yoshi0808_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yoshi0808_" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="/new-technology/lib/@creativecommons/vocabulary/assets/license_badges/big/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="ja">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2024/04/07/xcpng/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/new-technology/images/yoshi.png">
+      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="New technologies in our life">
+      <meta itemprop="description" content="IT">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="XCP-ngとXen Orchestra | New technologies in our life">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          XCP-ngとXen Orchestra
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">投稿日</span>
+      
+
+      <time title="作成日：2024-04-07 00:00:00 / 修正日：17:26:26" itemprop="dateCreated datePublished" datetime="2024-04-07T00:00:00+09:00">2024-04-07</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><img src="/new-technology/2024/04/07/xcpng/title.png" class="" width="1024" title="alt">
+
+<p class="onepoint">この記事で実現すること</p>
+ESXi代替としての仮想環境ソフトウェアのXCP-ng、またそのオペレーションをGUIで支援するXen Orchestraの概要およびセットアップを行います。Xen Orchestraは有償ソフトウェアですが、オープンシステムとして提供されており、コンパイル、ビルドすることで無償で利用できます。
+
+<span id="more"></span>
+
+<h2 id="ESXi代替としてのXCP-ng"><a href="#ESXi代替としてのXCP-ng" class="headerlink" title="ESXi代替としてのXCP-ng"></a>ESXi代替としてのXCP-ng</h2><p>無償版ESXiが新規で利用できなくなった現在、個人向けの仮想化基盤としての代替ソフトウェアはProxmoxが有力です。インストールも簡単でVMの作成までに迷うことが殆どありません。私個人としては、ProxmoxはあくまでPCという領域の範囲で便利なソフトウェアという認識を持っています。モジュールの更新が<code>apt update</code>であったり、バックアップ一覧がファイル名を意識させるものであったり、どこかでLinuxの延長として見てしまうところにあるのでしょうか。<br>個人向けであっても、仮想環境は、運用面における信頼性、保守性は重要と考えるユーザーには、もう1つの選択としてXCP-ngが候補となります。</p>
+<p>XCP-ngはフランスのVatesという会社が提供しているプロダクトで、Citrix社のXenを引き継いで（技術提供を受けて）仮想環境の運用面と安定性を重要視して構築されているオープンシステムです。ESXiやProxmoxと比較し、CPU、メモリなどの基本的なスループットは劣ります。しかし、VM同士が互いに確実に分離され安定性が高いという意味においてはESXi同等です。KVMやProxmoxはメモリアクセスの観点では明確な分離が行われていないのでスループットは高くなります。</p>
+<p>つまりXCP-ng、Proxmoxはそれぞれの良さがあり、選択するのはユーザー次第です。1台のみでお手軽な仮想環境を作るのであれば、Proxmox一択となるでしょう。一方で2台以上、障害時のフェールオーバーを想定したり、バックアップなどの運用を重視するのであればXCP-ngのメリットが出てきます。XCP-ngは単純に仮想マシンが動作するリソースとなるサーバーであり、それを操作するのは別途XenOrchestraというGUIツールが必要でこれは別ノードのLinux上に構築します。従い3台構成が1つの目安となります。1台はProxmoxまたはベアメタルでXenOrchestraをセットアップし、別のノードにXCP-ngをセットアップすることになります。最低構成は2台です。もちろん最終的にXenOrchestraのLinux-VMをXCP-ngにインポートすれば1台でXCP-ng+XenOrchestraを運用可能です（障害発生時はその回復に手間が掛かりますが）。</p>
+<p>ホームユーザーとして本格的な連続稼働を前提として仮想環境を利用される場合に検討対象となります。</p>
+<img src="/new-technology/2024/04/07/xcpng/XCP-ng1.png" class="" width="360" title="alt">
+
+<h2 id="現時点で未解決の事項"><a href="#現時点で未解決の事項" class="headerlink" title="現時点で未解決の事項"></a>現時点で未解決の事項</h2><h3 id="Ryzen-CPUと主要Linuxディストリビューション"><a href="#Ryzen-CPUと主要Linuxディストリビューション" class="headerlink" title="Ryzen CPUと主要Linuxディストリビューション"></a>Ryzen CPUと主要Linuxディストリビューション</h3><p>なお、1か月ほどRyzen環境でXCP-ngを試行錯誤しましたが、主要なLinux distribution（Ubuntu,Debian,Mint）のiperf3のスループットが不十分な状況であり、解決できませんでした。インターネットに対する接続のspeedtestは4Gbps-5Gbps程度出ている状況でこちらは全く問題がなく、原因がよく分かっていません。<br>Ryzen5 5600G、Ryzen9 7900と2種類のPCを用意して最新のバージョン8.2.1および8.3ベータで検証しましたがいずれもiperf3では送信ネットワークスループットが2Gbps程度でした。RyzenでもCPUの種類によっては高速に動作するようですが、巷に事例としてあるのは限られたCPUとマザーボードとの組み合わせのみになるようです。例外的に、Rocky LinuxだけはRyzenでも全く問題はなくiperf3でワイヤレートの速度が出ます。Windowsに関しては検証できていません。</p>
+<p>結局、5年ほど前に稼働していたIntel(R) Core(TM) i7-8700 CPU @ 3.20GHz（6Core 12Thread）に加え、新規に12th Gen Intel(R) Core(TM) i5-12400（6Core 12Thread）を購入して主、従の関係を構築しました。なお、XCP-ngではintelのE Coreについて強くお勧めしないとのことです。こういった情報は原則、コミュニティから収集することになります。Vates社は有償サポートで収益を上げるモデルを選択していますが、コミュニティ上での無償サポートも積極的です。</p>
+<h3 id="VMのUEFI"><a href="#VMのUEFI" class="headerlink" title="VMのUEFI"></a>VMのUEFI</h3><p>XCP-ngの検証を始めた時にはVMのセキュアブートは設定できたと記憶しているのですが、現時点で設定可能であるものの、VMの情報からはUEFIに対応していないという表記が出ます。確かにUEFIモードで起動しているようなのですが、現時点でその影響は判明していません。特に運用上実害は出ていません。</p>
+<h2 id="XCP-ngのモジュールや関連プロダクト"><a href="#XCP-ngのモジュールや関連プロダクト" class="headerlink" title="XCP-ngのモジュールや関連プロダクト"></a>XCP-ngのモジュールや関連プロダクト</h2><p>最新モジュールは、8.2.1です。ベータバージョンは8.3となります。8.3ベータはAMD CPU向けに色々追加されているのとIPv6の強化などが含まれています。バージョンの更新は非常にゆっくりと進んでいくので8.3ベータはこれで1年以上検証中の状態が続いています。<br>今後構成されるプロダクトとしてXCP-ngを簡易なGUIで操作するXO Liteというプロダクトがありますが、これはまだ機能的に不足していて使えません。また、過去利用されていたものにXCP-ng Centerというプロダクトがありますが、これも非推奨となっています。</p>
+<blockquote>
+<p>XCP-ng ドキュメント<br> <a target="_blank" rel="noopener" href="https://docs.xcp-ng.org/">https://docs.xcp-ng.org</a></p>
+</blockquote>
+<blockquote>
+<p>XCP-ng フォーラム<br> <a target="_blank" rel="noopener" href="https://xcp-ng.org/forum/">https://xcp-ng.org/forum/</a></p>
+</blockquote>
+<h2 id="Xen-Orchestra"><a href="#Xen-Orchestra" class="headerlink" title="Xen Orchestra"></a>Xen Orchestra</h2><p>Xen Orchestra(XOA)もVates社が製造しています。</p>
+<img src="/new-technology/2024/04/07/xcpng/xoa.png" class="" width="1024" title="alt">
+
+<p>XOAはターンキーアプライアンスという名目ですぐに使えると表現されています（車のキーを回してすぐに動く）。これは有償のソフトウェアであり、CitrixのXen Server、XCP-ngを操作するためのGUIクライアントです。セットアップも簡単でXCP-ngに対してコマンド1つでモジュールを送り込み内部でビルドされます。</p>
+<p>これに対してホームユーザーが利用するものは同じXen Orchestraではありますが、ソースコードからコンパイルすることで無償で利用できます。これは一手間掛かりますが、公式に認められた方法であり、オープンソースという建て付けで無償で提供されているものです。<br>同じ、Xen Orchestraであっても、こちらはXOという表記がなされ、有償版と無償版はそれぞれ、XOA、XOと区別されます。</p>
+<p>ここではXOの導入について説明をしていきます。XOはVMの構築、操作、バックアップ、スナップショット、マイグレーション（ノード間のVMの移動）を行います。</p>
+<blockquote>
+<p>Xen Orchestra ドキュメント<br> <a target="_blank" rel="noopener" href="https://xen-orchestra.com/docs/">https://xen-orchestra.com/docs/</a></p>
+</blockquote>
+<p>なお、フォーラムはXCP-ngと共通です。</p>
+<h3 id="XOの操作イメージ"><a href="#XOの操作イメージ" class="headerlink" title="XOの操作イメージ"></a>XOの操作イメージ</h3><p>ここで説明する環境は以下の通りです。</p>
+<img src="/new-technology/2024/04/07/xcpng/xo-xcp.drawio.png" class="" width="640" title="alt">
+
+<p>VMに対する操作はWebで行います。</p>
+<img src="/new-technology/2024/04/07/xcpng/xo1.png" class="" width="1024" title="alt">
+
+<p>これはUbuntuを動作させているところです。ネットワーク、ディスクの基本構成があります。ここでSSH　as userを選ぶとローカル端末のSSHで接続できます。スナップショットやバックアップはすぐに取得できます。ESXi同様にXCP-ng向けのVMToolを導入することで、IPアドレスの把握やXOからvmのシャットダウン、リブートが可能になります（ESXiとは異なり手動でインストールが必要です）。Advancedタグでは、メモリやCPUの上限などを可変できます。<br>バックアップは自動的にスナップショットを取得します。ログも確認が容易ですし、Google等を経由したメール通知もできます。</p>
+<img src="/new-technology/2024/04/07/xcpng/xo2.png" class="" width="1024" title="alt">
+
+<p>私の環境では10GbbpsのネットワークでXCP-ngからXOがデータを吸い上げ、それをNASにNFSで書き込んでいます。106MiB&#x2F;sなのでお世辞にもバックアップが早いとは言えませんが、圧縮しながらなのでこんなところなのでしょうか。基本は日時指定でバックアップを取得することになるのであまり気になるような状況でもないでしょう。複数ノードを1つのジョブでバックアップできるため、ノードが多くあればその分利便性を感じられます。</p>
+<p>XCP-ngは2種類のスナップショットの取得方法があります。通常のスナップショットはメモリの情報を保存しません。バックアップなどはこの方式が選択されます。もう一方はメモリの情報を含んだスナップショットであり、こちらは少しの間VMの応答ができません。セットアップ作業の合間にチェックポイントとして状態を保存したい場合は、後者を選択すると良いでしょう。</p>
+<p>同じCPU（intel）同士であれば、ダウンタイムを最小にするライブマイグレーションが可能です。</p>
+<img src="/new-technology/2024/04/07/xcpng/xo3.png" class="" width="1024" title="alt">
+
+<p>表示が見切れているのでわかりづらいですが、ここでは同一のリソースプール（Pool1）における、1号機（XCP-ng1）から2号機（XCP-ng2）に対するマイグレーションを実施します。</p>
+<p>この処理は最初に1号機から2号機への、ノード間でそれぞれのストレージ同士でコピー、その後動作したメモリの差分をコピーして完了させます。</p>
+<p>Wi-Fiに接続されたMacbookから、XCP-ng上のUbuntuにiperf3を実行し、ほぼ同時にマイグレーションを開始してみます。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[  5] 138.01-139.00 sec   174 MBytes  1.47 Gbits/sec</span><br><span class="line">[  5] 139.00-140.00 sec   178 MBytes  1.49 Gbits/sec</span><br><span class="line">[  5] 140.00-141.00 sec   174 MBytes  1.47 Gbits/sec</span><br><span class="line">[  5] 141.00-142.01 sec   179 MBytes  1.50 Gbits/sec</span><br><span class="line">[  5] 142.01-143.01 sec  78.4 MBytes   657 Mbits/sec</span><br><span class="line">[  5] 143.01-144.00 sec  0.00 Bytes  0.00 bits/sec</span><br><span class="line">[  5] 144.00-145.01 sec  0.00 Bytes  0.00 bits/sec</span><br><span class="line">[  5] 145.01-146.01 sec  40.4 MBytes   339 Mbits/sec</span><br><span class="line">[  5] 146.01-147.00 sec  73.2 MBytes   617 Mbits/sec</span><br><span class="line">[  5] 147.00-148.00 sec  97.8 MBytes   818 Mbits/sec</span><br><span class="line">[  5] 148.00-149.01 sec   112 MBytes   938 Mbits/sec</span><br><span class="line">[  5] 149.01-150.00 sec   125 MBytes  1.05 Gbits/sec</span><br><span class="line">[  5] 150.00-151.00 sec   130 MBytes  1.09 Gbits/sec</span><br><span class="line">[  5] 151.00-152.00 sec   136 MBytes  1.14 Gbits/sec</span><br></pre></td></tr></table></figure>
+
+<p>2分20秒程度で1号機のノードとの応答が途絶え、それから約3秒後に2号機からiperf3の応答が再開されています。TCPセッションは切断されません。<br>もちろん共有Diskがあればもっとマイグレーションは高速になりますが、個人向けの安価なハードウェアでも、ここまで出来るのは素晴らしいことです。</p>
+<h2 id="XCP-ngのインストール"><a href="#XCP-ngのインストール" class="headerlink" title="XCP-ngのインストール"></a>XCP-ngのインストール</h2><p>8.2のインストールイメージは以下からダウンロードします。<br><a target="_blank" rel="noopener" href="https://xcp-ng.org/#easy-to-install">https://xcp-ng.org/#easy-to-install</a></p>
+<p>8.3ベータは以下からダウンロードします。<br><a target="_blank" rel="noopener" href="https://xcp-ng.org/blog/2024/02/15/xcp-ng-8-3-beta-2/">https://xcp-ng.org/blog/2024/02/15/xcp-ng-8-3-beta-2/</a></p>
+<p>導入にあたっては、ハードウェアサポートのページをまず参照されることをお勧めします。<br><a target="_blank" rel="noopener" href="https://docs.xcp-ng.org/installation/hardware/">https://docs.xcp-ng.org/installation/hardware/</a></p>
+<p>ここでは、問題が少ないと思われるintelマシンに対して8.2.1をインストールすることにします。ISOファイルをダウンロードし、RufusなどでUSBメモリにブートイメージを書き込みます。Rufus上でも特殊な設定は不要でデフォルト設定のまま書き込みます。XCP-ngはUEFIブートに対応していませんのでサーバーとなるPCのセキュアブートは無効にします。なお、稼働するVMはUEFIのセキュアブートにできます。</p>
+<img src="/new-technology/2024/04/07/xcpng/usb.png" class="" width="360" title="alt">
+
+<p>ハードウェアによって異なりますが、最初にGRUBの画面が表示され、以下の選択になります。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">*install</span><br><span class="line"> install with alterate kernel(kernel-alt)</span><br><span class="line"> no-serial</span><br><span class="line"> safe</span><br><span class="line"> multipath</span><br><span class="line"> shell</span><br></pre></td></tr></table></figure>
+
+<p>基本は最初の<code>instal</code>で構いませんが、セットアップ時にストレージ（NVMe）が見えずセットアップ出来ない場合は、Alt Kernel（代替カーネル）を選択してみてください。</p>
+<p>セットアップは以下の手順で進めます。</p>
+<img src="/new-technology/2024/04/07/xcpng/xcp1.png" class="" width="800" title="alt">
+<p>最初にキーボードを選択します。</p>
+<img src="/new-technology/2024/04/07/xcpng/xcp2.png" class="" width="800" title="alt">
+<p>セットアップの注意書き（お決まり）です。基本的にはこのままOKで進めていきます。</p>
+<img src="/new-technology/2024/04/07/xcpng/xcp3.png" class="" width="800" title="alt">
+<p>EULAに同意します。</p>
+<img src="/new-technology/2024/04/07/xcpng/xcp4.png" class="" width="800" title="alt">
+
+<p>ストレージを選択します（ここではキャプチャ確保のためにProxmox上で動作させているのでQEMUと表示されています）。<br>8.2のストレージはブロックベース（LVM）がデフォルトです。8.3以降はファイルベースになるようです。</p>
+<img src="/new-technology/2024/04/07/xcpng/xcp5.png" class="" width="800" title="alt">
+
+<p>インストール元としてlocal media(USB)を選択します。</p>
+<img src="/new-technology/2024/04/07/xcpng/xcp6.png" class="" width="800" title="alt">
+
+<p>インストールメディアの検証の確認です。どちらでも構いません。</p>
+<img src="/new-technology/2024/04/07/xcpng/xcp7.png" class="" width="800" title="alt">
+
+<p>メディア検証で問題なしというダイアログです。次に進みます。</p>
+<img src="/new-technology/2024/04/07/xcpng/xcp8.png" class="" width="800" title="alt">
+
+<p>パスワードを決めます。</p>
+<img src="/new-technology/2024/04/07/xcpng/xcp9.png" class="" width="800" title="alt">
+
+<p>IPアドレスを決めます。サーバーになるので、DHCPではなくStaticで固定IPアドレスにします。</p>
+<img src="/new-technology/2024/04/07/xcpng/xcp10.png" class="" width="800" title="alt">
+
+<p>XCP-ng自身のhostnameを決めます。hostnameの一部はランダムに命名されていますが、わかりやすいものに変えた方が良いです。DNSサーバーはご自身のDNS（ルーターまたはゲートウェイ）を指定します。</p>
+<img src="/new-technology/2024/04/07/xcpng/xcp11.png" class="" width="800" title="alt">
+
+<p>タイムゾーンは、Asia、Tokyoと指定します。</p>
+<img src="/new-technology/2024/04/07/xcpng/xcp12.png" class="" width="800" title="alt">
+<img src="/new-technology/2024/04/07/xcpng/xcp13.png" class="" width="800" title="alt">
+
+<p>NTPを指定します。<br>ご自身の環境から近く、安定しているNTPサーバーを指定します。上記は指定の一例です。</p>
+<img src="/new-technology/2024/04/07/xcpng/xcp14.png" class="" width="800" title="alt">
+
+<p>最後に<strong>Install XCP-ng</strong>のボタンを押下します。</p>
+<img src="/new-technology/2024/04/07/xcpng/xcp15.png" class="" width="800" title="alt">
+
+<p>セットアップの進捗を示すダイアログが表示されています。</p>
+<img src="/new-technology/2024/04/07/xcpng/xcp16.png" class="" width="800" title="alt">
+
+<p>サプリメントパックをインストールするか聞かれますので、ここはNoを答えます。<br>その後インストールが継続します。</p>
+<img src="/new-technology/2024/04/07/xcpng/xcp17.png" class="" width="800" title="alt">
+
+<p>セットアップ完了です。USBメディアを取り外し、OKボタンを押下します。</p>
+<p>セットアップ完了後再起動して以下の画面が表示されます。もしここまで上手く表示されない場合は、マザーボードのBIOSのアップデートをお勧めします。</p>
+
+
+<p>XCP-ngにはインストール時に設定したマネジメントネットワークが1つ必要です。このマネジメントネットワークに対してXen Orchestraから接続され制御されることになります。<br>この状態でXCP-ngにはSSHできる状態になっています。または、このメニューの<mark class="label primary">Local Command Shell</mark>を起動します。</p>
+<p>VMがUEFIブートを可能とするため、以下のコマンドを入力します。<br><code>$ secureboot-certs install</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[11:31 xcp-ng3 ~]<span class="comment"># secureboot-certs install</span></span><br><span class="line">Downloading https://www.microsoft.com/pkiops/certs/MicCorKEKCA2011_2011-06-24.crt...</span><br><span class="line">Downloading https://www.microsoft.com/pkiops/certs/MicCorUEFCA2011_2011-06-27.crt...</span><br><span class="line">Downloading https://www.microsoft.com/pkiops/certs/MicWinProPCA2011_2011-10-19.crt...</span><br><span class="line">Downloading https://uefi.org/sites/default/files/resources/dbxupdate_x64.bin...</span><br><span class="line">Successfully installed certificates to the XAPI DB <span class="keyword">for</span> pool.</span><br><span class="line">[11:37 xcp-ng3 ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p>ここまででXCP-ngのセットアップは一旦完了です。<br>NICを取り外して別のNICを取り付ける場合には、デバイス論理名（ex:eth0）とデバイスとの関連付けがずれてしまう場合があります。この際は以下のページを参考にしてください。</p>
+<p><a target="_blank" rel="noopener" href="https://docs.xcp-ng.org/networking/">https://docs.xcp-ng.org/networking/</a></p>
+<p>同じリソースプールでスムーズにVMの移動（ライブマイグレーション）を行う際は、同一の物理インタフェースが必要となります。もちろん同一製品である必要はありませんが、どのセグメントに属するか、速度タイプなどは同一にする必要があります。</p>
+<h2 id="Xen-Orchestraのインストール"><a href="#Xen-Orchestraのインストール" class="headerlink" title="Xen Orchestraのインストール"></a>Xen Orchestraのインストール</h2><p>XOのセットアップにはインターネットに接続されたLinuxが必要です。ここではXCP-ngとは別にUbuntu22を使ってXOのコンパイル、デプロイを実行していきます。<br>まず、ベアメタルかVMとしてのGUIのあるUbuntu Desktopを用意してください。私の例ではマネジメントネットワークに加え、バックアップのセグメント（SynologyへのNFS接続）とのvNICを2つ用意しています。1つのNICのみであってもXOのセットアップは可能です。<br>ここではProxmox上のUbuntuにXOをセットアップします。Proxmox上でのUbuntuのセットアップは「<a href="/new-technology/2024/02/19/Proxmox-new-vm/" title="ProxmoxVEのVM新規作成">ProxmoxVEのVM新規作成</a>」の記事を参考にしてください（XOをセットアップする想定でUbuntuを構築しています）。</p>
+<p>クライアントからXOにブラウザで接続して使うことになるので、最初にubuntuのIPアドレスは固定IPアドレスにします。設定ーネットワークから有線設定を変更しておきます。<br>また、XOのセットアップ開始にあたり、最初にLinuxそのもののスナップショットを取得しておくとよいでしょう。</p>
+<p>XOのセットアップには有志であるronivay氏が作成したXenOrchestraInstallerUpdaterを利用します。<br><a target="_blank" rel="noopener" href="https://github.com/ronivay/XenOrchestraInstallerUpdater">https://github.com/ronivay/XenOrchestraInstallerUpdater</a></p>
+<h3 id="事前準備"><a href="#事前準備" class="headerlink" title="事前準備"></a>事前準備</h3><p>Ubuntuの<mark class="label primary">ソフトウェアとアップデート</mark>を起動し、<mark class="label primary">Ubuntuのソフトウェア</mark>で<mark class="label primary">ソースコード</mark>のチェックをオンにします。</p>
+<img src="/new-technology/2024/04/07/xcpng/xo4.png" class="" width="640" title="alt">
+
+<p>また、<mark class="label primary">他のソフトウェア</mark>の一覧で<mark class="label primary">ソースコード</mark>と記載されているものにチェックをオンにします。</p>
+<img src="/new-technology/2024/04/07/xcpng/xo5.png" class="" width="640" title="alt">
+
+<p>これ以降はShellでの操作となるので、SSHでクライアントから接続してコマンドを投入していった方が簡単です（コマンドのコピペが出来るので）。SSH ServerがUbuntuに入っていない場合は、以下のコマンドでインストールします。<br><code>$ sudo apt install openssh-server</code></p>
+<p>Ubuntu DesktopでのShell操作、或いはクライアントからsshして以降の作業を行います（<code>ssh username@your-host</code>)。UbuntuのGUIで実施する場合は、<mark class="label primary">端末</mark>を起動します。</p>
+<h4 id="rootになる"><a href="#rootになる" class="headerlink" title="rootになる"></a>rootになる</h4><p><code>$ sudo -i</code></p>
+<h4 id="gitのインストール"><a href="#gitのインストール" class="headerlink" title="gitのインストール"></a>gitのインストール</h4><p>リポジトリを追加し、gitをインストールします。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ add-apt-repository ppa:git-core/ppa</span><br><span class="line">$ apt update; apt install git</span><br></pre></td></tr></table></figure>
+
+<h3 id="XenOrchestraInstallerUpdaterのダウンロード、XOのインストール"><a href="#XenOrchestraInstallerUpdaterのダウンロード、XOのインストール" class="headerlink" title="XenOrchestraInstallerUpdaterのダウンロード、XOのインストール"></a>XenOrchestraInstallerUpdaterのダウンロード、XOのインストール</h3><p>GitHubからスクリプトをダウンロードし、cfgファイルのサンプルのコピーを作成します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> https://github.com/ronivay/XenOrchestraInstallerUpdater.git</span><br><span class="line">$ <span class="built_in">cd</span> XenOrchestraInstallerUpdater</span><br><span class="line">~/XenOrchestraInstallerUpdater$ <span class="built_in">cp</span> sample.xo-install.cfg xo-install.cfg</span><br></pre></td></tr></table></figure>
+
+<p><code>xo-install.cfg</code>ファイルをviで開き、インストールパス、XOが待ち受けるPort、SSL自己証明書を指定します。<br>Ubuntuでは、インストールパスは<code>/usr/lib/</code>配下とします（お好みで変えてください）。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">~/XenOrchestraInstallerUpdater$ vi xo-install.cfg</span><br></pre></td></tr></table></figure>
+
+<p>3箇所の修正ポイントです。以下の行を見つけます。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Port number where xen-orchestra service is bound</span></span><br><span class="line"><span class="comment"># no effect to Xen Orchestra proxy</span></span><br><span class="line">PORT=<span class="string">&quot;80&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>PORT&#x3D;”80”をPORT&#x3D;”443”に変更します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Port number where xen-orchestra service is bound</span></span><br><span class="line"><span class="comment"># no effect to Xen Orchestra proxy</span></span><br><span class="line">PORT=<span class="string">&quot;443&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>次に以下の行を見つけます。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Base dir for installation and future updates</span></span><br><span class="line">INSTALLDIR=<span class="string">&quot;/opt/xo&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>INSTALLDIR&#x3D;”&#x2F;opt&#x2F;xo”をINSTALLDIR&#x3D;”&#x2F;usr&#x2F;lib&#x2F;xo”に変更します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Base dir for installation and future updates</span></span><br><span class="line">INSTALLDIR=<span class="string">&quot;/usr/lib/xo&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>次に以下の行を見つけます。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Location of pem certificate/key files. Installation will automatically configure HTTPS if these are defined. Remember to change PORT variable as well.</span></span><br><span class="line"><span class="comment">#PATH_TO_HTTPS_CERT=$INSTALLDIR/xo.crt</span></span><br><span class="line"><span class="comment">#PATH_TO_HTTPS_KEY=$INSTALLDIR/xo.key</span></span><br></pre></td></tr></table></figure>
+
+<p>証明書のパスについて2箇所コメントを外します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Location of pem certificate/key files. Installation will automatically configure HTTPS if these are defined. Remember to change PORT variable as well.</span></span><br><span class="line">PATH_TO_HTTPS_CERT=<span class="variable">$INSTALLDIR</span>/xo.crt</span><br><span class="line">PATH_TO_HTTPS_KEY=<span class="variable">$INSTALLDIR</span>/xo.key</span><br></pre></td></tr></table></figure>
+
+<p>以上でファイルの修正は終了ですので、保存しviを終了します。</p>
+<p>Open SSLをインストールします。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ apt-get install openssl</span><br></pre></td></tr></table></figure>
+
+<p>自己証明書を生成します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ openssl req -newkey rsa:4096 \</span><br><span class="line">            -x509 \</span><br><span class="line">            -sha256 \</span><br><span class="line">            -days 3650 \</span><br><span class="line">            -nodes \</span><br><span class="line">            -out /usr/lib/xo/xo.crt  \</span><br><span class="line">            -keyout /usr/lib/xo/xo.key</span><br></pre></td></tr></table></figure>
+
+<p>証明書の設定では以下、適当なものを入力しておきます。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Country Name (2 letter code) [AU]:JP</span><br><span class="line">State or Province Name (full name) [Some-State]:anywhere</span><br><span class="line">Locality Name (eg, city) []:anywhere</span><br><span class="line">Organization Name (eg, company) [Internet Widgits Pty Ltd]:yoshi</span><br><span class="line">Organizational Unit Name (eg, section) []:none</span><br><span class="line">Common Name (e.g. server FQDN or YOUR name) []:yoshi</span><br><span class="line">Email Address []:yoshi0808.blog@gmail</span><br></pre></td></tr></table></figure>
+
+<p>スクリプトを起動します。<code>$ ./xo-install.sh</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Xen Orchestra configuration will be stored to /root/.config/xo-server/config.toml, <span class="keyword">if</span> you don<span class="string">&#x27;t want it to be replaced with every update, set CONFIGUPDATE to false in xo-install.cfg</span></span><br><span class="line"><span class="string">Xen Orchestra Proxy configuration will be stored to /root/.config/xo-proxy/config.toml. Config won&#x27;</span>t be overwritten during update, ever</span><br><span class="line">-----------------------------------------</span><br><span class="line"></span><br><span class="line">1. Install</span><br><span class="line">2. Update</span><br><span class="line">3. Rollback</span><br><span class="line">4. Install proxy</span><br><span class="line">5. Update proxy</span><br><span class="line">6. Exit</span><br><span class="line"></span><br><span class="line">：</span><br></pre></td></tr></table></figure>
+
+<p>Installの1を入力してEnterを押下します。必要なモジュール、ソースコードをダウンロードし、コンパイルに入ります。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[info] xo-server and xo-web build takes quite a <span class="keyword">while</span>. Grab a cup of coffee and lay back</span><br></pre></td></tr></table></figure>
+
+<p>ということで、コーヒーを淹れに行き、3分程度待ちます😊。<br>以下の表示が出たところで、rebootします。事後にはLinixのアプリケーションファイアウォールであるufwを有効にして443のみを開けると良いでしょう（GUIもあります）。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[info] Starting xo-server...</span><br><span class="line"> waiting <span class="keyword">for</span> port to be open</span><br><span class="line"></span><br><span class="line">       WebUI started <span class="keyword">in</span> port 443. Make sure you have firewall rules <span class="keyword">in</span> place to allow access.</span><br><span class="line">       Default username: admin@admin.net password: admin</span><br><span class="line"></span><br><span class="line">[info] Installation successful. Enabling xo-server service to start on reboot</span><br><span class="line"></span><br><span class="line">root@xo:~/XenOrchestraInstallerUpdater<span class="comment"># reboot</span></span><br></pre></td></tr></table></figure>
+
+<p>再起動してインストールは終了です。<br>上記のコメントにある通り、XOの画面からはユーザー:<a href="mailto:&#97;&#100;&#x6d;&#105;&#110;&#64;&#x61;&#x64;&#109;&#x69;&#110;&#x2e;&#110;&#101;&#116;">&#97;&#100;&#x6d;&#105;&#110;&#64;&#x61;&#x64;&#109;&#x69;&#110;&#x2e;&#110;&#101;&#116;</a>、パスワード：adminでログインします。</p>
+<h3 id="XOの初期設定"><a href="#XOの初期設定" class="headerlink" title="XOの初期設定"></a>XOの初期設定</h3><p>Ubuntuが再起動してきたら、ブラウザから<code>https://XOのIPアドレス/</code>としてXOのGUIに接続します。<br>ブラウザからは自己証明書の警告が表示されますが気にせず継続します。<br>無事、以下のログイン画面が表示されればインストールは成功です。</p>
+<img src="/new-technology/2024/04/07/xcpng/xo6.png" class="" width="360" title="alt">
+
+<p>デフォルトアカウントでログインします。</p>
+<img src="/new-technology/2024/04/07/xcpng/xo7.png" class="" width="800" title="alt">
+
+<p>ソースコードから作成されたものというダイアログが表示されます。OKをクリックして閉じます。また、画面上部には、”This version is not bundled with any support nor updates. Use it with caution. Why do I see this message?”と表示されていますが、これもサポートなしと理解して使っているので閉じます。そして、左ペインにXOA❓マークがありますが、これをクリックすると、Update❓という表示がされています。この？アイコンは削除できません。XOAはここからアップデートなどの処理が行えますが、これはXOAではなく、XOなのでこのサブメニューは使いません。無視して大丈夫です。</p>
+<h3 id="ユーザーの作成とデフォルトアカウントの削除"><a href="#ユーザーの作成とデフォルトアカウントの削除" class="headerlink" title="ユーザーの作成とデフォルトアカウントの削除"></a>ユーザーの作成とデフォルトアカウントの削除</h3><p>左ペインの<mark class="label primary">Settings</mark>から、<mark class="label primary">Users</mark>を選択します。</p>
+<img src="/new-technology/2024/04/07/xcpng/xo8.png" class="" width="1024" title="alt">
+
+<p>上記画面から、ユーザー名、ユーザーの権限は”Admin”を選択、パスワードを入力して<mark class="label primary">Create</mark>ボタンをクリックして管理者を作成します。</p>
+<p>無事作成できたら、左ペインの一番下にあるサインアウトをクリックして、新しい管理者アカウントで入りなおします。<br>ログインできたら、デフォルトのアカウントを右側のゴミ箱アイコンをクリックして削除します。</p>
+<p>任意の作業ですが、最初に仮想環境でスナップショットを取得していれば、ここまでは1つの区切りです。もう一度Linux全体のスナップショットを撮り直す、またはスナップショットは削除して再作成するなどしても良いでしょう。</p>
+<h2 id="Xen-OrchestraからXCP-ngへの接続"><a href="#Xen-OrchestraからXCP-ngへの接続" class="headerlink" title="Xen OrchestraからXCP-ngへの接続"></a>Xen OrchestraからXCP-ngへの接続</h2><p>左ペインの<mark class="label primary">Settings</mark>から<mark class="label primary">Servers</mark>を選択します。</p>
+<img src="/new-technology/2024/04/07/xcpng/xo9.png" class="" width="1024" title="alt">
+
+<p>ここでXCP-ngのインストール時に決めたユーザー：root、パスワードをセットします。トグルスイッチの<mark class="label primary">Unauthorized Certificate</mark>は今回作成した自己証明書なのでオンにします。先頭のLabelは自分のメモとしてサーバー名を入力しておきます。</p>
+<mark class="label primary">Connect</mark>ボタンをクリックして接続します。うまくXCP-ngに接続できると<mark class="label primary">Status</mark>がEnableの表示となります。
+
+<p>さて、この状態になると、恐らく左ペインの<mark class="label primary">Home</mark>には、！マークが付いていると思われます。</p>
+<mark class="label primary"> Home</mark>→<mark class="label primary">Hosts</mark>と進むとサーバー名が表示されているのでこれをクリックします。
+
+<img src="/new-technology/2024/04/07/xcpng/xo10.png" class="" width="1024" title="alt">
+
+<mark class="label primary"> Patches</mark>の部分に恐らく数十の数字が書かれていることと思われます。これはXCP-ngでまだ適用されていないパッチの数を示します。<mark class="label primary"> Patches</mark>の項目をクリックして、<mark class="label primary"> Install all patches</mark>ボタンをクリックしてパッチを適用します。適用後は、リブートが必要となります。画面右上のリサイクルマークのようなアイコンが再起動となるのでそれをクリックしてパッチの適用を完了させます。
+
+<img src="/new-technology/2024/04/07/xcpng/xo11.png" class="" width="360" title="alt">
+
+<p>今はXCP-ngが1台だけですが、複数台を運用することになり、1つのリソースプールに存在する複数台のサーバーに順にパッチを適用する事になります。その際は、常にMasterとなっているサーバーを先にパッチ適用する必要があります。<br>XCP-ngの再起動が完了するとXOは自動的にXCP-ngに接続します。</p>
+<h2 id="XCP-ngネットワークの確認"><a href="#XCP-ngネットワークの確認" class="headerlink" title="XCP-ngネットワークの確認"></a>XCP-ngネットワークの確認</h2><p>XCP-ngへの接続が完了したら、まず<mark class="label primary">Home</mark>→<mark class="label primary">Hosts</mark>と進みます。XCP-ngサーバーをクリックし、CPU&#x2F;メモリ&#x2F;ネットワークを確認しましょう。</p>
+<img src="/new-technology/2024/04/07/xcpng/xo14.png" class="" width="1024" title="alt">
+
+<p>ここで、<mark class="label primary">PIFs</mark>というのはPhysical Interfaces（物理インタフェース）の意味です。Private Networkを作成すると、物理Portを指定してそこにVLANを定義するなどできます。そのようにすることで物理インタフェースにVLANタグの付いたパケットが流れます。XCP-ngがスイッチからタグ付きパケットを受け取り、VMにはPrivate Network（論理Port）経由でタグを剥がしてパケットをVMに渡します。またその逆でVMからタグなしのPrivate Network経由でパケットを受け取り、XCP-ngは該当の物理Portにタグ付きでパケットをスイッチに向けて送信します。</p>
+<h2 id="ISOファイルを配置するSRの設定"><a href="#ISOファイルを配置するSRの設定" class="headerlink" title="ISOファイルを配置するSRの設定"></a>ISOファイルを配置するSRの設定</h2><p>VMを作成する前に、OSのISOファイルをアップロードするフォルダが必要です。これはXCP-ng上に作成します。つまりサーバー毎に必要です。大量に利用するなら、NASなどのNFSを用意してそこにマウントできます。ここではとりあえずXCP-ngのローカル上にSR(Storage Repository)を作成します。</p>
+<p>以下のVates社のブログを元に構成します。<br><a target="_blank" rel="noopener" href="https://xcp-ng.org/blog/2022/05/05/how-to-create-a-local-iso-repository-in-xcp-ng/">https://xcp-ng.org/blog/2022/05/05/how-to-create-a-local-iso-repository-in-xcp-ng/</a></p>
+<p>ちょうどこの記事を見ていただくと、このブログの最後に記事を書いた方の情報があります。Olivier Lambert氏、Vates社の起業者でありCEOです。Forumにも頻繁にコメントされています。</p>
+<img src="/new-technology/2024/04/07/xcpng/xo12.png" class="" width="480" title="alt">
+<p>このようにStorage TypeはISO SRのlocalとして作成します。パスは&#x2F;media固定です。</p>
+<p>次に左ペインの<mark class="label primary">Import</mark>→<mark class="label primary">Disk</mark>をクリック、対象のXCP-ngサーバーの指定フォルダ（上記では”ISOs”）を選びます。その画面上でクライアント端末からISOファイルをDrag&amp;Dropできます。</p>
+<p>お疲れ様でした！これでXCP-ngとXEN Orchestraの基本設定は完了です。<br>次の記事で、<strong>New VM</strong>でVMの新規作成を行います。</p>
+<p>この段階でXOがインストールされたUbuntuのOS毎のスナップショットは削除し、一度UbuntuのOSそのもののバックアップを取得されることをお勧めします。</p>
+<h2 id="XOのアップデート"><a href="#XOのアップデート" class="headerlink" title="XOのアップデート"></a>XOのアップデート</h2><p>左ペインの<mark class="label primary">About</mark>からXOのモジュールについてアップデート状況が確認できます。現時点ではコンパイルしたばかりなので、”Your Xen Orchestra is up to date ”という表示になっているはずです。<br>しばらく時間が経過するとこの表記はGitのMasterブランチに対して遅れを取っていきます。”You are not up to date with master. xx commits behind “という表記に変わります。かなり細かい単位でコミットされていきますが、Communityの情報を見ながら適宜アップデートする事になります。この際もコンパイルが必要です。最初にXenOrchestraInstallerUpdaterでInstallを選びましたが、再びスクリプトからUpdateを実行することで常にXOは最新モジュールとなります。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ sudo -i</span><br><span class="line">$ <span class="built_in">cd</span> XenOrchestraInstallerUpdater</span><br><span class="line">$ git pull origin master</span><br><span class="line">$ ./xo-install.sh</span><br></pre></td></tr></table></figure>
+
+<p>ここで<code>2.Update</code>を選択して更新します。</p>
+<p> GitHub上のXenOrchestraInstallerUpdaterを見る限りは数ヶ月に1度くらいの頻度で更新されているので、毎回<code>git pull 〜</code>は必要ありません。これはGitHubのページなどで情報を確認しながら、適宜アップデートしてください。</p>
+<h2 id="XCP-ngの独自用語"><a href="#XCP-ngの独自用語" class="headerlink" title="XCP-ngの独自用語"></a>XCP-ngの独自用語</h2><p> XCP-ngのホストそのものはXenの世界でdom0と呼ばれます。色々コミュニティを見ていてdom0は何ぞや？と思われる方もいらっしゃると思うので補足です。dom0には色々なツールなどをインストールすることは避けた方が良さそうです(iperf3など)。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/new-technology/tags/XCP-ng/" rel="tag"><i class="fa fa-tag"></i> XCP-ng</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/new-technology/2024/03/06/unifi-express/" rel="prev" title="UniFi Express">
+                  <i class="fa fa-angle-left"></i> UniFi Express
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/new-technology/2024/04/07/xcpng-newvm/" rel="next" title="XCP-ngのVM新規作成">
+                  XCP-ngのVM新規作成 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2020 – 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">阿部　吉伸(Yoshinobu ABE)</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div><script src="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.umd.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.min.css" rel="stylesheet">
+
+<script>
+if (Cookies.get('PRVCY202112') != 'Agree') {
+  const notice = new SimpleGDPR({
+    title: 'Accept Cookies & Privacy Policy?',
+    message: 'このWebサイトでは、訪問や活動に関するデータがクッキー等によって収集されます。閲覧を継続される場合、\
+    プライバシーポリシーをご覧いただき同意(Agree)をお願いします',
+    link: null,
+    icons: true,
+    theme: 'light',
+    animation: 'fade',
+    float: 'bottom-right',
+      callback: () => {
+      notice.close();
+      Cookies.set('PRVCY202112', 'Agree', { expires: 365, path: '/'});
+      notice.destroy();
+      // Google Analytics 4
+      gtag('consent', 'update', {
+      'analytics_storage': 'granted'
+      });
+      gtag('js', new Date());
+      gtag('config', 'G-JMY6NSC2KK', { 'anonymize_ip': true });
+      },
+  });
+}
+</script>
+<div class="disclaimer1">
+このサイトの記事は、特別な記載がない限り <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja">クリエイティブ・コモンズ BY-NC-SA ライセンス</a>で保護されています</div>
+
+
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/yoshi0808" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="/new-technology/lib/animejs/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="/new-technology/lib/medium-zoom/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/comments.js"></script><script src="/new-technology/js/utils.js"></script><script src="/new-technology/js/motion.js"></script><script src="/new-technology/js/schemes/muse.js"></script><script src="/new-technology/js/next-boot.js"></script>
+
+  <script src="/new-technology/lib/hexo-generator-searchdb/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"/new-technology/lib/mermaid/dist/mermaid.min.js","integrity":"sha256-TtLOdUA8mstPoO6sGvHIGx2ceXrrX4KgIItO06XOn8A="}}</script>
+  <script src="/new-technology/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
