@@ -124,4 +124,8 @@ XCP-ng、Xen Orchestraへの理解を深めるには、ローレンスシステ�
 >Understanding How The XCP-NG & Xen Orchestra Open Source Virtualization Platform Works
  <https://www.youtube.com/watch?v=CEUFHudLO1g&t=447s>
 
-今後、Xen Orchestraのセットアップ手順などを整理していきたいと考えています。手持ちの予備マシンをProxmoxで使ってしまったのでこれから新しいマシンで検証を開始します。現在、Ryzen9 7900のPCとintel nic（X710-4Port）が届いたところです。来週くらいから8.3ベータのセットアップをし始めますので、XCP-ngが使えるのか検証して記事にしたいと考えてます（苦労しそうです。。。）。ESXiが使えず急いでいる方は比較的簡単で運用開始しやすいproxmoxのセットアップをお勧めします。
+XCP-ngに興味のある方はこちらの記事をご覧ください。
+
+- {% post_link xcpng %}
+- {% post_link xcpng-newvm %}
+
