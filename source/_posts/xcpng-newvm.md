@@ -102,7 +102,7 @@ Ubuntu22、Debian12のデスクトップ環境がある場合は、Video RAMの8
 ## モジュールのインストール
 
 Debian系と異なり、Rocky Linuxでモジュールをインストールする際は`sudo dnf -y install module-name`を使います。
-SSHとiperf3はまず基本セットでしょうか。SSHはFirewallの設定が必要になります。
+SSHとiperf3はまず基本セットでしょうか。SSHはConfigの設定でPort22を空けるなど多少追加設定が必要です。また、iperf3で待ち受けする場合は、Firewallの設定も必要になってきます。セキュアなOSだけに少し手間が掛かりますね。
 
 ``` bash
 $ sudo dnf -y install openssh-server
