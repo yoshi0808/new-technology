@@ -19,23 +19,26 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
 
-    <meta name="description" content="この記事で実現すること  無償版ESXi（VMware vSphere Hypervisor）について、VMwareのサイトから製品パッチに関する情報を入手し、ESXi上でパッチを適用します。この記事ではESXi8.0を対象にしていますが、コマンド自体はESXi7.0も変わりません。">
+    <meta name="description" content="この記事で実現すること  無償版ESXi（VMware vSphere Hypervisor）について、BroadcomおよびVMWareのサイトから製品パッチに関する情報を入手し、ESXi上でパッチを適用します。この記事ではESXi8.0を対象にしていますが、コマンド自体はESXi7.0も変わりません。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="VMware ESXiにパッチを適用する">
 <meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/index.html">
 <meta property="og:site_name" content="New technologies in our life">
-<meta property="og:description" content="この記事で実現すること  無償版ESXi（VMware vSphere Hypervisor）について、VMwareのサイトから製品パッチに関する情報を入手し、ESXi上でパッチを適用します。この記事ではESXi8.0を対象にしていますが、コマンド自体はESXi7.0も変わりません。">
+<meta property="og:description" content="この記事で実現すること  無償版ESXi（VMware vSphere Hypervisor）について、BroadcomおよびVMWareのサイトから製品パッチに関する情報を入手し、ESXi上でパッチを適用します。この記事ではESXi8.0を対象にしていますが、コマンド自体はESXi7.0も変わりません。">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/title.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/myvm3.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/myvm2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/broadcom1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/broadcom2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/broadcom3.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/broadcom4.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/broadcom5.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/esxi1.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/esxi2.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/esxi3.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/esxi6.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/rollback.png">
 <meta property="article:published_time" content="2020-06-14T13:19:20.000Z">
-<meta property="article:modified_time" content="2024-03-13T12:18:53.147Z">
+<meta property="article:modified_time" content="2024-05-08T11:45:03.818Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="ESXi">
 <meta name="twitter:card" content="summary">
@@ -177,7 +180,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%94%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A0%85"><span class="nav-number">1.</span> <span class="nav-text">ご注意事項</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%91%E3%83%83%E3%83%81%E9%81%A9%E7%94%A8%E3%81%AB%E5%BF%85%E8%A6%81%E3%81%AA%E3%82%82%E3%81%AE"><span class="nav-number">2.</span> <span class="nav-text">パッチ適用に必要なもの</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VMware%E3%81%AE%E3%83%91%E3%83%83%E3%83%81%E6%83%85%E5%A0%B1"><span class="nav-number">3.</span> <span class="nav-text">VMwareのパッチ情報</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A3%BD%E5%93%81%E3%83%91%E3%83%83%E3%83%81%E3%81%AE%E6%83%85%E5%A0%B1%E3%82%92%E5%85%A5%E6%89%8B%E3%81%99%E3%82%8B"><span class="nav-number">4.</span> <span class="nav-text">製品パッチの情報を入手する</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E5%89%8D%E6%BA%96%E5%82%99"><span class="nav-number">5.</span> <span class="nav-text">事前準備</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi%E3%81%AE%E3%83%91%E3%83%83%E3%83%81%E9%81%A9%E7%94%A8"><span class="nav-number">6.</span> <span class="nav-text">ESXiのパッチ適用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%91%E3%83%83%E3%83%81%E9%81%A9%E7%94%A8-ESXi8-0%E3%81%AE%E5%A0%B4%E5%90%88"><span class="nav-number">6.1.</span> <span class="nav-text">パッチ適用(ESXi8.0の場合)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%8F%BE%E5%9C%A8%E7%A8%BC%E5%83%8D%E4%B8%AD%E3%81%AE%E3%83%97%E3%83%AD%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E7%A2%BA%E8%AA%8D"><span class="nav-number">6.1.1.</span> <span class="nav-text">現在稼働中のプロファイルを確認</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E3%83%91%E3%83%83%E3%83%81%E9%81%A9%E7%94%A8"><span class="nav-number">6.1.2.</span> <span class="nav-text">パッチ適用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%8D%E8%B5%B7%E5%8B%95%E3%81%A8%E7%B5%90%E6%9E%9C%E7%A2%BA%E8%AA%8D"><span class="nav-number">6.1.3.</span> <span class="nav-text">再起動と結果確認</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E5%BE%8C%E4%BD%9C%E6%A5%AD"><span class="nav-number">7.</span> <span class="nav-text">事後作業</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%91%E3%83%83%E3%83%81%E3%81%AE%E3%83%AD%E3%83%BC%E3%83%AB%E3%83%90%E3%83%83%E3%82%AF"><span class="nav-number">8.</span> <span class="nav-text">パッチのロールバック</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A7%8B%E6%88%90%E6%83%85%E5%A0%B1%E3%81%AE%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%EF%BC%88%E4%BB%BB%E6%84%8F%EF%BC%89"><span class="nav-number">9.</span> <span class="nav-text">構成情報のバックアップ（任意）</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%94%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A0%85"><span class="nav-number">1.</span> <span class="nav-text">ご注意事項</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%91%E3%83%83%E3%83%81%E3%81%AE%E3%83%80%E3%82%A6%E3%83%B3%E3%83%AD%E3%83%BC%E3%83%89%E3%82%B5%E3%82%A4%E3%83%88%E3%81%AE%E5%A4%89%E6%9B%B4%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span class="nav-number">2.</span> <span class="nav-text">パッチのダウンロードサイトの変更について</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%91%E3%83%83%E3%83%81%E9%81%A9%E7%94%A8%E3%81%AB%E5%BF%85%E8%A6%81%E3%81%AA%E3%82%82%E3%81%AE"><span class="nav-number">3.</span> <span class="nav-text">パッチ適用に必要なもの</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VMware%E3%81%AE%E3%83%91%E3%83%83%E3%83%81%E6%83%85%E5%A0%B1"><span class="nav-number">4.</span> <span class="nav-text">VMwareのパッチ情報</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A3%BD%E5%93%81%E3%83%91%E3%83%83%E3%83%81%E3%81%AE%E6%83%85%E5%A0%B1%E3%82%92%E5%85%A5%E6%89%8B%E3%81%99%E3%82%8B%EF%BC%88Broadcom%E3%82%B5%E3%82%A4%E3%83%88%EF%BC%89"><span class="nav-number">5.</span> <span class="nav-text">製品パッチの情報を入手する（Broadcomサイト）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E5%89%8D%E6%BA%96%E5%82%99"><span class="nav-number">6.</span> <span class="nav-text">事前準備</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi%E3%81%AE%E3%83%91%E3%83%83%E3%83%81%E9%81%A9%E7%94%A8"><span class="nav-number">7.</span> <span class="nav-text">ESXiのパッチ適用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%91%E3%83%83%E3%83%81%E9%81%A9%E7%94%A8-ESXi8-0%E3%81%AE%E5%A0%B4%E5%90%88"><span class="nav-number">7.1.</span> <span class="nav-text">パッチ適用(ESXi8.0の場合)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%8F%BE%E5%9C%A8%E7%A8%BC%E5%83%8D%E4%B8%AD%E3%81%AE%E3%83%97%E3%83%AD%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E7%A2%BA%E8%AA%8D"><span class="nav-number">7.1.1.</span> <span class="nav-text">現在稼働中のプロファイルを確認</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E3%83%91%E3%83%83%E3%83%81%E9%81%A9%E7%94%A8"><span class="nav-number">7.1.2.</span> <span class="nav-text">パッチ適用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%8D%E8%B5%B7%E5%8B%95%E3%81%A8%E7%B5%90%E6%9E%9C%E7%A2%BA%E8%AA%8D"><span class="nav-number">7.1.3.</span> <span class="nav-text">再起動と結果確認</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E5%BE%8C%E4%BD%9C%E6%A5%AD"><span class="nav-number">8.</span> <span class="nav-text">事後作業</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%91%E3%83%83%E3%83%81%E3%81%AE%E3%83%AD%E3%83%BC%E3%83%AB%E3%83%90%E3%83%83%E3%82%AF"><span class="nav-number">9.</span> <span class="nav-text">パッチのロールバック</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A7%8B%E6%88%90%E6%83%85%E5%A0%B1%E3%81%AE%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%EF%BC%88%E4%BB%BB%E6%84%8F%EF%BC%89"><span class="nav-number">10.</span> <span class="nav-text">構成情報のバックアップ（任意）</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -280,7 +283,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">編集日</span>
-      <time title="修正日：2024-03-13 21:18:53" itemprop="dateModified" datetime="2024-03-13T21:18:53+09:00">2024-03-13</time>
+      <time title="修正日：2024-05-08 20:45:03" itemprop="dateModified" datetime="2024-05-08T20:45:03+09:00">2024-05-08</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -304,11 +307,37 @@
     <div class="post-body" itemprop="articleBody"><img src="/new-technology/2020/06/14/esxi67-patch/title.png" class="" title="alt">
 <p class="onepoint">この記事で実現すること</p>
 
-<p>無償版ESXi（VMware vSphere Hypervisor）について、VMwareのサイトから製品パッチに関する情報を入手し、ESXi上でパッチを適用します。この記事ではESXi8.0を対象にしていますが、コマンド自体はESXi7.0も変わりません。</p>
+<p>無償版ESXi（VMware vSphere Hypervisor）について、BroadcomおよびVMWareのサイトから製品パッチに関する情報を入手し、ESXi上でパッチを適用します。この記事ではESXi8.0を対象にしていますが、コマンド自体はESXi7.0も変わりません。</p>
 <span id="more"></span>
 
 <h2 id="ご注意事項"><a href="#ご注意事項" class="headerlink" title="ご注意事項"></a>ご注意事項</h2><p>2024-01-22に発表されたVMWareブログによりますと、スタンドアロン製品の提供を終了し、サブスクリプションモデルに変更されることとなりました。この無償版ESXiは今後提供停止となりますが、サポートは継続されるとの事です。<br>無償版ESXiの利用にあたっては、まずこちらの記事「<a href="/new-technology/2024/01/30/EOS-Free-esxi/" title="VMWare 無償版ESXiの提供終了について">VMWare 無償版ESXiの提供終了について</a>」を参照されることをお勧めします。</p>
 <p>2024-02-29には、ESXi8.0の最新パッチ（VMware-ESXi-8.0U2b-23305546-depot）が提供されています。無償版ESXiの安全な運用は当面継続できそうです。</p>
+<h2 id="パッチのダウンロードサイトの変更について"><a href="#パッチのダウンロードサイトの変更について" class="headerlink" title="パッチのダウンロードサイトの変更について"></a>パッチのダウンロードサイトの変更について</h2><p>無償ESXiのライセンスをお持ちの方、つまりVMware Support Accountをお持ちのユーザー宛に、2024-05-03未明にBroadcomから以下のタイトルのメールを受信されている事と思われます。<br><code>ACTION NEEDED: Migrate your VMware Support Account to Broadcom</code></p>
+<p>このメールの一部を引用します。</p>
+<blockquote>
+<p>all VMware support accounts (ie. VMware Customer Connect) are being migrated to Broadcom’s support accounts. Your VMware support account will stop working on May 6, 2024.</p>
+</blockquote>
+<blockquote>
+<p>Please take action now. You must activate your Broadcom support account and update your profile information before you can access the Broadcom Support Portal.</p>
+</blockquote>
+<blockquote>
+<p>To activate your Broadcom account, click your unique link here and follow the prompts that begin with resetting your password from the Broadcom screen. You can refer to this article for detailed instructions.</p>
+</blockquote>
+<blockquote>
+<p>Once you activate your account successfully, you will be directed to the Broadcom Support Portal, where it will show you as logged in, with your name appearing in the upper right of your screen. Please note that your active VMware product entitlements will not be made available in the Broadcom Support Portal until May 6, 2024.</p>
+</blockquote>
+<blockquote>
+<p>（要約）VMware support accountは、Broadcomのsupport accountに移行されています。VMware support accountは、2024-05-06に使えなくなります。</p>
+</blockquote>
+<blockquote>
+<p>Broadcomのsupport accountを有効化し、プロファイル情報を更新する必要があります。直ちに対応が必要です。</p>
+</blockquote>
+<blockquote>
+<p>アカウントの有効化に成功し、Broadcom support portalに入ると、ログイン中と表示され、画面の右上にあなたの名前が表示されます。ただし、アクティブな VMware 製品の資格は、2024-05-06まではBroadcom サポート ポータルで利用できません。</p>
+</blockquote>
+<p>斜め読みすると「すぐに対応しないとアカウントが閉鎖されてしまう」などと誤解を招くような文章にも受け取れますが、ちゃんと読むと旧VMwareのサイトは使えずBroadcomでサービスが継続されるが、Broadcomサイトでは移行の準備で5&#x2F;6まではVMWareの移行データが参照できないという事ですね。</p>
+<p>メール本文にはユーザー毎のユニークなLinkがあり、そちらをクリックすることでBroadcomサイトに飛び、そこで新しいパスワードを設定し移行を完了させます。</p>
+<p>Broadcomサイトでは現時点でもデータ移行が継続されているようです。</p>
 <h2 id="パッチ適用に必要なもの"><a href="#パッチ適用に必要なもの" class="headerlink" title="パッチ適用に必要なもの"></a>パッチ適用に必要なもの</h2><p>SSHでESXiに接続し、コマンドラインでパッチを適用します。Windows10ではOpenSSHがサポートされていますので、<mark class="label primary">オプション機能を追加する</mark>から<mark class="label primary">OpenSSHクライアント</mark>を有効にし、コマンドラインから<code>ssh  root@ESXiのIPアドレス</code>で接続可能です。Windows11ではOpenSSHがデフォルトで導入されています。</p>
 <h2 id="VMwareのパッチ情報"><a href="#VMwareのパッチ情報" class="headerlink" title="VMwareのパッチ情報"></a>VMwareのパッチ情報</h2><p>ESXiのパッチ情報は以下を参照してください。当該ページの左ペインメニューには最新パッチの情報が掲載されていますので、最新のパッチ情報を辿ってください。また、過去のパッチの情報も提供されています。</p>
 <blockquote>
@@ -320,16 +349,27 @@
 <p>VMware ESXi 7.0 Update 3p（2024-3-5発表）<br> <a target="_blank" rel="noopener" href="https://docs.vmware.com/en/VMware-vSphere/7.0/rn/vsphere-esxi-70u3p-release-notes/index.html">https://docs.vmware.com/en/VMware-vSphere/7.0/rn/vsphere-esxi-70u3p-release-notes/index.html</a></p>
 </blockquote>
 <p> この記事ではESXi7.0のパッチ適用の詳細は説明していません。ESXi8.0のものを参考に最新パッチをダウンロードし適用してください。<br>CVE-2024-22252, CVE-2024-22253, CVE-2024-22254, CVE-2024-22255への対応となります。</p>
-<h2 id="製品パッチの情報を入手する"><a href="#製品パッチの情報を入手する" class="headerlink" title="製品パッチの情報を入手する"></a>製品パッチの情報を入手する</h2><p>ESXiのセットアップ時にCustomer Connectへの登録を行い、個人向けvSphere Hypervisorのライセンス（無償）を入手されている事を前提にしています。</p>
-<p><strong>VMware Customer Connect</strong>にサインインし、<mark class="label primary">製品とアカウント</mark>メニューから、”製品パッチ”を選択します。</p>
+<h2 id="製品パッチの情報を入手する（Broadcomサイト）"><a href="#製品パッチの情報を入手する（Broadcomサイト）" class="headerlink" title="製品パッチの情報を入手する（Broadcomサイト）"></a>製品パッチの情報を入手する（Broadcomサイト）</h2><p><strong>Broadcomサポートポータル</strong>にサインインし、画面上部のメニューの<mark class="label primary">VMWare Cloud Fundation</mark>をクリックします。</p>
 <blockquote>
-<p>VMware Customer Connect<br> <a target="_blank" rel="noopener" href="https://customerconnect.vmware.com/jp">https://customerconnect.vmware.com/jp</a></p>
+<p>Broadcom Support Portal<br> <a target="_blank" rel="noopener" href="https://support.broadcom.com/">https://support.broadcom.com/</a></p>
 </blockquote>
-<img src="/new-technology/2020/06/14/esxi67-patch/myvm3.png" class="" title="alt">
+<img src="/new-technology/2020/06/14/esxi67-patch/broadcom1.png" class="" width="1024" title="alt">
 
-<p>さらに、”ESXi”とバージョンの”7.0”または”8.0”を選択し”検索”ボタンをクリックすると、パッチの一覧が表示されます。以下は8.0U2bの画面です。</p>
-<img src="/new-technology/2020/06/14/esxi67-patch/myvm2.png" class="" title="alt">
+<p>さらに、左ペインの<mark class="label primary">My Download</mark>をクリックし、さらに画面左にある絞り込みのテキストボックスに”vSphere”と入力します。</p>
+<img src="/new-technology/2020/06/14/esxi67-patch/broadcom2.png" class="" width="1024" title="alt">
 
+<p>VMWare vSphereを選択します。</p>
+<img src="/new-technology/2020/06/14/esxi67-patch/broadcom3.png" class="" width="1024" title="alt">
+
+<p>次に”Solutions”のタブをクリックします。</p>
+<img src="/new-technology/2020/06/14/esxi67-patch/broadcom4.png" class="" width="800" title="alt">
+
+<p>“VMware vSphere Standard”をクリックし、バージョンの”8”をクリックします。</p>
+<img src="/new-technology/2020/06/14/esxi67-patch/broadcom5.png" class="" width="800" title="alt">
+
+<p>最新のパッチである”VMware-ESXi-8.0U2b-23305546-depot”のリンクが現れるのでクリックしダウンロードします。</p>
+<p>本来であれば、vSphere Hypervisorが選択肢としてあるべきですが、今回はStandardを選んでいます。過去のESXi8でアップデートしたUpdate2bとコンペアしてみましたが、一致していました。</p>
+<p>今後、Broadcomの移行が進むに従い、もう少しわかりやすいものになるとは考えられます。</p>
 <p>基本的にESXiは修正パッチを適用する場合はこの7.0、8.0という2桁の数字は変わりません。この数字が変わる更新をアップグレードと呼びます。それ以外の小さい更新をパッチまたはアップデートと呼びます。但し、Update2,Update3というグループがあり、さらにUpdate3k、Update3lという具合にグループ単位でパッチ毎に末尾の英字が大きくなっていきます。VMwareのパッチは累積パッチとなるため、最新のパッチを適用するだけでよく、古いパッチの適用は必要ありません。ここでは最新版のパッチをダウンロードします。</p>
 <h2 id="事前準備"><a href="#事前準備" class="headerlink" title="事前準備"></a>事前準備</h2><p>ESXiにログインし、以下の作業を行います。</p>
 <ul>
