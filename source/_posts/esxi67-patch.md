@@ -10,7 +10,7 @@ date: 2020-06-14 22:19:20
 {% asset_img title.png alt %}
 <p class="onepoint">この記事で実現すること</p>
 
-無償版ESXi（VMware vSphere Hypervisor）について、VMwareのサイトから製品パッチに関する情報を入手し、ESXi上でパッチを適用します。この記事ではESXi8.0を対象にしていますが、コマンド自体はESXi7.0も変わりません。
+無償版ESXi（VMware vSphere Hypervisor）について、BroadcomおよびVMWareのサイトから製品パッチに関する情報を入手し、ESXi上でパッチを適用します。この記事ではESXi8.0を対象にしていますが、コマンド自体はESXi7.0も変わりません。
 
 <!-- more -->
 
@@ -20,6 +20,33 @@ date: 2020-06-14 22:19:20
 無償版ESXiの利用にあたっては、まずこちらの記事「{% post_link EOS-Free-esxi %}」を参照されることをお勧めします。
 
 2024-02-29には、ESXi8.0の最新パッチ（VMware-ESXi-8.0U2b-23305546-depot）が提供されています。無償版ESXiの安全な運用は当面継続できそうです。
+
+## パッチのダウンロードサイトの変更について
+
+無償ESXiのライセンスをお持ちの方、つまりVMware Support Accountをお持ちのユーザー宛に、2024-05-03未明にBroadcomから以下のタイトルのメールを受信されている事と思われます。
+`ACTION NEEDED: Migrate your VMware Support Account to Broadcom`
+
+このメールの一部を引用します。
+
+>all VMware support accounts (ie. VMware Customer Connect) are being migrated to Broadcom's support accounts. Your VMware support account will stop working on May 6, 2024.
+
+>Please take action now. You must activate your Broadcom support account and update your profile information before you can access the Broadcom Support Portal.
+
+>To activate your Broadcom account, click your unique link here and follow the prompts that begin with resetting your password from the Broadcom screen. You can refer to this article for detailed instructions.
+
+>Once you activate your account successfully, you will be directed to the Broadcom Support Portal, where it will show you as logged in, with your name appearing in the upper right of your screen. Please note that your active VMware product entitlements will not be made available in the Broadcom Support Portal until May 6, 2024.
+
+>（要約）VMware support accountは、Broadcomのsupport accountに移行されています。VMware support accountは、2024-05-06に使えなくなります。
+
+>Broadcomのsupport accountを有効化し、プロファイル情報を更新する必要があります。直ちに対応が必要です。
+
+>アカウントの有効化に成功し、Broadcom support portalに入ると、ログイン中と表示され、画面の右上にあなたの名前が表示されます。ただし、アクティブな VMware 製品の資格は、2024-05-06まではBroadcom サポート ポータルで利用できません。
+
+斜め読みすると「すぐに対応しないとアカウントが閉鎖されてしまう」などと誤解を招くような文章にも受け取れますが、ちゃんと読むと旧VMwareのサイトは使えずBroadcomでサービスが継続されるが、Broadcomサイトでは移行の準備で5/6まではVMWareの移行データが参照できないという事ですね。
+
+メール本文にはユーザー毎のユニークなLinkがあり、そちらをクリックすることでBroadcomサイトに飛び、そこで新しいパスワードを設定し移行を完了させます。
+
+Broadcomサイトでは現時点でもデータ移行が継続されているようです。
 
 ## パッチ適用に必要なもの
 
@@ -42,19 +69,35 @@ ESXi7.0は2024-03-05に提供されています。
  この記事ではESXi7.0のパッチ適用の詳細は説明していません。ESXi8.0のものを参考に最新パッチをダウンロードし適用してください。
 CVE-2024-22252, CVE-2024-22253, CVE-2024-22254, CVE-2024-22255への対応となります。
 
-## 製品パッチの情報を入手する
+## 製品パッチの情報を入手する（Broadcomサイト）
 
-ESXiのセットアップ時にCustomer Connectへの登録を行い、個人向けvSphere Hypervisorのライセンス（無償）を入手されている事を前提にしています。
+**Broadcomサポートポータル**にサインインし、画面上部のメニューの{% label primary@VMWare Cloud Fundation %}をクリックします。
+> Broadcom Support Portal
+ <https://support.broadcom.com/>
 
-**VMware Customer Connect**にサインインし、{% label primary@製品とアカウント %}メニューから、"製品パッチ"を選択します。
-> VMware Customer Connect
- <https://customerconnect.vmware.com/jp>
+{% asset_img broadcom1.png 1024 alt %}
 
-{% asset_img myvm3.png alt %}
+さらに、左ペインの{% label primary@My Download %}をクリックし、さらに画面左にある絞り込みのテキストボックスに"vSphere"と入力します。
 
-さらに、"ESXi"とバージョンの"7.0"または"8.0"を選択し"検索"ボタンをクリックすると、パッチの一覧が表示されます。以下は8.0U2bの画面です。
+{% asset_img broadcom2.png 1024 alt %}
 
-{% asset_img myvm2.png alt %}
+VMWare vSphereを選択します。
+
+{% asset_img broadcom3.png 1024 alt %}
+
+次に”Solutions”のタブをクリックします。
+
+{% asset_img broadcom4.png 800 alt %}
+
+"VMware vSphere Standard"をクリックし、バージョンの”8”をクリックします。
+
+{% asset_img broadcom5.png 800 alt %}
+
+最新のパッチである"VMware-ESXi-8.0U2b-23305546-depot"のリンクが現れるのでクリックしダウンロードします。
+
+本来であれば、vSphere Hypervisorが選択肢としてあるべきですが、今回はStandardを選んでいます。過去のESXi8でアップデートしたUpdate2bとコンペアしてみましたが、一致していました。
+
+今後、Broadcomの移行が進むに従い、もう少しわかりやすいものになるとは考えられます。
 
 基本的にESXiは修正パッチを適用する場合はこの7.0、8.0という2桁の数字は変わりません。この数字が変わる更新をアップグレードと呼びます。それ以外の小さい更新をパッチまたはアップデートと呼びます。但し、Update2,Update3というグループがあり、さらにUpdate3k、Update3lという具合にグループ単位でパッチ毎に末尾の英字が大きくなっていきます。VMwareのパッチは累積パッチとなるため、最新のパッチを適用するだけでよく、古いパッチの適用は必要ありません。ここでは最新版のパッチをダウンロードします。
 
