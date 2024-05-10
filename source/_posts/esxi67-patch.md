@@ -40,7 +40,7 @@ date: 2020-06-14 22:19:20
 
 >Broadcomのsupport accountを有効化し、プロファイル情報を更新する必要があります。直ちに対応が必要です。
 
->アカウントの有効化に成功し、Broadcom support portalに入ると、ログイン中と表示され、画面の右上にあなたの名前が表示されます。ただし、アクティブな VMware 製品の資格は、2024-05-06まではBroadcom サポート ポータルで利用できません。
+>アカウントの有効化に成功し、Broadcom support portalに入ると、ログイン中と表示され、画面の右上にあなたの名前が表示されます。ただし、アクティブな VMware 製品の資格は、2024-05-06まではBroadcom support portalで利用できません。
 
 斜め読みすると「すぐに対応しないとアカウントが閉鎖されてしまう」などと誤解を招くような文章にも受け取れますが、ちゃんと読むと旧VMwareのサイトは使えずBroadcomでサービスが継続されるが、Broadcomサイトでは移行の準備で5/6まではVMWareの移行データが参照できないという事ですね。
 
@@ -71,7 +71,7 @@ CVE-2024-22252, CVE-2024-22253, CVE-2024-22254, CVE-2024-22255への対応とな
 
 ## 製品パッチの情報を入手する（Broadcomサイト）
 
-**Broadcomサポートポータル**にサインインし、画面上部のメニューの{% label primary@VMWare Cloud Fundation %}をクリックします。
+**Broadcomサポートポータル**にサインインし、画面上部のメニューの{% label primary@VMWare Cloud Foundation %}をクリックします。
 > Broadcom Support Portal
  <https://support.broadcom.com/>
 

@@ -58,7 +58,7 @@ favicon:
   #android_manifest: /manifest.json
 
 # Custom Logo (Warning: Do not support scheme Mist)
-custom_logo: #/uploads/custom-logo.jpg
+custom_logo: #/uploads/custom-logo.png
 
 # Creative Commons 4.0 International License.
 # See: https://creativecommons.org/about/cclicenses/
@@ -73,7 +73,7 @@ creative_commons:
   # CC licenses are available in 39 languages, you can find the specific and correct abbreviation you need on https://creativecommons.org
   language: deed.ja
 
-  # Open graph settings
+# Open graph settings
 # See: https://hexo.io/docs/helpers#open-graph
 open_graph:
   enable: true
@@ -119,16 +119,18 @@ menu_settings:
 # ---------------------------------------------------------------
 
 sidebar:
-  # Sidebar Position.
+  # Sidebar position. Available values: left | right
   position: left
-  #position: right
 
-  # Manual define the sidebar width. If commented, will be default for:
-  # Muse | Mist: 320
-  # Pisces | Gemini: 240
-  #width: 300
+  # Sidebar width.
+  # Applicable to Muse | Mist and mobile of Pisces | Gemini.
+  width_expanded: 320
+  # Applicable to desktop of Pisces | Gemini.
+  width_dual_column: 240
 
-  # Sidebar Display (only for Muse | Mist), available values:
+  # Sidebar display.
+  # Applicable to Muse | Mist and mobile of Pisces | Gemini.
+  # Available values:
   #  - post    expand on posts automatically. Default.
   #  - always  expand for all pages automatically.
   #  - hide    expand only when click on the sidebar toggle icon.
@@ -211,7 +213,6 @@ footer:
   icon:
     # Icon name in Font Awesome. See: https://fontawesome.com/icons
     name: fa fa-heart
-    #name: fa fa-ghost
     # If you want to animate the icon, set it to true.
     animated: false
     # Change the color of icon, using Hex Code.

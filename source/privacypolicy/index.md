@@ -54,7 +54,7 @@ comments: false
 私は作成したコンテンツを米国GitHub社が提供するGitHub Pagesにアップロードし、ユーザーがコンテンツを閲覧できるようになっています。GitHub社は法的義務を遵守するためならびにウェブサイトおよびサービスのセキュリティおよび統合性を保持するために、GitHub Pagesウェブサイトへの訪問者から、IPアドレスを含むユーザ個人情報を収集することがあります。
 
 「GitHubのプライバシーについての声明」に関しては以下の通りです。
-<https://help.github.com/ja/github/site-policy/github-privacy-statement>
+<https://docs.github.com/ja/site-policy/privacy-policies/github-general-privacy-statement>
 
 なお、GitHubのサービス全般の運営上、プライバシーポリシーにおいてはCookieを利用する事となっていますが、このホスティングサービスである、GitHub Pagesにおいては、GitHubがCookieを埋め込むような事はしないと明言されています。
 <https://github.community/t/cookies-if-i-use-github-pages-am-i-using-cookies/130249>

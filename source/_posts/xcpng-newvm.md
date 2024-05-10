@@ -69,7 +69,7 @@ Ubuntuライクに管理者は作成せず、新規ユーザーを管理者と�
 
 さて、Rocky Linuxが起動してきた後に、インストールで利用したマウントを解除し、代わりにVMToolsのSRをマウントします。
 
-{% asset_img rocky2.png 800 alt %}
+{% asset_img rocky3.png 800 alt %}
 
 プルダウンから"guest-tools.iso"を選択します。その後Rocky Linuxを再起動します。
 
