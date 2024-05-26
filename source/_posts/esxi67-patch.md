@@ -19,7 +19,7 @@ date: 2020-06-14 22:19:20
 2024-01-22に発表されたVMWareブログによりますと、スタンドアロン製品の提供を終了し、サブスクリプションモデルに変更されることとなりました。この無償版ESXiは今後提供停止となりますが、サポートは継続されるとの事です。
 無償版ESXiの利用にあたっては、まずこちらの記事「{% post_link EOS-Free-esxi %}」を参照されることをお勧めします。
 
-2024-02-29には、ESXi8.0の最新パッチ（VMware-ESXi-8.0U2b-23305546-depot）が提供されています。無償版ESXiの安全な運用は当面継続できそうです。
+2024-02-29には、ESXi8.0のパッチ（VMware-ESXi-8.0U2b-23305546-depot）が提供されています。無償版ESXiの安全な運用は当面継続できそうです。
 
 ## パッチのダウンロードサイトの変更について
 
@@ -50,7 +50,7 @@ Broadcomサイトでは現時点でもデータ移行が継続されているよ
 
 ## パッチ適用に必要なもの
 
-SSHでESXiに接続し、コマンドラインでパッチを適用します。Windows10ではOpenSSHがサポートされていますので、{% label primary@オプション機能を追加する %}から{% label primary@OpenSSHクライアント %}を有効にし、コマンドラインから`ssh  root@ESXiのIPアドレス`で接続可能です。Windows11ではOpenSSHがデフォルトで導入されています。
+SSHでESXiに接続し、コマンドラインでパッチを適用します。Windows11ではOpenSSHがデフォルトで導入されています。Windows10ではOpenSSHがサポートされていますので、{% label primary@オプション機能を追加する %}から{% label primary@OpenSSHクライアント %}を有効にし、コマンドラインから`ssh  root@ESXiのIPアドレス`で接続可能です。
 
 ## VMwareのパッチ情報
 
@@ -61,13 +61,21 @@ ESXiのパッチ情報は以下を参照してください。当該ページの�
 
 セキュリティパッチと不具合修正があります。久しぶりのパッチだけに不具合修正もかなり多い状況です。セキュリティ対応も含め適用をお勧めします。久しぶりということで忘れがちですが、アップデートで稀に動作しなくなるデバイスが発生するケースもありますので事前の仮想マシンのバックアップをお勧めします。
 
-ESXi7.0は2024-03-05に提供されています。
+なお、ESXi8.0の最新パッチという意味では2024年5月21日に発表されているESXi 8.0 Update 2cが最新のパッチとなりますが、こちらはリリースノートにあるように、vSANを使用したESXiを対象としているとのことです。従い、個人向けESXiという意味ではその前のUpdate 2bのパッチを当てる方が大多数と思われるので、ここの手順としてはUpdate 2dの内容をそのまま掲載しておきます。Update 2cのダウンロードは以下のリリースノートを参照してください。
 
-> VMware ESXi 7.0 Update 3p（2024-3-5発表）
- <https://docs.vmware.com/en/VMware-vSphere/7.0/rn/vsphere-esxi-70u3p-release-notes/index.html>
+> VMware ESXi 8.0 Update 2c （2024-05-21リリースノート発表）
+ <https://docs.vmware.com/en/VMware-vSphere/8.0/rn/vsphere-esxi-80u2c-release-notes/index.html#Release-Note-Section-18622>
+
+
+ESXi7.0は2024-05-21に提供されています。
+
+> VMware ESXi 7.0 Update 3q（2024-5-21発表）
+ <https://docs.vmware.com/en/VMware-vSphere/7.0/rn/vsphere-esxi-70u3q-release-notes/index.html>
 
  この記事ではESXi7.0のパッチ適用の詳細は説明していません。ESXi8.0のものを参考に最新パッチをダウンロードし適用してください。
-CVE-2024-22252, CVE-2024-22253, CVE-2024-22254, CVE-2024-22255への対応となります。
+
+> Broadcom サポートページ　VMware-ESXi-7.0U3q-23794027-depot
+ <https://support.broadcom.com/web/ecx/solutiondetails?patchId=5330>
 
 ## 製品パッチの情報を入手する（Broadcomサイト）
 
