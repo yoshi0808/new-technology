@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/icon-16x16.png">
+  <link rel="mask-icon" href="/new-technology/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/new-technology/css/main.css">
+
+
+
+<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="/new-technology/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
+
+    <meta name="description" content="この記事で実現すること  UniFiの新しい小型ゲートウェイUniFi Cloud Gatewayのセットアップ、機能紹介、ホームユーザー向けのセキュリティ対策の実例を掲載しています。検証のため製品提供を受けていますのでこの記事はPR要素を含みます。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ubiquiti Cloud Gateway Ultra">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2024/06/25/UCG-Ultra/index.html">
+<meta property="og:site_name" content="New technologies in our life">
+<meta property="og:description" content="この記事で実現すること  UniFiの新しい小型ゲートウェイUniFi Cloud Gatewayのセットアップ、機能紹介、ホームユーザー向けのセキュリティ対策の実例を掲載しています。検証のため製品提供を受けていますのでこの記事はPR要素を含みます。">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/06/25/UCG-Ultra/0.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/06/25/UCG-Ultra/diaglam.drawio.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/06/25/UCG-Ultra/2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/06/25/UCG-Ultra/3.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/06/25/UCG-Ultra/6.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/06/25/UCG-Ultra/8.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/06/25/UCG-Ultra/9.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/06/25/UCG-Ultra/10.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/06/25/UCG-Ultra/11.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/06/25/UCG-Ultra/11-1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/06/25/UCG-Ultra/12.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/06/25/UCG-Ultra/13.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/06/25/UCG-Ultra/14.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/06/25/UCG-Ultra/wan.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/06/25/UCG-Ultra/geo.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/06/25/UCG-Ultra/traffic.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/06/25/UCG-Ultra/wireshark.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/06/25/UCG-Ultra/ips.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/06/25/UCG-Ultra/lan.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/06/25/UCG-Ultra/speedtest2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/06/25/UCG-Ultra/fw1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/06/25/UCG-Ultra/fw2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/06/25/UCG-Ultra/fw3.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/06/25/UCG-Ultra/fw4.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/06/25/UCG-Ultra/guest.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/06/25/UCG-Ultra/port.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/06/25/UCG-Ultra/chromebook.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/06/25/UCG-Ultra/routing.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/06/25/UCG-Ultra/interop1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/06/25/UCG-Ultra/interop2.png">
+<meta property="article:published_time" content="2024-06-25T01:20:00.000Z">
+<meta property="article:modified_time" content="2024-06-25T10:33:07.910Z">
+<meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
+<meta property="article:tag" content="UniFi">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2024/06/25/UCG-Ultra/0.png">
+
+
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2024/06/25/UCG-Ultra/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"ja","comments":true,"permalink":"https://yoshi0808.github.io/new-technology/2024/06/25/UCG-Ultra/","path":"2024/06/25/UCG-Ultra/","title":"Ubiquiti Cloud Gateway Ultra"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Ubiquiti Cloud Gateway Ultra | New technologies in our life</title>
+  
+
+
+
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{&quot;token&quot;: &quot;0148b4d0442e42b483ddce684030bd2f&quot;}'></script>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JMY6NSC2KK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+  'ad_storage': 'denied',
+  'analytics_storage': 'denied'
+  });
+
+  dataLayer.push({
+  'event': 'default_consent'
+  });
+
+  if (Cookies.get('PRVCY202112') == 'Agree') {
+    gtag('consent', 'update', {
+    'analytics_storage': 'granted'
+    });
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'G-JMY6NSC2KK',{ 'anonymize_ip': true });
+</script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/new-technology/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/new-technology/atom.xml" title="New technologies in our life" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="ナビゲーションバーの切り替え" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/new-technology/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">New technologies in our life</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Device,Network,Code,etc...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="検索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/new-technology/" rel="section"><i class="fa fa-home fa-fw"></i>ホーム</a></li><li class="menu-item menu-item-about"><a href="/new-technology/about/" rel="section"><i class="fa fa-user fa-fw"></i>サイトポリシー</a></li><li class="menu-item menu-item-tags"><a href="/new-technology/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>タグ</a></li><li class="menu-item menu-item-categories"><a href="/new-technology/categories/" rel="section"><i class="fa fa-th fa-fw"></i>カテゴリ</a></li><li class="menu-item menu-item-archives"><a href="/new-technology/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>アーカイブ</a></li><li class="menu-item menu-item-privacy"><a href="/new-technology/privacypolicy/" rel="section"><i class="fa fa-check fa-fw"></i>プライバシーポリシー</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="検索…" spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          見出し
+        </li>
+        <li class="sidebar-nav-overview">
+          概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Cloud-Gateway-Ultra%EF%BC%88UCG-Ultra%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">Cloud Gateway Ultra（UCG-Ultra）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UCG-Ultra%E3%81%AE%E8%AA%AC%E6%98%8E%E3%83%9A%E3%83%BC%E3%82%B8"><span class="nav-number">2.</span> <span class="nav-text">UCG-Ultraの説明ページ</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%93%E3%81%AE%E8%A8%98%E4%BA%8B%E3%81%A7%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%BF%E3%83%BC%E3%83%8D%E3%83%83%E3%83%88%E3%81%AE%E6%A7%8B%E6%88%90"><span class="nav-number">3.</span> <span class="nav-text">この記事でのインターネットの構成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%82%BB%E3%83%83%E3%83%88%E3%82%A2%E3%83%83%E3%83%97"><span class="nav-number">4.</span> <span class="nav-text">セットアップ</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9D%E6%9C%9F%E7%94%BB%E9%9D%A2"><span class="nav-number">5.</span> <span class="nav-text">初期画面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%82%BB%E3%83%83%E3%83%88%E3%82%A2%E3%83%83%E3%83%97%E3%81%AE%E8%A3%9C%E8%B6%B3"><span class="nav-number">6.</span> <span class="nav-text">セットアップの補足</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UCG-Ultra%E3%82%92%E5%88%A9%E7%94%A8%E3%81%97%E3%81%9F%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3%E5%BC%B7%E5%8C%96"><span class="nav-number">7.</span> <span class="nav-text">UCG-Ultraを利用したセキュリティ強化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#UCG-Ultra%E3%81%AF%E4%BD%95%E3%81%8C%E5%87%BA%E6%9D%A5%E3%82%8B%E3%81%AE%E3%81%8B"><span class="nav-number">7.1.</span> <span class="nav-text">UCG-Ultraは何が出来るのか</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E3%82%B8%E3%82%AA%E3%83%AD%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3"><span class="nav-number">7.1.1.</span> <span class="nav-text">ジオロケーション</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E3%83%88%E3%83%A9%E3%83%95%E3%82%A3%E3%83%83%E3%82%AF%E8%AD%98%E5%88%A5"><span class="nav-number">7.1.2.</span> <span class="nav-text">トラフィック識別</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#IDS-IPS"><span class="nav-number">7.1.3.</span> <span class="nav-text">IDS&#x2F;IPS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BA%83%E5%91%8A%E3%83%96%E3%83%AD%E3%83%83%E3%82%AF"><span class="nav-number">7.1.4.</span> <span class="nav-text">広告ブロック</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UCG-Ultra%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%9F%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3%E3%81%AE%E9%AB%98%E3%82%81%E6%96%B9"><span class="nav-number">7.2.</span> <span class="nav-text">UCG-Ultraを使ったセキュリティの高め方</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%BD%E5%88%A5%E3%83%95%E3%82%A3%E3%83%AB%E3%82%BF%E3%80%81IPS%E3%81%AE%E5%85%B7%E4%BD%93%E4%BE%8B"><span class="nav-number">7.3.</span> <span class="nav-text">国別フィルタ、IPSの具体例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%AE%E3%83%96%E3%83%AD%E3%83%83%E3%82%AF%E3%81%A8Firewall%E3%81%AE%E3%83%96%E3%83%AD%E3%83%83%E3%82%AF"><span class="nav-number">7.4.</span> <span class="nav-text">アプリケーションのブロックとFirewallのブロック</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%AE%E6%83%B3%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%EF%BC%88VLAN%EF%BC%89"><span class="nav-number">7.5.</span> <span class="nav-text">仮想ネットワーク（VLAN）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%BE%E3%81%A8%E3%82%81"><span class="nav-number">8.</span> <span class="nav-text">まとめ</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Interop24"><span class="nav-number">9.</span> <span class="nav-text">Interop24</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A3%9C%E8%B6%B3%E8%AA%AC%E6%98%8E"><span class="nav-number">10.</span> <span class="nav-text">補足説明</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="阿部　吉伸(Yoshinobu ABE)"
+      src="/new-technology/images/yoshi.png">
+  <p class="site-author-name" itemprop="name">阿部　吉伸(Yoshinobu ABE)</p>
+  <div class="site-description" itemprop="description">IT</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/new-technology/archives/">
+          <span class="site-state-item-count">91</span>
+          <span class="site-state-item-name">ポスト</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/new-technology/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">カテゴリ</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/new-technology/tags/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">タグ</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yoshi0808" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yoshi0808" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yoshi0808.blog@gmail.com" title="E-Mail → mailto:yoshi0808.blog@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yoshi0808_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yoshi0808_" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="/new-technology/lib/@creativecommons/vocabulary/assets/license_badges/big/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="ja">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2024/06/25/UCG-Ultra/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/new-technology/images/yoshi.png">
+      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="New technologies in our life">
+      <meta itemprop="description" content="IT">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Ubiquiti Cloud Gateway Ultra | New technologies in our life">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Ubiquiti Cloud Gateway Ultra
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">投稿日</span>
+      
+
+      <time title="作成日：2024-06-25 10:20:00 / 修正日：19:33:07" itemprop="dateCreated datePublished" datetime="2024-06-25T10:20:00+09:00">2024-06-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">カテゴリ</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/Hardware/" itemprop="url" rel="index"><span itemprop="name">Hardware</span></a>
+        </span>
+          、
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/Network/" itemprop="url" rel="index"><span itemprop="name">Network</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><img src="/new-technology/2024/06/25/UCG-Ultra/0.png" class="" width="1024" title="alt">
+<p class="onepoint">この記事で実現すること</p>
+
+<p>UniFiの新しい小型ゲートウェイUniFi Cloud Gatewayのセットアップ、機能紹介、ホームユーザー向けのセキュリティ対策の実例を掲載しています。検証のため製品提供を受けていますのでこの記事はPR要素を含みます。</p>
+<span id="more"></span>
+
+<h2 id="Cloud-Gateway-Ultra（UCG-Ultra）"><a href="#Cloud-Gateway-Ultra（UCG-Ultra）" class="headerlink" title="Cloud Gateway Ultra（UCG-Ultra）"></a>Cloud Gateway Ultra（UCG-Ultra）</h2><p>3月には、UniFi初心者向けにUniFi Express（UX）の導入に関する記事を記載しました。UXはワンルームなどの比較的限られた範囲のWi-FiとUniFiゲートウェイがAll in oneとなったハードウェアですが、新しく発売されたCloud Gateway Ultraは、 Wi-Fi APやネットワークスイッチなどを追加、拡張することを想定しているゲートウェイです。Ubiquiti製品の一番人気はなんといってもアクセスポイント（Wi-Fi）ですが、複数のAPをはじめ、スイッチも拡張を想定するユーザーが購入対象となるでしょう。米国では$129と極めて廉価です。</p>
+<p>手短にUCG-Ultraを説明すると以下の通りです。</p>
+<blockquote class="blockquote-center">
+<p>30以上のUniFiデバイス&#x2F;300以上のクライアントサポート、1 Gbps IPSルーティング、およびマルチWANロードバランシングを備えたコンパクトなCloud Gateway</p>
+
+</blockquote>
+
+<p> 日本におけるUbiquitiの知名度もだいぶ上がってきたと感じています。これからUniFiを導入したいユーザーとしては、まず通信の見える化のためにUniFiゲートウェイを導入し、随時、人気のあるAPを追加していきたいと考えられているのではないでしょうか。私個人としては、UCG-UltraはIDS&#x2F;IPSも装備されているので自宅環境のセキュリティ面の強化という意味で期待ができるものと考えています。</p>
+<h2 id="UCG-Ultraの説明ページ"><a href="#UCG-Ultraの説明ページ" class="headerlink" title="UCG-Ultraの説明ページ"></a>UCG-Ultraの説明ページ</h2><p>製品の説明ページは以下になります。</p>
+<blockquote>
+<p>UCG-Ultra<br> <a target="_blank" rel="noopener" href="https://jp.store.ui.com/jp/ja/pro/category/cloud-gateways-compact/products/ucg-ultra">https://jp.store.ui.com/jp/ja/pro/category/cloud-gateways-compact/products/ucg-ultra</a></p>
+</blockquote>
+<ul>
+<li>WAN:2.5GbE RJ45ポートx 1</li>
+<li>LAN:GbE RJ45ポートx 4</li>
+<li>IDS&#x2F;IPSスループット1Gbps</li>
+<li>LTEバックアップによる追加のインターネットフェイルオーバー</li>
+<li>アプリケーション認識ファイアウォールルール</li>
+<li>シグネチャベースのIDS&#x2F;IPS脅威検出</li>
+<li>コンテンツ、国、ドメイン、広告のフィルタリング</li>
+<li>VLAN&#x2F;サブネットに基づくトラフィックセグメンテーション</li>
+<li>完全なステートフルファイアウォール</li>
+<li>ワンクリックのTeleportおよびIdentity VPN</li>
+</ul>
+<h2 id="この記事でのインターネットの構成"><a href="#この記事でのインターネットの構成" class="headerlink" title="この記事でのインターネットの構成"></a>この記事でのインターネットの構成</h2><p>私はauひかりホーム（10ギガ）を導入しており、貸与されたホームゲートウェイ（HGW）があります。その後ろにUCG-Ultraを配置する形式となります。</p>
+<img src="/new-technology/2024/06/25/UCG-Ultra/diaglam.drawio.png" class="" width="240" title="alt">
+
+<h2 id="セットアップ"><a href="#セットアップ" class="headerlink" title="セットアップ"></a>セットアップ</h2><p>UCG-Ultraはスマホだけでセットアップ可能です。アプリをダウンロードし、Bluetoothで接続して行います。</p>
+<p>製品と付属品です。本体、電源ケーブル、30cmのLANケーブルが付属します。</p>
+<img src="/new-technology/2024/06/25/UCG-Ultra/2.png" class="" width="800" title="alt">
+
+<p>PortはWAN（2.5Gbps）x1、LAN（1Gbps）x4です。</p>
+<img src="/new-technology/2024/06/25/UCG-Ultra/3.png" class="" width="800" title="alt">
+
+<p>さて、説明書のQRコードをiPhoneのカメラで読み込み、スマホアプリ（UniFi）をダウンロードしましょう。</p>
+
+
+<p>Ubiquitiのアカウントを作成します。<br><a target="_blank" rel="noopener" href="https://account.ui.com/login">https://account.ui.com/login</a></p>
+<p>スマホアプリUniFiを起動後、UIアカウントにログインします。スマホアプリがBluetooth経由でUCG-Ultraを見つけると画面にセットアップ開始を促します。</p>
+<img src="/new-technology/2024/06/25/UCG-Ultra/6.png" class="" width="360" title="alt">
+
+<img src="/new-technology/2024/06/25/UCG-Ultra/8.png" class="" width="360" title="alt">
+
+<p>UCG-UltraにはWi-Fiは無いので、UCG-Ultraの名前を決めたらセットアップが完了します。また、途中インターネット速度テストが行われ、さらにファームウェアのアップデートが自動で行われていきます。</p>
+<img src="/new-technology/2024/06/25/UCG-Ultra/9.png" class="" width="360" title="alt">
+
+<p>WAN　Portの速度である2.5Gbpsの速度がきちんと出ています。</p>
+<img src="/new-technology/2024/06/25/UCG-Ultra/10.png" class="" width="360" title="alt">
+
+<p>あっさりとセットアップ完了です。</p>
+<img src="/new-technology/2024/06/25/UCG-Ultra/11.png" class="" width="360" title="alt">
+
+<p>ファームウェアの自動更新が行われます。</p>
+<img src="/new-technology/2024/06/25/UCG-Ultra/11-1.png" class="" width="800" title="alt">
+
+<p>ここまで、全く迷うことがありません。</p>
+<h2 id="初期画面"><a href="#初期画面" class="headerlink" title="初期画面"></a>初期画面</h2><p>さて、アプリの表記では、HGWのDHCPによって割り当てられた<code>192.168.0.2</code>というUCG-UltraのWAN側IPアドレス、および、LAN側のIPアドレス<code>192.168.1.1</code>が振られています。</p>
+<img src="/new-technology/2024/06/25/UCG-Ultra/12.png" class="" width="360" title="alt">
+
+<p>LANのネットワーク、WANの情報が表示されています。LANはデフォルトVLANが1となっています（かつネイティブVLAN（タグ無し）。<br>WANにはバックアップとしてのSecondary表記があります。今回はPrimaryをauひかりに接続していますが、別の回線または公衆回線（SIMを使う無線ルーター）に接続できます。</p>
+<img src="/new-technology/2024/06/25/UCG-Ultra/13.png" class="" width="360" title="alt">
+
+<mark class="label primary">設定</mark>から、<mark class="label primary">コンソール</mark>を選択すると、<mark class="label primary">コンソール管理</mark>画面が表示されます。UniFi OSはv3.2.18となっていますが、Networkアプリケーション（UNA）はUpdate可能なようです。早速Updateをタップします。
+
+<img src="/new-technology/2024/06/25/UCG-Ultra/14.png" class="" width="360" title="alt">
+
+<p>UCG-UltraのUNAはv8.2.93となりました。</p>
+<p>今回は初回操作なので手動でアップデートすることにしましたが、毎日夜中3時に自動でアップデートチェックが行われ、自動でアップデートされます。また、Release Channelについては、”Official”(通常）、”Release Candidate”（リリース候補）、あとはUIアカウントのページから”Early Access”(ベータ版）を有効にすれば、3つのバージョンを選択できます。</p>
+<blockquote>
+<p>UI Account<br> <a target="_blank" rel="noopener" href="https://account.ui.com/profile">https://account.ui.com/profile</a></p>
+</blockquote>
+<p>慣れるまではOfficialにしておくのがお勧めです。<br>Early Accessは事前確認する利用条件にある通り、守秘義務が存在します。許可なくその内容を第三者に開示してはいけません。安定しない場合も多く、広くユーザーに互換性を確認してもらうためのものです。</p>
+<p>さて、ここまでで初期セットアップは完了です。<br>この段階でUCG-Ultraはインターネットへ接続可能になっているので、設定で利用したスマホアプリはUbiquitiクラウド経由でUCG-Ultraの操作が可能となっています。自宅でも外出中でもUCG-Ultraを操作できます。Cloud Gatewayという名前に相応しい基本機能です。</p>
+<h2 id="セットアップの補足"><a href="#セットアップの補足" class="headerlink" title="セットアップの補足"></a>セットアップの補足</h2><p>私の環境（auひかり）ではとても簡単にセットアップが完了しました。なお、UniFiのゲートウェイ全般は現在、Officialリリースにおいてインターネットマルチフィード社が提供するtransix IPv4接続 (DS-Lite) への対応はされていますが、その他のIPv4 over IPv6の対応は現時点でサポート外となっています。</p>
+<p>UniFiゲートウェイに関するガイドを以下に記載します。</p>
+<ul>
+<li><p>ネットワークが不安定、Lineなどでやり取りができなくなる。<br> 以下のガイドにMSS Clampingの設定で解決するという投稿がありますので確認ください。<br> Facebook Ubiquiti日本公式コミュニティ<br> <a target="_blank" rel="noopener" href="https://www.facebook.com/groups/uijapan/learning_content/?filter=167949146143924&amp;post=3507234616157550">https://www.facebook.com/groups/uijapan/learning_content/?filter=167949146143924&amp;post=3507234616157550</a><br> この設定についてはUCG-Ultraにブラウザでログインし、WANのMSS Clampingの値をCustomの1414や1420等に設定する必要があります。具体的な設定はISPにより異なります。</p>
+</li>
+<li><p>IPv6 IPoE transix IPv4 (DS-Lite)の設定手順｜Ubiquiti UniFi<br> <a target="_blank" rel="noopener" href="https://note.com/ui_japan/n/n3154ff641db5">https://note.com/ui_japan/n/n3154ff641db5</a></p>
+</li>
+</ul>
+<p>インターネットマルチフィードのDS-Liteは以下のISPが対象となります。</p>
+<ul>
+<li>株式会社インターネットイニシアティブ<br> IIJ IPv6 FiberAccess&#x2F;Fサービス タイプIPoE</li>
+<li>株式会社インターネットイニシアティブ<br> IIJmioひかり</li>
+<li>株式会社インターネットイニシアティブ<br> IIJmio FiberAccess&#x2F;NF</li>
+<li>株式会社インターリンク<br> ZOOT NATIVE</li>
+<li>エキサイト株式会社<br> excite MEC光</li>
+<li>エキサイト株式会社<br> BB.excite光Fit</li>
+<li>エキサイト株式会社<br> BB.exciteコネクトIPoE接続プラン</li>
+<li>スターティア株式会社<br> マネージドゲート2</li>
+<li>メディアウェイブシステムズ株式会社<br> Hybrid64 (ハイブリッド・ろくよん）</li>
+<li>メディアウェイブシステムズ株式会社<br> メディアひかり</li>
+</ul>
+<p>（引用： <a target="_blank" rel="noopener" href="https://www.mfeed.ad.jp/transix/customers/">https://www.mfeed.ad.jp/transix/customers/</a>）</p>
+<p>FacebookのUbiquiti日本公式コミュニティの情報によれば、ASAHIネットなど、対応ISPを増やす対応に取り組まれているようです。なお、PPPoEやDS-Liteのデータ転送時に、MSSの調整、すなわちデータ部分を切り詰める必要が発生するのは仕方のない事です。ネットワーク機器は専用チップ（ASIC)が処理する事が基本であり、CPUがデータ処理すると、途端にパフォーマンスがダウンしてしまいます。これは一般的に考えられるよりもネットワーク機器のCPUが非力なためです。UCG-UltraはUXよりCPUが強化され、IDS&#x2F;IPSが実行できるようになりましたが、それでもスマホ相当であり、小型PCと比較しても非力です。</p>
+<table>
+<thead>
+<tr>
+<th>CPU</th>
+<th>CPU Mark</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ARM Cortex-A53 4 Core 1512 MHz※UCG-Ultra</td>
+<td>472</td>
+</tr>
+<tr>
+<td>Intel   Celeron J1900 @ 1.99GHz</td>
+<td>1,150</td>
+</tr>
+<tr>
+<td>Intel N100</td>
+<td>5,552</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>Passmark software<br> <a target="_blank" rel="noopener" href="https://www.cpubenchmark.net/cpu_list.php">https://www.cpubenchmark.net/cpu_list.php</a></p>
+</blockquote>
+<p>日本は世界の中でも通信速度においては先進的であり、かなり日本のユーザーの目線が高いのは事実です。PPPoEが存在するのは日本に限った話ではありませんが、PPPoEとIDS&#x2F;IPSとを併用するとかなりCPUパワーも必要になりパフォーマンスの問題は発生しやすいようです。<br>UCG-Ultraの技術仕様のIDS&#x2F;IPSの項には「<strong>ISP の実装によって PPPoEでは性能が低下する可能性があります。</strong>」と記載されています。</p>
+<p>私が利用しているauひかりは、PPPoEやDS-Liteを使わず1,500バイトをLAN同様に転送できますので、パフォーマンスの問題は発生しません。他にもCATVなどもこういった問題にはあまり関わる事がありません。一方、DS-LiteなどではIPv6の複数サブネットの配布（Prefix Delegation）は魅力的なのも事実でありISPの選定は悩ましいものがあります。</p>
+<p>なお、ここではIPv6の説明は割愛しますが、auひかりのホームゲートウェイ（HGW）からUXにPrefix DelegationでIPv6サブネットを1つ割り振る設定を以下の記事で記載していますので参考にしてください。その他、通知機能やSSH、プライベートDNS、VPNなどの基本設定についても記載しています。</p>
+<ul>
+<li><a href="/new-technology/2024/03/06/unifi-express/" title="UniFi Express">UniFi Express</a>
+</li>
+<li><p>Ubiquiti日本公式コミュニティ<br> <a target="_blank" rel="noopener" href="https://www.facebook.com/groups/uijapan">https://www.facebook.com/groups/uijapan</a></p>
+</li>
+</ul>
+<p>初期セットアップは終了し、Windows PCをUCG-Ultraに繋いで、IPv4、IPv6の割り当てが確認できました。</p>
+<img src="/new-technology/2024/06/25/UCG-Ultra/wan.png" class="" width="1024" title="alt">
+
+<p>Windowsは以下のようにIPアドレスが振られています。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Windows IP 構成</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">イーサネット アダプター イーサネット:</span><br><span class="line"></span><br><span class="line">   接続固有の DNS サフィックス . . . . .: localdomain</span><br><span class="line">   IPv6 アドレス . . . . . . . . . . . .: 240f:103:xxxx:3:17f7:xxxx:xxxx:4c40</span><br><span class="line">   一時 IPv6 アドレス. . . . . . . . . .: 240f:103:xxxx:3:2594:xxxx:xxxx:e4c7</span><br><span class="line">   リンクローカル IPv6 アドレス. . . . .: fe80::7baf:af2:aa9:55a0%18</span><br><span class="line">   IPv4 アドレス . . . . . . . . . . . .: 192.168.1.170</span><br><span class="line">   サブネット マスク . . . . . . . . . .: 255.255.255.0</span><br><span class="line">   デフォルト ゲートウェイ . . . . . . .: fe80::xxxx:xxff:fexx:xxxx%18</span><br><span class="line">                                          192.168.1.1</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="UCG-Ultraを利用したセキュリティ強化"><a href="#UCG-Ultraを利用したセキュリティ強化" class="headerlink" title="UCG-Ultraを利用したセキュリティ強化"></a>UCG-Ultraを利用したセキュリティ強化</h2><h3 id="UCG-Ultraは何が出来るのか"><a href="#UCG-Ultraは何が出来るのか" class="headerlink" title="UCG-Ultraは何が出来るのか"></a>UCG-Ultraは何が出来るのか</h3><p>セキュリティに関しては話をシンプルにするために、一旦IPv4のみ割り当てが行われた状態で確認していきます。</p>
+<h4 id="ジオロケーション"><a href="#ジオロケーション" class="headerlink" title="ジオロケーション"></a>ジオロケーション</h4><p>IPアドレスによる国別の認識が出来ています。</p>
+<img src="/new-technology/2024/06/25/UCG-Ultra/geo.png" class="" width="1024" title="alt">
+
+<h4 id="トラフィック識別"><a href="#トラフィック識別" class="headerlink" title="トラフィック識別"></a>トラフィック識別</h4><img src="/new-technology/2024/06/25/UCG-Ultra/traffic.png" class="" width="1024" title="alt">
+
+<p>IDS&#x2F;IPSの設定をしていない初期設定状態でもトラフィックの識別はできています。この状態でのPCのスピードテストはワイヤレート（下り947Mbps&#x2F;上り942Mbps）の速度が出ています。</p>
+<h4 id="IDS-IPS"><a href="#IDS-IPS" class="headerlink" title="IDS&#x2F;IPS"></a>IDS&#x2F;IPS</h4><p>IDS&#x2F;IPSの説明は以下の通りです。</p>
+<table>
+<thead>
+<tr>
+<th>略称</th>
+<th>名称</th>
+<th>動作</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>IDS</td>
+<td>Intrusion Detection System</td>
+<td>アラートのみ</td>
+</tr>
+<tr>
+<td>IPS</td>
+<td>Intrusion Prevension System</td>
+<td>防御（当該通信をReset）</td>
+</tr>
+</tbody></table>
+<p>一般的にブラウザで利用するトラフィックは一般的に9割以上がhttps通信と言われており、SSL&#x2F;TLSにより暗号化されています。暗号化されている通信はその間にUCG-Ultraが入り込んでも情報を奪取できません。それでもトラフィック識別ができているのは、接続先のIPアドレスに加え、SSL&#x2F;TLSによるハンドシェイク時にリクエストされるSNI（Server Name Indicator）が平文で相手のFQDNをリクエストするため、どんなアプリケーションを利用しているのか判定する事が可能になっています。例えば、Appleのサイトにhttps接続する場合に最初のハンドシェイク時にSNIの情報が確認できます。</p>
+<img src="/new-technology/2024/06/25/UCG-Ultra/wireshark.png" class="" width="1024" title="alt">
+
+<p>UCG-Ultraで識別が不能な場合は、トラフィック識別においてSSL&#x2F;TLSで一括りとなっています。またhttps通信をTCPではなくUDPを使い高速化したQUICプロトコルもあります。セキュリティレベルの高い事業者では、このQUICを認めないなどもある一方でGoogle系サービス（Gmail、Youtube）や国内の大手報道機関ではQUICプロトコルが採用されています。正直、SSL&#x2F;TLS、QUICが通信の大半と予想されます。</p>
+<p>ホームユーザーの用途としては疑わしい通信は排除する使い方となるため、IPSが一般的に使われます。しかしながら前述の通り暗号化された通信が大半である環境下において、IPSがシグネチャベースで検出する能力を持っていても、暗号化されたパケットは検査できません。従い過剰な期待は禁物です。これを実現するならばSSL&#x2F;TLSインスペクションといったSSL&#x2F;TLS解析の仕組みが必要ですが、大量のCPUリソースを使うことや端末毎にCA証明書のインストールが必要であるため個人向けには一般的ではありません。</p>
+<p>マルウェアやウィルスが配布されるような危険なサーバーに接続しようとしたところでDNSやIPS（SNIによる接続先検証）で防御することがまずはホームユーザー向けの対策と言えるでしょう。</p>
+<h4 id="広告ブロック"><a href="#広告ブロック" class="headerlink" title="広告ブロック"></a>広告ブロック</h4><p>UNAの設定（歯車アイコン）から、<mark class="label primary">セキュリティ</mark>を選択します。<br>ここでは<mark class="label primary">広告ブロック</mark>にチェックしておきます。他に追加の設定は不要です。<br>DNSシールドはDNSによる名前解決時にDoH（DNS over HTTPS）を使い、GoogleまたはCloudflareで名前解決するものです。TLS&#x2F;SSLで暗号化されているので、プロバイダや途中の経路において、どこにアクセスしているのか判らないようにする目的があります。日本のISPはDDoS対策のために独自のDNSフィルタを実施していることや、その情報を売却するなどの行為が厳しいために日本においてはDNSシールドの重要性はあまり無いものと考えられます。<br>なお、このDNSフィルタを使っていても、広告ブロックは有効です。</p>
+<h3 id="UCG-Ultraを使ったセキュリティの高め方"><a href="#UCG-Ultraを使ったセキュリティの高め方" class="headerlink" title="UCG-Ultraを使ったセキュリティの高め方"></a>UCG-Ultraを使ったセキュリティの高め方</h3><p>UCG-Ultraを使ってどのようにセキュリティを高めるかという観点では、使える機能は使うべきということになるでしょう。利用することで特にデメリットとなることはパフォーマンスに関する観点くらいだと考えられます。</p>
+<ul>
+<li>IoT機器をお持ちであれば、PCなど多くのInternetとやり取りする機器とはネットワークを分離する。同様にリモートワークで使う会社貸与のPCなども自分が所有するPCとは分離することをお勧めします。これはタグVLANを設定し、実現させます。UniFiのAPを使うことでさらにSSID毎に属するVLANを変えられます。</li>
+<li>広告フィルタを行う。これは広告サイトが必ずしも安全とは言えないこと、不要なトラフィックが減らせます。</li>
+<li>IPSでリスクのあるサイトをブロックする。不要なVPNサイトが止められるのはリスクを軽減できます。</li>
+<li>国別フィルタを使って不要国を止める。米国から一定量の攻撃がある事からも米国を止めるのは現実的でありませんが、普段アクセスしない国が明確なのであれば停止すべきでしょう。</li>
+</ul>
+<h3 id="国別フィルタ、IPSの具体例"><a href="#国別フィルタ、IPSの具体例" class="headerlink" title="国別フィルタ、IPSの具体例"></a>国別フィルタ、IPSの具体例</h3><p>設定はとても簡単です。一例としては以下の通りです。</p>
+<img src="/new-technology/2024/06/25/UCG-Ultra/ips.png" class="" width="640" title="alt">
+
+<p>フィルタリングは通知とブロック（IPS相当）とし、検出感度は高めに設定してあります。<br>さらに、ネットワーク（LAN）の画面からコンテンツフィルタを有効にします。</p>
+<img src="/new-technology/2024/06/25/UCG-Ultra/lan.png" class="" width="640" title="alt">
+
+<p>コンテンツフィルタリングは仕事、家族と選択できますが、家族にしておけばVPNを止められます。なお、IPv4の画面にはコンテンツフィルタリングの設定がありますが、IPv6の画面にはありません。</p>
+<p>私の環境ではこの設定を行った上でのInternet速度テストは以下の通りでした。</p>
+<img src="/new-technology/2024/06/25/UCG-Ultra/speedtest2.png" class="" width="320" title="alt">
+
+<p>ダウンロードが947Mbpsから925Mbpsに下がりましたが、殆ど誤差でしょう。私の環境だと、パフォーマンスを意識してセキュリティレベルを下げる必要は無さそうです。</p>
+<p>これらのように設定は可能ですが、セキュリティの観点からはなかなかこれらの実効性を高めるのが難しいのが現状です。<br>中国のメーカーであっても、サーバーをAkamai（セキュリティベンダー）上に構築していたり、コンテンツデリバリネットワーク（CDN）やCloudflareにあれば同様に判定が難しくなります。</p>
+<p>また、危険なサイトに関する情報についてはIPv4に関しては情報共有は積極的に行われるものの、IPv6についてはその情報共有が少ないのが実情です。今後、IPv6のコンテンツフィルタ機能が拡充されたとしても、IPv4だけのネットワークの方がセキュリティ上は安全ともいえるジレンマを抱えることになります。</p>
+<p>UCG-Ultraではロシアや中国企業のWebサイトでアクセスできない（パケットは拒否される）事を確認できています。フィッシングの手口ではこれらの国はよく使われるため、これらの抑止策はフェールセーフとして期待できます。</p>
+<h3 id="アプリケーションのブロックとFirewallのブロック"><a href="#アプリケーションのブロックとFirewallのブロック" class="headerlink" title="アプリケーションのブロックとFirewallのブロック"></a>アプリケーションのブロックとFirewallのブロック</h3><p>UniFiゲートウェイには、アプリケーションタイプでの制御（許可、ブロック）と従来型のFirewallのネットワーク、Port単位の制御の2通りがあります。Ubiquitiはそれぞれ、<mark class="label primary">シンプル</mark>、<mark class="label primary">高度な</mark>と分かれています。<mark class="label primary">シンプル</mark>の方がアクセス統計のアプリから止められるため直感的で簡単です。ネットワークに慣れている方は従来のIPネットワーク、Portで止める方法もあります。ただ、自宅でサーバーを立てる時にPort8443などでWebサーバーを立てる事が多いように、必ずしもSSL&#x2F;TLSがPort443とは限りません。そういう意味ではアプリケーションで止めていく方が時代の流れには沿っていると考えられます。</p>
+<p>シンプルのルール表示の例です。</p>
+<img src="/new-technology/2024/06/25/UCG-Ultra/fw1.png" class="" width="1024" title="alt">
+
+<p>高度なルール表示の例です。</p>
+<img src="/new-technology/2024/06/25/UCG-Ultra/fw2.png" class="" width="1024" title="alt">
+
+<p>シンプルなルールでInternetに出ていくアプリケーションのうち、DNS(53&#x2F;TCP,UDP)、DoT（DNS over TLS(853&#x2F;TCP)）、DoH（DNS over HTTPS(443&#x2F;TCP)）とを止めるルールです。基本的にDNSはUCG-UltraがInternetに名前解決を問い合わせするため、クライアントがInternetとDNSで直接セッションを張る必要はないとして、ブロックするルールです（ユーザーの考え方次第でこのルールが多くの人に適合するというわけではありません）。</p>
+<img src="/new-technology/2024/06/25/UCG-Ultra/fw3.png" class="" width="640" title="alt">
+
+<p>従来型のファイアウォール設定、つまり高度なルールの設定です。Port 53&#x2F;TCP,UDPをInternetに出ていくものをブロックする設定を保険的に明示しています。</p>
+<img src="/new-technology/2024/06/25/UCG-Ultra/fw4.png" class="" width="640" title="alt">
+
+<p>高度なルールでDoTはPort853を指定して止める方法はありますが、DoHは暗号化されているのでファイアウォールでは検出不可能です。しかし、UCG-UltraはDoHの接続先（SNI)を見てブロックしているものと考えられ、シンプルなルールを使うことで簡単にアクセス制御ができます。</p>
+<p>最近はサイバーの脅威保護にDNSを使って情報資産を保護する取り組みは多い一方、ブラウザを提供しているITベンダーは広告を回避されたくないためユーザーが指定したDNSを参照せず、ベンダーが提供するDNSを（DoHを使って）参照しようとします。DoHでユーザーが用意したDNSの広告ブロックをバイパスするためです。ただこれがサイバー対策を迂回されてしまうリスクにもなります。</p>
+<p>SSL&#x2F;TLSインスペクションを使ったとしても完璧ではなく、最終的にはセキュリティ機器がどれだけ早く脅威情報を取り込めるかどうかに掛かっています。個人に対するサイバー攻撃で一番多いのはフィッシング詐欺です。このような仕組みでセキュリティを高めることに加え、多要素認証などを組み合わせる事でフィッシングの脅威から保護する事が重要です。</p>
+<blockquote>
+<p>Ubiquiti Deep Dive into Advanced Firewall Rules<br> <a target="_blank" rel="noopener" href="https://help.ui.com/hc/en-us/articles/115003173168-Deep-Dive-into-Advanced-Firewall-Rules">https://help.ui.com/hc/en-us/articles/115003173168-Deep-Dive-into-Advanced-Firewall-Rules</a></p>
+</blockquote>
+<h3 id="仮想ネットワーク（VLAN）"><a href="#仮想ネットワーク（VLAN）" class="headerlink" title="仮想ネットワーク（VLAN）"></a>仮想ネットワーク（VLAN）</h3><p>前述した通り、IoT機器などのために、普段使うネットワークと分離するために新しいネットワークを作成できます。私の場合、ChromebookやAmazon Echo、Amazon FireTVなどは全てゲストネットワークとして、PCやスマホで普段使うネットワークとは分離しています。<br>UniFiでは「仮想ネットワーク」としてVLANを定義しています。ネットワークの設定から「新しい仮想ネットワーク」を選択します。</p>
+<img src="/new-technology/2024/06/25/UCG-Ultra/guest.png" class="" width="1024" title="alt">
+
+<p>ここでの例はGuestという名前を付けました。ネットワークアドレスは<code>192.168.10.0/24</code>、IPアドレスの第3オクテットに合わせてVLAN IDは10としています。ネットワーク分離を有効にし、Defaultネットワークとはお互いにルーティングできないようにしつつもInternetへのアクセスは可能としています。DHCPも有効になります。</p>
+<p>続いてPortマネージャーから、UCG-Ultraのポートを設定変更します。ここでは単一の端末を接続できるための設定をします。</p>
+<img src="/new-technology/2024/06/25/UCG-Ultra/port.png" class="" width="1024" title="alt">
+
+<p>ネイティブVLANネットワークはguestを選択します。つまりタグ10のVLANをネイティブ（タグ無し）として設定します。さらに他のネットワーク（Default)のパケットがタグ付きで外に出て行かないように、タグ付きVLAN管理の項目は<mark class="label primary">すべてをブロック</mark>にチェックを付けておきます。</p>
+<p>この2か所の設定で、Port2に端末を接続することで上記で作成したネットワーク（VLAN&#x3D;10)のIPアドレスが割り当てられます。<br>以下はUCG-UltraのPort2に接続したChromebookの画面です。</p>
+<img src="/new-technology/2024/06/25/UCG-Ultra/chromebook.png" class="" width="480" title="alt">
+
+<p>これでIoTはインターネットにはアクセスできますが、自宅の重要な機器とは分離されます。PCがマルウェアに感染し、やがてセキュリティ上脆弱なIoTに感染してしまうということを防止できます。その逆も然りです。</p>
+<p>NASやサーバーがある場合、Default、ゲストだけでなく、サーバー用のVLANを作成し、Defaultとサーバーとは高度なファイアウォールを使用し、最低限度のプロトコルを通すなどすればよりセキュアな環境が整います。</p>
+<p>また、今回は詳細の説明を割愛しますが、ルーティング機能も業務レベルの機能が用意されています。</p>
+<img src="/new-technology/2024/06/25/UCG-Ultra/routing.png" class="" width="1024" title="alt">
+
+<p>特定のドメインや地域などでルーティング先を変えるポリシーベースのルーティングやOSPF、L3スイッチなどを追加した場合の静的ルーティングに加え、DNSのカスタム設定（Aレコードだけではなく、MX、CNAME）などネットワーク機器としてはかなり多機能です。</p>
+<h2 id="まとめ"><a href="#まとめ" class="headerlink" title="まとめ"></a>まとめ</h2><p>今回は、Cloud Gateway Ultraをセキュリティの観点から検証してみました。今後APやネットワークスイッチを導入する小型ネットワークを敷設される場合には候補になるプロダクトであると考えられます。</p>
+<blockquote>
+<p>UI Japan Store Cloud Gateway Ultra<br><a target="_blank" rel="noopener" href="https://jp.store.ui.com/jp/ja/pro/category/cloud-gateways-compact/products/ucg-ultra">https://jp.store.ui.com/jp/ja/pro/category/cloud-gateways-compact/products/ucg-ultra</a></p>
+</blockquote>
+<p>価格は23,899円です。</p>
+<h2 id="Interop24"><a href="#Interop24" class="headerlink" title="Interop24"></a>Interop24</h2><p>6月14日の幕張で行われたInterop24でUbiquiti製品が紹介されていましたので、写真を撮ってきました。</p>
+<p>UXG-LiteとUCG-Ultra（これだとサイズ感が分からないですね。。。）</p>
+<img src="/new-technology/2024/06/25/UCG-Ultra/interop1.png" class="" width="1024" title="alt">
+
+<p>PoEスイッチ　Switch Ultra</p>
+<img src="/new-technology/2024/06/25/UCG-Ultra/interop2.png" class="" width="1024" title="alt">
+
+<p>UCG-UltraはPoEを持っていないので、APを接続する際は、別途PoEアダプタが必要となります。このSwitch UltraはPoEによる電源供給ができるのでAPや監視カメラなどを将来的に拡張していくのにちょうど良いスイッチかもしれません。</p>
+<blockquote>
+<p>Switch Ultra<br> <a target="_blank" rel="noopener" href="https://jp.store.ui.com/jp/ja/pro/category/switching-utility/collections/pro-ultra">https://jp.store.ui.com/jp/ja/pro/category/switching-utility/collections/pro-ultra</a></p>
+</blockquote>
+<h2 id="補足説明"><a href="#補足説明" class="headerlink" title="補足説明"></a>補足説明</h2><blockquote>
+<p>Ubiquiti Japan ホームページ<br> <a target="_blank" rel="noopener" href="https://note.com/ui_japan">https://note.com/ui_japan</a></p>
+</blockquote>
+<blockquote>
+<p>Ubiquiti ヘルプセンター<br> <a target="_blank" rel="noopener" href="https://help.jp.ui.com/categories/6583256751383/">https://help.jp.ui.com/categories/6583256751383/</a></p>
+</blockquote>
+<blockquote>
+<p>Ubiquiti コミュニティ（日本）<br> <a target="_blank" rel="noopener" href="https://www.facebook.com/groups/uijapan">https://www.facebook.com/groups/uijapan</a></p>
+</blockquote>
+<blockquote>
+<p>Ubiquiti Community（米国中心）<br> <a target="_blank" rel="noopener" href="https://community.ui.com/">https://community.ui.com/</a></p>
+</blockquote>
+<p>（製品提供：Ubiquiti Japan株式会社）</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/new-technology/tags/UniFi/" rel="tag"><i class="fa fa-tag"></i> UniFi</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/new-technology/2024/06/08/xg-v20mr1/" rel="prev" title="Sophos Firewall v20 MR1">
+                  <i class="fa fa-angle-left"></i> Sophos Firewall v20 MR1
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2020 – 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">阿部　吉伸(Yoshinobu ABE)</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div><script src="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.umd.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.min.css" rel="stylesheet">
+
+<script>
+if (Cookies.get('PRVCY202112') != 'Agree') {
+  const notice = new SimpleGDPR({
+    title: 'Accept Cookies & Privacy Policy?',
+    message: 'このWebサイトでは、訪問や活動に関するデータがクッキー等によって収集されます。閲覧を継続される場合、\
+    プライバシーポリシーをご覧いただき同意(Agree)をお願いします',
+    link: null,
+    icons: true,
+    theme: 'light',
+    animation: 'fade',
+    float: 'bottom-right',
+      callback: () => {
+      notice.close();
+      Cookies.set('PRVCY202112', 'Agree', { expires: 365, path: '/'});
+      notice.destroy();
+      // Google Analytics 4
+      gtag('consent', 'update', {
+      'analytics_storage': 'granted'
+      });
+      gtag('js', new Date());
+      gtag('config', 'G-JMY6NSC2KK', { 'anonymize_ip': true });
+      },
+  });
+}
+</script>
+<div class="disclaimer1">
+このサイトの記事は、特別な記載がない限り <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja">クリエイティブ・コモンズ BY-NC-SA ライセンス</a>で保護されています</div>
+
+
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/yoshi0808" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="/new-technology/lib/animejs/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="/new-technology/lib/medium-zoom/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/comments.js"></script><script src="/new-technology/js/utils.js"></script><script src="/new-technology/js/motion.js"></script><script src="/new-technology/js/schemes/muse.js"></script><script src="/new-technology/js/sidebar.js"></script><script src="/new-technology/js/next-boot.js"></script>
+
+  <script src="/new-technology/lib/hexo-generator-searchdb/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"/new-technology/lib/mermaid/dist/mermaid.min.js","integrity":"sha256-stuqcu2FrjYCXDOytWFA5SoUE/r3nkp6gTglzNSlavU="}}</script>
+  <script src="/new-technology/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

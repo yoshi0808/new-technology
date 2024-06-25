@@ -219,7 +219,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/new-technology/archives/">
-          <span class="site-state-item-count">90</span>
+          <span class="site-state-item-count">91</span>
           <span class="site-state-item-name">ポスト</span>
         </a>
       </div>
@@ -433,7 +433,7 @@ ESXi代替としての仮想環境ソフトウェアのXCP-ng、またそのオ�
 <p>ここまででXCP-ngのセットアップは一旦完了です。<br>NICを取り外して別のNICを取り付ける場合には、デバイス論理名（ex:eth0）とデバイスとの関連付けがずれてしまう場合があります。この際は以下のページを参考にしてください。</p>
 <p><a target="_blank" rel="noopener" href="https://docs.xcp-ng.org/networking/">https://docs.xcp-ng.org/networking/</a></p>
 <p>同じリソースプールでスムーズにVMの移動（ライブマイグレーション）を行う際は、同一の物理インタフェースが必要となります。もちろん同一製品である必要はありませんが、どのセグメントに属するか、速度タイプなどは同一にする必要があります。</p>
-<h2 id="Xen-Orchestraのインストール"><a href="#Xen-Orchestraのインストール" class="headerlink" title="Xen Orchestraのインストール"></a>Xen Orchestraのインストール</h2><p>XOのセットアップにはインターネットに接続されたLinuxが必要です。ここではXCP-ngとは別にUbuntu22を使ってXOのコンパイル、デプロイを実行していきます。<br>まず、ベアメタルかVMとしてのGUIのあるUbuntu Desktopを用意してください。私の例ではマネジメントネットワークに加え、バックアップのセグメント（SynologyへのNFS接続）とのvNICを2つ用意しています。1つのNICのみであってもXOのセットアップは可能です。<br>ここではProxmox上のUbuntuにXOをセットアップします。Proxmox上でのUbuntuのセットアップは「<a href="/new-technology/2024/02/19/Proxmox-new-vm/" title="ProxmoxVEのVM新規作成">ProxmoxVEのVM新規作成</a>」の記事を参考にしてください（XOをセットアップする想定でUbuntuを構築しています）。</p>
+<h2 id="Xen-Orchestraのインストール"><a href="#Xen-Orchestraのインストール" class="headerlink" title="Xen Orchestraのインストール"></a>Xen Orchestraのインストール</h2><p>XOのセットアップにはインターネットに接続されたLinuxが必要です。ここではXCP-ngとは別にUbuntu22を使ってXOのコンパイル、デプロイを実行していきます。<br>まず、ベアメタルかVMとしてのGUIのあるUbuntu Desktopを用意してください。私の例ではマネジメントネットワークに加え、バックアップのセグメント（SynologyへのNFS接続）とのvNICを2つ用意しています。1つのNICのみであってもXOのセットアップは可能です。<br>ここではProxmox上のUbuntuにXOをセットアップします。Proxmox上でのUbuntuのセットアップは「<a href="/new-technology/2024/02/19/Proxmox-new-vm/" title="ProxmoxVEのVM新規作成（Ubuntu24.04LTS）">ProxmoxVEのVM新規作成（Ubuntu24.04LTS）</a>」の記事を参考にしてください（XOをセットアップする想定でUbuntuを構築しています）。</p>
 <p>クライアントからXOにブラウザで接続して使うことになるので、最初にubuntuのIPアドレスは固定IPアドレスにします。設定ーネットワークから有線設定を変更しておきます。<br>また、XOのセットアップ開始にあたり、最初にLinuxそのもののスナップショットを取得しておくとよいでしょう。</p>
 <p>XOのセットアップには有志であるronivay氏が作成したXenOrchestraInstallerUpdaterを利用します。<br><a target="_blank" rel="noopener" href="https://github.com/ronivay/XenOrchestraInstallerUpdater">https://github.com/ronivay/XenOrchestraInstallerUpdater</a></p>
 <h3 id="事前準備"><a href="#事前準備" class="headerlink" title="事前準備"></a>事前準備</h3><p>Ubuntuの<mark class="label primary">ソフトウェアとアップデート</mark>を起動し、<mark class="label primary">Ubuntuのソフトウェア</mark>で<mark class="label primary">ソースコード</mark>のチェックをオンにします。</p>
@@ -491,7 +491,7 @@ ESXi代替としての仮想環境ソフトウェアのXCP-ng、またそのオ�
 <p>ということで、コーヒーを淹れに行き、3分程度待ちます😊。<br>以下の表示が出たところで、rebootします。事後にはLinixのアプリケーションファイアウォールであるufwを有効にして443のみを開けると良いでしょう（GUIもあります）。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[info] Starting xo-server...</span><br><span class="line"> waiting <span class="keyword">for</span> port to be open</span><br><span class="line"></span><br><span class="line">       WebUI started <span class="keyword">in</span> port 443. Make sure you have firewall rules <span class="keyword">in</span> place to allow access.</span><br><span class="line">       Default username: admin@admin.net password: admin</span><br><span class="line"></span><br><span class="line">[info] Installation successful. Enabling xo-server service to start on reboot</span><br><span class="line"></span><br><span class="line">root@xo:~/XenOrchestraInstallerUpdater<span class="comment"># reboot</span></span><br></pre></td></tr></table></figure>
 
-<p>再起動してインストールは終了です。<br>上記のコメントにある通り、XOの画面からはユーザー:<a href="mailto:&#x61;&#x64;&#109;&#105;&#x6e;&#64;&#x61;&#100;&#x6d;&#x69;&#x6e;&#46;&#x6e;&#101;&#116;">&#x61;&#x64;&#109;&#105;&#x6e;&#64;&#x61;&#100;&#x6d;&#x69;&#x6e;&#46;&#x6e;&#101;&#116;</a>、パスワード：adminでログインします。</p>
+<p>再起動してインストールは終了です。<br>上記のコメントにある通り、XOの画面からはユーザー:<a href="mailto:&#x61;&#100;&#x6d;&#x69;&#110;&#64;&#x61;&#100;&#x6d;&#105;&#110;&#x2e;&#x6e;&#x65;&#116;">&#x61;&#100;&#x6d;&#x69;&#110;&#64;&#x61;&#100;&#x6d;&#105;&#110;&#x2e;&#x6e;&#x65;&#116;</a>、パスワード：adminでログインします。</p>
 <h3 id="XOの初期設定"><a href="#XOの初期設定" class="headerlink" title="XOの初期設定"></a>XOの初期設定</h3><p>Ubuntuが再起動してきたら、ブラウザから<code>https://XOのIPアドレス/</code>としてXOのGUIに接続します。<br>ブラウザからは自己証明書の警告が表示されますが気にせず継続します。<br>無事、以下のログイン画面が表示されればインストールは成功です。</p>
 <img src="/new-technology/2024/04/07/xcpng/xo6.png" class="" width="360" title="alt">
 
