@@ -57,7 +57,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/06/25/UCG-Ultra/interop1.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/06/25/UCG-Ultra/interop2.png">
 <meta property="article:published_time" content="2024-06-25T01:20:00.000Z">
-<meta property="article:modified_time" content="2024-06-25T10:33:07.910Z">
+<meta property="article:modified_time" content="2024-06-25T22:15:44.932Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="UniFi">
 <meta name="twitter:card" content="summary">
@@ -294,9 +294,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">投稿日</span>
-      
 
-      <time title="作成日：2024-06-25 10:20:00 / 修正日：19:33:07" itemprop="dateCreated datePublished" datetime="2024-06-25T10:20:00+09:00">2024-06-25</time>
+      <time title="作成日：2024-06-25 10:20:00" itemprop="dateCreated datePublished" datetime="2024-06-25T10:20:00+09:00">2024-06-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">編集日</span>
+      <time title="修正日：2024-06-26 07:15:44" itemprop="dateModified" datetime="2024-06-26T07:15:44+09:00">2024-06-26</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -446,9 +452,9 @@
 <blockquote>
 <p>Passmark software<br> <a target="_blank" rel="noopener" href="https://www.cpubenchmark.net/cpu_list.php">https://www.cpubenchmark.net/cpu_list.php</a></p>
 </blockquote>
-<p>日本は世界の中でも通信速度においては先進的であり、かなり日本のユーザーの目線が高いのは事実です。PPPoEが存在するのは日本に限った話ではありませんが、PPPoEとIDS&#x2F;IPSとを併用するとかなりCPUパワーも必要になりパフォーマンスの問題は発生しやすいようです。<br>UCG-Ultraの技術仕様のIDS&#x2F;IPSの項には「<strong>ISP の実装によって PPPoEでは性能が低下する可能性があります。</strong>」と記載されています。</p>
+<p>日本は世界の中でも通信速度においては先進的であり、日本のユーザーの目線が高いのは事実です。PPPoEが存在するのは日本に限った話ではありませんが、PPPoEとIDS&#x2F;IPSとを併用するとCPUパワーも必要になりパフォーマンスの問題は発生しやすいようです。<br>UCG-Ultraの技術仕様のIDS&#x2F;IPSの項には「<strong>ISP の実装によって PPPoEでは性能が低下する可能性があります。</strong>」と記載されています。</p>
 <p>私が利用しているauひかりは、PPPoEやDS-Liteを使わず1,500バイトをLAN同様に転送できますので、パフォーマンスの問題は発生しません。他にもCATVなどもこういった問題にはあまり関わる事がありません。一方、DS-LiteなどではIPv6の複数サブネットの配布（Prefix Delegation）は魅力的なのも事実でありISPの選定は悩ましいものがあります。</p>
-<p>なお、ここではIPv6の説明は割愛しますが、auひかりのホームゲートウェイ（HGW）からUXにPrefix DelegationでIPv6サブネットを1つ割り振る設定を以下の記事で記載していますので参考にしてください。その他、通知機能やSSH、プライベートDNS、VPNなどの基本設定についても記載しています。</p>
+<p>なお、ここではIPv6の説明は割愛しますが、auひかりのホームゲートウェイ（HGW）からUXにPrefix DelegationでIPv6サブネットを1つ割り振る設定を以下の記事で記載しています。その他、通知機能やSSH、プライベートDNS、VPNなどの基本設定についても記載しています。</p>
 <ul>
 <li><a href="/new-technology/2024/03/06/unifi-express/" title="UniFi Express">UniFi Express</a>
 </li>
@@ -461,8 +467,7 @@
 <p>Windowsは以下のようにIPアドレスが振られています。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Windows IP 構成</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">イーサネット アダプター イーサネット:</span><br><span class="line"></span><br><span class="line">   接続固有の DNS サフィックス . . . . .: localdomain</span><br><span class="line">   IPv6 アドレス . . . . . . . . . . . .: 240f:103:xxxx:3:17f7:xxxx:xxxx:4c40</span><br><span class="line">   一時 IPv6 アドレス. . . . . . . . . .: 240f:103:xxxx:3:2594:xxxx:xxxx:e4c7</span><br><span class="line">   リンクローカル IPv6 アドレス. . . . .: fe80::7baf:af2:aa9:55a0%18</span><br><span class="line">   IPv4 アドレス . . . . . . . . . . . .: 192.168.1.170</span><br><span class="line">   サブネット マスク . . . . . . . . . .: 255.255.255.0</span><br><span class="line">   デフォルト ゲートウェイ . . . . . . .: fe80::xxxx:xxff:fexx:xxxx%18</span><br><span class="line">                                          192.168.1.1</span><br></pre></td></tr></table></figure>
 
-
-<h2 id="UCG-Ultraを利用したセキュリティ強化"><a href="#UCG-Ultraを利用したセキュリティ強化" class="headerlink" title="UCG-Ultraを利用したセキュリティ強化"></a>UCG-Ultraを利用したセキュリティ強化</h2><h3 id="UCG-Ultraは何が出来るのか"><a href="#UCG-Ultraは何が出来るのか" class="headerlink" title="UCG-Ultraは何が出来るのか"></a>UCG-Ultraは何が出来るのか</h3><p>セキュリティに関しては話をシンプルにするために、一旦IPv4のみ割り当てが行われた状態で確認していきます。</p>
+<h2 id="UCG-Ultraを利用したセキュリティ強化"><a href="#UCG-Ultraを利用したセキュリティ強化" class="headerlink" title="UCG-Ultraを利用したセキュリティ強化"></a>UCG-Ultraを利用したセキュリティ強化</h2><h3 id="UCG-Ultraは何が出来るのか"><a href="#UCG-Ultraは何が出来るのか" class="headerlink" title="UCG-Ultraは何が出来るのか"></a>UCG-Ultraは何が出来るのか</h3><p>セキュリティに関しては話をシンプルにするため、一旦IPv4のみ割り当てが行われた状態で確認していきます。</p>
 <h4 id="ジオロケーション"><a href="#ジオロケーション" class="headerlink" title="ジオロケーション"></a>ジオロケーション</h4><p>IPアドレスによる国別の認識が出来ています。</p>
 <img src="/new-technology/2024/06/25/UCG-Ultra/geo.png" class="" width="1024" title="alt">
 
@@ -492,15 +497,15 @@
 <p>一般的にブラウザで利用するトラフィックは一般的に9割以上がhttps通信と言われており、SSL&#x2F;TLSにより暗号化されています。暗号化されている通信はその間にUCG-Ultraが入り込んでも情報を奪取できません。それでもトラフィック識別ができているのは、接続先のIPアドレスに加え、SSL&#x2F;TLSによるハンドシェイク時にリクエストされるSNI（Server Name Indicator）が平文で相手のFQDNをリクエストするため、どんなアプリケーションを利用しているのか判定する事が可能になっています。例えば、Appleのサイトにhttps接続する場合に最初のハンドシェイク時にSNIの情報が確認できます。</p>
 <img src="/new-technology/2024/06/25/UCG-Ultra/wireshark.png" class="" width="1024" title="alt">
 
-<p>UCG-Ultraで識別が不能な場合は、トラフィック識別においてSSL&#x2F;TLSで一括りとなっています。またhttps通信をTCPではなくUDPを使い高速化したQUICプロトコルもあります。セキュリティレベルの高い事業者では、このQUICを認めないなどもある一方でGoogle系サービス（Gmail、Youtube）や国内の大手報道機関ではQUICプロトコルが採用されています。正直、SSL&#x2F;TLS、QUICが通信の大半と予想されます。</p>
-<p>ホームユーザーの用途としては疑わしい通信は排除する使い方となるため、IPSが一般的に使われます。しかしながら前述の通り暗号化された通信が大半である環境下において、IPSがシグネチャベースで検出する能力を持っていても、暗号化されたパケットは検査できません。従い過剰な期待は禁物です。これを実現するならばSSL&#x2F;TLSインスペクションといったSSL&#x2F;TLS解析の仕組みが必要ですが、大量のCPUリソースを使うことや端末毎にCA証明書のインストールが必要であるため個人向けには一般的ではありません。</p>
+<p>UCG-Ultraで識別が不能な場合は、UniFiのトラフィック識別においてSSL&#x2F;TLSで一括りとなっています。またhttps通信をTCPではなくUDPを使い高速化したQUICプロトコルもあります。セキュリティレベルの高い事業者では、このQUICを認めないなどもある一方でGoogle系サービス（Gmail、Youtube）や国内の大手報道機関ではQUICプロトコルが採用されています。正直、SSL&#x2F;TLS、QUICが通信の大半と予想されます。</p>
+<p>ユーザーとしては疑わしい通信は排除するIPSが一般的に使われます。しかしながら前述の通り暗号化された通信が大半である環境下において、IPSがシグネチャベースで検出する能力を持っていても、暗号化されたパケットは検査できません。これを実現するならばSSL&#x2F;TLSインスペクションといったSSL&#x2F;TLS解析の仕組みが必要ですが、大量のCPUリソースを使うことや端末毎にCA証明書のインストールが必要であるため個人向けには一般的ではありません。</p>
 <p>マルウェアやウィルスが配布されるような危険なサーバーに接続しようとしたところでDNSやIPS（SNIによる接続先検証）で防御することがまずはホームユーザー向けの対策と言えるでしょう。</p>
 <h4 id="広告ブロック"><a href="#広告ブロック" class="headerlink" title="広告ブロック"></a>広告ブロック</h4><p>UNAの設定（歯車アイコン）から、<mark class="label primary">セキュリティ</mark>を選択します。<br>ここでは<mark class="label primary">広告ブロック</mark>にチェックしておきます。他に追加の設定は不要です。<br>DNSシールドはDNSによる名前解決時にDoH（DNS over HTTPS）を使い、GoogleまたはCloudflareで名前解決するものです。TLS&#x2F;SSLで暗号化されているので、プロバイダや途中の経路において、どこにアクセスしているのか判らないようにする目的があります。日本のISPはDDoS対策のために独自のDNSフィルタを実施していることや、その情報を売却するなどの行為が厳しいために日本においてはDNSシールドの重要性はあまり無いものと考えられます。<br>なお、このDNSフィルタを使っていても、広告ブロックは有効です。</p>
 <h3 id="UCG-Ultraを使ったセキュリティの高め方"><a href="#UCG-Ultraを使ったセキュリティの高め方" class="headerlink" title="UCG-Ultraを使ったセキュリティの高め方"></a>UCG-Ultraを使ったセキュリティの高め方</h3><p>UCG-Ultraを使ってどのようにセキュリティを高めるかという観点では、使える機能は使うべきということになるでしょう。利用することで特にデメリットとなることはパフォーマンスに関する観点くらいだと考えられます。</p>
 <ul>
-<li>IoT機器をお持ちであれば、PCなど多くのInternetとやり取りする機器とはネットワークを分離する。同様にリモートワークで使う会社貸与のPCなども自分が所有するPCとは分離することをお勧めします。これはタグVLANを設定し、実現させます。UniFiのAPを使うことでさらにSSID毎に属するVLANを変えられます。</li>
+<li>IoT機器をお持ちであれば、PCなど多くのInternetとやり取りする機器とはネットワークを分離する。同様にリモートワークで使う会社貸与のPCなども自分が所有するPCとは分離することをお勧めします。これはタグVLANを設定し実現します。UniFiのAPを使うことでさらにSSID毎に属するVLANを変えられます。</li>
 <li>広告フィルタを行う。これは広告サイトが必ずしも安全とは言えないこと、不要なトラフィックが減らせます。</li>
-<li>IPSでリスクのあるサイトをブロックする。不要なVPNサイトが止められるのはリスクを軽減できます。</li>
+<li>IPSでリスクのあるサイトをブロックする。不要なVPNサイトが止められリスクを軽減できます。</li>
 <li>国別フィルタを使って不要国を止める。米国から一定量の攻撃がある事からも米国を止めるのは現実的でありませんが、普段アクセスしない国が明確なのであれば停止すべきでしょう。</li>
 </ul>
 <h3 id="国別フィルタ、IPSの具体例"><a href="#国別フィルタ、IPSの具体例" class="headerlink" title="国別フィルタ、IPSの具体例"></a>国別フィルタ、IPSの具体例</h3><p>設定はとても簡単です。一例としては以下の通りです。</p>
@@ -509,12 +514,11 @@
 <p>フィルタリングは通知とブロック（IPS相当）とし、検出感度は高めに設定してあります。<br>さらに、ネットワーク（LAN）の画面からコンテンツフィルタを有効にします。</p>
 <img src="/new-technology/2024/06/25/UCG-Ultra/lan.png" class="" width="640" title="alt">
 
-<p>コンテンツフィルタリングは仕事、家族と選択できますが、家族にしておけばVPNを止められます。なお、IPv4の画面にはコンテンツフィルタリングの設定がありますが、IPv6の画面にはありません。</p>
-<p>私の環境ではこの設定を行った上でのInternet速度テストは以下の通りでした。</p>
+<p>コンテンツフィルタリングは仕事、家族と選択できますが、家族にしておけばVPNを止められます。<br>私の環境ではこの設定を行った上でのInternet速度テストは以下の通りでした。</p>
 <img src="/new-technology/2024/06/25/UCG-Ultra/speedtest2.png" class="" width="320" title="alt">
 
 <p>ダウンロードが947Mbpsから925Mbpsに下がりましたが、殆ど誤差でしょう。私の環境だと、パフォーマンスを意識してセキュリティレベルを下げる必要は無さそうです。</p>
-<p>これらのように設定は可能ですが、セキュリティの観点からはなかなかこれらの実効性を高めるのが難しいのが現状です。<br>中国のメーカーであっても、サーバーをAkamai（セキュリティベンダー）上に構築していたり、コンテンツデリバリネットワーク（CDN）やCloudflareにあれば同様に判定が難しくなります。</p>
+<p>ただし、フィルタをすり抜ける可能性もあります。中国のメーカーであっても、サーバーをAkamai（セキュリティベンダー）上に構築していたり、コンテンツデリバリネットワーク（CDN）やCloudflareにあれば同様に判定が難しくなります。</p>
 <p>また、危険なサイトに関する情報についてはIPv4に関しては情報共有は積極的に行われるものの、IPv6についてはその情報共有が少ないのが実情です。今後、IPv6のコンテンツフィルタ機能が拡充されたとしても、IPv4だけのネットワークの方がセキュリティ上は安全ともいえるジレンマを抱えることになります。</p>
 <p>UCG-Ultraではロシアや中国企業のWebサイトでアクセスできない（パケットは拒否される）事を確認できています。フィッシングの手口ではこれらの国はよく使われるため、これらの抑止策はフェールセーフとして期待できます。</p>
 <h3 id="アプリケーションのブロックとFirewallのブロック"><a href="#アプリケーションのブロックとFirewallのブロック" class="headerlink" title="アプリケーションのブロックとFirewallのブロック"></a>アプリケーションのブロックとFirewallのブロック</h3><p>UniFiゲートウェイには、アプリケーションタイプでの制御（許可、ブロック）と従来型のFirewallのネットワーク、Port単位の制御の2通りがあります。Ubiquitiはそれぞれ、<mark class="label primary">シンプル</mark>、<mark class="label primary">高度な</mark>と分かれています。<mark class="label primary">シンプル</mark>の方がアクセス統計のアプリから止められるため直感的で簡単です。ネットワークに慣れている方は従来のIPネットワーク、Portで止める方法もあります。ただ、自宅でサーバーを立てる時にPort8443などでWebサーバーを立てる事が多いように、必ずしもSSL&#x2F;TLSがPort443とは限りません。そういう意味ではアプリケーションで止めていく方が時代の流れには沿っていると考えられます。</p>
@@ -558,22 +562,19 @@
 <p>UI Japan Store Cloud Gateway Ultra<br><a target="_blank" rel="noopener" href="https://jp.store.ui.com/jp/ja/pro/category/cloud-gateways-compact/products/ucg-ultra">https://jp.store.ui.com/jp/ja/pro/category/cloud-gateways-compact/products/ucg-ultra</a></p>
 </blockquote>
 <p>価格は23,899円です。</p>
-<h2 id="Interop24"><a href="#Interop24" class="headerlink" title="Interop24"></a>Interop24</h2><p>6月14日の幕張で行われたInterop24でUbiquiti製品が紹介されていましたので、写真を撮ってきました。</p>
+<h2 id="Interop24"><a href="#Interop24" class="headerlink" title="Interop24"></a>Interop24</h2><p>6月12日〜14日の幕張で行われたInterop24でUbiquiti製品が紹介されていましたので、写真を撮ってきました。</p>
 <p>UXG-LiteとUCG-Ultra（これだとサイズ感が分からないですね。。。）</p>
 <img src="/new-technology/2024/06/25/UCG-Ultra/interop1.png" class="" width="1024" title="alt">
 
 <p>PoEスイッチ　Switch Ultra</p>
 <img src="/new-technology/2024/06/25/UCG-Ultra/interop2.png" class="" width="1024" title="alt">
 
-<p>UCG-UltraはPoEを持っていないので、APを接続する際は、別途PoEアダプタが必要となります。このSwitch UltraはPoEによる電源供給ができるのでAPや監視カメラなどを将来的に拡張していくのにちょうど良いスイッチかもしれません。</p>
+<p>UCG-UltraはPoEを持っていないので、UniFi APを接続する際は、別途PoEアダプタが必要となります。このSwitch UltraはPoEによる電源供給ができるのでAPや監視カメラなどを将来的に拡張していくのにちょうど良いスイッチかもしれません。</p>
 <blockquote>
 <p>Switch Ultra<br> <a target="_blank" rel="noopener" href="https://jp.store.ui.com/jp/ja/pro/category/switching-utility/collections/pro-ultra">https://jp.store.ui.com/jp/ja/pro/category/switching-utility/collections/pro-ultra</a></p>
 </blockquote>
 <h2 id="補足説明"><a href="#補足説明" class="headerlink" title="補足説明"></a>補足説明</h2><blockquote>
 <p>Ubiquiti Japan ホームページ<br> <a target="_blank" rel="noopener" href="https://note.com/ui_japan">https://note.com/ui_japan</a></p>
-</blockquote>
-<blockquote>
-<p>Ubiquiti ヘルプセンター<br> <a target="_blank" rel="noopener" href="https://help.jp.ui.com/categories/6583256751383/">https://help.jp.ui.com/categories/6583256751383/</a></p>
 </blockquote>
 <blockquote>
 <p>Ubiquiti コミュニティ（日本）<br> <a target="_blank" rel="noopener" href="https://www.facebook.com/groups/uijapan">https://www.facebook.com/groups/uijapan</a></p>
