@@ -57,7 +57,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/06/25/UCG-Ultra/interop1.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/06/25/UCG-Ultra/interop2.png">
 <meta property="article:published_time" content="2024-06-25T01:20:00.000Z">
-<meta property="article:modified_time" content="2024-06-25T22:15:44.932Z">
+<meta property="article:modified_time" content="2024-06-26T13:50:51.804Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="UniFi">
 <meta name="twitter:card" content="summary">
@@ -302,7 +302,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">編集日</span>
-      <time title="修正日：2024-06-26 07:15:44" itemprop="dateModified" datetime="2024-06-26T07:15:44+09:00">2024-06-26</time>
+      <time title="修正日：2024-06-26 22:50:51" itemprop="dateModified" datetime="2024-06-26T22:50:51+09:00">2024-06-26</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -473,7 +473,7 @@
 
 <h4 id="トラフィック識別"><a href="#トラフィック識別" class="headerlink" title="トラフィック識別"></a>トラフィック識別</h4><img src="/new-technology/2024/06/25/UCG-Ultra/traffic.png" class="" width="1024" title="alt">
 
-<p>IDS&#x2F;IPSの設定をしていない初期設定状態でもトラフィックの識別はできています。この状態でのPCのスピードテストはワイヤレート（下り947Mbps&#x2F;上り942Mbps）の速度が出ています。</p>
+<p>IDS&#x2F;IPSの設定をしていない初期設定状態でもトラフィックの識別はできています。この状態でのPCのスピードテストはワイヤレート（下り947Mbps&#x2F;上り942Mbps）の速度が出ています。<br>(2024-06-26追記)<br>なお、LANからWANへのスループットはクライアントを複数台同時に利用した場合、上限は1Gbps程度のようです。WAN Portは2.5Gbpsですが、VPNなどを意識して少しWAN側の余力を持たせているのでしょうか。ファームウェアのダウンロード時も最低1Gbpsを確保するという考え方もありますが、ここの設計思想は私も理解できていません。</p>
 <h4 id="IDS-IPS"><a href="#IDS-IPS" class="headerlink" title="IDS&#x2F;IPS"></a>IDS&#x2F;IPS</h4><p>IDS&#x2F;IPSの説明は以下の通りです。</p>
 <table>
 <thead>
@@ -518,7 +518,7 @@
 <img src="/new-technology/2024/06/25/UCG-Ultra/speedtest2.png" class="" width="320" title="alt">
 
 <p>ダウンロードが947Mbpsから925Mbpsに下がりましたが、殆ど誤差でしょう。私の環境だと、パフォーマンスを意識してセキュリティレベルを下げる必要は無さそうです。</p>
-<p>ただし、フィルタをすり抜ける可能性もあります。中国のメーカーであっても、サーバーをAkamai（セキュリティベンダー）上に構築していたり、コンテンツデリバリネットワーク（CDN）やCloudflareにあれば同様に判定が難しくなります。</p>
+<p>国別フィルタは、フィルタをすり抜ける可能性もあります。中国のメーカーであっても、サーバーをAkamai（セキュリティベンダー）上に構築していたり、コンテンツデリバリネットワーク（CDN）やCloudflareにあれば同様に判定が難しくなります。</p>
 <p>また、危険なサイトに関する情報についてはIPv4に関しては情報共有は積極的に行われるものの、IPv6についてはその情報共有が少ないのが実情です。今後、IPv6のコンテンツフィルタ機能が拡充されたとしても、IPv4だけのネットワークの方がセキュリティ上は安全ともいえるジレンマを抱えることになります。</p>
 <p>UCG-Ultraではロシアや中国企業のWebサイトでアクセスできない（パケットは拒否される）事を確認できています。フィッシングの手口ではこれらの国はよく使われるため、これらの抑止策はフェールセーフとして期待できます。</p>
 <h3 id="アプリケーションのブロックとFirewallのブロック"><a href="#アプリケーションのブロックとFirewallのブロック" class="headerlink" title="アプリケーションのブロックとFirewallのブロック"></a>アプリケーションのブロックとFirewallのブロック</h3><p>UniFiゲートウェイには、アプリケーションタイプでの制御（許可、ブロック）と従来型のFirewallのネットワーク、Port単位の制御の2通りがあります。Ubiquitiはそれぞれ、<mark class="label primary">シンプル</mark>、<mark class="label primary">高度な</mark>と分かれています。<mark class="label primary">シンプル</mark>の方がアクセス統計のアプリから止められるため直感的で簡単です。ネットワークに慣れている方は従来のIPネットワーク、Portで止める方法もあります。ただ、自宅でサーバーを立てる時にPort8443などでWebサーバーを立てる事が多いように、必ずしもSSL&#x2F;TLSがPort443とは限りません。そういう意味ではアプリケーションで止めていく方が時代の流れには沿っていると考えられます。</p>
