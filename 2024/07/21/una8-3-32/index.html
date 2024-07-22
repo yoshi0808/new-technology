@@ -19,12 +19,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
 
-    <meta name="description" content="この記事で実現すること  米国Ubiquiti（ユビキティ）社のUniFi製品のコントローラーとして利用するUniFi Network Application（以下、UNA）の8.3.32(Official)が提供されています。特にゲートウェイにおけるNAT機能において機能強化が図られています。この記事ではこのバージョンで強化されたNATのセキュリティ対応としての実例を示します。">
+    <meta name="description" content="この記事で実現すること  米国Ubiquiti（ユビキティ）社のUniFi製品のコントローラーとして利用するUniFi Network Application（以下、UNA）の8.3.32(Official)が提供されています。特にゲートウェイにおけるNAT機能において機能強化が図られています。この記事は本バージョンで強化されたNATのセキュリティ対応を纏めています。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="UniFi Network Application 8.3.32">
 <meta property="og:url" content="https://yoshi0808.github.io/new-technology/2024/07/21/una8-3-32/index.html">
 <meta property="og:site_name" content="New technologies in our life">
-<meta property="og:description" content="この記事で実現すること  米国Ubiquiti（ユビキティ）社のUniFi製品のコントローラーとして利用するUniFi Network Application（以下、UNA）の8.3.32(Official)が提供されています。特にゲートウェイにおけるNAT機能において機能強化が図られています。この記事ではこのバージョンで強化されたNATのセキュリティ対応としての実例を示します。">
+<meta property="og:description" content="この記事で実現すること  米国Ubiquiti（ユビキティ）社のUniFi製品のコントローラーとして利用するUniFi Network Application（以下、UNA）の8.3.32(Official)が提供されています。特にゲートウェイにおけるNAT機能において機能強化が図られています。この記事は本バージョンで強化されたNATのセキュリティ対応を纏めています。">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/07/21/una8-3-32/title.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/07/21/una8-3-32/dns.drawio.png">
@@ -36,7 +36,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/07/21/una8-3-32/masq1.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2024/07/21/una8-3-32/nat1.png">
 <meta property="article:published_time" content="2024-07-20T23:00:00.000Z">
-<meta property="article:modified_time" content="2024-07-21T08:38:14.940Z">
+<meta property="article:modified_time" content="2024-07-22T09:46:39.821Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="UniFi">
 <meta name="twitter:card" content="summary">
@@ -273,9 +273,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">投稿日</span>
-      
 
-      <time title="作成日：2024-07-21 08:00:00 / 修正日：17:38:14" itemprop="dateCreated datePublished" datetime="2024-07-21T08:00:00+09:00">2024-07-21</time>
+      <time title="作成日：2024-07-21 08:00:00" itemprop="dateCreated datePublished" datetime="2024-07-21T08:00:00+09:00">2024-07-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">編集日</span>
+      <time title="修正日：2024-07-22 18:46:39" itemprop="dateModified" datetime="2024-07-22T18:46:39+09:00">2024-07-22</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -300,7 +306,7 @@
 
 <p class="onepoint">この記事で実現すること</p>
 
-<p>米国Ubiquiti（ユビキティ）社のUniFi製品のコントローラーとして利用するUniFi Network Application（以下、UNA）の8.3.32(Official)が提供されています。特にゲートウェイにおけるNAT機能において機能強化が図られています。この記事ではこのバージョンで強化されたNATのセキュリティ対応としての実例を示します。</p>
+<p>米国Ubiquiti（ユビキティ）社のUniFi製品のコントローラーとして利用するUniFi Network Application（以下、UNA）の8.3.32(Official)が提供されています。特にゲートウェイにおけるNAT機能において機能強化が図られています。この記事は本バージョンで強化されたNATのセキュリティ対応を纏めています。</p>
 <span id="more"></span>
 
 <h2 id="UNA8-3"><a href="#UNA8-3" class="headerlink" title="UNA8.3"></a>UNA8.3</h2><p>以下の機能が追加されています。</p>
@@ -309,15 +315,15 @@
 <li>検査モニタリングの一元化<br> 侵入防止、トラフィックおよびファイアウォールルール、広告ブロッキングなどのセキュリティサービスの詳細なアクティビティログを1つのインターフェースで表示します。</li>
 <li>より詳細なスイッチ分離設定<br> ACLルールを使用して、同じネットワーク内または異なるネットワーク間の特定のトラフィックをブロックします。</li>
 </ul>
-<p>UNA8.3.32でダブルNATを回避できるようになり、これはホームユーザーにとっても期待されていた機能です。</p>
-<h2 id="NATの種類"><a href="#NATの種類" class="headerlink" title="NATの種類"></a>NATの種類</h2><p>一般的に、NATというと、自宅で利用するIPv4プライベートIPアドレスをグローバルIPアドレスに変換してインターネットに接続する技術ですが、これは厳密には<strong>ソースNAT</strong>（Source NAT、SNAT）またはIPマスカレードと呼ばれます。単に送信元のIPアドレスをプライベートからパブリックに変換するだけならSNATですが、IPアドレスとTCP Portの組み合わせでセッションを管理（紐付け）されているのがIPマスカレードです。これに対して、宛先を変換する<strong>宛先NAT</strong>（Destination NAT、DNAT）という機能があります。DNATは宛先のIPアドレスを別のIPアドレスに強制的に変更するものです。</p>
-<p>DNATは負荷分散装置で、複数あるサーバーに一定ロジックで振り分けることに使われたり、パブリックIPアドレスを持つサーバーにプライベートネットワークから接続する場合に強制的に向き先を変更することなどを目的とされています。</p>
+<p>UNA8.3.32でダブルNATを回避できるようになりました。これはホームユーザーにとっても期待されていた機能です。</p>
+<h2 id="NATの種類"><a href="#NATの種類" class="headerlink" title="NATの種類"></a>NATの種類</h2><p>一般的にNATというと、自宅で利用するIPv4プライベートIPアドレスをグローバルIPアドレスに変換してインターネットに接続する技術ですが、これは厳密には<strong>ソースNAT</strong>（Source NAT、SNAT）または<strong>IPマスカレード</strong>と呼ばれます。単に送信元のIPアドレスをプライベートからパブリックに変換するだけならSNATですが、IPアドレスとTCP Portの組み合わせでセッションを管理（紐付け）されているのがIPマスカレードです。これに対して、宛先を変換する<strong>宛先NAT</strong>（Destination NAT、DNAT）という機能があります。DNATは宛先のIPアドレスを別のIPアドレスに強制的に変更するものです。</p>
+<p>負荷分散装置で複数あるサーバーに一定ルールで振り分けたり、パブリックIPアドレスを持つサーバーにプライベートネットワークから接続するよう強制的に向き先を変更することなど、DNATは様々な場所で活用されています。</p>
 <p>今回はセキュリティの観点からホームユーザーにも使い道のあるDNATを紹介します。</p>
-<h2 id="クライアントに強制的にUniFi-GatewayのDNSを参照させる"><a href="#クライアントに強制的にUniFi-GatewayのDNSを参照させる" class="headerlink" title="クライアントに強制的にUniFi GatewayのDNSを参照させる"></a>クライアントに強制的にUniFi GatewayのDNSを参照させる</h2><p>この記事の実例は、IoTなど、DHCPでDNSを指定してもそれを無視してクラウドDNS（GoogleDNSなどの8.8.8.8）を参照する機器や行儀の悪いアプリケーションへの対策になります。企業や個人向けのルータでは一般的にHTTPSやDNSが許可されていることを理由に攻撃者から見て、DDos攻撃などを行いやすい環境になっています。IoTの許可のない情報収集などは、クラウドのファイルサービスに対して行うことも多いのですが、セキュアなDNSやFirewallで阻止される可能性もあるため、外部DNS（Port53）を使って遮断を回避する手口はよく使われます。外部DNS（Port53）へのアクセスをFirewallでRejectすることもできますが、IoTのサービスそのものが機能しなくなるのは困ります。そこでクラウドDNSにアクセスしているように騙し、リクエストを横取りするのがこれから説明するDNATによる宛先IPアドレスの変換です。</p>
+<h2 id="クライアントに強制的にUniFi-GatewayのDNSを参照させる"><a href="#クライアントに強制的にUniFi-GatewayのDNSを参照させる" class="headerlink" title="クライアントに強制的にUniFi GatewayのDNSを参照させる"></a>クライアントに強制的にUniFi GatewayのDNSを参照させる</h2><p>この記事の実例は、IoTなど、DHCPでDNSを指定してもそれを無視してクラウドDNS（GoogleDNSなどの8.8.8.8）を参照する機器や行儀の悪いアプリケーションへの対策になります。企業や個人向けのルータでは一般的にHTTPSやDNSが許可されていることを前提に攻撃者はDDos攻撃のシナリオを作成します。また、IoTの許可のない情報収集などは、クラウドのファイルサービスに対して行われるケースもありますが、セキュアなDNSやFirewallで阻止される可能性もあるため、クラウドDNS（Port53）を使って遮断を回避する手口はよく使われます。クラウドDNS（Port53）へのアクセスをFirewallでRejectできますが、IoTのサービスそのものが機能しなくなるのは困ります。そこでクラウドDNSにアクセスしているように騙し、リクエストを横取りするのがこれから説明するDNATによる宛先IPアドレスの変換です。</p>
 <p>つまり、セキュリティを守るために行われる正当かつ原始的な中間者攻撃（Man-in-the-middle Attack）となります。</p>
 <img src="/new-technology/2024/07/21/una8-3-32/dns.drawio.png" class="" width="480" title="alt">
 
-<p>なお、今回はDNSについて書いていますが、UNAの<mark class="label primary">ネットワーク</mark>-&gt;「<mark class="label primary">コンテンツフィルタリング</mark>」や<mark class="label primary">セキュリティ</mark>-&gt;<mark class="label primary">広告ブロック</mark>を有効にすると自動的にUniFiゲートウェイ自身のDNS参照が強制されます。ですので、IoT向けにこの2つの機能を外してUCG-Ultraで検証します。</p>
+<p>なお、今回はDNSについて書いていますが、UNAの<mark class="label primary">ネットワーク</mark>-&gt;「<mark class="label primary">コンテンツフィルタリング</mark>」や<mark class="label primary">セキュリティ</mark>-&gt;<mark class="label primary">広告ブロック</mark>を有効にすると自動的にUniFi Gateway自身のDNS参照が強制されます。ですので、IoT向けにこの2つの機能を外してUCG-Ultraで検証します。</p>
 <h3 id="DNATの設定"><a href="#DNATの設定" class="headerlink" title="DNATの設定"></a>DNATの設定</h3><p>ここではUniFi GatewayのLANを<code>192.168.1.1</code>として設定しています。</p>
 <img src="/new-technology/2024/07/21/una8-3-32/dnat.png" class="" width="1024" title="alt">
 
@@ -329,14 +335,15 @@
 </ul>
 <p>実行結果</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\yoshi&gt;nslookup test.home</span><br><span class="line">サーバー:  dns.google</span><br><span class="line">Address:  8.8.8.8</span><br><span class="line"></span><br><span class="line">名前:    test.home</span><br><span class="line">Address:  192.168.100.200</span><br></pre></td></tr></table></figure>
+
 <p>このようにクライアントはGoogle DNSを参照しているつもりでいますが、DNSからの回答としてプライベートIPアドレスを返します。<br>このDNAT設定をオフにすると以下のようになります。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\yoshi&gt;nslookup test.home</span><br><span class="line">サーバー:  dns.google</span><br><span class="line">Address:  8.8.8.8</span><br><span class="line"></span><br><span class="line">*** dns.google が test.home を見つけられません: Non-existent domain</span><br></pre></td></tr></table></figure>
 
-<p>このようにしてDNSを強制的にUniFi Gatewayに向けることができます。</p>
-<h3 id="応用編"><a href="#応用編" class="headerlink" title="応用編"></a>応用編</h3><p>もし、UniFi Gatewayを利用せず、独自にLAN内にセキュアなDNSや内部向けDNSを構築されている環境ではどうでしょうか？LANのインタフェースではない、別のLANセグメントにDNSがある場合は、DNATが有効に機能しますが、UniFi GatewayのLANと同じセグメントにDNSがある場合、少し工夫が必要となります。</p>
+<p>このようにDNSを強制的にUniFi Gatewayに向けることができます。</p>
+<h3 id="応用編"><a href="#応用編" class="headerlink" title="応用編"></a>応用編</h3><p>UniFi GatewayのDNSを利用せず、独自にLAN内にセキュアなDNSや内部向けDNSを構築されている環境ではどうでしょうか？別のLANセグメントにDNSがある場合はDNATが有効に機能しますが、UniFi GatewayのLANと同じセグメントにDNSがある場合、少し工夫が必要です。</p>
 <img src="/new-technology/2024/07/21/una8-3-32/dnserror.drawio.png" class="" width="480" title="alt">
 
-<p>この例のように、IoTからリクエストされたDNSクエリは最初にUniFi Gatewayにリクエストされますが、リクエストしていない機器（DNS）からの応答が返って来ることになり、パケットを受信できません。</p>
+<p>IoTからリクエストされたDNSクエリは最初にUniFi Gatewayを経由し、DNATされ、DNSにリクエストされます。但し、返りのパケットは、DNSからの応答が直接IoTに返って来ることになり、（IoTがリクエストしていない機器からの）パケットを受信できません。</p>
 <p>この対策として、IPマスカレードを追加することになります。</p>
 <img src="/new-technology/2024/07/21/una8-3-32/dnsmasq.drawio.png" class="" width="480" title="alt">
 
@@ -345,16 +352,16 @@
 <p>最初にDNATを構成します。</p>
 <img src="/new-technology/2024/07/21/una8-3-32/dnat1.png" class="" width="1024" title="alt">
 
-<p>ここでは、DNATの宛先として、DNSサーバのIPアドレスを指定します。</p>
+<p>ここでは、DNATの宛先として、DNSサーバーのIPアドレスを指定します。</p>
 <p>続いてマスカレードの設定です。</p>
 <img src="/new-technology/2024/07/21/una8-3-32/masq1.png" class="" width="1024" title="alt">
 
-<p>ここで、送信先の<mark class="label primary">IPグループ</mark>で<mark class="label primary">新しい</mark>のリンクをクリックし、新しいIPアドレス、つまりDNSサーバのIPアドレスを指定します。さらに、<mark class="label primary">ポートグループ</mark>で<mark class="label primary">新しい</mark>リンクをクリックし、DNSのPort53の設定を行います。</p>
-<p>この登録を行い、DNAT→Masqueradeの順序に並びます。</p>
+<p>ここで、送信先の<mark class="label primary">IPグループ</mark>で<mark class="label primary">新しい</mark>リンクをクリックし、新しいIPアドレス、つまりDNSサーバーのIPアドレスを登録します。さらに、<mark class="label primary">ポートグループ</mark>で<mark class="label primary">新しい</mark>リンクをクリックし、DNSのPort53を登録します。</p>
+<p>２つの登録を行った結果、DNAT→Masqueradeの順序に並びます。</p>
 <img src="/new-technology/2024/07/21/una8-3-32/nat1.png" class="" width="800" title="alt">
 
 <p>これでクライアントからInternetに向けたDNSリクエストは全てLAN内のDNSに強制的に参照されることになります。行儀の悪いIoTやアプリケーションからは「卑怯だぞ」という声が聞こえてきそうです<span class="github-emoji" alias="grin" style="" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f601.png?v8">&#x1f601;</span>。</p>
-<h2 id="ご参考"><a href="#ご参考" class="headerlink" title="ご参考"></a>ご参考</h2><p>Ubiquiti JapanからのUNA8.3の記事には概要が記載されています。あくまでNAT機能の概要でしたので具体例を記載してみました。なお、まだ発売されていませんが、Cloud Gateway Maxにも言及されていますね。今度は全て2.5Gbpsポートを持つゲートウェイということに加え、監視カメラ（Protect）に対応することにもなり（動画保存用にNVMe SSDというのが素敵です）、個人向けとして楽しみなプロダクトになりそうです。</p>
+<h2 id="ご参考"><a href="#ご参考" class="headerlink" title="ご参考"></a>ご参考</h2><p>Ubiquiti JapanからのUNA8.3の記事では、NAT機能の概要のみが記載されていましたので具体例を記載してみました。なお、まだ発売されていませんが、Cloud Gateway Maxにも言及されていますね。今度は全て2.5Gbpsポートを持つゲートウェイということに加え、監視カメラ（Protect）に対応することにもなり（動画保存用にNVMe SSDというのが素敵です）、個人向けとして楽しみなプロダクトになりそうです。</p>
 <blockquote>
 <p>UI Japan UniFi Networkの進化: Site Manager | Network Application8.3 | クラウドゲートウェイマックス<br> <a target="_blank" rel="noopener" href="https://note.com/ui_japan/n/n503fc31a3442">https://note.com/ui_japan/n/n503fc31a3442</a></p>
 </blockquote>
