@@ -19,8 +19,6 @@ date: 2020-06-14 22:19:20
 2024-01-22に発表されたVMWareブログによりますと、スタンドアロン製品の提供を終了し、サブスクリプションモデルに変更されることとなりました。この無償版ESXiは今後提供停止となりますが、サポートは継続されるとの事です。
 無償版ESXiの利用にあたっては、まずこちらの記事「{% post_link EOS-Free-esxi %}」を参照されることをお勧めします。
 
-2024-02-29には、ESXi8.0のパッチ（VMware-ESXi-8.0U2b-23305546-depot）が提供されています。無償版ESXiの安全な運用は当面継続できそうです。
-
 ## パッチのダウンロードサイトの変更について
 
 無償ESXiのライセンスをお持ちの方、つまりVMware Support Accountをお持ちのユーザー宛に、2024-05-03未明にBroadcomから以下のタイトルのメールを受信されている事と思われます。
@@ -54,16 +52,10 @@ SSHでESXiに接続し、コマンドラインでパッチを適用します。W
 
 ESXiのパッチ情報は以下を参照してください。当該ページの左ペインメニューには最新パッチの情報が掲載されていますので、最新のパッチ情報を辿ってください。また、過去のパッチの情報も提供されています。
 
-> VMware ESXi 8.0 Update 2b （2024-03-01リリースノート発表）
- <https://docs.vmware.com/en/VMware-vSphere/8.0/rn/vsphere-esxi-80u2b-release-notes/index.html>
+> VMware ESXi 8.0 Update 3b （2024-09-24リリースノート発表）
+ <https://docs.vmware.com/en/VMware-vSphere/8.0/rn/vsphere-esxi-80u3b-release-notes/index.html>
 
 セキュリティパッチと不具合修正があります。セキュリティ対応も含め適用をお勧めします。久しぶりということで忘れがちですが、アップデートで稀に動作しなくなるデバイスが発生するケースもありますので事前の仮想マシンのバックアップをお勧めします。
-
-なお、ESXi8.0の最新パッチという意味では2024年5月21日に発表されているESXi 8.0 Update 2cが最新のパッチとなりますが、こちらはリリースノートにあるように、vSANを使用したESXiを対象としているとのことです。従い、個人向けESXiという意味ではその前のUpdate 2bのパッチを当てる方が大多数と思われるので、ここの手順としてはUpdate 2bの内容をそのまま掲載しておきます。Update 2cのダウンロードは以下のリリースノートを参照してください。
-
-> VMware ESXi 8.0 Update 2c （2024-05-21リリースノート発表）
- <https://docs.vmware.com/en/VMware-vSphere/8.0/rn/vsphere-esxi-80u2c-release-notes/index.html#Release-Note-Section-18622>
-
 
 ESXi7.0は2024-05-21に提供されています。
 
@@ -99,11 +91,12 @@ VMWare vSphereを選択します。
 
 {% asset_img broadcom5.png 800 alt %}
 
-最新のパッチである"VMware-ESXi-8.0U2b-23305546-depot"のリンクが現れるのでクリックしダウンロードします。
+本来であれば、vSphere Hypervisorが選択肢としてあるべきですが、Standardを選びます。
 
-本来であれば、vSphere Hypervisorが選択肢としてあるべきですが、今回はStandardを選んでいます。過去のESXi8でアップデートしたUpdate2bとコンペアしてみましたが、一致していました。
+最新のパッチである"VMware-ESXi-8.0U3b-24280767"のリンクが現れるのでクリックし、画面下部に移動し、"VMware-ESXi-8.0U3b-24280767-depot.zip"をダウンロードします。
 
-今後、Broadcomの移行が進むに従い、もう少しわかりやすいものになるとは考えられます。
+今回気づきましたが、このzipファイルのパッチの他にインストールファイル（.iso）も配置されていました。新規インストールも可能なようですね。
+> VMware-VMvisor-Installer-8.0U3b-24280767.x86_64.iso
 
 基本的にESXiは修正パッチを適用する場合はこの7.0、8.0という2桁の数字は変わりません。この数字が変わる更新をアップグレードと呼びます。それ以外の小さい更新をパッチまたはアップデートと呼びます。但し、Update2,Update3というグループがあり、さらにUpdate3k、Update3lという具合にグループ単位でパッチ毎に末尾の英字が大きくなっていきます。VMwareのパッチは累積パッチとなるため、最新のパッチを適用するだけでよく、古いパッチの適用は必要ありません。ここでは最新版のパッチをダウンロードします。
 
@@ -158,74 +151,78 @@ ESXiにログインし、以下の作業を行います。
  現在の実行中のprofileを確認します。`esxcli software profile get`
  ``` bash
 [root@localhost:~] esxcli software profile get
-   ESXi-8.0U2-22380479-standard
-   Name: ESXi-8.0U2-22380479-standard
+(Updated) ESXi-8.0U2b-23305546-standard
+   Name: (Updated) ESXi-8.0U2b-23305546-standard
    Vendor: VMware, Inc.
-   Creation Time: 2023-09-28T11:26:16
-   Modification Time: 2024-03-04T10:24:30
+   Creation Time: 2024-03-04T11:08:40
+   Modification Time: 2024-09-25T10:39:42
    Stateless Ready: True
  ```
 
  一般的にはバージョンの最後に"-standard"の文字が付いています。standard版がインストールされている事を示します。
  次に、パッチファイルに登録されているprofileを確認します（パッチはフルパス指定が必要です）。
  ``` bash
-[root@localhost:/vmfs/volumes/644d900e-e666deaf-8cf2-1c34da77cb4c/update] esxcli software sources profile list -d /vmfs/volumes/datastore1/update/VMware-ESXi-8.0U2b-23305546-depot.zip
+[root@localhost:/vmfs/volumes/651405f6-75b489bc-43eb-80615f0db1ce/update] esxcli software sources profile list -d /vmfs/volumes/datastore1/update/VMware-ESXi-8.0U3b-24280767-depot.zip
 Name                            Vendor        Acceptance Level  Creation Time        Modification Time
 ------------------------------  ------------  ----------------  -------------------  -----------------
-ESXi-8.0U2sb-23305545-standard  VMware, Inc.  PartnerSupported  2024-02-29T00:00:00  2024-02-29T00:00:00
-ESXi-8.0U2sb-23305545-no-tools  VMware, Inc.  PartnerSupported  2024-02-29T00:00:00  2024-02-14T06:50:08
-ESXi-8.0U2b-23305546-standard   VMware, Inc.  PartnerSupported  2024-02-29T00:00:00  2024-02-29T00:00:00
-ESXi-8.0U2b-23305546-no-tools   VMware, Inc.  PartnerSupported  2024-02-29T00:00:00  2024-02-14T08:21:05
+ESXi-8.0U3b-24280767-no-tools   VMware, Inc.  PartnerSupported  2024-09-17T00:00:00  2024-09-17T00:00:00
+ESXi-8.0U3b-24280767-standard   VMware, Inc.  PartnerSupported  2024-09-17T00:00:00  2024-09-17T00:00:00
+ESXi-8.0U3sb-24262298-no-tools  VMware, Inc.  PartnerSupported  2024-09-17T00:00:00  2024-09-17T00:00:00
+ESXi-8.0U3sb-24262298-standard  VMware, Inc.  PartnerSupported  2024-09-17T00:00:00  2024-09-17T00:00:00
 ```
 
-今回は、VMWareTools有/無と通常/セキュリティパッチのみのパターンです。繰り返しとなりますが、Updateでは基本的に使えなくなるデバイスは発生しないのですが、新たな不具合によってデバイスが動かないことはありえます。
-互換性ガイドでも特に8.0U2b向けのリストは出ていないので8.0U2からは変わっていないように見えます。
+VMWareTools有/無と通常/セキュリティパッチのみのパターンです。
+互換性ガイドにおいて特に8.0U3向けのハードウェアリストが出ていますので、ご自身のハードウェアが対応されているか確認してくだあい。
 > VMware Compatibility Guide
  <https://www.vmware.com/resources/compatibility/search.php>
 
  さて、VMWareTools有を前提として、パッチを２つ比較します。
- | ESXi-8.0U2b-23305546-standard（通常）                               | ESXi-8.0U2sb-23305545-standard（セキュリティパッチのみ）            |
- | ------------------------------------------------------------------- | ------------------------------------------------------------------- |
- | VMW_bootbank_pensandoatlas_1.46.0.E.28.1.314-2                      | VMW_bootbank_pensandoatlas_1.46.0.E.28.1.314                        |
- | VMware_bootbank_bmcal_8.0.2-0.30.23305546                           | VMware_bootbank_bmcal_8.0.2-0.25.23305545                           |
- | VMware_bootbank_bmcal-esxio_8.0.2-0.30.23305546                     | VMware_bootbank_bmcal-esxio_8.0.2-0.25.23305545                     |
- | VMware_bootbank_clusterstore_8.0.2-0.30.23305546                    | VMware_bootbank_clusterstore_8.0.2-0.25.23305545                    |
- | VMware_bootbank_cpu-microcode_8.0.2-0.30.23305546                   |                                                                     |
- | VMware_bootbank_crx_8.0.2-0.30.23305546                             | VMware_bootbank_crx_8.0.2-0.25.23305545                             |
- | VMware_bootbank_drivervm-gpu-base_8.0.2-0.30.23305546               | VMware_bootbank_drivervm-gpu-base_8.0.2-0.25.23305545               |
- | VMware_bootbank_esx-base_8.0.2-0.30.23305546                        | VMware_bootbank_esx-base_8.0.2-0.25.23305545                        |
- | VMware_bootbank_esx-dvfilter-generic-fastpath_8.0.2-0.30.23305546   | VMware_bootbank_esx-dvfilter-generic-fastpath_8.0.2-0.25.23305545   |
- | VMware_bootbank_esx-update_8.0.2-0.30.23305546                      | VMware_bootbank_esx-update_8.0.2-0.25.23305545                      |
- | VMware_bootbank_esx-xserver_8.0.2-0.30.23305546                     | VMware_bootbank_esx-xserver_8.0.2-0.25.23305545                     |
- | VMware_bootbank_esxio_8.0.2-0.30.23305546                           | VMware_bootbank_esxio_8.0.2-0.25.23305545                           |
- | VMware_bootbank_esxio-base_8.0.2-0.30.23305546                      | VMware_bootbank_esxio-base_8.0.2-0.25.23305545                      |
- | VMware_bootbank_esxio-combiner_8.0.2-0.30.23305546                  | VMware_bootbank_esxio-combiner_8.0.2-0.25.23305545                  |
- | VMware_bootbank_esxio-combiner-esxio_8.0.2-0.30.23305546            | VMware_bootbank_esxio-combiner-esxio_8.0.2-0.25.23305545            |
- | VMware_bootbank_esxio-dvfilter-generic-fastpath_8.0.2-0.30.23305546 | VMware_bootbank_esxio-dvfilter-generic-fastpath_8.0.2-0.25.23305545 |
- | VMware_bootbank_esxio-update_8.0.2-0.30.23305546                    | VMware_bootbank_esxio-update_8.0.2-0.25.23305545                    |
- | VMware_bootbank_gc_8.0.2-0.30.23305546                              | VMware_bootbank_gc_8.0.2-0.25.23305545                              |
- | VMware_bootbank_gc-esxio_8.0.2-0.30.23305546                        | VMware_bootbank_gc-esxio_8.0.2-0.25.23305545                        |
- | VMware_bootbank_infravisor_8.0.2-0.30.23305546                      | VMware_bootbank_infravisor_8.0.2-0.25.23305545                      |
- | VMware_bootbank_loadesx_8.0.2-0.30.23305546                         | VMware_bootbank_loadesx_8.0.2-0.25.23305545                         |
- | VMware_bootbank_loadesxio_8.0.2-0.30.23305546                       | VMware_bootbank_loadesxio_8.0.2-0.25.23305545                       |
- | VMware_bootbank_native-misc-drivers_8.0.2-0.30.23305546             | VMware_bootbank_native-misc-drivers_8.0.2-0.25.23305545             |
- | VMware_bootbank_native-misc-drivers-esxio_8.0.2-0.30.23305546       | VMware_bootbank_native-misc-drivers-esxio_8.0.2-0.25.23305545       |
- | VMware_bootbank_trx_8.0.2-0.30.23305546                             | VMware_bootbank_trx_8.0.2-0.25.23305545                             |
- | VMware_bootbank_vdfs_8.0.2-0.30.23305546                            | VMware_bootbank_vdfs_8.0.2-0.25.23305545                            |
- | VMware_bootbank_vds-vsip_8.0.2-0.30.23305546                        | VMware_bootbank_vds-vsip_8.0.2-0.25.23305545                        |
- | VMware_bootbank_vmware-hbrsrv_8.0.2-0.30.23305546                   |                                                                     |
- | VMware_bootbank_vsan_8.0.2-0.30.23305546                            | VMware_bootbank_vsan_8.0.2-0.25.23305545                            |
- | VMware_bootbank_vsanhealth_8.0.2-0.30.23305546                      | VMware_bootbank_vsanhealth_8.0.2-0.25.23305545                      |
- | VMware_locker_tools-light_12.3.5.22544099-23305545                  | VMware_locker_tools-light_12.3.5.22544099-23305545                  |
 
-いつもの通りですが、通常の方はセキュリティパッチのみよりも全体的なバージョンは上なので特段の理由がない場合は通常のパッチを適用します。
+| U3SB（セキュリティパッチのみ）                                       | U3B（不具合修正＋セキュリティパッチ）                                |
+| -------------------------------------------------------------------- | -------------------------------------------------------------------- |
+|                                                                      | VMW_bootbank_mlnx-bfbootctl-esxio_0.1-7vmw.803.0.35.24280767         |
+| VMW_bootbank_pensandoatlas_1.46.0.E.41.1.326-2vmw.803.0.0.0.23797590 | VMW_bootbank_pensandoatlas_1.46.0.E.41.1.326-2vmw.803.0.0.0.23797590 |
+|                                                                      | VMW_bootbank_rshim_0.1-12vmw.803.0.35.24280767                       |
+|                                                                      | VMW_bootbank_rshim-net_0.1.0-1vmw.803.0.35.24280767                  |
+| VMware_bootbank_bmcal_8.0.3-0.30.24262298                            | VMware_bootbank_bmcal_8.0.3-0.35.24280767                            |
+| VMware_bootbank_bmcal-esxio_8.0.3-0.30.24262298                      | VMware_bootbank_bmcal-esxio_8.0.3-0.35.24280767                      |
+| VMware_bootbank_clusterstore_8.0.3-0.30.24262298                     | VMware_bootbank_clusterstore_8.0.3-0.35.24280767                     |
+| VMware_bootbank_cpu-microcode_8.0.3-0.30.24262298                    | VMware_bootbank_cpu-microcode_8.0.3-0.35.24280767                    |
+| VMware_bootbank_crx_8.0.3-0.30.24262298                              | VMware_bootbank_crx_8.0.3-0.35.24280767                              |
+| VMware_bootbank_drivervm-gpu-base_8.0.3-0.30.24262298                | VMware_bootbank_drivervm-gpu-base_8.0.3-0.35.24280767                |
+| VMware_bootbank_esx-base_8.0.3-0.30.24262298                         | VMware_bootbank_esx-base_8.0.3-0.35.24280767                         |
+| VMware_bootbank_esx-dvfilter-generic-fastpath_8.0.3-0.30.24262298    | VMware_bootbank_esx-dvfilter-generic-fastpath_8.0.3-0.35.24280767    |
+| VMware_bootbank_esx-update_8.0.3-0.30.24262298                       | VMware_bootbank_esx-update_8.0.3-0.35.24280767                       |
+| VMware_bootbank_esx-xserver_8.0.3-0.30.24262298                      | VMware_bootbank_esx-xserver_8.0.3-0.35.24280767                      |
+| VMware_bootbank_esxio_8.0.3-0.30.24262298                            | VMware_bootbank_esxio_8.0.3-0.35.24280767                            |
+| VMware_bootbank_esxio-base_8.0.3-0.30.24262298                       | VMware_bootbank_esxio-base_8.0.3-0.35.24280767                       |
+| VMware_bootbank_esxio-combiner_8.0.3-0.30.24262298                   | VMware_bootbank_esxio-combiner_8.0.3-0.35.24280767                   |
+| VMware_bootbank_esxio-combiner-esxio_8.0.3-0.30.24262298             | VMware_bootbank_esxio-combiner-esxio_8.0.3-0.35.24280767             |
+| VMware_bootbank_esxio-dvfilter-generic-fastpath_8.0.3-0.30.24262298  | VMware_bootbank_esxio-dvfilter-generic-fastpath_8.0.3-0.35.24280767  |
+| VMware_bootbank_esxio-update_8.0.3-0.30.24262298                     | VMware_bootbank_esxio-update_8.0.3-0.35.24280767                     |
+| VMware_bootbank_gc_8.0.3-0.30.24262298                               | VMware_bootbank_gc_8.0.3-0.35.24280767                               |
+| VMware_bootbank_gc-esxio_8.0.3-0.30.24262298                         | VMware_bootbank_gc-esxio_8.0.3-0.35.24280767                         |
+| VMware_bootbank_infravisor_8.0.3-0.30.24262298                       | VMware_bootbank_infravisor_8.0.3-0.35.24280767                       |
+| VMware_bootbank_loadesx_8.0.3-0.30.24262298                          | VMware_bootbank_loadesx_8.0.3-0.35.24280767                          |
+| VMware_bootbank_loadesxio_8.0.3-0.30.24262298                        | VMware_bootbank_loadesxio_8.0.3-0.35.24280767                        |
+| VMware_bootbank_native-misc-drivers_8.0.3-0.30.24262298              | VMware_bootbank_native-misc-drivers_8.0.3-0.35.24280767              |
+| VMware_bootbank_native-misc-drivers-esxio_8.0.3-0.30.24262298        | VMware_bootbank_native-misc-drivers-esxio_8.0.3-0.35.24280767        |
+| VMware_bootbank_trx_8.0.3-0.30.24262298                              | VMware_bootbank_trx_8.0.3-0.35.24280767                              |
+| VMware_bootbank_vcls-pod-crx_8.0.3-0.30.24262298                     | VMware_bootbank_vcls-pod-crx_8.0.3-0.35.24280767                     |
+| VMware_bootbank_vdfs_8.0.3-0.30.24262298                             | VMware_bootbank_vdfs_8.0.3-0.35.24280767                             |
+| VMware_bootbank_vds-vsip_8.0.3-0.30.24262298                         | VMware_bootbank_vds-vsip_8.0.3-0.35.24280767                         |
+| VMware_bootbank_vsan_8.0.3-0.30.24262298                             | VMware_bootbank_vsan_8.0.3-0.35.24280767                             |
+| VMware_bootbank_vsanhealth_8.0.3-0.30.24262298                       | VMware_bootbank_vsanhealth_8.0.3-0.35.24280767                       |
+| VMware_locker_tools-light_12.4.5.23787635-24262298                   |                                                                      |
+
+本来であれば、不具合＋セキュリティパッチに全てのパッチが内包されており、セキュリティパッチの方はモジュールが少ないはずなのですが、今回はVMware_locker_tools-light_12.4.5.がセキュリティパッチ**のみ**に含まれています。バージョン自体は、これまで通り不具合＋セキュリティパッチの方が新しいため、恐らくVMWare Toolsの違いだけと考えられます。これまでの鉄則通り、不具合＋セキュリティパッチである、”ESXi-8.0U3b-24280767-standard”を適用します。
 
 #### パッチ適用
 
 以下のようにパッチファイルのzipをフルパスで指定し、VMwareのパッチ情報にあるプロファイル名を指定しパッチを適用します。ここではstandardを指定します。
 
 ``` bash
-[.../update] esxcli software profile update -d /vmfs/volumes/datastore1/update/VMware-ESXi-8.0U2b-23305546-depot.zip -p ESXi-8.0U2b-23305546-standard
+[.../update] esxcli software profile update -d /vmfs/volumes/datastore1/update/VMware-ESXi-8.0U3b-24280767-depot.zip -p ESXi-8.0U3b-24280767-standard
 ```
 
 `esxcli software profile update`の実行後しばらくしてから、結果が表示されます。
@@ -239,7 +236,7 @@ Update Result
 
 コマンドプロンプトから、`reboot`としてESXiを再起動します。
 
-再起動完了後、ESXiにログインします。左ペインメニューの"ホスト"をクリックし、バージョンの表記に今回パッチを当てたビルド番号が表示されている事を確認してください。今回はU2bとなっているはずです。
+再起動完了後、ESXiにログインします。左ペインメニューの"ホスト"をクリックし、バージョンの表記に今回パッチを当てたビルド番号が表示されている事を確認してください。今回はU3bとなっているはずです。
 
 {% asset_img esxi6.png 1024 alt %}
 
@@ -247,7 +244,7 @@ Update Result
 
  ``` bash
 [root@localhost:~] vmware -v
-VMware ESXi 8.0.2 build-23305546
+VMware ESXi 8.0.3 build-24280767
  ```
 
 ## 事後作業
