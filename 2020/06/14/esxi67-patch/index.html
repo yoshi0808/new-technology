@@ -38,7 +38,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/esxi6.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/rollback.png">
 <meta property="article:published_time" content="2020-06-14T13:19:20.000Z">
-<meta property="article:modified_time" content="2024-09-25T11:20:06.125Z">
+<meta property="article:modified_time" content="2024-09-25T11:32:22.096Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="ESXi">
 <meta name="twitter:card" content="summary">
@@ -283,7 +283,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">編集日</span>
-      <time title="修正日：2024-09-25 20:20:06" itemprop="dateModified" datetime="2024-09-25T20:20:06+09:00">2024-09-25</time>
+      <time title="修正日：2024-09-25 20:32:22" itemprop="dateModified" datetime="2024-09-25T20:32:22+09:00">2024-09-25</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -368,8 +368,12 @@
 <p>“VMware vSphere Standard”をクリックし、バージョンの”8”をクリックします。</p>
 <img src="/new-technology/2020/06/14/esxi67-patch/broadcom5.png" class="" width="800" title="alt">
 
-<p>最新のパッチである”VMware-ESXi-8.0U3b-24280767”のリンクが現れるのでクリックし、画面下部に移動し、”VMware-ESXi-8.0U3b-24280767-depot.zip”をダウンロードします。</p>
 <p>本来であれば、vSphere Hypervisorが選択肢としてあるべきですが、Standardを選びます。</p>
+<p>最新のパッチである”VMware-ESXi-8.0U3b-24280767”のリンクが現れるのでクリックし、画面下部に移動し、”VMware-ESXi-8.0U3b-24280767-depot.zip”をダウンロードします。</p>
+<p>今回気づきましたが、このzipファイルのパッチの他にインストールファイル（.iso）も配置されていました。新規インストールも可能なようですね。</p>
+<blockquote>
+<p>VMware-VMvisor-Installer-8.0U3b-24280767.x86_64.iso</p>
+</blockquote>
 <p>基本的にESXiは修正パッチを適用する場合はこの7.0、8.0という2桁の数字は変わりません。この数字が変わる更新をアップグレードと呼びます。それ以外の小さい更新をパッチまたはアップデートと呼びます。但し、Update2,Update3というグループがあり、さらにUpdate3k、Update3lという具合にグループ単位でパッチ毎に末尾の英字が大きくなっていきます。VMwareのパッチは累積パッチとなるため、最新のパッチを適用するだけでよく、古いパッチの適用は必要ありません。ここでは最新版のパッチをダウンロードします。</p>
 <h2 id="事前準備"><a href="#事前準備" class="headerlink" title="事前準備"></a>事前準備</h2><p>ESXiにログインし、以下の作業を行います。</p>
 <ul>
