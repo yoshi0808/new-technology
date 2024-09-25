@@ -14,10 +14,10 @@
 
 
 
-<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
   <link rel="stylesheet" href="/new-technology/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.21.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
 
     <meta name="description" content="この記事で実現すること  仮想環境のProxmox VEで仮想マシン（VM）の新規作成を行います。例示としてこの記事ではUbuntu24のセットアップを行います。ネットワークインターフェースと仮想マシンとの関係も見ていきます。">
 <meta property="og:type" content="article">
@@ -161,25 +161,25 @@
 
 
   <div class="search-pop-overlay">
-    <div class="popup search-popup"><div class="search-header">
-  <span class="search-icon">
-    <i class="fa fa-search"></i>
-  </span>
-  <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off" maxlength="80"
-           placeholder="検索…" spellcheck="false"
-           type="search" class="search-input">
-  </div>
-  <span class="popup-btn-close" role="button">
-    <i class="fa fa-times-circle"></i>
-  </span>
-</div>
-<div class="search-result-container no-result">
-  <div class="search-result-icon">
-    <i class="fa fa-spinner fa-pulse fa-5x"></i>
-  </div>
-</div>
-
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="検索…" spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -216,7 +216,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/new-technology/archives/">
-          <span class="site-state-item-count">93</span>
+          <span class="site-state-item-count">94</span>
           <span class="site-state-item-name">ポスト</span>
         </a>
       </div>
@@ -227,7 +227,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/new-technology/tags/">
-        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-count">27</span>
         <span class="site-state-item-name">タグ</span></a>
       </div>
   </nav>
@@ -432,7 +432,7 @@
 <h2 id="Proxmoxのセットアップの続き"><a href="#Proxmoxのセットアップの続き" class="headerlink" title="Proxmoxのセットアップの続き"></a>Proxmoxのセットアップの続き</h2><p>さて、Proxmoxの世界に戻ります。セットアップしているところでVMのサマリー画面を見ていると結構面白いですね。1vCPUと2GBのメモリでは少々足りないようです。</p>
 <img src="/new-technology/2024/02/19/Proxmox-new-vm/proxmox14.png" class="" width="1024" title="alt">
 
-<p>もちろん後からCPUとメモリは変更できます。4vCPU&#x2F;4GBのメモリでもFirefoxを起動し、Fast.comに接続すると結構しんどそうです（1.5Gbps）。Ryzen7 5700GのESXiでは2vCPU&#x2F;2GBで2.4Gbps、XCP-ngでは古いCore <a href="mailto:&#105;&#55;&#45;&#x38;&#55;&#x30;&#48;&#64;&#51;&#46;&#50;&#48;&#71;&#x48;&#122;">&#105;&#55;&#45;&#x38;&#55;&#x30;&#48;&#64;&#51;&#46;&#50;&#48;&#71;&#x48;&#122;</a>で2vCPU&#x2F;2GBで2.8Gbpsなので最適化という意味では若干改善の余地があるような気もします。これがCLIベースのSpeedtestだと3者共に殆ど結果が変わらないので何か描画などに関してオーバーヘッドがあるのかなという気がしています。</p>
+<p>もちろん後からCPUとメモリは変更できます。4vCPU&#x2F;4GBのメモリでもFirefoxを起動し、Fast.comに接続すると結構しんどそうです（1.5Gbps）。Ryzen7 5700GのESXiでは2vCPU&#x2F;2GBで2.4Gbps、XCP-ngでは古いCore <a href="mailto:&#105;&#55;&#x2d;&#56;&#x37;&#48;&#x30;&#x40;&#x33;&#x2e;&#x32;&#x30;&#x47;&#72;&#122;">&#105;&#55;&#x2d;&#56;&#x37;&#48;&#x30;&#x40;&#x33;&#x2e;&#x32;&#x30;&#x47;&#72;&#122;</a>で2vCPU&#x2F;2GBで2.8Gbpsなので最適化という意味では若干改善の余地があるような気もします。これがCLIベースのSpeedtestだと3者共に殆ど結果が変わらないので何か描画などに関してオーバーヘッドがあるのかなという気がしています。</p>
 <p>また、ゲストエージェントが未設定という表示もされています。</p>
 <h2 id="VMの確認と後工程"><a href="#VMの確認と後工程" class="headerlink" title="VMの確認と後工程"></a>VMの確認と後工程</h2><p>Ubuntuのセットアップが終了して再起動後、さらにUbuntuモジュールの更新処理が行われていきます。<br>それがひと段落したら、ゲストエージェントをインストールします。Ubuntu上の端末アプリケーションを起動し、以下のコマンドを入力します。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt install qemu-guest-agent</span><br></pre></td></tr></table></figure>
@@ -554,13 +554,13 @@ if (Cookies.get('PRVCY202112') != 'Agree') {
   
   <script src="/new-technology/lib/animejs/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
   <script src="/new-technology/lib/medium-zoom/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script>
-<script src="/new-technology/js/comments.js"></script><script src="/new-technology/js/utils.js"></script><script src="/new-technology/js/motion.js"></script><script src="/new-technology/js/schemes/muse.js"></script><script src="/new-technology/js/sidebar.js"></script><script src="/new-technology/js/next-boot.js"></script>
+<script src="/new-technology/js/comments.js"></script><script src="/new-technology/js/utils.js"></script><script src="/new-technology/js/motion.js"></script><script src="/new-technology/js/sidebar.js"></script><script src="/new-technology/js/next-boot.js"></script>
 
   <script src="/new-technology/lib/hexo-generator-searchdb/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
 <script src="/new-technology/js/third-party/search/local-search.js"></script>
 
 
-  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"/new-technology/lib/mermaid/dist/mermaid.min.js","integrity":"sha256-stuqcu2FrjYCXDOytWFA5SoUE/r3nkp6gTglzNSlavU="}}</script>
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"/new-technology/lib/mermaid/dist/mermaid.min.js","integrity":"sha256-YbM1pG3wWnzhyYN49g5fPnen+2CKEFaZfopkkwSpNtY="}}</script>
   <script src="/new-technology/js/third-party/tags/mermaid.js"></script>
 
 

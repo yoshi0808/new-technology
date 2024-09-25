@@ -14,10 +14,10 @@
 
 
 
-<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
   <link rel="stylesheet" href="/new-technology/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.21.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
 
     <meta name="description" content="この記事で実現すること XG Firewallなどの次世代Firewallで利用されているSSL&#x2F;TLSインスペクションについて、PCやiPhone等（Windows&#x2F;macOS&#x2F;Linux&#x2F;iOS）を防御する仕組み、および必要となる対応を説明します。">
 <meta property="og:type" content="article">
@@ -130,25 +130,25 @@
 
 
   <div class="search-pop-overlay">
-    <div class="popup search-popup"><div class="search-header">
-  <span class="search-icon">
-    <i class="fa fa-search"></i>
-  </span>
-  <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off" maxlength="80"
-           placeholder="検索…" spellcheck="false"
-           type="search" class="search-input">
-  </div>
-  <span class="popup-btn-close" role="button">
-    <i class="fa fa-times-circle"></i>
-  </span>
-</div>
-<div class="search-result-container no-result">
-  <div class="search-result-icon">
-    <i class="fa fa-spinner fa-pulse fa-5x"></i>
-  </div>
-</div>
-
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="検索…" spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -185,7 +185,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/new-technology/archives/">
-          <span class="site-state-item-count">93</span>
+          <span class="site-state-item-count">94</span>
           <span class="site-state-item-name">ポスト</span>
         </a>
       </div>
@@ -196,7 +196,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/new-technology/tags/">
-        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-count">27</span>
         <span class="site-state-item-name">タグ</span></a>
       </div>
   </nav>
@@ -299,7 +299,8 @@ XG Firewallなどの次世代Firewallで利用されているSSL/TLSインスペ
 <span id="more"></span>
 
 <h2 id="SSLインスペクションとは"><a href="#SSLインスペクションとは" class="headerlink" title="SSLインスペクションとは"></a>SSLインスペクションとは</h2><p>https通信では、サーバーとクライアント間がSSLで暗号化されます。SSLというのは本来はTLS（Transport Layer Security）が正しい名称ですが、SSLという言葉が過去より定着しているので、今日でも”SSL証明書”などSSLという言葉は一般的に使われます。この暗号化された通信をIPS（Intrusion Prevension System）は暗号を解読しながらコンテンツの中身の検査を行います。暗号通信の復号化方法として<mark class="label primary">SSL/TLSインスペクション</mark>という方式が採用されています。ここではSSL&#x2F;TLSインスペクションによりどのようにFirewallが暗号化された通信を「正当な方法で」解読するかをシーケンスで説明します。</p>
-<h2 id="ブラウザとサーバーのSSL-TLS通信のシーケンス"><a href="#ブラウザとサーバーのSSL-TLS通信のシーケンス" class="headerlink" title="ブラウザとサーバーのSSL&#x2F;TLS通信のシーケンス"></a>ブラウザとサーバーのSSL&#x2F;TLS通信のシーケンス</h2><pre class="mermaid">
+<h2 id="ブラウザとサーバーのSSL-TLS通信のシーケンス"><a href="#ブラウザとサーバーのSSL-TLS通信のシーケンス" class="headerlink" title="ブラウザとサーバーのSSL&#x2F;TLS通信のシーケンス"></a>ブラウザとサーバーのSSL&#x2F;TLS通信のシーケンス</h2><pre>
+<code class="mermaid">
 sequenceDiagram
 participant cl as クライアント&lt;br&gt;（ブラウザ）
 participant sv as Webサーバー
@@ -311,11 +312,13 @@ Note over cl: 4.一時的な共通鍵を作成し、サーバーの公開鍵で�
 cl -&gt;&gt;+ sv : 5.暗号化された共通鍵を送信
 sv --&gt;&gt;- cl : 6.共通鍵で暗号化されたデータの送信
 Note over cl: 7.共通鍵で復号
+</code>
 </pre>
 
 <p>上記のようにサーバーは公開鍵をクライアントに渡し、ブラウザ（クライアント）は保持しているルート証明書（ルート証明機関）への照合によってサーバーが正しいURLのものかを判別します。クライアントが生成した共通鍵はサーバーの公開鍵で暗号化されているため、サーバー自身が持つ秘密鍵でなければ解読できません。よって、クライアントとサーバーの間に第三者が割り込んでも電文の中身を解読できません。</p>
 <h2 id="Firewallを経由するSSL通信のシーケンス"><a href="#Firewallを経由するSSL通信のシーケンス" class="headerlink" title="Firewallを経由するSSL通信のシーケンス"></a>Firewallを経由するSSL通信のシーケンス</h2><p>正当な方法として、FirewallのCA証明書を予めクライアントに承認させることで、電文の検査を行う事ができます。実際にhttpsの通信を開始するシーケンスは以下の通りです。</p>
-<pre class="mermaid">
+<pre>
+<code class="mermaid">
 sequenceDiagram
 participant cl as クライアント&lt;br&gt;（ブラウザ）
 participant xg as Firewall
@@ -337,6 +340,7 @@ Note over xg: 13.共通鍵で復号
 Note over xg: 14.コンテンツの中身の検証
 xg --&gt;&gt;- cl : 15.共通鍵で暗号化されたデータの送信
 Note over cl: 16.共通鍵で復号
+</code>
 </pre>
 
 <p>FirewallはクライアントとWebサーバーとの間に入り、SSLの解読を行います。クライアントはFirewallが暗号化した電文を解読する事になります。</p>
@@ -466,13 +470,13 @@ if (Cookies.get('PRVCY202112') != 'Agree') {
   
   <script src="/new-technology/lib/animejs/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
   <script src="/new-technology/lib/medium-zoom/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script>
-<script src="/new-technology/js/comments.js"></script><script src="/new-technology/js/utils.js"></script><script src="/new-technology/js/motion.js"></script><script src="/new-technology/js/schemes/muse.js"></script><script src="/new-technology/js/sidebar.js"></script><script src="/new-technology/js/next-boot.js"></script>
+<script src="/new-technology/js/comments.js"></script><script src="/new-technology/js/utils.js"></script><script src="/new-technology/js/motion.js"></script><script src="/new-technology/js/sidebar.js"></script><script src="/new-technology/js/next-boot.js"></script>
 
   <script src="/new-technology/lib/hexo-generator-searchdb/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
 <script src="/new-technology/js/third-party/search/local-search.js"></script>
 
 
-  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"/new-technology/lib/mermaid/dist/mermaid.min.js","integrity":"sha256-stuqcu2FrjYCXDOytWFA5SoUE/r3nkp6gTglzNSlavU="}}</script>
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"/new-technology/lib/mermaid/dist/mermaid.min.js","integrity":"sha256-YbM1pG3wWnzhyYN49g5fPnen+2CKEFaZfopkkwSpNtY="}}</script>
   <script src="/new-technology/js/third-party/tags/mermaid.js"></script>
 
 
