@@ -9,7 +9,7 @@ categories:
 {% asset_img title.png 1024 alt %}
 <p class="onepoint">この記事で実現すること</p>
 
-無償版ESXi（VMware vSphere Hypervisor）について、ESXi8.0U1にアップグレードします。最新のESXiは8.0U2となっています。
+無償版ESXi（VMware vSphere Hypervisor）について、ESXi8.0U1にアップグレードします。最新のESXiは8.0U3bとなっています。
 
 <!-- more -->
 
@@ -17,6 +17,7 @@ categories:
 
 2024/1/22に発表されたVMWareブログによりますと、スタンドアロン製品の提供を終了し、サブスクリプションモデルに変更されることとなりました。この無償版ESXiは今後提供停止となりますが、サポートは継続されるとの事です。
 無償版ESXiの利用にあたっては、まずこちらの記事「{% post_link EOS-Free-esxi %}」を参照されることをお勧めします。
+現時点では、ESXi8のライセンスキーをお持ちの方が対象です。Broadcomサイトでは最新のisoモジュールがダウンロードできますが、ライセンスキーを新たに取得することはできません。
 
 ## ESXiのアップグレード
 
@@ -49,14 +50,9 @@ VMware互換性ガイドは個人向けのハードウェアが殆ど列挙さ�
 また、上記マニュアルには注意点としての記載がありませんが、スナップショットを取得していない状態でアップグレードされる事をお勧めします。
 
 ESXi8にアップグレードする例を記載しています。厳密なアップグレードパスについては以下を確認してください。
-{% asset_img upgradepath.png 640 alt %}
-
-<https://interopmatrix.vmware.com/Upgrade?productId=1363>
-
 
 > vCenter Server Back-in-time release 
  <https://kb.vmware.com/s/article/67077#vCenterServer_7.0.x_to_8.0_upgrade_matrix>
-
 
 ## 仮想マシンのバックアップ（任意）
 
@@ -64,10 +60,7 @@ ESXi8にアップグレードする例を記載しています。厳密なアッ
 
 ## アップグレード対象のESXi8.0を確認する
 
-ESXiのISOインストーラのダウンロードは、2023年9月23日時点ではESXi8.0 Update2となっています。
-
->VMware vSphere Hypervisor 8.0 ダウンロード センター(※VMware Customer Connectへログインが必要です)
- <https://customerconnect.vmware.com/jp/evalcenter?p=free-esxi8>
+ESXiのISOインストーラのダウンロードは、2024年9月29日時点ではESXi8.0 Update3bとなっています。
 
 ## ESXi8.0インストールメディア（USB）の作成
 
@@ -79,15 +72,33 @@ ESXiのISOインストーラのダウンロードは、2023年9月23日時点で
 
 以前は検証のためにUSB上にESXi7.0をセットアップできましたが、 ESXi8からはUSBへのテストセットアップできなくなっています。ハードウェアが準拠せずアップグレード後起動しない、NICが利用できない可能性があるため、仮想マシンのバックアップを確保される事をお勧めします。なお、個人向けのハードウェアで関係するところは、Mellanox Connect X-3がサポート対象外となりました。Mellanoxユーザーとしては、Connect X-4/X-5を使う事になるでしょう。
 
-### ESXi8.0 インストーラーのダウンロード
+### ESXi8.0 インストーラーのダウンロード（Broadcomサイト）
 
-以下からISOをダウンロードします。
+**Broadcomサポートポータル**にサインインし、画面上部のメニューの{% label primary@VMWare Cloud Foundation %}をクリックします。
+> Broadcom Support Portal
+ <https://support.broadcom.com/>
 
-<https://customerconnect.vmware.com/jp/web/vmware/evalcenter?p=free-esxi8>
+{% asset_img broadcom1.png 1024 alt %}
 
-ダウンロードは、”VMware vSphere Hypervisor (ESXi ISO) image”をダウンロードします。
+さらに、左ペインの{% label primary@My Download %}をクリックし、さらに画面左にある絞り込みのテキストボックスに"vSphere"と入力します。
 
-また、製品のライセンスキーが表示されていますので、メモを取っておいてください。
+{% asset_img broadcom2.png 1024 alt %}
+
+VMWare vSphereを選択します。
+
+{% asset_img broadcom3.png 1024 alt %}
+
+次に”Solutions”のタブをクリックします。
+
+{% asset_img broadcom4.png 800 alt %}
+
+"VMware vSphere Standard"をクリックし、バージョンの”8”をクリックします。
+
+{% asset_img broadcom5.png 800 alt %}
+
+本来であれば、vSphere Hypervisorが選択肢としてあるべきですが、Standardを選びます。
+
+最新のパッチである"VMware-ESXi-8.0U3b-24280767"のリンクが現れるのでクリックし、画面下部に移動し"VMware-VMvisor-Installer-8.0U3b-24280767.x86_64.iso"をダウンロードします。
 
 ### Rufusによるisoメディアの作成
 
@@ -109,8 +120,24 @@ ESXiのISOインストーラのダウンロードは、2023年9月23日時点で
 
 アップグレードが終了し、再起動する際にはUSBメディアは外してください。
 
+### 補足：この記事でのアップグレードの検証について
+
+私は現時点でESXi7がインストールされている検証機を保有していないため、ここでは今回ダウンロードしたESXi-8.0U3bのISOファイルをクリーンインストールして検証しています。インストールの中でクリーンインストールかアップグレードかを選択するため、特にアップグレードでも問題が発生することは無いものと考えられます。従来の"vSphere Hypervisor"ではなく、BroadcomではStandardのvSphereということで大丈夫なのか？という疑問があるかもしれませんが、これはライセンスキーを投入したところでvSphere Hypervisor"としての挙動をするようになります。
+{% asset_img install2.png 640 alt %}
+
+無事、vSphere Hypervisorのライセンスキーが通ります（手順は後述します）
+{% asset_img lisence.png 480 alt %}
+
+vSphere HypervisorとなってvMotionも無効になっています。
+{% asset_img esxi2.png 1024 alt %}
+
+そういえば、ESXiはストレージに対して厳しかったことをすっかり忘れていましたが、Lexar NM790 2TBは特に問題なく認識されています。
+{% asset_img esxi3.png 1024 alt %}
+
+## アップグレード後のログイン
+
 無事再起動したら管理画面にログインします。
-sshでESXiに接続し、`esxcli system version get`を実行し確認します。
+sshでESXiに接続し、`esxcli system version get`を実行し確認します（これはESXi8U1のケースです）。
 
 ``` bash
 [root@localhost:~] esxcli system version get
@@ -128,7 +155,7 @@ sshでESXiに接続し、`esxcli system version get`を実行し確認します�
 無事アップグレードが成功したら、以下の作業を行います。
 
 1. ESXi8.0のライセンス登録
- ESXiにログイン後、左ペインメニューの{% label primary@ホスト %}-{% label primary@管理 %}から{% label primary@ライセンスタブ %}を選択し、{% label primary@ライセンスの割り当て %}でダウンロード時に控えたライセンスキーを登録します。
+ ESXiにログイン後、左ペインメニューの{% label primary@ホスト %}-{% label primary@管理 %}から{% label primary@ライセンスタブ %}を選択し、{% label primary@ライセンスの割り当て %}で（VMWare時代の）ダウンロード時に控えたライセンスキーを登録します。※私はBroadcomサイトでのvSphere Hypervisorのライセンスのダウンロードは既に行えないものと理解しています（新規製品提供終了のため）
 2. ESXi8.0の最新パッチ適用
  ESXiのパッチ適用については、「{% post_link esxi67-patch %}」を参照してください。
 3. ESXi8.0の構成情報のバックアップ（任意）
