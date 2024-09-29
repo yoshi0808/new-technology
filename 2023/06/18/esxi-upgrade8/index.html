@@ -19,21 +19,29 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.21.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
 
-    <meta name="description" content="この記事で実現すること  無償版ESXi（VMware vSphere Hypervisor）について、ESXi8.0U1にアップグレードします。最新のESXiは8.0U2となっています。">
+    <meta name="description" content="この記事で実現すること  無償版ESXi（VMware vSphere Hypervisor）について、ESXi8.0U1にアップグレードします。最新のESXiは8.0U3bとなっています。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="VMware ESXiを8.0にアップグレードする">
 <meta property="og:url" content="https://yoshi0808.github.io/new-technology/2023/06/18/esxi-upgrade8/index.html">
 <meta property="og:site_name" content="New technologies in our life">
-<meta property="og:description" content="この記事で実現すること  無償版ESXi（VMware vSphere Hypervisor）について、ESXi8.0U1にアップグレードします。最新のESXiは8.0U2となっています。">
+<meta property="og:description" content="この記事で実現すること  無償版ESXi（VMware vSphere Hypervisor）について、ESXi8.0U1にアップグレードします。最新のESXiは8.0U3bとなっています。">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/06/18/esxi-upgrade8/title.png">
-<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/06/18/esxi-upgrade8/upgradepath.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/06/18/esxi-upgrade8/broadcom1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/06/18/esxi-upgrade8/broadcom2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/06/18/esxi-upgrade8/broadcom3.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/06/18/esxi-upgrade8/broadcom4.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/06/18/esxi-upgrade8/broadcom5.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/06/18/esxi-upgrade8/rufus1.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/06/18/esxi-upgrade8/install.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/06/18/esxi-upgrade8/install2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/06/18/esxi-upgrade8/lisence.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/06/18/esxi-upgrade8/esxi2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/06/18/esxi-upgrade8/esxi3.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/06/18/esxi-upgrade8/vmwaretools2.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2023/06/18/esxi-upgrade8/upgrade-vm.png">
 <meta property="article:published_time" content="2023-06-17T22:00:00.000Z">
-<meta property="article:modified_time" content="2024-01-30T05:47:22.321Z">
+<meta property="article:modified_time" content="2024-09-28T23:34:23.706Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="ESXi">
 <meta name="twitter:card" content="summary">
@@ -175,7 +183,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%94%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A0%85"><span class="nav-number">1.</span> <span class="nav-text">ご注意事項</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi%E3%81%AE%E3%82%A2%E3%83%83%E3%83%97%E3%82%B0%E3%83%AC%E3%83%BC%E3%83%89"><span class="nav-number">2.</span> <span class="nav-text">ESXiのアップグレード</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%AE%E6%83%B3%E3%83%9E%E3%82%B7%E3%83%B3%E3%81%AE%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%EF%BC%88%E4%BB%BB%E6%84%8F%EF%BC%89"><span class="nav-number">3.</span> <span class="nav-text">仮想マシンのバックアップ（任意）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%82%A2%E3%83%83%E3%83%97%E3%82%B0%E3%83%AC%E3%83%BC%E3%83%89%E5%AF%BE%E8%B1%A1%E3%81%AEESXi8-0%E3%82%92%E7%A2%BA%E8%AA%8D%E3%81%99%E3%82%8B"><span class="nav-number">4.</span> <span class="nav-text">アップグレード対象のESXi8.0を確認する</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi8-0%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E3%83%A1%E3%83%87%E3%82%A3%E3%82%A2%EF%BC%88USB%EF%BC%89%E3%81%AE%E4%BD%9C%E6%88%90"><span class="nav-number">5.</span> <span class="nav-text">ESXi8.0インストールメディア（USB）の作成</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ESXi8-0-%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%A9%E3%83%BC%E3%81%AE%E3%83%80%E3%82%A6%E3%83%B3%E3%83%AD%E3%83%BC%E3%83%89"><span class="nav-number">5.1.</span> <span class="nav-text">ESXi8.0 インストーラーのダウンロード</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Rufus%E3%81%AB%E3%82%88%E3%82%8Biso%E3%83%A1%E3%83%87%E3%82%A3%E3%82%A2%E3%81%AE%E4%BD%9C%E6%88%90"><span class="nav-number">5.2.</span> <span class="nav-text">Rufusによるisoメディアの作成</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi8-0%E3%81%B8%E3%81%AE%E3%82%A2%E3%83%83%E3%83%97%E3%82%B0%E3%83%AC%E3%83%BC%E3%83%89"><span class="nav-number">6.</span> <span class="nav-text">ESXi8.0へのアップグレード</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%8C%E5%87%A6%E7%90%86"><span class="nav-number">7.</span> <span class="nav-text">後処理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%AE%E6%83%B3%E3%83%9E%E3%82%B7%E3%83%B3%E3%81%AE%E3%82%A2%E3%83%83%E3%83%97%E3%82%B0%E3%83%AC%E3%83%BC%E3%83%89%EF%BC%88%E4%BB%BB%E6%84%8F%EF%BC%89"><span class="nav-number">8.</span> <span class="nav-text">仮想マシンのアップグレード（任意）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A7%8B%E6%88%90%E6%83%85%E5%A0%B1%E3%81%AE%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%EF%BC%88%E4%BB%BB%E6%84%8F%EF%BC%89"><span class="nav-number">9.</span> <span class="nav-text">構成情報のバックアップ（任意）</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%94%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A0%85"><span class="nav-number">1.</span> <span class="nav-text">ご注意事項</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi%E3%81%AE%E3%82%A2%E3%83%83%E3%83%97%E3%82%B0%E3%83%AC%E3%83%BC%E3%83%89"><span class="nav-number">2.</span> <span class="nav-text">ESXiのアップグレード</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%AE%E6%83%B3%E3%83%9E%E3%82%B7%E3%83%B3%E3%81%AE%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%EF%BC%88%E4%BB%BB%E6%84%8F%EF%BC%89"><span class="nav-number">3.</span> <span class="nav-text">仮想マシンのバックアップ（任意）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%82%A2%E3%83%83%E3%83%97%E3%82%B0%E3%83%AC%E3%83%BC%E3%83%89%E5%AF%BE%E8%B1%A1%E3%81%AEESXi8-0%E3%82%92%E7%A2%BA%E8%AA%8D%E3%81%99%E3%82%8B"><span class="nav-number">4.</span> <span class="nav-text">アップグレード対象のESXi8.0を確認する</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi8-0%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E3%83%A1%E3%83%87%E3%82%A3%E3%82%A2%EF%BC%88USB%EF%BC%89%E3%81%AE%E4%BD%9C%E6%88%90"><span class="nav-number">5.</span> <span class="nav-text">ESXi8.0インストールメディア（USB）の作成</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ESXi8-0-%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%A9%E3%83%BC%E3%81%AE%E3%83%80%E3%82%A6%E3%83%B3%E3%83%AD%E3%83%BC%E3%83%89%EF%BC%88Broadcom%E3%82%B5%E3%82%A4%E3%83%88%EF%BC%89"><span class="nav-number">5.1.</span> <span class="nav-text">ESXi8.0 インストーラーのダウンロード（Broadcomサイト）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Rufus%E3%81%AB%E3%82%88%E3%82%8Biso%E3%83%A1%E3%83%87%E3%82%A3%E3%82%A2%E3%81%AE%E4%BD%9C%E6%88%90"><span class="nav-number">5.2.</span> <span class="nav-text">Rufusによるisoメディアの作成</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi8-0%E3%81%B8%E3%81%AE%E3%82%A2%E3%83%83%E3%83%97%E3%82%B0%E3%83%AC%E3%83%BC%E3%83%89"><span class="nav-number">6.</span> <span class="nav-text">ESXi8.0へのアップグレード</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A3%9C%E8%B6%B3%EF%BC%9A%E3%81%93%E3%81%AE%E8%A8%98%E4%BA%8B%E3%81%A7%E3%81%AE%E3%82%A2%E3%83%83%E3%83%97%E3%82%B0%E3%83%AC%E3%83%BC%E3%83%89%E3%81%AE%E6%A4%9C%E8%A8%BC%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span class="nav-number">6.1.</span> <span class="nav-text">補足：この記事でのアップグレードの検証について</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%82%A2%E3%83%83%E3%83%97%E3%82%B0%E3%83%AC%E3%83%BC%E3%83%89%E5%BE%8C%E3%81%AE%E3%83%AD%E3%82%B0%E3%82%A4%E3%83%B3"><span class="nav-number">7.</span> <span class="nav-text">アップグレード後のログイン</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%8C%E5%87%A6%E7%90%86"><span class="nav-number">8.</span> <span class="nav-text">後処理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%AE%E6%83%B3%E3%83%9E%E3%82%B7%E3%83%B3%E3%81%AE%E3%82%A2%E3%83%83%E3%83%97%E3%82%B0%E3%83%AC%E3%83%BC%E3%83%89%EF%BC%88%E4%BB%BB%E6%84%8F%EF%BC%89"><span class="nav-number">9.</span> <span class="nav-text">仮想マシンのアップグレード（任意）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A7%8B%E6%88%90%E6%83%85%E5%A0%B1%E3%81%AE%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%EF%BC%88%E4%BB%BB%E6%84%8F%EF%BC%89"><span class="nav-number">10.</span> <span class="nav-text">構成情報のバックアップ（任意）</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -278,7 +286,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">編集日</span>
-      <time title="修正日：2024-01-30 14:47:22" itemprop="dateModified" datetime="2024-01-30T14:47:22+09:00">2024-01-30</time>
+      <time title="修正日：2024-09-29 08:34:23" itemprop="dateModified" datetime="2024-09-29T08:34:23+09:00">2024-09-29</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -302,10 +310,10 @@
     <div class="post-body" itemprop="articleBody"><img src="/new-technology/2023/06/18/esxi-upgrade8/title.png" class="" width="1024" title="alt">
 <p class="onepoint">この記事で実現すること</p>
 
-<p>無償版ESXi（VMware vSphere Hypervisor）について、ESXi8.0U1にアップグレードします。最新のESXiは8.0U2となっています。</p>
+<p>無償版ESXi（VMware vSphere Hypervisor）について、ESXi8.0U1にアップグレードします。最新のESXiは8.0U3bとなっています。</p>
 <span id="more"></span>
 
-<h2 id="ご注意事項"><a href="#ご注意事項" class="headerlink" title="ご注意事項"></a>ご注意事項</h2><p>2024&#x2F;1&#x2F;22に発表されたVMWareブログによりますと、スタンドアロン製品の提供を終了し、サブスクリプションモデルに変更されることとなりました。この無償版ESXiは今後提供停止となりますが、サポートは継続されるとの事です。<br>無償版ESXiの利用にあたっては、まずこちらの記事「<a href="/new-technology/2024/01/30/EOS-Free-esxi/" title="VMWare 無償版ESXiの提供終了について">VMWare 無償版ESXiの提供終了について</a>」を参照されることをお勧めします。</p>
+<h2 id="ご注意事項"><a href="#ご注意事項" class="headerlink" title="ご注意事項"></a>ご注意事項</h2><p>2024&#x2F;1&#x2F;22に発表されたVMWareブログによりますと、スタンドアロン製品の提供を終了し、サブスクリプションモデルに変更されることとなりました。この無償版ESXiは今後提供停止となりますが、サポートは継続されるとの事です。<br>無償版ESXiの利用にあたっては、まずこちらの記事「<a href="/new-technology/2024/01/30/EOS-Free-esxi/" title="VMWare 無償版ESXiの提供終了について">VMWare 無償版ESXiの提供終了について</a>」を参照されることをお勧めします。<br>現時点では、ESXi8のライセンスキーをお持ちの方が対象です。Broadcomサイトでは最新のisoモジュールがダウンロードできますが、ライセンスキーを新たに取得することはできません。</p>
 <h2 id="ESXiのアップグレード"><a href="#ESXiのアップグレード" class="headerlink" title="ESXiのアップグレード"></a>ESXiのアップグレード</h2><p>まず正式なアップグレードに関するドキュメントがVMwareより提供されており、こちらでポイントを確認します。アップデートとアップグレードとは異なります。<br>ESXiのバージョン体系は、”x”.”y” update “z” ビルド番号 という並びで表現されます。</p>
 <ul>
 <li>アップグレードは、前2桁（x,y）を上げることを指します。</li>
@@ -332,26 +340,36 @@
 <p>VMware互換性ガイドは個人向けのハードウェアが殆ど列挙されておらずチェックが困難なのが実態です。ハードウェアが準拠しているかどうかのチェックについては後述します。</p>
 <p>また、上記マニュアルには注意点としての記載がありませんが、スナップショットを取得していない状態でアップグレードされる事をお勧めします。</p>
 <p>ESXi8にアップグレードする例を記載しています。厳密なアップグレードパスについては以下を確認してください。</p>
-<img src="/new-technology/2023/06/18/esxi-upgrade8/upgradepath.png" class="" width="640" title="alt">
-
-<p><a target="_blank" rel="noopener" href="https://interopmatrix.vmware.com/Upgrade?productId=1363">https://interopmatrix.vmware.com/Upgrade?productId=1363</a></p>
 <blockquote>
 <p>vCenter Server Back-in-time release<br> <a target="_blank" rel="noopener" href="https://kb.vmware.com/s/article/67077#vCenterServer_7.0.x_to_8.0_upgrade_matrix">https://kb.vmware.com/s/article/67077#vCenterServer_7.0.x_to_8.0_upgrade_matrix</a></p>
 </blockquote>
 <h2 id="仮想マシンのバックアップ（任意）"><a href="#仮想マシンのバックアップ（任意）" class="headerlink" title="仮想マシンのバックアップ（任意）"></a>仮想マシンのバックアップ（任意）</h2><p>バージョンアップの前には仮想マシンのバックアップを別の筐体またはメディアに取得される事をお勧めします。「<a href="/new-technology/2020/10/11/esxi-backup/" title="VMware ESXiの仮想マシンをバックアップする">VMware ESXiの仮想マシンをバックアップする</a>」の記事を参照してください。ghettoVCBを使ったバックアップでは、ESXiにsshした上で、次のコマンドで全ての仮想マシンのバックアップ取得が可能です。<code>/bin/sh ./ghettoVCB.sh -a</code></p>
-<h2 id="アップグレード対象のESXi8-0を確認する"><a href="#アップグレード対象のESXi8-0を確認する" class="headerlink" title="アップグレード対象のESXi8.0を確認する"></a>アップグレード対象のESXi8.0を確認する</h2><p>ESXiのISOインストーラのダウンロードは、2023年9月23日時点ではESXi8.0 Update2となっています。</p>
-<blockquote>
-<p>VMware vSphere Hypervisor 8.0 ダウンロード センター(※VMware Customer Connectへログインが必要です)<br> <a target="_blank" rel="noopener" href="https://customerconnect.vmware.com/jp/evalcenter?p=free-esxi8">https://customerconnect.vmware.com/jp/evalcenter?p=free-esxi8</a></p>
-</blockquote>
+<h2 id="アップグレード対象のESXi8-0を確認する"><a href="#アップグレード対象のESXi8-0を確認する" class="headerlink" title="アップグレード対象のESXi8.0を確認する"></a>アップグレード対象のESXi8.0を確認する</h2><p>ESXiのISOインストーラのダウンロードは、2024年9月29日時点ではESXi8.0 Update3bとなっています。</p>
 <h2 id="ESXi8-0インストールメディア（USB）の作成"><a href="#ESXi8-0インストールメディア（USB）の作成" class="headerlink" title="ESXi8.0インストールメディア（USB）の作成"></a>ESXi8.0インストールメディア（USB）の作成</h2><p>ここではUSBメモリを用意し、ESXi8.0のインストーラーをセットアップします。<br>事前にハードウェア互換リストを元に互換性があるかチェックしたいところですが、実際に個人向けのハードウェアは殆ど列挙されていません。</p>
 <blockquote>
 <p>VMware Compatibility Guide<br> <a target="_blank" rel="noopener" href="https://www.vmware.com/resources/compatibility/search.php">https://www.vmware.com/resources/compatibility/search.php</a></p>
 </blockquote>
 <p>以前は検証のためにUSB上にESXi7.0をセットアップできましたが、 ESXi8からはUSBへのテストセットアップできなくなっています。ハードウェアが準拠せずアップグレード後起動しない、NICが利用できない可能性があるため、仮想マシンのバックアップを確保される事をお勧めします。なお、個人向けのハードウェアで関係するところは、Mellanox Connect X-3がサポート対象外となりました。Mellanoxユーザーとしては、Connect X-4&#x2F;X-5を使う事になるでしょう。</p>
-<h3 id="ESXi8-0-インストーラーのダウンロード"><a href="#ESXi8-0-インストーラーのダウンロード" class="headerlink" title="ESXi8.0 インストーラーのダウンロード"></a>ESXi8.0 インストーラーのダウンロード</h3><p>以下からISOをダウンロードします。</p>
-<p><a target="_blank" rel="noopener" href="https://customerconnect.vmware.com/jp/web/vmware/evalcenter?p=free-esxi8">https://customerconnect.vmware.com/jp/web/vmware/evalcenter?p=free-esxi8</a></p>
-<p>ダウンロードは、”VMware vSphere Hypervisor (ESXi ISO) image”をダウンロードします。</p>
-<p>また、製品のライセンスキーが表示されていますので、メモを取っておいてください。</p>
+<h3 id="ESXi8-0-インストーラーのダウンロード（Broadcomサイト）"><a href="#ESXi8-0-インストーラーのダウンロード（Broadcomサイト）" class="headerlink" title="ESXi8.0 インストーラーのダウンロード（Broadcomサイト）"></a>ESXi8.0 インストーラーのダウンロード（Broadcomサイト）</h3><p><strong>Broadcomサポートポータル</strong>にサインインし、画面上部のメニューの<mark class="label primary">VMWare Cloud Foundation</mark>をクリックします。</p>
+<blockquote>
+<p>Broadcom Support Portal<br> <a target="_blank" rel="noopener" href="https://support.broadcom.com/">https://support.broadcom.com/</a></p>
+</blockquote>
+<img src="/new-technology/2023/06/18/esxi-upgrade8/broadcom1.png" class="" width="1024" title="alt">
+
+<p>さらに、左ペインの<mark class="label primary">My Download</mark>をクリックし、さらに画面左にある絞り込みのテキストボックスに”vSphere”と入力します。</p>
+<img src="/new-technology/2023/06/18/esxi-upgrade8/broadcom2.png" class="" width="1024" title="alt">
+
+<p>VMWare vSphereを選択します。</p>
+<img src="/new-technology/2023/06/18/esxi-upgrade8/broadcom3.png" class="" width="1024" title="alt">
+
+<p>次に”Solutions”のタブをクリックします。</p>
+<img src="/new-technology/2023/06/18/esxi-upgrade8/broadcom4.png" class="" width="800" title="alt">
+
+<p>“VMware vSphere Standard”をクリックし、バージョンの”8”をクリックします。</p>
+<img src="/new-technology/2023/06/18/esxi-upgrade8/broadcom5.png" class="" width="800" title="alt">
+
+<p>本来であれば、vSphere Hypervisorが選択肢としてあるべきですが、Standardを選びます。</p>
+<p>最新のパッチである”VMware-ESXi-8.0U3b-24280767”のリンクが現れるのでクリックし、画面下部に移動し”VMware-VMvisor-Installer-8.0U3b-24280767.x86_64.iso”をダウンロードします。</p>
 <h3 id="Rufusによるisoメディアの作成"><a href="#Rufusによるisoメディアの作成" class="headerlink" title="Rufusによるisoメディアの作成"></a>Rufusによるisoメディアの作成</h3><p>以下のサイトからRufusをWindowsでダウンロードし実行します。</p>
 <blockquote>
 <p>Rufus<br> <a target="_blank" rel="noopener" href="https://rufus.ie/ja/">https://rufus.ie/ja/</a></p>
@@ -366,13 +384,25 @@
 <img src="/new-technology/2023/06/18/esxi-upgrade8/install.png" class="" width="1024" title="alt">
 
 <p>アップグレードが終了し、再起動する際にはUSBメディアは外してください。</p>
-<p>無事再起動したら管理画面にログインします。<br>sshでESXiに接続し、<code>esxcli system version get</code>を実行し確認します。</p>
+<h3 id="補足：この記事でのアップグレードの検証について"><a href="#補足：この記事でのアップグレードの検証について" class="headerlink" title="補足：この記事でのアップグレードの検証について"></a>補足：この記事でのアップグレードの検証について</h3><p>私は現時点でESXi7がインストールされている検証機を保有していないため、ここでは今回ダウンロードしたESXi-8.0U3bのISOファイルをクリーンインストールして検証しています。インストールの中でクリーンインストールかアップグレードかを選択するため、特にアップグレードでも問題が発生することは無いものと考えられます。従来の”vSphere Hypervisor”ではなく、BroadcomではStandardのvSphereということで大丈夫なのか？という疑問があるかもしれませんが、これはライセンスキーを投入したところでvSphere Hypervisor”としての挙動をするようになります。</p>
+<img src="/new-technology/2023/06/18/esxi-upgrade8/install2.png" class="" width="640" title="alt">
+
+<p>無事、vSphere Hypervisorのライセンスキーが通ります（手順は後述します）</p>
+<img src="/new-technology/2023/06/18/esxi-upgrade8/lisence.png" class="" width="480" title="alt">
+
+<p>vSphere HypervisorとなってvMotionも無効になっています。</p>
+<img src="/new-technology/2023/06/18/esxi-upgrade8/esxi2.png" class="" width="1024" title="alt">
+
+<p>そういえば、ESXiはストレージに対して厳しかったことをすっかり忘れていましたが、Lexar NM790 2TBは特に問題なく認識されています。</p>
+<img src="/new-technology/2023/06/18/esxi-upgrade8/esxi3.png" class="" width="1024" title="alt">
+
+<h2 id="アップグレード後のログイン"><a href="#アップグレード後のログイン" class="headerlink" title="アップグレード後のログイン"></a>アップグレード後のログイン</h2><p>無事再起動したら管理画面にログインします。<br>sshでESXiに接続し、<code>esxcli system version get</code>を実行し確認します（これはESXi8U1のケースです）。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost:~] esxcli system version get</span><br><span class="line">   Product: VMware ESXi</span><br><span class="line">   Version: 8.0.1</span><br><span class="line">   Build: Releasebuild-21495797</span><br><span class="line">   Update: 1</span><br><span class="line">   Patch: 0</span><br><span class="line">[root@localhost:~]</span><br></pre></td></tr></table></figure>
 
 <p>管理画面でもESXi8になっていることは確認できますし、<code>vmware -l</code>コマンドでも確認できますが、Versionとビルド番号で見るには上記コマンドを使います。</p>
 <h2 id="後処理"><a href="#後処理" class="headerlink" title="後処理"></a>後処理</h2><p>無事アップグレードが成功したら、以下の作業を行います。</p>
 <ol>
-<li>ESXi8.0のライセンス登録<br> ESXiにログイン後、左ペインメニューの<mark class="label primary">ホスト</mark>-<mark class="label primary">管理</mark>から<mark class="label primary">ライセンスタブ</mark>を選択し、<mark class="label primary">ライセンスの割り当て</mark>でダウンロード時に控えたライセンスキーを登録します。</li>
+<li>ESXi8.0のライセンス登録<br> ESXiにログイン後、左ペインメニューの<mark class="label primary">ホスト</mark>-<mark class="label primary">管理</mark>から<mark class="label primary">ライセンスタブ</mark>を選択し、<mark class="label primary">ライセンスの割り当て</mark>で（VMWare時代の）ダウンロード時に控えたライセンスキーを登録します。※私はBroadcomサイトでのvSphere Hypervisorのライセンスのダウンロードは既に行えないものと理解しています（新規製品提供終了のため）</li>
 <li>ESXi8.0の最新パッチ適用<br> ESXiのパッチ適用については、「<a href="/new-technology/2020/06/14/esxi67-patch/" title="VMware ESXiにパッチを適用する">VMware ESXiにパッチを適用する</a>」を参照してください。</li>
 <li>ESXi8.0の構成情報のバックアップ（任意）</li>
 </ol>
