@@ -339,7 +339,7 @@ ESXi代替としての仮想環境ソフトウェアのXCP-ng、またそのオ�
 
 <p>プルダウンから”guest-tools.iso”を選択します。その後Rocky Linuxを再起動します。</p>
 <p>端末を起動し、Shellから、以下のコマンドを順に投入します。マウント、Toolsのインストール、アンマウントです。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo mount /dev/cdrom /mnt</span><br><span class="line">sudo /mnt/Linux/install.sh</span><br><span class="line">sudo umount /dev/cdrom</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> mount /dev/cdrom /mnt</span><br><span class="line"><span class="built_in">sudo</span> /mnt/Linux/install.sh</span><br><span class="line"><span class="built_in">sudo</span> umount /dev/cdrom</span><br></pre></td></tr></table></figure>
 <p>これが終われば、特にリブートは不要でVMToolsのインストールが完了します。XCP-ngからリブート、シャットダウンが行え、また<mark class="label primary">Network</mark>のタブではL3の情報（IPアドレス）が表示出来るようになります。</p>
 <img src="/new-technology/2024/04/07/xcpng-newvm/xo4.png" class="" width="1024" title="alt">
 
@@ -354,7 +354,7 @@ ESXi代替としての仮想環境ソフトウェアのXCP-ng、またそのオ�
 <mark class="label primary">CPU limits</mark>と<mark class="label primary">Memory limits</mark>は、減らす方向であればOSを稼働させたままで変更可能です。起動時の最大値に戻すこともできます。なお、起動時の初期値は動作中には行えず、一度VMを停止する必要があります。
 
 <h2 id="モジュールのインストール"><a href="#モジュールのインストール" class="headerlink" title="モジュールのインストール"></a>モジュールのインストール</h2><p>Debian系と異なり、Rocky Linuxでモジュールをインストールする際は<code>sudo dnf -y install module-name</code>を使います。<br>SSHとiperf3はまず基本セットでしょうか。SSHはConfigの設定でPort22を空けるなど多少追加設定が必要です。また、iperf3で待ち受けする場合は、Firewallの設定も必要になってきます。セキュアなOSだけに少し手間が掛かりますね。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo dnf -y install openssh-server</span><br><span class="line">$ sudo dnf -y install iperf3</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> dnf -y install openssh-server</span><br><span class="line">$ <span class="built_in">sudo</span> dnf -y install iperf3</span><br></pre></td></tr></table></figure>
 
 <h2 id="Ryzen9でのパフォーマンス"><a href="#Ryzen9でのパフォーマンス" class="headerlink" title="Ryzen9でのパフォーマンス"></a>Ryzen9でのパフォーマンス</h2><p>前回記事で記載したように、XCP-ngをRyzenで構築した場合、Ubuntuではiperf3のネットワークパフォーマンス（送信）が2Gbps程度と厳しい状況でした。しかし、Rocky Linux9に関しては、iperf3の上り&#x2F;下り共に9.0Gbps&#x2F;9.3Gbpsであり、Retryは、145&#x2F;0と素晴らしい内容でした。今回は、XCP-ng8.3BetaをRyzen9 7900で、XCP-ng8.2.1に関してはintel CPUでそれぞれセットアップの確認をしており、どちらとも問題はありません。</p>
 <p>個人的にはあと3年半稼働できるESXi8を中心に使いつつ、少しづつProxmoxとXCP-ngも検証を続けていければと考えています。<br>ProxmoxにおけるRocky Linuxのiperf3は上り下り共に9.3Gbps前後出ていますが、送信時のRetryが13,000程度と異常値が出ています。ESXiでは当たり前のように使えていたものがいざ他のものに移ろうとすると、なかなか大変である事を実感しています。</p>

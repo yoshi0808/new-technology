@@ -376,8 +376,8 @@ XG Firewall v18のSSL/TLSインスペクションを使い、暗号化されたS
 <li>Linux上で証明書をインストールします。</li>
 </ol>
 <p> ubuntu、Debianの場合</p>
-  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo <span class="built_in">cp</span> /tmp/ca.crt /usr/local/share/ca-certificates/</span><br><span class="line">$ sudo update-ca-certificates</span><br></pre></td></tr></table></figure>
-<p> CentOS、Fedora、またはRedHatベースのシステムの場合<br>  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo <span class="built_in">cp</span> /tmp/ca.crt /etc/pki/ca-trust/source/anchors/</span><br><span class="line">$ sudo update-ca-trust</span><br></pre></td></tr></table></figure><br>※ubuntu20.04で動作確認をしています。</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> <span class="built_in">cp</span> /tmp/ca.crt /usr/local/share/ca-certificates/</span><br><span class="line">$ <span class="built_in">sudo</span> update-ca-certificates</span><br></pre></td></tr></table></figure>
+<p> CentOS、Fedora、またはRedHatベースのシステムの場合<br>  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> <span class="built_in">cp</span> /tmp/ca.crt /etc/pki/ca-trust/source/anchors/</span><br><span class="line">$ <span class="built_in">sudo</span> update-ca-trust</span><br></pre></td></tr></table></figure><br>※ubuntu20.04で動作確認をしています。</p>
 <h3 id="iOSにルート証明書をインストール"><a href="#iOSにルート証明書をインストール" class="headerlink" title="iOSにルート証明書をインストール"></a>iOSにルート証明書をインストール</h3><p>iOSで「ファイル」アプリを使います。</p>
 <ol>
 <li>iCloud Driveに証明書を配置します</li>

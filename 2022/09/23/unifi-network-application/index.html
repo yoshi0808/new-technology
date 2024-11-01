@@ -389,13 +389,13 @@
 
 <p>UniFi Network Applicationでは現時点でIPv4のみを利用しIPv6は未対応と考えてください。個々のスイッチ&#x2F;APはもちろんIPv6通信に対応していますが、機器本体の管理をIPv4で行います。</p>
 <h3 id="ufwの設定"><a href="#ufwの設定" class="headerlink" title="ufwの設定"></a>ufwの設定</h3><p>UniFi Consoleで最低限のPortを開けるため、UbuntuのFirewallであるufwを設定します。Ubuntuの<mark class="label primary">端末</mark>を起動します。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo ufw status</span><br><span class="line">状態: 非アクティブ</span><br><span class="line">$</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> ufw status</span><br><span class="line">状態: 非アクティブ</span><br><span class="line">$</span><br></pre></td></tr></table></figure>
 
 <p>ufwを有効にします。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo ufw <span class="built_in">enable</span></span><br><span class="line">ファイアウォールはアクティブかつシステムの起動時に有効化されます。</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> ufw <span class="built_in">enable</span></span><br><span class="line">ファイアウォールはアクティブかつシステムの起動時に有効化されます。</span><br></pre></td></tr></table></figure>
 
 <p>再度状態確認します。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo ufw status</span><br><span class="line">状態: アクティブ</span><br><span class="line">$</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> ufw status</span><br><span class="line">状態: アクティブ</span><br><span class="line">$</span><br></pre></td></tr></table></figure>
 
 <div class="note danger"><p>ESXiやVMRCを使わずSSHで接続しufwを有効にする場合は、SSHポート（22&#x2F;TCP)を許可しておかないと新しいSSHの接続ができません。再起動などのタイミングでSSHできず面倒になるのでご注意ください。なお、UniFi Network Applicationのセットアップ途中でSSHポートを開けます。</p>
 </div>
@@ -409,7 +409,7 @@
 <p>実行は3ステップです。Ubuntuの<mark class="label primary">端末</mark>から、以下のコマンドを実行します。</p>
 <ol>
 <li><p>管理者になります</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo -i</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> -i</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>証明書などのダウンロードをします。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ apt-get update; apt-get install ca-certificates wget -y</span><br></pre></td></tr></table></figure>
