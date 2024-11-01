@@ -169,12 +169,12 @@ Freeで絞り込むとTorのBlockListカタログなどを見つけられます�
 
 ## その他
 
-その他はURLhausやOSINTといったコミュニティベースの情報をFirewallに取り込めます。
+その他はURLhausやDigitalSide Threat-Intelといったコミュニティベースの情報をFirewallに取り込めます。
 
 > URLhaus
  <https://urlhaus.abuse.ch>
 
-> OSINT
+> DigitalSide Threat-Intel
  <https://osint.digitalside.it/> 
 
 ここでは詳細説明を割愛します。これら２つはサインアップ不要で脅威フィードを公開しています。
