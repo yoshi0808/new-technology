@@ -987,14 +987,14 @@
   </url>
   
   <url>
-    <loc>https://yoshi0808.github.io/new-technology/tags/DeepL/</loc>
+    <loc>https://yoshi0808.github.io/new-technology/tags/proxmox/</loc>
     <lastmod>2024-11-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://yoshi0808.github.io/new-technology/tags/proxmox/</loc>
+    <loc>https://yoshi0808.github.io/new-technology/tags/DeepL/</loc>
     <lastmod>2024-11-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1016,13 +1016,6 @@
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/tags/bitwarden/</loc>
-    <lastmod>2024-11-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://yoshi0808.github.io/new-technology/tags/IPv6/</loc>
     <lastmod>2024-11-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1072,6 +1065,13 @@
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/tags/SK-hynix-Platinum-P41/</loc>
+    <lastmod>2024-11-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/tags/IPv6/</loc>
     <lastmod>2024-11-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
