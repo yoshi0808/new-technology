@@ -19,31 +19,6 @@ date: 2020-06-14 22:19:20
 2024-01-22に発表されたVMWareブログによりますと、スタンドアロン製品の提供を終了し、サブスクリプションモデルに変更されることとなりました。この無償版ESXiは今後提供停止となりますが、サポートは継続されるとの事です。
 無償版ESXiの利用にあたっては、まずこちらの記事「{% post_link EOS-Free-esxi %}」を参照されることをお勧めします。
 
-## パッチのダウンロードサイトの変更について
-
-無償ESXiのライセンスをお持ちの方、つまりVMware Support Accountをお持ちのユーザー宛に、2024-05-03未明にBroadcomから以下のタイトルのメールを受信されている事と思われます。
-`ACTION NEEDED: Migrate your VMware Support Account to Broadcom`
-
-このメールの一部を引用します。
-
->all VMware support accounts (ie. VMware Customer Connect) are being migrated to Broadcom's support accounts. Your VMware support account will stop working on May 6, 2024.
-
->Please take action now. You must activate your Broadcom support account and update your profile information before you can access the Broadcom Support Portal.
-
->To activate your Broadcom account, click your unique link here and follow the prompts that begin with resetting your password from the Broadcom screen. You can refer to this article for detailed instructions.
-
->Once you activate your account successfully, you will be directed to the Broadcom Support Portal, where it will show you as logged in, with your name appearing in the upper right of your screen. Please note that your active VMware product entitlements will not be made available in the Broadcom Support Portal until May 6, 2024.
-
->（要約）VMware support accountは、Broadcomのsupport accountに移行されています。VMware support accountは、2024-05-06に使えなくなります。
-
->Broadcomのsupport accountを有効化し、プロファイル情報を更新する必要があります。直ちに対応が必要です。
-
->アカウントの有効化に成功し、Broadcom support portalに入ると、ログイン中と表示され、画面の右上にあなたの名前が表示されます。ただし、アクティブな VMware 製品の資格は、2024-05-06まではBroadcom support portalで利用できません。
-
-斜め読みすると「すぐに対応しないとアカウントが閉鎖されてしまう」などと誤解を招くような文章にも受け取れますが、ちゃんと読むと旧VMwareのサイトは使えずBroadcomでサービスが継続されるが、Broadcomサイトでは移行の準備で5/6まではVMWareの移行データが参照できないという事ですね。
-
-メール本文にはユーザー毎のユニークなLinkがあり、そちらをクリックすることでBroadcomサイトに飛び、そこで新しいパスワードを設定し移行を完了させます。
-
 ## パッチ適用に必要なもの
 
 SSHでESXiに接続し、コマンドラインでパッチを適用します。Windows11ではOpenSSHがデフォルトで導入されています。Windows10ではOpenSSHがサポートされていますので、{% label primary@オプション機能を追加する %}から{% label primary@OpenSSHクライアント %}を有効にし、コマンドラインから`ssh  root@ESXiのIPアドレス`で接続可能です。
@@ -52,24 +27,25 @@ SSHでESXiに接続し、コマンドラインでパッチを適用します。W
 
 ESXiのパッチ情報は以下を参照してください。当該ページの左ペインメニューには最新パッチの情報が掲載されていますので、最新のパッチ情報を辿ってください。また、過去のパッチの情報も提供されています。
 
-> VMware ESXi 8.0 Update 3b （2024-09-24リリースノート発表）
- <https://docs.vmware.com/en/VMware-vSphere/8.0/rn/vsphere-esxi-80u3b-release-notes/index.html>
+> VMware ESXi 8.0 Update 3c （2024-12-12リリースノート発表）
+ <https://docs.vmware.com/en/VMware-vSphere/8.0/rn/vsphere-esxi-80u3c-release-notes/index.html>
 
-久しぶりということで忘れがちですが、アップデートで稀に動作しなくなるデバイスが発生するケースもありますので事前の仮想マシンのバックアップをお勧めします。
+アップデートで稀に動作しなくなるデバイスが発生するケースもありますので事前の仮想マシンのバックアップをお勧めします。
 
-ESXi7.0は2024-05-21に提供されています。
+ESXi7.0も2024-12-12に提供されています。
 
-> VMware ESXi 7.0 Update 3q（2024-5-21発表）
- <https://docs.vmware.com/en/VMware-vSphere/7.0/rn/vsphere-esxi-70u3q-release-notes/index.html>
+> VMware ESXi 7.0 Update 3r
+ <https://knowledge.broadcom.com/external/article/383775>
 
  この記事ではESXi7.0のパッチ適用の詳細は説明していません。ESXi8.0のものを参考に最新パッチをダウンロードし適用してください。
 
-> Broadcom サポートページ　VMware-ESXi-7.0U3q-23794027-depot
- <https://support.broadcom.com/web/ecx/solutiondetails?patchId=5330>
+> Broadcom サポートページ　VMware-ESXi-7.0U3r-24411414-depot
+ <https://support.broadcom.com/web/ecx/solutiondetails?patchId=5633>
 
 ## 製品パッチの情報を入手する（Broadcomサイト）
 
-**Broadcomサポートポータル**にサインインし、画面上部のメニューの{% label primary@VMWare Cloud Foundation %}をクリックします。
+**Broadcomサポートポータル**にサインインし、画面上部のメニューの{% label primary@VMWare Cloud Foundation %}をクリックします。アカウントを保有していない方は右上の**Register**からユーザー登録を行います。
+
 > Broadcom Support Portal
  <https://support.broadcom.com/>
 
@@ -89,14 +65,11 @@ VMWare vSphereを選択します。
 
 "VMware vSphere Standard"をクリックし、バージョンの”8”をクリックします。
 
-{% asset_img broadcom5.png 800 alt %}
-
 本来であれば、vSphere Hypervisorが選択肢としてあるべきですが、Standardを選びます。
 
-最新のパッチである"VMware-ESXi-8.0U3b-24280767"のリンクが現れるのでクリックし、画面下部に移動し、"VMware-ESXi-8.0U3b-24280767-depot.zip"をダウンロードします。
+最新のパッチである"VMware-ESXi-8.0U3c-24414501-depot"のリンクが現れるのでクリックし、画面下部に移動し、"VMware-ESXi-8.0U3c-24414501-depot.zip"をダウンロードします。
 
-今回気づきましたが、このzipファイルのパッチの他にインストールファイル（.iso）も配置されていました。新規インストールも可能なようですね。
-> VMware-VMvisor-Installer-8.0U3b-24280767.x86_64.iso
+{% asset_img broadcom5.png 800 alt %}
 
 基本的にESXiは修正パッチを適用する場合はこの7.0、8.0という2桁の数字は変わりません。この数字が変わる更新をアップグレードと呼びます。それ以外の小さい更新をパッチまたはアップデートと呼びます。但し、Update2,Update3というグループがあり、さらにUpdate3k、Update3lという具合にグループ単位でパッチ毎に末尾の英字が大きくなっていきます。VMwareのパッチは累積パッチとなるため、最新のパッチを適用するだけでよく、古いパッチの適用は必要ありません。ここでは最新版のパッチをダウンロードします。
 
@@ -146,83 +119,39 @@ ESXiにログインし、以下の作業を行います。
 
 #### 現在稼働中のプロファイルを確認
 
- 新しいドライバやバグフィックス、セキュリティパッチなど含めたprofileとして整合性が取れたvibのアップデートはprofile updateを実行します。ここでは、ESXi8.0Update2bからUpdate3bにアップデートすることを例にします。
+ 新しいドライバやバグフィックス、セキュリティパッチなど含めたprofileとして整合性が取れたvibのアップデートはprofile updateを実行します。ここでは、ESXi8.0Update3bからUpdate3cにアップデートすることを例にします。
 
  現在の実行中のprofileを確認します。`esxcli software profile get`
  ``` bash
 [root@localhost:~] esxcli software profile get
-(Updated) ESXi-8.0U2b-23305546-standard
-   Name: (Updated) ESXi-8.0U2b-23305546-standard
+(Updated) ESXi-8.0U3b-24280767-standard
+   Name: (Updated) ESXi-8.0U3b-24280767-standard
    Vendor: VMware, Inc.
-   Creation Time: 2024-03-04T11:08:40
-   Modification Time: 2024-09-25T10:39:42
+   Creation Time: 2024-09-25T10:50:12
+   Modification Time: 2024-12-21T00:38:33
    Stateless Ready: True
  ```
 
  一般的にはバージョンの最後に"-standard"の文字が付いています。standard版がインストールされている事を示します。
+ 
  次に、パッチファイルに登録されているprofileを確認します（パッチはフルパス指定が必要です）。
  ``` bash
-[root@localhost:/vmfs/volumes/651405f6-75b489bc-43eb-80615f0db1ce/update] esxcli software sources profile list -d /vmfs/volumes/datastore1/update/VMware-ESXi-8.0U3b-24280767-depot.zip
-Name                            Vendor        Acceptance Level  Creation Time        Modification Time
-------------------------------  ------------  ----------------  -------------------  -----------------
-ESXi-8.0U3b-24280767-no-tools   VMware, Inc.  PartnerSupported  2024-09-17T00:00:00  2024-09-17T00:00:00
-ESXi-8.0U3b-24280767-standard   VMware, Inc.  PartnerSupported  2024-09-17T00:00:00  2024-09-17T00:00:00
-ESXi-8.0U3sb-24262298-no-tools  VMware, Inc.  PartnerSupported  2024-09-17T00:00:00  2024-09-17T00:00:00
-ESXi-8.0U3sb-24262298-standard  VMware, Inc.  PartnerSupported  2024-09-17T00:00:00  2024-09-17T00:00:00
+[root@localhost:/vmfs/volumes/datastore1/update] esxcli software sources profile list -d /vmfs/volumes/datastore1/update/VMware-ESXi-8.0U3c-24414501-depot.zip
+Name                           Vendor        Acceptance Level  Creation Time        Modification Time
+-----------------------------  ------------  ----------------  -------------------  -----------------
+ESXi-8.0U3c-24414501-no-tools  VMware, Inc.  PartnerSupported  2024-12-12T00:00:00  2024-12-12T00:00:00
+ESXi-8.0U3c-24414501-standard  VMware, Inc.  PartnerSupported  2024-12-12T00:00:00  2024-12-12T00:00:00
 ```
 
-VMWareTools有/無と(不具合対応＋セキュリティパッチ)/セキュリティパッチのみのパターンです。
-互換性ガイドにおいて特に8.0U3向けのハードウェアリストが出ていますので、ご自身のハードウェアが対応されているか確認してくだあい。
-> VMware Compatibility Guide
- <https://www.vmware.com/resources/compatibility/search.php>
-
- さて、VMWareTools有を前提として、パッチを２つ比較します。
-
-| U3SB（セキュリティパッチのみ）                                       | U3B（不具合修正＋セキュリティパッチ）                                |
-| -------------------------------------------------------------------- | -------------------------------------------------------------------- |
-|                                                                      | VMW_bootbank_mlnx-bfbootctl-esxio_0.1-7vmw.803.0.35.24280767         |
-| VMW_bootbank_pensandoatlas_1.46.0.E.41.1.326-2vmw.803.0.0.0.23797590 | VMW_bootbank_pensandoatlas_1.46.0.E.41.1.326-2vmw.803.0.0.0.23797590 |
-|                                                                      | VMW_bootbank_rshim_0.1-12vmw.803.0.35.24280767                       |
-|                                                                      | VMW_bootbank_rshim-net_0.1.0-1vmw.803.0.35.24280767                  |
-| VMware_bootbank_bmcal_8.0.3-0.30.24262298                            | VMware_bootbank_bmcal_8.0.3-0.35.24280767                            |
-| VMware_bootbank_bmcal-esxio_8.0.3-0.30.24262298                      | VMware_bootbank_bmcal-esxio_8.0.3-0.35.24280767                      |
-| VMware_bootbank_clusterstore_8.0.3-0.30.24262298                     | VMware_bootbank_clusterstore_8.0.3-0.35.24280767                     |
-| VMware_bootbank_cpu-microcode_8.0.3-0.30.24262298                    | VMware_bootbank_cpu-microcode_8.0.3-0.35.24280767                    |
-| VMware_bootbank_crx_8.0.3-0.30.24262298                              | VMware_bootbank_crx_8.0.3-0.35.24280767                              |
-| VMware_bootbank_drivervm-gpu-base_8.0.3-0.30.24262298                | VMware_bootbank_drivervm-gpu-base_8.0.3-0.35.24280767                |
-| VMware_bootbank_esx-base_8.0.3-0.30.24262298                         | VMware_bootbank_esx-base_8.0.3-0.35.24280767                         |
-| VMware_bootbank_esx-dvfilter-generic-fastpath_8.0.3-0.30.24262298    | VMware_bootbank_esx-dvfilter-generic-fastpath_8.0.3-0.35.24280767    |
-| VMware_bootbank_esx-update_8.0.3-0.30.24262298                       | VMware_bootbank_esx-update_8.0.3-0.35.24280767                       |
-| VMware_bootbank_esx-xserver_8.0.3-0.30.24262298                      | VMware_bootbank_esx-xserver_8.0.3-0.35.24280767                      |
-| VMware_bootbank_esxio_8.0.3-0.30.24262298                            | VMware_bootbank_esxio_8.0.3-0.35.24280767                            |
-| VMware_bootbank_esxio-base_8.0.3-0.30.24262298                       | VMware_bootbank_esxio-base_8.0.3-0.35.24280767                       |
-| VMware_bootbank_esxio-combiner_8.0.3-0.30.24262298                   | VMware_bootbank_esxio-combiner_8.0.3-0.35.24280767                   |
-| VMware_bootbank_esxio-combiner-esxio_8.0.3-0.30.24262298             | VMware_bootbank_esxio-combiner-esxio_8.0.3-0.35.24280767             |
-| VMware_bootbank_esxio-dvfilter-generic-fastpath_8.0.3-0.30.24262298  | VMware_bootbank_esxio-dvfilter-generic-fastpath_8.0.3-0.35.24280767  |
-| VMware_bootbank_esxio-update_8.0.3-0.30.24262298                     | VMware_bootbank_esxio-update_8.0.3-0.35.24280767                     |
-| VMware_bootbank_gc_8.0.3-0.30.24262298                               | VMware_bootbank_gc_8.0.3-0.35.24280767                               |
-| VMware_bootbank_gc-esxio_8.0.3-0.30.24262298                         | VMware_bootbank_gc-esxio_8.0.3-0.35.24280767                         |
-| VMware_bootbank_infravisor_8.0.3-0.30.24262298                       | VMware_bootbank_infravisor_8.0.3-0.35.24280767                       |
-| VMware_bootbank_loadesx_8.0.3-0.30.24262298                          | VMware_bootbank_loadesx_8.0.3-0.35.24280767                          |
-| VMware_bootbank_loadesxio_8.0.3-0.30.24262298                        | VMware_bootbank_loadesxio_8.0.3-0.35.24280767                        |
-| VMware_bootbank_native-misc-drivers_8.0.3-0.30.24262298              | VMware_bootbank_native-misc-drivers_8.0.3-0.35.24280767              |
-| VMware_bootbank_native-misc-drivers-esxio_8.0.3-0.30.24262298        | VMware_bootbank_native-misc-drivers-esxio_8.0.3-0.35.24280767        |
-| VMware_bootbank_trx_8.0.3-0.30.24262298                              | VMware_bootbank_trx_8.0.3-0.35.24280767                              |
-| VMware_bootbank_vcls-pod-crx_8.0.3-0.30.24262298                     | VMware_bootbank_vcls-pod-crx_8.0.3-0.35.24280767                     |
-| VMware_bootbank_vdfs_8.0.3-0.30.24262298                             | VMware_bootbank_vdfs_8.0.3-0.35.24280767                             |
-| VMware_bootbank_vds-vsip_8.0.3-0.30.24262298                         | VMware_bootbank_vds-vsip_8.0.3-0.35.24280767                         |
-| VMware_bootbank_vsan_8.0.3-0.30.24262298                             | VMware_bootbank_vsan_8.0.3-0.35.24280767                             |
-| VMware_bootbank_vsanhealth_8.0.3-0.30.24262298                       | VMware_bootbank_vsanhealth_8.0.3-0.35.24280767                       |
-| VMware_locker_tools-light_12.4.5.23787635-24262298                   |                                                                      |
-
-本来であれば、不具合＋セキュリティパッチに全てのパッチが内包されており、セキュリティパッチの方はモジュールが少ないはずなのですが、今回はVMware_locker_tools-light_12.4.5.がセキュリティパッチ**のみ**に含まれています。バージョン自体は、これまで通り不具合＋セキュリティパッチの方が新しいため、恐らくVMWare Toolsの違いだけと考えられます。これまでの鉄則通り、不具合＋セキュリティパッチである、”ESXi-8.0U3b-24280767-standard”を適用します。
+今回はVMWareTools有/無のシンプルなパターンですね。
+今回はツール有りの、”ESXi-8.0U3c-24414501-standard”を適用します。
 
 #### パッチ適用
 
 以下のようにパッチファイルのzipをフルパスで指定し、VMwareのパッチ情報にあるプロファイル名を指定しパッチを適用します。ここではstandardを指定します。
 
 ``` bash
-[.../update] esxcli software profile update -d /vmfs/volumes/datastore1/update/VMware-ESXi-8.0U3b-24280767-depot.zip -p ESXi-8.0U3b-24280767-standard
+[.../update] esxcli software profile update -d /vmfs/volumes/datastore1/update/VMware-ESXi-8.0U3c-24414501-depot.zip -p ESXi-8.0U3c-24414501-standard
 ```
 
 `esxcli software profile update`の実行後しばらくしてから、結果が表示されます。
@@ -230,13 +159,15 @@ VMWareTools有/無と(不具合対応＋セキュリティパッチ)/セキュ�
 ```
 Update Result
    Message: The update completed successfully, but the system needs to be rebooted for the changes to be effective.
+   ...
+   Reboot Required: true
 ```
 
 #### 再起動と結果確認
 
 コマンドプロンプトから、`reboot`としてESXiを再起動します。
 
-再起動完了後、ESXiにログインします。左ペインメニューの"ホスト"をクリックし、バージョンの表記に今回パッチを当てたビルド番号が表示されている事を確認してください。今回はU3bとなっているはずです。
+再起動完了後、ESXiにログインします。左ペインメニューの"ホスト"をクリックし、バージョンの表記に今回パッチを当てたビルド番号が表示されている事を確認してください。今回はU3cとなっているはずです。
 
 {% asset_img esxi6.png 1024 alt %}
 
@@ -244,7 +175,7 @@ Update Result
 
  ``` bash
 [root@localhost:~] vmware -v
-VMware ESXi 8.0.3 build-24280767
+VMware ESXi 8.0.3 build-24414501
  ```
 
 ## 事後作業
