@@ -38,7 +38,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/esxi6.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/rollback.png">
 <meta property="article:published_time" content="2020-06-14T13:19:20.000Z">
-<meta property="article:modified_time" content="2024-09-25T20:23:50.803Z">
+<meta property="article:modified_time" content="2024-12-21T01:28:17.286Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="ESXi">
 <meta name="twitter:card" content="summary">
@@ -179,7 +179,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%94%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A0%85"><span class="nav-number">1.</span> <span class="nav-text">ご注意事項</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%91%E3%83%83%E3%83%81%E3%81%AE%E3%83%80%E3%82%A6%E3%83%B3%E3%83%AD%E3%83%BC%E3%83%89%E3%82%B5%E3%82%A4%E3%83%88%E3%81%AE%E5%A4%89%E6%9B%B4%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span class="nav-number">2.</span> <span class="nav-text">パッチのダウンロードサイトの変更について</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%91%E3%83%83%E3%83%81%E9%81%A9%E7%94%A8%E3%81%AB%E5%BF%85%E8%A6%81%E3%81%AA%E3%82%82%E3%81%AE"><span class="nav-number">3.</span> <span class="nav-text">パッチ適用に必要なもの</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VMware%E3%81%AE%E3%83%91%E3%83%83%E3%83%81%E6%83%85%E5%A0%B1"><span class="nav-number">4.</span> <span class="nav-text">VMwareのパッチ情報</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A3%BD%E5%93%81%E3%83%91%E3%83%83%E3%83%81%E3%81%AE%E6%83%85%E5%A0%B1%E3%82%92%E5%85%A5%E6%89%8B%E3%81%99%E3%82%8B%EF%BC%88Broadcom%E3%82%B5%E3%82%A4%E3%83%88%EF%BC%89"><span class="nav-number">5.</span> <span class="nav-text">製品パッチの情報を入手する（Broadcomサイト）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E5%89%8D%E6%BA%96%E5%82%99"><span class="nav-number">6.</span> <span class="nav-text">事前準備</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi%E3%81%AE%E3%83%91%E3%83%83%E3%83%81%E9%81%A9%E7%94%A8"><span class="nav-number">7.</span> <span class="nav-text">ESXiのパッチ適用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%91%E3%83%83%E3%83%81%E9%81%A9%E7%94%A8-ESXi8-0%E3%81%AE%E5%A0%B4%E5%90%88"><span class="nav-number">7.1.</span> <span class="nav-text">パッチ適用(ESXi8.0の場合)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%8F%BE%E5%9C%A8%E7%A8%BC%E5%83%8D%E4%B8%AD%E3%81%AE%E3%83%97%E3%83%AD%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E7%A2%BA%E8%AA%8D"><span class="nav-number">7.1.1.</span> <span class="nav-text">現在稼働中のプロファイルを確認</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E3%83%91%E3%83%83%E3%83%81%E9%81%A9%E7%94%A8"><span class="nav-number">7.1.2.</span> <span class="nav-text">パッチ適用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%8D%E8%B5%B7%E5%8B%95%E3%81%A8%E7%B5%90%E6%9E%9C%E7%A2%BA%E8%AA%8D"><span class="nav-number">7.1.3.</span> <span class="nav-text">再起動と結果確認</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E5%BE%8C%E4%BD%9C%E6%A5%AD"><span class="nav-number">8.</span> <span class="nav-text">事後作業</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%91%E3%83%83%E3%83%81%E3%81%AE%E3%83%AD%E3%83%BC%E3%83%AB%E3%83%90%E3%83%83%E3%82%AF"><span class="nav-number">9.</span> <span class="nav-text">パッチのロールバック</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A7%8B%E6%88%90%E6%83%85%E5%A0%B1%E3%81%AE%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%EF%BC%88%E4%BB%BB%E6%84%8F%EF%BC%89"><span class="nav-number">10.</span> <span class="nav-text">構成情報のバックアップ（任意）</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%94%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A0%85"><span class="nav-number">1.</span> <span class="nav-text">ご注意事項</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%91%E3%83%83%E3%83%81%E9%81%A9%E7%94%A8%E3%81%AB%E5%BF%85%E8%A6%81%E3%81%AA%E3%82%82%E3%81%AE"><span class="nav-number">2.</span> <span class="nav-text">パッチ適用に必要なもの</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VMware%E3%81%AE%E3%83%91%E3%83%83%E3%83%81%E6%83%85%E5%A0%B1"><span class="nav-number">3.</span> <span class="nav-text">VMwareのパッチ情報</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A3%BD%E5%93%81%E3%83%91%E3%83%83%E3%83%81%E3%81%AE%E6%83%85%E5%A0%B1%E3%82%92%E5%85%A5%E6%89%8B%E3%81%99%E3%82%8B%EF%BC%88Broadcom%E3%82%B5%E3%82%A4%E3%83%88%EF%BC%89"><span class="nav-number">4.</span> <span class="nav-text">製品パッチの情報を入手する（Broadcomサイト）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E5%89%8D%E6%BA%96%E5%82%99"><span class="nav-number">5.</span> <span class="nav-text">事前準備</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi%E3%81%AE%E3%83%91%E3%83%83%E3%83%81%E9%81%A9%E7%94%A8"><span class="nav-number">6.</span> <span class="nav-text">ESXiのパッチ適用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%91%E3%83%83%E3%83%81%E9%81%A9%E7%94%A8-ESXi8-0%E3%81%AE%E5%A0%B4%E5%90%88"><span class="nav-number">6.1.</span> <span class="nav-text">パッチ適用(ESXi8.0の場合)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%8F%BE%E5%9C%A8%E7%A8%BC%E5%83%8D%E4%B8%AD%E3%81%AE%E3%83%97%E3%83%AD%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E7%A2%BA%E8%AA%8D"><span class="nav-number">6.1.1.</span> <span class="nav-text">現在稼働中のプロファイルを確認</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E3%83%91%E3%83%83%E3%83%81%E9%81%A9%E7%94%A8"><span class="nav-number">6.1.2.</span> <span class="nav-text">パッチ適用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%8D%E8%B5%B7%E5%8B%95%E3%81%A8%E7%B5%90%E6%9E%9C%E7%A2%BA%E8%AA%8D"><span class="nav-number">6.1.3.</span> <span class="nav-text">再起動と結果確認</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E5%BE%8C%E4%BD%9C%E6%A5%AD"><span class="nav-number">7.</span> <span class="nav-text">事後作業</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%91%E3%83%83%E3%83%81%E3%81%AE%E3%83%AD%E3%83%BC%E3%83%AB%E3%83%90%E3%83%83%E3%82%AF"><span class="nav-number">8.</span> <span class="nav-text">パッチのロールバック</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A7%8B%E6%88%90%E6%83%85%E5%A0%B1%E3%81%AE%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%EF%BC%88%E4%BB%BB%E6%84%8F%EF%BC%89"><span class="nav-number">9.</span> <span class="nav-text">構成情報のバックアップ（任意）</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -282,7 +282,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">編集日</span>
-      <time title="修正日：2024-09-26 05:23:50" itemprop="dateModified" datetime="2024-09-26T05:23:50+09:00">2024-09-26</time>
+      <time title="修正日：2024-12-21 10:28:17" itemprop="dateModified" datetime="2024-12-21T10:28:17+09:00">2024-12-21</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -310,46 +310,21 @@
 <span id="more"></span>
 
 <h2 id="ご注意事項"><a href="#ご注意事項" class="headerlink" title="ご注意事項"></a>ご注意事項</h2><p>2024-01-22に発表されたVMWareブログによりますと、スタンドアロン製品の提供を終了し、サブスクリプションモデルに変更されることとなりました。この無償版ESXiは今後提供停止となりますが、サポートは継続されるとの事です。<br>無償版ESXiの利用にあたっては、まずこちらの記事「<a href="/new-technology/2024/01/30/EOS-Free-esxi/" title="VMWare 無償版ESXiの提供終了について">VMWare 無償版ESXiの提供終了について</a>」を参照されることをお勧めします。</p>
-<h2 id="パッチのダウンロードサイトの変更について"><a href="#パッチのダウンロードサイトの変更について" class="headerlink" title="パッチのダウンロードサイトの変更について"></a>パッチのダウンロードサイトの変更について</h2><p>無償ESXiのライセンスをお持ちの方、つまりVMware Support Accountをお持ちのユーザー宛に、2024-05-03未明にBroadcomから以下のタイトルのメールを受信されている事と思われます。<br><code>ACTION NEEDED: Migrate your VMware Support Account to Broadcom</code></p>
-<p>このメールの一部を引用します。</p>
-<blockquote>
-<p>all VMware support accounts (ie. VMware Customer Connect) are being migrated to Broadcom’s support accounts. Your VMware support account will stop working on May 6, 2024.</p>
-</blockquote>
-<blockquote>
-<p>Please take action now. You must activate your Broadcom support account and update your profile information before you can access the Broadcom Support Portal.</p>
-</blockquote>
-<blockquote>
-<p>To activate your Broadcom account, click your unique link here and follow the prompts that begin with resetting your password from the Broadcom screen. You can refer to this article for detailed instructions.</p>
-</blockquote>
-<blockquote>
-<p>Once you activate your account successfully, you will be directed to the Broadcom Support Portal, where it will show you as logged in, with your name appearing in the upper right of your screen. Please note that your active VMware product entitlements will not be made available in the Broadcom Support Portal until May 6, 2024.</p>
-</blockquote>
-<blockquote>
-<p>（要約）VMware support accountは、Broadcomのsupport accountに移行されています。VMware support accountは、2024-05-06に使えなくなります。</p>
-</blockquote>
-<blockquote>
-<p>Broadcomのsupport accountを有効化し、プロファイル情報を更新する必要があります。直ちに対応が必要です。</p>
-</blockquote>
-<blockquote>
-<p>アカウントの有効化に成功し、Broadcom support portalに入ると、ログイン中と表示され、画面の右上にあなたの名前が表示されます。ただし、アクティブな VMware 製品の資格は、2024-05-06まではBroadcom support portalで利用できません。</p>
-</blockquote>
-<p>斜め読みすると「すぐに対応しないとアカウントが閉鎖されてしまう」などと誤解を招くような文章にも受け取れますが、ちゃんと読むと旧VMwareのサイトは使えずBroadcomでサービスが継続されるが、Broadcomサイトでは移行の準備で5&#x2F;6まではVMWareの移行データが参照できないという事ですね。</p>
-<p>メール本文にはユーザー毎のユニークなLinkがあり、そちらをクリックすることでBroadcomサイトに飛び、そこで新しいパスワードを設定し移行を完了させます。</p>
 <h2 id="パッチ適用に必要なもの"><a href="#パッチ適用に必要なもの" class="headerlink" title="パッチ適用に必要なもの"></a>パッチ適用に必要なもの</h2><p>SSHでESXiに接続し、コマンドラインでパッチを適用します。Windows11ではOpenSSHがデフォルトで導入されています。Windows10ではOpenSSHがサポートされていますので、<mark class="label primary">オプション機能を追加する</mark>から<mark class="label primary">OpenSSHクライアント</mark>を有効にし、コマンドラインから<code>ssh  root@ESXiのIPアドレス</code>で接続可能です。</p>
 <h2 id="VMwareのパッチ情報"><a href="#VMwareのパッチ情報" class="headerlink" title="VMwareのパッチ情報"></a>VMwareのパッチ情報</h2><p>ESXiのパッチ情報は以下を参照してください。当該ページの左ペインメニューには最新パッチの情報が掲載されていますので、最新のパッチ情報を辿ってください。また、過去のパッチの情報も提供されています。</p>
 <blockquote>
-<p>VMware ESXi 8.0 Update 3b （2024-09-24リリースノート発表）<br> <a target="_blank" rel="noopener" href="https://docs.vmware.com/en/VMware-vSphere/8.0/rn/vsphere-esxi-80u3b-release-notes/index.html">https://docs.vmware.com/en/VMware-vSphere/8.0/rn/vsphere-esxi-80u3b-release-notes/index.html</a></p>
+<p>VMware ESXi 8.0 Update 3c （2024-12-12リリースノート発表）<br> <a target="_blank" rel="noopener" href="https://docs.vmware.com/en/VMware-vSphere/8.0/rn/vsphere-esxi-80u3c-release-notes/index.html">https://docs.vmware.com/en/VMware-vSphere/8.0/rn/vsphere-esxi-80u3c-release-notes/index.html</a></p>
 </blockquote>
-<p>久しぶりということで忘れがちですが、アップデートで稀に動作しなくなるデバイスが発生するケースもありますので事前の仮想マシンのバックアップをお勧めします。</p>
-<p>ESXi7.0は2024-05-21に提供されています。</p>
+<p>アップデートで稀に動作しなくなるデバイスが発生するケースもありますので事前の仮想マシンのバックアップをお勧めします。</p>
+<p>ESXi7.0も2024-12-12に提供されています。</p>
 <blockquote>
-<p>VMware ESXi 7.0 Update 3q（2024-5-21発表）<br> <a target="_blank" rel="noopener" href="https://docs.vmware.com/en/VMware-vSphere/7.0/rn/vsphere-esxi-70u3q-release-notes/index.html">https://docs.vmware.com/en/VMware-vSphere/7.0/rn/vsphere-esxi-70u3q-release-notes/index.html</a></p>
+<p>VMware ESXi 7.0 Update 3r<br> <a target="_blank" rel="noopener" href="https://knowledge.broadcom.com/external/article/383775">https://knowledge.broadcom.com/external/article/383775</a></p>
 </blockquote>
 <p> この記事ではESXi7.0のパッチ適用の詳細は説明していません。ESXi8.0のものを参考に最新パッチをダウンロードし適用してください。</p>
 <blockquote>
-<p>Broadcom サポートページ　VMware-ESXi-7.0U3q-23794027-depot<br> <a target="_blank" rel="noopener" href="https://support.broadcom.com/web/ecx/solutiondetails?patchId=5330">https://support.broadcom.com/web/ecx/solutiondetails?patchId=5330</a></p>
+<p>Broadcom サポートページ　VMware-ESXi-7.0U3r-24411414-depot<br> <a target="_blank" rel="noopener" href="https://support.broadcom.com/web/ecx/solutiondetails?patchId=5633">https://support.broadcom.com/web/ecx/solutiondetails?patchId=5633</a></p>
 </blockquote>
-<h2 id="製品パッチの情報を入手する（Broadcomサイト）"><a href="#製品パッチの情報を入手する（Broadcomサイト）" class="headerlink" title="製品パッチの情報を入手する（Broadcomサイト）"></a>製品パッチの情報を入手する（Broadcomサイト）</h2><p><strong>Broadcomサポートポータル</strong>にサインインし、画面上部のメニューの<mark class="label primary">VMWare Cloud Foundation</mark>をクリックします。</p>
+<h2 id="製品パッチの情報を入手する（Broadcomサイト）"><a href="#製品パッチの情報を入手する（Broadcomサイト）" class="headerlink" title="製品パッチの情報を入手する（Broadcomサイト）"></a>製品パッチの情報を入手する（Broadcomサイト）</h2><p><strong>Broadcomサポートポータル</strong>にサインインし、画面上部のメニューの<mark class="label primary">VMWare Cloud Foundation</mark>をクリックします。アカウントを保有していない方は右上の<strong>Register</strong>からユーザー登録を行います。</p>
 <blockquote>
 <p>Broadcom Support Portal<br> <a target="_blank" rel="noopener" href="https://support.broadcom.com/">https://support.broadcom.com/</a></p>
 </blockquote>
@@ -365,14 +340,10 @@
 <img src="/new-technology/2020/06/14/esxi67-patch/broadcom4.png" class="" width="800" title="alt">
 
 <p>“VMware vSphere Standard”をクリックし、バージョンの”8”をクリックします。</p>
+<p>本来であれば、vSphere Hypervisorが選択肢としてあるべきですが、Standardを選びます。</p>
+<p>最新のパッチである”VMware-ESXi-8.0U3c-24414501-depot”のリンクが現れるのでクリックし、画面下部に移動し、”VMware-ESXi-8.0U3c-24414501-depot.zip”をダウンロードします。</p>
 <img src="/new-technology/2020/06/14/esxi67-patch/broadcom5.png" class="" width="800" title="alt">
 
-<p>本来であれば、vSphere Hypervisorが選択肢としてあるべきですが、Standardを選びます。</p>
-<p>最新のパッチである”VMware-ESXi-8.0U3b-24280767”のリンクが現れるのでクリックし、画面下部に移動し、”VMware-ESXi-8.0U3b-24280767-depot.zip”をダウンロードします。</p>
-<p>今回気づきましたが、このzipファイルのパッチの他にインストールファイル（.iso）も配置されていました。新規インストールも可能なようですね。</p>
-<blockquote>
-<p>VMware-VMvisor-Installer-8.0U3b-24280767.x86_64.iso</p>
-</blockquote>
 <p>基本的にESXiは修正パッチを適用する場合はこの7.0、8.0という2桁の数字は変わりません。この数字が変わる更新をアップグレードと呼びます。それ以外の小さい更新をパッチまたはアップデートと呼びます。但し、Update2,Update3というグループがあり、さらにUpdate3k、Update3lという具合にグループ単位でパッチ毎に末尾の英字が大きくなっていきます。VMwareのパッチは累積パッチとなるため、最新のパッチを適用するだけでよく、古いパッチの適用は必要ありません。ここでは最新版のパッチをダウンロードします。</p>
 <h2 id="事前準備"><a href="#事前準備" class="headerlink" title="事前準備"></a>事前準備</h2><p>ESXiにログインし、以下の作業を行います。</p>
 <ul>
@@ -405,171 +376,23 @@
 </ol>
 <h2 id="ESXiのパッチ適用"><a href="#ESXiのパッチ適用" class="headerlink" title="ESXiのパッチ適用"></a>ESXiのパッチ適用</h2><p>パッチ適用のコマンドは7.0、8.0とで違いはありません。ここでは直近バージョンからのパッチ適用のための具体的なコマンドを記載しています。</p>
 <h3 id="パッチ適用-ESXi8-0の場合"><a href="#パッチ適用-ESXi8-0の場合" class="headerlink" title="パッチ適用(ESXi8.0の場合)"></a>パッチ適用(ESXi8.0の場合)</h3><p>ここでは、ESXi8.0の情報を掲載します。ESXi7.0についてもコマンド自体は変わりません。</p>
-<h4 id="現在稼働中のプロファイルを確認"><a href="#現在稼働中のプロファイルを確認" class="headerlink" title="現在稼働中のプロファイルを確認"></a>現在稼働中のプロファイルを確認</h4><p> 新しいドライバやバグフィックス、セキュリティパッチなど含めたprofileとして整合性が取れたvibのアップデートはprofile updateを実行します。ここでは、ESXi8.0Update2bからUpdate3bにアップデートすることを例にします。</p>
-<p> 現在の実行中のprofileを確認します。<code>esxcli software profile get</code><br> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost:~] esxcli software profile get</span><br><span class="line">(Updated) ESXi-8.0U2b-23305546-standard</span><br><span class="line">   Name: (Updated) ESXi-8.0U2b-23305546-standard</span><br><span class="line">   Vendor: VMware, Inc.</span><br><span class="line">   Creation Time: 2024-03-04T11:08:40</span><br><span class="line">   Modification Time: 2024-09-25T10:39:42</span><br><span class="line">   Stateless Ready: True</span><br></pre></td></tr></table></figure></p>
-<p> 一般的にはバージョンの最後に”-standard”の文字が付いています。standard版がインストールされている事を示します。<br> 次に、パッチファイルに登録されているprofileを確認します（パッチはフルパス指定が必要です）。<br> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost:/vmfs/volumes/651405f6-75b489bc-43eb-80615f0db1ce/update] esxcli software sources profile list -d /vmfs/volumes/datastore1/update/VMware-ESXi-8.0U3b-24280767-depot.zip</span><br><span class="line">Name                            Vendor        Acceptance Level  Creation Time        Modification Time</span><br><span class="line">------------------------------  ------------  ----------------  -------------------  -----------------</span><br><span class="line">ESXi-8.0U3b-24280767-no-tools   VMware, Inc.  PartnerSupported  2024-09-17T00:00:00  2024-09-17T00:00:00</span><br><span class="line">ESXi-8.0U3b-24280767-standard   VMware, Inc.  PartnerSupported  2024-09-17T00:00:00  2024-09-17T00:00:00</span><br><span class="line">ESXi-8.0U3sb-24262298-no-tools  VMware, Inc.  PartnerSupported  2024-09-17T00:00:00  2024-09-17T00:00:00</span><br><span class="line">ESXi-8.0U3sb-24262298-standard  VMware, Inc.  PartnerSupported  2024-09-17T00:00:00  2024-09-17T00:00:00</span><br></pre></td></tr></table></figure></p>
-<p>VMWareTools有&#x2F;無と(不具合対応＋セキュリティパッチ)&#x2F;セキュリティパッチのみのパターンです。<br>互換性ガイドにおいて特に8.0U3向けのハードウェアリストが出ていますので、ご自身のハードウェアが対応されているか確認してくだあい。</p>
-<blockquote>
-<p>VMware Compatibility Guide<br> <a target="_blank" rel="noopener" href="https://www.vmware.com/resources/compatibility/search.php">https://www.vmware.com/resources/compatibility/search.php</a></p>
-</blockquote>
-<p> さて、VMWareTools有を前提として、パッチを２つ比較します。</p>
-<table>
-<thead>
-<tr>
-<th>U3SB（セキュリティパッチのみ）</th>
-<th>U3B（不具合修正＋セキュリティパッチ）</th>
-</tr>
-</thead>
-<tbody><tr>
-<td></td>
-<td>VMW_bootbank_mlnx-bfbootctl-esxio_0.1-7vmw.803.0.35.24280767</td>
-</tr>
-<tr>
-<td>VMW_bootbank_pensandoatlas_1.46.0.E.41.1.326-2vmw.803.0.0.0.23797590</td>
-<td>VMW_bootbank_pensandoatlas_1.46.0.E.41.1.326-2vmw.803.0.0.0.23797590</td>
-</tr>
-<tr>
-<td></td>
-<td>VMW_bootbank_rshim_0.1-12vmw.803.0.35.24280767</td>
-</tr>
-<tr>
-<td></td>
-<td>VMW_bootbank_rshim-net_0.1.0-1vmw.803.0.35.24280767</td>
-</tr>
-<tr>
-<td>VMware_bootbank_bmcal_8.0.3-0.30.24262298</td>
-<td>VMware_bootbank_bmcal_8.0.3-0.35.24280767</td>
-</tr>
-<tr>
-<td>VMware_bootbank_bmcal-esxio_8.0.3-0.30.24262298</td>
-<td>VMware_bootbank_bmcal-esxio_8.0.3-0.35.24280767</td>
-</tr>
-<tr>
-<td>VMware_bootbank_clusterstore_8.0.3-0.30.24262298</td>
-<td>VMware_bootbank_clusterstore_8.0.3-0.35.24280767</td>
-</tr>
-<tr>
-<td>VMware_bootbank_cpu-microcode_8.0.3-0.30.24262298</td>
-<td>VMware_bootbank_cpu-microcode_8.0.3-0.35.24280767</td>
-</tr>
-<tr>
-<td>VMware_bootbank_crx_8.0.3-0.30.24262298</td>
-<td>VMware_bootbank_crx_8.0.3-0.35.24280767</td>
-</tr>
-<tr>
-<td>VMware_bootbank_drivervm-gpu-base_8.0.3-0.30.24262298</td>
-<td>VMware_bootbank_drivervm-gpu-base_8.0.3-0.35.24280767</td>
-</tr>
-<tr>
-<td>VMware_bootbank_esx-base_8.0.3-0.30.24262298</td>
-<td>VMware_bootbank_esx-base_8.0.3-0.35.24280767</td>
-</tr>
-<tr>
-<td>VMware_bootbank_esx-dvfilter-generic-fastpath_8.0.3-0.30.24262298</td>
-<td>VMware_bootbank_esx-dvfilter-generic-fastpath_8.0.3-0.35.24280767</td>
-</tr>
-<tr>
-<td>VMware_bootbank_esx-update_8.0.3-0.30.24262298</td>
-<td>VMware_bootbank_esx-update_8.0.3-0.35.24280767</td>
-</tr>
-<tr>
-<td>VMware_bootbank_esx-xserver_8.0.3-0.30.24262298</td>
-<td>VMware_bootbank_esx-xserver_8.0.3-0.35.24280767</td>
-</tr>
-<tr>
-<td>VMware_bootbank_esxio_8.0.3-0.30.24262298</td>
-<td>VMware_bootbank_esxio_8.0.3-0.35.24280767</td>
-</tr>
-<tr>
-<td>VMware_bootbank_esxio-base_8.0.3-0.30.24262298</td>
-<td>VMware_bootbank_esxio-base_8.0.3-0.35.24280767</td>
-</tr>
-<tr>
-<td>VMware_bootbank_esxio-combiner_8.0.3-0.30.24262298</td>
-<td>VMware_bootbank_esxio-combiner_8.0.3-0.35.24280767</td>
-</tr>
-<tr>
-<td>VMware_bootbank_esxio-combiner-esxio_8.0.3-0.30.24262298</td>
-<td>VMware_bootbank_esxio-combiner-esxio_8.0.3-0.35.24280767</td>
-</tr>
-<tr>
-<td>VMware_bootbank_esxio-dvfilter-generic-fastpath_8.0.3-0.30.24262298</td>
-<td>VMware_bootbank_esxio-dvfilter-generic-fastpath_8.0.3-0.35.24280767</td>
-</tr>
-<tr>
-<td>VMware_bootbank_esxio-update_8.0.3-0.30.24262298</td>
-<td>VMware_bootbank_esxio-update_8.0.3-0.35.24280767</td>
-</tr>
-<tr>
-<td>VMware_bootbank_gc_8.0.3-0.30.24262298</td>
-<td>VMware_bootbank_gc_8.0.3-0.35.24280767</td>
-</tr>
-<tr>
-<td>VMware_bootbank_gc-esxio_8.0.3-0.30.24262298</td>
-<td>VMware_bootbank_gc-esxio_8.0.3-0.35.24280767</td>
-</tr>
-<tr>
-<td>VMware_bootbank_infravisor_8.0.3-0.30.24262298</td>
-<td>VMware_bootbank_infravisor_8.0.3-0.35.24280767</td>
-</tr>
-<tr>
-<td>VMware_bootbank_loadesx_8.0.3-0.30.24262298</td>
-<td>VMware_bootbank_loadesx_8.0.3-0.35.24280767</td>
-</tr>
-<tr>
-<td>VMware_bootbank_loadesxio_8.0.3-0.30.24262298</td>
-<td>VMware_bootbank_loadesxio_8.0.3-0.35.24280767</td>
-</tr>
-<tr>
-<td>VMware_bootbank_native-misc-drivers_8.0.3-0.30.24262298</td>
-<td>VMware_bootbank_native-misc-drivers_8.0.3-0.35.24280767</td>
-</tr>
-<tr>
-<td>VMware_bootbank_native-misc-drivers-esxio_8.0.3-0.30.24262298</td>
-<td>VMware_bootbank_native-misc-drivers-esxio_8.0.3-0.35.24280767</td>
-</tr>
-<tr>
-<td>VMware_bootbank_trx_8.0.3-0.30.24262298</td>
-<td>VMware_bootbank_trx_8.0.3-0.35.24280767</td>
-</tr>
-<tr>
-<td>VMware_bootbank_vcls-pod-crx_8.0.3-0.30.24262298</td>
-<td>VMware_bootbank_vcls-pod-crx_8.0.3-0.35.24280767</td>
-</tr>
-<tr>
-<td>VMware_bootbank_vdfs_8.0.3-0.30.24262298</td>
-<td>VMware_bootbank_vdfs_8.0.3-0.35.24280767</td>
-</tr>
-<tr>
-<td>VMware_bootbank_vds-vsip_8.0.3-0.30.24262298</td>
-<td>VMware_bootbank_vds-vsip_8.0.3-0.35.24280767</td>
-</tr>
-<tr>
-<td>VMware_bootbank_vsan_8.0.3-0.30.24262298</td>
-<td>VMware_bootbank_vsan_8.0.3-0.35.24280767</td>
-</tr>
-<tr>
-<td>VMware_bootbank_vsanhealth_8.0.3-0.30.24262298</td>
-<td>VMware_bootbank_vsanhealth_8.0.3-0.35.24280767</td>
-</tr>
-<tr>
-<td>VMware_locker_tools-light_12.4.5.23787635-24262298</td>
-<td></td>
-</tr>
-</tbody></table>
-<p>本来であれば、不具合＋セキュリティパッチに全てのパッチが内包されており、セキュリティパッチの方はモジュールが少ないはずなのですが、今回はVMware_locker_tools-light_12.4.5.がセキュリティパッチ<strong>のみ</strong>に含まれています。バージョン自体は、これまで通り不具合＋セキュリティパッチの方が新しいため、恐らくVMWare Toolsの違いだけと考えられます。これまでの鉄則通り、不具合＋セキュリティパッチである、”ESXi-8.0U3b-24280767-standard”を適用します。</p>
+<h4 id="現在稼働中のプロファイルを確認"><a href="#現在稼働中のプロファイルを確認" class="headerlink" title="現在稼働中のプロファイルを確認"></a>現在稼働中のプロファイルを確認</h4><p> 新しいドライバやバグフィックス、セキュリティパッチなど含めたprofileとして整合性が取れたvibのアップデートはprofile updateを実行します。ここでは、ESXi8.0Update3bからUpdate3cにアップデートすることを例にします。</p>
+<p> 現在の実行中のprofileを確認します。<code>esxcli software profile get</code><br> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost:~] esxcli software profile get</span><br><span class="line">(Updated) ESXi-8.0U3b-24280767-standard</span><br><span class="line">   Name: (Updated) ESXi-8.0U3b-24280767-standard</span><br><span class="line">   Vendor: VMware, Inc.</span><br><span class="line">   Creation Time: 2024-09-25T10:50:12</span><br><span class="line">   Modification Time: 2024-12-21T00:38:33</span><br><span class="line">   Stateless Ready: True</span><br></pre></td></tr></table></figure></p>
+<p> 一般的にはバージョンの最後に”-standard”の文字が付いています。standard版がインストールされている事を示します。</p>
+<p> 次に、パッチファイルに登録されているprofileを確認します（パッチはフルパス指定が必要です）。<br> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost:/vmfs/volumes/datastore1/update] esxcli software sources profile list -d /vmfs/volumes/datastore1/update/VMware-ESXi-8.0U3c-24414501-depot.zip</span><br><span class="line">Name                           Vendor        Acceptance Level  Creation Time        Modification Time</span><br><span class="line">-----------------------------  ------------  ----------------  -------------------  -----------------</span><br><span class="line">ESXi-8.0U3c-24414501-no-tools  VMware, Inc.  PartnerSupported  2024-12-12T00:00:00  2024-12-12T00:00:00</span><br><span class="line">ESXi-8.0U3c-24414501-standard  VMware, Inc.  PartnerSupported  2024-12-12T00:00:00  2024-12-12T00:00:00</span><br></pre></td></tr></table></figure></p>
+<p>今回はVMWareTools有&#x2F;無のシンプルなパターンですね。<br>今回はツール有りの、”ESXi-8.0U3c-24414501-standard”を適用します。</p>
 <h4 id="パッチ適用"><a href="#パッチ適用" class="headerlink" title="パッチ適用"></a>パッチ適用</h4><p>以下のようにパッチファイルのzipをフルパスで指定し、VMwareのパッチ情報にあるプロファイル名を指定しパッチを適用します。ここではstandardを指定します。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[.../update] esxcli software profile update -d /vmfs/volumes/datastore1/update/VMware-ESXi-8.0U3b-24280767-depot.zip -p ESXi-8.0U3b-24280767-standard</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[.../update] esxcli software profile update -d /vmfs/volumes/datastore1/update/VMware-ESXi-8.0U3c-24414501-depot.zip -p ESXi-8.0U3c-24414501-standard</span><br></pre></td></tr></table></figure>
 
 <p><code>esxcli software profile update</code>の実行後しばらくしてから、結果が表示されます。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Update Result</span><br><span class="line">   Message: The update completed successfully, but the system needs to be rebooted for the changes to be effective.</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Update Result</span><br><span class="line">   Message: The update completed successfully, but the system needs to be rebooted for the changes to be effective.</span><br><span class="line">   ...</span><br><span class="line">   Reboot Required: true</span><br></pre></td></tr></table></figure>
 
 <h4 id="再起動と結果確認"><a href="#再起動と結果確認" class="headerlink" title="再起動と結果確認"></a>再起動と結果確認</h4><p>コマンドプロンプトから、<code>reboot</code>としてESXiを再起動します。</p>
-<p>再起動完了後、ESXiにログインします。左ペインメニューの”ホスト”をクリックし、バージョンの表記に今回パッチを当てたビルド番号が表示されている事を確認してください。今回はU3bとなっているはずです。</p>
+<p>再起動完了後、ESXiにログインします。左ペインメニューの”ホスト”をクリックし、バージョンの表記に今回パッチを当てたビルド番号が表示されている事を確認してください。今回はU3cとなっているはずです。</p>
 <img src="/new-technology/2020/06/14/esxi67-patch/esxi6.png" class="" width="1024" title="alt">
 
 <p>または、sshでESXiに接続し、<code>vmware -v</code>を実行し確認します。</p>
- <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost:~] vmware -v</span><br><span class="line">VMware ESXi 8.0.3 build-24280767</span><br></pre></td></tr></table></figure>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost:~] vmware -v</span><br><span class="line">VMware ESXi 8.0.3 build-24414501</span><br></pre></td></tr></table></figure>
 
 <h2 id="事後作業"><a href="#事後作業" class="headerlink" title="事後作業"></a>事後作業</h2><p>これまで実施してきたメンテナンス準備とは反対の作業をします。メンテナンスモードの終了・SSHの無効化・仮想マシンの起動と続けます。</p>
 <h2 id="パッチのロールバック"><a href="#パッチのロールバック" class="headerlink" title="パッチのロールバック"></a>パッチのロールバック</h2><p>あまり考えたくはありませんが、パッチ適用後、うまく動作しないなどの場合にはロールバックします。ESXiはひとつ前のバージョンに戻せます（アップグレードの場合は戻せない場合があります）。<br>ESXiホストを再起動し、起動中にShift+’R’キーを押します。</p>
