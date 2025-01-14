@@ -14,10 +14,10 @@
 
 
 
-<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
   <link rel="stylesheet" href="/new-technology/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.21.1","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
 
     <meta name="description" content="この記事で実現すること  無償版ESXiの仮想マシンをバックアップ、レストアします。">
 <meta property="og:type" content="article">
@@ -333,13 +333,13 @@
 <h3 id="NAS上でのNFSの設定"><a href="#NAS上でのNFSの設定" class="headerlink" title="NAS上でのNFSの設定"></a>NAS上でのNFSの設定</h3><p>まず、ESXiでサポートされるNFSのバージョンは3および4となります。v3はシンプルにクライアントのIPアドレスで認証し、v4はIPアドレスに加えユーザー単位の認証が可能です。</p>
 <p>ここではSynologyのDisk Station Manager7.1を実例にNFSv4.1の設定を記載します。</p>
 <ol>
-<li><mark class="label primary">コントロールパネル</mark>の、<mark class="label primary">ファイルサービス</mark>からNFSを選択し、NFSv4.1を有効にします。
+<li><mark class="label primary">コントロールパネル</mark>の、<mark class="label primary">ファイルサービス</mark>からNFSを選択し、NFSv4.1を有効にします。</li>
+</ol>
 <img src="/new-technology/2020/10/11/esxi-backup/syno1.png" class="" title="alt">
-</li>
-<li><p>認証するバックアップ専用のユーザー（一般ユーザー）を作成します。</p>
-</li>
-<li><p>バックアップを取得する共有フォルダを作成し、バックアップ専用ユーザーにアクセス権を付与します。<mark class="label primary">コントロールパネル</mark>の、<mark class="label primary">共有フォルダ</mark>でバックアップを取得する共有フォルダを選択し、共有フォルダの権限を設定します。</p>
-</li>
+
+<ol start="2">
+<li>認証するバックアップ専用のユーザー（一般ユーザー）を作成します。</li>
+<li>バックアップを取得する共有フォルダを作成し、バックアップ専用ユーザーにアクセス権を付与します。<mark class="label primary">コントロールパネル</mark>の、<mark class="label primary">共有フォルダ</mark>でバックアップを取得する共有フォルダを選択し、共有フォルダの権限を設定します。</li>
 <li><mark class="label primary">共有フォルダ</mark>の設定では、さらにNFS権限のルールで、接続を許可するネットワークアドレス、Squashは「なし」を選択します。</li>
 </ol>
 <img src="/new-technology/2020/10/11/esxi-backup/syno2.png" class="" title="alt">

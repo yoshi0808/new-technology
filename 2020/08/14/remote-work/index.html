@@ -14,10 +14,10 @@
 
 
 
-<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
   <link rel="stylesheet" href="/new-technology/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.21.1","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
 
     <meta name="description" content="安全快適な在宅勤務を行うためにすっかり在宅勤務が新たな日常として定着しつつありますが、2020-07-01にICT-ISAC（アイシーティ・アイザック）から「家庭内で安全快適に在宅勤務を行うためのリファレンスガイド」が公開されています。ICT-ISACは、サイバーセキュリティに関する情報収集・調査・分析等の業務を行っている組織で、IPA情報処理推進機構と同様に、情報セキュリティについて分かり易">
 <meta property="og:type" content="article">
@@ -373,11 +373,13 @@
 </li>
 <li><p>マルチキャストの速度設定<br>上述したDLNAはひかりTVなどで利用されます。このDLNAに利用されるマルチキャストは、バッファローであればマルチキャストレート、Atermであればマルチキャスト伝送速度という名前で記載されています。例えばAtermですと初期値が6Mbpsで、これだと十分に番組を伝送出来ない可能性があります。従いその値を増やす事でTV映像は安定します。しかし、マルチキャストは1対多で指定した帯域を確保し伝送するわけですから、全ての端末にデータ配信が行われます。無線機に接続された仕事用の端末はマルチキャストパケットの帯域確保が優先されてしまう事で仕事上のTV会議などが思わず影響を受けてしまう事になります。従いマルチキャストレートは上げすぎても良くないという事になります。マルチキャスト通信も種類があり、上述のひかりTVは番組を視聴している間ずっとマルチキャストを転送し続けますが、PanasonicのプライベートビエラなどのPortableTVなどは最初だけマルチキャストで接続を確認した後はユニキャストになります。</p>
 <blockquote>
-<p>Panasonic プライベートビエラ<br> <a target="_blank" rel="noopener" href="https://panasonic.jp/privateviera/">https://panasonic.jp/privateviera/</a></p>
+<p>Panasonic プライベートビエラ</p>
 </blockquote>
 </li>
-<li><p>UPnpの停止<br>Universal plug and playの機能でホームゲートウェイなど光回線に接続する機器には装備されている機能です。インターネットからLAN内の機器に接続する仕組みです。これは過去から脆弱性攻撃に利用されやすいものですので明確に必要としていない場合はこの機能を停止する事をお勧めします。</p>
-</li>
+</ol>
+<p> <a target="_blank" rel="noopener" href="https://panasonic.jp/privateviera/">https://panasonic.jp/privateviera/</a></p>
+<ol>
+<li>UPnpの停止<br>Universal plug and playの機能でホームゲートウェイなど光回線に接続する機器には装備されている機能です。インターネットからLAN内の機器に接続する仕組みです。これは過去から脆弱性攻撃に利用されやすいものですので明確に必要としていない場合はこの機能を停止する事をお勧めします。</li>
 </ol>
 <h2 id="（2）パスワード管理ソフトの導入"><a href="#（2）パスワード管理ソフトの導入" class="headerlink" title="（2）パスワード管理ソフトの導入"></a>（2）パスワード管理ソフトの導入</h2><p>無線ルーターの設定では、機器にログインするためのIDとSSIDに対するパスワード（暗号キー）を必ず変更して下さい。Wi-Fiに入られない限り安全だろうという理由で、無線ルーターのパスワードが短かったり単純なものは危険です。悪意のあるスマホアプリからWi-Fiを経由し、簡単に無線ルーターの乗っ取りが可能です。個人的にはパスワード管理ソフトとして、米国の<strong>bitwarden</strong>がお勧めです。</p>
 <blockquote>

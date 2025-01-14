@@ -14,10 +14,10 @@
 
 
 
-<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
   <link rel="stylesheet" href="/new-technology/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.21.1","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
 
     <meta name="description" content="この記事で実現すること  この記事ではホームユーザー向けにUniFi AP(Wi-Fiアクセスポイント）の設定ができるようになることを目的としています。">
 <meta property="og:type" content="article">
@@ -323,7 +323,7 @@
 <h2 id="最近のWi-Fi事情"><a href="#最近のWi-Fi事情" class="headerlink" title="最近のWi-Fi事情"></a>最近のWi-Fi事情</h2><p>2022年9月にWi-Fiで6GHzも利用できるよう法律が変更されました（Wi-Fi6E）。国内のメーカーはこの6GHzとメッシュを謳い文句にWi-Fiルータの販売強化を図っているようです。しかしながら、端末側は今年に発売するiPhoneで6Eの対応が見送られた事であまり盛り上がってはいないようです。</p>
 <p>Wi-Fiの難しいところはその住居の形や家の周りの電波状態に大きく左右されてしまう点で、これがベストという構成を見出せません。私の例で言えば、凡庸な建売の木造2階建であり、無線APが1つだけでも、それなりに無難にWi-Fiが使えるという環境です。</p>
 <p>最近販売され始めた無線ルーターは、メッシュ対応のものが多く出てきました。メッシュは複数台のAPと無線でデータをやり取りできる機能です。無線の中継機は常に親機に集約されていましたが、メッシュは複数台のAPと相互に接続します。一般的には中継専用のSSIDを用いお互いにデータを中継します。</p>
-<p>最近のメッシュWi-Fiルーターでは高速ローミング（802.11k、802.11r、802.11v）に対応している製品も出てきており、端末を持ちながら移動した場合に、アクセスポイント（AP）間を高速ローミングすることで切断時間を短くし、近くのAPに接続できます。また、それぞれのAPがメッシュ（無線）ではなく、有線接続して互いの情報を交換できる<strong>イーサネットバックホール（有線バックホール）</strong>という機能に対応している製品を複数の部屋に設置することでずいぶん快適になるでしょう。</p>
+<p>最近のメッシュWi-Fiルーターでは高速ローミング（802.11k、802.11r、802.11v）に対応している製品も出てきており、端末を持ちながら移動した場合に、アクセスポイント（AP）間を高速ローミングすることで切断時間を短くし、近くのAPに接続できます。また、それぞれのAPがメッシュ（無線）ではなく、有線接続して互いの情報を交換できる**イーサネットバックホール（有線バックホール）**という機能に対応している製品を複数の部屋に設置することでずいぶん快適になるでしょう。</p>
 <p>なお、6EはDFSの影響を受けないチャンネルなので、自宅の間取りで6GHzが効率よく使える環境下であれば利便性は増します。私は6GHzの無線APは保有していないので、どのくらい電波が届くものなのかは今後機会があれば評価してみたいと考えています。周波数が上がるにつれて障害物によって遠くに届きづらくなるとは考えられます。各部屋に有線がなく、イーサネットバックホールが使えないケースでは、AP同士を6Eの独立チャンネルで接続する事で中継機能が改善することが期待されます（これまでは親機と中継機が同一のチャンネルを使うことで効率が大幅に落ちるケースがありました）。</p>
 <p>また、端末側の6E対応状況が進捗するまではしばらくはWi-Fi6（5GHz）のままというのが現状でしょうか。</p>
 <h2 id="UniFi-APのスペック"><a href="#UniFi-APのスペック" class="headerlink" title="UniFi APのスペック"></a>UniFi APのスペック</h2><p>日本国内で販売されているUniFi APはルーター機能を持たず、アクセスポイントに特化したハードウェアです。UniFiネットワークアプリケーションまたはUniFiコンソールを介して情報連携が行われます。</p>
@@ -379,15 +379,14 @@
 </blockquote>
 <h2 id="UniFi-APの実速度"><a href="#UniFi-APの実速度" class="headerlink" title="UniFi APの実速度"></a>UniFi APの実速度</h2><p>iPhone11を使ってAPに1mの距離まで近づけて、iperf3を実行した時の結果は以下の通りです。</p>
 <blockquote>
-<p>U6 Pro<br> <img src="/new-technology/2022/12/31/unifi-ap/u6-pro3.png" class="" width="360" title="alt"></p>
-</blockquote>
+<p>U6 Pro</p>
+ <img src="/new-technology/2022/12/31/unifi-ap/u6-pro3.png" class="" width="360" title="alt"></blockquote>
 <blockquote>
-<p>U6 Lite<br> <img src="/new-technology/2022/12/31/unifi-ap/u6-lite3.png" class="" width="360" title="alt"></p>
-</blockquote>
+<p>U6 Lite</p>
+ <img src="/new-technology/2022/12/31/unifi-ap/u6-lite3.png" class="" width="360" title="alt"></blockquote>
 <p>参考までに、Aterm WX6000HPの場合は以下です。</p>
 <blockquote>
-<img src="/new-technology/2022/12/31/unifi-ap/aterm.png" class="" width="360" title="alt">
-</blockquote>
+<img src="/new-technology/2022/12/31/unifi-ap/aterm.png" class="" width="360" title="alt"></blockquote>
 <p>U6 Proの個性として、iperf3の起動直後は少しスロースタートに見えます。省電力の最適化に重きを置いているのでしょうか。</p>
 <p>また、私の自宅の1階において、macOSのWi-Fi Explorerで電波の強さを計測してみました。1階にはU6 ProとAterm、2階にはU6 Liteが配置されています。</p>
 <img src="/new-technology/2022/12/31/unifi-ap/wifi-explorer.png" class="" width="1024" title="alt">
@@ -395,12 +394,15 @@
 <p>電波の強さだけであればAtermのWX6000HPが素晴らしい結果を出しています。しかしiperf3の最高速度という観点についてはU6 Proの方が良いスコアです。</p>
 <p>pingのレイテンシも見てみましょう。iPhoneからNASへのping応答速度です。iOSやmacOSはpingのレイテンシ数値が高く出てしまう傾向にあります。実は上記のiperf3を含めてL3スイッチ経由でルーティングしてNASのiperf3サーバーに接続しており、1ホップあります。</p>
 <ul>
-<li><p>Aterm pingレイテンシ</p>
- <img src="/new-technology/2022/12/31/unifi-ap/aterm4.png" class="" width="360" title="alt">
-</li>
-<li><p>U6 Pro pingレイテンシ</p>
- <img src="/new-technology/2022/12/31/unifi-ap/u6-pro4.png" class="" width="360" title="alt"></li>
+<li>Aterm pingレイテンシ</li>
 </ul>
+ <img src="/new-technology/2022/12/31/unifi-ap/aterm4.png" class="" width="360" title="alt">
+
+<ul>
+<li>U6 Pro pingレイテンシ</li>
+</ul>
+ <img src="/new-technology/2022/12/31/unifi-ap/u6-pro4.png" class="" width="360" title="alt">
+
 <blockquote>
 <p>PingPlotterによる計測<br> <a target="_blank" rel="noopener" href="https://www.pingman.com/">https://www.pingman.com</a></p>
 </blockquote>

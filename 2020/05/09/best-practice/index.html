@@ -14,10 +14,10 @@
 
 
 
-<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
   <link rel="stylesheet" href="/new-technology/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.21.1","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
 
     <meta name="description" content="この記事で実現すること XG Firewall v18を利用するホームユーザー向けに、ベストプラクティスとなる設定をします。">
 <meta property="og:type" content="article">
@@ -403,23 +403,22 @@ XG Firewall v18を利用するホームユーザー向けに、ベストプラ�
 </tr>
 </tbody></table>
 <h4 id="アプリケーションフィルタの設定方法"><a href="#アプリケーションフィルタの設定方法" class="headerlink" title="アプリケーションフィルタの設定方法"></a>アプリケーションフィルタの設定方法</h4><ol>
-<li><p>XGの左メニューの<mark class="label primary">アプリケーション</mark>の<mark class="label primary">アプリケーションフィルタ</mark>から、”追加”ボタンをクリックしてください。フィルタの名前を決めます。テンプレートは”Allow ALL”のままで構いません。ここでは、”Block High Risk Apps”と命名します。</p>
+<li>XGの左メニューの<mark class="label primary">アプリケーション</mark>の<mark class="label primary">アプリケーションフィルタ</mark>から、”追加”ボタンをクリックしてください。フィルタの名前を決めます。テンプレートは”Allow ALL”のままで構いません。ここでは、”Block High Risk Apps”と命名します。</li>
+</ol>
 <img src="/new-technology/2020/05/09/best-practice/application1.png" class="" title="alt">
-</li>
-<li><p>以下のようにカテゴリで<mark class="label primary">リスク</mark>のプルダウンからHigh、Very Highのものを選択し、アクションは”拒否”を選び保存してください。</p>
+
+<ol start="2">
+<li>以下のようにカテゴリで<mark class="label primary">リスク</mark>のプルダウンからHigh、Very Highのものを選択し、アクションは”拒否”を選び保存してください。</li>
+</ol>
 <img src="/new-technology/2020/05/09/best-practice/application2.png" class="" title="alt">登録が完了するとリスクの高いアプリケーションが並びます。
 <img src="/new-technology/2020/05/09/best-practice/application3.png" class="" title="alt">
-</li>
-<li><p>アプリケーションフィルタの<mark class="label primary">追加</mark>ボタンをクリックし、フィルタを追加します。今度はカテゴリから、P2PとProxyを選び、<mark class="label primary">アクション</mark>は”拒否”を選び保存します。</p>
-</li>
-<li><p>“DNS QNAME”と”OpenVPN”とをフィルタします。一番右側のプルダウンのスマートフィルタに<code>qname</code>と入力し、Enterキーを押下してください。一旦”DNS Multiple QNAME”が絞り込まれスマートフィルタの欄が空白になりますので、引き続き<code>openvpn</code>と入力し、Enterキーを押下してください。これで2つのフィルタが絞り込まれているので、”拒否”を選択し、”保存”をクリックしてください。</p>
-</li>
-<li><p>ご自身で利用しているアプリが高リスクまたはP2PとProxyに含まれる場合の除外設定です。ログビューアでアプリケーションフィルタログを見ながら拒否されてしまった対象を除外する設定が必要です。ホームユーザーには最低限度EXEファイルおよびZIPファイルは必要でしょうから、スマートフィルタを活用し<code>exe file</code>、<code>zip file</code>と入力し、許可と設定します。</p>
-</li>
-<li><p>フィルタの<mark class="label primary">分類</mark>から”未認証”を選ぶと、自動で”Cloud Application”が選択されます。これを”拒否”として保存します。</p>
-</li>
-<li><p>フィルタの<mark class="label primary">分類</mark>から”許容”と”認証済み”を選択し、<mark class="label primary">アクション</mark>は”許可”として登録します。</p>
-</li>
+
+<ol start="3">
+<li>アプリケーションフィルタの<mark class="label primary">追加</mark>ボタンをクリックし、フィルタを追加します。今度はカテゴリから、P2PとProxyを選び、<mark class="label primary">アクション</mark>は”拒否”を選び保存します。</li>
+<li>“DNS QNAME”と”OpenVPN”とをフィルタします。一番右側のプルダウンのスマートフィルタに<code>qname</code>と入力し、Enterキーを押下してください。一旦”DNS Multiple QNAME”が絞り込まれスマートフィルタの欄が空白になりますので、引き続き<code>openvpn</code>と入力し、Enterキーを押下してください。これで2つのフィルタが絞り込まれているので、”拒否”を選択し、”保存”をクリックしてください。</li>
+<li>ご自身で利用しているアプリが高リスクまたはP2PとProxyに含まれる場合の除外設定です。ログビューアでアプリケーションフィルタログを見ながら拒否されてしまった対象を除外する設定が必要です。ホームユーザーには最低限度EXEファイルおよびZIPファイルは必要でしょうから、スマートフィルタを活用し<code>exe file</code>、<code>zip file</code>と入力し、許可と設定します。</li>
+<li>フィルタの<mark class="label primary">分類</mark>から”未認証”を選ぶと、自動で”Cloud Application”が選択されます。これを”拒否”として保存します。</li>
+<li>フィルタの<mark class="label primary">分類</mark>から”許容”と”認証済み”を選択し、<mark class="label primary">アクション</mark>は”許可”として登録します。</li>
 </ol>
 <p>クラウドアプリケーションの画面では、以下の通り、過去に通信のあったアプリケーション一覧が表示されます。既に安全と分かっているものについては、<mark class="label primary">classify</mark>から分類を”認証済み”にマークできます。未認証と設定した場合は、アプリケーションフィルタで即座に通信が停止されます。</p>
 <p>これでアプリケーションフィルタの設定は終了です。今後Sophosによりフィルタが定期的に追加されていきますが、リスクの高いアプリケーションは自動的にフィルタされる事になります。また、クラウドアプリケーションはリスクが高でも即座に拒否とはなりませんので、上記の記載のとおり、定期的にクラウドアプリケーションの利用状況を確認してください。</p>
@@ -469,17 +468,15 @@ XG Firewall v18を利用するホームユーザー向けに、ベストプラ�
 </tr>
 </tbody></table>
 <h4 id="Webフィルタの設定方法"><a href="#Webフィルタの設定方法" class="headerlink" title="Webフィルタの設定方法"></a>Webフィルタの設定方法</h4><ol>
-<li><p>XGの左ペインメニューの、<mark class="label primary">Web</mark>、<mark class="label primary">ポリシー</mark>から、”追加”ボタンをクリックします。</p>
+<li>XGの左ペインメニューの、<mark class="label primary">Web</mark>、<mark class="label primary">ポリシー</mark>から、”追加”ボタンをクリックします。</li>
+</ol>
 <img src="/new-technology/2020/05/09/best-practice/webfilter1.png" class="" title="alt">
-</li>
-<li><p>上記の図のとおり名前を入力します。ここでは、”Home Policy”とします。デフォルトは許可で、その上に拒否するルールを追加していきます。</p>
-</li>
-<li><p>以下の図のとおり拒否する対象を選択する時には”すべて表示”とし、全てのカテゴリを表示させ、選択してください。<img src="/new-technology/2020/05/09/best-practice/webfilter2.png" class="" title="alt"></p>
-</li>
-<li><p>登録が終わったら、画面の最下部にある、<mark class="label primary">変更を適用</mark>をクリックしてください。</p>
-</li>
-<li><p>最後にWebの<mark class="label primary">全般設定</mark>をクリックします。</p>
-</li>
+
+<ol start="2">
+<li>上記の図のとおり名前を入力します。ここでは、”Home Policy”とします。デフォルトは許可で、その上に拒否するルールを追加していきます。</li>
+<li>以下の図のとおり拒否する対象を選択する時には”すべて表示”とし、全てのカテゴリを表示させ、選択してください。<img src="/new-technology/2020/05/09/best-practice/webfilter2.png" class="" title="alt"></li>
+<li>登録が終わったら、画面の最下部にある、<mark class="label primary">変更を適用</mark>をクリックしてください。</li>
+<li>最後にWebの<mark class="label primary">全般設定</mark>をクリックします。</li>
 </ol>
 <ul>
 <li><mark class="label primary">認識されていないSSLプロトコルをブロック</mark>にチェックします</li>

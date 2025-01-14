@@ -14,10 +14,10 @@
 
 
 
-<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
   <link rel="stylesheet" href="/new-technology/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.21.1","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
 
     <meta name="description" content="この記事で実現すること  サイバー攻撃の話題が相変わらず賑やかな状況下、これまで使っていたNASのソフトウェアの安定性やセキュリティ面の不安があり、安定感のあるSynologyのNASにリプレースしました。昨今SSDが安くなってきた事もあり、節電兼ねてALL SSDのNASをセットアップしてみました。">
 <meta property="og:type" content="article">
@@ -377,7 +377,7 @@
 <p>一度セットアップした後は警告メッセージは表示されていません。</p>
 <p>NASというグループではなく、ConsumerというクラスでSynologyの互換性について検索すると、850EVO、860EVOが一覧に表示されます。何れ870EVOがサポート対象になるのを願うことにします。</p>
 <blockquote>
-<p>Synology 製品互換リスト（機種指定なし）<br> <a target="_blank" rel="noopener" href="https://www.synology.com/ja-jp/compatibility?search_by=category&amp;category=hdds_no_ssd_trim&amp;filter_brand=Samsung&amp;filter_class=Consumer&amp;display_brand=other">https://www.synology.com/ja-jp/compatibility?search_by=category&amp;category=hdds_no_ssd_trim&amp;filter_brand=Samsung&amp;filter_class=Consumer&amp;display_brand=other</a></p>
+<p>Synology 製品互換リスト（機種指定なし）<br> <a target="_blank" rel="noopener" href="https://www.synology.com/ja-jp/compatibility?search_by=category&category=hdds_no_ssd_trim&filter_brand=Samsung&filter_class=Consumer&display_brand=other">https://www.synology.com/ja-jp/compatibility?search_by=category&amp;category=hdds_no_ssd_trim&amp;filter_brand=Samsung&amp;filter_class=Consumer&amp;display_brand=other</a></p>
 </blockquote>
 <p>なお、Synologyの互換性試験を軽んじているわけではありませんし、なるべくは互換性のあるものを使おうと考えてはいます。ただし、DS1621+に関してSSDはサードパーティ製で認められたものはなく、SynologyのEnterpriseドライブのみで4TBだと価格が15万円&#x2F;個なので、これは個人で購入するのは困難でしょう。<br>メモリやSSDキャッシュ用途であれば流石に互換性を重視した製品選定をしますが。。。</p>
 <h2 id="NIC"><a href="#NIC" class="headerlink" title="NIC"></a>NIC</h2><img src="/new-technology/2023/07/27/Synology1621plus-ssd/mellanox.png" class="" width="640" title="alt">
@@ -385,7 +385,7 @@
 <p>このブログでは定番のMellanox Connect X4(MCX4121A-ACAT)を選定しました。ebayで1枚$70〜$80（日本円で約1万円）程度です。Synologyで正式に互換性検証されたものは、intel X710-T4がありますが、Connect X4は互換性リストにはありません。1つ昔のモデルのDS1618+はConnect X3には対応しているようです。Connect X4がダメなら純正のSFP28カードを購入するつもりでした。</p>
 <p>前出の互換性リストを見ると、Mellanox Connect X4に対応しているSynology NASもそれなりの数があるようです。</p>
 <blockquote>
-<p>Synology 製品互換リスト<br> <a target="_blank" rel="noopener" href="https://www.synology.com/ja-jp/compatibility?search_by=category&amp;category=network_interface_cards&amp;display_brand=other">https://www.synology.com/ja-jp/compatibility?search_by=category&amp;category=network_interface_cards&amp;display_brand=other</a></p>
+<p>Synology 製品互換リスト<br> <a target="_blank" rel="noopener" href="https://www.synology.com/ja-jp/compatibility?search_by=category&category=network_interface_cards&display_brand=other">https://www.synology.com/ja-jp/compatibility?search_by=category&amp;category=network_interface_cards&amp;display_brand=other</a></p>
 </blockquote>
 <h2 id="ハードウェアインストール"><a href="#ハードウェアインストール" class="headerlink" title="ハードウェアインストール"></a>ハードウェアインストール</h2><h3 id="メモリ"><a href="#メモリ" class="headerlink" title="メモリ"></a>メモリ</h3><p>筐体の底の部分に蓋があり、それを外すとメモリモジュールを挿すところがあります。シール付きの別売りモジュール（4GByte）を装着したところです。</p>
 <img src="/new-technology/2023/07/27/Synology1621plus-ssd/memory.png" class="" width="640" title="alt">
@@ -406,12 +406,15 @@
 
 <h2 id="消費電力"><a href="#消費電力" class="headerlink" title="消費電力"></a>消費電力</h2><p>SSD6台、Mellanox Connect X4を装着した状態で、ワットチェッカーで計測してみました。以下の通り、おおよそ33W-35W程度で安定しています。なかなかの省電力です。以前に利用していたNASは4台のHDDという事もあり、70W-100W程度でかなり発熱も大きかったのがかなり改善されました。</p>
 <ul>
-<li><p>Synology（SSDx6、Mellanox Connect X4）<br> （33W-35W）</p>
- <img src="/new-technology/2023/07/27/Synology1621plus-ssd/wchecker1.png" class="" width="360" title="alt">
-</li>
-<li><p>旧NAS（HDDx4、Mellanox Connect X3）<br> （70W-100W）</p>
- <img src="/new-technology/2023/07/27/Synology1621plus-ssd/wchecker2.png" class="" width="360" title="alt"></li>
+<li>Synology（SSDx6、Mellanox Connect X4）<br> （33W-35W）</li>
 </ul>
+ <img src="/new-technology/2023/07/27/Synology1621plus-ssd/wchecker1.png" class="" width="360" title="alt">
+
+<ul>
+<li>旧NAS（HDDx4、Mellanox Connect X3）<br> （70W-100W）</li>
+</ul>
+ <img src="/new-technology/2023/07/27/Synology1621plus-ssd/wchecker2.png" class="" width="360" title="alt">
+
 <h2 id="ネットワーク"><a href="#ネットワーク" class="headerlink" title="ネットワーク"></a>ネットワーク</h2><p>セットアップ終了後、無事Connect X4はNASに以下のように認識されていました。</p>
 <blockquote>
 <p><code>25000 Mbps, 全二重, MTU 1500</code></p>
@@ -447,10 +450,11 @@
 </ul>
 <p> 絞り込みも優秀で、ホスト名を入力させるのではなく、すでにログ出力されているホスト名から選択できます。<br>  <img src="/new-technology/2023/07/27/Synology1621plus-ssd/syslog2.png" class="" width="800" title="alt"></p>
 <ul>
-<li><p>ストレージアナライザー</p>
+<li>ストレージアナライザー</li>
+</ul>
  <img src="/new-technology/2023/07/27/Synology1621plus-ssd/analyzer.png" class="" width="1024" title="alt">  
 <p> ファイルサイズの大きいもの順に確認できたり、重複ファイルを確認、削除できます。データの見える化ができて、とても便利です。</p>
-</li>
+<ul>
 <li><p>ファイアウォール<br> これはアプリケーションの自動ブロックと連動していて、このブロックが働いた時、つまり明らかな不正ログインの懸念がある場合のみ通知されます。ですので、普段から通知されることはありません。以前のNASでは許可していないサービスにIPレベルでパケットが到達した段階でエラーとカウントして膨大な件数の拒否カウントが定期的に通知されており、結局通知を止めていたのですが、こちらは現実的なファイアウォール機能となっています。</p>
 <blockquote>
 <p>さまざまなサービスとパッケージが自動ブロックをサポートします。例：DSM、SSH、Telnet、rsync、ネットワーク バックアップ、共有フォルダの同期、FTP、SMB、WebDAV、File Station、Audio Station、Video Station、Download Station、Mail Server、Mail Station、MailPlus、MailPlus Server、VPN Server、Synology Drive Server、および Synology モバイル アプリ。</p>

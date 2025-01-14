@@ -14,10 +14,10 @@
 
 
 
-<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
   <link rel="stylesheet" href="/new-technology/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.21.1","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
 
     <meta name="description" content="この記事で実現すること  リモートワークやインターネット回線の高速化に伴い、10Gネットワークが普及し、10GBase-Tの発熱に対する声が聞かれます。10Gネットワークにおいては従来のLANケーブルではなく光ファイバーで省電力化と低発熱が実現できる、SFP+が選択肢となります。実はあまり知られていない低遅延の効果もあります。2023年4月以降段階的に各地で電気代が値上げされることになりました">
 <meta property="og:type" content="article">
@@ -484,15 +484,15 @@
 <p>OM3は1,500円&#x2F;10m、2,500円&#x2F;20mです。OM4は2,200円&#x2F;10mです（販売会社によって若干のばらつきがあります）。ケーブルを自宅内に敷設するなら、将来の拡張性のために40Gbps&#x2F;100Gbpsを150mの距離に対応しているOM4を選択しても良いように見えます。しかし今のところ25GbpsのスイッチはSFP28インタフェースとなりOM3のLC-LCケーブルが使えますが、40Gbpsはスイッチ側がQFSPインタフェースとなり、LC-LCではなくMPOケーブルとなります。個人向けという意味では、PF管&#x2F;CD管を通す場合のMPOコネクタは幅・厚みがあることで、管を通すことが難しくなります。OM3のLC-LCであれば、（1ペアづつ地道に通線させ）直径2cmの管に3本〜4本程度のOM3ケーブルを通せます。</p>
 <h3 id="10GBase-Tモジュール、1000Base-Tモジュール"><a href="#10GBase-Tモジュール、1000Base-Tモジュール" class="headerlink" title="10GBase-Tモジュール、1000Base-Tモジュール"></a>10GBase-Tモジュール、1000Base-Tモジュール</h3><p>既存のRJ45端子のLANケーブル（UTPケーブル）を接続するためのモジュールです。10GBase-Tの口を持っていないSFP+のみのスイッチでは、このモジュールを利用し既存の10GBase-T環境と接続します。10GBase-TモジュールはLANケーブルの長さが30mまでを限界としている製品が多いです。ケーブルが長くなれば電力量が増え3Wを超えてしまうためです。通信量と消費電力とは殆ど関係ありません。確かにIEEE802.3azという規格では無通信時は省電力にする仕組みを持っていますが、<strong>消費電力は距離によって変わります</strong>。MarvellではなくBroadcomのチップを使った10GBase-Tモジュールも出てきており省電力で80mまで可能となっています。</p>
 <h3 id="その他ケーブル、トランシーバ"><a href="#その他ケーブル、トランシーバ" class="headerlink" title="その他ケーブル、トランシーバ"></a>その他ケーブル、トランシーバ</h3><ul>
-<li><p>SCケーブル</p>
+<li>SCケーブル</li>
+</ul>
  <img src="/new-technology/2022/05/28/sfp-plus/sc.png" class="" width="600" title="alt">
 <p> 古い規格の光ファイバ端子です。GBICとも呼ばれます。これが対となりSC-SCケーブルというものになりますが、SFP&#x2F;SFP+モジュールには接続できません。</p>
-</li>
-<li><p>MPOケーブル</p>
+<ul>
+<li>MPOケーブル</li>
+</ul>
  <img src="/new-technology/2022/05/28/sfp-plus/mpo.png" class="" width="600" title="alt">
 <p> 40GbpsのQFSPトランシーバ（QSFP-40G-SR4）に利用されます。SFP&#x2F;SFP+&#x2F;SFP28とは互換性がありません。</p>
-</li>
-</ul>
 <h2 id="モジュールの互換性・ベンダーロックイン"><a href="#モジュールの互換性・ベンダーロックイン" class="headerlink" title="モジュールの互換性・ベンダーロックイン"></a>モジュールの互換性・ベンダーロックイン</h2><p>SFP+を語るときに外せないテーマが、互換性の問題とベンダーロックインです。まず互換性の問題ですが、背景としてはSGMIIというCiscoが提唱した方式がデファクトスタンダードとなり、他のメーカーがSGMII対応に倣ってきたため、各社仕様が微妙に異なる状況となっており、互換性の問題で接続できないケースが発生します。また、ベンダーロックインはCisco&#x2F;HP&#x2F;intelなどのメーカーが設定しており、動作を担保するためにテスト済みのモジュール以外は使えないようになっています。SFPはMSA（マルチソースアグリーメント）によって業界で標準化されたトランシーバデバイスとして、可能な限り規格を統一されるように取り組まれています。</p>
 <h3 id="MMFモジュールの互換性"><a href="#MMFモジュールの互換性" class="headerlink" title="MMFモジュールの互換性"></a>MMFモジュールの互換性</h3><p>MMFモジュールの互換性については、Cisco&#x2F;intel&#x2F;Dell&#x2F;Mellanox&#x2F;HPというグループに分かれます。この互換性に基づきMMFモジュールを購入する必要があります。</p>
 <p>MMFモジュールの互換性グループ</p>
@@ -780,8 +780,8 @@
 </tr>
 </tbody></table>
 <blockquote>
-<p>Mellanox Connect X-3<br> <img src="/new-technology/2022/05/28/sfp-plus/connectx3.png" class="" width="480" title="alt"></p>
-</blockquote>
+<p>Mellanox Connect X-3</p>
+ <img src="/new-technology/2022/05/28/sfp-plus/connectx3.png" class="" width="480" title="alt"></blockquote>
 <blockquote>
 <p>Mellanox Connect X-4&#x2F;X-5<br> <a target="_blank" rel="noopener" href="https://docs.nvidia.com/networking/display/CX4LxEN/Specifications#Specifications-MCX4111A-ACATandMCX4111A-ACUTSpecifications">https://docs.nvidia.com/networking/display/CX4LxEN/Specifications#Specifications-MCX4111A-ACATandMCX4111A-ACUTSpecifications</a><br> <a target="_blank" rel="noopener" href="https://docs.nvidia.com/networking/display/ConnectX5EN/Specifications#Specifications-MCX512A-ACATandMCX512A-ACUTSpecifications">https://docs.nvidia.com/networking/display/ConnectX5EN/Specifications#Specifications-MCX512A-ACATandMCX512A-ACUTSpecifications</a></p>
 </blockquote>

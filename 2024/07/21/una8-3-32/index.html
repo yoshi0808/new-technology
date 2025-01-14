@@ -14,10 +14,10 @@
 
 
 
-<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
   <link rel="stylesheet" href="/new-technology/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.21.1","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
 
     <meta name="description" content="この記事で実現すること  米国Ubiquiti（ユビキティ）社のUniFi製品のコントローラーとして利用するUniFi Network Application（以下、UNA）の8.3.32(Official)が提供されています。特にゲートウェイにおけるNAT機能において機能強化が図られています。この記事は本バージョンで強化されたNATのセキュリティ対応を纏めています。">
 <meta property="og:type" content="article">
@@ -329,7 +329,10 @@
 <p>インタフェースを<strong>Default</strong>、Internetに出ていく宛先、つまり<strong>0.0.0.0&#x2F;0</strong>の宛先、<strong>Port53&#x2F;TCP,UDP</strong>を対象に<mark class="label primary">変換されたIPアドレス</mark>としてGatewayのIPアドレスを指定することで宛先IPアドレスが変換されます。<br>なお、IPv6のNAT機能はまだ実装されていないようなので、DefaultセグメントのIPv6は無効にしておきます。</p>
 <h3 id="検証"><a href="#検証" class="headerlink" title="検証"></a>検証</h3><ul>
 <li>WindowsPCをIoT機器と見立て、LANに接続の上、WindowsのDNSの設定を<code>8.8.8.8</code>に変更します</li>
-<li>UniFiのDNS設定で、仮のホスト”test.home”のエントリを作成します <img src="/new-technology/2024/07/21/una8-3-32/dns.png" class="" width="800" title="alt"></li>
+<li>UniFiのDNS設定で、仮のホスト”test.home”のエントリを作成します</li>
+</ul>
+ <img src="/new-technology/2024/07/21/una8-3-32/dns.png" class="" width="800" title="alt">
+<ul>
 <li><code>nslookup test.home</code>を実行します</li>
 </ul>
 <p>実行結果</p>
