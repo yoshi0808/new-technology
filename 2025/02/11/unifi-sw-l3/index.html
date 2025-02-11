@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/icon-16x16.png">
+  <link rel="mask-icon" href="/new-technology/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/new-technology/css/main.css">
+
+
+
+<link rel="stylesheet" href="/new-technology/lib/@fortawesome/fontawesome-free/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="/new-technology/lib/animate.css/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js"></script>
+
+    <meta name="description" content="この記事で実現すること  この記事ではホームユーザー向けにUniFiスイッチのL3レイヤおよびL2レイヤアクセスコントロール（ACL）の機能を紹介します。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UniFiスイッチ アクセスコントロール">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2025/02/11/unifi-sw-l3/index.html">
+<meta property="og:site_name" content="New technologies in our life">
+<meta property="og:description" content="この記事で実現すること  この記事ではホームユーザー向けにUniFiスイッチのL3レイヤおよびL2レイヤアクセスコントロール（ACL）の機能を紹介します。">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2025/02/11/unifi-sw-l3/title.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2025/02/11/unifi-sw-l3/L3.drawio.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2025/02/11/unifi-sw-l3/network1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2025/02/11/unifi-sw-l3/network2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2025/02/11/unifi-sw-l3/network3.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2025/02/11/unifi-sw-l3/network4.png">
+<meta property="article:published_time" content="2025-02-10T18:13:30.000Z">
+<meta property="article:modified_time" content="2025-02-11T06:00:54.671Z">
+<meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
+<meta property="article:tag" content="UniFi">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2025/02/11/unifi-sw-l3/title.png">
+
+
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2025/02/11/unifi-sw-l3/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"ja","comments":true,"permalink":"https://yoshi0808.github.io/new-technology/2025/02/11/unifi-sw-l3/","path":"2025/02/11/unifi-sw-l3/","title":"UniFiスイッチ アクセスコントロール"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>UniFiスイッチ アクセスコントロール | New technologies in our life</title>
+  
+
+
+
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{&quot;token&quot;: &quot;0148b4d0442e42b483ddce684030bd2f&quot;}'></script>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JMY6NSC2KK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+  'ad_storage': 'denied',
+  'analytics_storage': 'denied'
+  });
+
+  dataLayer.push({
+  'event': 'default_consent'
+  });
+
+  if (Cookies.get('PRVCY202112') == 'Agree') {
+    gtag('consent', 'update', {
+    'analytics_storage': 'granted'
+    });
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'G-JMY6NSC2KK',{ 'anonymize_ip': true });
+</script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/new-technology/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/new-technology/atom.xml" title="New technologies in our life" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="ナビゲーションバーの切り替え" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/new-technology/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">New technologies in our life</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Device,Network,Code,etc...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="検索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/new-technology/" rel="section"><i class="fa fa-home fa-fw"></i>ホーム</a></li><li class="menu-item menu-item-about"><a href="/new-technology/about/" rel="section"><i class="fa fa-user fa-fw"></i>サイトポリシー</a></li><li class="menu-item menu-item-tags"><a href="/new-technology/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>タグ</a></li><li class="menu-item menu-item-categories"><a href="/new-technology/categories/" rel="section"><i class="fa fa-th fa-fw"></i>カテゴリ</a></li><li class="menu-item menu-item-archives"><a href="/new-technology/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>アーカイブ</a></li><li class="menu-item menu-item-privacy"><a href="/new-technology/privacypolicy/" rel="section"><i class="fa fa-check fa-fw"></i>プライバシーポリシー</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="検索…" spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          見出し
+        </li>
+        <li class="sidebar-nav-overview">
+          概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#UniFi%E3%82%B9%E3%82%A4%E3%83%83%E3%83%81%E3%81%AE%E4%B8%80%E8%88%AC%E7%9A%84%E3%81%AA%E4%BD%BF%E3%81%84%E6%96%B9"><span class="nav-number">1.</span> <span class="nav-text">UniFiスイッチの一般的な使い方</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#L3%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF"><span class="nav-number">2.</span> <span class="nav-text">L3ネットワーク</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#L3%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E3%81%AE%E4%BD%9C%E6%88%90"><span class="nav-number">3.</span> <span class="nav-text">L3ネットワークの作成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%82%A2%E3%82%AF%E3%82%BB%E3%82%B9%E3%82%B3%E3%83%B3%E3%83%88%E3%83%AD%E3%83%BC%E3%83%AB"><span class="nav-number">4.</span> <span class="nav-text">アクセスコントロール</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="阿部　吉伸(Yoshinobu ABE)"
+      src="/new-technology/images/yoshi.png">
+  <p class="site-author-name" itemprop="name">阿部　吉伸(Yoshinobu ABE)</p>
+  <div class="site-description" itemprop="description">IT</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/new-technology/archives/">
+          <span class="site-state-item-count">96</span>
+          <span class="site-state-item-name">ポスト</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/new-technology/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">カテゴリ</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/new-technology/tags/">
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">タグ</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yoshi0808" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yoshi0808" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yoshi0808.blog@gmail.com" title="E-Mail → mailto:yoshi0808.blog@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yoshi0808_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yoshi0808_" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="/new-technology/lib/@creativecommons/vocabulary/assets/license_badges/big/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="ja">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2025/02/11/unifi-sw-l3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/new-technology/images/yoshi.png">
+      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="New technologies in our life">
+      <meta itemprop="description" content="IT">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="UniFiスイッチ アクセスコントロール | New technologies in our life">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          UniFiスイッチ アクセスコントロール
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">投稿日</span>
+      
+
+      <time title="作成日：2025-02-11 03:13:30 / 修正日：15:00:54" itemprop="dateCreated datePublished" datetime="2025-02-11T03:13:30+09:00">2025-02-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">カテゴリ</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/Hardware/" itemprop="url" rel="index"><span itemprop="name">Hardware</span></a>
+        </span>
+          、
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/Network/" itemprop="url" rel="index"><span itemprop="name">Network</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><img src="/new-technology/2025/02/11/unifi-sw-l3/title.png" class="" width="1024" title="alt">
+<p class="onepoint">この記事で実現すること</p>
+
+<p>この記事ではホームユーザー向けにUniFiスイッチのL3レイヤおよびL2レイヤアクセスコントロール（ACL）の機能を紹介します。</p>
+<span id="more"></span>
+
+<h2 id="UniFiスイッチの一般的な使い方"><a href="#UniFiスイッチの一般的な使い方" class="headerlink" title="UniFiスイッチの一般的な使い方"></a>UniFiスイッチの一般的な使い方</h2><p>UniFiスイッチにはPro AggregationなどのL3スイッチ機能を持つものがあり、異なるサブネットへのルーティングが出来ます。もっとも個人向けのUniFiではDream Machineなどのクラウドゲートウェイを中心として複数のサブネットにルーティングするデザインが一般的です。<br>それに対して、CloudKey+などのゲートウェイ無しのコンソールで配下のスイッチ・AP・監視カメラを管理するスタイルで別途ホームゲートウェイに接続したり、別のセキュリティゲートウェイ（firewall）を用意するケースもあるでしょう。</p>
+<p>Ubiqutiがお勧めするのは前者であり、クラウドゲートウェイで配下の端末やアクセスコントロールを集中管理できるのがメリットとしています。管理がとても楽なのは間違いありません。</p>
+<h2 id="L3ネットワーク"><a href="#L3ネットワーク" class="headerlink" title="L3ネットワーク"></a>L3ネットワーク</h2><p>少し煩雑でもできるだけ用途別のトラフィックを1つのサブネットに留めておきたいというニーズはあると思います。必ずしもインターネットを利用しない端末やサーバーのバックアップなど、仮想マシンから複数の足を出してユーザーが利用するネットワーク、バックアップ専用ネットワークと使い分けたりします。こういった用途はスイッチの単位でトラフィックを閉じ込める事もできますが、ゲストや家族向けなど複数のスイッチに跨ってアクセスコントロールが必要な場合もあります。</p>
+<p>以下は一例（私の自宅の環境）です。</p>
+<img src="/new-technology/2025/02/11/unifi-sw-l3/L3.drawio.png" class="" width="480" title="alt">
+
+<ul>
+<li>Serverセグメントには仮想サーバー群、NASが設置してあります</li>
+<li>FamilyセグメントはiOS、Windowsを中心に家族が利用する端末があります。</li>
+<li>GuestセグメントはIoT、会社の端末が接続します。</li>
+</ul>
+<p>これらは全てタグ有り（デフォルト1以外のタグ）のネットワークで構成されています。タグ無しのデフォルトネットワークはUniFiのCloudkeyと監視カメラ、メインの仮想マシン（ESXi）が接続されています。こういったセグメント構成は個人向けとしてはよくある形ではないかと思います。<br>それでGuestは当然、ServerやFamilyと繋ぐ必要はない一方で、FamilyからServerへのアクセスは必要となります。セグメントを超える場合（ルーティングする場合）はすべからくゲートウェイ（firewall）を経由するネットワークデザインも有りなんですが、macOSからNASへのバックアップ（TimeMachine）などやはり様々なデータフローがあるので、全てをゲートウェイ経由というのは少しやりすぎではないかと思うのです。そこで私の場合は、L3スイッチを効果的に使うべく、FamilyからServerへのセグメント越えはL3スイッチを使ったルーティングにしています。</p>
+<h2 id="L3ネットワークの作成"><a href="#L3ネットワークの作成" class="headerlink" title="L3ネットワークの作成"></a>L3ネットワークの作成</h2><p>以下のようにコンソールのネットワークを開きます。</p>
+<img src="/new-technology/2025/02/11/unifi-sw-l3/network1.png" class="" width="800" title="alt">
+
+<p>すでに構成されたセグメントを見るとわかるように、どのL3スイッチ上にL3ネットワークを作るかを指定します。<br>作り方は簡単で、<mark class="label primary">New Virtual Network</mark>をクリックし、赤枠で囲ったL3スイッチを選択し、新たなセグメントで割り当てるスイッチ自身のIPアドレス、VLAN IDを指定するだけです。</p>
+<img src="/new-technology/2025/02/11/unifi-sw-l3/network2.png" class="" width="1024" title="alt">
+
+<mark class="label primary">Auto-Scale Network</mark>のチェックは外し、Host IP Addressを新しいセグメントのIPアドレスを指定します。一般的な24ビットのネットワークであれば第3オクテットの数字を10などとしてスイッチのIPを決めます。またVLAN IDもそれに合わせておいた方がわかりやすいですね。
+<p>なお、UniFiのL3スイッチはDHCP機能を持ちますので、簡易にIPv4アドレスをホストに割り当てたい場合には利用できます。但し、DHCPオプションの高度な事はできませんし、IPv6の割り当て機能もありません。</p>
+<p>インターネットにルーティングするためのデフォルトゲートウェイの指定以外に、このようにL3スイッチ経由で特定のセグメントにルーティングするならばスタティックルーティングの設定が個々の端末に必要になります。このためにはDCHPサーバーにOption121によるスタティックルーティングの情報を登録する必要があるのですが、今のUniFi Consoleにはそれを設定する機能がありません。<br>そういうわけで私はスイッチのDHCPを使わず、firewallのDHCPを利用してスタティックルーティングの情報を各端末に配布しています。同様にIPv6もfirewall側で配布しています。</p>
+<p>なお、UniFiのL3にはInter-VLANと呼ばれる、UniFi以外のゲートウェイにルーティングするための専用VLAN（4040）が存在します。L3スイッチから直接ゲートウェイの指定IPにルーティングする機能があり、これを併用すれば端末のデフォルトゲートウェイをスイッチにしてさえおけば、個別のスタティックルーティングの設定は不要になります。今回の記事ではこの説明は割愛します。</p>
+<h2 id="アクセスコントロール"><a href="#アクセスコントロール" class="headerlink" title="アクセスコントロール"></a>アクセスコントロール</h2><p>さて、本題です。UniFiではL3レイヤのACLとL2レイヤのACLが可能です。L3レイヤのACLは当然L3スイッチを対象としていますが、L2の方は、USW-Flex-Miniなどの小型スイッチ以外のL2スイッチについて対応しています。</p>
+<p>L3の方は簡単です。<mark class="label primary">L3 Network Isolation (ACL)</mark>で、<mark class="label primary">Source Network</mark>から見て、**接続できない（Isolate）**ネットワークを指定するだけです。</p>
+<img src="/new-technology/2025/02/11/unifi-sw-l3/network3.png" class="" width="800" title="alt">
+
+
+<p>ここでは、Guestから隣接するL3ネットワーク全てに接続できないという指定をしています。</p>
+<img src="/new-technology/2025/02/11/unifi-sw-l3/network4.png" class="" width="480" title="alt">
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/new-technology/tags/UniFi/" rel="tag"><i class="fa fa-tag"></i> UniFi</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/new-technology/2024/10/27/xg-v21/" rel="prev" title="Sophos Firewall v21でLet's Encrypt™️と3rdパーティ脅威情報を使う">
+                  <i class="fa fa-angle-left"></i> Sophos Firewall v21でLet's Encrypt™️と3rdパーティ脅威情報を使う
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2020 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">阿部　吉伸(Yoshinobu ABE)</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div><script src="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.umd.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.min.css" rel="stylesheet">
+
+<script>
+if (Cookies.get('PRVCY202112') != 'Agree') {
+  const notice = new SimpleGDPR({
+    title: 'Accept Cookies & Privacy Policy?',
+    message: 'このWebサイトでは、訪問や活動に関するデータがクッキー等によって収集されます。閲覧を継続される場合、\
+    プライバシーポリシーをご覧いただき同意(Agree)をお願いします',
+    link: null,
+    icons: true,
+    theme: 'light',
+    animation: 'fade',
+    float: 'bottom-right',
+      callback: () => {
+      notice.close();
+      Cookies.set('PRVCY202112', 'Agree', { expires: 365, path: '/'});
+      notice.destroy();
+      // Google Analytics 4
+      gtag('consent', 'update', {
+      'analytics_storage': 'granted'
+      });
+      gtag('js', new Date());
+      gtag('config', 'G-JMY6NSC2KK', { 'anonymize_ip': true });
+      },
+  });
+}
+</script>
+<div class="disclaimer1">
+このサイトの記事は、特別な記載がない限り <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja">クリエイティブ・コモンズ BY-NC-SA ライセンス</a>で保護されています</div>
+
+
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/yoshi0808" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="/new-technology/lib/animejs/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="/new-technology/lib/medium-zoom/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/comments.js"></script><script src="/new-technology/js/utils.js"></script><script src="/new-technology/js/motion.js"></script><script src="/new-technology/js/sidebar.js"></script><script src="/new-technology/js/next-boot.js"></script>
+
+  <script src="/new-technology/lib/hexo-generator-searchdb/dist/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/new-technology/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"/new-technology/lib/mermaid/dist/mermaid.min.js","integrity":"sha256-G8ouPAnw4zzMbnAenHnVz6h9XpKbNdOkrqTh7AadyHs="}}</script>
+  <script src="/new-technology/js/third-party/tags/mermaid.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
