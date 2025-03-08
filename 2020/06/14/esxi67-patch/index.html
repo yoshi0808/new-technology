@@ -38,7 +38,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/esxi6.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/rollback.png">
 <meta property="article:published_time" content="2020-06-14T13:19:20.000Z">
-<meta property="article:modified_time" content="2024-12-21T01:28:17.286Z">
+<meta property="article:modified_time" content="2025-03-08T03:13:29.927Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="ESXi">
 <meta name="twitter:card" content="summary">
@@ -282,7 +282,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">編集日</span>
-      <time title="修正日：2024-12-21 10:28:17" itemprop="dateModified" datetime="2024-12-21T10:28:17+09:00">2024-12-21</time>
+      <time title="修正日：2025-03-08 12:13:29" itemprop="dateModified" datetime="2025-03-08T12:13:29+09:00">2025-03-08</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -309,7 +309,8 @@
 <p>無償版ESXi（VMware vSphere Hypervisor）について、BroadcomおよびVMWareのサイトから製品パッチに関する情報を入手し、ESXi上でパッチを適用します。この記事ではESXi8.0を対象にしていますが、コマンド自体はESXi7.0も変わりません。</p>
 <span id="more"></span>
 
-<h2 id="ご注意事項"><a href="#ご注意事項" class="headerlink" title="ご注意事項"></a>ご注意事項</h2><p>2024-01-22に発表されたVMWareブログによりますと、スタンドアロン製品の提供を終了し、サブスクリプションモデルに変更されることとなりました。この無償版ESXiは今後提供停止となりますが、サポートは継続されるとの事です。<br>無償版ESXiの利用にあたっては、まずこちらの記事「<a href="/new-technology/2024/01/30/EOS-Free-esxi/" title="VMWare 無償版ESXiの提供終了について">VMWare 無償版ESXiの提供終了について</a>」を参照されることをお勧めします。</p>
+<h2 id="ご注意事項"><a href="#ご注意事項" class="headerlink" title="ご注意事項"></a>ご注意事項</h2><p>2025-03-08の時点でESXi8.0は　Update3dのパッチが提供されているようです。しかしながら、私のBroadcomアカウントが個人のgmailで登録していたためか、パッチがダウンロードできなくなっています。個人のProfileを構成しなくてはなりませんが、「non-corporate email domain」はProfileが構成できないとのことで、昨年はパッチをダウンロードできていましたが、現時点ではこの記事に記載している方法では実施できなくなっています。</p>
+<p>人によって異なるかもしれませんので、この記事は残しておきますが、私はこのような理由で最新のパッチが取得できていません。何か情報がわかりましたらまたこの記事をアップデートしたいと思います。</p>
 <h2 id="パッチ適用に必要なもの"><a href="#パッチ適用に必要なもの" class="headerlink" title="パッチ適用に必要なもの"></a>パッチ適用に必要なもの</h2><p>SSHでESXiに接続し、コマンドラインでパッチを適用します。Windows11ではOpenSSHがデフォルトで導入されています。Windows10ではOpenSSHがサポートされていますので、<mark class="label primary">オプション機能を追加する</mark>から<mark class="label primary">OpenSSHクライアント</mark>を有効にし、コマンドラインから<code>ssh  root@ESXiのIPアドレス</code>で接続可能です。</p>
 <h2 id="VMwareのパッチ情報"><a href="#VMwareのパッチ情報" class="headerlink" title="VMwareのパッチ情報"></a>VMwareのパッチ情報</h2><p>ESXiのパッチ情報は以下を参照してください。当該ページの左ペインメニューには最新パッチの情報が掲載されていますので、最新のパッチ情報を辿ってください。また、過去のパッチの情報も提供されています。</p>
 <blockquote>
