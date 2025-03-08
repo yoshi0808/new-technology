@@ -11,6 +11,15 @@
   </url>
   
   <url>
+    <loc>https://yoshi0808.github.io/new-technology/2025/03/08/ESXi8-Patch/</loc>
+    
+    <lastmod>2025-03-08</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://yoshi0808.github.io/new-technology/about/index.html</loc>
     
     <lastmod>2025-02-23</lastmod>
@@ -961,6 +970,13 @@
   </url>
   
   <url>
+    <loc>https://yoshi0808.github.io/new-technology/tags/M-2-NVMe/</loc>
+    <lastmod>2025-03-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://yoshi0808.github.io/new-technology/tags/SFP/</loc>
     <lastmod>2025-03-08</lastmod>
     <changefreq>weekly</changefreq>
@@ -982,14 +998,14 @@
   </url>
   
   <url>
-    <loc>https://yoshi0808.github.io/new-technology/tags/M-2-NVMe/</loc>
+    <loc>https://yoshi0808.github.io/new-technology/tags/proxmox-Ubuntu/</loc>
     <lastmod>2025-03-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://yoshi0808.github.io/new-technology/tags/proxmox-Ubuntu/</loc>
+    <loc>https://yoshi0808.github.io/new-technology/tags/DeepL/</loc>
     <lastmod>2025-03-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1004,13 +1020,6 @@
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/tags/Synology/</loc>
-    <lastmod>2025-03-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://yoshi0808.github.io/new-technology/tags/DeepL/</loc>
     <lastmod>2025-03-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1145,7 +1154,7 @@
   </url>
   
   <url>
-    <loc>https://yoshi0808.github.io/new-technology/categories/Security/</loc>
+    <loc>https://yoshi0808.github.io/new-technology/categories/Software/</loc>
     <lastmod>2025-03-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1159,7 +1168,7 @@
   </url>
   
   <url>
-    <loc>https://yoshi0808.github.io/new-technology/categories/Software/</loc>
+    <loc>https://yoshi0808.github.io/new-technology/categories/Security/</loc>
     <lastmod>2025-03-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
