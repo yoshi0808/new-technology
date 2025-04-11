@@ -9,7 +9,8 @@ categories: Security
 
 ## Sophos Firewall v21 MR1
 
-Sophos Firewall v21 MR1が2024年03月13日に発表されました。VPNのエンハンス、DHCPのエラーからの回復機能追加などが挙げられます。IPv6のみのクライアント（IPv4を持たない）に対しIPv6からのNAT機能でIPv4サイトを閲覧できるProxy機能が加えられました。 
+Sophos Firewall v21 MR1が2025年03月13日に発表されました。VPNのエンハンス、DHCPのエラーからの回復機能追加などが挙げられます。IPv6のみのクライアント（IPv4を持たない）に対しIPv6からのNAT機能でIPv4サイトを閲覧できるProxy機能が加えられました。 
+また、 2025年3月31日にバグフィックスされたMR1-Build277が発表されています。
 <!-- more -->
 
 v21 MR1の詳細な説明はSophos Communityを参照してください。
@@ -18,20 +19,22 @@ v21 MR1の詳細な説明はSophos Communityを参照してください。
 リリースノートはこちらです。
 > <https://docs.sophos.com/releasenotes/index.html?productGroupID=nsg&productID=xg&versionID=21.0>
 
+MR1-Build277では、PPPoEユーザー名（NC-153892）に特殊文字「#」がある場合、PPPoEインターフェイスが接続されないという孤立した問題が見られたためそれの解決策が適用されています。
+
 ## Sophos Firewallのアップデート
 
 管理画面にログイン後、左ペインメニューの{% label primary @バックアップ＆ファームウェア %}の{% label primary @ファームウェアの確認 %}でアップデートの案内が順次来ます。ただし、これはかなり時間が経過してから通知が行われるのが通常のようです。
 
 {% asset_img mr1-1.png 800 alt %}
 
-※上記はv19稼働中において、v20のファームウェアが通知されたところです。
+※上記はv21 MR1のファームウェアが通知されたところです。
 
 個別にバージョンアップのファイルを入手するには、以下のURLからダウンロードします。
 
 <https://support.sophos.com/support/s/article/KB-000043162?language=en_US>
 
 1. 上記画面で{% label primary @Sophos Firewall %}の{% label primary @ファームウェア %}の{% label primary @ソフトウェア %}のLinkをクリックします。
-2. "SW-21.0.1_MR-1.SFW-272.sig"をダウンロードします。
+2. "SW-21.0.1_MR-1.SFW-277.sig"をダウンロードします。
 3. Sophos Firewallの管理画面にログインし、左ペインメニューの{% label primary @バックアップ＆ファームウェア %}の{% label primary @ファームウェアのタブメニュー %}から以下の画面に赤丸で囲った矢印のアイコンをクリックし、ダウンロードしたモジュールをアップロードします。
 
 {% asset_img verup.png 800 alt %}
