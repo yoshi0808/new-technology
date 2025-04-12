@@ -1,8 +1,9 @@
-/* global CONFIG, NexT, pjax */
+/* global CONFIG, NexT, pjax, algoliasearch */
 
 document.addEventListener('DOMContentLoaded', () => {
   const { indexName, appID, apiKey, hits } = CONFIG.algolia;
-  const client = window['algoliasearch/lite'].liteClient(appID, apiKey);
+  const client = algoliasearch(appID, apiKey);
+  const index = client.initIndex(indexName);
 
   const input = document.querySelector('.search-input');
   const container = document.querySelector('.search-result-container');
@@ -10,10 +11,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const formatHits = data => {
     const { title, excerpt, excerptStrip, contentStripTruncate } = data._highlightResult;
     let result = `<li><a href="${data.permalink}" class="search-result-title">${title.value}</a>`;
-    const content = excerpt?.value || excerptStrip?.value || contentStripTruncate?.value;
-    if (content) {
+    const content = excerpt || excerptStrip || contentStripTruncate;
+    if (content && content.value) {
       const div = document.createElement('div');
-      div.innerHTML = content;
+      div.innerHTML = content.value;
       result += `<a href="${data.permalink}"><p class="search-result">${div.textContent.substring(0, 100)}...</p></a></li>`;
     }
     return result;
@@ -29,19 +30,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     isSearching = true;
     const startTime = Date.now();
-    const result = await client.search({
-      requests: [{
-        indexName,
-        page,
-        query                : searchText,
-        hitsPerPage          : hits.per_page || 10,
-        attributesToRetrieve : ['permalink'],
-        attributesToHighlight: ['title', 'excerpt', 'excerptStrip', 'contentStripTruncate'],
-        highlightPreTag      : '<mark class="search-keyword">',
-        highlightPostTag     : '</mark>'
-      }]
+    const data = await index.search(searchText, {
+      page,
+      attributesToRetrieve : ['permalink'],
+      attributesToHighlight: ['title', 'excerpt', 'excerptStrip', 'contentStripTruncate'],
+      hitsPerPage          : hits.per_page || 10,
+      highlightPreTag      : '<mark class="search-keyword">',
+      highlightPostTag     : '</mark>'
     });
-    const data = result.results[0];
     if (data.nbHits === 0) {
       container.innerHTML = '<div class="search-result-icon"><i class="far fa-frown fa-5x"></i></div>';
     } else {

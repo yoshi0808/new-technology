@@ -988,13 +988,6 @@
   </url>
   
   <url>
-    <loc>https://yoshi0808.github.io/new-technology/tags/M-2-NVMe/</loc>
-    <lastmod>2025-04-12</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://yoshi0808.github.io/new-technology/tags/SFP/</loc>
     <lastmod>2025-04-12</lastmod>
     <changefreq>weekly</changefreq>
@@ -1010,6 +1003,13 @@
   
   <url>
     <loc>https://yoshi0808.github.io/new-technology/tags/25GbE/</loc>
+    <lastmod>2025-04-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://yoshi0808.github.io/new-technology/tags/M-2-NVMe/</loc>
     <lastmod>2025-04-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
