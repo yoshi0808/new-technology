@@ -11,7 +11,7 @@ categories:
 {% asset_img title.png alt %}
 <p class="onepoint">この記事で実現すること</p>
 
-無償版ESXi（VMware vSphere Hypervisor）について、2025-4-7にESXi8 Update3eが発表されています。今回、Broadcomサポートサイトからisoファイルをダウンロードできるようになっています。また、ESXi8 Update3dの時と同様にVMWareのサイトから製品パッチをESXi本体から直接ダウンロードし、ESXi上でパッチを適用する方法も（推奨されませんが）存在します。従来は、BroadcomからパッチのZIPファイルをダウンロードしESXiに適用する方法でしたが、ESXi8 Update3eではISOによるファイルのダウンロードおよび、（非推奨の）コマンドからのUpdateについて説明します。
+無償版ESXi（VMware vSphere Hypervisor）について、2025-4-10にESXi8 Update3eが発表されています。今回、Broadcomサポートサイトからisoファイルをダウンロードできるようになっています。また、ESXi8 Update3dの時と同様にVMWareのサイトから製品パッチをESXi本体から直接ダウンロードし、ESXi上でパッチを適用する方法も（推奨されませんが）存在します。従来は、BroadcomからパッチのZIPファイルをダウンロードしESXiに適用する方法でしたが、ESXi8 Update3eではISOによるファイルのダウンロードおよび、（非推奨の）コマンドからのUpdateについて説明します。
 
 <!-- more -->
 
