@@ -137,4 +137,5 @@ search:
   path: search.json
   field: post
   content: true
-  format: html
+  format: striptags
+  
