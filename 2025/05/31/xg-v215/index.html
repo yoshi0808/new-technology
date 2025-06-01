@@ -36,7 +36,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2025/05/31/xg-v215/rule.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2025/05/31/xg-v215/test.png">
 <meta property="article:published_time" content="2025-05-30T20:37:33.000Z">
-<meta property="article:modified_time" content="2025-06-01T03:07:47.224Z">
+<meta property="article:modified_time" content="2025-06-01T04:02:17.692Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -302,7 +302,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">編集日</span>
-      <time title="修正日：2025-06-01 12:07:47" itemprop="dateModified" datetime="2025-06-01T12:07:47+09:00">2025-06-01</time>
+      <time title="修正日：2025-06-01 13:02:17" itemprop="dateModified" datetime="2025-06-01T13:02:17+09:00">2025-06-01</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -338,8 +338,9 @@
 </blockquote>
 <p>NDR EssentialsというSSL&#x2F;TLSインスペクション無しにリスクを判定する新機能が加えられていますが、ホームエディションでは今の所使えません。DNS Protectionという機能も追加されていますが、ホームユーザーは使えるようにはなっていないようです。また、Sophos Communityによれば、VPNの新しいWindows向けクライアントが6月初旬に発表されるようです。</p>
 <h3 id="RAM制限の撤廃"><a href="#RAM制限の撤廃" class="headerlink" title="RAM制限の撤廃"></a>RAM制限の撤廃</h3><p>これまでCPU4コア、メモリ6GBの制限がありましたが、メモリの制限が撤廃となりました。これはv21の状態においても再起動するだけでロックが解除されるようになっています。CPUの上限は4つのまま、変わらずです。</p>
-<h3 id="DHCPプレフィックス委任"><a href="#DHCPプレフィックス委任" class="headerlink" title="DHCPプレフィックス委任"></a>DHCPプレフィックス委任</h3><p>IPv6は2023年11月のv20より、Prefix Delegationに対応しています。私のISPはauひかりですが、これは&#x2F;64のPrefix Delegationとなっており、Sophos Firewallはこの&#x2F;64には対応していませんでした。よって、私はIPv4同等にIPv6サイトにアクセスするために、NAT6での対応を行なっていました。私が使っているネットワーク機器のUbiquiti製品のゲートウェイは&#x2F;64のPrefix Delegationに対応できていますが、やはり私が求めているのはビジネスグレードのセキュリティゲートウェイなので、Sophos Firewallは外せません。auホームゲートウェイ（HGW）→UniFiゲートウェイ→Sophos Firewallというのはちょっとやりすぎですね。<br>Linux、FreeBSDでルーターを作る上級者の方はもちろん、NAT6で稼働しているケースは少なくないと思いますし、auひかりはNTT系とは異なり、IPv4ネットワークが遅いなどということはありませんから、普段通り、内部はユニークローカルアドレス（ULA）を割り当て、InternetへのアクセスはNAT6の構成で全く問題ありません。また、LANの内部のIPアドレスがコロコロ変わるというのは思いの外、管理が大変です。DHCPを使いIPv4とIPv6とでアドレスの末尾の数字を合わせておけば、ULAは例えば、<code>fd12:3456:x::1/128</code>と記述でき、Prefixで途中の<code>0</code>が省略できますから、IPv6アドレス自体も短く、Firewallログを見た際にもどのクライアントか特定しやすいというメリットがあります。<br><code>240f:103:xxxx:2:1c4d:3545:d934:ef62</code>などのパブリックなIPv6アドレスで、後半64ビットがランダムに割り振られるのはやっぱりログを見ていくのが大変です。</p>
+<h3 id="DHCPプレフィックス委任"><a href="#DHCPプレフィックス委任" class="headerlink" title="DHCPプレフィックス委任"></a>DHCPプレフィックス委任</h3><p>IPv6は2023年11月のv20より、Prefix Delegationに対応しています。私のISPはauひかりですが、これは&#x2F;64のPrefix Delegationとなっており、Sophos Firewallはこの&#x2F;64には対応していませんでした。よって、私はIPv4同等にIPv6サイトにアクセスするために、NAT6での対応を行なっていました。私が使っているネットワーク機器のUbiquiti製品のゲートウェイは&#x2F;64のPrefix Delegationに対応できていますが、やはり私が求めているのはビジネスグレードのセキュリティゲートウェイなので、Sophos Firewallは外せません。auホームゲートウェイ（HGW）→UniFiゲートウェイ→Sophos Firewallというのはちょっとやりすぎですね。<br>Linux、FreeBSDでルーターを作る上級者の方はもちろん、NAT6で稼働しているケースは少なくないと思います。内部はユニークローカルアドレス（ULA）を割り当て、InternetへのアクセスはNAT6の構成で運用上の不都合は全くありません。また、LANの内部のIPv6アドレスが変わるというのは思いの外、管理が大変です。DHCPを使いIPv4とIPv6とでアドレスの末尾の数字を合わせておけば、ULAは例えば、<code>fd12:3456:x::1/128</code>と記述でき、Prefixで途中の<code>0</code>が省略できますから、IPv6アドレス自体も短く、Firewallログを見た際にもどのクライアントか特定しやすいというメリットがあります。<br><code>240f:103:xxxx:2:ed68:b033:e59b:3f1b</code>などのパブリックなIPv6アドレスで、後半64ビットがランダムに割り振られ、端末の再起動毎にインターフェースIDが変わるのはやっぱりログを見ていくのが大変です※。</p>
 <p>それでもIPv6が作られた背景を考えると、その広大なアドレス空間からもNATは不要という考え方があります。折角の機能ですからIPv6アドレスの追跡が困難になることをメリットと考え設定するのも良いのかもしれません。</p>
+<p>※最近のクライアントではIPv6アドレスは２つ割り当てられ、インタフェースIDが変わらないものと、端末の再起動時に変わるものと２つあり、クライアントとしてInternetにアクセスしに行くのは後者の方で、Firewallのログでは毎回インターフェースIDが変わります。</p>
 <h3 id="Sophos-DNS-Protection"><a href="#Sophos-DNS-Protection" class="headerlink" title="Sophos DNS Protection"></a>Sophos DNS Protection</h3><p>Sophosが提供するDNS Protectionです。Sophos Centralと呼ばれる集中型管理コンソールの機能があり、DNSはそこで提供されるサービスです。Sophos Firewallから一般的にはISPが提供するDNSに名前解決を要請しますが、この機能ではCentralのDNSにリレーすることになります。<br>私は既にCentralにFirewallを登録していますが、DNS Protectionの機能は出てこないので、別途ライセンスが必要なのでしょうか。<br>いずれは個人向けにも提供されるような気がしますが、もう少し状況をウォッチしていきたいと考えています。</p>
 <h2 id="Sophos-Firewallのアップデート"><a href="#Sophos-Firewallのアップデート" class="headerlink" title="Sophos Firewallのアップデート"></a>Sophos Firewallのアップデート</h2><p>ここでは、アップデート方法について記載します。</p>
 <p>管理画面にログイン後、左ペインメニューの<mark class="label primary">バックアップ＆ファームウェア</mark>の<mark class="label primary">ファームウェアの確認</mark>でアップデートの案内が順次来ます。直ちにファームウェアのアップグレードの案内が来るわけでは無さそうです。ファームウェア公開後すぐの場合は個別にバージョンアップのファイルを入手します。</p>
