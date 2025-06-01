@@ -36,7 +36,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2025/05/31/xg-v215/rule.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2025/05/31/xg-v215/test.png">
 <meta property="article:published_time" content="2025-05-30T20:37:33.000Z">
-<meta property="article:modified_time" content="2025-06-01T00:32:30.719Z">
+<meta property="article:modified_time" content="2025-06-01T03:07:47.224Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="XG Firewall">
 <meta name="twitter:card" content="summary">
@@ -302,7 +302,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">編集日</span>
-      <time title="修正日：2025-06-01 09:32:30" itemprop="dateModified" datetime="2025-06-01T09:32:30+09:00">2025-06-01</time>
+      <time title="修正日：2025-06-01 12:07:47" itemprop="dateModified" datetime="2025-06-01T12:07:47+09:00">2025-06-01</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -360,7 +360,7 @@
 <p>続いてLAN側です。こちらは、<mark class="label primary">委任</mark>を選び、WANのインターフェースを指定します。</p>
 <img src="/new-technology/2025/05/31/xg-v215/v6-2.png" class="" width="640" title="alt">
 
-<p>そうすると委任されたサブネットが表示されます。私の環境では64ビット委任となっています。前半64ビットのPrefixが自動で表示されていますが、一般的に&#x2F;54などの豊富なサブネットがある場合は、ここで当該LANのサブネットを何にするかプルダウンから選ぶことになるようですね。そして、後半64ビットのインターフェースIDについては1などの具体的なアドレスを設定して、FirewallのIPv6アドレスを確定させます。WAN側のIPアドレスに変更があった場合は、Prefix部分も自動で更新されます。</p>
+<p>そうすると委任されたサブネットが表示されます。私の環境では64ビット委任となっています。前半64ビットのPrefixが自動で表示されていますが、一般的に&#x2F;56や&#x2F;60などの多くのサブネットがある場合は、ここで当該LANのサブネットを何にするかプルダウンから選ぶことになるようですね。そして、後半64ビットのインターフェースIDについては1などの具体的なアドレスを設定して、FirewallのIPv6アドレスを確定させます。WAN側のIPアドレスに変更があった場合は、Prefix部分も自動で更新されます。</p>
 <p>さて、これでDHCPv6もIPv6ルーターアドバタイズも自動で構成されます。<br>DHCPv6は以下の構成になっています。</p>
 <img src="/new-technology/2025/05/31/xg-v215/v6-3.png" class="" width="640" title="alt">
 
