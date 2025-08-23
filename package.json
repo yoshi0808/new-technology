@@ -28,11 +28,11 @@
     "hexo-renderer-stylus": "^3.0.1",
     "hexo-server": "^3.0.0",
     "hexo-tag-qrcode": "^1.0.0",
-    "hexo-theme-next": "^8.24.0",
+    "hexo-theme-next": "^8.24.1",
     "hexo-util": "^3.3.0"
   },
   "devDependencies": {
-    "textlint": "^15.2.1",
+    "textlint": "^15.2.2",
     "textlint-rule-preset-ja-spacing": "^2.4.3",
     "textlint-rule-preset-ja-technical-writing": "^12.0.2",
     "textlint-rule-preset-jtf-style": "^3.0.2",
