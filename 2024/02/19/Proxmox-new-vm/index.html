@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 8.1.1">
 
   <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
@@ -17,7 +17,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.24.1","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"github","dark":"a11y-dark"},"prism":{"light":"prism-vs","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js" defer></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"github","dark":"a11y-dark"},"prism":{"light":"prism-vs","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js" defer></script>
 
     <meta name="description" content="この記事で実現すること  仮想環境のProxmox VEで仮想マシン（VM）の新規作成を行います。例示としてこの記事ではUbuntu24のセットアップを行います。ネットワークインターフェースと仮想マシンとの関係も見ていきます。">
 <meta property="og:type" content="article">
@@ -92,7 +92,7 @@
 <script src="/new-technology/js/third-party/search/local-search.js" defer></script>
 
 
-  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@11.9.0/dist/mermaid.min.js","integrity":"sha256-Cz7UN0EXNjgV2u/a38wg/3BNfdRRO1XtgDq93L2GqJg="}}</script>
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@11.10.1/dist/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
   <script src="/new-technology/js/third-party/tags/mermaid.js" defer></script>
 
 
@@ -237,7 +237,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/new-technology/archives/">
-          <span class="site-state-item-count">100</span>
+          <span class="site-state-item-count">101</span>
           <span class="site-state-item-name">ポスト</span>
         </a>
       </div>
@@ -453,7 +453,7 @@
 <h2 id="Proxmoxのセットアップの続き"><a href="#Proxmoxのセットアップの続き" class="headerlink" title="Proxmoxのセットアップの続き"></a>Proxmoxのセットアップの続き</h2><p>さて、Proxmoxの世界に戻ります。セットアップしているところでVMのサマリー画面を見ていると結構面白いですね。1vCPUと2GBのメモリでは少々足りないようです。</p>
 <img src="/new-technology/2024/02/19/Proxmox-new-vm/proxmox14.png" class="" width="1024" title="alt">
 
-<p>もちろん後からCPUとメモリは変更できます。4vCPU&#x2F;4GBのメモリでもFirefoxを起動し、Fast.comに接続すると結構しんどそうです（1.5Gbps）。Ryzen7 5700GのESXiでは2vCPU&#x2F;2GBで2.4Gbps、XCP-ngでは古いCore <a href="mailto:&#105;&#x37;&#45;&#x38;&#55;&#48;&#x30;&#x40;&#51;&#46;&#50;&#x30;&#x47;&#72;&#x7a;">i7-8700@3.20GHz</a>で2vCPU&#x2F;2GBで2.8Gbpsなので最適化という意味では若干改善の余地があるような気もします。これがCLIベースのSpeedtestだと3者共に殆ど結果が変わらないので何か描画などに関してオーバーヘッドがあるのかなという気がしています。</p>
+<p>もちろん後からCPUとメモリは変更できます。4vCPU&#x2F;4GBのメモリでもFirefoxを起動し、Fast.comに接続すると結構しんどそうです（1.5Gbps）。Ryzen7 5700GのESXiでは2vCPU&#x2F;2GBで2.4Gbps、XCP-ngでは古いCore <a href="mailto:&#x69;&#x37;&#45;&#x38;&#55;&#48;&#48;&#x40;&#x33;&#46;&#50;&#48;&#x47;&#72;&#122;">i7-8700@3.20GHz</a>で2vCPU&#x2F;2GBで2.8Gbpsなので最適化という意味では若干改善の余地があるような気もします。これがCLIベースのSpeedtestだと3者共に殆ど結果が変わらないので何か描画などに関してオーバーヘッドがあるのかなという気がしています。</p>
 <p>また、ゲストエージェントが未設定という表示もされています。</p>
 <h2 id="VMの確認と後工程"><a href="#VMの確認と後工程" class="headerlink" title="VMの確認と後工程"></a>VMの確認と後工程</h2><p>Ubuntuのセットアップが終了して再起動後、さらにUbuntuモジュールの更新処理が行われていきます。<br>それがひと段落したら、ゲストエージェントをインストールします。Ubuntu上の端末アプリケーションを起動し、以下のコマンドを入力します。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">sudo</span> apt install qemu-guest-agent</span><br></pre></td></tr></table></figure>
