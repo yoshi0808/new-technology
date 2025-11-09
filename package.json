@@ -9,10 +9,10 @@
     "server": "hexo server"
   },
   "hexo": {
-    "version": "7.3.0"
+    "version": "8.1.1"
   },
   "dependencies": {
-    "hexo": "^7.3.0",
+    "hexo": "^8.1.1",
     "hexo-deployer-git": "^4.0.0",
     "hexo-filter-emoji": "^2.2.2",
     "hexo-generator-archive": "^2.0.0",
@@ -28,14 +28,14 @@
     "hexo-renderer-stylus": "^3.0.1",
     "hexo-server": "^3.0.0",
     "hexo-tag-qrcode": "^1.0.0",
-    "hexo-theme-next": "^8.24.1",
-    "hexo-util": "^3.3.0"
+    "hexo-theme-next": "^8.26.0",
+    "hexo-util": "^4.0.0"
   },
   "devDependencies": {
-    "textlint": "^15.2.2",
+    "textlint": "^15.2.3",
     "textlint-rule-preset-ja-spacing": "^2.4.3",
     "textlint-rule-preset-ja-technical-writing": "^12.0.2",
-    "textlint-rule-preset-jtf-style": "^3.0.2",
+    "textlint-rule-preset-jtf-style": "^3.0.3",
     "textlint-rule-spellcheck-tech-word": "^5.0.0"
   }
 }
