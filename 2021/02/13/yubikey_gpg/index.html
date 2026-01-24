@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/02/13/yubikey_gpg/ssh.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2021/02/13/yubikey_gpg/automator1.png">
 <meta property="article:published_time" content="2021-02-12T15:58:00.000Z">
-<meta property="article:modified_time" content="2024-01-21T05:49:01.042Z">
+<meta property="article:modified_time" content="2026-01-24T00:00:53.852Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="yubikey">
 <meta name="twitter:card" content="summary">
@@ -299,7 +299,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">編集日</span>
-      <time title="修正日：2024-01-21 14:49:01" itemprop="dateModified" datetime="2024-01-21T14:49:01+09:00">2024-01-21</time>
+      <time title="修正日：2026-01-24 09:00:53" itemprop="dateModified" datetime="2026-01-24T09:00:53+09:00">2026-01-24</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -350,7 +350,7 @@ macOS環境下でGPG Tools(GPG Suite)の鍵管理（署名、暗号化、SSH認�
 <h3 id="GPGを使ったSSH"><a href="#GPGを使ったSSH" class="headerlink" title="GPGを使ったSSH"></a>GPGを使ったSSH</h3><p>YubiKeyで設定したPINを入力して公開鍵認証でSSH接続します。</p>
 <img src="/new-technology/2021/02/13/yubikey_gpg/ssh.png" class="" width="640" title="alt">
 
-<h2 id="YubiKeyを使ったGPGの鍵管理"><a href="#YubiKeyを使ったGPGの鍵管理" class="headerlink" title="YubiKeyを使ったGPGの鍵管理"></a>YubiKeyを使ったGPGの鍵管理</h2><p>YubiKeyを使うGPGでは主鍵(MainKey)となる認定鍵(Certify)に加え、署名(Sign)、暗号(Encrypt)、認証(Authenticate)という副鍵(SubKey)を持たせます。YubiKeyの構成上、ひとつの機能にひとつの副鍵を割り当てる事が大前提です。そしてYubiKeyを紛失した場合を考慮し、主鍵はYubiKeyには置きません。主鍵は変えず、副鍵は任意に削除、追加する事を想定しています。Yubicoでは、この副鍵を端末側で生成し、それをYubiKeyに取り込む形を推奨しています。RSA暗号2048ビットのPIVとは異なり、GPGにおけるYubiKey 4&#x2F;5はRSA暗号4096ビットまで対応できます。RSA暗号は2048ビットあれば十分と考えていますが、<strong>GitHubの推奨</strong>としては「キーは少なくとも4096ビットである必要があります」との事。GitHubさん、そこまで必要ですか<span class="github-emoji" alias="persevere" style="" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f623.png?v8">&#x1f623;</span></p>
+<h2 id="YubiKeyを使ったGPGの鍵管理"><a href="#YubiKeyを使ったGPGの鍵管理" class="headerlink" title="YubiKeyを使ったGPGの鍵管理"></a>YubiKeyを使ったGPGの鍵管理</h2><p>YubiKeyを使うGPGでは主鍵(MainKey)となる認定鍵(Certify)に加え、署名(Sign)、暗号(Encrypt)、認証(Authenticate)という副鍵(SubKey)を持たせます。YubiKeyの構成上、ひとつの機能にひとつの副鍵を割り当てる事が大前提です。そしてYubiKeyを紛失した場合を考慮し、主鍵はYubiKeyには置きません。主鍵は変えず、副鍵は任意に削除、追加する事を想定しています。Yubicoでは、この副鍵を端末側で生成し、それをYubiKeyに取り込む形を推奨しています。RSA暗号2048ビットのPIVとは異なり、GPGにおけるYubiKey 4&#x2F;5はRSA暗号4096ビットまで対応できます。RSA暗号は2048ビットあれば十分と考えていますが、<strong>GitHubの推奨</strong>としては「キーは少なくとも4096ビットである必要があります」との事。GitHubさん、そこまで必要ですか…</p>
 <blockquote>
 <p>GitHub -新しいGPGキーを生成する-<br> <a target="_blank" rel="noopener" href="https://docs.github.com/ja/github/authenticating-to-github/generating-a-new-gpg-key">https://docs.github.com/ja/github/authenticating-to-github/generating-a-new-gpg-key</a></p>
 </blockquote>
@@ -484,7 +484,7 @@ C --&gt;F[Authenticate]
 <p>デフォルトですべてのコミットに署名するには、以下を実行します。</p>
 <p><code>$ git config --global commit.gpgsign true</code></p>
 <p>Visual Studio Codeをお使いの方であれば、<code>&quot;git.enableCommitSigning&quot;: true</code>を確認します。</p>
-<p>これまでの設定でGPG Toolsを使ったSSH接続と署名の対応は完了です<span class="github-emoji" alias="thumbsup" style="" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f44d.png?v8">&#x1f44d;</span>。<br>PIV方式とは異なりGUI方式によりPINの入力も行える事、また一定時間PINはキャッシュしますので、セキュアである事と利便性を両立させています。</p>
+<p>これまでの設定でGPG Toolsを使ったSSH接続と署名の対応は完了です。<br>PIV方式とは異なりGUI方式によりPINの入力も行える事、また一定時間PINはキャッシュしますので、セキュアである事と利便性を両立させています。</p>
 <h2 id="（任意）YubiKeyタッチ認証"><a href="#（任意）YubiKeyタッチ認証" class="headerlink" title="（任意）YubiKeyタッチ認証"></a>（任意）YubiKeyタッチ認証</h2><p>GPGで認証、署名、暗号化を行おうとしている時に、YubiKeyへのタッチを必要とさせる設定ができます。GPGのPIN入力はキャッシュしている時間がありますが、これを設定すると、GPGのアクションの前には必ずYubiKeyにタッチする必要があります。より慎重さを求める方に向いています。デフォルトではOffになっていますが、これをOnにする場合は以下のコマンドを投入します。YubiKeyがタッチを待っている間はランプが点滅します（12秒程度応答しないとギブアップします）。これはNeoなどYubiKeyの種類によっては設定できません。<br>認証　<code>$ ykman openpgp keys set-touch aut on</code><br>署名　<code>$ ykman openpgp keys set-touch sig on</code><br>暗号化　<code>$ ykman openpgp keys set-touch enc on</code><br>Offにする場合は以下のコマンドになります。<br>認証　<code>$ ykman openpgp keys set-touch aut off</code><br>署名　<code>$ ykman openpgp keys set-touch sig off</code><br>暗号化　<code>$ ykman openpgp keys set-touch enc off</code></p>
 <p>Onの代わりに15秒キャッシュする”CACHED”という項目も設定できます。詳しくは<code>ykman openpgp keys set-touch -h</code>を参照します。</p>
 <div class="note info"><p>継続的インテグレーション（CI)など、署名、デプロイと連続動作させる時にこのCACHED設定は便利です。</p>
