@@ -169,7 +169,7 @@ Linux（ubuntu）の場合は、`/etc/gai.conf`に設定ファイルがありま
 
 6. ファイルを保存し、OSを再起動します。
 
-以上でIPv6が優先となります {% emoji turtle %}
+以上でIPv6が優先となります
 
 なお、LinuxでmDNS（Bonjour）が使える環境にあり、LANにおける名前解決がIPv4指定となっている場合は、`/etc/nsswitch.conf`を修正する事でIPv6対応に変更可能です。LAN内の端末をIPv6で明示的に指定することはあまりないのでここは参考程度に留めておいてください。
 ``` bash
