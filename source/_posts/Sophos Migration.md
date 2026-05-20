@@ -34,23 +34,19 @@ ESXiのストレージをproxmoxでマウントしてマイグレーションす
 
 私の自宅のネットワーク構成は以下の通りです。現状に影響を与えず、セットアップを行なっていきます。
 
-{% mermaid flowchart TD %}
+ {% asset_img network-diagram.png 1024 alt %}
   
-    A[ESXi上の旧Sophos稼働中] --> B[Proxmox上に新Sophosを構築]
-    B --> C[6 NIC構成を作成<br/>Port1〜Port6]
-    C --> D[Sophosバックアップを取得]
-    D --> E[新Sophosへリストア]
-    E --> F[MAC / Port認識を確認]
-    F --> G[テストLANで管理GUI接続確認]
-    G --> H[ESXi旧Sophosを停止]
-    H --> I[Proxmox新Sophosを本番ネットワークへ接続]
-    I --> J[Windows Clientから疎通確認]
-    J --> K[Guest / Family / Server / WAN確認]
-    K --> L[移行完了]
-{% endmermaid %}
+| Sophos Port | Zone / 用途 | Proxmox NIC | Proxmox Bridge | VLAN Tag | 備考 |
+|---|---|---|---|---:|---|
+| Port1 | LAN / Default | nic0 | vmbr0 | - | 管理LAN / Default VLAN |
+| Port2 | WAN | nic3 | vmbr3 | - | au HGW側 |
+| Port3 | Family | nic1 | vmbr1 | - | 家族用 |
+| Port4 | Server | nic2 | vmbr2 | - | Server / NAS |
+| Port5 | Guest | nic1 | vmbr1 | 210 | Guest |
+| Port6 | Edge | nic1 | vmbr1 | 130 | Printer IoT |
 
 VLANが６つあります。NICはこれまで同様、X710の4Portを利用しており、FamilyにGuestとEdge(プリンターや無線TVなど）がタグ付きで流れてきます。
-最初のセットアップはproxmoxのコンソールで実施できます。その際には、最低でもNICが２つなければセットアップができません。新規にFirewallをセットアップし、VLANを新旧で揃え、旧Firewallのバックアップから新Firewallへ戻すというのが計画になります。
+最初のセットアップはproxmoxのコンソールで実施できます。その際には、最低でもNICが２つなければセットアップができません。新規にFirewallをセットアップし、VLANを新旧で揃え、旧Firewallのバックアップから新Firewallへ戻すというのが計画になります。Sophos Firewall VM には 6 本の VirtIO NIC を割り当て、ESXi 時代の Port1〜Port6 の役割に合わせて Proxmox 側の bridge / VLAN tag を対応させます。
 
 ## Proxmoxの設定
 
