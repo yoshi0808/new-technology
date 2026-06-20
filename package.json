@@ -36,5 +36,11 @@
     "textlint-rule-preset-ja-technical-writing": "^12.0.2",
     "textlint-rule-preset-jtf-style": "^3.0.3",
     "textlint-rule-spellcheck-tech-word": "^5.0.0"
+  },
+  "allowScripts": {
+    "fsevents@2.3.3": true,
+    "hexo-util@3.3.0": true,
+    "hexo-util@2.7.0": true,
+    "hexo-util@4.0.0": true
   }
 }
