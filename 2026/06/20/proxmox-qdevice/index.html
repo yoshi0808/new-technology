@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/06/20/proxmox-qdevice/ha-failover-flow.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/06/20/proxmox-qdevice/slack.png">
 <meta property="article:published_time" content="2026-06-20T00:20:00.000Z">
-<meta property="article:modified_time" content="2026-06-21T04:57:32.910Z">
+<meta property="article:modified_time" content="2026-06-21T08:11:34.787Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="proxmox">
 <meta name="twitter:card" content="summary">
@@ -198,7 +198,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8A%E5%9B%9E%E3%81%AE%E6%A7%8B%E6%88%90"><span class="nav-number">1.</span> <span class="nav-text">今回の構成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC1%E9%83%A8%EF%BC%9Aquorum%E3%81%A8qdevice"><span class="nav-number">2.</span> <span class="nav-text">第1部：quorumとqdevice</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%83%8E%E3%83%BC%E3%83%89%E3%82%AF%E3%83%A9%E3%82%B9%E3%82%BF%E3%81%AE%E5%95%8F%E9%A1%8C"><span class="nav-number">2.1.</span> <span class="nav-text">2ノードクラスタの問題</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#quorum%E3%81%A8%E3%81%AF%E4%BD%95%E3%81%8B"><span class="nav-number">2.2.</span> <span class="nav-text">quorumとは何か</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#qdevice%E3%81%A8%E3%81%AF%E4%BD%95%E3%81%8B"><span class="nav-number">2.3.</span> <span class="nav-text">qdeviceとは何か</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#quory%E3%81%AE%E5%BD%B9%E5%89%B2"><span class="nav-number">2.4.</span> <span class="nav-text">quoryの役割</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC2%E9%83%A8%EF%BC%9Aqdevice%E3%82%BB%E3%83%83%E3%83%88%E3%82%A2%E3%83%83%E3%83%97"><span class="nav-number">3.</span> <span class="nav-text">第2部：qdeviceセットアップ</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#qdevice%E3%81%AB%E5%BF%85%E8%A6%81%E3%81%AA%E3%83%8F%E3%83%BC%E3%83%89%E3%82%A6%E3%82%A7%E3%82%A2"><span class="nav-number">3.1.</span> <span class="nav-text">qdeviceに必要なハードウェア</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8A%E5%9B%9E%E4%BD%BF%E3%81%A3%E3%81%9FMSI%E3%82%B5%E3%83%BC%E3%83%90%E3%83%BC"><span class="nav-number">3.2.</span> <span class="nav-text">今回使ったMSIサーバー</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#qdevice%E7%94%A8%E9%80%94%E3%81%A8%E3%81%97%E3%81%A6%E3%81%AF%E3%82%AA%E3%83%BC%E3%83%90%E3%83%BC%E3%82%B9%E3%83%9A%E3%83%83%E3%82%AF%E3%81%A0%E3%81%A3%E3%81%9F%E8%A9%B1"><span class="nav-number">3.3.</span> <span class="nav-text">qdevice用途としてはオーバースペックだった話</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E6%A7%8B%E6%88%90"><span class="nav-number">3.4.</span> <span class="nav-text">ネットワーク構成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8B%E5%89%8D%E7%A2%BA%E8%AA%8D"><span class="nav-number">3.5.</span> <span class="nav-text">事前確認</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8D%E5%89%8D%E8%A7%A3%E6%B1%BA%E7%A2%BA%E8%AA%8D"><span class="nav-number">3.6.</span> <span class="nav-text">名前解決確認</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#root%E3%81%AE%E6%9C%89%E5%8A%B9%E5%8C%96"><span class="nav-number">3.7.</span> <span class="nav-text">rootの有効化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#root-SSH-%E4%B8%80%E6%99%82%E8%A8%B1%E5%8F%AF"><span class="nav-number">3.8.</span> <span class="nav-text">root SSH 一時許可</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SSH%E7%96%8E%E9%80%9A%E7%A2%BA%E8%AA%8D"><span class="nav-number">3.9.</span> <span class="nav-text">SSH疎通確認</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%99%82%E5%88%BB%E5%90%8C%E6%9C%9F%E7%A2%BA%E8%AA%8D"><span class="nav-number">3.10.</span> <span class="nav-text">時刻同期確認</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%82%AF%E3%83%A9%E3%82%B9%E3%82%BF%E7%8A%B6%E6%85%8B%E7%A2%BA%E8%AA%8D"><span class="nav-number">3.11.</span> <span class="nav-text">クラスタ状態確認</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#quory%E3%81%ABqnetd%E3%82%92%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E3%81%99%E3%82%8B"><span class="nav-number">3.12.</span> <span class="nav-text">quoryにqnetdをインストールする</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Proxmox%E3%83%8E%E3%83%BC%E3%83%89%E5%81%B4%E3%81%AEqdevice%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8%E3%82%92%E7%A2%BA%E8%AA%8D%E3%81%99%E3%82%8B"><span class="nav-number">3.13.</span> <span class="nav-text">Proxmoxノード側のqdeviceパッケージを確認する</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#corosync%E8%A8%AD%E5%AE%9A%E3%82%92%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E3%81%99%E3%82%8B"><span class="nav-number">3.14.</span> <span class="nav-text">corosync設定をバックアップする</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pvecm-qdevice-setup%E3%82%92%E5%AE%9F%E8%A1%8C%E3%81%99%E3%82%8B"><span class="nav-number">3.15.</span> <span class="nav-text">pvecm qdevice setupを実行する</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#qdevice%E8%BF%BD%E5%8A%A0%E5%BE%8C%E3%81%AE%E7%8A%B6%E6%85%8B%E7%A2%BA%E8%AA%8D"><span class="nav-number">3.16.</span> <span class="nav-text">qdevice追加後の状態確認</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%82%BB%E3%83%83%E3%83%88%E3%82%A2%E3%83%83%E3%83%97%E5%AE%8C%E4%BA%86%E5%BE%8C"><span class="nav-number">3.17.</span> <span class="nav-text">セットアップ完了後</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC3%E9%83%A8%EF%BC%9AHA%E6%A7%8B%E6%88%90%E3%81%A8%E6%A4%9C%E8%A8%BC"><span class="nav-number">4.</span> <span class="nav-text">第3部：HA構成と検証</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HA%E3%81%AB%E7%99%BB%E9%8C%B2%E3%81%99%E3%82%8BVM%E3%82%92%E7%B5%9E%E3%82%8B"><span class="nav-number">4.1.</span> <span class="nav-text">HAに登録するVMを絞る</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HA%E3%81%ABVM%E3%82%92%E7%99%BB%E9%8C%B2%E3%81%99%E3%82%8B"><span class="nav-number">4.2.</span> <span class="nav-text">HAにVMを登録する</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%86%E3%82%B9%E3%83%88VM%E3%81%A7%E3%83%95%E3%82%A7%E3%82%A4%E3%83%AB%E3%82%AA%E3%83%BC%E3%83%90%E3%83%BC%E3%82%92%E7%A2%BA%E8%AA%8D%E3%81%99%E3%82%8B"><span class="nav-number">5.</span> <span class="nav-text">テストVMでフェイルオーバーを確認する</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9F%E9%9A%9B%E3%81%AE%E9%9A%9C%E5%AE%B3%E3%82%B7%E3%83%8A%E3%83%AA%E3%82%AA"><span class="nav-number">5.1.</span> <span class="nav-text">実際の障害シナリオ</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%95%E3%82%A7%E3%82%A4%E3%83%AB%E3%82%AA%E3%83%BC%E3%83%90%E3%83%BC%E5%BE%8C%E3%81%AE%E3%83%AC%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3"><span class="nav-number">5.2.</span> <span class="nav-text">フェイルオーバー後のレプリケーション</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%BE%E3%81%A8%E3%82%81"><span class="nav-number">6.</span> <span class="nav-text">まとめ</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8A%E5%9B%9E%E3%81%AE%E6%A7%8B%E6%88%90"><span class="nav-number">1.</span> <span class="nav-text">今回の構成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC1%E9%83%A8%EF%BC%9Aquorum%E3%81%A8qdevice"><span class="nav-number">2.</span> <span class="nav-text">第1部：quorumとqdevice</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%83%8E%E3%83%BC%E3%83%89%E3%82%AF%E3%83%A9%E3%82%B9%E3%82%BF%E3%81%AE%E5%95%8F%E9%A1%8C"><span class="nav-number">2.1.</span> <span class="nav-text">2ノードクラスタの問題</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#quorum%E3%81%A8%E3%81%AF%E4%BD%95%E3%81%8B"><span class="nav-number">2.2.</span> <span class="nav-text">quorumとは何か</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#qdevice%E3%81%A8%E3%81%AF%E4%BD%95%E3%81%8B"><span class="nav-number">2.3.</span> <span class="nav-text">qdeviceとは何か</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#quory%E3%81%AE%E5%BD%B9%E5%89%B2"><span class="nav-number">2.4.</span> <span class="nav-text">quoryの役割</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC2%E9%83%A8%EF%BC%9Aqdevice%E3%82%BB%E3%83%83%E3%83%88%E3%82%A2%E3%83%83%E3%83%97"><span class="nav-number">3.</span> <span class="nav-text">第2部：qdeviceセットアップ</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#qdevice%E3%81%AB%E5%BF%85%E8%A6%81%E3%81%AA%E3%83%8F%E3%83%BC%E3%83%89%E3%82%A6%E3%82%A7%E3%82%A2"><span class="nav-number">3.1.</span> <span class="nav-text">qdeviceに必要なハードウェア</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8A%E5%9B%9E%E4%BD%BF%E3%81%A3%E3%81%9FMSI%E3%82%B5%E3%83%BC%E3%83%90%E3%83%BC"><span class="nav-number">3.2.</span> <span class="nav-text">今回使ったMSIサーバー</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#qdevice%E7%94%A8%E9%80%94%E3%81%A8%E3%81%97%E3%81%A6%E3%81%AF%E5%AE%8C%E5%85%A8%E3%81%AB%E3%82%AA%E3%83%BC%E3%83%90%E3%83%BC%E3%82%B9%E3%83%9A%E3%83%83%E3%82%AF"><span class="nav-number">3.3.</span> <span class="nav-text">qdevice用途としては完全にオーバースペック</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E6%A7%8B%E6%88%90"><span class="nav-number">3.4.</span> <span class="nav-text">ネットワーク構成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8B%E5%89%8D%E7%A2%BA%E8%AA%8D"><span class="nav-number">3.5.</span> <span class="nav-text">事前確認</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8D%E5%89%8D%E8%A7%A3%E6%B1%BA%E7%A2%BA%E8%AA%8D"><span class="nav-number">3.6.</span> <span class="nav-text">名前解決確認</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#root%E3%81%AE%E6%9C%89%E5%8A%B9%E5%8C%96"><span class="nav-number">3.7.</span> <span class="nav-text">rootの有効化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#root-SSH-%E4%B8%80%E6%99%82%E8%A8%B1%E5%8F%AF"><span class="nav-number">3.8.</span> <span class="nav-text">root SSH 一時許可</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SSH%E7%96%8E%E9%80%9A%E7%A2%BA%E8%AA%8D"><span class="nav-number">3.9.</span> <span class="nav-text">SSH疎通確認</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%99%82%E5%88%BB%E5%90%8C%E6%9C%9F%E7%A2%BA%E8%AA%8D"><span class="nav-number">3.10.</span> <span class="nav-text">時刻同期確認</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%82%AF%E3%83%A9%E3%82%B9%E3%82%BF%E7%8A%B6%E6%85%8B%E7%A2%BA%E8%AA%8D"><span class="nav-number">3.11.</span> <span class="nav-text">クラスタ状態確認</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#quory%E3%81%ABqnetd%E3%82%92%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E3%81%99%E3%82%8B"><span class="nav-number">3.12.</span> <span class="nav-text">quoryにqnetdをインストールする</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Proxmox%E3%83%8E%E3%83%BC%E3%83%89%E5%81%B4%E3%81%AEqdevice%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8%E3%82%92%E7%A2%BA%E8%AA%8D%E3%81%99%E3%82%8B"><span class="nav-number">3.13.</span> <span class="nav-text">Proxmoxノード側のqdeviceパッケージを確認する</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#corosync%E8%A8%AD%E5%AE%9A%E3%82%92%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E3%81%99%E3%82%8B"><span class="nav-number">3.14.</span> <span class="nav-text">corosync設定をバックアップする</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pvecm-qdevice-setup%E3%82%92%E5%AE%9F%E8%A1%8C%E3%81%99%E3%82%8B"><span class="nav-number">3.15.</span> <span class="nav-text">pvecm qdevice setupを実行する</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#qdevice%E8%BF%BD%E5%8A%A0%E5%BE%8C%E3%81%AE%E7%8A%B6%E6%85%8B%E7%A2%BA%E8%AA%8D"><span class="nav-number">3.16.</span> <span class="nav-text">qdevice追加後の状態確認</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%82%BB%E3%83%83%E3%83%88%E3%82%A2%E3%83%83%E3%83%97%E5%AE%8C%E4%BA%86%E5%BE%8C"><span class="nav-number">3.17.</span> <span class="nav-text">セットアップ完了後</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC3%E9%83%A8%EF%BC%9AHA%E6%A7%8B%E6%88%90%E3%81%A8%E6%A4%9C%E8%A8%BC"><span class="nav-number">4.</span> <span class="nav-text">第3部：HA構成と検証</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HA%E3%81%AB%E7%99%BB%E9%8C%B2%E3%81%99%E3%82%8BVM%E3%82%92%E7%B5%9E%E3%82%8B"><span class="nav-number">4.1.</span> <span class="nav-text">HAに登録するVMを絞る</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HA%E3%81%ABVM%E3%82%92%E7%99%BB%E9%8C%B2%E3%81%99%E3%82%8B"><span class="nav-number">4.2.</span> <span class="nav-text">HAにVMを登録する</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%86%E3%82%B9%E3%83%88VM%E3%81%A7%E3%83%95%E3%82%A7%E3%82%A4%E3%83%AB%E3%82%AA%E3%83%BC%E3%83%90%E3%83%BC%E3%82%92%E7%A2%BA%E8%AA%8D%E3%81%99%E3%82%8B"><span class="nav-number">5.</span> <span class="nav-text">テストVMでフェイルオーバーを確認する</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9F%E9%9A%9B%E3%81%AE%E9%9A%9C%E5%AE%B3%E3%82%B7%E3%83%8A%E3%83%AA%E3%82%AA"><span class="nav-number">5.1.</span> <span class="nav-text">実際の障害シナリオ</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%95%E3%82%A7%E3%82%A4%E3%83%AB%E3%82%AA%E3%83%BC%E3%83%90%E3%83%BC%E5%BE%8C%E3%81%AE%E3%83%AC%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3"><span class="nav-number">5.2.</span> <span class="nav-text">フェイルオーバー後のレプリケーション</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%BE%E3%81%A8%E3%82%81"><span class="nav-number">6.</span> <span class="nav-text">まとめ</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -301,7 +301,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">編集日</span>
-      <time title="修正日：2026-06-21 13:57:32" itemprop="dateModified" datetime="2026-06-21T13:57:32+09:00">2026-06-21</time>
+      <time title="修正日：2026-06-21 17:11:34" itemprop="dateModified" datetime="2026-06-21T17:11:34+09:00">2026-06-21</time>
     </span>
 
   
@@ -341,7 +341,7 @@
 <td>CPU</td>
 <td>AMD Ryzen 9 7900 (12C&#x2F;24T)</td>
 <td>AMD Ryzen 5 5600G (6C&#x2F;12T)</td>
-<td>N100</td>
+<td>intel N100</td>
 </tr>
 <tr>
 <td>メモリ</td>
@@ -372,32 +372,28 @@
 <p>クラスタ構成では、できればCPUの種類は同じメーカーで揃えておいた方が安全です。完全に同じハードウェア構成にできれば理想ですが、家庭内のホームラボでは必ずしもそうはいきません。</p>
 <p>今回の構成でも、pve1はRyzen 9 7900、pve2はRyzen 5 5600Gで、世代も性能も異なります。そのため、VMのCPU設定では互換性を意識する必要があります。</p>
 <p>ネットワークについては、VMマイグレーションや将来的なフェイルオーバーを考えると、各ノードで同じ構成にしておくべきです。構成が揃っていれば、VMが別ノードへ移動した場合でも、どのネットワークを利用すべきかが明確になります。</p>
-<h2 id="第1部：quorumとqdevice"><a href="#第1部：quorumとqdevice" class="headerlink" title="第1部：quorumとqdevice"></a>第1部：quorumとqdevice</h2><h3 id="2ノードクラスタの問題"><a href="#2ノードクラスタの問題" class="headerlink" title="2ノードクラスタの問題"></a>2ノードクラスタの問題</h3><p>Proxmoxを2台でクラスタ化すると、VMのマイグレーションや管理の一元化ができるようになります。<br>しかし、2ノードクラスタにはquorumの問題があります。<br>クラスタでは、複数のノードが協調して動作します。そのため、障害やネットワーク分断が発生したときに、「どのノードが正しいクラスタとして動き続けてよいのか」を判断する必要があります。<br>3台以上のクラスタであれば、多数決によって判断しやすくなります。たとえば3台構成で1台が停止しても、残り2台で多数派を維持できます。<br>一方、2台構成では片方のノードが停止した場合、残ったノードは1台だけになります。この状態では、多数決という意味では過半数を作りにくくなります。</p>
+<h2 id="第1部：quorumとqdevice"><a href="#第1部：quorumとqdevice" class="headerlink" title="第1部：quorumとqdevice"></a>第1部：quorumとqdevice</h2><h3 id="2ノードクラスタの問題"><a href="#2ノードクラスタの問題" class="headerlink" title="2ノードクラスタの問題"></a>2ノードクラスタの問題</h3><p>Proxmoxを2台でクラスタ化すると、VMのマイグレーションや管理の一元化ができるようになります。しかし、2ノードクラスタにはquorumの問題があります。クラスタでは、複数のノードが協調して動作します。そのため、障害やネットワーク分断が発生したときに、「どのノードが正しいクラスタとして動き続けてよいのか」を判断する必要があります。<br>3台以上のクラスタであれば、多数決によって判断しやすくなります。たとえば3台構成で1台が停止しても、残り2台で多数派を維持できます。一方、2台構成では片方のノードが停止した場合、残ったノードは1台だけになります。この状態では、多数決という意味では過半数を作りにくくなります。</p>
 <p>また、単純なノード停止ではなく、ノード間の通信だけが切れた場合には、両方のノードが「相手が停止した」と判断してしまう可能性があります。このような状態で両方のノードが独立して動き続けると、両方のノードが稼働中になり、それぞれのノードはもう一方のノードが停止しているように見えてしまいます。<br>そのため、2ノードクラスタでは、単に2台をクラスタ化するだけでなく、quorumをどう扱うかを考える必要があります。</p>
-<h3 id="quorumとは何か"><a href="#quorumとは何か" class="headerlink" title="quorumとは何か"></a>quorumとは何か</h3><p>quorumは、クラスタが安全に動作を継続してよいかを判断するための多数決の考え方です。<br>クラスタ内の各ノードにはvote（投票）があり、クラスタ全体として必要な票数を満たしている場合に、quorate（定足数を満たした）状態になります。<br>Proxmoxクラスタでは、pvecm statusでquorumの状態を確認できます。</p>
+<h3 id="quorumとは何か"><a href="#quorumとは何か" class="headerlink" title="quorumとは何か"></a>quorumとは何か</h3><p>quorumは、クラスタが安全に動作を継続してよいかを判断するための多数決の考え方です。クラスタ内の各ノードにはvote（投票）があり、クラスタ全体として必要な票数を満たしている場合に、quorate（定足数を満たした）状態になります。</p>
+<p>Proxmoxクラスタでは、pvecm statusでquorumの状態を確認できます。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pvecm status</span><br></pre></td></tr></table></figure>
 <p>正常な状態であれば、以下のように表示されます。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Quorate: Yes</span><br></pre></td></tr></table></figure>
-<p>Quorate: Yesの状態であれば、そのクラスタは必要な票数を満たしており、クラスタとして動作を継続できます。<br>逆にquorumを失うと、クラスタとして安全に判断できない状態になります。</p>
-<p>quorumは、単なる死活監視ではありません。<br>「ノードが生きているか」だけではなく、「クラスタとして多数派を維持できているか」を判断するための仕組みです。</p>
-<h3 id="qdeviceとは何か"><a href="#qdeviceとは何か" class="headerlink" title="qdeviceとは何か"></a>qdeviceとは何か</h3><p>qdeviceは、クラスタのquorum判定を補助するための外部投票デバイスです。</p>
-<p>2ノードクラスタでは、pve1とpve2の2票だけで構成されます。この状態では、片方のノードが停止したときに、残った1台だけでは多数派を作りにくくなります。<br>そこで、Proxmoxノードとは別にqdeviceを追加します。<br>qdeviceを追加すると、2台のProxmoxノードに加えて、外部の投票役を持つ構成になります。<br>今回の構成では、以下のような考え方になります。</p>
+<p>Quorate: Yesの状態であれば、そのクラスタは必要な票数を満たしており、クラスタとして動作を継続できます。</p>
+<h3 id="qdeviceとは何か"><a href="#qdeviceとは何か" class="headerlink" title="qdeviceとは何か"></a>qdeviceとは何か</h3><p>qdeviceは、クラスタのquorum判定を補助するための外部投票デバイスです。2ノードクラスタの、pve1とpve2の2票にqdeviceを追加します。これによって2台のProxmoxノードに加えて、外部の投票役を持つ構成になります。<br>今回の構成では、以下のような考え方になります。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">pve1   : 1 vote</span><br><span class="line">pve2   : 1 vote</span><br><span class="line">quory  : qdevice</span><br><span class="line">合計   : 3 votes</span><br><span class="line"></span><br><span class="line">quorum : 2 votes</span><br></pre></td></tr></table></figure>
-<p>これにより、片方のProxmoxノードが停止した場合でも、残ったノードとqdeviceによってquorumを維持しやすくなります。<br>qdeviceは、Proxmoxノードそのものではありません。VMやCTを動かす役割もありません。<br>あくまで、クラスタの投票を補助するための外部サーバーです。</p>
-<h3 id="quoryの役割"><a href="#quoryの役割" class="headerlink" title="quoryの役割"></a>quoryの役割</h3><p>今回の環境では、quoryと名付けたUbuntu Server26.04をqdeviceとして利用します。<br>quoryはProxmoxノードではありません。pve1やpve2のようにVMを動かすことはありません。<br>役割は、corosync-qnetdを動作させ、Proxmoxクラスタのqdeviceとしてquorum判定を補助することです。</p>
-<p>qdevice用途であれば、高性能なCPUや大容量メモリは必要ありません。通信量も少なく、1GbEでも十分すぎるくらいです。<br>重要なのは、性能よりも安定して常時稼働できることです。</p>
-<p>また、qdeviceはクラスタの判断を補助する役割を持つため、できればProxmoxノードと同じ障害点に置きすぎない方が安全です。ホームラボでは色々な限界はありますが、同じ電源タップ、同じスイッチ、同じ物理場所にすべてを集約すると、障害時にまとめて影響を受ける可能性があります。</p>
-<p>家庭内のホームラボでは完全な分離は難しいですが、qdeviceは「3台目のProxmoxノード」ではなく、「軽量な外部投票役」として考えると分かりやすいと思います。</p>
-<p>一方で、qdeviceは万能ではありません。qdeviceはバックアップではありません。VMやCTのデータを保存するわけではありませんし、ストレージ冗長化もレプリケーションもバックアップとは全く関係ありません。<br>qdeviceが提供するものは、あくまでquorum判定の補助です。</p>
+
+<p>qdeviceは、Proxmoxノードそのものではありません。VMやCTを動かす役割もありません。あくまで、クラスタの投票を補助するための外部サーバーです。</p>
+<h3 id="quoryの役割"><a href="#quoryの役割" class="headerlink" title="quoryの役割"></a>quoryの役割</h3><p>今回の環境では、quoryと名付けたUbuntu Server26.04をqdeviceとして利用します。役割は、corosync-qnetdを動作させ、Proxmoxクラスタのqdeviceとしてquorum判定を補助することです。</p>
+<p>qdevice用途であれば、高性能なCPUや大容量メモリは必要ありません。通信量も少なく、1GbEでも十分すぎるくらいです。重要なのは、性能よりも安定して常時稼働できることです。</p>
 <h2 id="第2部：qdeviceセットアップ"><a href="#第2部：qdeviceセットアップ" class="headerlink" title="第2部：qdeviceセットアップ"></a>第2部：qdeviceセットアップ</h2><h3 id="qdeviceに必要なハードウェア"><a href="#qdeviceに必要なハードウェア" class="headerlink" title="qdeviceに必要なハードウェア"></a>qdeviceに必要なハードウェア</h3><p>実際のところ、ホームユーザーが導入するqdeviceとしては以下のようなものが選択されるようです。</p>
 <ol>
 <li>極めて小型のPC（ラズベリーパイなど）にセットアップ</li>
 <li>NASにVMとしてセットアップ</li>
 <li>小型PCにセットアップ</li>
 </ol>
-<p>私は、3の小型PCを選びました。クラスタ運用やVMの管理のために定期的なジョブ実行を行う処理もこのQuorumでも兼ねられるのが良いのではないかと思ったためです。但し過負荷になってはクラスタ通信に影響が出るのでそれは避けたいところです。省電力ならラズベリーパイが一番ですが、電源やパーツの安定稼働については今ひとつ心配なところがありました。</p>
-<h3 id="今回使ったMSIサーバー"><a href="#今回使ったMSIサーバー" class="headerlink" title="今回使ったMSIサーバー"></a>今回使ったMSIサーバー</h3><p>省電力で安定していそうな小型のハードウェアというのはありそうでなかなか探すのは難しいものです。今回は以下のハードウェアにしました。</p>
-<img src="/new-technology/2026/06/20/proxmox-qdevice/msi.png" class="" width="1024" title="alt">
+<p>私は、3の小型PCを選びました。クラスタ運用やVMの管理のために定期的なジョブ実行（ヘルスチェック、セキュリティパッチ等）と、このQuorumとが兼ねられると考えました。但し過負荷になってはクラスタ通信に影響が出るのでそれは避けたいところです。省電力ならラズベリーパイが一番ですが、電源やパーツの安定稼働については今ひとつ心配なところがありました。Amazonを覗いてみればミニPCはたくさんあります。そのようなデバイスは今一つ欲しいと思いません。これはもう感覚という以外無いです。うまく説明できません。「なんとなく嫌」なのです。そして、自分で組むとなるとケースのサイズもそれなりに大きくなってしまいますし、省電力も中途半端になりそうです。その中でもMSIのミニPCはきちんとしたスペックが開示されており、自分としては珍しくAmazonでPCを購入しました。</p>
+<h3 id="今回使ったMSIサーバー"><a href="#今回使ったMSIサーバー" class="headerlink" title="今回使ったMSIサーバー"></a>今回使ったMSIサーバー</h3><img src="/new-technology/2026/06/20/proxmox-qdevice/msi.png" class="" width="1024" title="alt">
 
 <p>MSI Cubi N ADL S-055BUS</p>
 <table>
@@ -435,18 +431,17 @@
 <blockquote>
 <p>MSI BUSINESS &amp; PRODUCTIVITY PCS Cubi N ADL<br> <a target="_blank" rel="noopener" href="https://storage-asset.msi.com/specSheet/uk/mini-pcs/Cubi%20N%20ADL%20S-055BUS.pdf">https://storage-asset.msi.com/specSheet/uk/mini-pcs/Cubi%20N%20ADL%20S-055BUS.pdf</a></p>
 </blockquote>
-<p>ベアボーンなのでSSDとメモリは別途手持ちのものを流用、購入しています。<br>このハードウェアは見た通り非常に小さいことと電源としてACアダプタが付いてます。<br>2PortのNICがあるので、Quorum用途だけではなく、色々な目的に使い回しが効きそうです。</p>
-<h3 id="qdevice用途としてはオーバースペックだった話"><a href="#qdevice用途としてはオーバースペックだった話" class="headerlink" title="qdevice用途としてはオーバースペックだった話"></a>qdevice用途としてはオーバースペックだった話</h3><p>ひたすらPVE1、PVE2との通信が発生するのだろうということで機器選定したものの、完全にオーバースペックです。</p>
-<p>ネットワーク</p>
+<p>ベアボーンなのでSSDとメモリは別途手持ちのものを流用、購入しています。<br>このハードウェアは見た通り非常に小さいですが、電源としてACアダプタ（65W、PSEマーク付き）が付いてます。<br>ファンレスで2PortのNICがあるので、色々な目的に使えそうです。何の話でしたっけ？そうでしたProxmoxの話でしたね。</p>
+<h3 id="qdevice用途としては完全にオーバースペック"><a href="#qdevice用途としては完全にオーバースペック" class="headerlink" title="qdevice用途としては完全にオーバースペック"></a>qdevice用途としては完全にオーバースペック</h3><p>ひたすらPVE1、PVE2との通信が発生するのだろうということで機器選定したものの、完全にオーバースペックです。</p>
+<p>ネットワーク<br>平均300B&#x2F;s。最大が2KB&#x2F;sですが、おそらくMaxの値は私がSSHをした時のものです。</p>
 <img src="/new-technology/2026/06/20/proxmox-qdevice/port.png" class="" width="1024" title="alt">
 
-<p>CPU&#x2F;メモリ</p>
-<p>8日以上連続稼働した状態でも、load averageは0.00, 0.00, 0.00で、CPU idleは97.7% でした。<br>メモリについても、16GB搭載に対して実使用量は約790MiB程度でした。qdevice用途としては、今回のIntel Celeron N100 &#x2F; 16GB RAM &#x2F; NVMe SSD 500GBという構成は、かなり余裕のある構成です。</p>
+<p>CPU&#x2F;メモリ<br>8日以上連続稼働した状態でも、load averageは0.00, 0.00, 0.00で、CPU idleは97.7% でした。<br>メモリについても、16GB搭載に対して実使用量は約790MiB程度でした。qdevice用途としては、今回のIntel Celeron N100 &#x2F; 16GB RAM &#x2F; NVMe SSD 500GBという構成は、かなり余裕のある構成です。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">yoshi@quory:~$ top -b -n 1 | <span class="built_in">head</span> -20</span><br><span class="line">top - 19:37:42 up 8 days,  5:29,  1 user,  load average: 0.00, 0.00, 0.00</span><br><span class="line">Tasks: 144 total,   1 running, 143 sleeping,   0 stopped,   0 zombie</span><br><span class="line">%Cpu(s):  0.0 us,  2.3 sy,  0.0 ni, 97.7 <span class="built_in">id</span>,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st</span><br><span class="line">MiB Mem :  15317.8 total,  12795.5 free,    790.0 used,   2078.5 buff/cache</span><br><span class="line">MiB Swap:   4096.0 total,   4096.0 free,      0.0 used.  14527.8 avail Mem</span><br><span class="line"></span><br><span class="line">    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND</span><br><span class="line">  69179 yoshi     20   0    8944   5824   3780 R   9.1   0.0   0:00.01 top</span><br><span class="line">      1 root      20   0   25504  16308  11172 S   0.0   0.1   0:31.64 systemd</span><br><span class="line">      2 root      20   0       0      0      0 S   0.0   0.0   0:00.83 kthreadd</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <p>実際にqdeviceとして動作しているcorosync-qnetdの使用量を確認すると、CPU使用率は0.0%、RSSは13,864 KiB、つまり約13.5MiBでした。</p>
 <p>この結果からも、qdevice用途では高性能なCPUや大容量メモリはほとんど必要ないことが分かります。</p>
-<p>今回のquoryはIntel Celeron N100、メモリ16GB、NVMe SSD 500GBという構成ですが、qdevice用途としては明らかに余裕のある構成です。</p>
+<p>今回のquoryはIntel Celeron N100、メモリ16GB、NVMe SSD 500GBという構成ですが、qdevice用途としては明らかに余裕がありすぎる構成です。今後は他の使い道を探すことにしましょう。</p>
 <table>
 <thead>
 <tr>
@@ -475,15 +470,14 @@
 <td>16,228 KiB（約15.8MiB）</td>
 </tr>
 </tbody></table>
-<h3 id="ネットワーク構成"><a href="#ネットワーク構成" class="headerlink" title="ネットワーク構成"></a>ネットワーク構成</h3><p>qdevice用途では、大容量の通信は発生しません。</p>
-<p>quoryはVMを実行するProxmoxノードではなく、VMマイグレーションやZFSレプリケーションのデータ転送にも使いません。あくまで、Proxmoxクラスタのquorum判定を補助する外部投票サーバーです。<br>そのため、qdevice用途であれば、ネットワークは1GbE 1ポートでも十分です。<br>今回の構成では、qdevice通信はDefault VLANのみを使用します。厳密に言えば、同じセグメントである必要はありませんが、できるだけ通信が妨げられることは防ぐために同一のネットワークに設定されることをお勧めします。</p>
+<h3 id="ネットワーク構成"><a href="#ネットワーク構成" class="headerlink" title="ネットワーク構成"></a>ネットワーク構成</h3><p>今回判明したように、qdevice用途であれば、ネットワークは1GbE 1ポートで十分です。10Mbps半二重だって大丈夫です笑。負荷分散を考え、2Portモデルを選定しましたが、全くの見込み違いでした。<br>今回の構成では、qdevice通信はProxmoxのマネジメントVLANと同一のネットワークのみを使用します。厳密に言えば、同じセグメントである必要はありませんが、できるだけ通信が妨げられることは防ぐために同一のネットワークに設定されることをお勧めします。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pve1.internal  : 192.168.x.11</span><br><span class="line">pve2.internal  : 192.168.x.12</span><br><span class="line">quory.internal : 192.168.x.14</span><br></pre></td></tr></table></figure>
 
 <p>前回の記事では、VMマイグレーションやZFSレプリケーション用の通信をServer VLAN側に分けました。</p>
-<p>一方で、qdeviceは大容量データを流す用途ではありません。そのため、quoryはDefault VLANに接続し、pve1 &#x2F; pve2から安定して名前解決と通信ができる状態にしています。<br>corosync-qnetdはTCP 5403を使用します。<br>そのため、pve1 &#x2F; pve2 <strong>から</strong> quoryのTCP 5403へ到達できることが必要です。</p>
-<p>私の環境では、quoryには1GbEポートが2つありますが、qdevice用途では片方だけ使用しています。qdeviceは大容量通信を行わないため、複数NICや10GbEは不要です。</p>
-<h3 id="事前確認"><a href="#事前確認" class="headerlink" title="事前確認"></a>事前確認</h3><p>ここからはUbuntu26.04 Serverを前提に、qdeviceの具体的なセットアップを行なっていきます。qdeviceを追加する前に、名前解決、SSH疎通、時刻同期、クラスタ状態を確認します。</p>
-<p>qdeviceのセットアップでは、Proxmoxノードからqdeviceへ接続して設定を行います。そのため、Proxmoxノードからqdeviceへ到達できることが前提になります。</p>
+<p>あとは私の環境の留意事項としては、VM担っているSophos FirewallがDNSとDHCPを提供するので、こういったレイヤではDNSやDHCPは依存しないようにします。昔ながらの固定IPアドレスと&#x2F;etc&#x2F;hostsで名前解決を管理します。</p>
+<p>なお、corosync-qnetdはTCP 5403を使用します。<br>そのため、pve1 &#x2F; pve2 <strong>から</strong> quoryのTCP 5403へ到達できることが必要です。</p>
+<h3 id="事前確認"><a href="#事前確認" class="headerlink" title="事前確認"></a>事前確認</h3><p>ここからはUbuntu26.04 Serverを前提に、qdeviceの具体的なセットアップを行っていきます。<br>2ノードのProxmoxが既にクラスタ化されている事を前提とします。<br>qdeviceを追加する前に、名前解決、SSH疎通、時刻同期、クラスタ状態を確認します。</p>
+<p>qdeviceのセットアップでは、Proxmoxノードからqdeviceへ接続して設定します。そのため、Proxmoxノードからqdeviceへ到達できることが前提になります。</p>
 <h3 id="名前解決確認"><a href="#名前解決確認" class="headerlink" title="名前解決確認"></a>名前解決確認</h3><p>まず、qdevice上でproxmoxノード、qdevice自身の名前解決を確認します。以下は私の環境ですが、ご自身の環境で、事前に<code>/etc/hosts</code>でホスト名の登録をしてください。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">getent hosts pve1.internal</span><br><span class="line">getent hosts pve2.internal</span><br><span class="line">getent hosts quory.internal</span><br></pre></td></tr></table></figure>
 
@@ -500,7 +494,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">192.168.x.14 quory.internal</span><br></pre></td></tr></table></figure>
 
 <p>qdeviceはクラスタの判断に関わるため、名前解決が不安定な状態で進めるのは避けるべきです。DNSを使う場合でも、&#x2F;etc&#x2F;hostsを使う場合でも、pve1 &#x2F; pve2 &#x2F; quoryの相互解決が安定していることを確認しておきます。</p>
-<h3 id="rootの有効化"><a href="#rootの有効化" class="headerlink" title="rootの有効化"></a>rootの有効化</h3><p><code>pvecm qdevice setup</code> は、Proxmox側からqdeviceへroot SSH接続して初期設定を行います。<br>そのため、qdevice登録直前のみquory側でroot SSHログインを一時的に許可します。</p>
+<h3 id="rootの有効化"><a href="#rootの有効化" class="headerlink" title="rootの有効化"></a>rootの有効化</h3><p><code>pvecm qdevice setup</code> は、Proxmox側からqdeviceへroot SSH接続して初期設定が行われます。そのため、qdevice登録直前のみquory側で<strong>root SSHログインを一時的に許可</strong>します。</p>
 <p>qdevice上で実行します。一時的なrootパスワードを設定してください。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> passwd root</span><br></pre></td></tr></table></figure>
 
@@ -511,14 +505,13 @@
 <p>そして、以下の内容を登録します。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">PermitRootLogin <span class="built_in">yes</span></span><br><span class="line">PasswordAuthentication <span class="built_in">yes</span></span><br><span class="line">KbdInteractiveAuthentication <span class="built_in">yes</span></span><br><span class="line">ChallengeResponseAuthentication <span class="built_in">yes</span></span><br></pre></td></tr></table></figure>
 
-<p>SSH設定の構文確認です。慎重にやりましょう。</p>
+<p>SSH設定の構文確認です。保険をかけて複数のSSH接続を実施の上で、慎重に実施しましょう。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> sshd -t</span><br></pre></td></tr></table></figure>
 
 <p>SSHを再起動します。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> systemctl restart ssh</span><br></pre></td></tr></table></figure>
 
-
-<h3 id="SSH疎通確認"><a href="#SSH疎通確認" class="headerlink" title="SSH疎通確認"></a>SSH疎通確認</h3><p>qdevice setupでは、Proxmoxノードからqdeviceへ接続します。<br>そのため、proxmox1号機とproxmox2号機からqdeviceへSSH接続できることを確認します。<br>pve1で実行します。ホスト名はご自身の環境で読み替えてください。</p>
+<h3 id="SSH疎通確認"><a href="#SSH疎通確認" class="headerlink" title="SSH疎通確認"></a>SSH疎通確認</h3><p>proxmox1号機とproxmox2号機からqdeviceへSSH接続できることを確認します。<br>pve1で実行します。ホスト名はご自身の環境で読み替えてください。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh root@quory.internal hostname</span><br></pre></td></tr></table></figure>
 
 <p>期待する結果は以下です。</p>
@@ -629,10 +622,10 @@
 <p>SSH設定構文確認</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> sshd -t</span><br></pre></td></tr></table></figure>
 
-<p>問題がなければ</p>
+<p>問題がなければ（慎重に複数のSSHセッションを張って実行してください）</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> systemctl restart ssh</span><br></pre></td></tr></table></figure>
 
-<p>rootパスワードのロック（必要に応じて）</p>
+<p>rootパスワードのロック</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> passwd -l root</span><br></pre></td></tr></table></figure>
 
 <p>ユーザーがsudo付きのコマンドを叩いたり、sudo -iするときのパスワードには無影響です。</p>
@@ -641,7 +634,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> ufw status</span><br><span class="line"></span><br><span class="line">Status: active</span><br><span class="line"></span><br><span class="line">To                         Action      From</span><br><span class="line">--                         ------      ----</span><br><span class="line">OpenSSH                    ALLOW       Anywhere</span><br><span class="line">5403/tcp                   ALLOW       Anywhere</span><br><span class="line">OpenSSH (v6)               ALLOW       Anywhere (v6)</span><br><span class="line">5403/tcp (v6)              ALLOW       Anywhere (v6)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <h2 id="第3部：HA構成と検証"><a href="#第3部：HA構成と検証" class="headerlink" title="第3部：HA構成と検証"></a>第3部：HA構成と検証</h2><p>さて、いよいよProxmoxサーバー側でのHA対応です。ここまで来れば、VMのマイグレーションもqdeviceがある状態で安全に運用できています。</p>
-<p>改めての確認ですが、この記事では、前回記事の<a href="/new-technology/2026/06/13/proxmox-cluster/" title="Proxmoxを2台でクラスタ化する：VMマイグレーションでパッチ適用を楽にする">Proxmoxを2台でクラスタ化する：VMマイグレーションでパッチ適用を楽にする</a>で紹介した通り、共有Diskは保有せずにZFSレプリケーションで、別ノードにVMディスクのコピーを作っておく方法を前提としています。<br>高価な共有Diskが無くて良い代わりに、レプリケーションにはその間隔が開きますから、同期できていない時間の情報はフェイルオーバーすると失われます。最新のメモリも連携されていないので、VMはもう片方のノードでブートから始まります。ここはライブマイグレーションとは大きく異なります。</p>
+<p>改めての確認ですが、この記事では、前回記事の<a href="/new-technology/2026/06/13/proxmox-cluster/" title="Proxmoxを2台でクラスタ化する：VMマイグレーションでパッチ適用を楽にする">Proxmoxを2台でクラスタ化する：VMマイグレーションでパッチ適用を楽にする</a>で紹介した通り、共有ストレージは保有せずにZFSレプリケーションで、別ノードにVMディスクのコピーを作っておく方法を前提としています。<br>高価な共有ストレージが無くて良い代わりに、レプリケーションにはその間隔が開きますから、同期できていない時間の情報はフェイルオーバーすると失われます。最新のメモリ情報も連携されていないので、VMはもう片方のノードでブートから始まります。ここはライブマイグレーションとは大きく異なります。</p>
 <h3 id="HAに登録するVMを絞る"><a href="#HAに登録するVMを絞る" class="headerlink" title="HAに登録するVMを絞る"></a>HAに登録するVMを絞る</h3><p>前述した通り、そのVMの適正に応じてHA戦略を立てる必要があります。HAに向いているVMは情報更新があまり発生しないものが対象になります。データ損失が致命的であるならばHAには向きません。</p>
 <table>
 <thead>
@@ -708,9 +701,9 @@
 </tr>
 </tbody></table>
 <p>私の場合は、HAに登録しているのはFirewall、Radiusサーバーの2つです。開発環境（ansibleなど）はレプリケーションを実行していますが、HAにはしていません。ノードがダウンして開発が止まるのは（仕事ではないので）許容できますが、ダウンのタイミングによって依存関係が崩れたりするのは致命的です（そもそものバックアップはGitHubがありますが、Pushしていない開発中の依存関係が崩れるのは避けたいものです）。</p>
-<p>Firewallは滅多にルールを更新することはなく、仮にレプリケーションの間（15分）にノードがダウンして15分前の状態に戻ったとしてもほぼ問題はありません。せいぜいルールの1つか2つを登録し直すだけで済みます。それよりもFirewallが止まれば自宅全体のネットが止まるわけですからむしろ細かいことよりもサービス復旧が優先です。</p>
-<p>もう1つ家族のために必須のサービスがWi-Fi向けのWPA3 Enterprise認証のFree Radiusサーバーです。これは負荷も極めて低くリソースもほとんど要らないサービスですが、ダウンしていると家族がWi-Fiに接続できなくなります。私が仕事で外出している時にそうなっては困るのでFirewall同様、ダウンタイムが許されないサービスになります。個人で運用しているものなのでユーザー追加という頻度が極めて少ないというのが一般的にも言えますし、この環境ではEAP-TLSでCA証明書によって利用ユーザーが署名されているため、実はRADIUSに対してユーザー登録、新しいデバイスの登録という必要もなく、Radiusには1つのCA証明書（公開鍵）が置いてあるだけで、ほぼ更新が発生することはありません。</p>
-<p>別の言い方をすれば、HA登録するためにできるだけ更新が発生しないような方式を選択するという考え方もあります。</p>
+<p>Firewallは滅多にルールを更新することはなく、仮にレプリケーションの実行間隔（15分毎）にノードがダウンして15分前の状態に戻ったとしてもほぼ問題はありません。せいぜいルールの1つか2つを登録し直すだけで済みます。それよりもFirewallが止まれば自宅全体のネットが止まるわけですからむしろ細かいことよりもサービス復旧が優先です。</p>
+<p>もう1つ家族のために必須のサービスがWi-Fi向けのWPA3 Enterprise認証のFree Radiusサーバーです。これは負荷も極めて低くリソースもほとんど要らないサービスですが、ダウンしていると家族がWi-Fiに接続できなくなります。私が仕事で外出している時にそうなっては困るのでFirewall同様、ダウンタイムが許されないサービスになります。個人で運用しているものなのでユーザー追加は頻度が極めて少ないという事が一般的にも言えますし、この環境ではEAP-TLSでCA証明書によって利用ユーザーが署名されているため、RADIUSに対して新しいユーザー登録、新しいデバイスの登録という必要もなく、Radiusには1つのCA証明書（公開鍵）が置いてあるだけで、ほぼ更新が発生することはありません。</p>
+<p>別の言い方をすれば、HA登録するためにできるだけ更新が発生しないようなVMを設計・構築するという考え方もあります。</p>
 <h3 id="HAにVMを登録する"><a href="#HAにVMを登録する" class="headerlink" title="HAにVMを登録する"></a>HAにVMを登録する</h3><p>まず最初にHA登録されるVMがレプリケーション設定されているかを確認してください。これが大前提となります。</p>
 <p>Proxmoxにログインし、データセンターからHAを選択します。</p>
 <img src="/new-technology/2026/06/20/proxmox-qdevice/ha1.png" class="" width="1024" title="alt">
@@ -730,7 +723,7 @@
 <p>事前状態は以下の通りです。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">HA対象VM: vm:100</span><br><span class="line">稼働ノード: pve2</span><br><span class="line">復旧先ノード: pve1</span><br><span class="line">レプリケーション: pve2 → pve1</span><br><span class="line">qdevice: 有効</span><br><span class="line">quorum: OK</span><br></pre></td></tr></table></figure>
 
-<p>pve2の電源を強制的に停止したところ、pve1側ではcorosyncがpve2との通信断を検知し、その後HA managerがpve2を障害ノードとして扱いました。</p>
+<p>pve2の電源を強制的に停止させたところ、pve1側ではcorosyncがpve2との通信断を検知し、その後HA managerがpve2を障害ノードとして扱いました。</p>
 <p>ログ上の流れは以下の通りです。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">08:19頃     事前ログ・状態確認</span><br><span class="line">08:20頃     pve2 電源断を実行</span><br><span class="line">08:20:47    pve1 が pve2 の KNET link down を検知</span><br><span class="line">08:20:52    pve2 が membership から離脱</span><br><span class="line">08:21:05    HA manager が pve2 を unknown に変更</span><br><span class="line">08:21:55    vm:100 / pve2 が fence 状態へ</span><br><span class="line">08:22:55    fencing acknowledged / recovery</span><br><span class="line">08:22:56    pve1 上で VM 100 起動</span><br></pre></td></tr></table></figure>
 
@@ -761,7 +754,7 @@
 <p>qdeviceを追加することで、2ノード構成でも安定してquorumを維持できるようになりました。さらに、HA対象VMを限定したうえでpve2の電源断を行い、vm:100がpve1上で自動起動することを確認しました。</p>
 <p>今回の検証では、pve2の電源断からpve1上でVMが起動するまで、ログ上では約2分程度かかりました。HAフェイルオーバーはライブマイグレーションではないため、メモリ状態は引き継がれず、VMは復旧先ノードで再起動されます。</p>
 <p>また、共有ストレージを利用せず、ローカルZFSとレプリケーションで構成している場合、復旧先ノードで起動するVMのディスク状態は、最後にレプリケーションされた時点のものになります。そのため、前回レプリケーションからノード障害発生までの間に更新されたデータは失われる事になります。</p>
-<p>一方で、停止すると困るが、数分程度のデータ巻き戻りを許容できるVMに対しては、今回の構成は十分に有効だと感じました。</p>
+<p>一方で、停止すると困るものの、数分程度のデータ巻き戻りを許容できるVMに対しては、今回の構成は十分に有効だと感じました。</p>
 <p>なお、すべてのVMをHA対象にすればよいわけではありません。例えば監視系VMのように、障害直前までのログを可能な限り保持したいVMは、あえてHAには登録しない判断もあります。</p>
 <p>VMごとに、サービス停止の影響、データ更新頻度、失ってよいデータの範囲を整理したうえで、HA対象にするかどうかを決めることが重要です。</p>
 
