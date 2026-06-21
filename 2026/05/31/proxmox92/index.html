@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/icon-16x16.png">
+  <link rel="mask-icon" href="/new-technology/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/new-technology/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"github","dark":"a11y-dark"},"prism":{"light":"prism-vs","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js" defer></script>
+
+    <meta name="description" content="この記事で実現すること  Proxmox VE 9.2では、GUIからカスタムCPUモデルを設定できるようになりました。 これまでVMのCPUタイプは、互換性を重視する場合はx86-64-v2-AESやkvm64などを選び、性能を重視する場合はhostを選ぶ、という考え方が一般的でした。ただし、host CPUは物理CPUの機能をVMへ大きく公開できる一方で、異なる世代のCPUを持つクラスタで">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Proxmox 9.2 のカスタムCPU設定を試す：AES-NI-V2 からどれだけ速くなるか検証">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2026/05/31/proxmox92/index.html">
+<meta property="og:site_name" content="New technologies in our life">
+<meta property="og:description" content="この記事で実現すること  Proxmox VE 9.2では、GUIからカスタムCPUモデルを設定できるようになりました。 これまでVMのCPUタイプは、互換性を重視する場合はx86-64-v2-AESやkvm64などを選び、性能を重視する場合はhostを選ぶ、という考え方が一般的でした。ただし、host CPUは物理CPUの機能をVMへ大きく公開できる一方で、異なる世代のCPUを持つクラスタで">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/05/31/proxmox92/Title.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/05/31/proxmox92/customcpu.png">
+<meta property="article:published_time" content="2026-05-30T15:07:54.000Z">
+<meta property="article:modified_time" content="2026-05-31T00:44:28.565Z">
+<meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
+<meta property="article:tag" content="proxmox">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2026/05/31/proxmox92/Title.png">
+
+
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2026/05/31/proxmox92/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"ja","comments":true,"permalink":"https://yoshi0808.github.io/new-technology/2026/05/31/proxmox92/","path":"2026/05/31/proxmox92/","title":"Proxmox 9.2 のカスタムCPU設定を試す：AES-NI-V2 からどれだけ速くなるか検証"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Proxmox 9.2 のカスタムCPU設定を試す：AES-NI-V2 からどれだけ速くなるか検証 | New technologies in our life</title>
+  
+
+
+
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{&quot;token&quot;: &quot;0148b4d0442e42b483ddce684030bd2f&quot;}'></script>
+
+
+
+
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+<script src="/new-technology/js/utils.js" defer></script><script src="/new-technology/js/motion.js" defer></script><script src="/new-technology/js/sidebar.js" defer></script><script src="/new-technology/js/next-boot.js" defer></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.5.0/dist/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/new-technology/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@11.10.1/dist/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/new-technology/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JMY6NSC2KK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+  'ad_storage': 'denied',
+  'analytics_storage': 'denied'
+  });
+
+  dataLayer.push({
+  'event': 'default_consent'
+  });
+
+  if (Cookies.get('PRVCY202112') == 'Agree') {
+    gtag('consent', 'update', {
+    'analytics_storage': 'granted'
+    });
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'G-JMY6NSC2KK',{ 'anonymize_ip': true });
+</script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/new-technology/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/new-technology/atom.xml" title="New technologies in our life" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="ナビゲーションバーの切り替え" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/new-technology/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">New technologies in our life</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Device,Network,Code,etc...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="検索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/new-technology/" rel="section"><i class="fa fa-home fa-fw"></i>ホーム</a></li><li class="menu-item menu-item-about"><a href="/new-technology/about/" rel="section"><i class="fa fa-user fa-fw"></i>サイトポリシー</a></li><li class="menu-item menu-item-tags"><a href="/new-technology/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>タグ</a></li><li class="menu-item menu-item-categories"><a href="/new-technology/categories/" rel="section"><i class="fa fa-th fa-fw"></i>カテゴリ</a></li><li class="menu-item menu-item-archives"><a href="/new-technology/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>アーカイブ</a></li><li class="menu-item menu-item-privacy"><a href="/new-technology/privacypolicy/" rel="section"><i class="fa fa-check fa-fw"></i>プライバシーポリシー</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="検索…" spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          見出し
+        </li>
+        <li class="sidebar-nav-overview">
+          概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A4%9C%E8%A8%BC%E7%92%B0%E5%A2%83"><span class="nav-number">1.</span> <span class="nav-text">検証環境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%A0CPU%E3%83%A2%E3%83%87%E3%83%AB%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">2.</span> <span class="nav-text">カスタムCPUモデルの設定</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%89%E5%8A%B9%E5%8C%96%E3%81%97%E3%81%9FCPU%E3%83%95%E3%83%A9%E3%82%B0"><span class="nav-number">2.1.</span> <span class="nav-text">有効化したCPUフラグ</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Base-Model-%E3%81%AB-EPYC-%E3%82%92%E9%81%B8%E3%82%93%E3%81%A0%E7%90%86%E7%94%B1"><span class="nav-number">2.2.</span> <span class="nav-text">Base Model に EPYC を選んだ理由</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AF%94%E8%BC%83%E5%AF%BE%E8%B1%A1"><span class="nav-number">3.</span> <span class="nav-text">比較対象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CPU%E3%83%99%E3%83%B3%E3%83%81%E3%83%9E%E3%83%BC%E3%82%AF"><span class="nav-number">4.</span> <span class="nav-text">CPUベンチマーク</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9F%E8%A1%8C%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89"><span class="nav-number">4.1.</span> <span class="nav-text">実行コマンド</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B5%90%E6%9E%9C"><span class="nav-number">4.2.</span> <span class="nav-text">結果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AES-256-GCM-%E3%81%8C%E5%A4%A7%E3%81%8D%E3%81%8F%E4%BC%B8%E3%81%B3%E3%81%9F%E7%90%86%E7%94%B1"><span class="nav-number">4.3.</span> <span class="nav-text">AES-256-GCM が大きく伸びた理由</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SHA-256-%E3%82%82%E5%A4%A7%E3%81%8D%E3%81%8F%E5%90%91%E4%B8%8A"><span class="nav-number">4.4.</span> <span class="nav-text">SHA-256 も大きく向上</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%BE%E3%81%A8%E3%82%81"><span class="nav-number">5.</span> <span class="nav-text">まとめ</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="阿部　吉伸(Yoshinobu ABE)"
+      src="/new-technology/images/yoshi.png">
+  <p class="site-author-name" itemprop="name">阿部　吉伸(Yoshinobu ABE)</p>
+  <div class="site-description" itemprop="description">IT</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/new-technology/archives/">
+          <span class="site-state-item-count">106</span>
+          <span class="site-state-item-name">ポスト</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/new-technology/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">カテゴリ</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/new-technology/tags/">
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">タグ</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yoshi0808" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yoshi0808" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yoshi0808.blog@gmail.com" title="E-Mail → mailto:yoshi0808.blog@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yoshi0808_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yoshi0808_" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/big/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="ja">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2026/05/31/proxmox92/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/new-technology/images/yoshi.png">
+      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="New technologies in our life">
+      <meta itemprop="description" content="IT">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Proxmox 9.2 のカスタムCPU設定を試す：AES-NI-V2 からどれだけ速くなるか検証 | New technologies in our life">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Proxmox 9.2 のカスタムCPU設定を試す：AES-NI-V2 からどれだけ速くなるか検証
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">投稿日</span>
+      
+
+      <time title="作成日：2026-05-31 00:07:54 / 修正日：09:44:28" itemprop="dateCreated datePublished" datetime="2026-05-31T00:07:54+09:00">2026-05-31</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><img src="/new-technology/2026/05/31/proxmox92/Title.png" class="" title="alt">
+
+<p class="onepoint">この記事で実現すること</p>
+
+<p>Proxmox VE 9.2では、GUIからカスタムCPUモデルを設定できるようになりました。</p>
+<p>これまでVMのCPUタイプは、互換性を重視する場合はx86-64-v2-AESやkvm64などを選び、性能を重視する場合はhostを選ぶ、という考え方が一般的でした。<br>ただし、host CPUは物理CPUの機能をVMへ大きく公開できる一方で、異なる世代のCPUを持つクラスタではライブマイグレーション時の安全性に注意が必要です。</p>
+<p>今回、Proxmox VE 9.2のカスタムCPUモデルを使い、従来利用していたx86-64-v2-AES相当の設定と比較して、暗号処理やI&#x2F;O性能にどの程度差が出るのかを検証しました。</p>
+<span id="more"></span>
+
+<h2 id="検証環境"><a href="#検証環境" class="headerlink" title="検証環境"></a>検証環境</h2><p>今回の検証環境は以下のとおりです。</p>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Proxmox VE</td>
+<td>9.2.2</td>
+</tr>
+<tr>
+<td>pve1 CPU</td>
+<td>AMD Ryzen 9 7900（Zen4）</td>
+</tr>
+<tr>
+<td>pve2 CPU</td>
+<td>AMD Ryzen 5 5600G（Zen3）</td>
+</tr>
+<tr>
+<td>VM OS</td>
+<td>Ubuntu</td>
+</tr>
+<tr>
+<td>vmファイルシステム</td>
+<td>ext4</td>
+</tr>
+<tr>
+<td>ストレージ</td>
+<td>ZFS mirror（NVMe x2 &#x2F; rpool）</td>
+</tr>
+<tr>
+<td>iothread</td>
+<td>ON</td>
+</tr>
+</tbody></table>
+<p>今回の主目的はライブマイグレーションそのものではなく、同一VM上でCPUタイプを変更した場合に、AES-NI-V2相当の設定とカスタムCPUモデルでどの程度性能差が出るかを確認することです。</p>
+<p>ただし、クラスタ内にZen3とZen4のCPUが混在しているため、CPUフラグの互換性も考慮しています。</p>
+<h2 id="カスタムCPUモデルの設定"><a href="#カスタムCPUモデルの設定" class="headerlink" title="カスタムCPUモデルの設定"></a>カスタムCPUモデルの設定</h2><p>今回作成したカスタムCPUモデルは以下です。</p>
+<p>ポイントは、pve1とpve2の両方でサポートされているCPUフラグのみを明示的に有効化したことです。</p>
+<p>また、Zen4のRyzen 9 7900はAVX-512系の機能を持っていますが、Zen3のRyzen 5 5600Gは対応していません。そのため、avx512fは明示的に無効化しています。</p>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>設定値</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>名前</td>
+<td><code>zen3-zen4-compat</code></td>
+</tr>
+<tr>
+<td>Base Model</td>
+<td><code>EPYC</code></td>
+</tr>
+</tbody></table>
+<h3 id="有効化したCPUフラグ"><a href="#有効化したCPUフラグ" class="headerlink" title="有効化したCPUフラグ"></a>有効化したCPUフラグ</h3><table>
+<thead>
+<tr>
+<th>操作</th>
+<th>フラグ</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>有効化</td>
+<td><code>aes</code>, <code>sha-ni</code>, <code>avx</code>, <code>avx2</code>, <code>bmi1</code>, <code>bmi2</code>, <code>fma</code>, <code>rdrand</code>, <code>vaes</code></td>
+</tr>
+<tr>
+<td>無効化</td>
+<td><code>avx512f</code></td>
+</tr>
+</tbody></table>
+<p>Proxmoxで「データセンター」→「カスタムCPUモデル」と進むとそこで設定できます。</p>
+<img src="/new-technology/2026/05/31/proxmox92/customcpu.png" class="" width="1024" title="alt">
+
+<p>環境によってフラグは異なりますが、単一のノードで運用されている方はサポートされているフラグをOnにする、クラスタノードでは両方がそのオプションが使えることを確認の上でOnにするということです。Flgの意味が厳密に理解できなくても、ひたすらぽちぽちと設定していく、そんな感じでしょうか。</p>
+<h3 id="Base-Model-に-EPYC-を選んだ理由"><a href="#Base-Model-に-EPYC-を選んだ理由" class="headerlink" title="Base Model に EPYC を選んだ理由"></a>Base Model に EPYC を選んだ理由</h3><p>最初は、より新しいCPUモデルである <code>EPYC-Milan-v3</code> なども候補にしました。</p>
+<p>しかし、実際に試したところ、<code>pcid</code> フラグに関連する起動エラーが発生しました。</p>
+<p>一方で、Base Modelを <code>EPYC</code> にした場合は問題なく起動できました。</p>
+<p><code>EPYC</code> はNaples世代、つまりZen1ベースのモデルです。新しいモデルと比べるとデフォルトで有効になるCPUフラグは少なめですが、その分、必要なフラグだけを明示的に追加しやすく、今回のような混在CPU環境では扱いやすいと感じました。</p>
+<p>今回の方針は、以下のような考え方です。</p>
+<ul>
+<li>Base Modelは控えめにする</li>
+<li>必要なCPUフラグだけを追加する</li>
+<li>片方のノードにしか存在しないフラグは入れない</li>
+<li>AVX-512は明示的に無効化する</li>
+</ul>
+<p>結果として、<code>EPYC</code> をベースにしつつ、AES、SHA、AVX2、VAESなどの実用上効果が大きいフラグを追加する構成にしました。</p>
+<h2 id="比較対象"><a href="#比較対象" class="headerlink" title="比較対象"></a>比較対象</h2><p>今回の比較対象は以下の2つです。</p>
+<table>
+<thead>
+<tr>
+<th>区分</th>
+<th>CPU設定</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>BEFORE</td>
+<td>AES-NI-V2 相当</td>
+</tr>
+<tr>
+<td>AFTER</td>
+<td>カスタムCPUモデル <code>zen3-zen4-compat</code></td>
+</tr>
+</tbody></table>
+<p><code>host</code> CPUとの比較ではなく、あくまで従来の互換性重視設定と、Proxmox 9.2のカスタムCPUモデル設定との比較です。</p>
+<h2 id="CPUベンチマーク"><a href="#CPUベンチマーク" class="headerlink" title="CPUベンチマーク"></a>CPUベンチマーク</h2><h3 id="実行コマンド"><a href="#実行コマンド" class="headerlink" title="実行コマンド"></a>実行コマンド</h3><p>CPU性能の確認には、OpenSSL、sysbench、stress-ngを使用しました。</p>
+<p>openssl speed -evp aes-256-gcm</p>
+<p>openssl speed -evp aes-256-cbc</p>
+<p>openssl speed sha256</p>
+<p>sysbench cpu –cpu-max-prime&#x3D;20000 –threads&#x3D;4 run</p>
+<p>stress-ng –matrix 4 –matrix-size 256 –metrics-brief –timeout 10s</p>
+<h3 id="結果"><a href="#結果" class="headerlink" title="結果"></a>結果</h3><p>8KBブロック基準の結果は以下です。</p>
+<table>
+<thead>
+<tr>
+<th>テスト</th>
+<th>BEFORE（AES-NI-V2）</th>
+<th>AFTER（custom EPYC）</th>
+<th>変化</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>AES-256-GCM</td>
+<td>803,394 KB&#x2F;s</td>
+<td>5,668,009 KB&#x2F;s</td>
+<td>約7倍</td>
+</tr>
+<tr>
+<td>AES-256-CBC</td>
+<td>1,517,008 KB&#x2F;s</td>
+<td>1,516,557 KB&#x2F;s</td>
+<td>ほぼ変化なし</td>
+</tr>
+<tr>
+<td>SHA-256</td>
+<td>617,835 KB&#x2F;s</td>
+<td>2,509,324 KB&#x2F;s</td>
+<td>約4倍</td>
+</tr>
+<tr>
+<td>sysbench</td>
+<td>9,193 events&#x2F;s</td>
+<td>9,197 events&#x2F;s</td>
+<td>ほぼ変化なし</td>
+</tr>
+<tr>
+<td>stress-ng matrix</td>
+<td>2,295 bogo ops&#x2F;s</td>
+<td>2,540 bogo ops&#x2F;s</td>
+<td>約10%向上</td>
+</tr>
+</tbody></table>
+<h3 id="AES-256-GCM-が大きく伸びた理由"><a href="#AES-256-GCM-が大きく伸びた理由" class="headerlink" title="AES-256-GCM が大きく伸びた理由"></a>AES-256-GCM が大きく伸びた理由</h3><p>もっとも大きな差が出たのはAES-256-GCMです。</p>
+<p>BEFOREでは803,394 KB&#x2F;sだったものが、AFTERでは5,668,009 KB&#x2F;sまで向上しました。およそ7倍の差です。</p>
+<p>AES-256-GCMはTLS 1.3でも広く使われる暗号方式です。そのため、VPN、TLS終端、SSL&#x2F;TLSインスペクションなど、暗号処理が多いVMではかなり大きな意味を持つ結果だと思います。</p>
+<h3 id="SHA-256-も大きく向上"><a href="#SHA-256-も大きく向上" class="headerlink" title="SHA-256 も大きく向上"></a>SHA-256 も大きく向上</h3><p>SHA-256も大きく改善しました。</p>
+<p>BEFOREでは617,835 KB&#x2F;sだったものが、AFTERでは2,509,324 KB&#x2F;sになりました。こちらはおよそ4倍です。</p>
+<p>SHA-256は暗号処理だけでなく、チェックサムやハッシュ計算でも使われます。ZFSのチェックサム処理そのものをVM内で直接行っているわけではありませんが、VM内の処理効率が上がることで、間接的にI&#x2F;O性能にも影響が出る可能性があります。</p>
+<h2 id="まとめ"><a href="#まとめ" class="headerlink" title="まとめ"></a>まとめ</h2><p>Proxmox VE 9.2のカスタムCPUモデルを使うことで、従来のAES-NI-V2相当設定と比較して、暗号処理性能を大きく改善できました。</p>
+<p>特にAES-256-GCMとSHA-256の改善は非常に大きく、VPN、TLS、暗号処理、ハッシュ処理を多用するVMでは効果が期待できます。</p>
+<p>一方で、すべての処理が速くなるわけではありません。sysbenchのような一般的なCPUベンチマークではほぼ変化がなく、AES-256-CBCも大きな差は出ませんでした。</p>
+<p>つまり、カスタムCPUモデルの効果は、<strong>CPUそのものを速くするというより、VMから利用できるCPU命令を適切に公開することで、対応する処理を大きく高速化するもの</strong>だと考えています。</p>
+<p>個人的には、Proxmox VE 9.2のカスタムCPUモデルは、混在CPUクラスタにおいてかなり実用的な新機能だと感じました。</p>
+<p>互換性を重視して <code>x86-64-v2-AES</code> などに寄せすぎると、現代のCPUが持っている命令を活かしきれません。一方で <code>host</code> にすると、混在環境ではライブマイグレーション時の安全性に不安が残ります。</p>
+<p>その中間として、<strong>必要なCPUフラグだけを明示的に公開するカスタムCPUモデル</strong>は、性能と互換性のバランスを取るうえで非常に良い選択肢だと思います。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/new-technology/tags/proxmox/" rel="tag"><i class="fa fa-tag"></i> proxmox</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/new-technology/2026/05/16/Sophos%20Migration/" rel="prev" title="Sophos FirewallをESXiからProxmoxに移行">
+                  <i class="fa fa-angle-left"></i> Sophos FirewallをESXiからProxmoxに移行
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/new-technology/2026/06/06/Proxmox-Cloud-Init/" rel="next" title="Proxmox 9.2でUbuntu ServerをCloud-Init化する：公開鍵認証・Secure Boot対応テンプレートの作り方">
+                  Proxmox 9.2でUbuntu ServerをCloud-Init化する：公開鍵認証・Secure Boot対応テンプレートの作り方 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2020 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">阿部　吉伸(Yoshinobu ABE)</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div><script src="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.umd.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.min.css" rel="stylesheet">
+
+<script>
+if (Cookies.get('PRVCY202112') != 'Agree') {
+  const notice = new SimpleGDPR({
+    title: 'Accept Cookies & Privacy Policy?',
+    message: 'このWebサイトでは、訪問や活動に関するデータがクッキー等によって収集されます。閲覧を継続される場合、\
+    プライバシーポリシーをご覧いただき同意(Agree)をお願いします',
+    link: null,
+    icons: true,
+    theme: 'light',
+    animation: 'fade',
+    float: 'bottom-right',
+      callback: () => {
+      notice.close();
+      Cookies.set('PRVCY202112', 'Agree', { expires: 365, path: '/'});
+      notice.destroy();
+      // Google Analytics 4
+      gtag('consent', 'update', {
+      'analytics_storage': 'granted'
+      });
+      gtag('js', new Date());
+      gtag('config', 'G-JMY6NSC2KK', { 'anonymize_ip': true });
+      },
+  });
+}
+</script>
+<div class="disclaimer1">
+このサイトの記事は、特別な記載がない限り <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja">クリエイティブ・コモンズ BY-NC-SA ライセンス</a>で保護されています</div>
+
+
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/yoshi0808" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

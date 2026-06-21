@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/icon-16x16.png">
+  <link rel="mask-icon" href="/new-technology/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/new-technology/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"github","dark":"a11y-dark"},"prism":{"light":"prism-vs","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js" defer></script>
+
+    <meta name="description" content="この記事で実現すること  仮想環境のProxmox VE9.2でCloud-Initを活用する方法をまとめています。私はこれまでは単にUbuntu Desktop VMのクローンだけで済ませており、Cloud-Initの最初の手間を考えると大して時短にもならないと考えてましたが、最近はDesktopではなくほぼUbuntu Serverに変わってきていることや小さいノードを複数持たせる傾向にあ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Proxmox 9.2でUbuntu ServerをCloud-Init化する：公開鍵認証・Secure Boot対応テンプレートの作り方">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2026/06/06/Proxmox-Cloud-Init/index.html">
+<meta property="og:site_name" content="New technologies in our life">
+<meta property="og:description" content="この記事で実現すること  仮想環境のProxmox VE9.2でCloud-Initを活用する方法をまとめています。私はこれまでは単にUbuntu Desktop VMのクローンだけで済ませており、Cloud-Initの最初の手間を考えると大して時短にもならないと考えてましたが、最近はDesktopではなくほぼUbuntu Serverに変わってきていることや小さいノードを複数持たせる傾向にあ">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/06/06/Proxmox-Cloud-Init/Title.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/06/06/Proxmox-Cloud-Init/flow.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/06/06/Proxmox-Cloud-Init/homelab.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/06/06/Proxmox-Cloud-Init/semaphoreui.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/06/06/Proxmox-Cloud-Init/grafana.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/06/06/Proxmox-Cloud-Init/vscode.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/06/06/Proxmox-Cloud-Init/snippets.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/06/06/Proxmox-Cloud-Init/template.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/06/06/Proxmox-Cloud-Init/clone.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/06/06/Proxmox-Cloud-Init/storage1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/06/06/Proxmox-Cloud-Init/storage2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/06/06/Proxmox-Cloud-Init/network1.png">
+<meta property="article:published_time" content="2026-06-05T18:42:38.000Z">
+<meta property="article:modified_time" content="2026-06-06T21:51:36.382Z">
+<meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
+<meta property="article:tag" content="proxmox">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2026/06/06/Proxmox-Cloud-Init/Title.png">
+
+
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2026/06/06/Proxmox-Cloud-Init/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"ja","comments":true,"permalink":"https://yoshi0808.github.io/new-technology/2026/06/06/Proxmox-Cloud-Init/","path":"2026/06/06/Proxmox-Cloud-Init/","title":"Proxmox 9.2でUbuntu ServerをCloud-Init化する：公開鍵認証・Secure Boot対応テンプレートの作り方"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Proxmox 9.2でUbuntu ServerをCloud-Init化する：公開鍵認証・Secure Boot対応テンプレートの作り方 | New technologies in our life</title>
+  
+
+
+
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{&quot;token&quot;: &quot;0148b4d0442e42b483ddce684030bd2f&quot;}'></script>
+
+
+
+
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+<script src="/new-technology/js/utils.js" defer></script><script src="/new-technology/js/motion.js" defer></script><script src="/new-technology/js/sidebar.js" defer></script><script src="/new-technology/js/next-boot.js" defer></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.5.0/dist/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/new-technology/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@11.10.1/dist/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/new-technology/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JMY6NSC2KK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+  'ad_storage': 'denied',
+  'analytics_storage': 'denied'
+  });
+
+  dataLayer.push({
+  'event': 'default_consent'
+  });
+
+  if (Cookies.get('PRVCY202112') == 'Agree') {
+    gtag('consent', 'update', {
+    'analytics_storage': 'granted'
+    });
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'G-JMY6NSC2KK',{ 'anonymize_ip': true });
+</script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/new-technology/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/new-technology/atom.xml" title="New technologies in our life" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="ナビゲーションバーの切り替え" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/new-technology/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">New technologies in our life</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Device,Network,Code,etc...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="検索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/new-technology/" rel="section"><i class="fa fa-home fa-fw"></i>ホーム</a></li><li class="menu-item menu-item-about"><a href="/new-technology/about/" rel="section"><i class="fa fa-user fa-fw"></i>サイトポリシー</a></li><li class="menu-item menu-item-tags"><a href="/new-technology/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>タグ</a></li><li class="menu-item menu-item-categories"><a href="/new-technology/categories/" rel="section"><i class="fa fa-th fa-fw"></i>カテゴリ</a></li><li class="menu-item menu-item-archives"><a href="/new-technology/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>アーカイブ</a></li><li class="menu-item menu-item-privacy"><a href="/new-technology/privacypolicy/" rel="section"><i class="fa fa-check fa-fw"></i>プライバシーポリシー</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="検索…" spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          見出し
+        </li>
+        <li class="sidebar-nav-overview">
+          概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Cloud-Init%E3%81%A8%E3%81%AF"><span class="nav-number">1.</span> <span class="nav-text">Cloud-Initとは</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%AA%E3%81%9C%E4%BD%BF%E3%81%8A%E3%81%86%E3%81%A8%E6%80%9D%E3%81%A3%E3%81%9F%E3%81%8B"><span class="nav-number">2.</span> <span class="nav-text">なぜ使おうと思ったか</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%9B%E3%83%BC%E3%83%A0%E3%83%A9%E3%83%9C%E3%81%AE%E9%81%8B%E7%94%A8%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span class="nav-number">2.1.</span> <span class="nav-text">ホームラボの運用について</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI%E3%81%AE%E6%B4%BB%E7%94%A8"><span class="nav-number">2.2.</span> <span class="nav-text">AIの活用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%9B%E3%83%BC%E3%83%A0%E3%83%A9%E3%83%9C%E3%81%AE%E5%93%81%E8%B3%AA%E5%90%91%E4%B8%8A%E3%81%A7%E7%9B%AE%E6%8C%87%E3%81%99%E3%82%82%E3%81%AE"><span class="nav-number">3.</span> <span class="nav-text">ホームラボの品質向上で目指すもの</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%81%8B%E7%94%A8%E3%82%B9%E3%82%BF%E3%82%A4%E3%83%AB%E3%81%AE%E5%A4%89%E9%81%B7"><span class="nav-number">4.</span> <span class="nav-text">運用スタイルの変遷</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cloud-Init%E3%81%AB%E5%BF%85%E8%A6%81%E3%81%AA%E3%82%82%E3%81%AE"><span class="nav-number">5.</span> <span class="nav-text">Cloud-Initに必要なもの</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9F%E9%9A%9B%E3%81%AECloud-Init%E3%81%AE%E6%A7%8B%E7%AF%89"><span class="nav-number">6.</span> <span class="nav-text">実際のCloud-Initの構築</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cloud-Image"><span class="nav-number">7.</span> <span class="nav-text">Cloud Image</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#user-data"><span class="nav-number">7.1.</span> <span class="nav-text">user-data</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%84%E3%82%BB%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%AE%E8%A7%A3%E8%AA%AC"><span class="nav-number">7.2.</span> <span class="nav-text">各セクションの解説</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GUI-%E3%81%AE-Cloud-Init-%E3%82%BF%E3%83%96%E3%81%A8%E3%81%AE%E9%96%A2%E4%BF%82"><span class="nav-number">7.3.</span> <span class="nav-text">GUI の Cloud-Init タブとの関係</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%86%E3%83%B3%E3%83%97%E3%83%AC%E3%83%BC%E3%83%88VM%E3%81%AE%E4%BD%9C%E6%88%90%E6%89%8B%E9%A0%86"><span class="nav-number">8.</span> <span class="nav-text">テンプレートVMの作成手順</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%86%E3%83%B3%E3%83%97%E3%83%AC%E3%83%BC%E3%83%88%E3%81%AE%E8%A8%AD%E5%AE%9A%E7%A2%BA%E8%AA%8D"><span class="nav-number">8.1.</span> <span class="nav-text">テンプレートの設定確認</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9F%E8%A1%8C%E3%83%AD%E3%82%B0"><span class="nav-number">8.2.</span> <span class="nav-text">実行ログ</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VM%E3%81%AEclone%E6%89%8B%E9%A0%86"><span class="nav-number">9.</span> <span class="nav-text">VMのclone手順</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Full-Clone%E3%81%A7%E4%BD%9C%E6%88%90"><span class="nav-number">9.1.</span> <span class="nav-text">Full Cloneで作成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%87%E3%82%A3%E3%82%B9%E3%82%AF%E3%83%AA%E3%82%B5%E3%82%A4%E3%82%BA"><span class="nav-number">9.2.</span> <span class="nav-text">ディスクリサイズ</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IP%E3%81%AE%E8%A8%AD%E5%AE%9A%EF%BC%88%E8%B5%B7%E5%8B%95%E5%89%8D%E3%81%AB%E5%BF%85%E3%81%9A%E5%AE%9F%E6%96%BD%EF%BC%89"><span class="nav-number">9.3.</span> <span class="nav-text">IPの設定（起動前に必ず実施）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VM%E8%B5%B7%E5%8B%95"><span class="nav-number">10.</span> <span class="nav-text">VM起動</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%81%9D%E3%81%AE%E5%BE%8C%E3%81%AE%E5%88%9D%E6%9C%9F%E8%A8%AD%E5%AE%9A%E3%81%AA%E3%81%A9"><span class="nav-number">10.1.</span> <span class="nav-text">その後の初期設定など</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E3%83%9B%E3%82%B9%E3%83%88%E5%90%8D%E5%A4%89%E6%9B%B4"><span class="nav-number">10.1.1.</span> <span class="nav-text">ホスト名変更</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cloud-Init%E9%81%A9%E7%94%A8%E3%81%AE%E9%A0%86%E7%95%AA%EF%BC%88%E9%87%8D%E8%A6%81%EF%BC%89"><span class="nav-number">10.2.</span> <span class="nav-text">Cloud-Init適用の順番（重要）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%86%E3%83%B3%E3%83%97%E3%83%AC%E3%83%BC%E3%83%88%E3%81%AE%E6%9B%B4%E6%96%B0"><span class="nav-number">10.3.</span> <span class="nav-text">テンプレートの更新</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%BE%E3%81%A8%E3%82%81"><span class="nav-number">11.</span> <span class="nav-text">まとめ</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A3%9C%E8%B6%B3"><span class="nav-number">12.</span> <span class="nav-text">補足</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="阿部　吉伸(Yoshinobu ABE)"
+      src="/new-technology/images/yoshi.png">
+  <p class="site-author-name" itemprop="name">阿部　吉伸(Yoshinobu ABE)</p>
+  <div class="site-description" itemprop="description">IT</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/new-technology/archives/">
+          <span class="site-state-item-count">106</span>
+          <span class="site-state-item-name">ポスト</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/new-technology/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">カテゴリ</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/new-technology/tags/">
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">タグ</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yoshi0808" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yoshi0808" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yoshi0808.blog@gmail.com" title="E-Mail → mailto:yoshi0808.blog@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yoshi0808_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yoshi0808_" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/big/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="ja">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2026/06/06/Proxmox-Cloud-Init/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/new-technology/images/yoshi.png">
+      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="New technologies in our life">
+      <meta itemprop="description" content="IT">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Proxmox 9.2でUbuntu ServerをCloud-Init化する：公開鍵認証・Secure Boot対応テンプレートの作り方 | New technologies in our life">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Proxmox 9.2でUbuntu ServerをCloud-Init化する：公開鍵認証・Secure Boot対応テンプレートの作り方
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">投稿日</span>
+
+      <time title="作成日：2026-06-06 03:42:38" itemprop="dateCreated datePublished" datetime="2026-06-06T03:42:38+09:00">2026-06-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">編集日</span>
+      <time title="修正日：2026-06-07 06:51:36" itemprop="dateModified" datetime="2026-06-07T06:51:36+09:00">2026-06-07</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><img src="/new-technology/2026/06/06/Proxmox-Cloud-Init/Title.png" class="" title="alt">
+
+<p class="onepoint">この記事で実現すること</p>
+
+<p>仮想環境のProxmox VE9.2でCloud-Initを活用する方法をまとめています。私はこれまでは単にUbuntu Desktop VMのクローンだけで済ませており、Cloud-Initの最初の手間を考えると大して時短にもならないと考えてましたが、最近はDesktopではなくほぼUbuntu Serverに変わってきていることや小さいノードを複数持たせる傾向にあるため、改めてCloud-Initのメリットを考えてみたいと思います。</p>
+<span id="more"></span>
+
+<h2 id="Cloud-Initとは"><a href="#Cloud-Initとは" class="headerlink" title="Cloud-Initとは"></a>Cloud-Initとは</h2><p>ご想像通り、テンプレートを作成し、それを元にVMを構築していくためのものです。複数のLinux VMがあるとしたら共通設定される部分（ユーザー、パスワードやSSH鍵など）は、できるだけ共通化して省力化を図ろうというものです。</p>
+<img src="/new-technology/2026/06/06/Proxmox-Cloud-Init/flow.png" class="" width="800" title="alt">
+
+<p>Cloud-Initが向いているのは、特にLinuxは親和性が高いのですが、似たような環境をいくつも作成するケースです。<br>Ubuntuだと開発、監視基盤、自動実行など目的に合わせてLinuxサーバーを構築したり、一時的なテスト端末を用意したりする場合に大きな効果を発揮します。</p>
+<h2 id="なぜ使おうと思ったか"><a href="#なぜ使おうと思ったか" class="headerlink" title="なぜ使おうと思ったか"></a>なぜ使おうと思ったか</h2><p>元々、Cloud-Initは特別新しいものでもなく、私自身はこれまでもVMのクローンで十分という認識があり、そもそもUbuntuのインストールも簡単にはなっているのでさほど気にしてはいませんでした。<br>ESXiを使っていた時代にも、そもそもUbuntuも数台あったものの、気が向いたら何かのサーバーを立てるのに使う程度のものであって、本格稼働していたとは言い難い状況でした。</p>
+<p>何よりもESXiはVMware Remote Consoleが便利だったおかげで、WindowsやmacOSからのコピペがとても簡単でした。クライアントで必要な情報を集めて、ダウンロードしたものをアップしたり、ダウンロードリンクを纏めてubuntuに取り込み、Ubuntu側で纏めて作業するという流れで運用してました。</p>
+<p>ESXiからProxmoxに移行してきて思ったことは、かなりLinuxライクな運用が求められることであり、またCLI中心に戻ってきたと感じたことです。もちろん、ESXiのパッチもコマンドベースでしたが、Proxmoxではかなりパッチの頻度も多く、詳細な情報を見られるようになった反面、運用面ではかなりやることが増えたなと感じます。もっとも、ESXiではブラックボックスでしたのであまり気にしなくてもよかった（色々知らない方が幸せ）と言えます。</p>
+<p>ちょうど時代も変わってきたと感じます。世の中にはサイバー攻撃が溢れ、今やパスワード管理というのは時代遅れになってきており、二要素認証だけではなく、フィッシング耐性が求められるパスキーが一般的になりつつあります。ホームラボは今のままで無影響ということにはなりません。これまでよりもセキュリティ対策に注力する必要があります。弱いパスワードのVPN、ホームラボならではの証明書エラー、強度の低いWi-Fiパスワードなど、見直すべき箇所はたくさんあります。世の中のパブリッククラウドのセキュリティ強化の流れからは取り残されたホームユーザーのオンプレミス環境は、今まさに見直しが必要な状況になってきていると思います。そして、そのためには個々のサーバーを場当たり的に構築するのではなく、共通のルールで構築・運用できる基盤が必要になります。</p>
+<h3 id="ホームラボの運用について"><a href="#ホームラボの運用について" class="headerlink" title="ホームラボの運用について"></a>ホームラボの運用について</h3><p>私個人としてはホームユーザーという立場で、データ保管やネットワークなどが中心の運用になっています。NASはSynologyを使い、ネットワークはUniFiを使い、できれば既にあるものはわざわざ自分では作らないという考えであり、過去、自身で構築している主だったものとしてはESXiに乗ったFirewall（Sophos）でした。</p>
+<p>Proxmoxになって、クラスター対応ができるようになり、運用の品質が一段上げられると感じました。前述したようにGUIである程度簡単にやれるのはとても便利でしたが、Ubuntuを活用しているとは言い難く、なぜUbuntu Desktopなの？と聞かれればせいぜいネットワークの設定がGUIで簡単、Firewallの設定が簡単だったということくらいでしょうか。</p>
+<p>ProxmoxはGUIを備えているとはいえ、やはり細かな作業単位はコマンドライン中心です。UniFiも見た目の良いコンソールはありますが、実際に細かく見ていくとしたらスイッチにSSHして見ていくしかありません。結局は、なんか不調だなと思ったところで、こういった漠然と手作業でやっていたことについて、品質を上げるためにはある程度の監視基盤や自動実行する基盤が必要と感じるようになりました。こうなってくると複数のVMが必要となり、ハードウェアのリソースにも限りがあります。Ubuntu Serverで最低限度のリソースで稼働できることを目指すようになりました。</p>
+<img src="/new-technology/2026/06/06/Proxmox-Cloud-Init/homelab.png" class="" width="1024" title="alt">
+
+<h3 id="AIの活用"><a href="#AIの活用" class="headerlink" title="AIの活用"></a>AIの活用</h3><p>これをお読みの皆さんも、お忙しい中、そんなに自宅の基盤の運用に時間を掛けていられないのが実情だとは思います。しかしそれを少し変えられるのは、台頭してきたAIの活用です。監視のための細かなShellを作るなんて仕事以外ではとてもやりきれないものですが、かなりの負荷軽減が可能となってきています。AIでブラウザを操作するということもできますが、コマンドを使えば圧倒的な速度で物事が進みます。しかも再現性が高くなります。</p>
+<p>大事なことはこれまで人がわかりやすいGUIや簡易な設定（教育コストが低いもの）に重きが置かれていたものが、AIを使って生産性を高める、運用品質を高められるようになったという事です。</p>
+<p>人の作業は曖昧で、VM1つづつ見ても、設定内容がバラバラなものが多いのではないでしょうか。ある程度のルールが決まっていた上で共通の運用基盤を作ることが何よりも品質向上に資するのではないかと思います。</p>
+<h2 id="ホームラボの品質向上で目指すもの"><a href="#ホームラボの品質向上で目指すもの" class="headerlink" title="ホームラボの品質向上で目指すもの"></a>ホームラボの品質向上で目指すもの</h2><ul>
+<li>GUI＋手順ということではなく、コマンドベースで一定の手順で運用し、再現性が高く、確実性を求める</li>
+<li>監視を強化する</li>
+<li>セキュリティ向上</li>
+<li>ダウンタイムの減少</li>
+</ul>
+<p>これらを実現するために、それぞれの専門分野のVMを立てて、それ専用のプロダクトを導入することにしました。VMは目的毎に分け、余計なモジュールを入れない事を基本にします。モジュールのアップデートの頻度を少なく、脆弱性のリスクを抑制、OSのリブート頻度を減らし、安定したサービス提供を目指します。<br>自動実行基盤　パッチ適用、ヘルスチェック→Ansible。きちんとやるにはDev、Productionそれぞれの環境が必要にもなってきます。<br>監視基盤　定番のGrafana、Loki、Prometheusで監視<br>運行計画　Semaphore-UI GUIでAnsibleの状況や運行管理（バッチ時刻管理）<br>証明書管理</p>
+<h2 id="運用スタイルの変遷"><a href="#運用スタイルの変遷" class="headerlink" title="運用スタイルの変遷"></a>運用スタイルの変遷</h2><p>上記のようなプロダクトの構築を行なっていく上では共通化された認証基盤、それこそ基本の名前解決から全て統一的に対応していくことになります。気が付けば、ターミナル（macOSのiTerm2）、定型処理を行うAnsibleの開発はVSCodeにCodex拡張機能、ClaudeCode拡張機能を用いるのがスタイルになってきました。<br>Ansible端末を踏み台にProxmoxに接続しコマンドを叩いて結果を収集するなど、気が付けば作業はSSHばかりです。もちろんこれは構築（開発）作業がそうなのであって、実際の運用はGUIが中心になります。</p>
+<ul>
+<li>Semaphore-UI運行管理（定期的なAnsibleジョブ実行）</li>
+</ul>
+ <img src="/new-technology/2026/06/06/Proxmox-Cloud-Init/semaphoreui.png" class="" width="1024" title="alt">
+
+<ul>
+<li>Grafana（Loki,Prometheus）(主にUniFiのネットワーク統計、Syslog管理）</li>
+</ul>
+ <img src="/new-technology/2026/06/06/Proxmox-Cloud-Init/grafana.png" class="" width="1024" title="alt">
+
+<ul>
+<li>VSCode（ClaudeCode（実装）とCodex（レビュー））</li>
+</ul>
+ <img src="/new-technology/2026/06/06/Proxmox-Cloud-Init/vscode.png" class="" width="1024" title="alt">
+<p> VSCodeはリモート上のAnsibleコードをaiで生成、レビューを実施します。</p>
+<h2 id="Cloud-Initに必要なもの"><a href="#Cloud-Initに必要なもの" class="headerlink" title="Cloud-Initに必要なもの"></a>Cloud-Initに必要なもの</h2><p> 必要なものは簡単にいえば、クラウドイメージのUbuntu本体とユーザー設定です。</p>
+<h2 id="実際のCloud-Initの構築"><a href="#実際のCloud-Initの構築" class="headerlink" title="実際のCloud-Initの構築"></a>実際のCloud-Initの構築</h2><p>＜前提＞ファイルシステムはzfsを前提に構築しています。ext4の方は別途ストレージについてはProxmoxサイトなどを参照し、適宜変更ください。</p>
+<h2 id="Cloud-Image"><a href="#Cloud-Image" class="headerlink" title="Cloud Image"></a>Cloud Image</h2><ul>
+<li>Proxmox（KVM）用Ubuntu26.04 Cloud image</li>
+</ul>
+<p>  <a target="_blank" rel="noopener" href="https://cloud-images.ubuntu.com/resolute/current/">https://cloud-images.ubuntu.com/resolute/current/</a>から、<code>resolute-server-cloudimg-amd64.img</code>をダウンロードします（QCow2 UEFI&#x2F;GPT Bootable disk image）。</p>
+<p>  Proxmoxのshellから<code>/var/lib/vz/template/iso</code>に移動し、<code>wget https://cloud-images.ubuntu.com/resolute/current/resolute-server-cloudimg-amd64.img</code>で取得します。</p>
+<blockquote>
+<p>本記事では2026年6月時点のUbuntu 26.04 LTS cloud imageを利用しています。環境によってはdaily&#x2F;currentの内容が更新されるため、実際に利用する際はファイル名と日付を確認してください。</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">root@pve1:~1 <span class="built_in">cd</span> /var/lib/vz/template/iso</span><br><span class="line">root@pve1:/var/lib/vz/template/iso wget https://cloud-images.ubuntu.com/resolute/current/resolute-server-cloudimg-amd64.img</span><br><span class="line">--2026-06-06 16:03:50--  https://cloud-images.ubuntu.com/resolute/current/resolute-server-cloudimg-amd64.img</span><br><span class="line">Resolving cloud-images.ubuntu.com (cloud-images.ubuntu.com)... 185.125.190.40, 185.125.190.37, 2620:2d:4000:1::1a, ...</span><br><span class="line">Connecting to cloud-images.ubuntu.com (cloud-images.ubuntu.com)|185.125.190.40|:443... connected.</span><br><span class="line">HTTP request sent, awaiting response... 200 OK</span><br><span class="line">Length: 858720256 (819M) [application/octet-stream]</span><br><span class="line">Saving to: ‘resolute-server-cloudimg-amd64.img’</span><br><span class="line"></span><br><span class="line">resolute-server-cloudimg-amd6 100%[==============================================&gt;] 818.94M  36.5MB/s    <span class="keyword">in</span> 14s</span><br><span class="line"></span><br><span class="line">2026-06-06 16:04:04 (59.4 MB/s) - ‘resolute-server-cloudimg-amd64.img’ saved [858720256/858720256]</span><br></pre></td></tr></table></figure>
+
+<h3 id="user-data"><a href="#user-data" class="headerlink" title="user-data"></a>user-data</h3><p>さて、この内容は人それぞれですので重要な部分は一応抑えつつ、カスタマイズをしていただくことになります。サーバー運用を前提の構築です。</p>
+<p>初めに断っておきたいことは、この設定はパスワードレスでサーバー用途として構築するものです。 Ubuntu Desktopではないですし、しかもProxmoxコンソールからパスワードでログインすらできません。その代わり、起動直後からお使いのクライアントから公開鍵認証でSSHできます。</p>
+<ul>
+<li>ユーザーの作成（sudo NOPASSWD付き）</li>
+<li>SSH公開鍵複数の登録</li>
+<li>パスワード認証の無効化（<code>ssh_pwauth: false</code>）</li>
+<li>rootログインの無効化（<code>disable_root: true</code>）</li>
+<li>SSH hardening（<code>/etc/ssh/sshd_config.d/99-hardening.conf</code>）</li>
+<li>タイムゾーン（Asia&#x2F;Tokyo）・ロケール（ja_JP.UTF-8）</li>
+<li>初期パッケージのインストール</li>
+<li>unattended-upgradesの設定</li>
+</ul>
+<p>まずuser-dataを配置するにあたり、Proxmoxのデータセンターからストレージ”local”に対してスニペットの配置を有効にします。編集ボタンから「スニペット」を加えます。</p>
+ <img src="/new-technology/2026/06/06/Proxmox-Cloud-Init/snippets.png" class="" width="1024" title="alt">
+
+<p>user-data（Snippets）の配置場所は、<code>/var/lib/vz/snippets</code>です。</p>
+<p>ここでは、<code>user-data-ubuntu-2604.yaml</code>という名前でuser-dataを作成します。viまたはnanoで作成してください。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#cloud-config</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># -------------------------------------------------------</span></span><br><span class="line"><span class="comment"># Locale / Timezone</span></span><br><span class="line"><span class="comment"># -------------------------------------------------------</span></span><br><span class="line">locale: ja_JP.UTF-8</span><br><span class="line">timezone: Asia/Tokyo</span><br><span class="line"></span><br><span class="line"><span class="comment"># -------------------------------------------------------</span></span><br><span class="line"><span class="comment"># User</span></span><br><span class="line"><span class="comment"># -------------------------------------------------------</span></span><br><span class="line"><span class="built_in">users</span>:</span><br><span class="line">  - name: yourname</span><br><span class="line">    gecos: Yourname</span><br><span class="line">    <span class="built_in">groups</span>:</span><br><span class="line">      - adm</span><br><span class="line">      - <span class="built_in">sudo</span></span><br><span class="line">    shell: /bin/bash</span><br><span class="line">    lock_passwd: <span class="literal">true</span></span><br><span class="line">    <span class="built_in">sudo</span>: <span class="string">&quot;ALL=(ALL) NOPASSWD:ALL&quot;</span></span><br><span class="line">    ssh_authorized_keys:</span><br><span class="line">      - ssh-rsa AAAA...== cardno:14 700 491</span><br><span class="line">      - ssh-rsa AAAA...== yoshi@yoshi-pc</span><br><span class="line">      - ssh-ed25519 AAAA...</span><br><span class="line"></span><br><span class="line"><span class="comment"># -------------------------------------------------------</span></span><br><span class="line"><span class="comment"># SSH</span></span><br><span class="line"><span class="comment"># -------------------------------------------------------</span></span><br><span class="line">ssh_pwauth: <span class="literal">false</span></span><br><span class="line">disable_root: <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># -------------------------------------------------------</span></span><br><span class="line"><span class="comment"># Packages</span></span><br><span class="line"><span class="comment"># -------------------------------------------------------</span></span><br><span class="line">package_update: <span class="literal">true</span></span><br><span class="line">package_upgrade: <span class="literal">true</span></span><br><span class="line">packages:</span><br><span class="line">  - openssh-server</span><br><span class="line">  - qemu-guest-agent</span><br><span class="line">  - curl</span><br><span class="line">  - wget</span><br><span class="line">  - git</span><br><span class="line">  - vim</span><br><span class="line">  - unattended-upgrades</span><br><span class="line"></span><br><span class="line"><span class="comment"># -------------------------------------------------------</span></span><br><span class="line"><span class="comment"># SSH hardening</span></span><br><span class="line"><span class="comment"># -------------------------------------------------------</span></span><br><span class="line">write_files:</span><br><span class="line">  - path: /etc/ssh/sshd_config.d/99-hardening.conf</span><br><span class="line">    owner: root:root</span><br><span class="line">    permissions: <span class="string">&#x27;0644&#x27;</span></span><br><span class="line">    content: |</span><br><span class="line">      PasswordAuthentication no</span><br><span class="line">      KbdInteractiveAuthentication no</span><br><span class="line">      ChallengeResponseAuthentication no</span><br><span class="line">      PermitRootLogin no</span><br><span class="line">      PubkeyAuthentication <span class="built_in">yes</span></span><br><span class="line"></span><br><span class="line">  - path: /etc/apt/apt.conf.d/20auto-upgrades</span><br><span class="line">    owner: root:root</span><br><span class="line">    permissions: <span class="string">&#x27;0644&#x27;</span></span><br><span class="line">    content: |</span><br><span class="line">      APT::Periodic::Update-Package-Lists <span class="string">&quot;1&quot;</span>;</span><br><span class="line">      APT::Periodic::Unattended-Upgrade <span class="string">&quot;1&quot;</span>;</span><br><span class="line"></span><br><span class="line">  - path: /etc/apt/apt.conf.d/52unattended-upgrades-local</span><br><span class="line">    owner: root:root</span><br><span class="line">    permissions: <span class="string">&#x27;0644&#x27;</span></span><br><span class="line">    content: |</span><br><span class="line">      Unattended-Upgrade::Automatic-Reboot <span class="string">&quot;false&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment"># -------------------------------------------------------</span></span><br><span class="line"><span class="comment"># Services</span></span><br><span class="line"><span class="comment"># -------------------------------------------------------</span></span><br><span class="line">runcmd:</span><br><span class="line">  - systemctl <span class="built_in">enable</span> ssh</span><br><span class="line">  - systemctl <span class="built_in">enable</span> qemu-guest-agent</span><br><span class="line">  - systemctl start qemu-guest-agent</span><br><span class="line">  - systemctl <span class="built_in">enable</span> unattended-upgrades</span><br><span class="line">  - dpkg-reconfigure -f noninteractive unattended-upgrades</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>yourname</code>となっている箇所は変更してください</li>
+<li>公開鍵認証は、<code>ssh_authorized_keys:</code>の場所で3つの鍵が定義されていますので、ご自身の鍵に変更してください（最低1つ必要です）。1つの鍵ごとに先頭に”-“が必要です。空白やインデントは忠実に再現してください。</li>
+</ul>
+<h3 id="各セクションの解説"><a href="#各セクションの解説" class="headerlink" title="各セクションの解説"></a>各セクションの解説</h3><p><strong>locale &#x2F; timezone</strong></p>
+<p>インストール直後から日本語ロケール・JSTタイムゾーンで起動します。指定しない場合はUTC&#x2F;英語になります。</p>
+<p><strong>users</strong></p>
+<p><code>users: - default</code> と書くとcloud imageのデフォルトユーザー（ubuntu）が作られます。今回はyournameユーザーだけを明示的に定義しています。ここは変更してください。</p>
+<ul>
+<li><code>lock_passwd: true</code> → パスワードログインを無効化</li>
+<li><code>sudo: &quot;ALL=(ALL) NOPASSWD:ALL&quot;</code> → パスワードなしでsudoを許可</li>
+<li><code>ssh_authorized_keys</code> → 3つの公開鍵を登録（これはあくまで鍵を複数登録可能という意図です）</li>
+</ul>
+<blockquote>
+<p>⚠️ GUI の Cloud-Init タブの「ユーザー名」設定（ciuser）は cicustom を使う場合は無効になります。users セクションがすべてを管理します。</p>
+</blockquote>
+<p><strong>ssh_pwauth &#x2F; disable_root</strong></p>
+<ul>
+<li><code>ssh_pwauth: false</code> → パスワード認証を無効化</li>
+<li><code>disable_root: true</code> → rootログインを無効化</li>
+</ul>
+<p>sshd_config.dのhardeningファイルと組み合わせることで確実に無効化されます。</p>
+<p><strong>packages</strong></p>
+<p>初回起動時に自動インストールするパッケージ。<code>qemu-guest-agent</code> を入れることでProxmoxのGUIにIPアドレスが表示されるようになります。これがないとIPが不明になりSSH接続先を探す手間が生じます。</p>
+<p><strong>write_files</strong></p>
+<p>ファイルをそのままVM内に書き込みます。</p>
+<ul>
+<li><code>99-hardening.conf</code> → sshdの設定を強化。<code>ssh_pwauth: false</code> と合わせて二重に無効化</li>
+<li><code>20auto-upgrades</code> → unattended-upgradesの自動更新を有効化</li>
+<li><code>52unattended-upgrades-local</code> → 自動rebootを <strong>false</strong> に設定（デフォルト）。開発用VMなど任意のタイミングでの再起動が許可される場合は後でtrueに変更する</li>
+</ul>
+<p><strong>runcmd</strong></p>
+<p>初回起動時にコマンドを実行します。サービスの有効化と起動を確実に行います。<code>qemu-guest-agent</code> をstartしないとProxmox GUIにIPが表示されない場合があります。</p>
+<h3 id="GUI-の-Cloud-Init-タブとの関係"><a href="#GUI-の-Cloud-Init-タブとの関係" class="headerlink" title="GUI の Cloud-Init タブとの関係"></a>GUI の Cloud-Init タブとの関係</h3><p>cicustomでuser-dataを指定した場合、GUIのCloud-Initタブで設定できる項目は以下に絞られます。</p>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>有効&#x2F;無効</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>IP アドレス (ipconfig0)</td>
+<td>✅ 有効</td>
+</tr>
+<tr>
+<td>DNS サーバー</td>
+<td>✅ 有効</td>
+</tr>
+<tr>
+<td>ユーザー名 (ciuser)</td>
+<td>❌ 無効（user-data が優先）</td>
+</tr>
+<tr>
+<td>SSH 公開鍵 (sshkeys)</td>
+<td>❌ 無効（user-data が優先）</td>
+</tr>
+</tbody></table>
+<p>IPとDNSはGUIで管理し、ユーザー・SSH鍵・セキュリティ設定はuser-dataで一元管理することになります。</p>
+<h2 id="テンプレートVMの作成手順"><a href="#テンプレートVMの作成手順" class="headerlink" title="テンプレートVMの作成手順"></a>テンプレートVMの作成手順</h2><p>以下の手順はProxmox上で実施します。ここから大事なところなので慎重に。。。</p>
+<ul>
+<li>Secure Boot</li>
+<li>2コアCPU</li>
+<li>2048MBメモリ</li>
+</ul>
+<p><strong>Step 1: VM作成</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">qm create 9001 \</span><br><span class="line">  --name ubuntu-2604-template \</span><br><span class="line">  --machine q35 \</span><br><span class="line">  --bios ovmf \</span><br><span class="line">  --cpu x86-64-v2-AES \</span><br><span class="line">  --cores 2 \</span><br><span class="line">  --memory 2048 \</span><br><span class="line">  --net0 virtio,bridge=vmbr0 \</span><br><span class="line">  --agent enabled=1</span><br></pre></td></tr></table></figure>
+
+<p>ポイント：</p>
+<ul>
+<li><code>--bios ovmf</code> でUEFI（Secure Boot対応）</li>
+<li><code>--machine q35</code> はOVMFに必須</li>
+<li>CPUタイプは無難に<code>x86-64-v2-AES</code>としていますが、Proxmox9.2から導入されたカスタムCPUフラグを参考にカスタムCPUを作成する場合は <code>custom-</code> プレフィックスが必要</li>
+<li>ネットワークはvmbr0（デフォルトVLAN）。VM作成後に用途に合わせて変更する</li>
+</ul>
+<blockquote>
+<p>カスタムCPUについては、以下の記事をご覧ください。</p>
+ <a href="/new-technology/2026/05/31/proxmox92/" title="Proxmox 9.2 のカスタムCPU設定を試す：AES-NI-V2 からどれだけ速くなるか検証">Proxmox 9.2 のカスタムCPU設定を試す：AES-NI-V2 からどれだけ速くなるか検証</a></blockquote>
+<p><strong>Step 2: EFI disk追加</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qm <span class="built_in">set</span> 9001 --efidisk0 local-zfs:0,efitype=4m,pre-enrolled-keys=1</span><br></pre></td></tr></table></figure>
+
+<p>これによりdisk-0が作成される。</p>
+<p><strong>Step 3: TPM追加</strong></p>
+<p>Proxmox 9.xでは <code>tpmstate0</code> が正しいオプション名（<code>tpm0</code> ではない）。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qm <span class="built_in">set</span> 9001 --tpmstate0 local-zfs:0,version=v2.0</span><br></pre></td></tr></table></figure>
+
+<p>これによりdisk-1が作成される。</p>
+<p><strong>Step 4: cloud imageをインポート</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qm importdisk 9001 /var/lib/vz/template/iso/resolute-server-cloudimg-amd64.img local-zfs</span><br></pre></td></tr></table></figure>
+
+<p>インポートされたdiskは <strong>unused0（disk-2）</strong> として認識される。</p>
+<blockquote>
+<p>⚠️ disk-0はEFI disk、disk-1はTPM用。cloud imageはdisk-2になる。Step 5で正しく指定すること。</p>
+</blockquote>
+<p><strong>Step 5: SCSIコントローラーとdisk設定</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">qm <span class="built_in">set</span> 9001 --scsihw virtio-scsi-single</span><br><span class="line">qm <span class="built_in">set</span> 9001 --scsi0 local-zfs:vm-9001-disk-2,discard=on,iothread=1,ssd=1</span><br></pre></td></tr></table></figure>
+
+<p>オプション説明：</p>
+<ul>
+<li><code>discard=on</code>: TRIM有効</li>
+<li><code>iothread=1</code>: パフォーマンス向上</li>
+<li><code>ssd=1</code>: SSD emulation</li>
+</ul>
+<p><strong>Step 6: Cloud-Init・boot・ネットワーク設定</strong><br>まずは汎用性を考え、DHCPでIP割り当てにしましょう。Diskの割り当ては念の為、数秒間隔あけて少しゆったり目で実行しましょう。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qm <span class="built_in">set</span> 9001 --ide2 local-zfs:cloudinit</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qm <span class="built_in">set</span> 9001 --boot order=scsi0</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qm <span class="built_in">set</span> 9001 --ipconfig0 ip=dhcp</span><br></pre></td></tr></table></figure>
+
+<p><strong>Step 7: cicustomの設定</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qm <span class="built_in">set</span> 9001 --cicustom <span class="string">&quot;user=local:snippets/user-data-ubuntu-2604.yaml&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>これでuser-dataをVMの初回起動時に適用するよう設定される。</p>
+<p><strong>Step 8: テンプレート化</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qm template 9001</span><br></pre></td></tr></table></figure>
+
+<h3 id="テンプレートの設定確認"><a href="#テンプレートの設定確認" class="headerlink" title="テンプレートの設定確認"></a>テンプレートの設定確認</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qm config 9001</span><br></pre></td></tr></table></figure>
+
+<p>以下が含まれていることを確認する。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">bios: ovmf</span><br><span class="line">machine: q35</span><br><span class="line">cpu: x86-64-v2-AES</span><br><span class="line">efidisk0: ...</span><br><span class="line">tpmstate0: ...</span><br><span class="line">cicustom: local:snippets/user-data-ubuntu-2604.yaml</span><br><span class="line">scsihw: virtio-scsi-single</span><br><span class="line">scsi0: ...,discard=on,iothread=1,ssd=1</span><br><span class="line">agent: enabled=1</span><br></pre></td></tr></table></figure>
+
+<h3 id="実行ログ"><a href="#実行ログ" class="headerlink" title="実行ログ"></a>実行ログ</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br></pre></td><td class="code"><pre><span class="line">root@pve1:/var/lib/vz/snippets23 qm create 9001 \</span><br><span class="line">  --name ubuntu-2604-template \</span><br><span class="line">  --machine q35 \</span><br><span class="line">  --bios ovmf \</span><br><span class="line">  --cpu x86-64-v2-AES \</span><br><span class="line">  --cores 2 \</span><br><span class="line">  --memory 2048 \</span><br><span class="line">  --net0 virtio,bridge=vmbr0 \</span><br><span class="line">  --agent enabled=1</span><br><span class="line">root@pve1:/var/lib/vz/snippets24 qm <span class="built_in">set</span> 9001 --efidisk0 local-zfs:0,efitype=4m,pre-enrolled-keys=1</span><br><span class="line">update VM 9001: -efidisk0 local-zfs:0,efitype=4m,pre-enrolled-keys=1</span><br><span class="line">transferred 0.0 B of 528.0 KiB (0.00%)</span><br><span class="line">transferred 528.0 KiB of 528.0 KiB (100.00%)</span><br><span class="line">transferred 528.0 KiB of 528.0 KiB (100.00%)</span><br><span class="line">INFO: reading raw edk2 varstore from /usr/share/pve-edk2-firmware//OVMF_VARS_4M.ms.fd</span><br><span class="line">INFO: var store range: 0x64 -&gt; 0x40000</span><br><span class="line">efidisk0: successfully created disk <span class="string">&#x27;local-zfs:vm-9001-disk-0,efitype=4m,ms-cert=2023k,pre-enrolled-keys=1,size=1M&#x27;</span></span><br><span class="line">root@pve1:/var/lib/vz/snippets25 qm <span class="built_in">set</span> 9001 --tpmstate0 local-zfs:0,version=v2.0</span><br><span class="line">update VM 9001: -tpmstate0 local-zfs:0,version=v2.0</span><br><span class="line">tpmstate0: successfully created disk <span class="string">&#x27;local-zfs:vm-9001-disk-1,size=4M,version=v2.0&#x27;</span></span><br><span class="line">root@pve1:/var/lib/vz/snippets26 qm importdisk 9001 /var/lib/vz/template/iso/resolute-server-cloudimg-amd64.img local-zfs</span><br><span class="line">importing disk <span class="string">&#x27;/var/lib/vz/template/iso/resolute-server-cloudimg-amd64.img&#x27;</span> to VM 9001 ...</span><br><span class="line">transferred 0.0 B of 3.5 GiB (0.00%)</span><br><span class="line">transferred 35.8 MiB of 3.5 GiB (1.00%)</span><br><span class="line">transferred 71.7 MiB of 3.5 GiB (2.00%)</span><br><span class="line">transferred 107.5 MiB of 3.5 GiB (3.00%)</span><br><span class="line">transferred 143.7 MiB of 3.5 GiB (4.01%)</span><br><span class="line">transferred 179.6 MiB of 3.5 GiB (5.01%)</span><br><span class="line">transferred 215.4 MiB of 3.5 GiB (6.01%)</span><br><span class="line">transferred 251.6 MiB of 3.5 GiB (7.02%)</span><br><span class="line">transferred 287.4 MiB of 3.5 GiB (8.02%)</span><br><span class="line">transferred 323.3 MiB of 3.5 GiB (9.02%)</span><br><span class="line">transferred 359.1 MiB of 3.5 GiB (10.02%)</span><br><span class="line">transferred 395.0 MiB of 3.5 GiB (11.02%)</span><br><span class="line">transferred 430.8 MiB of 3.5 GiB (12.02%)</span><br><span class="line">transferred 466.6 MiB of 3.5 GiB (13.02%)</span><br><span class="line">transferred 502.5 MiB of 3.5 GiB (14.02%)</span><br><span class="line">transferred 538.3 MiB of 3.5 GiB (15.02%)</span><br><span class="line">transferred 574.2 MiB of 3.5 GiB (16.02%)</span><br><span class="line">transferred 610.0 MiB of 3.5 GiB (17.02%)</span><br><span class="line">transferred 645.8 MiB of 3.5 GiB (18.02%)</span><br><span class="line">transferred 681.7 MiB of 3.5 GiB (19.02%)</span><br><span class="line">transferred 717.5 MiB of 3.5 GiB (20.02%)</span><br><span class="line">transferred 753.4 MiB of 3.5 GiB (21.02%)</span><br><span class="line">transferred 789.2 MiB of 3.5 GiB (22.02%)</span><br><span class="line">transferred 825.0 MiB of 3.5 GiB (23.02%)</span><br><span class="line">transferred 860.9 MiB of 3.5 GiB (24.02%)</span><br><span class="line">transferred 896.7 MiB of 3.5 GiB (25.02%)</span><br><span class="line">transferred 932.9 MiB of 3.5 GiB (26.03%)</span><br><span class="line">transferred 968.8 MiB of 3.5 GiB (27.03%)</span><br><span class="line">transferred 1004.6 MiB of 3.5 GiB (28.03%)</span><br><span class="line">transferred 1.0 GiB of 3.5 GiB (29.03%)</span><br><span class="line">transferred 1.1 GiB of 3.5 GiB (30.03%)</span><br><span class="line">transferred 1.1 GiB of 3.5 GiB (31.03%)</span><br><span class="line">transferred 1.1 GiB of 3.5 GiB (32.03%)</span><br><span class="line">transferred 1.2 GiB of 3.5 GiB (33.03%)</span><br><span class="line">transferred 1.2 GiB of 3.5 GiB (34.03%)</span><br><span class="line">transferred 1.2 GiB of 3.5 GiB (35.03%)</span><br><span class="line">transferred 1.3 GiB of 3.5 GiB (36.03%)</span><br><span class="line">transferred 1.3 GiB of 3.5 GiB (37.03%)</span><br><span class="line">transferred 1.3 GiB of 3.5 GiB (38.03%)</span><br><span class="line">transferred 1.4 GiB of 3.5 GiB (39.03%)</span><br><span class="line">transferred 1.4 GiB of 3.5 GiB (40.03%)</span><br><span class="line">transferred 1.4 GiB of 3.5 GiB (41.03%)</span><br><span class="line">transferred 1.5 GiB of 3.5 GiB (42.03%)</span><br><span class="line">transferred 1.5 GiB of 3.5 GiB (43.03%)</span><br><span class="line">transferred 1.5 GiB of 3.5 GiB (44.03%)</span><br><span class="line">transferred 1.6 GiB of 3.5 GiB (45.04%)</span><br><span class="line">transferred 1.6 GiB of 3.5 GiB (46.04%)</span><br><span class="line">transferred 1.6 GiB of 3.5 GiB (47.04%)</span><br><span class="line">transferred 1.7 GiB of 3.5 GiB (48.04%)</span><br><span class="line">transferred 1.7 GiB of 3.5 GiB (49.04%)</span><br><span class="line">transferred 1.8 GiB of 3.5 GiB (50.04%)</span><br><span class="line">transferred 1.8 GiB of 3.5 GiB (51.04%)</span><br><span class="line">transferred 1.8 GiB of 3.5 GiB (52.04%)</span><br><span class="line">transferred 1.9 GiB of 3.5 GiB (53.04%)</span><br><span class="line">transferred 1.9 GiB of 3.5 GiB (54.04%)</span><br><span class="line">transferred 1.9 GiB of 3.5 GiB (55.04%)</span><br><span class="line">transferred 2.0 GiB of 3.5 GiB (56.04%)</span><br><span class="line">transferred 2.0 GiB of 3.5 GiB (57.04%)</span><br><span class="line">transferred 2.0 GiB of 3.5 GiB (58.04%)</span><br><span class="line">transferred 2.1 GiB of 3.5 GiB (59.04%)</span><br><span class="line">transferred 2.1 GiB of 3.5 GiB (60.04%)</span><br><span class="line">transferred 2.1 GiB of 3.5 GiB (61.04%)</span><br><span class="line">transferred 2.2 GiB of 3.5 GiB (62.04%)</span><br><span class="line">transferred 2.2 GiB of 3.5 GiB (63.04%)</span><br><span class="line">transferred 2.2 GiB of 3.5 GiB (64.05%)</span><br><span class="line">transferred 2.3 GiB of 3.5 GiB (65.05%)</span><br><span class="line">transferred 2.3 GiB of 3.5 GiB (66.05%)</span><br><span class="line">transferred 2.3 GiB of 3.5 GiB (67.05%)</span><br><span class="line">transferred 2.4 GiB of 3.5 GiB (68.05%)</span><br><span class="line">transferred 2.4 GiB of 3.5 GiB (69.05%)</span><br><span class="line">transferred 2.5 GiB of 3.5 GiB (70.05%)</span><br><span class="line">transferred 2.5 GiB of 3.5 GiB (71.05%)</span><br><span class="line">transferred 2.5 GiB of 3.5 GiB (72.05%)</span><br><span class="line">transferred 2.6 GiB of 3.5 GiB (73.05%)</span><br><span class="line">transferred 2.6 GiB of 3.5 GiB (74.05%)</span><br><span class="line">transferred 2.6 GiB of 3.5 GiB (75.05%)</span><br><span class="line">transferred 2.7 GiB of 3.5 GiB (76.05%)</span><br><span class="line">transferred 2.7 GiB of 3.5 GiB (77.05%)</span><br><span class="line">transferred 2.7 GiB of 3.5 GiB (78.06%)</span><br><span class="line">transferred 2.8 GiB of 3.5 GiB (79.06%)</span><br><span class="line">transferred 2.8 GiB of 3.5 GiB (80.06%)</span><br><span class="line">transferred 2.8 GiB of 3.5 GiB (81.06%)</span><br><span class="line">transferred 2.9 GiB of 3.5 GiB (82.06%)</span><br><span class="line">transferred 2.9 GiB of 3.5 GiB (83.06%)</span><br><span class="line">transferred 2.9 GiB of 3.5 GiB (84.06%)</span><br><span class="line">transferred 3.0 GiB of 3.5 GiB (85.07%)</span><br><span class="line">transferred 3.0 GiB of 3.5 GiB (86.07%)</span><br><span class="line">transferred 3.0 GiB of 3.5 GiB (87.07%)</span><br><span class="line">transferred 3.1 GiB of 3.5 GiB (88.07%)</span><br><span class="line">transferred 3.1 GiB of 3.5 GiB (89.07%)</span><br><span class="line">transferred 3.2 GiB of 3.5 GiB (90.07%)</span><br><span class="line">transferred 3.2 GiB of 3.5 GiB (91.07%)</span><br><span class="line">transferred 3.2 GiB of 3.5 GiB (92.07%)</span><br><span class="line">transferred 3.3 GiB of 3.5 GiB (93.07%)</span><br><span class="line">transferred 3.3 GiB of 3.5 GiB (94.07%)</span><br><span class="line">transferred 3.3 GiB of 3.5 GiB (95.07%)</span><br><span class="line">transferred 3.4 GiB of 3.5 GiB (96.07%)</span><br><span class="line">transferred 3.4 GiB of 3.5 GiB (97.07%)</span><br><span class="line">transferred 3.4 GiB of 3.5 GiB (98.07%)</span><br><span class="line">transferred 3.5 GiB of 3.5 GiB (99.07%)</span><br><span class="line">transferred 3.5 GiB of 3.5 GiB (100.00%)</span><br><span class="line">transferred 3.5 GiB of 3.5 GiB (100.00%)</span><br><span class="line">unused0: successfully imported disk <span class="string">&#x27;local-zfs:vm-9001-disk-2&#x27;</span></span><br><span class="line">root@pve1:/var/lib/vz/snippets27 qm <span class="built_in">set</span> 9001 --scsihw virtio-scsi-single</span><br><span class="line">update VM 9001: -scsihw virtio-scsi-single</span><br><span class="line">root@pve1:/var/lib/vz/snippets28 qm <span class="built_in">set</span> 9001 --scsi0 local-zfs:vm-9001-disk-2,discard=on,iothread=1,ssd=1</span><br><span class="line">update VM 9001: -scsi0 local-zfs:vm-9001-disk-2,discard=on,iothread=1,ssd=1</span><br><span class="line">root@pve1:/var/lib/vz/snippets29 qm <span class="built_in">set</span> 9001 --ide2 local-zfs:cloudinit</span><br><span class="line">update VM 9001: -ide2 local-zfs:cloudinit</span><br><span class="line">ide2: successfully created disk <span class="string">&#x27;local-zfs:vm-9001-cloudinit,media=cdrom&#x27;</span></span><br><span class="line">generating cloud-init ISO</span><br><span class="line">root@pve1:/var/lib/vz/snippets30 qm <span class="built_in">set</span> 9001 --boot order=scsi0</span><br><span class="line">update VM 9001: -boot order=scsi0</span><br><span class="line">root@pve1:/var/lib/vz/snippets31 qm <span class="built_in">set</span> 9001 --ipconfig0 ip=dhcp</span><br><span class="line">update VM 9001: -ipconfig0 ip=dhcp</span><br><span class="line">root@pve1:/var/lib/vz/snippets32 qm <span class="built_in">set</span> 9001 --cicustom <span class="string">&quot;user=local:snippets/user-data-ubuntu-2604.yaml&quot;</span></span><br><span class="line">update VM 9001: -cicustom user=<span class="built_in">local</span>:snippets/user-data-ubuntu-2604.yaml</span><br><span class="line">root@pve1:/var/lib/vz/snippets33 qm template 9001</span><br><span class="line">root@pve1:/var/lib/vz/snippets34 qm config 9001</span><br><span class="line">agent: enabled=1</span><br><span class="line">bios: ovmf</span><br><span class="line">boot: order=scsi0</span><br><span class="line">cicustom: user=<span class="built_in">local</span>:snippets/user-data-ubuntu-2604.yaml</span><br><span class="line">cores: 2</span><br><span class="line">cpu: x86-64-v2-AES</span><br><span class="line">efidisk0: local-zfs:base-9001-disk-0,efitype=4m,ms-cert=2023k,pre-enrolled-keys=1,size=1M</span><br><span class="line">ide2: local-zfs:vm-9001-cloudinit,media=cdrom</span><br><span class="line">ipconfig0: ip=dhcp</span><br><span class="line">machine: q35</span><br><span class="line">memory: 2048</span><br><span class="line">meta: creation-qemu=11.0.0,ctime=1780733774</span><br><span class="line">name: ubuntu-2604-template</span><br><span class="line">net0: virtio=BC:24:11:C2:29:00,bridge=vmbr0</span><br><span class="line">scsi0: local-zfs:base-9001-disk-2,discard=on,iothread=1,size=3584M,ssd=1</span><br><span class="line">scsihw: virtio-scsi-single</span><br><span class="line">smbios1: uuid=0983fbde-74b1-452b-b64e-4c4d38704b02</span><br><span class="line">template: 1</span><br><span class="line">tpmstate0: local-zfs:base-9001-disk-1,size=4M,version=v2.0</span><br><span class="line">vmgenid: 19c0d2da-4008-4e5a-8ee3-5b9adf2a5fdc</span><br></pre></td></tr></table></figure>
+
+<p>これでテンプレートが完成しています。GUIからも確認できますよ！</p>
+ <img src="/new-technology/2026/06/06/Proxmox-Cloud-Init/template.png" class="" width="1024" title="alt">
+
+<p>一旦はここで区切りです。もちろん、次の稼働確認を終えるまで安心できませんが。</p>
+<h2 id="VMのclone手順"><a href="#VMのclone手順" class="headerlink" title="VMのclone手順"></a>VMのclone手順</h2><p>ここから先はVMを作成する度にカスタマイズしながら構成します。ここからが日々の運用フェーズです。</p>
+<h3 id="Full-Cloneで作成"><a href="#Full-Cloneで作成" class="headerlink" title="Full Cloneで作成"></a>Full Cloneで作成</h3><p>Proxmox GUIでテンプレート（VMID 9001）を右クリック →「クローン」。</p>
+<p><strong>必ずFull Cloneを選択する。</strong> Linked Cloneはテンプレートのdiskに依存した状態になるため不可。</p>
+<p>設定例：</p>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>値</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Mode</td>
+<td>Full Clone</td>
+</tr>
+<tr>
+<td>VM ID</td>
+<td>103（暫定）</td>
+</tr>
+<tr>
+<td>Name</td>
+<td>your-vm</td>
+</tr>
+<tr>
+<td>ストレージ</td>
+<td>local-zfs</td>
+</tr>
+</tbody></table>
+ <img src="/new-technology/2026/06/06/Proxmox-Cloud-Init/clone.png" class="" width="640" title="alt">
+
+<p>⚠️ ストレージをうっかりNFSにしてしまったりしないように。</p>
+<h3 id="ディスクリサイズ"><a href="#ディスクリサイズ" class="headerlink" title="ディスクリサイズ"></a>ディスクリサイズ</h3><p>cloud imageのデフォルトは3.5GBと小さいため、cloneした後に必ず拡張する。</p>
+<p>GUIのハードウェアタブでscsi0を選択 →「ディスクアクション」→「リサイズ」で追加サイズを指定。</p>
+ <img src="/new-technology/2026/06/06/Proxmox-Cloud-Init/storage1.png" class="" width="640" title="alt">
+
+<blockquote>
+<p>⚠️ ディスクは拡張のみ可能です。縮小はできません。拡張の対象は作成したVMです。テンプレートではないですよ！</p>
+</blockquote>
+ <img src="/new-technology/2026/06/06/Proxmox-Cloud-Init/storage2.png" class="" width="320" title="alt">
+
+<h3 id="IPの設定（起動前に必ず実施）"><a href="#IPの設定（起動前に必ず実施）" class="headerlink" title="IPの設定（起動前に必ず実施）"></a>IPの設定（起動前に必ず実施）</h3><p><strong>Cloud-Initは基本的に初回起動時に適用されます。後から再適用する場合は、VM内で cloud-init clean を実行して再起動する必要があります。</strong></p>
+<p>GUIのCloud-Initタブで設定するか、コマンドで：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">qm <span class="built_in">set</span> 103 --ipconfig0 ip=192.168.x.16/24,gw=192.168.x.1</span><br><span class="line">qm <span class="built_in">set</span> 103 --nameserver 192.168.x.100</span><br></pre></td></tr></table></figure>
+
+ <img src="/new-technology/2026/06/06/Proxmox-Cloud-Init/network1.png" class="" width="1024" title="alt">
+
+<p>ここはGUIの方が簡単かもしれませんね。ただし、同じVMを量産する場合はコマンドが良いでしょうね。</p>
+<p>⚠️ 設定変更後は、必ず「イメージ再作成」ボタンをクリックします。これ忘れがちです。</p>
+<h2 id="VM起動"><a href="#VM起動" class="headerlink" title="VM起動"></a>VM起動</h2><p>これまでの設定の他、必要に応じてCPUやメモリも変更してください（後からでも変更できます）。</p>
+<p>DHCPのままでよければそのまま起動してください。VM起動後、1分程度でIPアドレスがサマリーに表示されます。表示されない場合は、、、なんとかDHCPサーバーなどで確認いただき、まずはssh username@IPアドレスで公開鍵認証で接続して確認してください。スニペットが正しくないとうまくIPアドレスも取得できておらずログインできない可能性があります。</p>
+<p>うまくいけば、公開鍵認証であっさりと接続できます。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">$ ssh yoshi@192.168.x.x</span><br><span class="line">The authenticity of host <span class="string">&#x27;192.168.x.x (192.168.x.xxx)&#x27;</span> can<span class="string">&#x27;t be established.</span></span><br><span class="line"><span class="string">ED25519 key fingerprint is: SHA256:3IIWwGbmYYERfk3bUl3e+YNXKtfkM+uWwBNgzRx4GFc</span></span><br><span class="line"><span class="string">This key is not known by any other names.</span></span><br><span class="line"><span class="string">Are you sure you want to continue connecting (yes/no/[fingerprint])? yes</span></span><br><span class="line"><span class="string">Warning: Permanently added &#x27;</span>192.168.x.xxx<span class="string">&#x27; (ED25519) to the list of known hosts.</span></span><br><span class="line"><span class="string">Welcome to Ubuntu 26.04 LTS (GNU/Linux 7.0.0-15-generic x86_64)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"> * Documentation:  https://docs.ubuntu.com</span></span><br><span class="line"><span class="string"> * Management:     https://landscape.canonical.com</span></span><br><span class="line"><span class="string"> * Support:        https://ubuntu.com/pro</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"> System information as of 2026年 6月  6日 土曜日 18:44:34 JST</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  System load:  0.09              Processes:             134</span></span><br><span class="line"><span class="string">  Usage of /:   7.1% of 38.13GB   Users logged in:       0</span></span><br><span class="line"><span class="string">  Memory usage: 20%               IPv4 address for eth0: 192.168.x.xxx</span></span><br><span class="line"><span class="string">  Swap usage:   0%</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Expanded Security Maintenance for Applications is not enabled.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">0 updates can be applied immediately.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Enable ESM Apps to receive additional future security updates.</span></span><br><span class="line"><span class="string">See https://ubuntu.com/esm or run: sudo pro status</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">*** System restart required ***</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">The programs included with the Ubuntu system are free software;</span></span><br><span class="line"><span class="string">the exact distribution terms for each program are described in the</span></span><br><span class="line"><span class="string">individual files in /usr/share/doc/*/copyright.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by</span></span><br><span class="line"><span class="string">applicable law.</span></span><br></pre></td></tr></table></figure>
+
+<p>内部でupdateが進んでいるので、最初はrestart requiredが表示されるでしょう。一旦作成してしまえばDiskやCPUを変えながらさまざまなホストを作成できます。</p>
+<h3 id="その後の初期設定など"><a href="#その後の初期設定など" class="headerlink" title="その後の初期設定など"></a>その後の初期設定など</h3><h4 id="ホスト名変更"><a href="#ホスト名変更" class="headerlink" title="ホスト名変更"></a>ホスト名変更</h4><p>cloud-imageのデフォルトhostnameはubuntuになります。vmにログインしたらホスト名を変更します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> hostnamectl set-hostname myhost</span><br></pre></td></tr></table></figure>
+
+<p>一旦SSHを抜けて入り直して確認します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yoshi@myhost:~$ hostname</span><br><span class="line">myhost</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Cloud-Initでホスト名も管理できますが、本記事ではuser-dataを共通化するため、ホスト名のみ初回ログイン後に設定しています。</p>
+</blockquote>
+<p>後は&#x2F;etc&#x2F;hostsなど、個人的には、他によく見直すものとしては、アップグレード時の自動リブートを有効にする設定くらいでしょうか。以下は自動リブートを有効にする設定です。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> sed -i <span class="string">&#x27;s/Automatic-Reboot &quot;false&quot;/Automatic-Reboot &quot;true&quot;/&#x27;</span> /etc/apt/apt.conf.d/52unattended-upgrades-local</span><br></pre></td></tr></table></figure>
+
+<h3 id="Cloud-Init適用の順番（重要）"><a href="#Cloud-Init適用の順番（重要）" class="headerlink" title="Cloud-Init適用の順番（重要）"></a>Cloud-Init適用の順番（重要）</h3><p>IPアドレスは今回、DHCPから始めましたが、本番サーバーに仕立てるにあたり、固定IPアドレスに変更する場合は、以下の手順となります。VM稼働中に実施します。この後、rebootで再起動します。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. GUIのCloud-InitタブでIPやユーザー名を変更する</span><br><span class="line"> IPv4アドレスは`xxx.xxx.xxx.xxx/24`とサブネットマスクビットの指定が必要です。</span><br><span class="line">2. 「再生成」ボタンを押す（Cloud-InitのISOが更新される）</span><br><span class="line">3. VM内で: sudo cloud-init clean</span><br><span class="line">4. VM内で: sudo reboot</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>⚠️ 「再生成」を忘れると古い設定のままcloud-initが再実行される。GUIで変更してもVM内の設定は変わらない。</p>
+</blockquote>
+<p>このようなIP変更は従来viやnanoでubuntuのnetplanを手修正していたことを鑑みればとても簡単です。</p>
+<h3 id="テンプレートの更新"><a href="#テンプレートの更新" class="headerlink" title="テンプレートの更新"></a>テンプレートの更新</h3><p>Ubuntu OSは定期的にバージョンアップしていきますが、そんなに頻繁にテンプレートの更新はせずとも、Cloud Init直後に自動更新が入りますから1年に1回程度の見直しなどで良いでしょう。</p>
+<h2 id="まとめ"><a href="#まとめ" class="headerlink" title="まとめ"></a>まとめ</h2><p>ここまで設定ができるようになれば、Ubuntuのサーバー運用はとても気軽に試すことができるようになります。使ってみれば分かりますが、Cloud-Init、とても便利です。そしてuser-dataに共通部分を加えていくことによって、VMによっての違いが少なくなり、パッチを当てたりする際などの作業が一律で行えるようになります。最終的にはVMのセキュリティを高め、品質向上に一役買うはずです。</p>
+<h2 id="補足"><a href="#補足" class="headerlink" title="補足"></a>補足</h2><p>user-dataの配置場所は今回はローカルDiskにしましたが、クラスター化されている場合などは、NFSに配置しておくと両ノードから参照できて便利です。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qm <span class="built_in">set</span> 9001 --cicustom <span class="string">&quot;user=local:snippets/user-data-ubuntu-2604.yaml&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>という場所は、NFSのパス名に合わせて以下のように変更します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qm <span class="built_in">set</span> 9001 --cicustom <span class="string">&quot;user=Synology-nfs:snippets/user-data-ubuntu-2604.yaml&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/new-technology/tags/proxmox/" rel="tag"><i class="fa fa-tag"></i> proxmox</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/new-technology/2026/05/31/proxmox92/" rel="prev" title="Proxmox 9.2 のカスタムCPU設定を試す：AES-NI-V2 からどれだけ速くなるか検証">
+                  <i class="fa fa-angle-left"></i> Proxmox 9.2 のカスタムCPU設定を試す：AES-NI-V2 からどれだけ速くなるか検証
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/new-technology/2026/06/13/proxmox-cluster/" rel="next" title="Proxmoxを2台でクラスタ化する：VMマイグレーションでパッチ適用を楽にする">
+                  Proxmoxを2台でクラスタ化する：VMマイグレーションでパッチ適用を楽にする <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2020 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">阿部　吉伸(Yoshinobu ABE)</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div><script src="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.umd.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.min.css" rel="stylesheet">
+
+<script>
+if (Cookies.get('PRVCY202112') != 'Agree') {
+  const notice = new SimpleGDPR({
+    title: 'Accept Cookies & Privacy Policy?',
+    message: 'このWebサイトでは、訪問や活動に関するデータがクッキー等によって収集されます。閲覧を継続される場合、\
+    プライバシーポリシーをご覧いただき同意(Agree)をお願いします',
+    link: null,
+    icons: true,
+    theme: 'light',
+    animation: 'fade',
+    float: 'bottom-right',
+      callback: () => {
+      notice.close();
+      Cookies.set('PRVCY202112', 'Agree', { expires: 365, path: '/'});
+      notice.destroy();
+      // Google Analytics 4
+      gtag('consent', 'update', {
+      'analytics_storage': 'granted'
+      });
+      gtag('js', new Date());
+      gtag('config', 'G-JMY6NSC2KK', { 'anonymize_ip': true });
+      },
+  });
+}
+</script>
+<div class="disclaimer1">
+このサイトの記事は、特別な記載がない限り <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja">クリエイティブ・コモンズ BY-NC-SA ライセンス</a>で保護されています</div>
+
+
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/yoshi0808" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

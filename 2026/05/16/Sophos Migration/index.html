@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/icon-16x16.png">
+  <link rel="mask-icon" href="/new-technology/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/new-technology/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"github","dark":"a11y-dark"},"prism":{"light":"prism-vs","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js" defer></script>
+
+    <meta name="description" content="この記事で実現すること  これまで使ってきたESXiからいよいよProxmoxに移行します。私の環境で最も大切なVMはSophos Firewallですが、移行の過程、チューニングした項目を記録に残します。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Sophos FirewallをESXiからProxmoxに移行">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2026/05/16/Sophos%20Migration/index.html">
+<meta property="og:site_name" content="New technologies in our life">
+<meta property="og:description" content="この記事で実現すること  これまで使ってきたESXiからいよいよProxmoxに移行します。私の環境で最も大切なVMはSophos Firewallですが、移行の過程、チューニングした項目を記録に残します。">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/05/16/Sophos%20Migration/Title.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/05/16/Sophos%20Migration/network-diagram.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/05/16/Sophos%20Migration/pve1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/05/16/Sophos%20Migration/Sophos1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/05/16/Sophos%20Migration/Sophos2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/05/16/Sophos%20Migration/Sophos3.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/05/16/Sophos%20Migration/Sophos4.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/05/16/Sophos%20Migration/Sophos5.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/05/16/Sophos%20Migration/Sophos6.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/05/16/Sophos%20Migration/Sophos7.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/05/16/Sophos%20Migration/Sophos8.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/05/16/Sophos%20Migration/Sophos9.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/05/16/Sophos%20Migration/Sophos10.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/05/16/Sophos%20Migration/Sophos11.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/05/16/Sophos%20Migration/speedtest.png">
+<meta property="article:published_time" content="2026-05-15T16:37:13.000Z">
+<meta property="article:modified_time" content="2026-05-20T10:13:50.993Z">
+<meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
+<meta property="article:tag" content="proxmox">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2026/05/16/Sophos%20Migration/Title.png">
+
+
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2026/05/16/Sophos%20Migration/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"ja","comments":true,"permalink":"https://yoshi0808.github.io/new-technology/2026/05/16/Sophos%20Migration/","path":"2026/05/16/Sophos Migration/","title":"Sophos FirewallをESXiからProxmoxに移行"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Sophos FirewallをESXiからProxmoxに移行 | New technologies in our life</title>
+  
+
+
+
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{&quot;token&quot;: &quot;0148b4d0442e42b483ddce684030bd2f&quot;}'></script>
+
+
+
+
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+<script src="/new-technology/js/utils.js" defer></script><script src="/new-technology/js/motion.js" defer></script><script src="/new-technology/js/sidebar.js" defer></script><script src="/new-technology/js/next-boot.js" defer></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.5.0/dist/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/new-technology/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@11.10.1/dist/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/new-technology/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JMY6NSC2KK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+  'ad_storage': 'denied',
+  'analytics_storage': 'denied'
+  });
+
+  dataLayer.push({
+  'event': 'default_consent'
+  });
+
+  if (Cookies.get('PRVCY202112') == 'Agree') {
+    gtag('consent', 'update', {
+    'analytics_storage': 'granted'
+    });
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'G-JMY6NSC2KK',{ 'anonymize_ip': true });
+</script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/new-technology/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/new-technology/atom.xml" title="New technologies in our life" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="ナビゲーションバーの切り替え" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/new-technology/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">New technologies in our life</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Device,Network,Code,etc...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="検索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/new-technology/" rel="section"><i class="fa fa-home fa-fw"></i>ホーム</a></li><li class="menu-item menu-item-about"><a href="/new-technology/about/" rel="section"><i class="fa fa-user fa-fw"></i>サイトポリシー</a></li><li class="menu-item menu-item-tags"><a href="/new-technology/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>タグ</a></li><li class="menu-item menu-item-categories"><a href="/new-technology/categories/" rel="section"><i class="fa fa-th fa-fw"></i>カテゴリ</a></li><li class="menu-item menu-item-archives"><a href="/new-technology/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>アーカイブ</a></li><li class="menu-item menu-item-privacy"><a href="/new-technology/privacypolicy/" rel="section"><i class="fa fa-check fa-fw"></i>プライバシーポリシー</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="検索…" spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          見出し
+        </li>
+        <li class="sidebar-nav-overview">
+          概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Proxmox-VE%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span class="nav-number">1.</span> <span class="nav-text">Proxmox VEについて</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sophos-Firewall%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span class="nav-number">2.</span> <span class="nav-text">Sophos Firewallについて</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A7%BB%E8%A1%8C%E3%81%AE%E3%81%8D%E3%81%A3%E3%81%8B%E3%81%91"><span class="nav-number">3.</span> <span class="nav-text">移行のきっかけ</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sophos%E3%81%AE%E7%A7%BB%E8%A1%8C%E6%96%B9%E6%B3%95"><span class="nav-number">4.</span> <span class="nav-text">Sophosの移行方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Proxmox%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">5.</span> <span class="nav-text">Proxmoxの設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sophos-Firewall%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"><span class="nav-number">6.</span> <span class="nav-text">Sophos Firewallのインストール</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%8D%E8%B5%B7%E5%8B%95%E5%BE%8CGUI%E3%81%AE%E3%82%BB%E3%83%83%E3%83%88%E3%82%A2%E3%83%83%E3%83%97"><span class="nav-number">6.1.</span> <span class="nav-text">再起動後GUIのセットアップ</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%81%9D%E3%81%AE%E5%BE%8C%E3%81%AE%E3%83%8F%E3%83%9E%E3%82%8A%E3%81%A9%E3%81%93%E3%82%8D"><span class="nav-number">6.2.</span> <span class="nav-text">その後のハマりどころ</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A4%9C%E8%A8%BC"><span class="nav-number">6.3.</span> <span class="nav-text">検証</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A2%BA%E8%AA%8D%E4%BA%8B%E9%A0%85"><span class="nav-number">6.4.</span> <span class="nav-text">確認事項</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Proxmox-%E3%81%AE%E3%83%91%E3%83%A9%E3%83%A1%E3%83%BC%E3%82%BF"><span class="nav-number">6.5.</span> <span class="nav-text">Proxmox のパラメータ</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Proxmox%E3%81%AE%E3%83%81%E3%83%A5%E3%83%BC%E3%83%8B%E3%83%B3%E3%82%B0"><span class="nav-number">7.</span> <span class="nav-text">Proxmoxのチューニング</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-X710-Ring-Buffer-%E6%8B%A1%E5%BC%B5"><span class="nav-number">7.1.</span> <span class="nav-text">1. X710 Ring Buffer 拡張</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%90%86%E7%94%B1"><span class="nav-number">7.1.1.</span> <span class="nav-text">理由</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-ntuple-filters-%E7%84%A1%E5%8A%B9%E5%8C%96"><span class="nav-number">7.2.</span> <span class="nav-text">2. ntuple filters 無効化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%90%86%E7%94%B1-1"><span class="nav-number">7.2.1.</span> <span class="nav-text">理由</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Flow-Control"><span class="nav-number">7.3.</span> <span class="nav-text">3. Flow Control</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-offload-%E8%A8%AD%E5%AE%9A"><span class="nav-number">7.4.</span> <span class="nav-text">4. offload 設定</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Sophos-VM-%E5%81%B4%E8%A8%AD%E5%AE%9A"><span class="nav-number">8.</span> <span class="nav-text">Sophos VM 側設定</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A8%E5%A5%A8%E8%A8%AD%E5%AE%9A"><span class="nav-number">8.1.</span> <span class="nav-text">推奨設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Proxmox-Firewall"><span class="nav-number">8.2.</span> <span class="nav-text">Proxmox Firewall</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%BE%E3%81%A8%E3%82%81"><span class="nav-number">8.3.</span> <span class="nav-text">まとめ</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="阿部　吉伸(Yoshinobu ABE)"
+      src="/new-technology/images/yoshi.png">
+  <p class="site-author-name" itemprop="name">阿部　吉伸(Yoshinobu ABE)</p>
+  <div class="site-description" itemprop="description">IT</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/new-technology/archives/">
+          <span class="site-state-item-count">106</span>
+          <span class="site-state-item-name">ポスト</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/new-technology/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">カテゴリ</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/new-technology/tags/">
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">タグ</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yoshi0808" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yoshi0808" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yoshi0808.blog@gmail.com" title="E-Mail → mailto:yoshi0808.blog@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yoshi0808_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yoshi0808_" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/big/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="ja">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2026/05/16/Sophos%20Migration/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/new-technology/images/yoshi.png">
+      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="New technologies in our life">
+      <meta itemprop="description" content="IT">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Sophos FirewallをESXiからProxmoxに移行 | New technologies in our life">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Sophos FirewallをESXiからProxmoxに移行
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">投稿日</span>
+
+      <time title="作成日：2026-05-16 01:37:13" itemprop="dateCreated datePublished" datetime="2026-05-16T01:37:13+09:00">2026-05-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">編集日</span>
+      <time title="修正日：2026-05-20 19:13:50" itemprop="dateModified" datetime="2026-05-20T19:13:50+09:00">2026-05-20</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><img src="/new-technology/2026/05/16/Sophos%20Migration/Title.png" class="" title="alt">
+
+<p class="onepoint">この記事で実現すること</p>
+
+<p>これまで使ってきたESXiからいよいよProxmoxに移行します。私の環境で最も大切なVMはSophos Firewallですが、移行の過程、チューニングした項目を記録に残します。</p>
+<span id="more"></span>
+
+<h2 id="Proxmox-VEについて"><a href="#Proxmox-VEについて" class="headerlink" title="Proxmox VEについて"></a>Proxmox VEについて</h2><p>前回、Proxmoxの紹介をしてから2年が経過しました。基本的なProxmoxのセットアップは以前からほとんど変わっていませんので以下のものを参照してください。vmの作り方についてもほぼ変わっていません。今の最新はv9.1.9です。</p>
+<ul>
+<li><a href="/new-technology/2024/02/17/ProxmoxVE/" title="ProxmoxVEのインストール">ProxmoxVEのインストール</a></li>
+</ul>
+<h2 id="Sophos-Firewallについて"><a href="#Sophos-Firewallについて" class="headerlink" title="Sophos Firewallについて"></a>Sophos Firewallについて</h2><p>Sophos Firewallの最新はv22.0.1 MR-1-Build490です。非常に安定しており、SSl&#x2F;TLSインスペクションで脅威の対策をすることにおいてはホームユーザーとしては唯一無二のプロダクトだと考えてます。</p>
+<h2 id="移行のきっかけ"><a href="#移行のきっかけ" class="headerlink" title="移行のきっかけ"></a>移行のきっかけ</h2><p>ESXi vSphere hypervisorですが、すでに個人向けにはパッチが提供されなくなったようです。昨年の4月から定期的に状況を確認していましたが、vmxnet3の脆弱性が発表されてからも動きがないので、いよいよProxmoxに移行することとしました。移行するならばESXiでできなかったクラスタ化にも取り組んでみたいと考えてます。</p>
+<h2 id="Sophosの移行方法"><a href="#Sophosの移行方法" class="headerlink" title="Sophosの移行方法"></a>Sophosの移行方法</h2><p>ESXiのストレージをproxmoxでマウントしてマイグレーションするという方法が多くのサイトで説明されています。ただし、ESXi稼働時代にはVMware ToolsがSophosに自動でインストールされていました。Ubuntuであればパッケージをremoveしてから移行ということも考えられますが、この辺りの影響がFirewallという目的を鑑みると一抹の不安があり、ちょっと遠回りですが、正攻法でSophosの機能を使って移行することにしました。</p>
+<p>私の自宅のネットワーク構成は以下の通りです。現状に影響を与えず、セットアップを行なっていきます。</p>
+ <img src="/new-technology/2026/05/16/Sophos%20Migration/network-diagram.png" class="" width="1024" title="alt">
+<table>
+<thead>
+<tr>
+<th>Sophos Port</th>
+<th>Zone &#x2F; 用途</th>
+<th>Proxmox NIC</th>
+<th>Proxmox Bridge</th>
+<th align="right">VLAN Tag</th>
+<th>備考</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Port1</td>
+<td>LAN &#x2F; Default</td>
+<td>nic0</td>
+<td>vmbr0</td>
+<td align="right">-</td>
+<td>管理LAN &#x2F; Default VLAN</td>
+</tr>
+<tr>
+<td>Port2</td>
+<td>WAN</td>
+<td>nic3</td>
+<td>vmbr3</td>
+<td align="right">-</td>
+<td>au HGW側</td>
+</tr>
+<tr>
+<td>Port3</td>
+<td>Family</td>
+<td>nic1</td>
+<td>vmbr1</td>
+<td align="right">-</td>
+<td>家族用</td>
+</tr>
+<tr>
+<td>Port4</td>
+<td>Server</td>
+<td>nic2</td>
+<td>vmbr2</td>
+<td align="right">-</td>
+<td>Server &#x2F; NAS</td>
+</tr>
+<tr>
+<td>Port5</td>
+<td>Guest</td>
+<td>nic1</td>
+<td>vmbr1</td>
+<td align="right">210</td>
+<td>Guest</td>
+</tr>
+<tr>
+<td>Port6</td>
+<td>Edge</td>
+<td>nic1</td>
+<td>vmbr1</td>
+<td align="right">130</td>
+<td>Printer IoT</td>
+</tr>
+</tbody></table>
+<p>VLANが６つあります。NICはこれまで同様、X710の4Portを利用しており、FamilyにGuestとEdge(プリンターや無線TVなど）がタグ付きで流れてきます。<br>最初のセットアップはproxmoxのコンソールで実施できます。その際には、最低でもNICが２つなければセットアップができません。新規にFirewallをセットアップし、VLANを新旧で揃え、旧Firewallのバックアップから新Firewallへ戻すというのが計画になります。Sophos Firewall VM には 6 本の VirtIO NIC を割り当て、ESXi 時代の Port1〜Port6 の役割に合わせて Proxmox 側の bridge &#x2F; VLAN tag を対応させます。</p>
+<h2 id="Proxmoxの設定"><a href="#Proxmoxの設定" class="headerlink" title="Proxmoxの設定"></a>Proxmoxの設定</h2><p>このように、nic0-nic3まではvmbr0ーvmbr3と相対するブリッジが存在しますのでセグメント毎に作成します。また、タグ付きでスイッチから流れてくるものはタグの指定をしておきます。</p>
+ <img src="/new-technology/2026/05/16/Sophos%20Migration/pve1.png" class="" width="800" title="alt">
+
+<p>私は事前に旧FirewallのPort1〜Port6までがどのVLANかを事前に確認し、メモをとっておきました。これがズレると後で違うセグメントに異なるネットワークアドレスのパケットが流れたりして家中が大混乱になりそうと思ったからです。でも実はここまで厳格にやらなくても後で新旧で対応を変えられることがわかったのでここまでは不要だったかもしれません。</p>
+<table>
+<thead>
+<tr>
+<th>Sophos Network on ESXi</th>
+<th>Segment</th>
+<th>Proxmox　Bgidge</th>
+<th>Tag</th>
+<th>mac Address</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Port1</td>
+<td>LAN</td>
+<td>vmbr0</td>
+<td></td>
+<td>BC:24:11:xx:xx:93</td>
+</tr>
+<tr>
+<td>Port2</td>
+<td>WAN</td>
+<td>vmbr3</td>
+<td></td>
+<td>BC:24:11:xx:xx:7D</td>
+</tr>
+<tr>
+<td>Port3</td>
+<td>Family</td>
+<td>vmbr 1</td>
+<td></td>
+<td>BC:24:11:xx:xx:8F</td>
+</tr>
+<tr>
+<td>Port4</td>
+<td>Server</td>
+<td>vmbr2</td>
+<td></td>
+<td>BC:24:11:xx:xx:A3</td>
+</tr>
+<tr>
+<td>Port5</td>
+<td>Guest</td>
+<td>vmbr 1</td>
+<td>210</td>
+<td>BC:24:11:xx:xx:25</td>
+</tr>
+<tr>
+<td>Port6</td>
+<td>Edge</td>
+<td>vmbr 1</td>
+<td>130</td>
+<td>BC:24:11:xx:xx:D8</td>
+</tr>
+</tbody></table>
+<h2 id="Sophos-Firewallのインストール"><a href="#Sophos-Firewallのインストール" class="headerlink" title="Sophos Firewallのインストール"></a>Sophos Firewallのインストール</h2><p>このブログで何度もSophosについては書いていますし、セットアップ自体は昔から変わっていません。今回の留意事項だけ記載しておきます。</p>
+<p>Sophosのセットアップは今も変わらずUEFIには対応しておらず、SeaBIOSを選択してセットアップします。インストールはproxmox上のターミナルからまずは最低限のLAN、WAN(DHCP)の指定をし、ネットワークアドレスの設定など従来から変わらずTerminalからのセットアップ開始になります。その後モジュールがインストールされ、GUIでのセットアップに移行します。この時に一度リブートすることになりますが、旧環境と同じ環境でセットアップしたいため、LANについてはテスト用の専用VLANを作成し、そこにWindows端末を配置してセットアップをします。WANにはそのまま接続できるようにしてセットアップ中にInternetに接続できる状態にしておきます。<br>その他のVLANは全て作成しますが、Proxmox上で切断状態にしてパケットが流れないようにしておきます。</p>
+<h3 id="再起動後GUIのセットアップ"><a href="#再起動後GUIのセットアップ" class="headerlink" title="再起動後GUIのセットアップ"></a>再起動後GUIのセットアップ</h3><p>以下の画面のように進めていきます。移行用VLAN上に配置した端末からFirewallに接続してID・パスワードを入力して進みましたが、後で見直したらここで元の環境から環境を戻せそうです。セットアップ中は全然気づきませんでした。ちょっと遠回りしてしまいました。</p>
+<img src="/new-technology/2026/05/16/Sophos%20Migration/Sophos1.png" class="" width="800" title="alt">
+
+<p>セキュアストレージマスターキーは後でレストアしてしまうので仮のもので構いません。慎重な方は現行で設定しているものを入力してください。</p>
+<img src="/new-technology/2026/05/16/Sophos%20Migration/Sophos2.png" class="" width="800" title="alt">
+
+<img src="/new-technology/2026/05/16/Sophos%20Migration/Sophos3.png" class="" width="800" title="alt">
+<img src="/new-technology/2026/05/16/Sophos%20Migration/Sophos4.png" class="" width="800" title="alt">
+
+<p>ファイアウォールのライセンスは現在使っているIDをそのまま登録します。</p>
+<img src="/new-technology/2026/05/16/Sophos%20Migration/Sophos5.png" class="" width="800" title="alt">
+<img src="/new-technology/2026/05/16/Sophos%20Migration/Sophos6.png" class="" width="800" title="alt">
+<img src="/new-technology/2026/05/16/Sophos%20Migration/Sophos7.png" class="" width="800" title="alt">
+<p>そしてセットアップ完了後、admin&#x2F;今回指定したパスワードでログインします。</p>
+<img src="/new-technology/2026/05/16/Sophos%20Migration/Sophos8.png" class="" width="800" title="alt">
+<img src="/new-technology/2026/05/16/Sophos%20Migration/Sophos9.png" class="" width="800" title="alt">
+<p>新Firewallのネットワークの詳細画面で実際のMACアドレスが一致しているか確認します。</p>
+<img src="/new-technology/2026/05/16/Sophos%20Migration/Sophos10.png" class="" width="800" title="alt">
+
+<p>さて、私は遠回りしましたが、以下でバックアップからレストアします。</p>
+<img src="/new-technology/2026/05/16/Sophos%20Migration/Sophos11.png" class="" width="800" title="alt">
+
+<h3 id="その後のハマりどころ"><a href="#その後のハマりどころ" class="headerlink" title="その後のハマりどころ"></a>その後のハマりどころ</h3><p>私は二要素認証を設定していましたが、戻した後のAdminのパスワードは新たにセットアップしたパスワードになっています。そして二要素認証をパスワードの後ろに6文字を続けて入力するのですが、この2要素認証は古いものを求められます。<br>私はここで散々詰まってしまいました。。。</p>
+<h3 id="検証"><a href="#検証" class="headerlink" title="検証"></a>検証</h3><p>検証とはいっても、普段のルールが戻っているかどうかの確認です。現状と同じIPアドレスを保有しているので移行環境にあるLAN、DHCPで設定されたWAN以外はIPアドレスが重複してしまうので、まだこの段階ではProxmox上では切断したままです。インターネットにも無事接続できるか、仮のTest VLANに配置した端末からアクセスを行います。それが終わったら、いよいよESXi側のSophosを停止し、新Sophosも停止し、各VLANを接続した後、再度新Firewallを起動します。数年に亘り、大きなトラブルもなく稼働してくれたESXiに感謝です。</p>
+<h3 id="確認事項"><a href="#確認事項" class="headerlink" title="確認事項"></a>確認事項</h3><p>Sophosのサイトには、Proxmoxでのインストールに関するドキュメントがあります。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://docs.sophos.com/nsg/sophos-firewall/21.5/Help/ja-jp/webhelp/onlinehelp/VirtualAndSoftwareAppliancesHelp/KVM/ProxmoxInstall/index.html#sophos-firewall-qcow">https://docs.sophos.com/nsg/sophos-firewall/21.5/Help/ja-jp/webhelp/onlinehelp/VirtualAndSoftwareAppliancesHelp/KVM/ProxmoxInstall/index.html#sophos-firewall-qcow</a></li>
+</ul>
+<p>また、KVMに関するページでは以下の記載があります。</p>
+<blockquote>
+<p>”Proxmox 上で Sophos Firewall VM を実行するには、 Proxmox の VM 設定で「QEMU ゲストエージェントを使用する」をオフにする必要があります。”</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://docs.sophos.com/nsg/sophos-firewall/20.0/Help/ja-jp/webhelp/onlinehelp/VirtualAndSoftwareAppliancesHelp/KVM/index.html">https://docs.sophos.com/nsg/sophos-firewall/20.0/Help/ja-jp/webhelp/onlinehelp/VirtualAndSoftwareAppliancesHelp/KVM/index.html</a></li>
+</ul>
+<h3 id="Proxmox-のパラメータ"><a href="#Proxmox-のパラメータ" class="headerlink" title="Proxmox のパラメータ"></a>Proxmox のパラメータ</h3><p>VMの構成で気をつけるとしたら、ネットデバイスの設定で、Proxmox側のファイアウォールをオフにすることでしょうか。MACアドレスのなりすましや、L3レベルのフィルタ機能ですが、Sophosで十分管理できるので外して良いです。後はメモリを固定して使いたいので最初のVMの設定画面にも載せていますが、Balooningデバイスのチェックは外しておきます。</p>
+<h2 id="Proxmoxのチューニング"><a href="#Proxmoxのチューニング" class="headerlink" title="Proxmoxのチューニング"></a>Proxmoxのチューニング</h2><p>これは私の利用しているintel X710に限った話かもしれませんが、LAN内に速度差のある端末やAPがある場合は、フローコントロールの活用を検討してください。一般的なネットワークスイッチはフローコントロールがオンになっています。またバースト的な大量データの送受信のために、以下の項目は設定すべきでしょうか。特にRing Bufferは効果が大きいと思いますが環境によって変わるでしょうから、2048〜6144あたりで調整されることをお勧めします。</p>
+<h3 id="1-X710-Ring-Buffer-拡張"><a href="#1-X710-Ring-Buffer-拡張" class="headerlink" title="1. X710 Ring Buffer 拡張"></a>1. X710 Ring Buffer 拡張</h3><p>確認コマンド。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ethtool -g nic0</span><br></pre></td></tr></table></figure>
+
+<p>初期値は RX&#x2F;TX ともに 512。</p>
+<p>X710 の最大値は RX&#x2F;TX ともに 8160。</p>
+<p>適用値。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ethtool -G nic0 rx 4096 tx 4096</span><br><span class="line">ethtool -G nic1 rx 4096 tx 4096</span><br><span class="line">ethtool -G nic2 rx 4096 tx 4096</span><br><span class="line">ethtool -G nic3 rx 4096 tx 4096</span><br></pre></td></tr></table></figure>
+
+<p>永続化例。永続化は &#x2F;etc&#x2F;network&#x2F;interfaces</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">post-up /usr/sbin/ethtool -G $IFACE rx 4096 tx 4096 || true</span><br></pre></td></tr></table></figure>
+
+<h4 id="理由"><a href="#理由" class="headerlink" title="理由"></a>理由</h4><ul>
+<li>高速通信時の micro burst 耐性向上</li>
+<li>NIC ring overflow による drop &#x2F; retry 抑制</li>
+<li>最大値 8160 ではなく 4096 にすることで、遅延増加を抑えつつバースト耐性を確保</li>
+</ul>
+<h3 id="2-ntuple-filters-無効化"><a href="#2-ntuple-filters-無効化" class="headerlink" title="2. ntuple filters 無効化"></a>2. ntuple filters 無効化</h3><p>確認コマンド。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ethtool -k nic0 | grep ntuple</span><br></pre></td></tr></table></figure>
+
+<p>初期状態。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ntuple-filters: on</span><br></pre></td></tr></table></figure>
+
+<p>適用。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ethtool -K nic0 ntuple off</span><br><span class="line">ethtool -K nic1 ntuple off</span><br><span class="line">ethtool -K nic2 ntuple off</span><br><span class="line">ethtool -K nic3 ntuple off</span><br></pre></td></tr></table></figure>
+
+<p>永続化例。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">post-up /usr/sbin/ethtool -K $IFACE ntuple off || true</span><br></pre></td></tr></table></figure>
+
+<h4 id="理由-1"><a href="#理由-1" class="headerlink" title="理由"></a>理由</h4><p>X710 の Flow Director &#x2F; ntuple により、特定 flow が意図せず特定 queue に偏る可能性がある。</p>
+<p>仮想化・Firewall VM・VPN系の通信では、NIC側の自動 steering より Linux &#x2F; RSS 側に任せた方が安定することがある。</p>
+<h3 id="3-Flow-Control"><a href="#3-Flow-Control" class="headerlink" title="3. Flow Control"></a>3. Flow Control</h3><p>（環境に応じて） RX&#x2F;TX ともに ON。※LAN内で端末の速度差がある場合に吸収してくれます。</p>
+<p>確認。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ethtool -a nic1</span><br></pre></td></tr></table></figure>
+
+<p>確認結果例。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Pause parameters for nic1:</span><br><span class="line">Autonegotiate: off</span><br><span class="line">RX: on</span><br><span class="line">TX: on</span><br></pre></td></tr></table></figure>
+
+<p>永続化済み設定。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">post-up /usr/sbin/ethtool -A $IFACE tx on rx on 2&gt; /dev/null</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="4-offload-設定"><a href="#4-offload-設定" class="headerlink" title="4. offload 設定"></a>4. offload 設定</h3><p>以下は基本的に ON 維持。</p>
+<ul>
+<li>rx-checksumming</li>
+<li>tx-checksumming</li>
+<li>tcp-segmentation-offload &#x2F; TSO</li>
+<li>generic-segmentation-offload &#x2F; GSO</li>
+<li>generic-receive-offload &#x2F; GRO</li>
+<li>rx-vlan-offload</li>
+<li>tx-vlan-offload</li>
+<li>receive-hashing</li>
+</ul>
+<h1 id="Sophos-VM-側設定"><a href="#Sophos-VM-側設定" class="headerlink" title="Sophos VM 側設定"></a>Sophos VM 側設定</h1><h2 id="推奨設定"><a href="#推奨設定" class="headerlink" title="推奨設定"></a>推奨設定</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">CPU: 4 core</span><br><span class="line">NIC: VirtIO</span><br><span class="line">Multiqueue: 4</span><br><span class="line">SCSI: VirtIO SCSI single</span><br><span class="line">Disk IO thread: ON</span><br><span class="line">Proxmox Firewall: OFF</span><br></pre></td></tr></table></figure>
+
+<h2 id="Proxmox-Firewall"><a href="#Proxmox-Firewall" class="headerlink" title="Proxmox Firewall"></a>Proxmox Firewall</h2><p>Sophos VM の各 NIC では Proxmox Firewall を OFF。</p>
+<p>確認箇所。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">VM</span><br><span class="line">→ Hardware</span><br><span class="line">→ Network Device</span><br><span class="line">→ Firewall OFF</span><br></pre></td></tr></table></figure>
+
+<p>Firewall VM の前段で Proxmox Firewall が挟まると、切り分けが複雑化するため OFF</p>
+<h2 id="まとめ"><a href="#まとめ" class="headerlink" title="まとめ"></a>まとめ</h2><p>Proxmoxもこういったネットワークチューニング次第で十分に速度を出せます。</p>
+ <img src="/new-technology/2026/05/16/Sophos%20Migration/speedtest.png" class="" width="360" title="alt">
+
+<p>AMD Ryzen 9 7900 (12C&#x2F;24T)とAMD Ryzen 5 5600G (6C&#x2F;12T)とで計測しましたが、大きく値に変化はありませんので、CPU性能よりは省電力を目指す方が良さそうです。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/new-technology/tags/proxmox/" rel="tag"><i class="fa fa-tag"></i> proxmox</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/new-technology/2025/10/13/xg-v215mr1/" rel="prev" title="Sophos Firewall v21.5 MR1">
+                  <i class="fa fa-angle-left"></i> Sophos Firewall v21.5 MR1
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/new-technology/2026/05/31/proxmox92/" rel="next" title="Proxmox 9.2 のカスタムCPU設定を試す：AES-NI-V2 からどれだけ速くなるか検証">
+                  Proxmox 9.2 のカスタムCPU設定を試す：AES-NI-V2 からどれだけ速くなるか検証 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2020 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">阿部　吉伸(Yoshinobu ABE)</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div><script src="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.umd.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.min.css" rel="stylesheet">
+
+<script>
+if (Cookies.get('PRVCY202112') != 'Agree') {
+  const notice = new SimpleGDPR({
+    title: 'Accept Cookies & Privacy Policy?',
+    message: 'このWebサイトでは、訪問や活動に関するデータがクッキー等によって収集されます。閲覧を継続される場合、\
+    プライバシーポリシーをご覧いただき同意(Agree)をお願いします',
+    link: null,
+    icons: true,
+    theme: 'light',
+    animation: 'fade',
+    float: 'bottom-right',
+      callback: () => {
+      notice.close();
+      Cookies.set('PRVCY202112', 'Agree', { expires: 365, path: '/'});
+      notice.destroy();
+      // Google Analytics 4
+      gtag('consent', 'update', {
+      'analytics_storage': 'granted'
+      });
+      gtag('js', new Date());
+      gtag('config', 'G-JMY6NSC2KK', { 'anonymize_ip': true });
+      },
+  });
+}
+</script>
+<div class="disclaimer1">
+このサイトの記事は、特別な記載がない限り <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja">クリエイティブ・コモンズ BY-NC-SA ライセンス</a>で保護されています</div>
+
+
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/yoshi0808" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

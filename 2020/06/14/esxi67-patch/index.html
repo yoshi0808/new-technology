@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/icon-16x16.png">
+  <link rel="mask-icon" href="/new-technology/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/new-technology/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"github","dark":"a11y-dark"},"prism":{"light":"prism-vs","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js" defer></script>
+
+    <meta name="description" content="この記事で実現すること  無償版ESXi（VMware vSphere Hypervisor）について、BroadcomおよびVMWareのサイトから製品パッチに関する情報を入手し、ESXi上でパッチを適用します。この記事ではESXi8.0を対象にしていますが、コマンド自体はESXi7.0も変わりません。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VMware ESXiにパッチを適用する">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/index.html">
+<meta property="og:site_name" content="New technologies in our life">
+<meta property="og:description" content="この記事で実現すること  無償版ESXi（VMware vSphere Hypervisor）について、BroadcomおよびVMWareのサイトから製品パッチに関する情報を入手し、ESXi上でパッチを適用します。この記事ではESXi8.0を対象にしていますが、コマンド自体はESXi7.0も変わりません。">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/title.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/broadcom1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/broadcom2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/broadcom3.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/broadcom4.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/broadcom5.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/esxi1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/esxi2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/esxi3.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/esxi6.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/rollback.png">
+<meta property="article:published_time" content="2020-06-14T13:19:20.000Z">
+<meta property="article:modified_time" content="2025-03-08T06:39:47.626Z">
+<meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
+<meta property="article:tag" content="ESXi">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/title.png">
+
+
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"ja","comments":true,"permalink":"https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/","path":"2020/06/14/esxi67-patch/","title":"VMware ESXiにパッチを適用する"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>VMware ESXiにパッチを適用する | New technologies in our life</title>
+  
+
+
+
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{&quot;token&quot;: &quot;0148b4d0442e42b483ddce684030bd2f&quot;}'></script>
+
+
+
+
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+<script src="/new-technology/js/utils.js" defer></script><script src="/new-technology/js/motion.js" defer></script><script src="/new-technology/js/sidebar.js" defer></script><script src="/new-technology/js/next-boot.js" defer></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.5.0/dist/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/new-technology/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@11.10.1/dist/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/new-technology/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JMY6NSC2KK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+  'ad_storage': 'denied',
+  'analytics_storage': 'denied'
+  });
+
+  dataLayer.push({
+  'event': 'default_consent'
+  });
+
+  if (Cookies.get('PRVCY202112') == 'Agree') {
+    gtag('consent', 'update', {
+    'analytics_storage': 'granted'
+    });
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'G-JMY6NSC2KK',{ 'anonymize_ip': true });
+</script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/new-technology/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/new-technology/atom.xml" title="New technologies in our life" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="ナビゲーションバーの切り替え" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/new-technology/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">New technologies in our life</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Device,Network,Code,etc...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="検索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/new-technology/" rel="section"><i class="fa fa-home fa-fw"></i>ホーム</a></li><li class="menu-item menu-item-about"><a href="/new-technology/about/" rel="section"><i class="fa fa-user fa-fw"></i>サイトポリシー</a></li><li class="menu-item menu-item-tags"><a href="/new-technology/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>タグ</a></li><li class="menu-item menu-item-categories"><a href="/new-technology/categories/" rel="section"><i class="fa fa-th fa-fw"></i>カテゴリ</a></li><li class="menu-item menu-item-archives"><a href="/new-technology/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>アーカイブ</a></li><li class="menu-item menu-item-privacy"><a href="/new-technology/privacypolicy/" rel="section"><i class="fa fa-check fa-fw"></i>プライバシーポリシー</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="検索…" spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          見出し
+        </li>
+        <li class="sidebar-nav-overview">
+          概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Broadcom%E3%81%AE%E3%83%91%E3%83%83%E3%83%81%E3%81%AE%E3%83%80%E3%82%A6%E3%83%B3%E3%83%AD%E3%83%BC%E3%83%89%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span class="nav-number">1.</span> <span class="nav-text">Broadcomのパッチのダウンロードについて</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%93%E6%9D%A5%E3%81%AE%E3%83%91%E3%83%83%E3%83%81%E9%81%A9%E7%94%A8%E6%96%B9%E6%B3%95%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span class="nav-number">2.</span> <span class="nav-text">従来のパッチ適用方法について</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%91%E3%83%83%E3%83%81%E9%81%A9%E7%94%A8%E3%81%AB%E5%BF%85%E8%A6%81%E3%81%AA%E3%82%82%E3%81%AE"><span class="nav-number">3.</span> <span class="nav-text">パッチ適用に必要なもの</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VMware%E3%81%AE%E3%83%91%E3%83%83%E3%83%81%E6%83%85%E5%A0%B1"><span class="nav-number">4.</span> <span class="nav-text">VMwareのパッチ情報</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A3%BD%E5%93%81%E3%83%91%E3%83%83%E3%83%81%E3%81%AE%E6%83%85%E5%A0%B1%E3%82%92%E5%85%A5%E6%89%8B%E3%81%99%E3%82%8B%EF%BC%88Broadcom%E3%82%B5%E3%82%A4%E3%83%88%EF%BC%89"><span class="nav-number">5.</span> <span class="nav-text">製品パッチの情報を入手する（Broadcomサイト）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E5%89%8D%E6%BA%96%E5%82%99"><span class="nav-number">6.</span> <span class="nav-text">事前準備</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESXi%E3%81%AE%E3%83%91%E3%83%83%E3%83%81%E9%81%A9%E7%94%A8"><span class="nav-number">7.</span> <span class="nav-text">ESXiのパッチ適用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%91%E3%83%83%E3%83%81%E9%81%A9%E7%94%A8-ESXi8-0%E3%81%AE%E5%A0%B4%E5%90%88"><span class="nav-number">7.1.</span> <span class="nav-text">パッチ適用(ESXi8.0の場合)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%8F%BE%E5%9C%A8%E7%A8%BC%E5%83%8D%E4%B8%AD%E3%81%AE%E3%83%97%E3%83%AD%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E7%A2%BA%E8%AA%8D"><span class="nav-number">7.1.1.</span> <span class="nav-text">現在稼働中のプロファイルを確認</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E3%83%91%E3%83%83%E3%83%81%E9%81%A9%E7%94%A8"><span class="nav-number">7.1.2.</span> <span class="nav-text">パッチ適用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%8D%E8%B5%B7%E5%8B%95%E3%81%A8%E7%B5%90%E6%9E%9C%E7%A2%BA%E8%AA%8D"><span class="nav-number">7.1.3.</span> <span class="nav-text">再起動と結果確認</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E5%BE%8C%E4%BD%9C%E6%A5%AD"><span class="nav-number">8.</span> <span class="nav-text">事後作業</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%91%E3%83%83%E3%83%81%E3%81%AE%E3%83%AD%E3%83%BC%E3%83%AB%E3%83%90%E3%83%83%E3%82%AF"><span class="nav-number">9.</span> <span class="nav-text">パッチのロールバック</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A7%8B%E6%88%90%E6%83%85%E5%A0%B1%E3%81%AE%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%EF%BC%88%E4%BB%BB%E6%84%8F%EF%BC%89"><span class="nav-number">10.</span> <span class="nav-text">構成情報のバックアップ（任意）</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="阿部　吉伸(Yoshinobu ABE)"
+      src="/new-technology/images/yoshi.png">
+  <p class="site-author-name" itemprop="name">阿部　吉伸(Yoshinobu ABE)</p>
+  <div class="site-description" itemprop="description">IT</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/new-technology/archives/">
+          <span class="site-state-item-count">106</span>
+          <span class="site-state-item-name">ポスト</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/new-technology/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">カテゴリ</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/new-technology/tags/">
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">タグ</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yoshi0808" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yoshi0808" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yoshi0808.blog@gmail.com" title="E-Mail → mailto:yoshi0808.blog@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yoshi0808_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yoshi0808_" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/big/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="ja">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2020/06/14/esxi67-patch/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/new-technology/images/yoshi.png">
+      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="New technologies in our life">
+      <meta itemprop="description" content="IT">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="VMware ESXiにパッチを適用する | New technologies in our life">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          VMware ESXiにパッチを適用する
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">投稿日</span>
+
+      <time title="作成日：2020-06-14 22:19:20" itemprop="dateCreated datePublished" datetime="2020-06-14T22:19:20+09:00">2020-06-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">編集日</span>
+      <time title="修正日：2025-03-08 15:39:47" itemprop="dateModified" datetime="2025-03-08T15:39:47+09:00">2025-03-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">カテゴリ</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/Software/" itemprop="url" rel="index"><span itemprop="name">Software</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><img src="/new-technology/2020/06/14/esxi67-patch/title.png" class="" title="alt">
+<p class="onepoint">この記事で実現すること</p>
+
+<p>無償版ESXi（VMware vSphere Hypervisor）について、BroadcomおよびVMWareのサイトから製品パッチに関する情報を入手し、ESXi上でパッチを適用します。この記事ではESXi8.0を対象にしていますが、コマンド自体はESXi7.0も変わりません。</p>
+<span id="more"></span>
+
+<h2 id="Broadcomのパッチのダウンロードについて"><a href="#Broadcomのパッチのダウンロードについて" class="headerlink" title="Broadcomのパッチのダウンロードについて"></a>Broadcomのパッチのダウンロードについて</h2><p>2025-03-08の時点でESXi8.0は　Update3dのパッチが提供されています。しかしながら、私のBroadcomアカウントが個人のgmailで登録していたためか、Broadcomのサイトからパッチがダウンロードできなくなっています。個人のProfileを構成しなくてはなりませんが、「non-corporate email domain」はProfileが構成できないとのことです。無償ユーザーは少しづつ制約が加えられてきていることをひしひしと感じます。昨年はパッチをダウンロードできていましたが、現時点ではこれまで紹介してきた方法では実施できなくなっています。とはいえ、このブログは個人のためのものであり、自分が勤めている会社のメールを登録するつもりは全くありませんし、他の方法を模索しなくてはなりません。</p>
+<p>この記事に記載していることはメーカーの推奨する正しい方法ですのでこの記事は残しておきます。</p>
+<p>ESXi8.0 Update3dのパッチ適用方法については「<a href="/new-technology/2025/03/08/ESXi8-Patch/" title="VMware ESXi8 Update3dのパッチを適用する">VMware ESXi8 Update3dのパッチを適用する</a>」で、新たな記事を書いています。</p>
+<h2 id="従来のパッチ適用方法について"><a href="#従来のパッチ適用方法について" class="headerlink" title="従来のパッチ適用方法について"></a>従来のパッチ適用方法について</h2><p>ここから先は、Esxi8のUpdate3cまでパッチ適用に利用していたBroadcomの推奨する方法です。</p>
+<h2 id="パッチ適用に必要なもの"><a href="#パッチ適用に必要なもの" class="headerlink" title="パッチ適用に必要なもの"></a>パッチ適用に必要なもの</h2><p>SSHでESXiに接続し、コマンドラインでパッチを適用します。Windows11ではOpenSSHがデフォルトで導入されています。Windows10ではOpenSSHがサポートされていますので、<mark class="label primary">オプション機能を追加する</mark>から<mark class="label primary">OpenSSHクライアント</mark>を有効にし、コマンドラインから<code>ssh  root@ESXiのIPアドレス</code>で接続可能です。</p>
+<h2 id="VMwareのパッチ情報"><a href="#VMwareのパッチ情報" class="headerlink" title="VMwareのパッチ情報"></a>VMwareのパッチ情報</h2><p>ESXiのパッチ情報は以下を参照してください。当該ページの左ペインメニューには最新パッチの情報が掲載されていますので、最新のパッチ情報を辿ってください。また、過去のパッチの情報も提供されています。</p>
+<blockquote>
+<p>VMware ESXi 8.0 Update 3c （2024-12-12リリースノート発表）<br> <a target="_blank" rel="noopener" href="https://docs.vmware.com/en/VMware-vSphere/8.0/rn/vsphere-esxi-80u3c-release-notes/index.html">https://docs.vmware.com/en/VMware-vSphere/8.0/rn/vsphere-esxi-80u3c-release-notes/index.html</a></p>
+</blockquote>
+<p>アップデートで稀に動作しなくなるデバイスが発生するケースもありますので事前の仮想マシンのバックアップをお勧めします。</p>
+<p>ESXi7.0も2024-12-12に提供されています。</p>
+<blockquote>
+<p>VMware ESXi 7.0 Update 3r<br> <a target="_blank" rel="noopener" href="https://knowledge.broadcom.com/external/article/383775">https://knowledge.broadcom.com/external/article/383775</a></p>
+</blockquote>
+<p> この記事ではESXi7.0のパッチ適用の詳細は説明していません。ESXi8.0のものを参考に最新パッチをダウンロードし適用してください。</p>
+<blockquote>
+<p>Broadcom サポートページ　VMware-ESXi-7.0U3r-24411414-depot<br> <a target="_blank" rel="noopener" href="https://support.broadcom.com/web/ecx/solutiondetails?patchId=5633">https://support.broadcom.com/web/ecx/solutiondetails?patchId=5633</a></p>
+</blockquote>
+<h2 id="製品パッチの情報を入手する（Broadcomサイト）"><a href="#製品パッチの情報を入手する（Broadcomサイト）" class="headerlink" title="製品パッチの情報を入手する（Broadcomサイト）"></a>製品パッチの情報を入手する（Broadcomサイト）</h2><p><strong>Broadcomサポートポータル</strong>にサインインし、画面上部のメニューの<mark class="label primary">VMWare Cloud Foundation</mark>をクリックします。アカウントを保有していない方は右上の<strong>Register</strong>からユーザー登録を行います。</p>
+<blockquote>
+<p>Broadcom Support Portal<br> <a target="_blank" rel="noopener" href="https://support.broadcom.com/">https://support.broadcom.com/</a></p>
+</blockquote>
+<img src="/new-technology/2020/06/14/esxi67-patch/broadcom1.png" class="" width="1024" title="alt">
+
+<p>さらに、左ペインの<mark class="label primary">My Download</mark>をクリックし、さらに画面左にある絞り込みのテキストボックスに”vSphere”と入力します。</p>
+<img src="/new-technology/2020/06/14/esxi67-patch/broadcom2.png" class="" width="1024" title="alt">
+
+<p>VMWare vSphereを選択します。</p>
+<img src="/new-technology/2020/06/14/esxi67-patch/broadcom3.png" class="" width="1024" title="alt">
+
+<p>次に”Solutions”のタブをクリックします。</p>
+<img src="/new-technology/2020/06/14/esxi67-patch/broadcom4.png" class="" width="800" title="alt">
+
+<p>“VMware vSphere Standard”をクリックし、バージョンの”8”をクリックします。</p>
+<p>本来であれば、vSphere Hypervisorが選択肢としてあるべきですが、Standardを選びます。</p>
+<p>最新のパッチである”VMware-ESXi-8.0U3c-24414501-depot”のリンクが現れるのでクリックし、画面下部に移動し、”VMware-ESXi-8.0U3c-24414501-depot.zip”をダウンロードします。</p>
+<img src="/new-technology/2020/06/14/esxi67-patch/broadcom5.png" class="" width="800" title="alt">
+
+<p>基本的にESXiは修正パッチを適用する場合はこの7.0、8.0という2桁の数字は変わりません。この数字が変わる更新をアップグレードと呼びます。それ以外の小さい更新をパッチまたはアップデートと呼びます。但し、Update2,Update3というグループがあり、さらにUpdate3k、Update3lという具合にグループ単位でパッチ毎に末尾の英字が大きくなっていきます。VMwareのパッチは累積パッチとなるため、最新のパッチを適用するだけでよく、古いパッチの適用は必要ありません。ここでは最新版のパッチをダウンロードします。</p>
+<h2 id="事前準備"><a href="#事前準備" class="headerlink" title="事前準備"></a>事前準備</h2><p>ESXiにログインし、以下の作業を行います。</p>
+<ul>
+<li>SSHを有効にします</li>
+<li>仮想マシンを全てシャットダウンします</li>
+<li>ESXiをメンテナンスモードに切り替えます</li>
+<li>ダウンロードしたパッチファイル（ZIPファイル）をESXiにアップロードします</li>
+<li>SSHでESXiにログインします</li>
+<li>パッチ適用コマンドを入力、リブートします</li>
+<li>メンテナンスモードを終了します</li>
+<li>SSHを無効にします</li>
+<li>仮想マシンを起動します</li>
+</ul>
+<ol>
+<li>SSHを有効にする<br> ESXiの左ペインの<mark class="label primary">ホストー管理</mark>から、”サービス”のタブをクリックし、”TSM-SSH”を選択し”起動”ボタンをクリックし、SSHを有効にします。</li>
+</ol>
+ <img src="/new-technology/2020/06/14/esxi67-patch/esxi1.png" class="" title="alt">
+
+<ol start="2">
+<li><p>仮想マシンを全てシャットダウンします</p>
+</li>
+<li><p>ESXiをメンテナンスモードに切り替えます</p>
+</li>
+</ol>
+ <img src="/new-technology/2020/06/14/esxi67-patch/esxi2.png" class="" title="alt">
+
+<ol start="4">
+<li>パッチファイルのESXiへのアップロード<br> ESXiの左ペインメニューの”ストレージ”を選択、メインのストレージ（一般的にはdatastore1）を選択し、”データストアブラウザ”をクリックします</li>
+</ol>
+ <img src="/new-technology/2020/06/14/esxi67-patch/esxi3.png" class="" title="alt">
+ <mark class="label primary">アップロード</mark>ボタンをクリックし、ダウンロードしたパッチファイルをZIPのままアップロードします。
+<p> ここの例では<mark class="label primary">ディレクトリの作成</mark>ボタンで<strong>updateフォルダを作成</strong>し、そこにアップロードします。</p>
+<ol start="5">
+<li>SSHでESXiにログイン<br> ログイン後、パッチをアップロードしたフォルダ（datastore1&#x2F;update）に移動しアップロードしたパッチファイルが存在するか<code>ls</code>で確認します</li>
+</ol>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">[root@esxi:~] <span class="built_in">cd</span> /vmfs/volumes/datastore1/update</span><br><span class="line">[root@esxi:~] <span class="built_in">ls</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="ESXiのパッチ適用"><a href="#ESXiのパッチ適用" class="headerlink" title="ESXiのパッチ適用"></a>ESXiのパッチ適用</h2><p>パッチ適用のコマンドは7.0、8.0とで違いはありません。ここでは直近バージョンからのパッチ適用のための具体的なコマンドを記載しています。</p>
+<h3 id="パッチ適用-ESXi8-0の場合"><a href="#パッチ適用-ESXi8-0の場合" class="headerlink" title="パッチ適用(ESXi8.0の場合)"></a>パッチ適用(ESXi8.0の場合)</h3><p>ここでは、ESXi8.0の情報を掲載します。ESXi7.0についてもコマンド自体は変わりません。</p>
+<h4 id="現在稼働中のプロファイルを確認"><a href="#現在稼働中のプロファイルを確認" class="headerlink" title="現在稼働中のプロファイルを確認"></a>現在稼働中のプロファイルを確認</h4><p> 新しいドライバやバグフィックス、セキュリティパッチなど含めたprofileとして整合性が取れたvibのアップデートはprofile updateを実行します。ここでは、ESXi8.0Update3bからUpdate3cにアップデートすることを例にします。</p>
+<p> 現在の実行中のprofileを確認します。<code>esxcli software profile get</code><br> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost:~] esxcli software profile get</span><br><span class="line">(Updated) ESXi-8.0U3b-24280767-standard</span><br><span class="line">   Name: (Updated) ESXi-8.0U3b-24280767-standard</span><br><span class="line">   Vendor: VMware, Inc.</span><br><span class="line">   Creation Time: 2024-09-25T10:50:12</span><br><span class="line">   Modification Time: 2024-12-21T00:38:33</span><br><span class="line">   Stateless Ready: True</span><br></pre></td></tr></table></figure></p>
+<p> 一般的にはバージョンの最後に”-standard”の文字が付いています。standard版がインストールされている事を示します。</p>
+<p> 次に、パッチファイルに登録されているprofileを確認します（パッチはフルパス指定が必要です）。<br> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost:/vmfs/volumes/datastore1/update] esxcli software sources profile list -d /vmfs/volumes/datastore1/update/VMware-ESXi-8.0U3c-24414501-depot.zip</span><br><span class="line">Name                           Vendor        Acceptance Level  Creation Time        Modification Time</span><br><span class="line">-----------------------------  ------------  ----------------  -------------------  -----------------</span><br><span class="line">ESXi-8.0U3c-24414501-no-tools  VMware, Inc.  PartnerSupported  2024-12-12T00:00:00  2024-12-12T00:00:00</span><br><span class="line">ESXi-8.0U3c-24414501-standard  VMware, Inc.  PartnerSupported  2024-12-12T00:00:00  2024-12-12T00:00:00</span><br></pre></td></tr></table></figure></p>
+<p>今回はVMWareTools有&#x2F;無のシンプルなパターンですね。<br>今回はツール有りの、”ESXi-8.0U3c-24414501-standard”を適用します。</p>
+<h4 id="パッチ適用"><a href="#パッチ適用" class="headerlink" title="パッチ適用"></a>パッチ適用</h4><p>以下のようにパッチファイルのzipをフルパスで指定し、VMwareのパッチ情報にあるプロファイル名を指定しパッチを適用します。ここではstandardを指定します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[.../update] esxcli software profile update -d /vmfs/volumes/datastore1/update/VMware-ESXi-8.0U3c-24414501-depot.zip -p ESXi-8.0U3c-24414501-standard</span><br></pre></td></tr></table></figure>
+
+<p><code>esxcli software profile update</code>の実行後しばらくしてから、結果が表示されます。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Update Result</span><br><span class="line">   Message: The update completed successfully, but the system needs to be rebooted for the changes to be effective.</span><br><span class="line">   ...</span><br><span class="line">   Reboot Required: true</span><br></pre></td></tr></table></figure>
+
+<h4 id="再起動と結果確認"><a href="#再起動と結果確認" class="headerlink" title="再起動と結果確認"></a>再起動と結果確認</h4><p>コマンドプロンプトから、<code>reboot</code>としてESXiを再起動します。</p>
+<p>再起動完了後、ESXiにログインします。左ペインメニューの”ホスト”をクリックし、バージョンの表記に今回パッチを当てたビルド番号が表示されている事を確認してください。今回はU3cとなっているはずです。</p>
+<img src="/new-technology/2020/06/14/esxi67-patch/esxi6.png" class="" width="1024" title="alt">
+
+<p>または、sshでESXiに接続し、<code>vmware -v</code>を実行し確認します。</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost:~] vmware -v</span><br><span class="line">VMware ESXi 8.0.3 build-24414501</span><br></pre></td></tr></table></figure>
+
+<h2 id="事後作業"><a href="#事後作業" class="headerlink" title="事後作業"></a>事後作業</h2><p>これまで実施してきたメンテナンス準備とは反対の作業をします。メンテナンスモードの終了・SSHの無効化・仮想マシンの起動と続けます。</p>
+<h2 id="パッチのロールバック"><a href="#パッチのロールバック" class="headerlink" title="パッチのロールバック"></a>パッチのロールバック</h2><p>あまり考えたくはありませんが、パッチ適用後、うまく動作しないなどの場合にはロールバックします。ESXiはひとつ前のバージョンに戻せます（アップグレードの場合は戻せない場合があります）。<br>ESXiホストを再起動し、起動中にShift+’R’キーを押します。</p>
+<blockquote>
+<p>VMware ESXi を前のバージョンに戻す (1033604)<br> <a target="_blank" rel="noopener" href="https://kb.vmware.com/s/article/1033604?lang=ja">https://kb.vmware.com/s/article/1033604?lang=ja</a></p>
+</blockquote>
+<blockquote>
+<p>Hypervisor のプログレス バーの読み込みが開始されたら、Shift+R を押します。(これはバーが表示されたロード後ではなく、ロード中に実行する必要があります。コマンドを実行するタイミングを逃さないよう、”system is preparing to boot” 表示中に Shift+R を繰り返し押すことをお勧めいたします)。</p>
+</blockquote>
+<p> 以下の通り、今動いているビルド番号と前のビルド番号が表示されます。</p>
+<img src="/new-technology/2020/06/14/esxi67-patch/rollback.png" class="" width="1024" title="alt">
+
+<p>ここでロールバックを選択します。</p>
+<h2 id="構成情報のバックアップ（任意）"><a href="#構成情報のバックアップ（任意）" class="headerlink" title="構成情報のバックアップ（任意）"></a>構成情報のバックアップ（任意）</h2><p>今後、パッチ適用を重ねていきますが、ある時点にロールバックしたいと思った時に、ホスト構成バックアップから戻す必要が出てきます。パッチを当てる度に構成情報のバックアップを取得されることをお勧めします。</p>
+<p>参考にするドキュメントはこちらです。</p>
+<blockquote>
+<p>ESXi ホストの構成のバックアップ方法 (2042141)<br> <a target="_blank" rel="noopener" href="https://kb.vmware.com/s/article/2042141?lang=ja">https://kb.vmware.com/s/article/2042141?lang=ja</a></p>
+</blockquote>
+<ol>
+<li>SSHでESXiに接続します。</li>
+<li>ストレージの確実な同期のためのコマンド<code>vim-cmd hostsvc/firmware/sync_config</code>を実行します。</li>
+<li>バックアップコマンド<code>vim-cmd hostsvc/firmware/backup_config</code>を実行します。</li>
+<li>画面にダウンロードパスが表示されるのでそのURLにブラウザから接続し構成情報をダウンロードします。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@esxi:~] vim-cmd hostsvc/firmware/sync_config</span><br><span class="line">[root@esxi:~] vim-cmd hostsvc/firmware/backup_config</span><br><span class="line">Bundle can be downloaded at : http://*/downloads/52ce000f-cad4-20c0-078d-a111fa1ad82x/configBundle-esxi.local.tgz</span><br><span class="line">[root@esxi:~]</span><br></pre></td></tr></table></figure>
+
+<p>先頭に<code>http://*/</code>とありますが、ここはESXiのホスト名またはIPアドレスを指定しブラウザからアクセスします。例えば、<code>http://192.168.1.1/downloads〜</code>という具合です。万が一レストアが必要になってしまった場合はバックアップを取得したバージョンのパッチを適用の上、メンテナンスモードに移行してから<code>vim-cmd hostsvc/firmware/restore_config /your_backup_location/configBundle-esxi.local.tgz</code>で戻します。バックアップを取得してから既にハードウェア構成が変わっていたりする場合は戻せない場合があります。仮想マシンはデータストアブラウザから再登録する必要があります。詳細は上記VMwareのドキュメントを参照してください。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/new-technology/tags/ESXi/" rel="tag"><i class="fa fa-tag"></i> ESXi</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/new-technology/2020/05/16/Intercept-DNS/" rel="prev" title="XG Firewall v18で正しいDNS利用を強制する">
+                  <i class="fa fa-angle-left"></i> XG Firewall v18で正しいDNS利用を強制する
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/new-technology/2020/06/24/protect-xg/" rel="next" title="XG Firewall自身を防御する">
+                  XG Firewall自身を防御する <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2020 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">阿部　吉伸(Yoshinobu ABE)</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div><script src="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.umd.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.min.css" rel="stylesheet">
+
+<script>
+if (Cookies.get('PRVCY202112') != 'Agree') {
+  const notice = new SimpleGDPR({
+    title: 'Accept Cookies & Privacy Policy?',
+    message: 'このWebサイトでは、訪問や活動に関するデータがクッキー等によって収集されます。閲覧を継続される場合、\
+    プライバシーポリシーをご覧いただき同意(Agree)をお願いします',
+    link: null,
+    icons: true,
+    theme: 'light',
+    animation: 'fade',
+    float: 'bottom-right',
+      callback: () => {
+      notice.close();
+      Cookies.set('PRVCY202112', 'Agree', { expires: 365, path: '/'});
+      notice.destroy();
+      // Google Analytics 4
+      gtag('consent', 'update', {
+      'analytics_storage': 'granted'
+      });
+      gtag('js', new Date());
+      gtag('config', 'G-JMY6NSC2KK', { 'anonymize_ip': true });
+      },
+  });
+}
+</script>
+<div class="disclaimer1">
+このサイトの記事は、特別な記載がない限り <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja">クリエイティブ・コモンズ BY-NC-SA ライセンス</a>で保護されています</div>
+
+
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/yoshi0808" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

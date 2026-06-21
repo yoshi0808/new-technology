@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/icon-16x16.png">
+  <link rel="mask-icon" href="/new-technology/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/new-technology/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"github","dark":"a11y-dark"},"prism":{"light":"prism-vs","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js" defer></script>
+
+    <meta name="description" content="この記事で実現すること  今回の記事では、2台のProxmoxノードでクラスタを構成します。 Proxmoxは1台構成でも十分に利用できます。しかし、ファイアウォール、認証サーバー、監視サーバーなど、自宅の基盤となるVMを動かすようになると、ホストOSのパッチ適用や再起動のたびにサービスを止めることが課題になります。 そこで今回は、2台のProxmoxノードをクラスタ化し、VMマイグレーション">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Proxmoxを2台でクラスタ化する：VMマイグレーションでパッチ適用を楽にする">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2026/06/13/proxmox-cluster/index.html">
+<meta property="og:site_name" content="New technologies in our life">
+<meta property="og:description" content="この記事で実現すること  今回の記事では、2台のProxmoxノードでクラスタを構成します。 Proxmoxは1台構成でも十分に利用できます。しかし、ファイアウォール、認証サーバー、監視サーバーなど、自宅の基盤となるVMを動かすようになると、ホストOSのパッチ適用や再起動のたびにサービスを止めることが課題になります。 そこで今回は、2台のProxmoxノードをクラスタ化し、VMマイグレーション">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/06/13/proxmox-cluster/Title.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/06/13/proxmox-cluster/cluster-overview.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/06/13/proxmox-cluster/network-separation.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/06/13/proxmox-cluster/network.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/06/13/proxmox-cluster/zfs-replication.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/06/13/proxmox-cluster/live-migration-diagram.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/06/13/proxmox-cluster/rolling-patch.png">
+<meta property="article:published_time" content="2026-06-12T23:12:02.000Z">
+<meta property="article:modified_time" content="2026-06-14T21:51:45.905Z">
+<meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
+<meta property="article:tag" content="proxmox">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2026/06/13/proxmox-cluster/Title.png">
+
+
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2026/06/13/proxmox-cluster/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"ja","comments":true,"permalink":"https://yoshi0808.github.io/new-technology/2026/06/13/proxmox-cluster/","path":"2026/06/13/proxmox-cluster/","title":"Proxmoxを2台でクラスタ化する：VMマイグレーションでパッチ適用を楽にする"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Proxmoxを2台でクラスタ化する：VMマイグレーションでパッチ適用を楽にする | New technologies in our life</title>
+  
+
+
+
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{&quot;token&quot;: &quot;0148b4d0442e42b483ddce684030bd2f&quot;}'></script>
+
+
+
+
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+<script src="/new-technology/js/utils.js" defer></script><script src="/new-technology/js/motion.js" defer></script><script src="/new-technology/js/sidebar.js" defer></script><script src="/new-technology/js/next-boot.js" defer></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.5.0/dist/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/new-technology/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@11.10.1/dist/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/new-technology/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JMY6NSC2KK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+  'ad_storage': 'denied',
+  'analytics_storage': 'denied'
+  });
+
+  dataLayer.push({
+  'event': 'default_consent'
+  });
+
+  if (Cookies.get('PRVCY202112') == 'Agree') {
+    gtag('consent', 'update', {
+    'analytics_storage': 'granted'
+    });
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'G-JMY6NSC2KK',{ 'anonymize_ip': true });
+</script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/new-technology/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/new-technology/atom.xml" title="New technologies in our life" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="ナビゲーションバーの切り替え" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/new-technology/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">New technologies in our life</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Device,Network,Code,etc...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="検索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/new-technology/" rel="section"><i class="fa fa-home fa-fw"></i>ホーム</a></li><li class="menu-item menu-item-about"><a href="/new-technology/about/" rel="section"><i class="fa fa-user fa-fw"></i>サイトポリシー</a></li><li class="menu-item menu-item-tags"><a href="/new-technology/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>タグ</a></li><li class="menu-item menu-item-categories"><a href="/new-technology/categories/" rel="section"><i class="fa fa-th fa-fw"></i>カテゴリ</a></li><li class="menu-item menu-item-archives"><a href="/new-technology/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>アーカイブ</a></li><li class="menu-item menu-item-privacy"><a href="/new-technology/privacypolicy/" rel="section"><i class="fa fa-check fa-fw"></i>プライバシーポリシー</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="検索…" spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          見出し
+        </li>
+        <li class="sidebar-nav-overview">
+          概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8A%E5%9B%9E%E3%81%AE%E6%A7%8B%E6%88%90"><span class="nav-number">1.</span> <span class="nav-text">今回の構成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Proxmox%E3%82%AF%E3%83%A9%E3%82%B9%E3%82%BF%E3%81%A7%E4%BD%95%E3%81%8C%E8%89%AF%E3%81%8F%E3%81%AA%E3%82%8B%E3%81%AE%E3%81%8B"><span class="nav-number">2.</span> <span class="nav-text">Proxmoxクラスタで何が良くなるのか</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E5%8F%B0%E6%A7%8B%E6%88%90%E3%80%812%E5%8F%B0%E6%A7%8B%E6%88%90%E3%80%812%E5%8F%B0%EF%BC%8Bqdevice%E3%80%813%E5%8F%B0%E6%A7%8B%E6%88%90%E3%81%AE%E6%AF%94%E8%BC%83"><span class="nav-number">3.</span> <span class="nav-text">1台構成、2台構成、2台＋qdevice、3台構成の比較</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%AA%E3%81%9C2%E5%8F%B0%EF%BC%8Bqdevice%E3%82%92%E9%81%B8%E3%82%93%E3%81%A0%E3%81%AE%E3%81%8B"><span class="nav-number">4.</span> <span class="nav-text">なぜ2台＋qdeviceを選んだのか</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#qdevice%E3%81%A8%E3%81%AF%E4%BD%95%E3%81%8B%EF%BC%9A%E4%BB%8A%E5%9B%9E%E3%81%AF%E6%A6%82%E8%A6%81%E3%81%AE%E3%81%BF"><span class="nav-number">5.</span> <span class="nav-text">qdeviceとは何か：今回は概要のみ</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%A1%E7%90%86%E7%B3%BB%E3%81%A8%E3%83%87%E3%83%BC%E3%82%BF%E8%BB%A2%E9%80%81%E7%B3%BB%E3%82%92%E5%88%86%E3%81%91%E3%82%8B%E7%90%86%E7%94%B1"><span class="nav-number">6.</span> <span class="nav-text">管理系とデータ転送系を分ける理由</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%96%E3%83%AA%E3%83%83%E3%82%B8%E6%A7%8B%E6%88%90"><span class="nav-number">6.1.</span> <span class="nav-text">ブリッジ構成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#VLAN-%E3%82%BB%E3%82%B0%E3%83%A1%E3%83%B3%E3%83%88%E8%A8%AD%E8%A8%88"><span class="nav-number">6.2.</span> <span class="nav-text">VLAN &#x2F; セグメント設計</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%82%AF%E3%83%A9%E3%82%B9%E3%82%BF%E4%BD%9C%E6%88%90%E3%81%AE%E6%B5%81%E3%82%8C"><span class="nav-number">7.</span> <span class="nav-text">クラスタ作成の流れ</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%9E%E3%82%A4%E3%82%B0%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E3%81%AE%E8%A8%AD%E5%AE%9A"><span class="nav-number">7.1.</span> <span class="nav-text">マイグレーションネットワークの設定</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ZFS%E3%83%AC%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%AE%E8%80%83%E3%81%88%E6%96%B9"><span class="nav-number">8.</span> <span class="nav-text">ZFSレプリケーションの考え方</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VM%E3%83%9E%E3%82%A4%E3%82%B0%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3"><span class="nav-number">9.</span> <span class="nav-text">VMマイグレーション</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%91%E3%83%83%E3%83%81%E9%81%A9%E7%94%A8%E3%81%8C%E6%A5%BD%E3%81%AB%E3%81%AA%E3%82%8B"><span class="nav-number">10.</span> <span class="nav-text">パッチ適用が楽になる</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%87%E7%B3%BB%E3%81%9A%E3%81%A4%E3%83%A1%E3%83%B3%E3%83%86%E3%83%8A%E3%83%B3%E3%82%B9%E3%81%A7%E3%81%8D%E3%82%8B"><span class="nav-number">10.1.</span> <span class="nav-text">片系ずつメンテナンスできる</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ansible%E5%8C%96%E3%81%99%E3%82%8B%E3%81%A8%E3%81%95%E3%82%89%E3%81%AB%E6%A5%BD"><span class="nav-number">11.</span> <span class="nav-text">Ansible化するとさらに楽</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%BE%E3%81%A8%E3%82%81"><span class="nav-number">12.</span> <span class="nav-text">まとめ</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="阿部　吉伸(Yoshinobu ABE)"
+      src="/new-technology/images/yoshi.png">
+  <p class="site-author-name" itemprop="name">阿部　吉伸(Yoshinobu ABE)</p>
+  <div class="site-description" itemprop="description">IT</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/new-technology/archives/">
+          <span class="site-state-item-count">106</span>
+          <span class="site-state-item-name">ポスト</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/new-technology/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">カテゴリ</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/new-technology/tags/">
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">タグ</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yoshi0808" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yoshi0808" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yoshi0808.blog@gmail.com" title="E-Mail → mailto:yoshi0808.blog@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yoshi0808_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yoshi0808_" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/big/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="ja">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2026/06/13/proxmox-cluster/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/new-technology/images/yoshi.png">
+      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="New technologies in our life">
+      <meta itemprop="description" content="IT">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Proxmoxを2台でクラスタ化する：VMマイグレーションでパッチ適用を楽にする | New technologies in our life">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Proxmoxを2台でクラスタ化する：VMマイグレーションでパッチ適用を楽にする
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">投稿日</span>
+
+      <time title="作成日：2026-06-13 08:12:02" itemprop="dateCreated datePublished" datetime="2026-06-13T08:12:02+09:00">2026-06-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">編集日</span>
+      <time title="修正日：2026-06-15 06:51:45" itemprop="dateModified" datetime="2026-06-15T06:51:45+09:00">2026-06-15</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><img src="/new-technology/2026/06/13/proxmox-cluster/Title.png" class="" title="alt">
+
+<p class="onepoint">この記事で実現すること</p>
+
+<p>今回の記事では、2台のProxmoxノードでクラスタを構成します。</p>
+<p>Proxmoxは1台構成でも十分に利用できます。しかし、ファイアウォール、認証サーバー、監視サーバーなど、自宅の基盤となるVMを動かすようになると、ホストOSのパッチ適用や再起動のたびにサービスを止めることが課題になります。</p>
+<p>そこで今回は、2台のProxmoxノードをクラスタ化し、VMマイグレーションとZFSレプリケーションを使える状態にします。</p>
+<p>ただし、2台構成にはquorumの課題があります。片方のノードが停止した場合や、ノード間の通信が切断された場合、残った1台だけではクラスタとして正常に判断できない場面が出てきます。</p>
+<p>そのため、最終的にはqdeviceを追加して、2台構成の弱点を補う予定です。qdeviceは後から追加できるため、今回はまず2台クラスタを作成し、VMマイグレーションとZFSレプリケーションを使ったメンテナンス性の向上を目指します。</p>
+<span id="more"></span>
+
+<h2 id="今回の構成"><a href="#今回の構成" class="headerlink" title="今回の構成"></a>今回の構成</h2><img src="/new-technology/2026/06/13/proxmox-cluster/cluster-overview.png" class="" width="800" title="alt">
+
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>pve1</th>
+<th>pve2</th>
+<th>quory</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>役割</td>
+<td>メインノード</td>
+<td>セカンダリノード</td>
+<td>監視 &#x2F; QDevice予定 &#x2F; automation</td>
+</tr>
+<tr>
+<td>CPU</td>
+<td>AMD Ryzen 9 7900 (12C&#x2F;24T)</td>
+<td>AMD Ryzen 5 5600G (6C&#x2F;12T)</td>
+<td>軽量構成</td>
+</tr>
+<tr>
+<td>メモリ</td>
+<td>64GB DDR5-4800</td>
+<td>48GB DDR4-3200</td>
+<td>軽量構成</td>
+</tr>
+<tr>
+<td>ストレージ</td>
+<td>NVMe 2TB ×2（ZFS mirror）</td>
+<td>NVMe 1TB（ZFS single）</td>
+<td>OS用</td>
+</tr>
+<tr>
+<td>NIC</td>
+<td>Intel X710 10GbE ×4</td>
+<td>Intel X710 10GbE ×4</td>
+<td>1GbE</td>
+</tr>
+<tr>
+<td>OS</td>
+<td>Debian 13 + Proxmox VE 9.1.9</td>
+<td>Debian 13 + Proxmox VE 9.1.9</td>
+<td>Ubuntu Server 26.04</td>
+</tr>
+</tbody></table>
+<p>※今回の記事ではqdeviceの概要だけ触れ、具体的なセットアップ手順は次回の記事で扱います。<br>※名称は私が名付けたホスト名です。特に記載する必要もありませんが文中で引用する時にわかりやすくするためですのでご理解ください。</p>
+<p>クラスタ構成では、できればCPUの種類は同じメーカーで揃えておいた方が安全です。完全に同じハードウェア構成にできれば理想ですが、家庭内のホームラボでは必ずしもそうはいきません。</p>
+<p>今回の構成でも、pve1はRyzen 9 7900、pve2はRyzen 5 5600Gで、世代も性能も異なります。そのため、VMのCPU設定では互換性を意識する必要があります。</p>
+<p>ネットワークについては、VMマイグレーションや将来的なフェイルオーバーを考えると、各ノードで同じ構成にしておくべきです。構成が揃っていれば、VMが別ノードへ移動した場合でも、どのネットワークを利用すべきかが明確になります。</p>
+<h2 id="Proxmoxクラスタで何が良くなるのか"><a href="#Proxmoxクラスタで何が良くなるのか" class="headerlink" title="Proxmoxクラスタで何が良くなるのか"></a>Proxmoxクラスタで何が良くなるのか</h2><p>Proxmoxをクラスタ化して一番ありがたいのは、パッチ適用やハードウェアメンテナンスが楽になることです。</p>
+<p>1台構成の場合、ホストOSを再起動すると、その上で動いているVMもまとめて停止します。検証用のVMだけであれば大きな問題にならないかもしれませんが、ファイアウォール、Wi-Fi認証、監視サーバーなどを動かしている場合、ホスト再起動の影響は大きくなります。</p>
+<p>クラスタ構成にしておけば、VMをもう1台のProxmoxノードへマイグレーションしてから、片方ずつメンテナンスできます。これにより、ホストをリブートしてもサービス影響をかなり小さくできます。</p>
+<p>私の場合、主な対象はFirewall、Wi-Fi認証（WPA3 Enterprise）、ネットワーク基盤の監視です。これらは自宅環境であっても、停止すると家族のインターネット利用や検証環境に影響します。</p>
+<p>また、Proxmoxでは比較的頻繁にアップデートが行われます。多くのホームユーザーはEnterprise Repositoryではなく、No-Subscription Repositoryを利用していると思います。この構成では、アップデート内容を確認しながら、まず片方のノードに適用し、問題がなければもう片方にも適用する、という段階的な運用ができます。</p>
+<p>仮に最初の1台で問題が出たとしても、VMをもう片方のノードへ退避していれば、サービス影響を抑えながら復旧作業ができます。もちろん、VMバックアップやZFSレプリケーションが正常に取れていることが前提です。</p>
+<p>クラスタ化は、障害時の自動復旧だけのために行うものではありません。日常的なパッチ適用やメンテナンスを安全に進めるためにも、大きな意味があります。</p>
+<h2 id="1台構成、2台構成、2台＋qdevice、3台構成の比較"><a href="#1台構成、2台構成、2台＋qdevice、3台構成の比較" class="headerlink" title="1台構成、2台構成、2台＋qdevice、3台構成の比較"></a>1台構成、2台構成、2台＋qdevice、3台構成の比較</h2><p>Proxmoxは1台構成でも十分に利用できます。特に、動かすVMが少ない場合や、多少のダウンタイムが許容できる環境であれば、無理にクラスタ化する必要はありません。</p>
+<p>一方で、ファイアウォール、認証サーバー、監視サーバーなど、停止すると困るVMが増えてくると、ホストOSのパッチ適用やハードウェアメンテナンスのたびに影響が大きくなります。</p>
+<p>ここでは、1台構成、2台構成、2台＋qdevice、3台構成をざっくり比較します。</p>
+<table>
+<thead>
+<tr>
+<th><strong>構成</strong></th>
+<th><strong>メリット</strong></th>
+<th><strong>デメリット</strong></th>
+<th><strong>向いている環境</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1台構成</td>
+<td>構成がシンプル。ハードウェアリソースが少なくて済む。管理が簡単。</td>
+<td>ホスト停止時は、その上のVMもすべて停止する。パッチ適用や再起動のたびにサービス停止が発生する。</td>
+<td>検証用途、動かすVMが少ない環境、ダウンタイムを許容できる環境</td>
+</tr>
+<tr>
+<td>2台構成</td>
+<td>VMを別ノードへマイグレーションできる。片方ずつパッチ適用しやすい。ハードウェア障害時の復旧選択肢が増える。</td>
+<td>2ノードだけではquorumの課題が残る。片方のノード停止時や通信断時に、クラスタとしての判断が難しくなる場合がある。</td>
+<td>ホームラボ、小規模環境、まずクラスタ化とVMマイグレーションを使いたい環境</td>
+</tr>
+<tr>
+<td>2台＋qdevice</td>
+<td>2台構成の運用しやすさを維持しつつ、qdeviceによりquorumの安定性を高められる。3台目のProxmoxノードを用意しなくてもよい。</td>
+<td>qdevice用の軽量な外部サーバーが必要。qdeviceはバックアップやストレージ冗長化ではない。</td>
+<td>ホームラボの実用構成、小規模ながら安定性を高めたい環境</td>
+</tr>
+<tr>
+<td>3台構成</td>
+<td>quorum構成として自然。複数VMを3台に分散配置しやすい。ノード障害時の余力を確保しやすい。</td>
+<td>ハードウェアコスト、消費電力、設置場所、管理対象が増える。家庭内ではやや過剰になりやすい。</td>
+<td>多数のVMを動かす環境、本格的な検証基盤、より高い可用性を求める環境</td>
+</tr>
+</tbody></table>
+<h2 id="なぜ2台＋qdeviceを選んだのか"><a href="#なぜ2台＋qdeviceを選んだのか" class="headerlink" title="なぜ2台＋qdeviceを選んだのか"></a>なぜ2台＋qdeviceを選んだのか</h2><p>私の環境では、まず2台構成でクラスタを作成し、VMマイグレーションとZFSレプリケーションを使える状態にします。</p>
+<p>この段階でも、パッチ適用時にVMを別ノードへ移動してから片方ずつメンテナンスできるため、1台構成よりかなり運用しやすくなります。</p>
+<p>メインとなるpve1はSSDを二重化するなど、単体での故障対策も行っています。ただし、ホスト自体が停止した場合、qdeviceやHAを構成していなければ、VMが自動的にもう片方のノードで起動するわけではありません。</p>
+<p>ZFSレプリケーションにより復旧の選択肢は増えますが、2台構成のままではquorumの課題が残ります。そのため、最終的にはqdeviceを追加し、2ノードクラスタの安定性を高める方針です。</p>
+<p>3台構成は理想的ではありますが、家庭内ホームラボでは電力、設置場所、コスト、管理負荷が大きくなります。多数のVMを3台に分散して動かすような環境であれば有効ですが、私の用途では、2台＋qdeviceが現実的な落としどころだと考えています。</p>
+<h2 id="qdeviceとは何か：今回は概要のみ"><a href="#qdeviceとは何か：今回は概要のみ" class="headerlink" title="qdeviceとは何か：今回は概要のみ"></a>qdeviceとは何か：今回は概要のみ</h2><p>qdeviceは、2ノードクラスタにおける投票を補助するための仕組みです。<br>Proxmoxノードをもう1台追加するのではなく、外部の軽量なサーバーを投票用の第三者として使います。</p>
+<p>これにより、2台構成でもquorumを維持しやすくなります。ただし、qdeviceはVMを動かすサーバーではありません。バックアップでもなく、ストレージ冗長化でもありません。ストレージもネットワーク帯域も殆ど使いません。</p>
+<p>常にpve1,pve2とポーリングを行い、どちらがダウンしたのか、どちらでサービス提供が行えるのかを判定するためのリソースです。</p>
+<p>今回はqdeviceの概要だけ触れ、具体的なセットアップは次回の記事で扱います。</p>
+<h2 id="管理系とデータ転送系を分ける理由"><a href="#管理系とデータ転送系を分ける理由" class="headerlink" title="管理系とデータ転送系を分ける理由"></a>管理系とデータ転送系を分ける理由</h2><p>私のProxmoxにおけるネットワーク構成は以下の通りです。</p>
+<h3 id="ブリッジ構成"><a href="#ブリッジ構成" class="headerlink" title="ブリッジ構成"></a>ブリッジ構成</h3><table>
+<thead>
+<tr>
+<th>Bridge</th>
+<th>用途</th>
+<th>物理NIC</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>vmbr0</td>
+<td>管理 &#x2F; corosync</td>
+<td>nic0</td>
+</tr>
+<tr>
+<td>vmbr1</td>
+<td>Family &#x2F; VLAN trunk</td>
+<td>nic1</td>
+</tr>
+<tr>
+<td>vmbr2</td>
+<td>Server</td>
+<td>nic2</td>
+</tr>
+<tr>
+<td>vmbr3</td>
+<td>WAN</td>
+<td>nic3</td>
+</tr>
+</tbody></table>
+<h3 id="VLAN-セグメント設計"><a href="#VLAN-セグメント設計" class="headerlink" title="VLAN &#x2F; セグメント設計"></a>VLAN &#x2F; セグメント設計</h3><table>
+<thead>
+<tr>
+<th>Name</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Default</td>
+<td>管理LAN &#x2F; Proxmox &#x2F; corosync</td>
+</tr>
+<tr>
+<td>WAN</td>
+<td>インターネット接続</td>
+</tr>
+<tr>
+<td>Family</td>
+<td>家庭内メインネットワーク</td>
+</tr>
+<tr>
+<td>Server</td>
+<td>NAS &#x2F; Replication &#x2F; Migration</td>
+</tr>
+<tr>
+<td>Edge</td>
+<td>IoT &#x2F; プリンター</td>
+</tr>
+<tr>
+<td>Guest</td>
+<td>ゲストネットワーク</td>
+</tr>
+</tbody></table>
+<img src="/new-technology/2026/06/13/proxmox-cluster/network-separation.png" class="" width="800" title="alt">
+
+<p>ネットワーク構成は環境によって大きく変わるため、上記はあくまで私の構成例です。</p>
+<p>私の環境では、pve1 &#x2F; pve2ともに4ポートのNICであるIntel X710を利用しています。たとえば2ポートのNICであれば、LAN用とWAN用で分ける構成もありますし、LAN側を家族向けネットワークとゲスト向けネットワークで分けるような考え方もあります。</p>
+<p>Proxmoxのクラスタ構成では、クラスタノード間で定期的に通信が行われます。このクラスタ間通信を担っているのがcorosyncです。</p>
+<p>corosyncの通信量自体は大きくありません。しかし、クラスタの状態判断に関わる重要な通信です。そのため、大量のデータ転送が発生する通信とは分けておいた方が安全です。</p>
+<p>特にVMマイグレーションやZFSレプリケーションでは、ノード間で大きなデータ転送が発生します。VMマイグレーションでは稼働中VMのメモリ転送が発生しますし、構成によってはディスクデータの転送も発生します。ZFSレプリケーションでは、VMディスクの差分データがノード間で転送されます。</p>
+<p>このような通信をcorosyncと同じネットワークに流すと、マイグレーションやレプリケーションの負荷が高いタイミングで、クラスタ間通信にも影響を与える可能性があります。</p>
+<p>そのため、私の環境では以下のように役割を分けています。</p>
+<table>
+<thead>
+<tr>
+<th><strong>ネットワーク</strong></th>
+<th><strong>主な用途</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Default</td>
+<td>Proxmox管理画面 &#x2F; 管理SSH &#x2F; corosync</td>
+</tr>
+<tr>
+<td>Server</td>
+<td>NASバックアップ &#x2F; ZFSレプリケーション &#x2F; VMマイグレーション</td>
+</tr>
+</tbody></table>
+<p>この構成により、管理系の通信と、大量データ転送が発生する通信を分離できます。</p>
+<p>完全にすべての通信が分離されるわけではありませんが、少なくともバックアップ、レプリケーション、マイグレーションの主なデータ転送をServerセグメント側に寄せることで、クラスタ管理系の通信に与える影響を小さくできます。</p>
+<h2 id="クラスタ作成の流れ"><a href="#クラスタ作成の流れ" class="headerlink" title="クラスタ作成の流れ"></a>クラスタ作成の流れ</h2><p>ここから、実際に2台のProxmoxノードでクラスタを作成します。</p>
+<p>私の環境では、ノード1をpve1、ノード2をpve2としています。また、ドメイン名として .internalを利用していますが、この部分はそれぞれの環境に合わせて変更してください。</p>
+<p>なお、私の環境では、クラスタに参加する側のpve2にはVMが存在しない状態で作業しています。既存VMやストレージ設定があるノードを後からクラスタへ参加させると、設定の扱いが複雑になります。そのため、クラスタ参加側のノードは、できるだけ空の状態にしておくことをおすすめします。</p>
+<p>事前準備</p>
+<p>まず、お互いの &#x2F;etc&#x2F;hostsを確認します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> /etc/hosts</span><br></pre></td></tr></table></figure>
+
+<p>お互いの登録がなければ、以下のように追記します。</p>
+<p>ここでは例として、pve1を192.168.1.1、pve2を192.168.1.2としています。</p>
+<p>pve1で実行します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;192.168.1.2 pve2.internal pve2&quot;</span> &gt;&gt; /etc/hosts</span><br></pre></td></tr></table></figure>
+
+<p>pve2で実行します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;192.168.1.1 pve1.internal pve1&quot;</span> &gt;&gt; /etc/hosts</span><br></pre></td></tr></table></figure>
+
+<p>追記したら、名前解決と疎通を確認します。</p>
+<p>pve1から確認します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ping pve2</span><br></pre></td></tr></table></figure>
+
+<p>pve2から確認します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ping pve1</span><br></pre></td></tr></table></figure>
+
+<p>次に、時刻同期を確認します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">timedatectl status</span><br></pre></td></tr></table></figure>
+<p>確認ポイントは以下です。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">System clock synchronized: <span class="built_in">yes</span></span><br><span class="line">NTP service: active</span><br><span class="line">Time zone: Asia/Tokyo (JST, +0900)</span><br></pre></td></tr></table></figure>
+
+<p>Proxmoxクラスタでは、ノード間の時刻同期が重要です。クラスタ作成前に、両ノードでNTP同期が有効になっていることを確認しておきます。</p>
+<p>準備ができたら、最初のノードでクラスタを作成します。</p>
+<p>今回はpve1で実行します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pvecm create mycluster</span><br></pre></td></tr></table></figure>
+
+<p>この時点では、まだpve1だけの1ノードクラスタです。</p>
+<p>次に、pve2をクラスタへ参加させます。</p>
+<p>pve2側で以下を実行します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pvecm add 192.168.1.1</span><br></pre></td></tr></table></figure>
+<p>ここでは192.168.1.1をpve1の管理IPアドレスとしています。実際には、自分の環境に合わせてpve1のIPアドレスを指定してください。</p>
+<p>実行中に、pve1のrootパスワードを求められます。また、初回接続時には証明書のfingerprint確認が表示されるため、問題なければyesを入力します。</p>
+<p>正常に完了すると、以下のようにpve2がクラスタへ追加されます。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> Login succeeded.</span><br><span class="line">Request addition of this node</span><br><span class="line">Join request OK, finishing setup locally</span><br><span class="line">waiting <span class="keyword">for</span> quorum...OK</span><br><span class="line">successfully added node <span class="string">&#x27;pve2&#x27;</span> to cluster.</span><br></pre></td></tr></table></figure>
+<p>クラスタ参加後、どちらかのノードで状態を確認します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pvecm status</span><br></pre></td></tr></table></figure>
+<p>Nodesにpve1とpve2が表示され、Quorate: Yesになっていれば、クラスタ作成は完了です。</p>
+<p>GUIからもクラスタ作成や参加は可能ですが、コマンドでも比較的簡単に実行できます。クラスタ作成後は、ProxmoxのGUI上でも2台のノードが同じデータセンター配下に表示されるようになります。<br>なお、2ノードクラスタの状態では、片方のノード停止時にquorumの課題が残ります。今回はまずクラスタ作成とVMマイグレーションを使える状態にすることを目的とし、qdeviceの追加は次回の記事で行います。</p>
+<h3 id="マイグレーションネットワークの設定"><a href="#マイグレーションネットワークの設定" class="headerlink" title="マイグレーションネットワークの設定"></a>マイグレーションネットワークの設定</h3><p>前述したように、私の環境では管理系のネットワークと、マイグレーションやレプリケーションで利用するデータ転送系のネットワークを分けています。</p>
+<p>通常、Proxmoxのクラスタ通信はcorosyncが利用する管理系ネットワークを使います。一方で、VMマイグレーションやZFSレプリケーションでは、ノード間で比較的大きなデータ転送が発生します。</p>
+<p>そのため、私の環境ではマイグレーションとレプリケーションの主なデータ転送を、Serverセグメント側に流すように設定しています。</p>
+<p>ProxmoxのGUIから設定する場合は、左ペインの「データセンター」から「オプション」を選択します。ここで「マイグレーションの設定」を編集し、利用するネットワークアドレスを指定できます。</p>
+<img src="/new-technology/2026/06/13/proxmox-cluster/network.png" class="" width="800" title="alt">
+
+<p>コマンドで設定する場合は、以下のように実行します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pvesh <span class="built_in">set</span> /cluster/options -migration <span class="built_in">type</span>=secure,network=192.168.x.0/24</span><br></pre></td></tr></table></figure>
+
+<p>上記では、ネットワークアドレスの第3オクテットをxとしています。実際には、自分の環境で利用しているマイグレーション用ネットワークを指定してください。</p>
+<p>設定内容は以下のコマンドで確認できます。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pvesh get /cluster/options</span><br></pre></td></tr></table></figure>
+
+<p>設定されていれば、以下のように表示されます。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">migration: network=192.168.x.0/24</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>同様に、レプリケーションネットワークも変更できます。</p>
+<p>ここでいうマイグレーションとレプリケーションは、役割が少し異なります。</p>
+<table>
+<thead>
+<tr>
+<th><strong>項目</strong></th>
+<th><strong>内容</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>マイグレーション</td>
+<td>VMを別ノードへ移動する処理</td>
+</tr>
+<tr>
+<td>レプリケーション</td>
+<td>ZFSの差分転送により、VMディスクを別ノードへ定期的にコピーしておく処理</td>
+</tr>
+</tbody></table>
+<p>レプリケーションは、VMを常に完全同期する仕組みではありません。指定したスケジュールに従って、ZFSの差分データを別ノードへ転送します。そのため、障害発生時には最後のレプリケーション以降の差分が失われる可能性があります。</p>
+<p>レプリケーションネットワークを指定する場合は、&#x2F;etc&#x2F;pve&#x2F;datacenter.cfgに以下のような設定を追加します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">replication: secure,network=192.168.x.0/24</span><br></pre></td></tr></table></figure>
+
+<p>datacenter.cfgの例です。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">migration: <span class="built_in">type</span>=secure,network=192.168.x.0/24</span><br><span class="line">replication: secure,network=192.168.x.0/24</span><br></pre></td></tr></table></figure>
+<p>設定後は、以下のように確認します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pvesh get /cluster/options</span><br><span class="line"><span class="built_in">cat</span> /etc/pve/datacenter.cfg</span><br></pre></td></tr></table></figure>
+
+<p>なお、実際に確認してみると、レプリケーション時にも管理系ネットワーク側に制御系と思われるSSH通信は残りました。一方で、大きなデータ転送はServerセグメント側に流れていることを確認しています。</p>
+<p>そのため、この設定は「すべての通信を完全に分離する」というよりも、「マイグレーションやレプリケーションの主なデータ転送を、管理系ネットワークから分離する」ための設定と考えるのが現実的です。</p>
+<p>参考：<br><a target="_blank" rel="noopener" href="https://pve.proxmox.com/pve-docs/pvesr.1.html">https://pve.proxmox.com/pve-docs/pvesr.1.html</a></p>
+<h2 id="ZFSレプリケーションの考え方"><a href="#ZFSレプリケーションの考え方" class="headerlink" title="ZFSレプリケーションの考え方"></a>ZFSレプリケーションの考え方</h2><img src="/new-technology/2026/06/13/proxmox-cluster/zfs-replication.png" class="" width="800" title="alt">
+
+<p>Proxmoxでは、ZFSストレージを利用している場合、VMディスクを別ノードへ定期的にレプリケーションできます。</p>
+<p>これは共有ストレージを使う構成とは異なり、各ノードがローカルストレージを持ったまま、ZFSの差分転送によって相手ノードへVMディスクのコピーを持たせておく仕組みです。</p>
+<p>従来のクラスタ構成では、複数ノードから同じ共有ディスクを参照する構成が一般的でした。しかし、自宅環境で共有ストレージを高信頼に作るのは、コストや構成の複雑さが大きくなります。</p>
+<p>その点、ProxmoxとZFSレプリケーションを組み合わせると、ローカルNVMeを使いながら、別ノードにもVMディスクのコピーを保持できます。ホームラボではかなり現実的な構成だと思います。</p>
+<p>ただし、ZFSレプリケーションは同期レプリケーションではありません。指定したスケジュールに従って、一定間隔で差分を転送する非同期レプリケーションです。</p>
+<p>そのため、ノード障害が発生した場合、最後のレプリケーション以降に書き込まれたデータは失われる可能性があります。</p>
+<p>たとえば、1分ごとにレプリケーションしていれば、理論上は最大で約1分の差分が失われる可能性があります。15分ごとであれば、最大で約15分の差分が対象になります。</p>
+<p>もちろん、障害時に失われる可能性のある差分は少ない方が好ましいのですが、実際には5分〜60分などの間隔をもって実行することが多いと思います。そのため、現時点では15分間隔でレプリケーションを行っています。</p>
+<p>私の環境では、主にFirewallやFreeRADIUSなど、VM内部に大量の更新データを持たないサービスを対象にしています。これは意識的に、状態を多く持つサービスをHA対象にしないようにしているためです。</p>
+<p>この構成であれば、通常時はローカルNVMeの性能を活かしつつ、別ノードにもVMディスクのコピーを保持できます。さらに、VMマイグレーションや障害時の復旧に備えることができます。</p>
+<p>ただし、これはバックアップの代わりではありません。</p>
+<p>レプリケーションは、別ノードへVMディスクのコピーを持たせるための仕組みです。誤操作、ファイル削除、VM内部の破損、ランサムウェアのような論理障害まで守るものではありません。</p>
+<table>
+<thead>
+<tr>
+<th>レプリケーション間隔</th>
+<th>メリット</th>
+<th>注意点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1分</td>
+<td>障害時に失われる可能性のある差分が少ない</td>
+<td>負荷が高くなりやすい</td>
+</tr>
+<tr>
+<td>5分</td>
+<td>データ保護と負荷のバランスが良い</td>
+<td>更新の多いVMでは負荷に注意</td>
+</tr>
+<tr>
+<td>15分</td>
+<td>ホームラボでは扱いやすい</td>
+<td>最大15分程度の差分喪失を許容する必要がある</td>
+</tr>
+<tr>
+<td>60分</td>
+<td>負荷が少ない</td>
+<td>障害時に失われる差分が大きくなる</td>
+</tr>
+</tbody></table>
+<p>そのため、ZFSレプリケーションとは別に、通常のVMバックアップも必要です。</p>
+<h2 id="VMマイグレーション"><a href="#VMマイグレーション" class="headerlink" title="VMマイグレーション"></a>VMマイグレーション</h2><p>VMマイグレーションには、停止しているVMを別ノードへ移動する通常のマイグレーションと、稼働中のVMを別ノードへ移動するライブマイグレーションがあります。</p>
+<p>今回の記事の段階では、qdeviceやHAの設定までは行っていません。そのため、障害時にVMが自動的に別ノードで起動する構成ではありません。あくまで、管理者が手動でVMを別ノードへ移動する構成です。</p>
+<p>それでも、パッチ適用やハードウェアメンテナンスの場面では、手動マイグレーションだけでも大きな効果があります。</p>
+<p>ZFSレプリケーションを組み合わせた環境では、VMディスクの差分があらかじめ別ノードへ転送されています。そのため、ライブマイグレーション時の転送量を抑えやすく、環境によってはかなり短い停止時間でノード間を移動できます。</p>
+<p>私の環境では、10GbpsのNICを利用しており、Firewall VMのライブマイグレーション時にProxmoxのログ上では100ms前後の短い停止時間で切り替わることを確認できました。もちろん、この時間はVMの負荷、メモリ容量、ストレージ構成、ネットワーク帯域によって変わります。</p>
+<p>特に面白かったのは、Firewall VMをライブマイグレーションしても、Proxmoxの管理画面が操作不能にならなかったことです。</p>
+<p>私の環境では、FamilyセグメントからFirewall VMを経由して、Proxmoxの管理画面に到達しています。つまり、Firewall VMが完全に停止すると、Proxmoxの管理画面にも到達できなくなります。</p>
+<p>しかし、この状態でFirewall VMをライブマイグレーションしても、管理画面が無応答になったり、操作エラーが発生したりすることはありませんでした。</p>
+<img src="/new-technology/2026/06/13/proxmox-cluster/live-migration-diagram.png" class="" width="800" title="alt">
+
+
+<video src='live-migration-web.mp4' type='video/mp4' controls='controls'  width='100%' height='100%'>
+</video>
+
+<p>このログではマイグレーションのダウンタイムは74msとあります。Firewall経由でのProxmox操作でも影響ありません。ただし、ちょうど切り替わったタイミングあたりのログの時刻を見ていると、3秒程度の画面表示のタイムラグはあるように見受けられます。これはProxmoxのノードの切り替わりみならず、幾つもの条件をクリアしなければなりません。</p>
+<ul>
+<li>FirewallがTCPセッションを引き継ぎ、別ノードで稼働すること</li>
+<li>Proxmoxは対象VM（Firewall）の仮想Macアドレスをもう1台のノードに引き継ぐこと </li>
+<li>ノードの切り替わりを検出したネットワークスイッチは自身の対象macアドレステーブルと物理Portの組み合わせを更新すること</li>
+<li>他のネットワークスイッチへmacアドレス情報を反映すること</li>
+<li>ProxmoxおよびネットワークカードはFirewallが送受信したパケットのリカバリーを行うこと<br>　新しいノードのNICからすれば、いきなりFirewallからの途中のデータを受信する、また外部から仮想Macアドレス宛の中途半端なデータを受信することになります。仮想環境とNIC側それぞれの腕の見せ所です。</li>
+<li>クライアント側のTCPレイヤのリカバリ。ロストしたパケットを再送要求すること<br>　クライアント、サーバー共にTCPの実装のおかげでセッション継続が可能となります。</li>
+</ul>
+<p>さらに言えば、この操作はMacBookからWi-Fi経由で操作しているので、そこも含めてスムーズな切り替わりが行えていることになります。そしてこの画面はpve1にブラウザで接続して操作しているので、pve2の稼働VMの状態はpve1を経由して把握していることになります。もっと厳密な言い方をすると、クライアントからはpve2のFirewallを経由してpve1のWebコンソールに接続し、pve2のProxmoxの状態を確認できているということです。<br>この挙動を見ると、ProxmoxとZFSレプリケーションの組み合わせは、ホームラボにおける大きなメリットだと感じます。共有ストレージを用意しなくても、ローカルNVMeの性能を活かしながら、別ノードへの移動や復旧に備えられるためです。</p>
+<h2 id="パッチ適用が楽になる"><a href="#パッチ適用が楽になる" class="headerlink" title="パッチ適用が楽になる"></a>パッチ適用が楽になる</h2><img src="/new-technology/2026/06/13/proxmox-cluster/rolling-patch.png" class="" width="800" title="alt">
+
+<p>Proxmoxは比較的頻繁にアップデートが行われます。誤解を恐れずに言うと、私の環境では2週間に1度程度、何らかのパッチ情報が更新されている印象です。</p>
+<p>1台構成の場合、Proxmoxホストにパッチを適用して再起動すると、その上で動いているVMもまとめて停止します。検証用のVMだけであれば問題になりませんが、Firewall、認証サーバー、監視サーバーなどを動かしている場合は、再起動の影響が大きくなります。</p>
+<p>2台クラスタ構成であれば、まずVMをもう片方のノードへ移動してから、片方ずつパッチ適用できます。</p>
+<p>仮に1台目のパッチ適用で問題が発生しても、VMを退避していれば、もう1台のノードで運用を継続できます。Proxmoxが1台しかなければ、こうはいきません。</p>
+<h3 id="片系ずつメンテナンスできる"><a href="#片系ずつメンテナンスできる" class="headerlink" title="片系ずつメンテナンスできる"></a>片系ずつメンテナンスできる</h3><p>パッチ適用だけでなく、ハードウェアメンテナンスでもクラスタ構成は有効です。</p>
+<p>VMを別ノードへ移動しておけば、もう片方のノードを落ち着いてメンテナンスできます。たとえば、ネットワークカードのファームウェア更新、BIOS設定の変更、メモリ増設、内部清掃なども、サービス影響を抑えながら実施しやすくなります。</p>
+<p>もちろん、すべての作業が無停止でできるわけではありません。しかし、1台構成と比べると、作業前にVMを逃がせるというだけで、運用上の安心感はかなり違います。</p>
+<h2 id="Ansible化するとさらに楽"><a href="#Ansible化するとさらに楽" class="headerlink" title="Ansible化するとさらに楽"></a>Ansible化するとさらに楽</h2><p>今回は詳細を紹介しませんが、パッチ適用をAnsibleで定期タスク化すると、さらに運用が楽になります。</p>
+<p>私の環境では、金曜日の夕方にパッチ情報を収集し、ChatGPT Codexでパッチ内容を整理しています。そのうえで、優先度や重要度を分類して通知し、土曜日にパッチ適用を行う運用にしています。</p>
+<p>軽微なパッチであれば自動適用し、注意が必要なものは手動確認に回します。</p>
+<p>クラスタ化によって片系ずつメンテナンスできるようになると、このような自動化とも相性が良くなります。</p>
+<h2 id="まとめ"><a href="#まとめ" class="headerlink" title="まとめ"></a>まとめ</h2><p>今回は、2台のProxmoxノードをクラスタ化し、VMマイグレーションとZFSレプリケーションを使える状態にしました。</p>
+<p>この状態でも、パッチ適用時にVMを別ノードへ移動できるため、1台構成よりもかなり運用しやすくなります。</p>
+<p>特に、Firewall、Wi-Fi認証、監視サーバーなど、自宅の基盤となるVMを動かしている場合、ホストOSの再起動やハードウェアメンテナンスの影響を小さくできることは大きなメリットです。</p>
+<p>一方で、2台構成のままではquorumの課題が残ります。また、今回の構成はHAによる自動フェイルオーバーまでは行っていません。</p>
+<p>次回はqdeviceを追加し、2ノードクラスタの安定性を高めていきます。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/new-technology/tags/proxmox/" rel="tag"><i class="fa fa-tag"></i> proxmox</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/new-technology/2026/06/06/Proxmox-Cloud-Init/" rel="prev" title="Proxmox 9.2でUbuntu ServerをCloud-Init化する：公開鍵認証・Secure Boot対応テンプレートの作り方">
+                  <i class="fa fa-angle-left"></i> Proxmox 9.2でUbuntu ServerをCloud-Init化する：公開鍵認証・Secure Boot対応テンプレートの作り方
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/new-technology/2026/06/20/proxmox-qdevice/" rel="next" title="Proxmox 2ノードクラスタにqdeviceを追加する">
+                  Proxmox 2ノードクラスタにqdeviceを追加する <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2020 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">阿部　吉伸(Yoshinobu ABE)</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div><script src="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.umd.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.min.css" rel="stylesheet">
+
+<script>
+if (Cookies.get('PRVCY202112') != 'Agree') {
+  const notice = new SimpleGDPR({
+    title: 'Accept Cookies & Privacy Policy?',
+    message: 'このWebサイトでは、訪問や活動に関するデータがクッキー等によって収集されます。閲覧を継続される場合、\
+    プライバシーポリシーをご覧いただき同意(Agree)をお願いします',
+    link: null,
+    icons: true,
+    theme: 'light',
+    animation: 'fade',
+    float: 'bottom-right',
+      callback: () => {
+      notice.close();
+      Cookies.set('PRVCY202112', 'Agree', { expires: 365, path: '/'});
+      notice.destroy();
+      // Google Analytics 4
+      gtag('consent', 'update', {
+      'analytics_storage': 'granted'
+      });
+      gtag('js', new Date());
+      gtag('config', 'G-JMY6NSC2KK', { 'anonymize_ip': true });
+      },
+  });
+}
+</script>
+<div class="disclaimer1">
+このサイトの記事は、特別な記載がない限り <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja">クリエイティブ・コモンズ BY-NC-SA ライセンス</a>で保護されています</div>
+
+
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/yoshi0808" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>
