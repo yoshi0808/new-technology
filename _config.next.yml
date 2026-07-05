@@ -674,6 +674,7 @@ canvas_ribbon:
 # ---------------------------------------------------------------
 # Comments Settings
 # See: https://theme-next.js.org/docs/third-party-services/comments
+# More comment system plugins: https://github.com/next-theme/awesome-next/blob/main/README.md#comment
 # ---------------------------------------------------------------
 
 # Multiple Comment System Support
@@ -887,6 +888,13 @@ chatra:
 tidio:
   enable: false
   key: # Public Key, get it from dashboard. See: https://www.tidio.com/panel/settings/developer
+
+# Knocket is a 100% free live chat widget by Tencent RTC.
+# For more information: https://trtc.io/solutions/knocket
+knocket:
+  enable: false
+  async: true
+  identifier: # Get it from https://trtc.io/solutions/knocket
 
 
 # ---------------------------------------------------------------
