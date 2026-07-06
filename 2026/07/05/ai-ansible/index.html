@@ -31,7 +31,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/07/05/ai-ansible/flow.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/07/05/ai-ansible/vscode.png">
 <meta property="article:published_time" content="2026-07-04T20:26:27.000Z">
-<meta property="article:modified_time" content="2026-07-05T21:47:17.640Z">
+<meta property="article:modified_time" content="2026-07-06T11:34:34.108Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="proxmox">
 <meta name="twitter:card" content="summary">
@@ -297,7 +297,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">編集日</span>
-      <time title="修正日：2026-07-06 06:47:17" itemprop="dateModified" datetime="2026-07-06T06:47:17+09:00">2026-07-06</time>
+      <time title="修正日：2026-07-06 20:34:34" itemprop="dateModified" datetime="2026-07-06T20:34:34+09:00">2026-07-06</time>
     </span>
 
   
@@ -365,7 +365,7 @@
 </tr>
 </tbody></table>
 <h2 id="AIがあると構成管理のハードルが下がる"><a href="#AIがあると構成管理のハードルが下がる" class="headerlink" title="AIがあると構成管理のハードルが下がる"></a>AIがあると構成管理のハードルが下がる</h2><p>Playbookの雛形作成、エラー調査、冪等（べきとう）性※の確認、危険な処理のレビュー、手順書との整合確認などをAIに任せることで、個人環境でも構成管理に踏み込みやすくなります。<br>※システムで一般的に使われるのは、更新が入っても何度実行しても同じ結果が保証されていること</p>
-<p>特に、ホームユーザーには冪等性という考え方は馴染みがないと思います。当たり前のことですが、パッチを2回適用したら壊れたというのでは困ります。本番稼働前に事前確認はするが実際の更新はしないというモード（dry-run）もコマンドの種類によってはあります。<br>ホームユーザーには馴染みが比較的あると思われる、SSDのTrim(fstrim)コマンド、これは何度実行しても無害ではありますが、このオプションには–dry_runを引数に持つことで、実際に開放予定の容量を把握できます。ubuntuなどは定期的なtrimは予めスケジューリングされていますが、こういった内容を理解して定期的に実行すると運用に強い環境が出来上がります。</p>
+<p>特に、ホームユーザーには冪等性という考え方は馴染みがないと思います。当たり前のことですが、パッチを2回適用したら壊れたというのでは困ります。本番稼働前に事前確認はするが実際の更新はしないというモード（dry-run）もコマンドの種類によってはあります。<br>ホームユーザーには馴染みが比較的あると思われる、SSDのTrim(fstrim)コマンド、これは何度実行しても無害ではありますが、このオプションには–dry_runを引数に持つことで、実際に開放予定の容量を把握できます。その時によって結果は変わりますが、何度実行しても破壊的行動にはなりません。ubuntuなどは定期的なtrimは予めスケジューリングされていますが、こういった内容を理解した上で実行すると運用に強い環境が出来上がります。</p>
 <h2 id="AnsibleとAIの役割分担"><a href="#AnsibleとAIの役割分担" class="headerlink" title="AnsibleとAIの役割分担"></a>AnsibleとAIの役割分担</h2><p>実際にサーバー運用に詳しくなくても、どのようなコマンドを叩けば良いかをAIに作ってもらうことができます。純粋なソフトウェアの開発はその目的を把握することがAIにとっても難しいのですが、運用管理はおおよそ安全に運用することが目的であるため、AIの理解も十分あります。</p>
 <p>Ansibleはplaybookというものを作り、それを実行します。どういったノードを保有しているのかはInventoryで予め登録する必要があります。そのノードに対してどんなPlaybookを実行したいのかを予めAIに渡すと、期待通りのplaybookを作ってくれます。私の環境では、Proxmoxや各種アプライアンス固有の確認が多いため、実処理の一部はシェルとして実装しています。その中身はRolesに構築します。シェルだけではなくPythonになるかもしれません。AIがAnsibleに向いていると思うのは以下の点です。</p>
 <ul>
@@ -373,7 +373,7 @@
 <li>AIがAnsible構成全体を俯瞰するので、一度作成したRoleを再利用しやすい</li>
 <li>予め必要とするソフトウェアを少なくしてほしいと要件を作っておけば、無駄に<code>sudo apt install</code>をしない</li>
 </ul>
-<p>なお、AnsibleはこういったLinuxなどを中心として動作させるものなので、AIを使うといってもチャット型のアプリケーションではなく、コマンドライン（CLI）を使います。OpenAIのChatGPTであれば、Codex、AnthropicのClaudeであればClaudeCodeです。AIのCLIツールを本格的に使う場合は、基本的には有料プランの利用を前提に考えた方がよいと思います。料金や利用条件は変わるため、最新情報は公式サイトで確認してください。</p>
+<p>なお、AnsibleはこういったLinuxなどを中心として動作させるものなので、AIを使うといってもチャット型のアプリケーションではなく、コマンドライン（CLI）を使います。OpenAIのChatGPTであれば、Codex、AnthropicのClaudeであればClaudeCodeです。AIのCLIツールを本格的に使う場合は、基本的には有料プランの利用を前提に考えた方がよいでしょう。料金や利用条件は変わるため、最新情報は公式サイトで確認してください。</p>
 <h2 id="私の環境での構成"><a href="#私の環境での構成" class="headerlink" title="私の環境での構成"></a>私の環境での構成</h2><ul>
 <li>ansy: Ansible開発環境</li>
 <li>pve1 &#x2F; pve2: Proxmoxノード</li>
@@ -383,11 +383,11 @@
 </ul>
 <img src="/new-technology/2026/07/05/ai-ansible/architecture.png" class="" width="1024" title="alt">
 
-<p>私の環境では、まずAnsible開発環境でAIと対話しながらAnsibleコードを構築します。ここではgit管理は必須です。AIが意図しない変更を加えたりする可能性があるので、いつでも戻れるようにしておきます。<br>私は開発環境でAIとやりとりしながら実装し、実装が終わったらそれをGitHubにプッシュ、そして運用環境としては別のノードからGitHub経由でgit pullし、そこでAnsibleを動かします。</p>
+<p>私の環境では、まずAnsible開発環境でAIと対話しながらAnsibleコードを構築します。ここではgit管理は必須です。AIが意図しない変更を加えたりする可能性があるので、いつでも戻れるようにしておきます。<br>私は開発環境（ProxmoxのVMです）でAIとやりとりしながら実装し、実装が終わったらそれをGitHubにプッシュ、そして運用環境としては別のノードからGitHub経由でgit pullし、そこでAnsibleを動かします。</p>
 <img src="/new-technology/2026/07/05/ai-ansible/flow.png" class="" width="1024" title="alt">
 
-<p>Ansibleを動かす開発環境、これはansyというホスト名にしていますが、これはProxmox配下のUbuntu26.04で動作させています。ここにはAIのCLIをインストールします。クライアントはmacですが、そこでVSCodeを起動し、ansyにSSHしてAnsibleコードを編集します。</p>
-<p>実行時は、quory、以前の記事でも書きましたが、Proxmoxクラスタに関連するqdeviceです。Qdeviceは非常にリソースが少なく、そのままだとリソースの無駄なので、Ansibleの実行環境にしています。なお、Ansibleを定期的に実行するには、CronやSystemd Timerが必要となりますが、さすがに運用しづらいので別途のSemaphoreUIというものを導入しています（また別の記事で紹介します）。</p>
+<p>Ansibleを動かす開発環境、これはansyというホスト名にしていますが、これはProxmox配下のUbuntu26.04で動作させています。ここにはAIのCLIをインストールします。クライアントはmacOSですが、そこでVSCodeを起動し、ansyにSSHしてAnsibleコードを編集します。</p>
+<p>実行時はquoryというノードになります。以前の記事でも書きましたが、Proxmoxクラスタに関連するqdeviceです。Qdeviceは非常にリソースが少なく、そのままだとリソースの無駄なので、Ansibleの実行環境にしています。クラスターを操作する内容が含まれるので、実行環境はVMにはしていません。なお、Ansibleを定期的に実行するには、CronやSystemd Timerが必要となりますが、さすがにCLIでは運用しづらいので別途のSemaphoreUIというものを導入しています（また別の記事で紹介します）。</p>
 <h2 id="Ansibleでできる「こんなこと」"><a href="#Ansibleでできる「こんなこと」" class="headerlink" title="Ansibleでできる「こんなこと」"></a>Ansibleでできる「こんなこと」</h2><p>以下は私のAnsibleのPlaybook一覧です。端的に纏めすぎで中身がよくわからないと思いますが、雰囲気だけは伝わると思います。軽いものであればヘルスチェックですし、重いものはOSパッチ適用です。</p>
 <table>
 <thead>
@@ -526,7 +526,7 @@
 <li>Gitで管理する</li>
 <li>シェルよりAnsible moduleを優先</li>
 </ul>
-<p>ただし、シェルよりAnsible moduleを優先とはいっても、私の場合その実装方法はAIに任せていることもありますが、自分で管理しやすいということでどうしても最初から実装するという方向性になりがちです。加えて、私はホームユーザーとして一般的なルールよりはセキュリティ面や安全面にはこだわる方だと思うので、残念ながら私（およびAI）が作ったAnsibleコードを多くの人に使ってもらうという事は難しいと感じています。</p>
+<p>ただし、シェルよりAnsible moduleを優先とはいっても、私の場合その実装方法はAIに任せていることもありますが、自分で管理しやすいということでどうしても最初から実装するという方向性になりがちです。私はホームユーザーとして一般的なルールよりはセキュリティ面や安全面にはこだわる方なので、残念ながら私（およびAI）が作ったAnsibleコードを多くの人に使ってもらうという事は難しいと感じています。</p>
 <p>AIといえば、その基本的な動作を伝えるのはコンテキストですが、私はAnsibleに関しては以下のようなコンテキストを定めています。</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">1. このリポジトリは homelab-ansible の正本である。</span><br><span class="line">2. Proxmox、RADIUS、監視基盤、証明書、バックアップ、復旧処理を管理する。</span><br><span class="line">3. Git を正本とし、ansy で開発・レビュー・commit/push を行う。</span><br><span class="line">4. quory は本番 Ansible 実行基盤であり、原則として直接編集しない。</span><br><span class="line">5. quory では Git から pull した確定済みコードだけを実行する。</span><br><span class="line">6. Ansible playbook の中で git pull しない。</span><br><span class="line">7. Proxmox ノードは pve1 / pve2 とする。</span><br><span class="line">8. qdevice / 本番実行基盤は quory とする。</span><br><span class="line">9. 開発環境は ansy とする。</span><br><span class="line">10. RADIUS サーバーは authy とする。</span><br><span class="line">11. 監視基盤は monnie とする。</span><br><span class="line">12. Sophos Firewall は sophos-fw とする。</span><br><span class="line">13. UniFi CloudKey は cloudkey とする。</span><br><span class="line">14. リポジトリ内に IP アドレスを直接書かない。</span><br><span class="line">15. ホスト指定は DNS 名または /etc/hosts の名前解決を使う。</span><br><span class="line">16. IP が必要な場合は getent 等で実行時に解決する。</span><br><span class="line">17. 標準のAnsible接続ユーザーは ann とする。</span><br><span class="line">18. ann は NOPASSWD sudo を許可する。</span><br><span class="line">19. 秘密鍵、パスフレーズ、認証情報はリポジトリに保存しない。</span><br><span class="line">20. 秘密情報は vault / secret / local を含むファイル名にし、Git管理しない。</span><br><span class="line">21. playbook は playbooks/*.yml に置く。</span><br><span class="line">22. role は roles/ 配下に置く。</span><br><span class="line">23. check 系 シェル は roles/*/files/*.sh に置く。</span><br><span class="line">24. check 系 シェル は情報収集と JSON 整形だけを行う。</span><br><span class="line">25. check 系 シェル は正常 / 異常判定をしない。</span><br><span class="line">26. warning / critical の分類は Ansible tasks 側で行う。</span><br><span class="line">27. host_vars との期待値比較も Ansible tasks 側で行う。</span><br><span class="line">28. read-only playbook に変更操作を混ぜない。</span><br><span class="line">29. patch / reboot / restart / migrate は専用 playbook に分離する。</span><br><span class="line">30. 危険操作は確認なしで実行しない。</span><br><span class="line">31. AIは自動決定主体ではなく、設計・実装・レビュー支援として使う。</span><br><span class="line">32. 要求仕様整理は ChatGPT / Claude と会話して行う。</span><br><span class="line">33. 実装は Claude Code が担当する。</span><br><span class="line">34. レビューは Codex が担当する。</span><br><span class="line">35. テストは Codex tester ロールが担当する。</span><br><span class="line">36. 運用判断、本番実行判断、commit 判断は人間が行う。</span><br><span class="line">37. AIが自律的に patch / reboot / migration を本番実行しない。</span><br><span class="line">38. 要求仕様には目的、対象、制約、確認項目、除外範囲を書く。</span><br><span class="line">39. 要求仕様には awk / sed / grep などの細かい実装方法を書きすぎない。</span><br><span class="line">40. 実装後は implement ファイルに変更内容と確認結果を残す。</span><br><span class="line">41. レビュー後は review ファイルに指摘内容を残す。</span><br><span class="line">42. 指摘には must-fix / suggestion / nit の重大度を付ける。</span><br><span class="line">43. Claude Code は Codex の指摘を鵜呑みにせず、トリアージする。</span><br><span class="line">44. 指摘を棄却する場合は理由を記録する。</span><br><span class="line">45. テスト計画は Claude Code が起案し、人間が承認する。</span><br><span class="line">46. tester は playbook 実行時に必ず tester_mode=true を付ける。</span><br><span class="line">47. tester_mode=true では対象ホストの実変更やSlack通知を起こさない。</span><br><span class="line">48. 変更系 playbook は tester_gate で安全側に止める。</span><br><span class="line">49. read-only playbook は SAFE として自動実行対象にできる。</span><br><span class="line">50. UN-SAFE な操作は人間の明示判断なしに実行しない。</span><br></pre></td></tr></table></figure>
 
