@@ -37,7 +37,7 @@
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/07/11/ai-ansible2/semaphore.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/07/11/ai-ansible2/semaphore2.png">
 <meta property="article:published_time" content="2026-07-10T16:55:32.000Z">
-<meta property="article:modified_time" content="2026-07-11T09:43:32.413Z">
+<meta property="article:modified_time" content="2026-07-17T21:56:47.232Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="proxmox">
 <meta name="twitter:card" content="summary">
@@ -295,9 +295,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">投稿日</span>
-      
 
-      <time title="作成日：2026-07-11 01:55:32 / 修正日：18:43:32" itemprop="dateCreated datePublished" datetime="2026-07-11T01:55:32+09:00">2026-07-11</time>
+      <time title="作成日：2026-07-11 01:55:32" itemprop="dateCreated datePublished" datetime="2026-07-11T01:55:32+09:00">2026-07-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">編集日</span>
+      <time title="修正日：2026-07-18 06:56:47" itemprop="dateModified" datetime="2026-07-18T06:56:47+09:00">2026-07-18</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -384,6 +390,11 @@
 
 <p>ブラウザを開き、メールアドレスで認証後、セッション情報をブラウザからコピーして、再び、VS Code上のClaude Code拡張機能に貼り付けるとClaude Codeが使えるようになります。挨拶してみます、ちゃんと使えますね。</p>
 <img src="/new-technology/2026/07/11/ai-ansible2/vscode4.png" class="" width="1024" title="alt">
+
+<p>なお、Codexの場合は、これまでCodex-CLIを使っていないクリーンな環境でCodex拡張機能を使う場合は、ホームディレクトリに.codexのフォルダを作る必要があるようです（VSCodeのターミナルの出力で以下のエラーメッセージが確認できます）。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2026-07-18 06:23:06.547 [error] [CodexMcpConnection] cli: message=&quot;WARNING: proceeding, even though we could not create PATH aliases: CODEX_HOME points to \&quot;/home/yoshi/.codex\&quot;, but that path does not exist\nError: CODEX_HOME points to \&quot;/home/yoshi/.codex\&quot;, but that path does not exist&quot;</span><br></pre></td></tr></table></figure>
+<p>よって、以下のコマンドを投入し、VS Codeを再起動してください。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">install -d -m 700 <span class="string">&quot;<span class="variable">$HOME</span>/.codex&quot;</span></span><br></pre></td></tr></table></figure>
 
 <p>さて、続いてClaude Code(CC)と会話してAnsible環境のテストをやっていきます。</p>
 <h2 id="AIと対話しAnsible環境を構築する-Claude-Code"><a href="#AIと対話しAnsible環境を構築する-Claude-Code" class="headerlink" title="AIと対話しAnsible環境を構築する　- Claude Code"></a>AIと対話しAnsible環境を構築する　- Claude Code</h2><p>CCの入力ボックスに以下を投入します。</p>
