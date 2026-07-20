@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/icon-16x16.png">
+  <link rel="mask-icon" href="/new-technology/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/new-technology/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.28.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"github","dark":"a11y-dark"},"prism":{"light":"prism-vs","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js" defer></script>
+
+    <meta name="description" content="この記事で実現すること  前回の記事では、AIを使ってAnsibleのPlaybookを実装しました。作成したコードはGitにも登録し、変更内容を管理できる状態にしています。今回は、本格的なAnsible運用へ進むため、Semaphore UIを導入します。作成したPlaybookをWebブラウザから実行し、決められた時間に定期実行できる環境を構築します。さらに、PlaybookをGitHub">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Proxmox運用にAnsibleとAIを活用する：Semaphore UIでAnsibleを定期実行する">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2026/07/20/ai-ansible3/index.html">
+<meta property="og:site_name" content="New technologies in our life">
+<meta property="og:description" content="この記事で実現すること  前回の記事では、AIを使ってAnsibleのPlaybookを実装しました。作成したコードはGitにも登録し、変更内容を管理できる状態にしています。今回は、本格的なAnsible運用へ進むため、Semaphore UIを導入します。作成したPlaybookをWebブラウザから実行し、決められた時間に定期実行できる環境を構築します。さらに、PlaybookをGitHub">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/07/20/ai-ansible3/Title.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/07/20/ai-ansible3/infrastructure.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/07/20/ai-ansible3/sshkey1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/07/20/ai-ansible3/github0.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/07/20/ai-ansible3/github1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/07/20/ai-ansible3/semaphore1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/07/20/ai-ansible3/semaphore-project.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/07/20/ai-ansible3/semaphore-project1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/07/20/ai-ansible3/semaphore-repository1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/07/20/ai-ansible3/github-code-ssh.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/07/20/ai-ansible3/semaphore-inventory1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/07/20/ai-ansible3/semaphore-template1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/07/20/ai-ansible3/semaphore-template2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/07/20/ai-ansible3/run-playbook1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/07/20/ai-ansible3/semaphore-schedule.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/07/20/ai-ansible3/semaphore-schedule2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/07/20/ai-ansible3/slack2.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/07/20/ai-ansible3/slack1.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/07/20/ai-ansible3/slack3.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/07/20/ai-ansible3/slack4.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/07/20/ai-ansible3/slack5.png">
+<meta property="article:published_time" content="2026-07-19T23:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-20T08:57:33.596Z">
+<meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
+<meta property="article:tag" content="proxmox">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2026/07/20/ai-ansible3/Title.png">
+
+
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2026/07/20/ai-ansible3/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"ja","comments":true,"permalink":"https://yoshi0808.github.io/new-technology/2026/07/20/ai-ansible3/","path":"2026/07/20/ai-ansible3/","title":"Proxmox運用にAnsibleとAIを活用する：Semaphore UIでAnsibleを定期実行する"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Proxmox運用にAnsibleとAIを活用する：Semaphore UIでAnsibleを定期実行する | New technologies in our life</title>
+  
+
+
+
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{&quot;token&quot;: &quot;0148b4d0442e42b483ddce684030bd2f&quot;}'></script>
+
+
+
+
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+<script src="/new-technology/js/utils.js" defer></script><script src="/new-technology/js/motion.js" defer></script><script src="/new-technology/js/sidebar.js" defer></script><script src="/new-technology/js/next-boot.js" defer></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.5.0/dist/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/new-technology/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@11.10.1/dist/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/new-technology/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JMY6NSC2KK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+  'ad_storage': 'denied',
+  'analytics_storage': 'denied'
+  });
+
+  dataLayer.push({
+  'event': 'default_consent'
+  });
+
+  if (Cookies.get('PRVCY202112') == 'Agree') {
+    gtag('consent', 'update', {
+    'analytics_storage': 'granted'
+    });
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'G-JMY6NSC2KK',{ 'anonymize_ip': true });
+</script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/new-technology/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/new-technology/atom.xml" title="New technologies in our life" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="ナビゲーションバーの切り替え" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/new-technology/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">New technologies in our life</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Device,Network,Code,etc...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="検索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/new-technology/" rel="section"><i class="fa fa-home fa-fw"></i>ホーム</a></li><li class="menu-item menu-item-about"><a href="/new-technology/about/" rel="section"><i class="fa fa-user fa-fw"></i>サイトポリシー</a></li><li class="menu-item menu-item-tags"><a href="/new-technology/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>タグ</a></li><li class="menu-item menu-item-categories"><a href="/new-technology/categories/" rel="section"><i class="fa fa-th fa-fw"></i>カテゴリ</a></li><li class="menu-item menu-item-archives"><a href="/new-technology/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>アーカイブ</a></li><li class="menu-item menu-item-privacy"><a href="/new-technology/privacypolicy/" rel="section"><i class="fa fa-check fa-fw"></i>プライバシーポリシー</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="検索…" spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          見出し
+        </li>
+        <li class="sidebar-nav-overview">
+          概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8A%E5%9B%9E%E3%81%AE%E6%A7%8B%E6%88%90"><span class="nav-number">1.</span> <span class="nav-text">今回の構成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Semaphore-UI%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span class="nav-number">2.</span> <span class="nav-text">Semaphore UIについて</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%AD%E3%83%BC%E3%82%AB%E3%83%ABGit%E3%83%AA%E3%83%9D%E3%82%B8%E3%83%88%E3%83%AA%E3%82%92GitHub%E3%81%B8%E7%99%BB%E9%8C%B2%E3%81%99%E3%82%8B"><span class="nav-number">3.</span> <span class="nav-text">ローカルGitリポジトリをGitHubへ登録する</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#GitHub%E7%94%A8%E3%81%AESSH%E3%82%AD%E3%83%BC%E3%82%92%E4%BD%9C%E6%88%90%E3%81%99%E3%82%8B"><span class="nav-number">3.1.</span> <span class="nav-text">GitHub用のSSHキーを作成する</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GitHub%E3%81%B8%E5%85%AC%E9%96%8B%E9%8D%B5%E3%82%92%E7%99%BB%E9%8C%B2%E3%81%99%E3%82%8B"><span class="nav-number">3.2.</span> <span class="nav-text">GitHubへ公開鍵を登録する</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SSH%E6%8E%A5%E7%B6%9A%E3%82%92%E7%A2%BA%E8%AA%8D%E3%81%99%E3%82%8B"><span class="nav-number">3.3.</span> <span class="nav-text">SSH接続を確認する</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GitHub-CLI%E3%82%92%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E3%81%99%E3%82%8B"><span class="nav-number">3.4.</span> <span class="nav-text">GitHub CLIをインストールする</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GitHub%E3%81%B8%E3%83%AD%E3%82%B0%E3%82%A4%E3%83%B3%E3%81%99%E3%82%8B"><span class="nav-number">3.5.</span> <span class="nav-text">GitHubへログインする</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Private-Repository%E3%82%92%E4%BD%9C%E6%88%90%E3%81%99%E3%82%8B"><span class="nav-number">3.6.</span> <span class="nav-text">Private Repositoryを作成する</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Semaphore-UI%E3%82%92%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E3%81%99%E3%82%8B"><span class="nav-number">4.</span> <span class="nav-text">Semaphore UIをインストールする</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Semaphore%E3%82%92%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E3%81%99%E3%82%8B"><span class="nav-number">4.1.</span> <span class="nav-text">Semaphoreをインストールする</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%87%E3%82%A3%E3%83%AC%E3%82%AF%E3%83%88%E3%83%AA%E3%82%92%E4%BD%9C%E6%88%90%E3%81%99%E3%82%8B"><span class="nav-number">4.2.</span> <span class="nav-text">ディレクトリを作成する</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9D%E6%9C%9F%E3%82%BB%E3%83%83%E3%83%88%E3%82%A2%E3%83%83%E3%83%97%E3%82%92%E5%AE%9F%E8%A1%8C%E3%81%99%E3%82%8B"><span class="nav-number">4.3.</span> <span class="nav-text">初期セットアップを実行する</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#systemd%E3%81%B8%E7%99%BB%E9%8C%B2%E3%81%99%E3%82%8B"><span class="nav-number">4.4.</span> <span class="nav-text">systemdへ登録する</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Semaphore-UI%E3%81%AE%E5%88%9D%E6%9C%9F%E8%A8%AD%E5%AE%9A"><span class="nav-number">5.</span> <span class="nav-text">Semaphore UIの初期設定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Semaphore-UI%E3%81%ABAnsible%E5%AE%9F%E8%A1%8C%E7%92%B0%E5%A2%83%E3%82%92%E7%99%BB%E9%8C%B2%E3%81%99%E3%82%8B"><span class="nav-number">6.</span> <span class="nav-text">Semaphore UIにAnsible実行環境を登録する</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SSH-Key%E3%81%AE%E7%99%BB%E9%8C%B2"><span class="nav-number">6.1.</span> <span class="nav-text">SSH Keyの登録</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GitHub-Repository%E3%81%AE%E7%99%BB%E9%8C%B2"><span class="nav-number">6.2.</span> <span class="nav-text">GitHub Repositoryの登録</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ansible%E6%8E%A5%E7%B6%9A%E7%94%A8SSH%E3%82%AD%E3%83%BC%E3%81%AE%E7%99%BB%E9%8C%B2"><span class="nav-number">6.3.</span> <span class="nav-text">Ansible接続用SSHキーの登録</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%82%A4%E3%83%B3%E3%83%99%E3%83%B3%E3%83%88%E3%83%AA%E3%81%AE%E7%99%BB%E9%8C%B2"><span class="nav-number">6.4.</span> <span class="nav-text">インベントリの登録</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E5%88%9D%E3%81%AETask-Template%E3%82%92%E4%BD%9C%E3%82%8B"><span class="nav-number">7.</span> <span class="nav-text">最初のTask Templateを作る</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#status-check-yml%E3%82%92%E6%89%8B%E5%8B%95%E5%AE%9F%E8%A1%8C%E3%81%99%E3%82%8B"><span class="nav-number">8.</span> <span class="nav-text">status_check.ymlを手動実行する</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%B9%E3%82%81%E3%81%A6%E4%BB%8A%E5%9B%9E%E3%83%86%E3%82%B9%E3%83%88%E3%81%AB%E4%BD%BF%E7%94%A8%E3%81%97%E3%81%9Fplaybook"><span class="nav-number">9.</span> <span class="nav-text">改めて今回テストに使用したplaybook</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%82%B9%E3%82%B1%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB%E3%82%92%E7%99%BB%E9%8C%B2%E3%81%99%E3%82%8B"><span class="nav-number">10.</span> <span class="nav-text">スケジュールを登録する</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TimeZone%E3%81%AE%E7%99%BB%E9%8C%B2"><span class="nav-number">10.1.</span> <span class="nav-text">TimeZoneの登録</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Slack%E3%81%AEWebhook%E3%81%AE%E4%BD%9C%E6%88%90"><span class="nav-number">11.</span> <span class="nav-text">SlackのWebhookの作成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Slack%E3%81%AEWebhook%E3%82%92SemaphoreUI%E3%81%AB%E7%99%BB%E9%8C%B2"><span class="nav-number">12.</span> <span class="nav-text">SlackのWebhookをSemaphoreUIに登録</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%BE%E3%81%A8%E3%82%81"><span class="nav-number">13.</span> <span class="nav-text">まとめ</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="阿部　吉伸(Yoshinobu ABE)"
+      src="/new-technology/images/yoshi.png">
+  <p class="site-author-name" itemprop="name">阿部　吉伸(Yoshinobu ABE)</p>
+  <div class="site-description" itemprop="description">IT</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/new-technology/archives/">
+          <span class="site-state-item-count">109</span>
+          <span class="site-state-item-name">ポスト</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/new-technology/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">カテゴリ</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/new-technology/tags/">
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">タグ</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yoshi0808" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yoshi0808" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yoshi0808.blog@gmail.com" title="E-Mail → mailto:yoshi0808.blog@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yoshi0808_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yoshi0808_" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/big/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="ja">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2026/07/20/ai-ansible3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/new-technology/images/yoshi.png">
+      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="New technologies in our life">
+      <meta itemprop="description" content="IT">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Proxmox運用にAnsibleとAIを活用する：Semaphore UIでAnsibleを定期実行する | New technologies in our life">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Proxmox運用にAnsibleとAIを活用する：Semaphore UIでAnsibleを定期実行する
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">投稿日</span>
+      
+
+      <time title="作成日：2026-07-20 08:00:00 / 修正日：17:57:33" itemprop="dateCreated datePublished" datetime="2026-07-20T08:00:00+09:00">2026-07-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">カテゴリ</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/AI/" itemprop="url" rel="index"><span itemprop="name">AI</span></a>
+        </span>
+          、
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/AI/Ansible/" itemprop="url" rel="index"><span itemprop="name">Ansible</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><img src="/new-technology/2026/07/20/ai-ansible3/Title.png" class="" width="1024" title="alt">
+
+<p class="onepoint">この記事で実現すること</p>
+
+<p>前回の記事では、AIを使ってAnsibleのPlaybookを実装しました。作成したコードはGitにも登録し、変更内容を管理できる状態にしています。<br>今回は、本格的なAnsible運用へ進むため、Semaphore UIを導入します。作成したPlaybookをWebブラウザから実行し、決められた時間に定期実行できる環境を構築します。さらに、PlaybookをGitHubのPrivate Repositoryで管理し、実行結果をSlackへ通知できるところまで進めます。</p>
+<ul>
+<li>（前回記事）<a href="/new-technology/2026/07/11/ai-ansible2/" title="Proxmox運用にAnsibleとAIを活用する：Ansibleの始め方">Proxmox運用にAnsibleとAIを活用する：Ansibleの始め方</a></li>
+</ul>
+<span id="more"></span>
+
+<h2 id="今回の構成"><a href="#今回の構成" class="headerlink" title="今回の構成"></a>今回の構成</h2><p>今回も前回に引き続き、テスト環境を使って構築を進めます。</p>
+<p>前回は、Ansible実行環境として <code>test-ansible</code>、操作対象として <code>test-vm</code> という2台のUbuntu 26.04 Server VMを作成しました。<br>Ansibleのリポジトリは、<code>test-ansible</code> のユーザーのホームディレクトリ配下にある <code>~/test-ansible</code> です。ローカル端末からVS CodeのRemote - SSHを使って接続し、Playbookを編集します。私の環境では、ローカル端末としてmacOSを使用しています。</p>
+<p>今回は、この <code>test-ansible</code> にSemaphore UIを導入します。前回作成したPlaybookをGitHubへ登録し、Semaphore UIがGitHubからコードを取得して <code>test-vm</code> に対して実行する構成です。</p>
+<p>また、実行結果を確認できるよう、Slackへの通知も追加します。昔ながらのメール通知でも構いませんが、やや時代遅れ感もあります。Slackはこういった単純な使い方であれば無料ですし、ハッシュタグで目的別に内容を確認できて便利です。実運用に入るとかなり目的毎に分類する方が運用しやすいので通知にはSlackを導入されることをお勧めします。蛇足ながら、Proxmoxからの通知に加え、（今回は関係ないですが）UniFiのネットワーク機器の管理についてもSlackへの通知機能がありますので、ホームラボからの通知をSlackに一本化できるメリットがあります。</p>
+<img src="/new-technology/2026/07/20/ai-ansible3/infrastructure.png" class="" width="1024" title="alt">
+
+<p>私の場合は、クライアントにmacOSを使っていますが、Ansible開発はSSHした先のUbuntuなのでWindowsであっても問題ありません。VS Codeが使える環境が必要です。前回の作成した構成を再度利用しますので、これ以降のセットアップでは、事前準備としては前回の記事をご覧ください。</p>
+<h2 id="Semaphore-UIについて"><a href="#Semaphore-UIについて" class="headerlink" title="Semaphore UIについて"></a>Semaphore UIについて</h2><p>GitHub、Ansibleなど自動化タスクを実行するために使用される、セルフホストの継続的自動化およびデプロイメントツールです。有償版、無償版(OSS)とがあります。今回はOSSを使います。</p>
+<p>日本語のWebサイトもありますが、実際の中身はGitHubと英語のドキュメントが中心です。<br><a target="_blank" rel="noopener" href="https://semaphoreui.com/ja">https://semaphoreui.com/ja</a></p>
+<p>が、メニューからSemaphore UI Communityを選ぶと、GitHubに飛びます。<br><a target="_blank" rel="noopener" href="https://github.com/semaphoreui/semaphore">https://github.com/semaphoreui/semaphore</a></p>
+<p>SemaphoreのDocumentsです。<br><a target="_blank" rel="noopener" href="https://semaphoreui.com/docs">https://semaphoreui.com/docs</a></p>
+<p>作成したAnsibleコードをGUIから起動したり、タイマー起動できるようになります。Proxmoxが代表格ですが、特にパッチ適用が頻繁に発生します。気が向いたらパッチ適用ということはセキュリティ上、厳しいですので自動パッチといかないまでもパッチ情報は遅延なく把握し、メンテナンス計画を設けたいものです。</p>
+<p>SemaphoreはGitHubのリポジトリを常に正として扱います。安定した運用を第一に考えるなら、決められた時間にパッチやヘルスチェックなどの実行、モニタリングが必要と考えています。前者のパッチやヘルスチェックなどはSemaphoreUIを中心にワークフローが回せます。</p>
+<h2 id="ローカルGitリポジトリをGitHubへ登録する"><a href="#ローカルGitリポジトリをGitHubへ登録する" class="headerlink" title="ローカルGitリポジトリをGitHubへ登録する"></a>ローカルGitリポジトリをGitHubへ登録する</h2><h3 id="GitHub用のSSHキーを作成する"><a href="#GitHub用のSSHキーを作成する" class="headerlink" title="GitHub用のSSHキーを作成する"></a>GitHub用のSSHキーを作成する</h3><p>Semaphore UIからはGitHubリポジトリに接続する必要があります。SSHキー、パーソナルアクセストークンなどで接続することになりますが、ここではSSHキーで進めます。</p>
+<blockquote>
+<p>GitHubのアカウントをお持ちでない方は、あらかじめ作成しておいてください。</p>
+</blockquote>
+<p>前回から、Ansibleの開発環境は <code>test-ansible</code> 上に構築しています。GitHubへ接続するSSHキーの例示も、この <code>test-ansible</code> 上で作成します。</p>
+<p>ローカル端末がWindowsやmacOSであっても、VS CodeのRemote - SSHで接続しているため、以下のコマンドはお使いのAnsible端末（リモートホスト）上で実行してください。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t ed25519 \</span><br><span class="line">  -C <span class="string">&quot;GitHub (test-ansible)&quot;</span> \</span><br><span class="line">  -f ~/.ssh/id_ed25519_github</span><br></pre></td></tr></table></figure>
+
+<p>実行するとパスフレーズの入力を求められます。セキュリティを重視する場合は設定することをお勧めしますが、今回は検証環境のため未設定（Enterキーを2回押下）とします。</p>
+<p>作成されるファイルは以下の2つです。</p>
+<ul>
+<li><code>~/.ssh/id_ed25519_github</code>（秘密鍵）</li>
+<li><code>~/.ssh/id_ed25519_github.pub</code>（公開鍵）</li>
+</ul>
+<p>公開鍵の内容を表示します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> ~/.ssh/id_ed25519_github.pub</span><br></pre></td></tr></table></figure>
+
+<p>表示された公開鍵をコピーし、次の手順でGitHubへ登録します。</p>
+<h3 id="GitHubへ公開鍵を登録する"><a href="#GitHubへ公開鍵を登録する" class="headerlink" title="GitHubへ公開鍵を登録する"></a>GitHubへ公開鍵を登録する</h3><p><code>https://github.com/settings/ssh/new</code>を開くと、SSHキーを登録する画面となります。</p>
+<img src="/new-technology/2026/07/20/ai-ansible3/sshkey1.png" class="" width="800" title="alt">
+
+<p>Titleにはわかりやすい説明を、Key Typeは”Authentication Key”、KeyにはSSH公開鍵を貼り付けて保存（Add SSH Key）してください。</p>
+<h3 id="SSH接続を確認する"><a href="#SSH接続を確認する" class="headerlink" title="SSH接続を確認する"></a>SSH接続を確認する</h3><p>公開鍵を登録したら、<code>test-ansible</code> からGitHubへSSH接続できることを確認します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -i ~/.ssh/id_ed25519_github -T git@github.com</span><br></pre></td></tr></table></figure>
+
+<p>初回接続時は以下のようなメッセージが表示されます。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">The authenticity of host &#x27;github.com (xxx.xxx.xxx.xxx)&#x27; can&#x27;t be established.</span><br><span class="line">ED25519 key fingerprint is SHA256:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.</span><br><span class="line">Are you sure you want to continue connecting (yes/no/[fingerprint])?</span><br></pre></td></tr></table></figure>
+
+<p>内容を確認し、<code>yes</code> を入力してください。</p>
+<p>接続に成功すると、以下のようなメッセージが表示されます。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Hi &lt;GitHubユーザー名&gt;! You&#x27;ve successfully authenticated, but GitHub does not provide shell access.</span><br></pre></td></tr></table></figure>
+
+<p>このメッセージが表示されれば、SSHキーの登録は正常に完了しています。</p>
+<p>続いて<code>.ssh/config</code>も設定しておきます。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">cat &lt;&lt;EOF &gt;&gt; ~/.ssh/config</span><br><span class="line">Host github.com</span><br><span class="line">    HostName github.com</span><br><span class="line">    User git</span><br><span class="line">    IdentityFile ~/.ssh/id_ed25519_github</span><br><span class="line">    IdentitiesOnly yes</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">chmod 600 ~/.ssh/config</span><br></pre></td></tr></table></figure>
+
+<p>これでシンプルに<code>ssh -T git@github.com</code>やgitコマンドが鍵指定なしで実行できます。</p>
+<h3 id="GitHub-CLIをインストールする"><a href="#GitHub-CLIをインストールする" class="headerlink" title="GitHub CLIをインストールする"></a>GitHub CLIをインストールする</h3><p>GitHubでは、リポジトリの作成や管理をコマンドラインから行えるGitHub CLI（<code>gh</code>）が提供されています。</p>
+<p>今回はGitHub CLIを利用して、Private Repositoryを作成します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt update</span><br><span class="line"><span class="built_in">sudo</span> apt install gh</span><br></pre></td></tr></table></figure>
+
+<p>インストールできたら、バージョンを確認します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gh --version</span><br></pre></td></tr></table></figure>
+
+<h3 id="GitHubへログインする"><a href="#GitHubへログインする" class="headerlink" title="GitHubへログインする"></a>GitHubへログインする</h3><p>GitHub CLIからGitHubへログインします。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gh auth login</span><br></pre></td></tr></table></figure>
+
+<p>対話形式で質問されるので、以下のように選択します。”your-user”やSSHキーは環境に応じて変わります。</p>
+<p>gh auth login</p>
+<ul>
+<li>What account do you want to log into? GitHub.com</li>
+<li>What is your preferred protocol for Git operations on this host? SSH</li>
+<li>Upload your SSH public key to your GitHub account? &#x2F;home&#x2F;your-user&#x2F;.ssh&#x2F;id_ed25519_github.pub</li>
+<li>Title for your SSH key: GitHub CLI</li>
+<li>How would you like to authenticate GitHub CLI? Login with a web browser</li>
+</ul>
+<p>ブラウザが起動し、認証コードが表示されます。GitHubへログインして認証を完了してください。</p>
+<img src="/new-technology/2026/07/20/ai-ansible3/github0.png" class="" width="240" title="alt">
+
+<p>認証が終わったら、ログイン状態を確認します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gh auth status</span><br></pre></td></tr></table></figure>
+
+<h3 id="Private-Repositoryを作成する"><a href="#Private-Repositoryを作成する" class="headerlink" title="Private Repositoryを作成する"></a>Private Repositoryを作成する</h3><p>認証が完了したら、ローカルGitリポジトリをGitHubのPrivate Repositoryとして登録します。<br>※（前回の記事で実施したローカルでgit init、ブランチをmainに設定していることが前提です）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/test-ansible</span><br><span class="line"></span><br><span class="line">gh repo create test-ansible \</span><br><span class="line">  --private \</span><br><span class="line">  --<span class="built_in">source</span>=. \</span><br><span class="line">  --remote=origin \</span><br><span class="line">  --push</span><br></pre></td></tr></table></figure>
+
+<p>これでGitHub上にPrivate Repositoryが作成され、ローカルリポジトリとの関連付けと初回Pushまで自動的に行われます。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">✓ Created repository your-git-account/test-ansible on GitHub</span><br><span class="line">✓ Added remote git@github.com:your-git-account/test-ansible.git</span><br><span class="line">To github.com:your-git-account/test-ansible.git</span><br><span class="line"> * [new branch]      HEAD -&gt; main</span><br><span class="line">branch &#x27;main&#x27; set up to track &#x27;origin/main&#x27;.</span><br><span class="line">✓ Pushed commits to git@github.com:your-git-account/test-ansible.git</span><br></pre></td></tr></table></figure>
+
+<p>これでブラウザからtest-ansibleのリポジトリを確認すると前回作成したコードが登録されていることがわかります。</p>
+<img src="/new-technology/2026/07/20/ai-ansible3/github1.png" class="" width="800" title="alt">
+
+<h2 id="Semaphore-UIをインストールする"><a href="#Semaphore-UIをインストールする" class="headerlink" title="Semaphore UIをインストールする"></a>Semaphore UIをインストールする</h2><p>これまではターミナルから <code>ansible-playbook</code> を実行していました。</p>
+<p>ここからは、WebブラウザからPlaybookを実行したり、定期実行したりできる <strong>Semaphore UI</strong> を導入します。</p>
+<p>SemaphoreはオープンソースのAnsible管理ツールであり、Playbookの実行履歴やスケジュール管理、GitHubとの連携などをGUIから行えます。</p>
+<p>今回は執筆時点で最新版の <strong>2.18.12</strong> を利用します。</p>
+<h3 id="Semaphoreをインストールする"><a href="#Semaphoreをインストールする" class="headerlink" title="Semaphoreをインストールする"></a>Semaphoreをインストールする</h3><p>まずはGitHub Releasesからパッケージをダウンロードしてインストールします。</p>
+<p>ダウンロード先には一時ディレクトリである <code>/tmp</code> を利用します。ここにはインストール用の <code>.deb</code> パッケージを一時的に保存するだけであり、インストール後に削除されても問題ありません。<br>これまでの手順はAnsibleを学ぶためのテスト環境を前提としていました。一方、ここから紹介するSemaphore UIの構成は、私自身が実際のホームラボで採用している考え方をベースにしています。ファイルパスやユーザー名（your-user）は環境に合わせて読み替えていただければ、そのまま実運用にも利用できる構成です。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /tmp</span><br><span class="line"></span><br><span class="line">SEMAPHORE_VERSION=<span class="string">&quot;2.18.12&quot;</span></span><br><span class="line"></span><br><span class="line">wget <span class="string">&quot;https://github.com/semaphoreui/semaphore/releases/download/v<span class="variable">$&#123;SEMAPHORE_VERSION&#125;</span>/semaphore_<span class="variable">$&#123;SEMAPHORE_VERSION&#125;</span>_linux_amd64.deb&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">sudo</span> apt update</span><br><span class="line"><span class="built_in">sudo</span> apt install -y ./semaphore_<span class="variable">$&#123;SEMAPHORE_VERSION&#125;</span>_linux_amd64.deb</span><br></pre></td></tr></table></figure>
+
+<p>インストールできたら確認します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">which</span> semaphore</span><br><span class="line">semaphore version</span><br></pre></td></tr></table></figure>
+
+<p>正常にインストールされていれば、以下のように表示されます。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/usr/bin/semaphore</span><br><span class="line">2.18.12-...</span><br></pre></td></tr></table></figure>
+
+<h3 id="ディレクトリを作成する"><a href="#ディレクトリを作成する" class="headerlink" title="ディレクトリを作成する"></a>ディレクトリを作成する</h3><p>Semaphoreの設定ファイルやデータベース、GitHubから取得したPlaybookを保存するため、あらかじめディレクトリを作成します。</p>
+<p>今回はAnsibleを実行しているユーザーと同じ（Ubuntuをセットアップした時のデフォルト）ユーザーでSemaphoreを動作させます。これにより、CLIから実行した場合と権限の違いを意識せずに運用できます。以下の”your-user”は実際の環境に置き換えてください。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> <span class="built_in">mkdir</span> -p /etc/semaphore</span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">mkdir</span> -p /var/lib/semaphore</span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">mkdir</span> -p /var/log/semaphore</span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">mkdir</span> -p /var/backups/semaphore</span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">mkdir</span> -p /opt/semaphore</span><br><span class="line"></span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">chown</span> -R your-user:your-user \</span><br><span class="line">    /etc/semaphore \</span><br><span class="line">    /var/lib/semaphore \</span><br><span class="line">    /var/log/semaphore \</span><br><span class="line">    /var/backups/semaphore \</span><br><span class="line">    /opt/semaphore</span><br><span class="line"></span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">chmod</span> 700 /etc/semaphore /var/lib/semaphore</span><br></pre></td></tr></table></figure>
+
+<h3 id="初期セットアップを実行する"><a href="#初期セットアップを実行する" class="headerlink" title="初期セットアップを実行する"></a>初期セットアップを実行する</h3><p>続いて初期設定を行います。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">semaphore setup</span><br></pre></td></tr></table></figure>
+
+<p>以下の内容で設定してください。</p>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>設定値</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Database</td>
+<td>SQLite</td>
+</tr>
+<tr>
+<td>DB Hostname</td>
+<td><code>/var/lib/semaphore/semaphore.db</code></td>
+</tr>
+<tr>
+<td>Playbook path</td>
+<td><code>/opt/semaphore</code></td>
+</tr>
+<tr>
+<td>Config output directory</td>
+<td><code>/etc/semaphore</code></td>
+</tr>
+<tr>
+<td>Admin user</td>
+<td><code>your-user</code></td>
+</tr>
+<tr>
+<td>Admin email</td>
+<td>任意(省略不可)</td>
+</tr>
+<tr>
+<td>Admin password</td>
+<td>任意の強力なパスワード</td>
+</tr>
+</tbody></table>
+<p>通知についても聞かれますが、今のところは全てNoと答えてください。</p>
+<p>セットアップが完了したら、設定ファイルとデータベースが作成されていることを確認します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span> -l /etc/semaphore/config.json /var/lib/semaphore/semaphore.db</span><br></pre></td></tr></table></figure>
+
+<p><code>config.json</code> には暗号化キーなどの重要な情報が含まれるため、アクセス権限を制限しておきます。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chmod</span> 600 /etc/semaphore/config.json</span><br><span class="line"><span class="built_in">chmod</span> 600 /var/lib/semaphore/semaphore.db</span><br></pre></td></tr></table></figure>
+
+<h3 id="systemdへ登録する"><a href="#systemdへ登録する" class="headerlink" title="systemdへ登録する"></a>systemdへ登録する</h3><p>今回はサービスとして起動できるようにsystemdへ登録します。</p>
+<p>これにより、OS起動時の自動起動や <code>systemctl</code> による管理ができるようになります。<br>引き続き、ユーザー名の<code>your-user</code>の部分は読み替えてください。それ以外は今回セットアップしたフォルダ構成に基づいて構成されています。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> <span class="built_in">tee</span> /etc/systemd/system/semaphore.service &gt;/dev/null &lt;&lt;<span class="string">&#x27;EOF&#x27;</span></span><br><span class="line">[Unit]</span><br><span class="line">Description=Semaphore UI</span><br><span class="line">Documentation=https://semaphoreui.com/docs</span><br><span class="line">Wants=network-online.target</span><br><span class="line">After=network-online.target</span><br><span class="line">ConditionPathExists=/usr/bin/semaphore</span><br><span class="line">ConditionPathExists=/etc/semaphore/config.json</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=simple</span><br><span class="line">User=your-user</span><br><span class="line">Group=your-user</span><br><span class="line">WorkingDirectory=/opt/semaphore</span><br><span class="line">Environment=HOME=/home/your-user</span><br><span class="line">Environment=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/your-user/.local/bin</span><br><span class="line">ExecStart=/usr/bin/semaphore server --config /etc/semaphore/config.json</span><br><span class="line">ExecReload=/bin/kill -HUP <span class="variable">$MAINPID</span></span><br><span class="line">Restart=always</span><br><span class="line">RestartSec=10s</span><br><span class="line">StandardOutput=journal</span><br><span class="line">StandardError=journal</span><br><span class="line">SyslogIdentifier=semaphore</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+
+<p>登録したらサービスを有効化します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> systemctl daemon-reload</span><br><span class="line"><span class="built_in">sudo</span> systemctl <span class="built_in">enable</span> --now semaphore</span><br><span class="line"><span class="built_in">sudo</span> systemctl status semaphore --no-pager -l</span><br></pre></td></tr></table></figure>
+
+<p>最後にポート3000で待ち受けていることを確認します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> ss -ltnp | grep :3000</span><br></pre></td></tr></table></figure>
+
+<p>以下のように表示されれば、Semaphore UIの起動は完了です。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LISTEN ... :3000 ...</span><br></pre></td></tr></table></figure>
+
+<p>ブラウザで以下のURLにアクセスするとSemaphore UIのログイン画面が表示されます。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://&lt;test-ansibleのIPアドレス&gt;:3000</span><br></pre></td></tr></table></figure>
+
+<img src="/new-technology/2026/07/20/ai-ansible3/semaphore1.png" class="" width="360" title="alt">
+
+
+<h2 id="Semaphore-UIの初期設定"><a href="#Semaphore-UIの初期設定" class="headerlink" title="Semaphore UIの初期設定"></a>Semaphore UIの初期設定</h2><p>セットアップ時に作成した管理者ユーザーでログインしてください。</p>
+<p>ログインすると、初期状態ではProjectが存在しないため、以下のような画面が表示されます。</p>
+<img src="/new-technology/2026/07/20/ai-ansible3/semaphore-project.png" class="" width="1024" title="alt">
+
+<p>まずは <strong>新しいプロジェクト</strong> をクリックし、Projectを作成します。</p>
+<p>プロジェクト名には任意の名前を入力します。今回は <code>Test Ansible</code> とします。そして、「このプロジェクトのアラートを許可」のチェックボックスをONにします。最後に作成ボタンをクリックします。</p>
+<p>プロジェクトを作成すると、Ansibleコードを保管するリポジトリやサーバーなどの定義をするインベントリなどの設定を追加できるようになります。ここからはAnsibleを実行するための環境を登録していきます。</p>
+<h2 id="Semaphore-UIにAnsible実行環境を登録する"><a href="#Semaphore-UIにAnsible実行環境を登録する" class="headerlink" title="Semaphore UIにAnsible実行環境を登録する"></a>Semaphore UIにAnsible実行環境を登録する</h2><p>Ansibleを実行するには、最低限以下の情報をSemaphoreへ登録する必要があります。</p>
+<ul>
+<li>GitHub Repository</li>
+<li>SSHキー</li>
+<li>インベントリ</li>
+<li>タスクテンプレート</li>
+</ul>
+<p>これらを一度登録してしまえば、以降はブラウザからPlaybookを実行できるようになります。</p>
+<p>今回は以下の順番で設定していきます。</p>
+<ol>
+<li>キーのストア</li>
+<li>リポジトリ</li>
+<li>インベントリ</li>
+<li>タスクテンプレート</li>
+<li>スケジュール</li>
+</ol>
+<h3 id="SSH-Keyの登録"><a href="#SSH-Keyの登録" class="headerlink" title="SSH Keyの登録"></a>SSH Keyの登録</h3><p>左ペインから <strong>Key Store</strong> を選択し、画面右上の <strong>新しいキー</strong> をクリックします。</p>
+<img src="/new-technology/2026/07/20/ai-ansible3/semaphore-project1.png" class="" width="1024" title="alt">
+
+<p>キー名は「<strong>GitHub SSH Key</strong>」など、分かりやすい名前を付けます。</p>
+<p><strong>Store</strong> は <strong>Local</strong>、<strong>Type</strong> は <strong>SSH Key</strong> を選択してください。</p>
+<p>続いて、GitHubへ登録したSSHキーの<strong>秘密鍵</strong>を登録します。</p>
+<p><code>test-ansible</code> で以下のコマンドを実行し、秘密鍵の内容を表示します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> ~/.ssh/id_ed25519_github</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>注意</strong></p>
+<p><code>id_ed25519_github.pub</code> は公開鍵です。ここで登録するのは <strong><code>.pub</code> が付いていない秘密鍵</strong>です。</p>
+</blockquote>
+<p>表示された内容を <strong>秘密鍵</strong> 欄へ貼り付けます。</p>
+<p>秘密鍵は以下のように、先頭が</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-----BEGIN OPENSSH PRIVATE KEY-----</span><br></pre></td></tr></table></figure>
+
+<p>で始まり、末尾が</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-----END OPENSSH PRIVATE KEY-----</span><br></pre></td></tr></table></figure>
+
+<p>で終わっていることを確認してください。</p>
+<p>最後に <strong>作成</strong> をクリックすると、SSHキーの登録は完了です。</p>
+<h3 id="GitHub-Repositoryの登録"><a href="#GitHub-Repositoryの登録" class="headerlink" title="GitHub Repositoryの登録"></a>GitHub Repositoryの登録</h3><p>続いて、Playbookを取得するGitHubリポジトリを登録します。</p>
+<p>左ペインから <strong>リポジトリ</strong> を選択し、画面右上の <strong>新しいリポジトリ</strong> をクリックします。</p>
+<img src="/new-technology/2026/07/20/ai-ansible3/semaphore-repository1.png" class="" width="1024" title="alt">
+
+<p>各項目は以下のように設定します。&lt;GitHubユーザー名&gt;やリポジトリの名前(test-ansible.git)は環境に応じてに置き換えてください。</p>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>設定値</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Name</td>
+<td>Test Ansible</td>
+</tr>
+<tr>
+<td>Git URL</td>
+<td><code>git@github.com:&lt;GitHubユーザー名&gt;/test-ansible.git</code></td>
+</tr>
+<tr>
+<td>SSH Key</td>
+<td>先ほど登録した <strong>GitHub SSH Key</strong></td>
+</tr>
+<tr>
+<td>Branch</td>
+<td><code>main</code></td>
+</tr>
+</tbody></table>
+<p>入力が完了したら <strong>作成</strong> をクリックします。</p>
+<p>登録が完了すると、SemaphoreはこのGitHubリポジトリからPlaybookを取得して実行できるようになります。</p>
+<p>Git URLを確認する場合は、GitHubのリポジトリ画面から <strong>Code</strong> → <strong>SSH</strong> を選択すると確認できます。</p>
+<img src="/new-technology/2026/07/20/ai-ansible3/github-code-ssh.png" class="" width="1024" title="alt">
+
+<h3 id="Ansible接続用SSHキーの登録"><a href="#Ansible接続用SSHキーの登録" class="headerlink" title="Ansible接続用SSHキーの登録"></a>Ansible接続用SSHキーの登録</h3><p>続いて、Semaphoreから管理対象サーバーへSSH接続するための秘密鍵を登録します。</p>
+<p>先ほど登録した <strong>GitHub SSH Key</strong> は、GitHubからPlaybookを取得するためのSSHキーです。今回登録するSSHキーは、Ansibleが <code>test-vm</code> へ接続してPlaybookを実行するために使用します。</p>
+<p>前回の記事では、<code>test-ansible</code> から <code>test-vm</code> へ接続するため、<code>ansible</code> ユーザー用のSSHキーを作成しました。今回は、その秘密鍵をSemaphoreへ登録します。こちらも実環境に合わせて読み替えてください。</p>
+<p>左ペインから <strong>キーのストア</strong> を選択し、画面右上の <strong>新しいキー</strong> をクリックします。</p>
+<p>キー名は「<strong>Ansible SSH Key</strong>」など、用途が分かる名前にします。<strong>Store</strong> は <strong>Local</strong>、<strong>Type</strong> は <strong>SSH Key</strong> を選択してください。</p>
+<p><code>test-ansible</code> で、前回作成した秘密鍵の内容を確認します。前回はClaude Codeが生成してくれました。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> ~/.ssh/id_ed25519</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>使用する秘密鍵のファイル名は、前回SSHキーを作成した際の指定によって異なります。別のファイル名で作成した場合は、実際のパスに読み替えてください。</p>
+</blockquote>
+<p>表示された秘密鍵を、Semaphoreの <strong>秘密鍵</strong> 欄へ貼り付けます。</p>
+<p>ここでも、<code>.pub</code> が付いていない方を使用します。秘密鍵が以下の行で始まっていることを確認してください。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-----BEGIN OPENSSH PRIVATE KEY-----</span><br></pre></td></tr></table></figure>
+
+<p>SSHキーにパスフレーズを設定している場合は、対応するパスフレーズも入力します。</p>
+<p>最後に <strong>作成</strong> をクリックして登録を完了します。</p>
+<p>これでSSHKeyはGitHub用とAnsible用（他のノードを操作するためにSSHするためのもの）と2つが登録完了しました。</p>
+<h3 id="インベントリの登録"><a href="#インベントリの登録" class="headerlink" title="インベントリの登録"></a>インベントリの登録</h3><p>続いて、Ansibleの管理対象となるサーバーをインベントリへ登録します。</p>
+<p>インベントリには、Ansibleが管理するサーバーの一覧を登録します。</p>
+<p>左ペインから <strong>インベントリ</strong> を選択し、画面右上の <strong>新しいインベントリ</strong> をクリックします。</p>
+<img src="/new-technology/2026/07/20/ai-ansible3/semaphore-inventory1.png" class="" width="1024" title="alt">
+
+<p>以下の内容を入力します。</p>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>設定値</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>名前</td>
+<td>Test Inventory</td>
+</tr>
+<tr>
+<td>ユーザー資格情報</td>
+<td>“Ansible SSH Key”を選択</td>
+</tr>
+<tr>
+<td>タイプ</td>
+<td>File</td>
+</tr>
+<tr>
+<td>インベントリファイルへのパス</td>
+<td>inventories&#x2F;hosts.yml</td>
+</tr>
+<tr>
+<td>リポジトリ（Optional）</td>
+<td>“Test Ansible”を選択</td>
+</tr>
+</tbody></table>
+<p>これで、Ansibleの実行対象となるサーバーがInventoryへ登録されました。</p>
+<h2 id="最初のTask-Templateを作る"><a href="#最初のTask-Templateを作る" class="headerlink" title="最初のTask Templateを作る"></a>最初のTask Templateを作る</h2><p>最初のTask Templateは前回作ったものを取り込む形にしましょう。<br>前回、test-ansibleでは、<code>playbooks/status_check.yml</code>というtest-vmのステータスチェックを行うPlaybookを作成しましたね。これをSemaphoreに登録します。</p>
+<p>左ペインから”タスクテンプレート”をクリックし、画面右上の新しいテンプレートをクリックしてから、”Test Ansible”をクリックします。</p>
+<img src="/new-technology/2026/07/20/ai-ansible3/semaphore-template1.png" class="" width="1024" title="alt">
+
+<p>以下のように入力または選択します</p>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>設定値</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>名前</td>
+<td>Status Check test-vm</td>
+</tr>
+<tr>
+<td>プレイブックファイルへのパス</td>
+<td>playbooks&#x2F;status_check.yml</td>
+</tr>
+<tr>
+<td>インベントリ</td>
+<td>”Test Ansible”を選択</td>
+</tr>
+<tr>
+<td>リポジトリ</td>
+<td>“Test Ansible”を選択</td>
+</tr>
+</tbody></table>
+<p>右下の”作成”ボタンをクリックして登録します。</p>
+<h2 id="status-check-ymlを手動実行する"><a href="#status-check-ymlを手動実行する" class="headerlink" title="status_check.ymlを手動実行する"></a>status_check.ymlを手動実行する</h2><p>さて、いよいよ実行です。</p>
+<p>タスクテンプレートの画面に今回登録したテンプレート「Status Check test-vm」が表示されていると思います。</p>
+<img src="/new-technology/2026/07/20/ai-ansible3/semaphore-template2.png" class="" width="1024" title="alt">
+
+<p>プレイボタン「▶️」をクリックすると当該Playbookが呼び出されます。新しいタスクというダイアログが表示されますので、実行をクリックしてください。</p>
+<img src="/new-technology/2026/07/20/ai-ansible3/run-playbook1.png" class="" width="1024" title="alt">
+
+<p>さて、GUIからPlaybookが実行、確認できるようになりました。<br>最初が少し手間が掛かりますが、GUIによる管理ができるようになれば、過去の実行結果の把握などが容易になります。</p>
+<h2 id="改めて今回テストに使用したplaybook"><a href="#改めて今回テストに使用したplaybook" class="headerlink" title="改めて今回テストに使用したplaybook"></a>改めて今回テストに使用したplaybook</h2><p>前回の記事ではCLIベースでのAnsibleの実行、今回はSemaphoreUIによる実行を行いました。私の環境では、AIが作成してくれたため、必要なファイルについて補足しておきます。</p>
+<p>前回記事で作成したのは、以下のフォルダ構成でした。フォルダの構成を作成するスクリプトも前回の記事に置いてあります。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">test-ansible/</span><br><span class="line">├── ansible.cfg</span><br><span class="line">├── inventories/</span><br><span class="line">│   ├── group_vars/</span><br><span class="line">│   ├── host_vars/</span><br><span class="line">│   └── hosts.yml</span><br><span class="line">├── playbooks/</span><br><span class="line">└── roles/</span><br></pre></td></tr></table></figure>
+<p>そして、前回AIが作成してくれたファイルについて改めて記載します。</p>
+<p>inventories&#x2F;hosts.yml</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">all:</span></span><br><span class="line">  <span class="attr">children:</span></span><br><span class="line">    <span class="attr">ubuntu:</span></span><br><span class="line">      <span class="attr">hosts:</span></span><br><span class="line">        <span class="attr">test-vm:</span></span><br><span class="line">          <span class="attr">ansible_host:</span> <span class="number">192.168</span><span class="string">.xxx.42</span></span><br></pre></td></tr></table></figure>
+
+<p>playbooks&#x2F;status_check.yml</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Check</span> <span class="string">host</span> <span class="string">status</span></span><br><span class="line">  <span class="attr">hosts:</span> <span class="string">ubuntu</span></span><br><span class="line">  <span class="attr">gather_facts:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">roles:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">status_check</span></span><br></pre></td></tr></table></figure>
+
+<p>roles&#x2F;status_check&#x2F;defaults&#x2F;main.yml</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">status_check_disk_mount:</span> <span class="string">&quot;/&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>roles&#x2F;status_check&#x2F;tasks&#x2F;main.yml</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Find</span> <span class="string">target</span> <span class="string">mount</span> <span class="string">facts</span></span><br><span class="line">  <span class="attr">ansible.builtin.set_fact:</span></span><br><span class="line">    <span class="attr">status_check_root_mount:</span> <span class="string">&quot;<span class="template-variable">&#123;&#123; ansible_facts.mounts | selectattr(&#x27;mount&#x27;, &#x27;equalto&#x27;, status_check_disk_mount) | first &#125;&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Calculate</span> <span class="string">disk</span> <span class="string">usage</span> <span class="string">percentage</span></span><br><span class="line">  <span class="attr">ansible.builtin.set_fact:</span></span><br><span class="line">    <span class="attr">status_check_disk_usage_percent:</span> <span class="string">&gt;-</span></span><br><span class="line"><span class="string">      &#123;&#123; ((status_check_root_mount.size_total - status_check_root_mount.size_available)</span></span><br><span class="line"><span class="string">      / status_check_root_mount.size_total * 100) | round(1) &#125;&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Display</span> <span class="string">host</span> <span class="string">status</span></span><br><span class="line">  <span class="attr">ansible.builtin.debug:</span></span><br><span class="line">    <span class="attr">msg:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;hostname : <span class="template-variable">&#123;&#123; ansible_facts.hostname &#125;&#125;</span>&quot;</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;whoami   : <span class="template-variable">&#123;&#123; ansible_facts.user_id &#125;&#125;</span>&quot;</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;uptime   : <span class="template-variable">&#123;&#123; (ansible_facts.uptime_seconds / 86400) | int &#125;&#125;</span> days, <span class="template-variable">&#123;&#123; ((ansible_facts.uptime_seconds % 86400) / 3600) | int &#125;&#125;</span> hours, <span class="template-variable">&#123;&#123; ((ansible_facts.uptime_seconds % 3600) / 60) | int &#125;&#125;</span> min&quot;</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;memory   : <span class="template-variable">&#123;&#123; ansible_facts.memtotal_mb &#125;&#125;</span> MB total / <span class="template-variable">&#123;&#123; ansible_facts.memfree_mb &#125;&#125;</span> MB free&quot;</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;disk(<span class="template-variable">&#123;&#123; status_check_disk_mount &#125;&#125;</span>) : <span class="template-variable">&#123;&#123; status_check_disk_usage_percent &#125;&#125;</span>% used (<span class="template-variable">&#123;&#123; (status_check_root_mount.size_total - status_check_root_mount.size_available) | filesizeformat &#125;&#125;</span> / <span class="template-variable">&#123;&#123; status_check_root_mount.size_total | filesizeformat &#125;&#125;</span>)&quot;</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;ip address : <span class="template-variable">&#123;&#123; ansible_facts.default_ipv4.address | default(&#x27;N/A&#x27;) &#125;&#125;</span>&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>いかがでしょうか、ここまでの流れで、VS CodeとAIを使って作成したAnsibleコードをSemaphoreUIで動かせるようになりました。</p>
+<h2 id="スケジュールを登録する"><a href="#スケジュールを登録する" class="headerlink" title="スケジュールを登録する"></a>スケジュールを登録する</h2><h3 id="TimeZoneの登録"><a href="#TimeZoneの登録" class="headerlink" title="TimeZoneの登録"></a>TimeZoneの登録</h3><p><code>/etc/semaphore.config.json</code>を見ると以下のような構成になっていると思います。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">cat config.json</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line"> 	<span class="attr">&quot;sqlite&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line"> 		<span class="attr">&quot;host&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/var/lib/semaphore/semaphore.db&quot;</span></span><br><span class="line"> 	<span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line"> 	<span class="attr">&quot;dialect&quot;</span><span class="punctuation">:</span> <span class="string">&quot;sqlite&quot;</span><span class="punctuation">,</span></span><br><span class="line"> 	<span class="attr">&quot;tmp_path&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/opt/semaphore&quot;</span><span class="punctuation">,</span></span><br><span class="line"> 	<span class="attr">&quot;cookie_hash&quot;</span><span class="punctuation">:</span> <span class="string">&quot;xxxxx=&quot;</span><span class="punctuation">,</span></span><br><span class="line"> 	<span class="attr">&quot;cookie_encryption&quot;</span><span class="punctuation">:</span> <span class="string">&quot;xxxx=&quot;</span><span class="punctuation">,</span></span><br><span class="line"> 	<span class="attr">&quot;access_key_encryption&quot;</span><span class="punctuation">:</span> <span class="string">&quot;xxxx=&quot;</span></span><br><span class="line"> <span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>ここにTimeZoneを設定します。jsonなので少しインデントなどに気をつけてもらって末尾から2行目にtimezoneの情報を加えて、以下のようにします。”access_key_encryption”: “xxx&#x3D;”の後ろに、（カンマ）を入れて”schedule”からの3行を足します。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line"> 	<span class="attr">&quot;sqlite&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line"> 		<span class="attr">&quot;host&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/var/lib/semaphore/semaphore.db&quot;</span></span><br><span class="line"> 	<span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line"> 	<span class="attr">&quot;dialect&quot;</span><span class="punctuation">:</span> <span class="string">&quot;sqlite&quot;</span><span class="punctuation">,</span></span><br><span class="line"> 	<span class="attr">&quot;tmp_path&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/opt/semaphore&quot;</span><span class="punctuation">,</span></span><br><span class="line"> 	<span class="attr">&quot;cookie_hash&quot;</span><span class="punctuation">:</span> <span class="string">&quot;xxxxx=&quot;</span><span class="punctuation">,</span></span><br><span class="line"> 	<span class="attr">&quot;cookie_encryption&quot;</span><span class="punctuation">:</span> <span class="string">&quot;xxxx=&quot;</span><span class="punctuation">,</span></span><br><span class="line"> 	<span class="attr">&quot;access_key_encryption&quot;</span><span class="punctuation">:</span> <span class="string">&quot;xxxx=&quot;</span><span class="punctuation">,</span></span><br><span class="line">	<span class="attr">&quot;schedule&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">	<span class="attr">&quot;timezone&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Asia/Tokyo&quot;</span></span><br><span class="line">	<span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span> </span><br></pre></td></tr></table></figure>
+
+<p>これはミスしやすいのでツールで確認しましょう。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo python3 -m json.tool /etc/semaphore/config.json &gt;/dev/<span class="literal"><span class="keyword">null</span></span> \</span><br><span class="line">  &amp;&amp; echo <span class="string">&quot;JSON OK&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>その後、サービス再起動します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> systemctl restart semaphore</span><br></pre></td></tr></table></figure>
+
+<p>スケジュール編集画面で <code>Asia/Tokyo time</code> と表示されれば設定完了です。</p>
+<img src="/new-technology/2026/07/20/ai-ansible3/semaphore-schedule.png" class="" width="1024" title="alt">
+
+<p>crontab -eでviで保守していくのはなかなか大変です。個人的な見解を述べさせていただくと、インフラやってる人はみんな嫌いだと思います笑。</p>
+<p>上記のShow cron formatのトグルを外すと、以下のようにわかりやすくなります。これで登録しておけばわかりやすいです。</p>
+<img src="/new-technology/2026/07/20/ai-ansible3/semaphore-schedule2.png" class="" width="360" title="alt">
+
+<p>ただし、このままだとジョブの終了時に通知が何も行われないので、結果がわかりません。ログインしてどうだったか確認できますが、こういったジョブスケジューラーというものはスケジューラーの設定をGUIで行い、その作業が終わったらログインしないのが一般的です。もちろんジョブが落ちたら中身を見ますが、それはログ中心だと思います。</p>
+<p>メール通知でも良いのですが、実は私がセットアップした時には、このメール通知が内部エラーとなりうまく機能しませんでした。最新バージョンでは確認していませんが、過去のユーザーの声を見ても結構な数のレポートがあったので何らかの難しさがあるのでしょう。ここは時代ということもあり、Slackからの通知をやってみましょう。</p>
+<h2 id="SlackのWebhookの作成"><a href="#SlackのWebhookの作成" class="headerlink" title="SlackのWebhookの作成"></a>SlackのWebhookの作成</h2><p>まず無料でアカウントを作成しましょう。ホームラボとして使う分には無料ユーザーの機能で十分多機能です。<br><code>https://slack.com/</code>から右上の”ワークスペースを新規作成”でアカウントを作成しましょう。</p>
+<p>アカウントが作成され、ワークスペースの設定が完了したら、ワークスペースの中で通知チャンネル（ハッシュタグ）を作成しておきます。</p>
+<img src="/new-technology/2026/07/20/ai-ansible3/slack2.png" class="" width="800" title="alt">
+
+<p>私の例だと、チャンネルはHomelabに最適化されていて、目的ごとにチャンネルがありますが、ここでは通知を受けるためのチャンネルを作成しておきます。「チャンネルを追加する」から私のように#semaphoreと入れても良いですね。</p>
+<p>続いてアプリの作成に進みます。</p>
+<p><code>https://api.slack.com/apps</code></p>
+<p>“Create New App”をクリックします。”From Scratch”を選びます。<br>その後、AppNameをたとえば、「Homelab」とし、最初に作成したワークスペースを指定します。</p>
+<img src="/new-technology/2026/07/20/ai-ansible3/slack1.png" class="" width="1024" title="alt">
+
+<p>ここからWebhookの設定を行います。</p>
+<img src="/new-technology/2026/07/20/ai-ansible3/slack3.png" class="" width="1024" title="alt">
+
+<p>まずはIncoming Webhookを有効にします。そのまま下にスクロールして、Add New Webhookをクリックします。</p>
+<img src="/new-technology/2026/07/20/ai-ansible3/slack4.png" class="" width="640" title="alt">
+
+<p>これらの作業によって、チャンネルごとのWebhookが作成されます。今回はSemaphore向けですが、ProxmoxからもSlackのWebhookは指定できますので、通知が一元管理できます。私の例をご覧になるとお分かりかと思いますが、Semaphoreの通知、Ansible Playbookそのものからの通知、ProxmoxのBackup通知、または目的毎にパッチなどもチャンネル単位に分けています。最後のprotect&#x2F;uniFiについては、UniFi Protect（監視カメラ）、UniFi(ネットワーク）からの通知を受けています（UniFiクラウド機能はOffにしてSlackで通知を一元管理）。</p>
+<p>ここで登録したチャンネル毎のURLを”Copy”ボタンでクリップボードにコピーしておいてください。</p>
+<h2 id="SlackのWebhookをSemaphoreUIに登録"><a href="#SlackのWebhookをSemaphoreUIに登録" class="headerlink" title="SlackのWebhookをSemaphoreUIに登録"></a>SlackのWebhookをSemaphoreUIに登録</h2><p>さて、先ほどは、<code>/etc/semaphore.config.json</code>を編集しましたが、またこのファイルの編集が必要です。<br>今回は先ほど追加したTimezoneの上に2行足しましょう。先ほどクリップボードにコピーしたURLを”slack_url”: の後に””で囲った上で貼り付けてください。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;slack_alert&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line"><span class="attr">&quot;slack_url&quot;</span><span class="punctuation">:</span> <span class="string">&quot;https://hooks.slack.com/services/XXXXXXXXXXXX&quot;</span><span class="punctuation">,</span></span><br></pre></td></tr></table></figure>
+
+<p>改めて、ツールで確認しましょう。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo python3 -m json.tool /etc/semaphore/config.json &gt;/dev/<span class="literal"><span class="keyword">null</span></span> \</span><br><span class="line">  &amp;&amp; echo <span class="string">&quot;JSON OK&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>その後、サービス再起動します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> systemctl restart semaphore</span><br></pre></td></tr></table></figure>
+
+<p>もう一度登録したジョブを実行してみます。<br>今度はSlack通知が行われたログが表示されました。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">7:49:43 PM</span><br><span class="line">PLAY RECAP *********************************************************************</span><br><span class="line">7:49:43 PM</span><br><span class="line">test-vm                    : ok=4    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   </span><br><span class="line">7:49:43 PM</span><br><span class="line">7:49:43 PM</span><br><span class="line">Attempting to send slack alert</span><br><span class="line">7:49:44 PM</span><br><span class="line">Sent successfully slack alert</span><br></pre></td></tr></table></figure>
+
+<p>私のスマホにはSlackをインストールしていますが、無事ジョブが正常終了したことが通知されました。</p>
+<img src="/new-technology/2026/07/20/ai-ansible3/slack5.png" class="" width="480" title="alt">
+
+<h2 id="まとめ"><a href="#まとめ" class="headerlink" title="まとめ"></a>まとめ</h2><p>さて、今回はAIを利用したAnsibleの実装にSlack通知まで進めたかったのですが、かなり長くなったのでここで一旦区切ります。<br>今回はSemaphoreUIのセットアップ、そしてSemaphoreからSlackへの通知までを行いました。<br>ただし、今回はAnsibleのジョブが正常終了したか異常終了したかだけの通知になります。実際にジョブの中でアラートが発生したり、何らかの警告や情報を通知したい場合はこれでは不足しています。つまり別のSlackのチャネルに何らかの付加情報を加えて、初めて運用の高度化が成り立ちます。次回はAnsibleのPlaybookの中で直接ユーザーに必要な情報をSlackに通知する方法をまとめたいと考えています。</p>
+<p>今回はまだAnsibleの高度化はしていないので、UbuntuのVMの参照しか行っていませんが、最終的にはProxmoxに対して安全な操作を行うところまでを目的にしたいと考えてます。</p>
+<p>前回と今回の記事でAIを使ってAnsibleの構築およびジョブの自動実行ができるようになり、Proxmoxの運用の高度化について、実現可能性が見えてきたと思います。今後の記事ではもう一歩先に進み、AIによるAnsibleの高度化についてまとめていきたいと考えてます。私の環境はProxmoxのクラスター構成であり、QdeviceにSemaphoreUIを配置し、Proxmoxクラスターの外のノードからProxmoxを操作していますが、必ずしもユーザー全てがそういう環境にはなく、むしろシングルノードのProxmoxユーザーが大半だと思われます。リスクのある破壊的操作を避けてProxmoxのパッチ情報の抽出などに取り組みたいと考えています。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/new-technology/tags/proxmox/" rel="tag"><i class="fa fa-tag"></i> proxmox</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/new-technology/2026/07/11/ai-ansible2/" rel="prev" title="Proxmox運用にAnsibleとAIを活用する：Ansibleの始め方">
+                  <i class="fa fa-angle-left"></i> Proxmox運用にAnsibleとAIを活用する：Ansibleの始め方
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2020 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">阿部　吉伸(Yoshinobu ABE)</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div><script src="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.umd.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.min.css" rel="stylesheet">
+
+<script>
+if (Cookies.get('PRVCY202112') != 'Agree') {
+  const notice = new SimpleGDPR({
+    title: 'Accept Cookies & Privacy Policy?',
+    message: 'このWebサイトでは、訪問や活動に関するデータがクッキー等によって収集されます。閲覧を継続される場合、\
+    プライバシーポリシーをご覧いただき同意(Agree)をお願いします',
+    link: null,
+    icons: true,
+    theme: 'light',
+    animation: 'fade',
+    float: 'bottom-right',
+      callback: () => {
+      notice.close();
+      Cookies.set('PRVCY202112', 'Agree', { expires: 365, path: '/'});
+      notice.destroy();
+      // Google Analytics 4
+      gtag('consent', 'update', {
+      'analytics_storage': 'granted'
+      });
+      gtag('js', new Date());
+      gtag('config', 'G-JMY6NSC2KK', { 'anonymize_ip': true });
+      },
+  });
+}
+</script>
+<div class="disclaimer1">
+このサイトの記事は、特別な記載がない限り <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja">クリエイティブ・コモンズ BY-NC-SA ライセンス</a>で保護されています</div>
+
+
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/yoshi0808" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>
