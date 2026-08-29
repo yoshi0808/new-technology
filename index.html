@@ -199,13 +199,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/new-technology/archives/">
-          <span class="site-state-item-count">109</span>
+          <span class="site-state-item-count">110</span>
           <span class="site-state-item-name">ポスト</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/new-technology/categories/">
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">カテゴリ</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -241,6 +241,104 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2026/08/29/proxmox-operations/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/new-technology/images/yoshi.png">
+      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="New technologies in our life">
+      <meta itemprop="description" content="IT">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | New technologies in our life">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/new-technology/2026/08/29/proxmox-operations/" class="post-title-link" itemprop="url">自宅のProxmoxクラスタ、AIに運用させる前に何を用意したか</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">投稿日</span>
+      
+
+      <time title="作成日：2026-08-29 01:19:46 / 修正日：12:48:03" itemprop="dateCreated datePublished" datetime="2026-08-29T01:19:46+09:00">2026-08-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">カテゴリ</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/AI/" itemprop="url" rel="index"><span itemprop="name">AI</span></a>
+        </span>
+          、
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/AI/Ansible/" itemprop="url" rel="index"><span itemprop="name">Ansible</span></a>
+        </span>
+          、
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/AI/Ansible/Network/" itemprop="url" rel="index"><span itemprop="name">Network</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <img src="/new-technology/2026/08/29/proxmox-operations/Title.png" class="" title="alt">
+
+<h2 id="AIエージェントに本番サーバの鍵を渡すのをやめました"><a href="#AIエージェントに本番サーバの鍵を渡すのをやめました" class="headerlink" title="AIエージェントに本番サーバの鍵を渡すのをやめました"></a>AIエージェントに本番サーバの鍵を渡すのをやめました</h2><p>「本番には触るな」とプロンプトには書いていました。ハーネスで止めても、AIエージェントが誤って（迂回して）本番へ触ろうとしたことが何度かあり、そのたびに文章を書き足しました。書き足せば書き足すほど、守られない文章が増えていく感覚がありました。</p>
+<p>最終的にやったのは、文章を足すことではなく、<code>~/.ssh/</code> から鍵ファイルそのものを削除することでした。届かなくなったので、結果的に守れるようになったわけです。</p>
+<p>——という運用を、自宅のProxmoxクラスタで行っています。この記事ではまず、その「運用されている側」、つまり何がどう動いているのかを紹介します。AIに任せるための設計そのものは、次回以降でまとめる予定です。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/new-technology/2026/08/29/proxmox-operations/#more" rel="contents">
+                続きを読む &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -383,7 +481,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">編集日</span>
-      <time title="修正日：2026-07-18 07:21:24" itemprop="dateModified" datetime="2026-07-18T07:21:24+09:00">2026-07-18</time>
+      <time title="修正日：2026-08-29 10:21:43" itemprop="dateModified" datetime="2026-08-29T10:21:43+09:00">2026-08-29</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -391,11 +489,7 @@
       </span>
       <span class="post-meta-item-text">カテゴリ</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/new-technology/categories/AI/" itemprop="url" rel="index"><span itemprop="name">AI</span></a>
-        </span>
-          、
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/new-technology/categories/AI/Ansible/" itemprop="url" rel="index"><span itemprop="name">Ansible</span></a>
+          <a href="/new-technology/categories/AI-AI-Ansible/" itemprop="url" rel="index"><span itemprop="name">AI - AI - Ansible</span></a>
         </span>
     </span>
 
@@ -484,7 +578,24 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">編集日</span>
-      <time title="修正日：2026-07-06 20:34:34" itemprop="dateModified" datetime="2026-07-06T20:34:34+09:00">2026-07-06</time>
+      <time title="修正日：2026-08-29 12:02:19" itemprop="dateModified" datetime="2026-08-29T12:02:19+09:00">2026-08-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">カテゴリ</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/AI/" itemprop="url" rel="index"><span itemprop="name">AI</span></a>
+        </span>
+          、
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/AI/Ansible/" itemprop="url" rel="index"><span itemprop="name">Ansible</span></a>
+        </span>
+          、
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/AI/Ansible/Network/" itemprop="url" rel="index"><span itemprop="name">Network</span></a>
+        </span>
     </span>
 
   
@@ -1039,100 +1150,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/new-technology/2025/10/13/xg-v215mr1/#more" rel="contents">
-                続きを読む &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2025/05/31/xg-v215/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/new-technology/images/yoshi.png">
-      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="New technologies in our life">
-      <meta itemprop="description" content="IT">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | New technologies in our life">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/new-technology/2025/05/31/xg-v215/" class="post-title-link" itemprop="url">Sophos Firewall v21.5</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">投稿日</span>
-
-      <time title="作成日：2025-05-31 05:37:33" itemprop="dateCreated datePublished" datetime="2025-05-31T05:37:33+09:00">2025-05-31</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">編集日</span>
-      <time title="修正日：2025-06-03 18:26:04" itemprop="dateModified" datetime="2025-06-03T18:26:04+09:00">2025-06-03</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">カテゴリ</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/new-technology/categories/Security/" itemprop="url" rel="index"><span itemprop="name">Security</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <img src="/new-technology/2025/05/31/xg-v215/Title.png" class="" title="alt">
-
-<h2 id="Sophos-Firewall-v21-5"><a href="#Sophos-Firewall-v21-5" class="headerlink" title="Sophos Firewall v21.5"></a>Sophos Firewall v21.5</h2><p>Sophos Firewall v21.5が2025年5月29日に発表されました。VPNのスケーラビリティの向上、その他の機能向上として、ホームエディションのRAM制限の撤廃、DHCPプレフィックス委任緩和（&#x2F;48〜&#x2F;64のプレフィックスに対応）が挙げられます。無償のホームユーザーに対しても積極的な機能提供が行われています。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/new-technology/2025/05/31/xg-v215/#more" rel="contents">
                 続きを読む &raquo;
               </a>
             </div>

@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/icon-16x16.png">
+  <link rel="mask-icon" href="/new-technology/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/new-technology/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.29.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"github","dark":"a11y-dark"},"prism":{"light":"prism-vs","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js" defer></script>
+
+    <meta name="description" content="AIエージェントに本番サーバの鍵を渡すのをやめました「本番には触るな」とプロンプトには書いていました。ハーネスで止めても、AIエージェントが誤って（迂回して）本番へ触ろうとしたことが何度かあり、そのたびに文章を書き足しました。書き足せば書き足すほど、守られない文章が増えていく感覚がありました。 最終的にやったのは、文章を足すことではなく、~&#x2F;.ssh&#x2F; から鍵ファイルそのものを削除することでし">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自宅のProxmoxクラスタ、AIに運用させる前に何を用意したか">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2026/08/29/proxmox-operations/index.html">
+<meta property="og:site_name" content="New technologies in our life">
+<meta property="og:description" content="AIエージェントに本番サーバの鍵を渡すのをやめました「本番には触るな」とプロンプトには書いていました。ハーネスで止めても、AIエージェントが誤って（迂回して）本番へ触ろうとしたことが何度かあり、そのたびに文章を書き足しました。書き足せば書き足すほど、守られない文章が増えていく感覚がありました。 最終的にやったのは、文章を足すことではなく、~&#x2F;.ssh&#x2F; から鍵ファイルそのものを削除することでし">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/08/29/proxmox-operations/Title.png">
+<meta property="article:published_time" content="2026-08-28T16:19:46.000Z">
+<meta property="article:modified_time" content="2026-08-29T03:48:03.349Z">
+<meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
+<meta property="article:tag" content="UniFi">
+<meta property="article:tag" content="proxmox">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2026/08/29/proxmox-operations/Title.png">
+
+
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2026/08/29/proxmox-operations/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"ja","comments":true,"permalink":"https://yoshi0808.github.io/new-technology/2026/08/29/proxmox-operations/","path":"2026/08/29/proxmox-operations/","title":"自宅のProxmoxクラスタ、AIに運用させる前に何を用意したか"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>自宅のProxmoxクラスタ、AIに運用させる前に何を用意したか | New technologies in our life</title>
+  
+
+
+
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{&quot;token&quot;: &quot;0148b4d0442e42b483ddce684030bd2f&quot;}'></script>
+
+
+
+
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+<script src="/new-technology/js/utils.js" defer></script><script src="/new-technology/js/motion.js" defer></script><script src="/new-technology/js/sidebar.js" defer></script><script src="/new-technology/js/next-boot.js" defer></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.5.0/dist/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/new-technology/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@11.10.1/dist/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/new-technology/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JMY6NSC2KK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+  'ad_storage': 'denied',
+  'analytics_storage': 'denied'
+  });
+
+  dataLayer.push({
+  'event': 'default_consent'
+  });
+
+  if (Cookies.get('PRVCY202112') == 'Agree') {
+    gtag('consent', 'update', {
+    'analytics_storage': 'granted'
+    });
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'G-JMY6NSC2KK',{ 'anonymize_ip': true });
+</script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/new-technology/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/new-technology/atom.xml" title="New technologies in our life" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="ナビゲーションバーの切り替え" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/new-technology/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">New technologies in our life</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Device,Network,Code,etc...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="検索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/new-technology/" rel="section"><i class="fa fa-home fa-fw"></i>ホーム</a></li><li class="menu-item menu-item-about"><a href="/new-technology/about/" rel="section"><i class="fa fa-user fa-fw"></i>サイトポリシー</a></li><li class="menu-item menu-item-tags"><a href="/new-technology/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>タグ</a></li><li class="menu-item menu-item-categories"><a href="/new-technology/categories/" rel="section"><i class="fa fa-th fa-fw"></i>カテゴリ</a></li><li class="menu-item menu-item-archives"><a href="/new-technology/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>アーカイブ</a></li><li class="menu-item menu-item-privacy"><a href="/new-technology/privacypolicy/" rel="section"><i class="fa fa-check fa-fw"></i>プライバシーポリシー</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="検索…" spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          見出し
+        </li>
+        <li class="sidebar-nav-overview">
+          概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#AI%E3%82%A8%E3%83%BC%E3%82%B8%E3%82%A7%E3%83%B3%E3%83%88%E3%81%AB%E6%9C%AC%E7%95%AA%E3%82%B5%E3%83%BC%E3%83%90%E3%81%AE%E9%8D%B5%E3%82%92%E6%B8%A1%E3%81%99%E3%81%AE%E3%82%92%E3%82%84%E3%82%81%E3%81%BE%E3%81%97%E3%81%9F"><span class="nav-number">1.</span> <span class="nav-text">AIエージェントに本番サーバの鍵を渡すのをやめました</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%95%E3%82%92%E9%81%8B%E7%94%A8%E3%81%97%E3%81%A6%E3%81%84%E3%82%8B%E3%81%8B"><span class="nav-number">2.</span> <span class="nav-text">何を運用しているか</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A6%B3%E6%B8%AC-%E2%80%94-%E3%83%AD%E3%82%B0%E3%81%A8%E3%83%A1%E3%83%88%E3%83%AA%E3%82%AF%E3%82%B9%E3%81%AE%E9%9B%86%E7%B4%84"><span class="nav-number">3.</span> <span class="nav-text">観測 — ログとメトリクスの集約</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%81%8B%E7%94%A8%E3%81%AE%E4%B8%AD%E8%BA%AB"><span class="nav-number">4.</span> <span class="nav-text">運用の中身</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%98%E3%83%AB%E3%82%B9%E3%83%81%E3%82%A7%E3%83%83%E3%82%AF-%E2%80%94-%E5%85%A8%E3%81%A6%E3%81%AE%E5%87%BA%E7%99%BA%E7%82%B9"><span class="nav-number">4.1.</span> <span class="nav-text">ヘルスチェック — 全ての出発点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A8%BC%E6%98%8E%E6%9B%B8%E7%AE%A1%E7%90%86-%E2%80%94-%E5%AE%B6%E5%BA%AD%E5%86%85PKI"><span class="nav-number">4.2.</span> <span class="nav-text">証明書管理 — 家庭内PKI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%83%91%E3%83%83%E3%83%81%E7%AE%A1%E7%90%86-%E2%80%94-%E7%84%A1%E5%81%9C%E6%AD%A2%E3%83%AD%E3%83%BC%E3%83%AA%E3%83%B3%E3%82%B0"><span class="nav-number">4.3.</span> <span class="nav-text">パッチ管理 — 無停止ローリング</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%B6%E5%BE%A1%E5%B9%B3%E9%9D%A2-%E2%80%94-%E8%AA%B0%E3%81%8Cplaybook%E3%82%92%E6%B5%81%E3%81%99%E3%81%AE%E3%81%8B"><span class="nav-number">5.</span> <span class="nav-text">制御平面 — 誰がplaybookを流すのか</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AC%A1%E5%9B%9E%E4%BA%88%E5%91%8A"><span class="nav-number">6.</span> <span class="nav-text">次回予告</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="阿部　吉伸(Yoshinobu ABE)"
+      src="/new-technology/images/yoshi.png">
+  <p class="site-author-name" itemprop="name">阿部　吉伸(Yoshinobu ABE)</p>
+  <div class="site-description" itemprop="description">IT</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/new-technology/archives/">
+          <span class="site-state-item-count">110</span>
+          <span class="site-state-item-name">ポスト</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/new-technology/categories/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">カテゴリ</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/new-technology/tags/">
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">タグ</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yoshi0808" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yoshi0808" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yoshi0808.blog@gmail.com" title="E-Mail → mailto:yoshi0808.blog@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yoshi0808_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yoshi0808_" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/big/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="ja">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2026/08/29/proxmox-operations/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/new-technology/images/yoshi.png">
+      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="New technologies in our life">
+      <meta itemprop="description" content="IT">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="自宅のProxmoxクラスタ、AIに運用させる前に何を用意したか | New technologies in our life">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          自宅のProxmoxクラスタ、AIに運用させる前に何を用意したか
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">投稿日</span>
+      
+
+      <time title="作成日：2026-08-29 01:19:46 / 修正日：12:48:03" itemprop="dateCreated datePublished" datetime="2026-08-29T01:19:46+09:00">2026-08-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">カテゴリ</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/AI/" itemprop="url" rel="index"><span itemprop="name">AI</span></a>
+        </span>
+          、
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/AI/Ansible/" itemprop="url" rel="index"><span itemprop="name">Ansible</span></a>
+        </span>
+          、
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/AI/Ansible/Network/" itemprop="url" rel="index"><span itemprop="name">Network</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><img src="/new-technology/2026/08/29/proxmox-operations/Title.png" class="" title="alt">
+
+<h2 id="AIエージェントに本番サーバの鍵を渡すのをやめました"><a href="#AIエージェントに本番サーバの鍵を渡すのをやめました" class="headerlink" title="AIエージェントに本番サーバの鍵を渡すのをやめました"></a>AIエージェントに本番サーバの鍵を渡すのをやめました</h2><p>「本番には触るな」とプロンプトには書いていました。ハーネスで止めても、AIエージェントが誤って（迂回して）本番へ触ろうとしたことが何度かあり、そのたびに文章を書き足しました。書き足せば書き足すほど、守られない文章が増えていく感覚がありました。</p>
+<p>最終的にやったのは、文章を足すことではなく、<code>~/.ssh/</code> から鍵ファイルそのものを削除することでした。届かなくなったので、結果的に守れるようになったわけです。</p>
+<p>——という運用を、自宅のProxmoxクラスタで行っています。この記事ではまず、その「運用されている側」、つまり何がどう動いているのかを紹介します。AIに任せるための設計そのものは、次回以降でまとめる予定です。</p>
+<span id="more"></span>
+
+<h2 id="何を運用しているか"><a href="#何を運用しているか" class="headerlink" title="何を運用しているか"></a>何を運用しているか</h2><p>まずは全体の構成から見ていきます。以降の図やplaybookには、私が付けたホスト名がそのまま出てきます。先に一覧にしておきます。</p>
+<table>
+<thead>
+<tr>
+<th>ホスト名</th>
+<th>役割</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>pve1</code> &#x2F; <code>pve2</code></td>
+<td>Proxmox VEクラスタを構成する物理ノード</td>
+</tr>
+<tr>
+<td><code>quory</code></td>
+<td>クラスタ<strong>外</strong>に置いた制御ノード。QDevice(2ノードクラスタの投票役)と、後述するAnsible本番実行環境を兼ねる</td>
+</tr>
+<tr>
+<td><code>sophos-fw</code></td>
+<td>ファイアウォール兼DNS。クラスタ上で動くVM</td>
+</tr>
+<tr>
+<td><code>authy</code></td>
+<td>FreeRADIUS(WPA3 Enterprise認証用)</td>
+</tr>
+<tr>
+<td><code>monnie</code></td>
+<td>監視スタック(Prometheus &#x2F; Grafana &#x2F; Loki)が動くVM</td>
+</tr>
+<tr>
+<td><code>sandbox</code></td>
+<td>使い捨ての検証用VM</td>
+</tr>
+<tr>
+<td><code>ansy</code></td>
+<td>Ansibleの開発・編集を行う環境。本番(<code>quory</code>)へは接続できない</td>
+</tr>
+</tbody></table>
+<p>QDeviceについては後ほど詳しく触れますが、簡単に言うと「2台構成のProxmoxクラスタで、どちらかのノードが落ちてももう一方が正常に動き続けられるように、第3の投票権を持たせておく仕組み」です。<code>quory</code> がその役割を担っています。</p>
+<p>それでは構成図です。</p>
+<pre>
+<code class="mermaid">
+flowchart TB
+
+NET([インターネット])
+subgraph rack[&quot;自宅ラック&quot;]
+    subgraph pvecluster[&quot;Proxmox VE クラスタ&quot;]
+        PVE1[&quot;pve1&quot;]
+        PVE2[&quot;pve2&quot;]
+    end
+    QUORY[&quot;quory&lt;br&#x2F;&gt;&lt;small&gt;制御ノード &#x2F; クラスタ外&lt;&#x2F;small&gt;&quot;]
+    SW[&quot;UniFi スイッチ&quot;]
+    AP[&quot;UniFi AP&quot;]
+    CK[&quot;CloudKey&lt;br&#x2F;&gt;&lt;small&gt;UniFi コントローラ&lt;&#x2F;small&gt;&quot;]
+    NAS[(&quot;Synology NAS&lt;br&#x2F;&gt;&lt;small&gt;バックアップ&lt;&#x2F;small&gt;&quot;)]
+end
+FW[&quot;sophos-fw&lt;br&#x2F;&gt;&lt;small&gt;ファイアウォール(VM)&lt;&#x2F;small&gt;&quot;]
+
+NET --&gt; PVE1
+NET --&gt; PVE2
+PVE1 -.ホスト.-&gt; FW
+PVE2 -.ホスト.-&gt; FW
+FW --&gt; SW
+SW --- AP
+SW --- CK
+SW --- PVE2
+SW --- QUORY
+SW --- NAS
+
+</code>
+</pre>
+
+
+<p>この構成で一番面白いのは、ファイアウォール(<code>sophos-fw</code>)がクラスタ上のVMだという点です。インターネットとの境界そのものが、自分がパッチを当てる対象の上に乗っています。だから、後述するパッチ運用はかなり慎重に設計しています。</p>
+<p>WANの引き込みもpve1・pve2の両方に来ており、ファイアウォールはHAで動いているため、通常はpve1側で稼働していても、フェイルオーバーが起きればpve2側に移って動き続けます。つまり境界そのものが「固定された場所」ではなく「動く」設計になっているということです。</p>
+<p>もう一点、<code>quory</code> がクラスタの<strong>外</strong>にいることも意図的です。クラスタを止める作業の制御点が、止める対象の上に乗っていてはいけないと考えたためです。</p>
+<pre>
+<code class="mermaid">
+flowchart TB
+
+subgraph cluster[&quot;Proxmox VE クラスタ&quot;]
+    FW[&quot;sophos-fw&lt;br&#x2F;&gt;&lt;small&gt;ファイアウォール・DNS&lt;&#x2F;small&gt;&quot;]
+    AUTHY[&quot;authy&lt;br&#x2F;&gt;&lt;small&gt;FreeRADIUS&lt;&#x2F;small&gt;&quot;]
+    MONNIE[&quot;monnie&lt;br&#x2F;&gt;&lt;small&gt;Prometheus &#x2F; Grafana &#x2F; Loki&lt;&#x2F;small&gt;&quot;]
+    SANDBOX[&quot;sandbox&lt;br&#x2F;&gt;&lt;small&gt;使い捨て検証用&lt;&#x2F;small&gt;&quot;]
+end
+QUORY[&quot;quory&lt;br&#x2F;&gt;&lt;small&gt;制御ノード + QDevice&lt;&#x2F;small&gt;&quot;]
+QUORY -.-&gt;|&quot;corosync-qnetd&lt;br&#x2F;&gt;(2ノードのquorum成立)&quot;| cluster
+
+classDef ha fill:#2d6a4f,stroke:#40916c,color:#fff
+class FW,AUTHY ha
+</code>
+</pre>
+
+<p>緑色になっているのがHA管理対象(<code>sophos-fw</code> &#x2F; <code>authy</code>)で、ノードの保守時には自動で反対側のノードへ移動します。一方、<code>monnie</code>(監視スタック)と <code>sandbox</code>(検証用)はHA対象外です。</p>
+<p>2ノード構成のProxmoxクラスタは、そのままだと片方のノードが落ちた際にquorumを失ってしまいます。そこで <code>quory</code> を <code>corosync-qnetd</code> として第3の投票者にしています。制御ノードをクラスタの外に置いた理由は、この点にも表れています。</p>
+<p>正直に書くと、冗長化の度合いにはばらつきがあります。<code>authy</code>(RADIUS)はソフトウェア自体をクラスタリングしているわけではありませんが、VMとしてProxmoxのHA管理下にあるため、ノード障害時には自動的に反対側のノードへ移動します。つまりインフラ層での冗長化は効いている、ということです。一方で <code>monnie</code>(監視スタック)はHA対象外のため、こちらは正直に単一障害点として残っています。これは意図的な割り切りで、監視ログを最後まで残すためにあえてフェイルオーバーさせない設定にしています。家庭向けの構成としてクリティカルなサービスそのものを持たせているわけではなく、あくまで監視専用のノードなので、可用性よりもログの一貫性を優先した形です。個人のホームラボとしてはそれなりに本格的な作りだと思いますが、すべてが均等に冗長化されているわけではありません。</p>
+<h2 id="観測-—-ログとメトリクスの集約"><a href="#観測-—-ログとメトリクスの集約" class="headerlink" title="観測 — ログとメトリクスの集約"></a>観測 — ログとメトリクスの集約</h2><p>障害や異常を追うための観測パイプラインは、<code>monnie</code> という1台のVMに集約しています。</p>
+<pre>
+<code class="mermaid">
+flowchart LR
+subgraph sources[&quot;送信元&quot;]
+    UNIFI[&quot;UniFiスイッチ &#x2F; AP&lt;br&#x2F;&gt;&lt;small&gt;GUI設定&lt;&#x2F;small&gt;&quot;]
+    CK[&quot;UniFi Controller&lt;br&#x2F;&gt;&lt;small&gt;CloudKey&lt;&#x2F;small&gt;&quot;]
+    UBUNTU[&quot;Ubuntuホスト&lt;br&#x2F;&gt;&lt;small&gt;rsyslog(Ansible管理)&lt;&#x2F;small&gt;&quot;]
+    PVE[&quot;Proxmox&lt;br&#x2F;&gt;&lt;small&gt;rsyslog(手動)&lt;&#x2F;small&gt;&quot;]
+end
+subgraph monnie[&quot;monnie&quot;]
+    RSYS[&quot;rsyslog receiver&quot;]
+    JOURNAL[&quot;local journal&quot;]
+    ALLOY[&quot;Grafana Alloy&quot;]
+    LOKI[(&quot;Loki&quot;)]
+    PROM[(&quot;Prometheus&quot;)]
+    UNPOLLER[&quot;unpoller&quot;]
+    GRAFANA[&quot;Grafana&quot;]
+end
+SLACK[&quot;Slack&quot;]
+
+UNIFI --&gt;|syslog| RSYS
+CK --&gt;|syslog| RSYS
+CK --&gt;|API| UNPOLLER
+UBUNTU --&gt;|syslog| RSYS
+PVE --&gt;|syslog| RSYS
+RSYS --&gt; ALLOY
+JOURNAL --&gt; ALLOY
+ALLOY --&gt; LOKI
+UNPOLLER --&gt; PROM
+LOKI --&gt; GRAFANA
+PROM --&gt; GRAFANA
+GRAFANA --&gt;|&quot;アラート&lt;br&#x2F;&gt;(例: スイッチのPacket Error&#x2F;Drop)&quot;| SLACK
+</code>
+</pre>
+
+<p>工夫している点は、Lokiへ書き込むのはAlloyだけに絞っていることです。送信元はUniFi機器・Ubuntuホスト・Proxmoxとバラバラですが、書き手を1つに統一することで、ログの流れを追いやすくしています。</p>
+<p>メトリクス面では、UniFi Controller(CloudKey)のAPIからUniFi Poller (<code>unpoller</code> )がメトリクスを取得し、Prometheusへ取り込んでいます。ここで実際に運用に活きているのが、スイッチポートのPacket Error &#x2F; Dropの監視です。Grafana側でこれを検知した場合はSlackへ通知するようにしていて、ケーブルの劣化やポートの異常といった、普段は気づきにくい物理層のトラブルの早期発見に役立っています。</p>
+<p>管理の仕方は正直、層によってバラバラです。monnie上のreceiverとAlloyはAnsibleで管理、Ubuntu側のsyslog送信設定もAnsibleで統一しています。一方でProxmoxのsyslog送信は手動設定、UniFi機器やSophos Firewallなどのアプライアンス類は各自のGUIで設定しています。「全部IaC(Infrastructure as Code)」というきれいな状態ではなく、現実的な範囲で整えている、という状況です。</p>
+<p>余談ですが、CloudKeyのログはCEF形式で <code>level</code> フィールドを持たないため、Grafana側の既定フィルタ(warning&#x2F;error)から漏れてしまい、「ログが来ていない」ように見えたことがありました。実際にはパイプライン自体は健全に動いていて、単にフィルタの条件に引っかからなかっただけ、というオチです。こういう「動いているのに動いていないように見える」トラブルは、監視を組んでいると意外とよく出会います。</p>
+<h2 id="運用の中身"><a href="#運用の中身" class="headerlink" title="運用の中身"></a>運用の中身</h2><p>ここでは代表的な運用を3つ、実際に起きたことも含めて紹介します。</p>
+<h3 id="ヘルスチェック-—-全ての出発点"><a href="#ヘルスチェック-—-全ての出発点" class="headerlink" title="ヘルスチェック — 全ての出発点"></a>ヘルスチェック — 全ての出発点</h3><p>最初に作ったのがこのヘルスチェックでした。Proxmox・RADIUS・監視スタックそれぞれに対して、日次で状態を確認しています。</p>
+<p>設計で意識しているのは、shellスクリプト側は観測だけを行い、判定はAnsible側で行うという役割分担です。shellに閾値判定まで持たせてしまうと、後になって「なぜこの値でアラートが上がったのか」を追いにくくなってしまうためです。</p>
+<p>また、正常時はあえて通知しないようにしています。ただし「通知が来ないこと」自体を、実行が成功した根拠にはしていません。実行されたかどうかは、<code>quory</code>上のSemaphoreUIのジョブ履歴で別途確認するようにしています。「通知がない&#x3D;正常」という思い込みは、ジョブそのものが動いていなかった場合に気づけなくなるリスクがあるからです。</p>
+<h3 id="証明書管理-—-家庭内PKI"><a href="#証明書管理-—-家庭内PKI" class="headerlink" title="証明書管理 — 家庭内PKI"></a>証明書管理 — 家庭内PKI</h3><p>最近はフィッシング対策等でパスキー全盛となり、サーバーの正当性確認が従来以上に求められています。内部サービス向けに、私設のCA(認証局)で証明書を発行・配布しています。ここで言う「証明書」はWebサーバー向けだけの話ではありません。VPNやRADIUS(EAP-TLS認証)も含めて、社内、もとい家庭内で使う証明書はすべて同じRoot CAを起点にしています。各ノードに配置しているのは、Root CA自身ではなく、そこから発行した中間CAです。Root CAの秘密鍵は普段オンラインの場所には置かず、外部ストレージに保管しています。</p>
+<p>この構成にしている理由は運用の単純さです。スマートフォンやPCには、Root CAをたった1つ登録しておくだけで、Webサーバー、VPN、RADIUSなど、家庭内のあらゆるサービスの証明書を検証できるようになります。RADIUS側から見ても恩恵は大きく、クライアント端末が増えるたびに何か設定を追加する必要はなく、サーバー側にRoot CAから署名されたサーバー証明書さえ置いておけば、あとはほぼ放っておける状態になります。</p>
+<p>週次で有効期限を確認し、残り15日を切ったタイミングで各サービスの証明書(中間CAから発行しているもの)を更新する運用です。</p>
+<p>ここで一つ、実際にあった落とし穴を紹介します。「ROOT CAを配っているつもり」で運用していたところ、実は配布していたのは中間CAだったことに後から気づきました。ファイル名が <code>home-tls-ca.crt</code> となっていて、いかにもROOTらしい名前だったのが原因です。証明書はファイル名ではなく、subjectやissuerといった中身で確認しなければならない、という教訓を得ました。</p>
+<p>なお、証明書更新作業で使うCAの秘密鍵はtmpfs上にのみ展開し、作業が終わったら消すようにしています。ディスク上に平文で残さないための最低限の配慮です。</p>
+<h3 id="パッチ管理-—-無停止ローリング"><a href="#パッチ管理-—-無停止ローリング" class="headerlink" title="パッチ管理 — 無停止ローリング"></a>パッチ管理 — 無停止ローリング</h3><p>週次でdry-runを実行し、実際の適用は別のタイミングで行っています。適用時は対象ゲストを反対側のノードへ退避 → パッチ適用 → 再起動 → ヘルスチェック → 復帰、という流れです。</p>
+<p>この話は掘り下げると長くなるので今回は1段落にとどめますが、一点だけ触れておきます。ノード移動中は監視をmute(一時停止)していますが、ファイアウォールの再起動中もアラートは止まってしまいます。だからこそ、muteのTTL(有効時間)は慎重に決めています。パッチ運用の詳細は、また別の記事でまとめる予定です。</p>
+<h2 id="制御平面-—-誰がplaybookを流すのか"><a href="#制御平面-—-誰がplaybookを流すのか" class="headerlink" title="制御平面 — 誰がplaybookを流すのか"></a>制御平面 — 誰がplaybookを流すのか</h2><p>最後に、この記事の本題である「誰が本番へplaybookを流すのか」という部分です。</p>
+<pre>
+<code class="mermaid">
+flowchart LR
+subgraph dev[&quot;開発 (ansy)&quot;]
+    EDIT[&quot;編集・レビュー・検証&quot;]
+end
+GIT[(&quot;GitHub&lt;br&#x2F;&gt;&lt;small&gt;確定済みコードの正本&lt;&#x2F;small&gt;&quot;)]
+subgraph prod[&quot;本番 (quory)&quot;]
+    PULL[&quot;1分ごとに pull&quot;]
+    SEMA[&quot;Semaphore&lt;br&#x2F;&gt;&lt;small&gt;GUI &#x2F; 定期実行&lt;&#x2F;small&gt;&quot;]
+end
+TARGETS[&quot;pve1 &#x2F; pve2 &#x2F; authy &#x2F; monnie &#x2F; …&quot;]
+
+EDIT --&gt;|&quot;push&lt;br&#x2F;&gt;(人間の承認が要る)&quot;| GIT
+GIT --&gt;|&quot;git pull --ff-only&quot;| PULL
+PULL --&gt; SEMA
+SEMA --&gt;|&quot;実行&quot;| TARGETS
+EDIT -.-&gt;|&quot;✕ 鍵を持たない&lt;br&#x2F;&gt;(到達できない)&quot;| TARGETS
+
+linkStyle 4 stroke:#c0392b,stroke-width:2px
+</code>
+</pre>
+
+<p>開発機である <code>ansy</code> は、本番へは物理的に届きません。接続に必要な鍵を持っていないためです。コードは必ずGitHubを経由してのみ本番へ渡る仕組みになっています（※厳密には全く鍵を持っていないことは無いのですが明確な制限付きのものだけです）。</p>
+<p>本番での実行はSemaphoreUIから行います。定期実行のジョブが登録されていて、それぞれのplaybook名には <code>SAFE:</code> &#x2F; <code>SEMI-SAFE:</code> &#x2F; <code>UN-SAFE:</code> といった危険度のプレフィックスを付けています。数はある程度あり、今後も増減する見込みなので、正確な本数はrepoの <code>playbooks/README.md</code> をご覧いただければと思います。</p>
+<p>そして、冒頭の「鍵を消した」という話は、この図の点線の×印のことです。AIエージェントに「本番には触るな」という文章をいくら書き足しても、それは規範上の制約にすぎません。物理的に鍵を持たせない、届かなくする、という構造そのもので制約をかける方が、少なくとも私にとっては安心できる設計でした。</p>
+<p>なぜそこまでするのか、という話は、次回の記事でAIに運用を任せるための設計として詳しく書きたいと思います。</p>
+<h2 id="次回予告"><a href="#次回予告" class="headerlink" title="次回予告"></a>次回予告</h2><p>次回は、AIに実際の運用を任せるための設計について書く予定です。境界をどう作るか、異なるAIによる相互レビューの仕組み、月次での人間によるレビューなど、この記事では触れなかった部分を掘り下げます。</p>
+<p>また、その次の回では、Proxmoxの無停止ローリングアップデートの詳細についてもまとめる予定です。</p>
+<p>構成に登場したplaybookは、リポジトリで公開しています。一覧は <code>playbooks/README.md</code> にカタログとしてまとめてありますので、興味のある方はご覧ください。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/yoshi0808/homelab-ansible">https://github.com/yoshi0808/homelab-ansible</a></p>
+<p>このリポジトリは全てAI（ClaudeCode,Codex）で生成しています。正直なところ、個人のホームラボとしてはやや大掛かりな構成だと思います。ただ、最初から今の形だったわけではなく、証明書の勘違いのような失敗を重ねながら少しずつ直してきたものです。そのあたりの試行錯誤も、リポジトリの <code>docs/ai/knowledge/incidents/</code> に記録として残しています。次回以降の記事とあわせて、興味があれば覗いてみてください。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/new-technology/tags/proxmox/" rel="tag"><i class="fa fa-tag"></i> proxmox</a>
+              <a href="/new-technology/tags/UniFi/" rel="tag"><i class="fa fa-tag"></i> UniFi</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/new-technology/2026/07/20/ai-ansible3/" rel="prev" title="Proxmox運用にAnsibleとAIを活用する：Semaphore UIでAnsibleを定期実行する">
+                  <i class="fa fa-angle-left"></i> Proxmox運用にAnsibleとAIを活用する：Semaphore UIでAnsibleを定期実行する
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2020 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">阿部　吉伸(Yoshinobu ABE)</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div><script src="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.umd.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.min.css" rel="stylesheet">
+
+<script>
+if (Cookies.get('PRVCY202112') != 'Agree') {
+  const notice = new SimpleGDPR({
+    title: 'Accept Cookies & Privacy Policy?',
+    message: 'このWebサイトでは、訪問や活動に関するデータがクッキー等によって収集されます。閲覧を継続される場合、\
+    プライバシーポリシーをご覧いただき同意(Agree)をお願いします',
+    link: null,
+    icons: true,
+    theme: 'light',
+    animation: 'fade',
+    float: 'bottom-right',
+      callback: () => {
+      notice.close();
+      Cookies.set('PRVCY202112', 'Agree', { expires: 365, path: '/'});
+      notice.destroy();
+      // Google Analytics 4
+      gtag('consent', 'update', {
+      'analytics_storage': 'granted'
+      });
+      gtag('js', new Date());
+      gtag('config', 'G-JMY6NSC2KK', { 'anonymize_ip': true });
+      },
+  });
+}
+</script>
+<div class="disclaimer1">
+このサイトの記事は、特別な記載がない限り <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja">クリエイティブ・コモンズ BY-NC-SA ライセンス</a>で保護されています</div>
+
+
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/yoshi0808" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>
