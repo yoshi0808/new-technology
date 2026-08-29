@@ -2,7 +2,7 @@
 title: Proxmox運用にAnsibleとAIを活用する：Ansibleの始め方
 date: 2026-07-11T10:55:32+09:00
 tags: proxmox
-categories:
+categories: AI
  - AI
  - Ansible
 ---

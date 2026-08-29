@@ -2,7 +2,10 @@
 title: Proxmox運用にAnsibleとAIを活用する：ホームラボ構成管理の始め方
 date: 2026-07-05T14:26:27+09:00
 tags: proxmox
-categories: 
+categories:
+ - AI
+ - Ansible
+ - Network
 ---
 
 {% asset_img Title.png 1024 alt %}
