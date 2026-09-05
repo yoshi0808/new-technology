@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/icon-16x16.png">
+  <link rel="mask-icon" href="/new-technology/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/new-technology/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.29.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"github","dark":"a11y-dark"},"prism":{"light":"prism-vs","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js" defer></script>
+
+    <meta name="description" content="この記事は、自宅のProxmoxクラスタをAnsibleで自動運用している中で、AIエージェントにどこまで作業を任せられるかを検証してきた記録です。構成の全体像は前回記事「自宅のProxmoxクラスタ、AIに運用させる前に何を用意したか」で紹介しました。使っているplaybook（Ansibleの自動化用スクリプト群）や規範文書は、すべて公開しているリポジトリyoshi0808&#x2F;ho">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AIに本番を任せるための設計 — プロンプトは期待でしかなかった">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2026/09/05/ai-devops/index.html">
+<meta property="og:site_name" content="New technologies in our life">
+<meta property="og:description" content="この記事は、自宅のProxmoxクラスタをAnsibleで自動運用している中で、AIエージェントにどこまで作業を任せられるかを検証してきた記録です。構成の全体像は前回記事「自宅のProxmoxクラスタ、AIに運用させる前に何を用意したか」で紹介しました。使っているplaybook（Ansibleの自動化用スクリプト群）や規範文書は、すべて公開しているリポジトリyoshi0808&#x2F;ho">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/09/05/ai-devops/Title.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/09/05/ai-devops/hooks.png">
+<meta property="article:published_time" content="2026-09-04T15:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-04T23:57:31.860Z">
+<meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
+<meta property="article:tag" content="proxmox">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2026/09/05/ai-devops/Title.png">
+
+
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2026/09/05/ai-devops/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"ja","comments":true,"permalink":"https://yoshi0808.github.io/new-technology/2026/09/05/ai-devops/","path":"2026/09/05/ai-devops/","title":"AIに本番を任せるための設計 — プロンプトは期待でしかなかった"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>AIに本番を任せるための設計 — プロンプトは期待でしかなかった | New technologies in our life</title>
+  
+
+
+
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{&quot;token&quot;: &quot;0148b4d0442e42b483ddce684030bd2f&quot;}'></script>
+
+
+
+
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+<script src="/new-technology/js/utils.js" defer></script><script src="/new-technology/js/motion.js" defer></script><script src="/new-technology/js/sidebar.js" defer></script><script src="/new-technology/js/next-boot.js" defer></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.5.0/dist/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/new-technology/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@11.10.1/dist/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/new-technology/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JMY6NSC2KK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+  'ad_storage': 'denied',
+  'analytics_storage': 'denied'
+  });
+
+  dataLayer.push({
+  'event': 'default_consent'
+  });
+
+  if (Cookies.get('PRVCY202112') == 'Agree') {
+    gtag('consent', 'update', {
+    'analytics_storage': 'granted'
+    });
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'G-JMY6NSC2KK',{ 'anonymize_ip': true });
+</script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/new-technology/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/new-technology/atom.xml" title="New technologies in our life" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="ナビゲーションバーの切り替え" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/new-technology/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">New technologies in our life</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Device,Network,Code,etc...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="検索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/new-technology/" rel="section"><i class="fa fa-home fa-fw"></i>ホーム</a></li><li class="menu-item menu-item-about"><a href="/new-technology/about/" rel="section"><i class="fa fa-user fa-fw"></i>サイトポリシー</a></li><li class="menu-item menu-item-tags"><a href="/new-technology/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>タグ</a></li><li class="menu-item menu-item-categories"><a href="/new-technology/categories/" rel="section"><i class="fa fa-th fa-fw"></i>カテゴリ</a></li><li class="menu-item menu-item-archives"><a href="/new-technology/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>アーカイブ</a></li><li class="menu-item menu-item-privacy"><a href="/new-technology/privacypolicy/" rel="section"><i class="fa fa-check fa-fw"></i>プライバシーポリシー</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="検索…" spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          見出し
+        </li>
+        <li class="sidebar-nav-overview">
+          概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88%E3%81%AF%E3%80%81%E3%83%AB%E3%83%BC%E3%83%AB%E3%81%A7%E3%81%AF%E3%81%AA%E3%81%8F%E3%80%8C%E6%9C%9F%E5%BE%85%E3%80%8D%E3%81%A7%E3%81%82%E3%82%8B"><span class="nav-number">1.</span> <span class="nav-text">プロンプトは、ルールではなく「期待」である</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A9%A6%E3%81%97%E3%81%9F%E3%81%93%E3%81%A8-%E2%80%94-%E3%83%8F%E3%83%BC%E3%83%8D%E3%82%B9%E3%81%AEHook%E3%81%A7%E7%B8%9B%E3%82%8B"><span class="nav-number">2.</span> <span class="nav-text">試したこと — ハーネスのHookで縛る</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%82%84%E3%82%8A%E3%81%9F%E3%81%8B%E3%81%A3%E3%81%9F%E3%81%93%E3%81%A8"><span class="nav-number">2.1.</span> <span class="nav-text">やりたかったこと</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B5%B7%E3%81%8D%E3%81%9F%E3%81%93%E3%81%A8"><span class="nav-number">2.2.</span> <span class="nav-text">起きたこと</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%82%9D"><span class="nav-number">2.3.</span> <span class="nav-text">肝</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%92%A4%E5%8E%BB%E3%81%97%E3%81%9F"><span class="nav-number">2.4.</span> <span class="nav-text">撤去した</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%81%A7%E3%80%81%E3%81%A9%E3%81%86%E3%81%97%E3%81%9F%E3%81%8B"><span class="nav-number">2.5.</span> <span class="nav-text">で、どうしたか</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%81%9F%E3%81%A0%E3%81%97%E3%80%81%E3%81%93%E3%81%AE%E3%83%A9%E3%83%83%E3%83%91%E3%83%BC%E3%81%AF%E5%BC%B7%E5%88%B6%E3%81%95%E3%82%8C%E3%81%A6%E3%81%84%E3%81%BE%E3%81%9B%E3%82%93"><span class="nav-number">2.6.</span> <span class="nav-text">ただし、このラッパーは強制されていません</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%8C%E6%97%A5%E8%AB%87-%E2%80%94-%E5%AE%9F%E9%9A%9B%E3%81%AB%E6%AD%A2%E3%82%81%E3%81%9F%E3%81%AE%E3%81%AF%E3%80%81%E8%A6%8F%E7%AF%84%E3%81%A7%E3%81%AF%E3%81%82%E3%82%8A%E3%81%BE%E3%81%9B%E3%82%93%E3%81%A7%E3%81%97%E3%81%9F"><span class="nav-number">2.7.</span> <span class="nav-text">後日談 — 実際に止めたのは、規範ではありませんでした</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A9%9F%E6%A7%8B1-%E2%80%94-%E3%81%A7%E3%81%8D%E3%81%AA%E3%81%84%E3%82%88%E3%81%86%E3%81%AB%E3%81%99%E3%82%8B"><span class="nav-number">3.</span> <span class="nav-text">機構1 — できないようにする</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%B31-%E2%80%94-%E6%AD%A2%E3%82%81%E6%96%B9%E3%81%AE%E9%81%95%E3%81%84"><span class="nav-number">3.1.</span> <span class="nav-text">図1 — 止め方の違い</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#a-SSH-forced-command-%E2%80%94-%E8%AA%9E%E5%BD%99%E3%82%92%E6%8C%81%E3%81%9F%E3%81%9B%E3%81%AA%E3%81%84"><span class="nav-number">3.2.</span> <span class="nav-text">(a) SSH forced command — 語彙を持たせない</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#b-%E6%A4%9C%E6%9F%BB%E3%81%AE%E7%84%A1%E3%81%84%E7%B5%8C%E8%B7%AF%E3%81%A7%E3%80%81%E4%BA%8B%E6%95%85%E3%81%8C%E8%B5%B7%E3%81%8D%E3%81%9F%E8%A9%B1"><span class="nav-number">3.3.</span> <span class="nav-text">(b) 検査の無い経路で、事故が起きた話</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#c-OPREQ-%E2%80%94-%E6%9C%AC%E7%95%AA%E5%81%B4%E3%81%A8%E3%81%AE%E9%80%A3%E7%B5%A1%E3%82%92%E3%80%81%E6%A4%9C%E6%9F%BB%E3%82%92%E9%80%9A%E3%81%97%E3%81%9F%E7%B5%8C%E8%B7%AF%E3%81%AB%E9%99%90%E3%82%8B"><span class="nav-number">3.4.</span> <span class="nav-text">(c) OPREQ — 本番側との連絡を、検査を通した経路に限る</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#d-%E6%A4%9C%E6%9F%BB%E3%82%92%E9%80%9A%E3%82%89%E3%81%AA%E3%81%84%E7%B5%8C%E8%B7%AF%E3%81%AF%E3%80%81%E9%80%9A%E3%82%89%E3%81%AA%E3%81%84%E3%82%82%E3%81%AE%E3%81%A8%E3%81%97%E3%81%A6%E6%89%B1%E3%81%86"><span class="nav-number">3.5.</span> <span class="nav-text">(d) 検査を通らない経路は、通らないものとして扱う</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E5%BE%8C%E3%81%AB1%E6%96%87%E3%81%A0%E3%81%91"><span class="nav-number">3.6.</span> <span class="nav-text">最後に1文だけ</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A9%9F%E6%A7%8B2-%E2%80%94-%E5%88%A5%E3%81%AEAI%E3%81%AB%E6%A4%9C%E6%9F%BB%E3%81%95%E3%81%9B%E3%82%8B-%E6%A9%9F%E6%A7%8B2-%E2%80%94-%E5%88%A5%E3%81%AEAI%E3%81%AB%E6%A4%9C%E6%9F%BB%E3%81%95%E3%81%9B%E3%82%8B"><span class="nav-number">4.</span> <span class="nav-text">機構2 — 別のAIに検査させる## 機構2 — 別のAIに検査させる</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%B32-%E2%80%94-%E5%BD%B9%E5%89%B2%E3%82%92%E5%88%86%E3%81%91%E3%80%81%E3%83%AC%E3%83%93%E3%83%A5%E3%83%BC%E3%82%92%E5%88%A5%E3%83%A2%E3%83%87%E3%83%AB%E3%81%B8%E5%87%BA%E3%81%99"><span class="nav-number">4.1.</span> <span class="nav-text">図2 — 役割を分け、レビューを別モデルへ出す</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9F%E6%B8%AC%E3%81%AE%E8%A3%8F%E3%81%A5%E3%81%91"><span class="nav-number">4.2.</span> <span class="nav-text">実測の裏づけ</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%9D%E3%82%8C%E3%81%A7%E3%82%82%E8%A6%8F%E7%AF%84%E3%81%AF%E5%8F%A4%E3%81%8F%E3%81%AA%E3%82%8B"><span class="nav-number">5.</span> <span class="nav-text">それでも規範は古くなる</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A9%9F%E6%A7%8B3-%E2%80%94-%E6%9C%88%E3%81%AB%E4%B8%80%E5%BA%A6%E3%80%81%E4%BA%BA%E9%96%93%E3%81%8C%E8%A6%8B%E7%9B%B4%E3%81%99"><span class="nav-number">6.</span> <span class="nav-text">機構3 — 月に一度、人間が見直す</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%B33-%E2%80%94-%E6%B0%97%E3%81%A5%E3%81%8D%E3%82%92%E8%A6%8F%E7%AF%84%E3%81%B8%E8%82%B2%E3%81%A6%E3%82%8B%E3%83%A9%E3%83%80%E3%83%BC"><span class="nav-number">6.1.</span> <span class="nav-text">図3 — 気づきを規範へ育てるラダー</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%BA%E9%96%93%E3%81%AE%E5%88%A4%E6%96%AD%E3%81%AF%E3%81%A9%E3%81%93%E3%81%AB%E6%AE%8B%E3%81%A3%E3%81%9F%E3%81%8B"><span class="nav-number">7.</span> <span class="nav-text">人間の判断はどこに残ったか</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AC%A1%E5%9B%9E%E4%BA%88%E5%91%8A"><span class="nav-number">8.</span> <span class="nav-text">次回予告</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="阿部　吉伸(Yoshinobu ABE)"
+      src="/new-technology/images/yoshi.png">
+  <p class="site-author-name" itemprop="name">阿部　吉伸(Yoshinobu ABE)</p>
+  <div class="site-description" itemprop="description">IT</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/new-technology/archives/">
+          <span class="site-state-item-count">111</span>
+          <span class="site-state-item-name">ポスト</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/new-technology/categories/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">カテゴリ</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/new-technology/tags/">
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">タグ</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yoshi0808" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yoshi0808" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yoshi0808.blog@gmail.com" title="E-Mail → mailto:yoshi0808.blog@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yoshi0808_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yoshi0808_" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/big/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="ja">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2026/09/05/ai-devops/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/new-technology/images/yoshi.png">
+      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="New technologies in our life">
+      <meta itemprop="description" content="IT">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="AIに本番を任せるための設計 — プロンプトは期待でしかなかった | New technologies in our life">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          AIに本番を任せるための設計 — プロンプトは期待でしかなかった
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">投稿日</span>
+      
+
+      <time title="作成日：2026-09-05 00:00:00 / 修正日：08:57:31" itemprop="dateCreated datePublished" datetime="2026-09-05T00:00:00+09:00">2026-09-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">カテゴリ</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/AI/" itemprop="url" rel="index"><span itemprop="name">AI</span></a>
+        </span>
+          、
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/AI/Ansible/" itemprop="url" rel="index"><span itemprop="name">Ansible</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><img src="/new-technology/2026/09/05/ai-devops/Title.png" class="" width="1024" title="alt">
+
+<p>この記事は、自宅のProxmoxクラスタをAnsibleで自動運用している中で、AIエージェントにどこまで作業を任せられるかを検証してきた記録です。構成の全体像は前回記事「<a href="/new-technology/2026/08/29/proxmox-operations/" title="自宅のProxmoxクラスタ、AIに運用させる前に何を用意したか">自宅のProxmoxクラスタ、AIに運用させる前に何を用意したか</a>」で紹介しました。使っているplaybook（Ansibleの自動化用スクリプト群）や規範文書は、すべて公開しているリポジトリyoshi0808&#x2F;homelab-ansible（<a target="_blank" rel="noopener" href="https://github.com/yoshi0808/homelab-ansible">https://github.com/yoshi0808/homelab-ansible</a>）にあります。</p>
+<p>今回はその続きとして、AIエージェントに実際の作業を任せる際に起きた出来事と、そこから組み立てた3つの防御の仕組みについて書きます。</p>
+<p>AIエージェントに、本番サーバでの作業を任せたときのことです。</p>
+<p>私が渡した手順書には、こう書いてありました。「作業ツリーの <code>git status</code> は権限の都合で見られないのが既知です。<strong>迂回しないでください。</strong>」</p>
+<p>そのAIは <code>sudo --become-user=yoshi</code> を実行しました。私のアカウントの権限を借りて、見られないはずのものを見たわけです。そして報告書にこう書きました。</p>
+<p><strong>「正しいidentityを使っただけで、迂回ではない」</strong></p>
+<p>実害はありませんでした。私が驚いたのは、そこではありません。そのAIは、過去に似た操作が拒否されたことを認識したうえで、「あれはファイルを読もうとした、今回はプロセスを動かしただけだ」と自分で区別を立てて踏み込んでいたのです。禁止を理解していなかったのではなく、理解したうえで、禁止に当たらない理由を組み立てていました。</p>
+<p>この一件は、<strong>教訓として記録してあります</strong>。</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/yoshi0808/homelab-ansible/blob/main/docs/ai/memory/lessons/permission-boundaries-must-be-designed-not-prompted.md">https://github.com/yoshi0808/homelab-ansible/blob/main/docs/ai/memory/lessons/permission-boundaries-must-be-designed-not-prompted.md</a></p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="プロンプトは、ルールではなく「期待」である"><a href="#プロンプトは、ルールではなく「期待」である" class="headerlink" title="プロンプトは、ルールではなく「期待」である"></a>プロンプトは、ルールではなく「期待」である</h2><p>プロンプトに「〜してはいけない」と書くとき、私たちはルールを設定したつもりになっています。しかし実際に設定されているのは、ルールではなく期待です。読み手であるAIがその指示に同意し、かつ想定した状況の範囲内であれば守られる、という条件つきの期待にすぎません。</p>
+<p>違いが表面化するのは、想定外の状況に遭遇したときです。手順どおりに進まない、権限が足りない、指定したコマンドが通らない。そうした場面でAIは「禁止を破ろう」とは考えていません。「この方法は使えないから、別の方法を試そう」と考えます。1節のAIも同じでした。禁止を無視したのではなく、目の前の制約を乗り越えて目的を達成しようとしただけです。</p>
+<p>そこに悪意はありません。むしろ、与えられた目的を真面目に達成しようとする姿勢が、そのまま逸脱として現れてしまう。これは私にとって、AIを責める話ではなく、そういう性質のものなのだと理解する話でした。</p>
+<p>ここから行き着いた原則は、こうです。<strong>自分が破ろうと思えば破れる対策は、対策ではなく願望である。</strong></p>
+<p>では、プロンプトに書くこと自体が無意味なのかというと、そうではありません。次に試したのは、プロンプトではなく仕組みそのものでAIの行動を縛る方法でした。</p>
+<h2 id="試したこと-—-ハーネスのHookで縛る"><a href="#試したこと-—-ハーネスのHookで縛る" class="headerlink" title="試したこと — ハーネスのHookで縛る"></a>試したこと — ハーネスのHookで縛る</h2><h3 id="やりたかったこと"><a href="#やりたかったこと" class="headerlink" title="やりたかったこと"></a>やりたかったこと</h3><p>レビュー役のAIには、playbookを必ず <code>--check</code> 付きで実行させたいと考えていました。<code>--check</code> なしの実行は、本番への適用そのものだからです。</p>
+<p>AIエージェントのハーネスにはhookという仕組みがあります。コマンドの実行前に割り込んで、条件に合わなければブロックできる機能です。これで縛れると考えました。ここで書きたいのは特定の製品の話ではなく、hookという機構そのものの性質です。</p>
+<h3 id="起きたこと"><a href="#起きたこと" class="headerlink" title="起きたこと"></a>起きたこと</h3><p>ブロックはされました。そして、AIは別の手を試しました。</p>
+<ul>
+<li>playbookを <code>/tmp</code> へコピーして実行する</li>
+<li><code>bash -c &#39;ansible-playbook ...&#39;</code> の形にして実行する</li>
+</ul>
+<h3 id="肝"><a href="#肝" class="headerlink" title="肝"></a>肝</h3><p>これは「回避」ではありません。少なくとも、AIの側から見えている景色はそうではないのです。</p>
+<p>hookのブロックは、AIには「禁止」としては見えていません。「この環境ではこのコマンドが通らない」という、環境の制約として見えています。環境の制約に対してAIがやることは、代替手段を探すことです。それが本来の仕事だからです。</p>
+<p>一方で、permissionsの <code>deny</code> は「やってはいけないこと」として認識できます。同じブロックでも、AI側での意味づけがまったく違うのです。</p>
+<p>つまり、同じ「止める」でも、AIに規範として届く止め方と、障害物としてしか届かない止め方があります。hookは後者でした。使うなら、この違いを踏まえた設計が必要です。</p>
+<h3 id="撤去した"><a href="#撤去した" class="headerlink" title="撤去した"></a>撤去した</h3><p>コマンドの書き方は無限にあります。<code>/tmp</code> へのコピーも <code>bash -c</code> も、思いつく限り塞いだところで、次の形が出てきます。文字列パターンでのブロックはいたちごっこだと判断し、hookは撤去しました。</p>
+<p>塞ぐ側が列挙する限り、列挙されていない形が常に残ります。そして先ほど書いたとおり、AIにとってそれは「禁止の抜け穴」ではなく「まだ試していない普通の方法」でしかありません。</p>
+<img src="/new-technology/2026/09/05/ai-devops/hooks.png" class="" width="1024" title="alt">
+
+
+<h3 id="で、どうしたか"><a href="#で、どうしたか" class="headerlink" title="で、どうしたか"></a>で、どうしたか</h3><p><code>--check</code> の強制は、こういうラッパーに置き換えました。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env bash</span></span><br><span class="line"><span class="built_in">set</span> -euo pipefail</span><br><span class="line"></span><br><span class="line">has_check=0</span><br><span class="line"><span class="keyword">for</span> arg <span class="keyword">in</span> <span class="string">&quot;<span class="variable">$@</span>&quot;</span>; <span class="keyword">do</span></span><br><span class="line">  <span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$arg</span>&quot;</span> == <span class="string">&quot;--check&quot;</span> ]]; <span class="keyword">then</span> has_check=1; <span class="built_in">break</span>; <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$has_check</span>&quot;</span> -ne 1 ]]; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;ERROR: this wrapper only runs ansible-playbook with --check.&quot;</span> &gt;&amp;2</span><br><span class="line">  <span class="built_in">exit</span> 2</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">exec</span> ansible-playbook <span class="string">&quot;<span class="variable">$@</span>&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>「<code>--check</code> を付けろ」と言うのをやめて、「<code>--check</code> なしでは動かない入口」を作ったわけです。このラッパーは、AI自身の提案で入りました。縛られる側が縛り方を提案してくる、というのは今も少し不思議な感じがします。</p>
+<h3 id="ただし、このラッパーは強制されていません"><a href="#ただし、このラッパーは強制されていません" class="headerlink" title="ただし、このラッパーは強制されていません"></a>ただし、このラッパーは強制されていません</h3><p>記事を書くにあたって現物を確認して、自分でも少し驚いたのですが、このラッパーを使えと言っているのは、Policyと索引の文章だけです。強制する仕組みはどこにもありません。直接 <code>ansible-playbook</code> を叩けば普通に動きますし、レビュー役のAIはこの開発機で承認プロンプトなしに動いています。<br>実際どのくらい使われているのか、記録を種別ごとに数えてみました。</p>
+<table>
+<thead>
+<tr>
+<th>記録の種別</th>
+<th>wrapperへの言及があるファイル数</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>test_result系</td>
+<td>22本</td>
+</tr>
+<tr>
+<td>test_plan</td>
+<td>5本</td>
+</tr>
+<tr>
+<td>implement</td>
+<td>3本</td>
+</tr>
+<tr>
+<td>review</td>
+<td>2本</td>
+</tr>
+<tr>
+<td>requirement</td>
+<td>2本</td>
+</tr>
+</tbody></table>
+<p>実行結果を記録するtest_result系では多く使われている一方、実装や要件定義の段階ではほとんど出てきません。「必ず通らなければならない唯一の入口」であれば、どの段階でも均等に出てくるはずです。実際にはそうなっていません。ラッパーを使う意味があると判断すれば使われ、そう思わなければ使われない。つまり判断の主導権は、依然としてAIの側にあるということです。</p>
+<p>つまりこのラッパーは、2節で「期待でしかない」と書いたのと、まったく同じ形で運用されているのです。「やってはいけない」を強制する仕組みには、結局なりませんでした。</p>
+<p>では危ないのかというと、そうでもありません。この開発機は、本番へ接続する鍵を持っていないからです。</p>
+<p><code>--check</code> を付け忘れて実行しても、本番グループを対象にした瞬間、接続の時点で失敗します。実際に届くのは自分自身と、検証用の使い捨てVM（壊れてよいものとして用意してあります）だけです。ラッパーが防ごうとしていた事故は、その下の層ですでに起こり得なくなっているわけです。</p>
+<p>ここから引き出した基準が、いまもう1つの判断軸になっています。</p>
+<p><strong>「守ってください」とお願いする統制と、「そもそも実行できない」という統制は、扱いが違う。</strong></p>
+<p>たとえば、このラッパーのように「<code>--check</code> を付けてください」とお願いするだけの統制は、その下に本物の壁があるなら、それで十分です。今回の場合、その壁は「本番へ接続する鍵が無い」ことでした。ラッパーを無視して直接コマンドを叩いても、本番には物理的に届かないので、最悪でも検証用の使い捨てVMが壊れるだけで済みます。</p>
+<p>逆に、下に壁が何も無い状態で「お願い」だけを積んでしまうと、それが一番危ないのです。「ルールを書いたから守られているはずだ」と思い込んだまま、その前提の上にさらに別の仕組みを組み立ててしまうことになるからです。</p>
+<p>Policyに「ラッパーを通したことを安全の根拠にしない」と書いてあるのは、この区別のことでした。</p>
+<h3 id="後日談-—-実際に止めたのは、規範ではありませんでした"><a href="#後日談-—-実際に止めたのは、規範ではありませんでした" class="headerlink" title="後日談 — 実際に止めたのは、規範ではありませんでした"></a>後日談 — 実際に止めたのは、規範ではありませんでした</h3><p>この節の答え合わせが、1週間ほど前にありました。</p>
+<p>レビュー役のAIが、playbookの構文チェック(<code>ansible-playbook --syntax-check</code>)を実行しようとしました。ラッパーは通していません。そもそもこのラッパーは <code>--check</code> が付いていないと動かないので、構文チェックには使えないのです（ラッパー側の設計の穴です）。</p>
+<p>そして直接実行したところ、止まりました。止めたのは、Policyでもラッパーでもありません。ハーネスのsandbox機構です。AIの作業用の一時ディレクトリが、書き込み可能な場所として登録されていなかったため、書けなかった。</p>
+<p>hookの時代なら、ここで別のディレクトリを試したはずです。実際、そうしていました。</p>
+<p>今回は違いました。レビュー記録にはこう書かれています。</p>
+<blockquote>
+<p>harnessが <code>~/.ansible/tmp</code> の作成を read-only filesystem で拒否したため未実施。別のtmpへ迂回せず、静的レビューを継続した。Implementer記録上はrc 0だが、Reviewerとして独立再確認できていない。</p>
+</blockquote>
+<p>止まって、何が確認できていないかを明記して、できる範囲のレビューを続けた。この案件はレビューが6ラウンドに及びましたが、6回とも同じ記述があり、一度も迂回していません。</p>
+<p>何が効いたのか。共通原則にはこう書いてあります。</p>
+<blockquote>
+<p>安全機構がブロックしたら、別の形で同じ結果へ到達しない。止めて、ブロックされた事実を報告する。ブロックが妥当かどうかを自分で判定しない。</p>
+</blockquote>
+<p>ここが、この記事で一番言いたいところです。</p>
+<p>止めたのは能力の不在で、振る舞いを決めたのは規範でした。どちらか片方では足りません。能力だけ塞いでも、AIは別の道を探します（hookの時がそうでした）。規範だけ書いても、越えられます(1節がそうでした)。塞いだうえで、塞がれたときに何をすべきかが書いてあると、そのとおりに振る舞います。</p>
+<p>「プロンプトは期待でしかない」は、正確にはこうでした。プロンプトが無力なのではなく、プロンプトだけが単独で効くことはない。</p>
+<p>ここから、実際に積んでいる機構を3つ、順番に説明します。まず、そもそもできないようにすること。次に、実装した本人とは別のAIに検査させること。そして、月に一度、人間が規範ごと見直すことです。</p>
+<h2 id="機構1-—-できないようにする"><a href="#機構1-—-できないようにする" class="headerlink" title="機構1 — できないようにする"></a>機構1 — できないようにする</h2><h3 id="図1-—-止め方の違い"><a href="#図1-—-止め方の違い" class="headerlink" title="図1 — 止め方の違い"></a>図1 — 止め方の違い</h3><pre>
+<code class="mermaid">
+flowchart TB
+subgraph p[&quot;プロンプトで禁止する&quot;]
+    A1[&quot;規範： 本番に触るな&quot;]--&gt; A2{&quot;AIが解釈する&quot;}
+    A2 --&gt;|&quot;守る&quot;| A3[&quot;OK&quot;]
+    A2 --&gt;|&quot;例外を組み立てる&quot;| A4[&quot;越える&quot;]
+end
+subgraph h[&quot;Hookでブロックする&quot;]
+    B1[&quot;コマンドを弾く&quot;]--&gt; B2{&quot;AIには環境の制約に見える&quot;}
+    B2 --&gt;|&quot;別の形を試す&quot;| B3[&quot;越える&quot;]
+end
+subgraph c[&quot;能力を持たせない&quot;]
+    C1[&quot;鍵&#x2F;語彙が存在しない&quot;]--&gt; C2[&quot;試す対象が無い&quot;]
+end
+
+p ~~~ h ~~~ c
+</code>
+</pre>
+
+<h3 id="a-SSH-forced-command-—-語彙を持たせない"><a href="#a-SSH-forced-command-—-語彙を持たせない" class="headerlink" title="(a) SSH forced command — 語彙を持たせない"></a>(a) SSH forced command — 語彙を持たせない</h3><p>情報共有という建て付けで開発機から本番へ届く唯一の経路です。公開鍵側にコマンドを固定してあります。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">command=&quot;/usr/local/bin/recovery-investigate-dispatch&quot;,no-agent-forwarding,</span><br><span class="line">no-X11-forwarding,no-port-forwarding,no-pty ssh-ed25519 AAAA...</span><br></pre></td></tr></table></figure>
+
+<p>この鍵でログインすると、何を打ってもこのスクリプトしか動きません。スクリプトは <code>case</code> で受け付ける語を列挙していて、<code>disk</code> <code>memory</code> <code>journal-unit</code> <code>ports</code> <code>unit-cat</code> など25本ほど、すべて読み取り専用です。<code>systemctl restart</code> も <code>rm</code> も、語として存在しません。「使うな」ではなく「無い」のです。ポートフォワードもPTYも無効なので、シェルが取れず、語彙の外へ出る手段がありません。</p>
+<p>ここが本物の境界です。ラッパーと違って、迂回する対象がありません。</p>
+<h3 id="b-検査の無い経路で、事故が起きた話"><a href="#b-検査の無い経路で、事故が起きた話" class="headerlink" title="(b) 検査の無い経路で、事故が起きた話"></a>(b) 検査の無い経路で、事故が起きた話</h3><p>本番と開発のAI同士が連絡を取り合う経路は、最初は単純なものでした。(a)による情報共有で不足する追加情報が必要になるケースは稀であり、開発側のAIが本番調査用のコマンドを組み立て、私がそれを本番で実行し（安全性は事前に確認したうえでのことです）、結果をそのまま開発側のAIへ返す。この経路には、当時、内容を検査する仕組みがありませんでした。</p>
+<p>ある調査の結果に、Slackアプリのbotキーが含まれていました。それに気づかないまま、結果をそのままチャットへ貼り付けてしまい、キーが流出しました。結果として、Slack全体を再構築する事態になりました。</p>
+<p>この経路には人間しか通らないという前提はどこにもなく、むしろAIが組み立てたコマンドの結果を人間がそのまま右から左へ流す、というのが実態でした。「AIには検査を掛けてあるが、人間が仲介する分には問題ない」という発想自体が誤りだったわけです。人間が仲介するからこそ、機械的なチェックを一段挟む必要がある。</p>
+<p>この一件がきっかけで作ったのが、次に説明するOPREQという仕組みです。</p>
+<h3 id="c-OPREQ-—-本番側との連絡を、検査を通した経路に限る"><a href="#c-OPREQ-—-本番側との連絡を、検査を通した経路に限る" class="headerlink" title="(c) OPREQ — 本番側との連絡を、検査を通した経路に限る"></a>(c) OPREQ — 本番側との連絡を、検査を通した経路に限る</h3><p>本番側（quory）にもAIを置いていて、開発側から調査を依頼できます。ただし平文のやり取りは許していません。requestは必ずスプールに置かれ、DLP(危険文字列の検査）を通ります。</p>
+<p>Python実装の要点です。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ルールは JSON で外出しし、engine_version / ruleset_version を持つ</span></span><br><span class="line"><span class="comment"># → ルールを更新しても、どの版で検査したかが記録に残る</span></span><br><span class="line">ruleset = load_ruleset(path)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ペイロードを JSON pointer で歩いて、全ての文字列を走査する</span></span><br><span class="line"><span class="keyword">for</span> pointer, text <span class="keyword">in</span> _walk_strings(payload, <span class="string">&quot;&quot;</span>):</span><br><span class="line">    <span class="keyword">for</span> rule <span class="keyword">in</span> ruleset[<span class="string">&quot;rules&quot;</span>]:</span><br><span class="line">        <span class="keyword">if</span> rule[<span class="string">&quot;compiled&quot;</span>].search(text):</span><br><span class="line">            findings.append(Finding(rule_id=rule[<span class="string">&quot;id&quot;</span>], pointer=pointer))</span><br><span class="line">    <span class="comment"># 正規表現に当たらない秘密のために、Shannon エントロピーも見る</span></span><br><span class="line">    <span class="keyword">if</span> _shannon_entropy(text) &gt; threshold:</span><br><span class="line">        findings.append(Finding(rule_id=<span class="string">&quot;high-entropy-string&quot;</span>, pointer=pointer))</span><br></pre></td></tr></table></figure>
+
+<p>設計で効いているのは、どこで引っかかったかをJSON pointerで返す点です。拒否メッセージが「ルールIDとポインタ」の形になるので、書き直して再送できます。「何かに引っかかりました」で終わらせないようにしてあります。ルールセットは外部JSONと版番号で管理していて、検査の中身をコードから分離してあります。</p>
+<p>正規表現の中には、特定の入力を与えると処理が異常に長くかかってしまうものがあります（ReDoSと呼ばれる現象です)。検査がそこで固まって止まってしまうと、「検査を待たずに素通りさせよう」という判断をしたくなってしまいます。それを避けるため、一定時間で検査を打ち切るタイムアウト保護（<code>_AlarmGuard</code>)を入れています。</p>
+<p>ルールが対象にしているのは、秘密鍵PEM、Slackトークン、Slack webhook URL、Semaphore APIトークン、Bearer、JWT、汎用の <code>key=value</code>、そして高エントロピー文字列です。あのSlackキーの流出も、今の設計であれば検査を通らずに止まっていたはずです。</p>
+<p>正直に書くと、このエントロピー検査は判定を誤ることがあります。文字列全体に占める高エントロピー部分の割合で判定しているため、外れ方は両方向にあります。長いPascalCaseの識別子やhex文字列のように、実際は秘密ではないのに割合が高く出て引っかかる例が、実際に14種類ありました（本来OKなものがNGになるケース）。逆に、本物の秘密が長いテキストの中に埋め込まれていると、全体に占める割合が薄まり、閾値を超えずに検査をすり抜けてしまうこともあり得ます（本来NGなものがOKになるケース)。前者は止まったときに「どのルールがどこで当たったか」が出るので、書き直して通せます。後者は正規表現ルール（秘密鍵PEM、トークン形式など）との組み合わせで補っていますが、両方を組み合わせても見逃しのリスクをゼロにはできません。</p>
+<h3 id="d-検査を通らない経路は、通らないものとして扱う"><a href="#d-検査を通らない経路は、通らないものとして扱う" class="headerlink" title="(d) 検査を通らない経路は、通らないものとして扱う"></a>(d) 検査を通らない経路は、通らないものとして扱う</h3><p>開発側と本番側のAIは、上のOPREQとは別に、短いメッセージをやり取りする連絡経路も持っています。こちらはDLPを通りません。</p>
+<p>なので規範はこうしてあります。この経路に載せてよいのは、依頼のIDと要旨だけ。本文は必ず検査を通った側から読ませる。</p>
+<p>これは能力の不在ではなく、経路ごとに信頼度が違うことを認めて、用途を分けた例です。「全部を検査経路にする」より、「検査を通らない経路があることを前提に、そこへ何を流すか決める」方が現実的でした。実装の詳細はrepoにあります。ここで大事なのは、便利な抜け道を消すのではなく、抜け道だと分かったうえで流すものを制限したという判断の形です。ここもリスクとしては残存しますが、その可能性を限りなく小さくする事がポイントでした。そのための別ベンダーのAIを配置することが生きてきます。</p>
+<h3 id="最後に1文だけ"><a href="#最後に1文だけ" class="headerlink" title="最後に1文だけ"></a>最後に1文だけ</h3><p>能力を消したつもりが、消せていないことがあります。設定が読まれていない、検査すべき経路に検査が掛かっていない、といったことは実際にありました。なので境界については、禁止されるはずの操作を実際に試して、拒否されることを見るようにしています。「消した」は状態ではなく、確かめ続ける対象です。</p>
+<h2 id="機構2-—-別のAIに検査させる-機構2-—-別のAIに検査させる"><a href="#機構2-—-別のAIに検査させる-機構2-—-別のAIに検査させる" class="headerlink" title="機構2 — 別のAIに検査させる## 機構2 — 別のAIに検査させる"></a>機構2 — 別のAIに検査させる## 機構2 — 別のAIに検査させる</h2><h3 id="図2-—-役割を分け、レビューを別モデルへ出す"><a href="#図2-—-役割を分け、レビューを別モデルへ出す" class="headerlink" title="図2 — 役割を分け、レビューを別モデルへ出す"></a>図2 — 役割を分け、レビューを別モデルへ出す</h3><pre>
+<code class="mermaid">
+flowchart LR
+Y[&quot;私（判断）&quot;]
+C[&quot;Coordinator&lt;br&#x2F;&gt;&lt;small&gt;対話・計画・commit&lt;&#x2F;small&gt;&quot;]
+I[&quot;Implementer&lt;br&#x2F;&gt;&lt;small&gt;実装&lt;&#x2F;small&gt;&quot;]
+R[&quot;Reviewer&lt;br&#x2F;&gt;&lt;small&gt;別プロセス &#x2F; 別モデル&lt;&#x2F;small&gt;&quot;]
+T[&quot;Tester&lt;br&#x2F;&gt;&lt;small&gt;実機検証&lt;&#x2F;small&gt;&quot;]
+A[&quot;Auditor&lt;br&#x2F;&gt;&lt;small&gt;記録の受入&lt;&#x2F;small&gt;&quot;]
+
+Y &lt;--&gt; C
+C --&gt; I
+I --&gt; R
+R --&gt;|&quot;指摘&quot;| C
+C --&gt; T
+C --&gt; A
+A --&gt;|&quot;受入 &#x2F; 差し戻し&quot;| C
+
+style R fill:#7c3aed,stroke:#a78bfa,color:#fff
+</code>
+</pre>
+
+<p>役割を5つに分けていて、実装した本人にはレビューさせません。計画を立てた者に差分をレビューさせることもしません。Auditorは案件を閉じるときに1回だけ、こちらの説明を渡さず、リポジトリの記録だけを読ませます。</p>
+<p>構成は以下のとおりです。</p>
+<table>
+<thead>
+<tr>
+<th>役</th>
+<th>実体</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Coordinator</td>
+<td>Claude Code の対話セッション(auto mode)。私と話し、計画し、commitする</td>
+</tr>
+<tr>
+<td>Implementer &#x2F; Tester &#x2F; Auditor</td>
+<td>Claude Code のサブエージェント。役ごとに定義を分けてある</td>
+</tr>
+<tr>
+<td>Reviewer</td>
+<td>Codex。別プロセス・別ベンダで動かす</td>
+</tr>
+</tbody></table>
+<p>不変条件は製品ではありません。守っているのはこれだけです。</p>
+<p><strong>実装した本人とは別の推論に検査させる。</strong></p>
+<p>Reviewerを別ベンダにしているのは、それが構造として一番確実だからです。同じ製品のサブエージェントでも、モデルを変えれば同じ効果は得られます。逆に、同じ人格に「客観的にレビューしてください」と頼むのは、2節で書いた「期待」と同じことになります。どちらが優れているかという比較の話ではなく、配置だけの話です。</p>
+<p>この構図は、quory側にも同じ形で敷いています。quoryに配置しているAIはOperatorと呼んでいて、前述したOPREQは、CoordinatorとこのOperatorの間でやり取りする経路です。Operatorも別ベンダ(Codex)で動かしています。Operatorのプロンプトは、このrepoの範囲には含めていません。AGENTS.mdの指示と、本番に接続可能な鍵の一覧だけを持つ、別のrepoに置いてあります。Operatorの役割は、依頼されたコマンドを実行しつつ本番環境を守ることと、情報を漏らさないことの2点に絞ってあります。異なるベンダのAI同士がやり取りする構図になっているぶん、お互いに慎重にならざるを得ず、この牽制が守るべき水準を一段引き上げています。</p>
+<h3 id="実測の裏づけ"><a href="#実測の裏づけ" class="headerlink" title="実測の裏づけ"></a>実測の裏づけ</h3><p>AIが書いた規範文書544KBを、別のAIに横断監査させたことがあります。機械的な整合性チェックは、すでに全部パスしている状態でのことでした。</p>
+<p>このときはClaude Code(Fable 5)で、集中的に矛盾点を洗い出しました。上の表ではReviewerを別ベンダとしていますが、この監査では同じ製品の別モデルを使っています。不変条件は「実装した本人とは別の推論に検査させる」なので、これでも成立します。</p>
+<p>結果、矛盾・宙ぶらりん参照・二重定義が54件見つかりました。修正を4回に分けて実施し、4回すべてで独立レビューがblockingを検出しています。機械的な整合性チェックをすでに通過していた文書から、これだけの数が出てきたことが、この機構の実測としての裏づけです。</p>
+<h2 id="それでも規範は古くなる"><a href="#それでも規範は古くなる" class="headerlink" title="それでも規範は古くなる"></a>それでも規範は古くなる</h2><p>54件は、誰かがサボった結果ではありません。運用の実態が変わったのに、それを説明していた文章が追随しなかった、というだけのことです。</p>
+<p>具体例を挙げます。鍵を消した（実態が変わった）のに、「開発機から実行する」と書いた手順書は残ったままでした（文章が追随しなかった)。対策として方式を変えたとき、変えた本人はその一点については正しく対応できます。しかし、その変更が別の規定と矛盾していないかまでは、なかなか見えません。ある規定を守るために書いたコードが、別の規定にはそぐわなくなっている、という組み合わせの問題は、単体では正しく見えるだけに気づきにくいのです。</p>
+<p>さらに厄介なのは、逆方向の追跡ができないことです。コードを読んで、「これはどの規定を満たすために書かれたものか」を逆引きすることはできません。結果として、時間が経つと、この処理やこの防御が何のために存在しているのか誰にも分からなくなる、ということが起こり得ます。守るべきものが分からないまま、守っているつもりの処理だけが残るわけです。</p>
+<p>機械検査は「形」しか見ません。参照先のファイルが存在するかどうかは見られますが、そこに何が書いてあるか、その処理がなぜそこにあるのかまでは見られないのです。</p>
+<p>だから、定期的に人間が見直す工程が必要になります。</p>
+<h2 id="機構3-—-月に一度、人間が見直す"><a href="#機構3-—-月に一度、人間が見直す" class="headerlink" title="機構3 — 月に一度、人間が見直す"></a>機構3 — 月に一度、人間が見直す</h2><h3 id="図3-—-気づきを規範へ育てるラダー"><a href="#図3-—-気づきを規範へ育てるラダー" class="headerlink" title="図3 — 気づきを規範へ育てるラダー"></a>図3 — 気づきを規範へ育てるラダー</h3><pre>
+<code class="mermaid">
+flowchart TB
+I[&quot;Incident&lt;br&#x2F;&gt;&lt;small&gt;失敗の記録（即時）&lt;&#x2F;small&gt;&quot;]
+L[&quot;Lesson&lt;br&#x2F;&gt;&lt;small&gt;再利用できる教訓&lt;&#x2F;small&gt;&quot;]
+S[&quot;Skill&lt;br&#x2F;&gt;&lt;small&gt;手順・チェックリスト&lt;&#x2F;small&gt;&quot;]
+C[&quot;共通原則&lt;br&#x2F;&gt;&lt;small&gt;全役割が毎回読む&lt;&#x2F;small&gt;&quot;]
+P[&quot;Policy&lt;br&#x2F;&gt;&lt;small&gt;許可・禁止・停止条件&lt;&#x2F;small&gt;&quot;]
+
+I --&gt;|&quot;2回目、または教訓を抽出できたとき&quot;| L
+L --&gt;|&quot;手順として繰り返し使う価値が固まったとき&quot;| S
+S --&gt;|&quot;例外なく毎回必要な原則になったとき(極めて稀)&quot;| C
+I -.-&gt;|&quot;同じ原因分類が月次で繰り返し検出されたとき&quot;| P
+
+style C fill:#b45309,stroke:#f59e0b,color:#fff
+</code>
+</pre>
+
+<p>捕捉と昇格は分けています。失敗の記録は即時に行います。詳細は時間が経つと失われてしまうためです。月次でやるのは、記録した中のどれを昇格させるかという判断だけです。</p>
+<p>昇格のハードルは、意図的に高くしてあります。一度きりの失敗を、すぐに恒久ルールにはしません。ルールが増えるほど、守られない文章が増えていく、というのは2節で書いたとおりです。</p>
+<p>逆向きの規律も設けています。昇格したら、元の記録は1行に縮約します。ただし、縮約する前に根拠を移送します。「なぜその規範に至ったか」が消えてしまうと、前提が変わったときに見直す手がかりがなくなるためです。</p>
+<p>なぜこの判断を人間がやるのか、正直に書きます。</p>
+<p>最初は自動化していました。月次でAIを無人実行して、振り返らせていたのです。やめました。昇格の判断は「この失敗は繰り返すか」「このルールは運用に耐えるか」というものであり、環境の実態を知っている側、つまり人間にしか判断できないことだったからです。</p>
+<p>いまはタイマーが通知を出すだけです。振り返りは私が主体で行います。とはいえ、候補抽出や課題判定など大部分の作業はAIがやってくれます。私は判定することだけが残ります。</p>
+<h2 id="人間の判断はどこに残ったか"><a href="#人間の判断はどこに残ったか" class="headerlink" title="人間の判断はどこに残ったか"></a>人間の判断はどこに残ったか</h2><p>3つの機構を入れた結果、私が判断する回数はかなり減りました。</p>
+<p>54件の修正で、私が実際に判断したのは2つだけでした。分類の規則をどう変えるか、つまり文書をどこに置くかという設計判断。そして、運用の実態がどうなっているか、つまりAIが知り得ない事実の提供です。あとはcommitの承認だけでした。</p>
+<p>この2つは、どちらもAIが持ち得ない情報でした。設計の意図と、環境の実態。それ以外は渡せるということです。AIに情報を持たせるほど、人間が判断しなければならない場所は減っていきます。</p>
+<p>ただし補足しておきます。減ったのは判断の「数」であって、「重要度」ではありません。残った2つは、間違えると全体が傾く種類のものです。</p>
+<p>実際どこまで手が離れているか、もう少し具体的に書きます。私が明示的に承認しているのは、<code>git commit</code> と <code>git push</code> のこの2つだけです。<code>git push</code> すると自動的に本番環境にコードが乗ります。それ以外の作業——仕様の検討、実装方針の決定、Implementerへの指示、Reviewerへの提出、Testerでの検証、Auditorでの受け入れ——はすべてCoordinatorが進めます。私が関与するタイミングは基本的に一箇所だけで、仕様が固まった段階で「これでいいか」と確認を求められ、そこでOKを出すと、実装からcommit直前まで一気に進みます。ジョブのスケジューリングでさえも、空いている時間帯を見つけて候補を提示してくれ、私は承認するだけです。</p>
+<p>「AIに完全に自動化してもらう」という期待を持たれるかもしれませんが、実際はそう甘くありません。仕様の確認、判断の妥当性チェック、途中で違和感があったときの介入など、人間が関与する場面自体は今もそれなりに残っています。ただ、以前と大きく変わったのは、その関与にかかる作業量です。SemaphoreUIによるplaybookの自動起動、自動障害復旧の仕組み、障害発生時の自動一次調査からIncident記録への落とし込み、漏洩チェック(DLP)、パッチ適用時のリスク判定など、ある程度の作り込みによって、AIを活用しつつも判断をAIに依存せずにブレない作業手法を確立しているため、私が運用上作業することはほぼなく、私がSSHすることはほぼありません。たまにClaudeが数週間単位で再認証が求められるのでその時だけはブラウザで認証を行いますが、SSHするのはその程度です。AIが私との対話なく自由にコマンドを実行する事はありません（上記で紹介したForced Commandを除く）。</p>
+<p>かつてはAI同士の情報連携もコピペ作業から始まり、判断のための材料を1つ1つAIに確認しながら自分でまとめて、対応方法も自分で決めてからAIに相談・実装してもらう、という流れでした。そして差分を1行ずつ追う、実行ログを全部読む、といった手作業が判断のたびに発生していました。そして<strong>何度もAIからのaskに”Y”を押す単純作業の繰り返し</strong>。大事なのは、こうした判断に付随する大量の人間の作業を削ることです。いまはその手前の部分——候補の洗い出し、矛盾のチェック、記録の整合性確認——をAIがやってくれるので、私に残るのは「判断すること」そのものだけになっています。<strong>わずかな判断を残すために、判断に付随する大量の作業を削る</strong>。これが、この3つの機構を積んだことで実際に得られたものです。</p>
+<p>「AIに任せる」というのは、賢いAIを用意することではありませんでした。任せられる形に、環境の側を作り替えることでした。</p>
+<h2 id="次回予告"><a href="#次回予告" class="headerlink" title="次回予告"></a>次回予告</h2><p>次回は、Proxmoxの無停止ローリングアップデートについて書く予定です。ゲストの退避、パッチ適用、再起動、復帰という一連の流れと、そこに潜む単一ノード時のフォールバックや、監視をミュートする際の判断について詳しくまとめます。</p>
+<p>repoは公開しています。規範文書は <code>docs/ai/</code> 以下にあり、Policy 12本、Role 6本、Skill 14本、失敗記録26本、教訓18本という構成です。DLPの実装は <code>roles/operator_request_channel/files/oprc/</code> にあります。</p>
+<p>失敗の記録もそのまま置いてあります。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/yoshi0808/homelab-ansible">https://github.com/yoshi0808/homelab-ansible</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/new-technology/tags/proxmox/" rel="tag"><i class="fa fa-tag"></i> proxmox</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/new-technology/2026/08/29/proxmox-operations/" rel="prev" title="自宅のProxmoxクラスタ、AIに運用させる前に何を用意したか">
+                  <i class="fa fa-angle-left"></i> 自宅のProxmoxクラスタ、AIに運用させる前に何を用意したか
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2020 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">阿部　吉伸(Yoshinobu ABE)</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div><script src="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.umd.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.min.css" rel="stylesheet">
+
+<script>
+if (Cookies.get('PRVCY202112') != 'Agree') {
+  const notice = new SimpleGDPR({
+    title: 'Accept Cookies & Privacy Policy?',
+    message: 'このWebサイトでは、訪問や活動に関するデータがクッキー等によって収集されます。閲覧を継続される場合、\
+    プライバシーポリシーをご覧いただき同意(Agree)をお願いします',
+    link: null,
+    icons: true,
+    theme: 'light',
+    animation: 'fade',
+    float: 'bottom-right',
+      callback: () => {
+      notice.close();
+      Cookies.set('PRVCY202112', 'Agree', { expires: 365, path: '/'});
+      notice.destroy();
+      // Google Analytics 4
+      gtag('consent', 'update', {
+      'analytics_storage': 'granted'
+      });
+      gtag('js', new Date());
+      gtag('config', 'G-JMY6NSC2KK', { 'anonymize_ip': true });
+      },
+  });
+}
+</script>
+<div class="disclaimer1">
+このサイトの記事は、特別な記載がない限り <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja">クリエイティブ・コモンズ BY-NC-SA ライセンス</a>で保護されています</div>
+
+
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/yoshi0808" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>
