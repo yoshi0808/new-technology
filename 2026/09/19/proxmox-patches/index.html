@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/new-technology/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/new-technology/images/icon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/new-technology/images/icon-16x16.png">
+  <link rel="mask-icon" href="/new-technology/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/new-technology/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoshi0808.github.io","root":"/new-technology/","images":"/new-technology/images","scheme":"Mist","darkmode":false,"version":"8.29.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"github","dark":"a11y-dark"},"prism":{"light":"prism-vs","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"検索…","empty":"検索結果が見つかりませんでした: ${query}","hits_time":"${hits} の結果が ${time} ms で見つかりました","hits":"${hits} 件の結果が見つかりました"},"path":"/new-technology/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/new-technology/js/config.js" defer></script>
+
+    <meta name="description" content="この記事で実現すること  Proxmoxのパッチ適用は、単体ならそこまで難しくありません。GUIで更新を確認して、適用して、必要なら再起動する。それだけです。 ただし、2ノードクラスタで、Firewallや認証サーバをVMとして載せていると話が変わります。 片方ずつ当てたい。VMは事前に逃がしたい。quorumは壊したくない。失敗したら、もう片方には進みたくない。そして、毎週これを手でやりたく">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2ノードProxmoxを毎週自動パッチする">
+<meta property="og:url" content="https://yoshi0808.github.io/new-technology/2026/09/19/proxmox-patches/index.html">
+<meta property="og:site_name" content="New technologies in our life">
+<meta property="og:description" content="この記事で実現すること  Proxmoxのパッチ適用は、単体ならそこまで難しくありません。GUIで更新を確認して、適用して、必要なら再起動する。それだけです。 ただし、2ノードクラスタで、Firewallや認証サーバをVMとして載せていると話が変わります。 片方ずつ当てたい。VMは事前に逃がしたい。quorumは壊したくない。失敗したら、もう片方には進みたくない。そして、毎週これを手でやりたく">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/09/19/proxmox-patches/Title.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/09/19/proxmox-patches/slack.png">
+<meta property="article:published_time" content="2026-09-18T18:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-19T02:20:29.124Z">
+<meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
+<meta property="article:tag" content="proxmox">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yoshi0808.github.io/new-technology/2026/09/19/proxmox-patches/Title.png">
+
+
+<link rel="canonical" href="https://yoshi0808.github.io/new-technology/2026/09/19/proxmox-patches/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"ja","comments":true,"permalink":"https://yoshi0808.github.io/new-technology/2026/09/19/proxmox-patches/","path":"2026/09/19/proxmox-patches/","title":"2ノードProxmoxを毎週自動パッチする"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>2ノードProxmoxを毎週自動パッチする | New technologies in our life</title>
+  
+
+
+
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{&quot;token&quot;: &quot;0148b4d0442e42b483ddce684030bd2f&quot;}'></script>
+
+
+
+
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+<script src="/new-technology/js/utils.js" defer></script><script src="/new-technology/js/motion.js" defer></script><script src="/new-technology/js/sidebar.js" defer></script><script src="/new-technology/js/next-boot.js" defer></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.5.0/dist/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/new-technology/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@11.10.1/dist/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/new-technology/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JMY6NSC2KK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+  'ad_storage': 'denied',
+  'analytics_storage': 'denied'
+  });
+
+  dataLayer.push({
+  'event': 'default_consent'
+  });
+
+  if (Cookies.get('PRVCY202112') == 'Agree') {
+    gtag('consent', 'update', {
+    'analytics_storage': 'granted'
+    });
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'G-JMY6NSC2KK',{ 'anonymize_ip': true });
+</script>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/new-technology/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/new-technology/atom.xml" title="New technologies in our life" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="ナビゲーションバーの切り替え" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/new-technology/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">New technologies in our life</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Device,Network,Code,etc...</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="検索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/new-technology/" rel="section"><i class="fa fa-home fa-fw"></i>ホーム</a></li><li class="menu-item menu-item-about"><a href="/new-technology/about/" rel="section"><i class="fa fa-user fa-fw"></i>サイトポリシー</a></li><li class="menu-item menu-item-tags"><a href="/new-technology/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>タグ</a></li><li class="menu-item menu-item-categories"><a href="/new-technology/categories/" rel="section"><i class="fa fa-th fa-fw"></i>カテゴリ</a></li><li class="menu-item menu-item-archives"><a href="/new-technology/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>アーカイブ</a></li><li class="menu-item menu-item-privacy"><a href="/new-technology/privacypolicy/" rel="section"><i class="fa fa-check fa-fw"></i>プライバシーポリシー</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>検索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="検索…" spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          見出し
+        </li>
+        <li class="sidebar-nav-overview">
+          概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%AA%E3%81%9C%E8%87%AA%E5%8B%95%E5%8C%96%E3%81%97%E3%81%9F%E3%81%8B"><span class="nav-number">1.</span> <span class="nav-text">なぜ自動化したか</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%B1%E3%81%AE%E6%B5%81%E3%82%8C-%E2%80%94-%E9%87%91%E6%9B%9C%E3%81%AB%E8%A6%8B%E3%81%A6%E3%80%81%E5%9C%9F%E6%9B%9C%E3%81%AB%E5%BD%93%E3%81%A6%E3%82%8B"><span class="nav-number">2.</span> <span class="nav-text">週の流れ — 金曜に見て、土曜に当てる</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%B31-%E2%80%94-2%E6%AE%B5%E6%A7%8B%E3%81%88"><span class="nav-number">2.1.</span> <span class="nav-text">図1 — 2段構え</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dry-run%E3%81%A7%E3%80%81%E3%81%BE%E3%81%9A%E4%BA%8B%E5%AE%9F%E3%81%A0%E3%81%91%E3%82%92%E9%9B%86%E3%82%81%E3%82%8B"><span class="nav-number">3.</span> <span class="nav-text">dry-runで、まず事実だけを集める</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E8%A6%81%E3%82%B3%E3%83%B3%E3%83%9D%E3%83%BC%E3%83%8D%E3%83%B3%E3%83%88%E3%81%AF%E3%80%81%E5%85%88%E3%81%AB%E3%83%AA%E3%82%B9%E3%83%88%E5%8C%96%E3%81%97%E3%81%A6%E3%81%8A%E3%81%8F"><span class="nav-number">4.</span> <span class="nav-text">重要コンポーネントは、先にリスト化しておく</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%9A%E7%9F%A5"><span class="nav-number">5.</span> <span class="nav-text">通知</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pve1-pve2-%E3%81%AE%E7%B5%90%E6%9E%9C%E3%82%92%E3%81%BE%E3%81%A8%E3%82%81%E3%82%8B"><span class="nav-number">6.</span> <span class="nav-text">pve1 &#x2F; pve2 の結果をまとめる</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#changelog%E3%81%AFAI%E3%81%AB%E8%AA%AD%E3%81%BE%E3%81%9B%E3%82%8B"><span class="nav-number">7.</span> <span class="nav-text">changelogはAIに読ませる</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B7%8A%E6%80%A5%E5%BA%A6%E3%81%AF%E3%80%81changelog%E3%81%8B%E3%82%89%E5%88%A4%E6%96%AD%E3%81%99%E3%82%8B"><span class="nav-number">8.</span> <span class="nav-text">緊急度は、changelogから判断する</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E7%B5%82%E5%88%A4%E5%AE%9A%E3%81%AFAnsible%E5%81%B4%E3%81%A7%E6%B1%BA%E3%82%81%E3%82%8B"><span class="nav-number">9.</span> <span class="nav-text">最終判定はAnsible側で決める</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%B32-%E2%80%94-%E5%88%A4%E5%AE%9A%E3%81%AE%E6%B5%81%E3%82%8C"><span class="nav-number">9.1.</span> <span class="nav-text">図2 — 判定の流れ</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%81%A9%E7%94%A8-%E2%80%94-pve2%E3%81%8B%E3%82%89%E5%A7%8B%E3%82%81%E3%81%A6%E3%80%81pve1%E3%81%B8%E9%80%B2%E3%82%80"><span class="nav-number">10.</span> <span class="nav-text">適用 — pve2から始めて、pve1へ進む</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%B33-%E2%80%94-%E7%89%87%E3%83%8E%E3%83%BC%E3%83%89%E3%81%9A%E3%81%A4"><span class="nav-number">10.1.</span> <span class="nav-text">図3 — 片ノードずつ</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%87%E5%81%B4%E3%81%97%E3%81%8B%E7%94%9F%E3%81%8D%E3%81%A6%E3%81%84%E3%81%AA%E3%81%84%E3%81%A8%E3%81%8D%E3%81%AF%E3%80%81%E7%84%A1%E7%90%86%E3%81%AB%E9%80%B2%E3%82%81%E3%81%AA%E3%81%84"><span class="nav-number">11.</span> <span class="nav-text">片側しか生きていないときは、無理に進めない</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9F%E8%A3%85%E3%81%AFGit%E3%81%AB%E7%BD%AE%E3%81%8F"><span class="nav-number">12.</span> <span class="nav-text">実装はGitに置く</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%81%8B%E7%94%A8%E3%81%97%E3%81%A6%E3%81%BF%E3%81%A6"><span class="nav-number">13.</span> <span class="nav-text">運用してみて</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="阿部　吉伸(Yoshinobu ABE)"
+      src="/new-technology/images/yoshi.png">
+  <p class="site-author-name" itemprop="name">阿部　吉伸(Yoshinobu ABE)</p>
+  <div class="site-description" itemprop="description">IT</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/new-technology/archives/">
+          <span class="site-state-item-count">112</span>
+          <span class="site-state-item-name">ポスト</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/new-technology/categories/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">カテゴリ</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/new-technology/tags/">
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">タグ</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yoshi0808" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yoshi0808" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:yoshi0808.blog@gmail.com" title="E-Mail → mailto:yoshi0808.blog@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/yoshi0808_" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;yoshi0808_" rel="noopener me" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/big/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="ja">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2026/09/19/proxmox-patches/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/new-technology/images/yoshi.png">
+      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="New technologies in our life">
+      <meta itemprop="description" content="IT">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="2ノードProxmoxを毎週自動パッチする | New technologies in our life">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          2ノードProxmoxを毎週自動パッチする
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">投稿日</span>
+      
+
+      <time title="作成日：2026-09-19 03:00:00 / 修正日：11:20:29" itemprop="dateCreated datePublished" datetime="2026-09-19T03:00:00+09:00">2026-09-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">カテゴリ</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/AI/" itemprop="url" rel="index"><span itemprop="name">AI</span></a>
+        </span>
+          、
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/AI/Ansible/" itemprop="url" rel="index"><span itemprop="name">Ansible</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><img src="/new-technology/2026/09/19/proxmox-patches/Title.png" class="" width="1024" title="alt">
+
+<p class="onepoint">この記事で実現すること</p>
+
+<p>Proxmoxのパッチ適用は、単体ならそこまで難しくありません。GUIで更新を確認して、適用して、必要なら再起動する。それだけです。</p>
+<p>ただし、2ノードクラスタで、Firewallや認証サーバをVMとして載せていると話が変わります。</p>
+<p>片方ずつ当てたい。<br>VMは事前に逃がしたい。<br>quorumは壊したくない。<br>失敗したら、もう片方には進みたくない。<br>そして、毎週これを手でやりたくない。</p>
+<p>ということで、Proxmoxの週次パッチ適用をAnsibleで自動化しました。</p>
+<p>今回の記事は、その仕組みの話です。<br>単に <code>apt upgrade</code> を自動実行する話ではありません。dry-runで更新候補を集め、重要コンポーネントを判定し、changelogをAIに読ませ、最後はAnsible側のルールで適用可否を決めます。</p>
+<span id="more"></span>
+
+<h2 id="なぜ自動化したか"><a href="#なぜ自動化したか" class="headerlink" title="なぜ自動化したか"></a>なぜ自動化したか</h2><p>毎週、何かしら更新は出ます。カーネル、ZFS、Proxmox本体、マイクロコード。「今週は無い」という週はほとんどありません。</p>
+<p>単体サーバであれば、気が向いたときにGUIから更新してもよいと思います。ですが、クラスタでの適用は、単体サーバへの <code>apt upgrade</code> とは別物です。</p>
+<p>ゲストをどかす。<br>片方ずつ当てる。<br>quorumを壊さない。<br>片方が戻ってきたことを確認してから、もう片方へ進む。<br>最後にVM配置を戻す。</p>
+<p>手順の数が多く、順番を間違えると面倒なことになります。</p>
+<p>さらに私の環境では、Firewallも認証サーバもProxmox上のVMとして動いています。Proxmoxのセキュリティを維持することは、ホームラボ全体の入口を守ることでもあります。</p>
+<p>毎週やる作業で、かつ手順が長い。<br>失敗したときの影響も大きい。</p>
+<p>自動化する理由としては、これで十分でした。</p>
+<p>構成のおさらいだけ簡単に。<code>pve1</code> &#x2F; <code>pve2</code> の2ノードクラスタに、第3の投票者かつ制御点として、クラスタ外に <code>quory</code> を置いています。詳しくは「<a href="/new-technology/2026/08/29/proxmox-operations/" title="自宅のProxmoxクラスタ、AIに運用させる前に何を用意したか">自宅のProxmoxクラスタ、AIに運用させる前に何を用意したか</a>」をご覧ください。</p>
+<h2 id="週の流れ-—-金曜に見て、土曜に当てる"><a href="#週の流れ-—-金曜に見て、土曜に当てる" class="headerlink" title="週の流れ — 金曜に見て、土曜に当てる"></a>週の流れ — 金曜に見て、土曜に当てる</h2><p>週次パッチは、金曜夕方と土曜早朝の2段構えにしています。</p>
+<h3 id="図1-—-2段構え"><a href="#図1-—-2段構え" class="headerlink" title="図1 — 2段構え"></a>図1 — 2段構え</h3><pre>
+<code class="mermaid">
+flowchart LR
+
+FRI[&quot;金曜 夕方&lt;br&#x2F;&gt;&lt;b&gt;dry-run&lt;&#x2F;b&gt;&lt;br&#x2F;&gt;&lt;small&gt;何が来ているか見るだけ&lt;&#x2F;small&gt;&quot;]
+SAT[&quot;土曜 早朝&lt;br&#x2F;&gt;&lt;b&gt;full patch&lt;&#x2F;b&gt;&lt;br&#x2F;&gt;&lt;small&gt;判定して、当てる&lt;&#x2F;small&gt;&quot;]
+SLACK[&quot;Slack通知&quot;]
+
+FRI --&gt; SLACK
+FRI -.-&gt;|&quot;人が見る猶予: 半日&quot;| SAT
+SAT --&gt; SLACK
+
+style FRI fill:#1d4ed8,stroke:#60a5fa,color:#fff
+style SAT fill:#b45309,stroke:#f59e0b,color:#fff
+
+</code>
+</pre>
+
+<p>金曜の夕方にdry-runを回します。ここでは <code>apt-get -s dist-upgrade</code> 相当の処理を行い、実際の変更はしません。結果はSlackへ通知します。大まかなパッチの規模感をここで把握します。</p>
+<p>土曜の早朝に本番適用を行います。ここでも、適用直前にもう一度dry-runを走らせます。金曜夕方から土曜早朝までの間に、更新候補が変わる可能性があるためです。</p>
+<p>この仕組みは、大きく4段階に分けています。</p>
+<p>1つ目は、各Proxmoxノードで更新候補を集めること。<br>2つ目は、pve1 &#x2F; pve2の結果を1つのJSONにまとめること。<br>3つ目は、changelogをAIに読ませて、CVEの種類や日本語レポートを作らせること。<br>4つ目は、Ansible側で最終判定し、適用してよいものだけを片ノードずつ当てることです。</p>
+<p>ポイントは、AIが直接 <code>apt upgrade</code> するわけではない、ということです。AIはchangelogを読む係です。適用するかどうかは、あらかじめ決めたルールとAnsibleの判定で決まります。</p>
+<h2 id="dry-runで、まず事実だけを集める"><a href="#dry-runで、まず事実だけを集める" class="headerlink" title="dry-runで、まず事実だけを集める"></a>dry-runで、まず事実だけを集める</h2><p>最初にやるのは、判断ではなく収集です。</p>
+<p>各Proxmoxノードで、以下を実行します。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># apt-get update</span></span><br><span class="line">apt_update_output=$(apt-get update -qq 2&gt;&amp;1) &amp;&amp; apt_update_ok=<span class="string">&quot;true&quot;</span> || apt_update_ok=<span class="string">&quot;false&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># dpkg/apt consistency check</span></span><br><span class="line">apt_check_output=$(apt-get check 2&gt;&amp;1) &amp;&amp; apt_check_ok=<span class="string">&quot;true&quot;</span> || apt_check_ok=<span class="string">&quot;false&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># no changes</span></span><br><span class="line">sim_output=$(LC_ALL=C apt-get -s dist-upgrade 2&gt;&amp;1) &amp;&amp; sim_ok=<span class="string">&quot;true&quot;</span> || sim_ok=<span class="string">&quot;false&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>ここで実行している <code>apt-get -s dist-upgrade</code> はシミュレーションです。実際のパッケージ更新は行いません。</p>
+<p>出力された <code>Inst</code> 行を更新候補、<code>Remv</code> 行を削除候補として拾います。さらに、各パッケージに対して <code>apt changelog</code> を取得し、あとでAIが読めるように <code>changelog_diff</code> として持たせています。</p>
+<p>イメージとしては、更新候補をこのようなJSONにします。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">updates.append(&#123;</span><br><span class="line">    <span class="string">&quot;name&quot;</span>: name,</span><br><span class="line">    <span class="string">&quot;installed_version&quot;</span>: old_ver,</span><br><span class="line">    <span class="string">&quot;candidate_version&quot;</span>: new_ver,</span><br><span class="line">    <span class="string">&quot;is_new&quot;</span>: old_ver <span class="keyword">is</span> <span class="literal">None</span>,</span><br><span class="line">    <span class="string">&quot;security_repo&quot;</span>: security_repo,</span><br><span class="line">    <span class="string">&quot;changelog_diff&quot;</span>: <span class="string">&quot;&quot;</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>この段階では、まだ「当てる」「止める」は決めません。</p>
+<p>Shellの役割は、あくまで事実を集めることです。<br>判断を混ぜないようにしています。</p>
+<h2 id="重要コンポーネントは、先にリスト化しておく"><a href="#重要コンポーネントは、先にリスト化しておく" class="headerlink" title="重要コンポーネントは、先にリスト化しておく"></a>重要コンポーネントは、先にリスト化しておく</h2><p>次に、更新候補の中に「重要なもの」が含まれるかを判定します。</p>
+<p>ここでいう重要とは、「失敗したときに遠隔から復旧しづらいもの」です。クラスタ、ストレージ、カーネル、マイクロコード、ネットワーク、systemd&#x2F;udev。ホームラボとはいえ、ここが壊れるとかなり厄介です。</p>
+<p>実装では、完全一致と前方一致の2種類で持たせています。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">proxmox_patch_dryrun_important_components:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">proxmox-ve</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">pve-manager</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">pve-cluster</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">pve-ha-manager</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">qemu-server</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">pve-container</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">corosync</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">zfsutils-linux</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">zfs-zed</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">ifupdown2</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">intel-microcode</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">amd64-microcode</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">systemd</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">udev</span></span><br><span class="line"></span><br><span class="line"><span class="attr">proxmox_patch_dryrun_important_component_prefixes:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">proxmox-kernel-</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">libpve-</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">firmware-</span></span><br></pre></td></tr></table></figure>
+
+<p>選定の理由です。</p>
+<ul>
+<li>クラスタの合意形成に関わるもの（<code>corosync</code>、<code>pve-cluster</code>）は、壊れると2ノードが互いを見失う</li>
+<li>ストレージ系（<code>zfsutils-linux</code>、<code>zfs-zed</code>）は、データに触る</li>
+<li>カーネルとマイクロコードは、再起動が必要になり、起動できなくなるリスクもある</li>
+<li>ネットワーク系（<code>ifupdown2</code>）は、失敗すると遠隔から復旧しづらい</li>
+<li><code>systemd</code> &#x2F; <code>udev</code> は、OSの起動やデバイス認識に関わる</li>
+</ul>
+<p>共通しているのは、「失敗したときに、遠隔から直せなくなる可能性があるもの」です。<br>これが、この環境での重要度の定義です。</p>
+<p>判定自体はかなり単純です。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">is_important</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="keyword">if</span> name <span class="keyword">in</span> important_components:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">any</span>(name.startswith(p) <span class="keyword">for</span> p <span class="keyword">in</span> important_prefixes)</span><br></pre></td></tr></table></figure>
+
+<p>この単純さが大事です。</p>
+<p>同じ入力なら、毎回同じ答えが返ります。<br>なぜ重要と判定されたかも、リストを見れば分かります。<br>基準を変えたいときは、判定ロジックではなくリストを直します。</p>
+<p>毎週の判断を、人間の気分やAIの雰囲気に寄せない。リストに載っているか、prefixに一致するか。それだけです。</p>
+<h2 id="通知"><a href="#通知" class="headerlink" title="通知"></a>通知</h2><p>パッチの内容についてはSlackで通知しています。上記のロジックを踏まえて最終的には端的な通知文に纏められます。具体的な例で、9&#x2F;19（土）時点での通知は以下になります。</p>
+<img src="/new-technology/2026/09/19/proxmox-patches/slack.png" class="" width="800" title="alt">
+
+<p>このようにAI（Codex）とPythonとを組み合わせ、端的な通知を得ることで凡その規模感を把握できます。</p>
+<h2 id="pve1-pve2-の結果をまとめる"><a href="#pve1-pve2-の結果をまとめる" class="headerlink" title="pve1 &#x2F; pve2 の結果をまとめる"></a>pve1 &#x2F; pve2 の結果をまとめる</h2><p>2ノード構成なので、pve1とpve2で同じ更新が出ることもあれば、片方にだけ出ることもあります。</p>
+<p>そこで、ノードごとのdry-run結果をマージします。同じパッケージは1つにまとめ、そのパッケージがどのノードに出ているかを <code>nodes</code> に持たせます。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> name <span class="keyword">not</span> <span class="keyword">in</span> merged_by_name:</span><br><span class="line">    merged_by_name[name] = <span class="built_in">dict</span>(u)</span><br><span class="line">    merged_by_name[name][<span class="string">&quot;important_component&quot;</span>] = is_important(name)</span><br><span class="line">    merged_by_name[name][<span class="string">&quot;nodes&quot;</span>] = [node]</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="keyword">if</span> node <span class="keyword">not</span> <span class="keyword">in</span> merged_by_name[name][<span class="string">&quot;nodes&quot;</span>]:</span><br><span class="line">        merged_by_name[name][<span class="string">&quot;nodes&quot;</span>].append(node)</span><br></pre></td></tr></table></figure>
+
+<p>これで、次のような見方ができるようになります。</p>
+<ul>
+<li>pve1 &#x2F; pve2共通の更新</li>
+<li>pve1だけの更新</li>
+<li>pve2だけの更新</li>
+<li>重要コンポーネントを含む更新</li>
+<li>削除を伴う更新</li>
+</ul>
+<p>ここまで来ると、「なんとなく怖い」ではなく、「何が来ているか」が機械的に見えます。</p>
+<h2 id="changelogはAIに読ませる"><a href="#changelogはAIに読ませる" class="headerlink" title="changelogはAIに読ませる"></a>changelogはAIに読ませる</h2><p>パッケージ名だけでは、その更新がRCEなのか、LPEなのか、XSSなのかは分かりません。ここはchangelogを読む必要があります。</p>
+<p>ただ、毎週すべてのchangelogを人間が読むのはつらいです。<br>そこでCodex CLIを呼んでいます。</p>
+<p>ただし、やらせていることは限定しています。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">各パッケージの changelog_diff を読み、CVEタイプを識別する</span><br><span class="line">パッチポリシーの URGENT / HIGH 判断基準テーブルと照合し、urgency_candidate を決定する</span><br><span class="line">JSON 形式のみ出力する</span><br></pre></td></tr></table></figure>
+
+<p>AIが返すのは、あくまで <code>urgency_candidate</code> です。<br>つまり「緊急度の候補」です。</p>
+<p>ここで大事なのは、AIの出力をそのまま信用しないことです。</p>
+<p>Codexの出力はJSONとして読めるか、必須キーがあるか、<code>package_classifications</code> の件数が入力の <code>updates</code> 件数と一致するか、ダミーのpackage名を返していないかを検証しています。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="built_in">len</span>(classifications) != <span class="built_in">len</span>(updates):</span><br><span class="line">    <span class="built_in">print</span>(</span><br><span class="line">        <span class="string">f&#x27;Error: package_classifications count (<span class="subst">&#123;<span class="built_in">len</span>(classifications)&#125;</span>) &#x27;</span></span><br><span class="line">        <span class="string">f&#x27;does not match input updates count (<span class="subst">&#123;<span class="built_in">len</span>(updates)&#125;</span>)&#x27;</span>,</span><br><span class="line">        file=sys.stderr,</span><br><span class="line">    )</span><br><span class="line">    sys.exit(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<p>AIは便利ですが、出力が壊れることがあります。テンプレートをそのまま返すこともあります。なので、AIの後ろには必ず機械的な検証を置きます。</p>
+<p>この仕組みでは、AIは「何が書かれているか」を読む係です。<br>「当ててよいか」を最終的に決める係ではありません。</p>
+<h2 id="緊急度は、changelogから判断する"><a href="#緊急度は、changelogから判断する" class="headerlink" title="緊急度は、changelogから判断する"></a>緊急度は、changelogから判断する</h2><p>重要度が「何が更新されるか」だとすると、緊急度は「なぜ更新が来たか」です。</p>
+<p>同じパッケージの更新でも、リモートから任意コード実行を踏まれる修正と、管理画面の表示崩れの修正では、扱いが違って当然です。</p>
+<p>これも先に一覧にしました。<br>この種類が出たら緊急扱いにする、というリストです。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RCE / LPE / VM escape / 認証バイパス / exploit公開 / ransomware</span><br></pre></td></tr></table></figure>
+
+<p>選定の考え方です。</p>
+<ul>
+<li>RCE（リモートコード実行）と認証バイパスは、外から踏める</li>
+<li>LPE（ローカル権限昇格）とVM escapeは、踏まれた後に被害が広がる</li>
+<li>VM escapeは、仮想化基盤では特に重い</li>
+<li>exploit公開 &#x2F; ransomwareは、実際に悪用されている状況の重さを見る</li>
+</ul>
+<p>CVSSのような数値で機械的にリスクを見る方法もあります。ですが、Proxmoxという仮想化基盤を守る前提では、「自分の環境で何がまずいのか」を先に決めておく方が扱いやすいと考えました。</p>
+<p>この一覧も、毎週その場で考えるためのものではありません。<br>判断をブレさせないために、先に決めた基準です。</p>
+<h2 id="最終判定はAnsible側で決める"><a href="#最終判定はAnsible側で決める" class="headerlink" title="最終判定はAnsible側で決める"></a>最終判定はAnsible側で決める</h2><p>最終的なステータスは、AIではなくAnsible側で決めています。</p>
+<p>まず、収集そのものが失敗していれば <code>BLOCKED</code> です。更新候補も削除候補もなければ <code>NO_UPDATES</code> です。この2つはAIを呼ぶ前に決まります。</p>
+<p>更新候補がある場合だけ、Codexにchangelog分類を依頼します。<br>その後、Ansible側で最終ステータスを決めます。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">_final_status:</span> <span class="string">&gt;-</span></span><br><span class="line"><span class="string">  &#123;%- if _pre_status != &#x27;NEEDS_CLASSIFICATION&#x27; -%&#125;</span></span><br><span class="line"><span class="string">  &#123;&#123; _pre_status &#125;&#125;</span></span><br><span class="line"><span class="string">  &#123;%- elif codex_output.status_inputs.major_upgrade_suspected | bool -%&#125;</span></span><br><span class="line"><span class="string">  MAJOR_UPGRADE_DETECTED</span></span><br><span class="line"><span class="string">  &#123;%- elif _has_important_component | bool or _has_removes | bool -%&#125;</span></span><br><span class="line"><span class="string">  MAINTENANCE_REQUIRED</span></span><br><span class="line"><span class="string">  &#123;%- else -%&#125;</span></span><br><span class="line"><span class="string">  PATCH_READY</span></span><br><span class="line"><span class="string">  &#123;%- endif -%&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>ここで見ているのは、主に次の要素です。</p>
+<ul>
+<li>dry-runが成功したか</li>
+<li>更新候補があるか</li>
+<li>重要コンポーネントを含むか</li>
+<li>削除を伴うか</li>
+<li>メジャーアップグレード疑いがあるか</li>
+</ul>
+<p>最終的には、次の5つに落ちます。</p>
+<table>
+<thead>
+<tr>
+<th>ステータス</th>
+<th>意味</th>
+<th>自動で当てるか</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NO_UPDATES</code></td>
+<td>更新なし</td>
+<td>当てるものがない</td>
+</tr>
+<tr>
+<td><code>PATCH_READY</code></td>
+<td>重要コンポーネントも削除もなし</td>
+<td>当てる</td>
+</tr>
+<tr>
+<td><code>MAINTENANCE_REQUIRED</code></td>
+<td>重要コンポーネントあり、または削除あり</td>
+<td>削除がなければ当てる。削除があれば止める</td>
+</tr>
+<tr>
+<td><code>MAJOR_UPGRADE_DETECTED</code></td>
+<td>メジャーアップグレード疑い</td>
+<td>止める</td>
+</tr>
+<tr>
+<td><code>BLOCKED</code></td>
+<td>dry-runやapt状態の確認に失敗</td>
+<td>エラー表記で止める</td>
+</tr>
+</tbody></table>
+<p>土曜早朝の本番適用でも、適用直前にもう一度dry-runします。金曜の結果だけを信用しないためです。</p>
+<p>その再dry-runの結果、削除を伴う <code>MAINTENANCE_REQUIRED</code> や <code>MAJOR_UPGRADE_DETECTED</code> であれば、自動適用は止めます。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">_redryrun_requires_confirmation:</span> <span class="string">&gt;-</span></span><br><span class="line"><span class="string">  &#123;&#123; (_redryrun_status == &#x27;MAJOR_UPGRADE_DETECTED&#x27;) or</span></span><br><span class="line"><span class="string">     (_redryrun_status == &#x27;MAINTENANCE_REQUIRED&#x27; and (_redryrun_has_removes | bool)) &#125;&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>これにより、「AIが大丈夫と言ったから当てる」という形にはしていません。</p>
+<p>重要なものは重要なものとして扱う。<br>削除を伴うなら止める。<br>メジャーアップグレード疑いも止める。<br>その判断基準はコード側に残します。</p>
+<p><code>BLOCKED</code> だけは、警告ではなくエラー相当の通知にしています。ここを一緒にすると、壊れているときほど「問題なし」に見える通知が届きます。dry-runがエラーで何も返せなかった週も、静かに正常になる。それが一番怖いことです。</p>
+<h3 id="図2-—-判定の流れ"><a href="#図2-—-判定の流れ" class="headerlink" title="図2 — 判定の流れ"></a>図2 — 判定の流れ</h3><pre>
+<code class="mermaid">
+flowchart TB
+
+COLLECT[&quot;各ノードで収集&lt;br&#x2F;&gt;&lt;small&gt;apt-get -s dist-upgrade&lt;&#x2F;small&gt;&quot;]
+OK{&quot;収集は成功したか&quot;}
+ANY{&quot;更新はあるか&quot;}
+IMP[&quot;重要コンポーネント判定&lt;br&#x2F;&gt;&lt;small&gt;完全一致 + 前方一致&lt;&#x2F;small&gt;&quot;]
+DEC{&quot;重要 or 削除あり?&quot;}
+AI[&quot;AIでchangelog分類&lt;br&#x2F;&gt;&lt;small&gt;CVE種別・レポート生成&lt;&#x2F;small&gt;&quot;]
+FINAL[&quot;Ansibleで最終判定&quot;]
+
+COLLECT --&gt; OK
+OK --&gt;|&quot;いいえ&quot;| BLOCKED[&quot;BLOCKED&lt;br&#x2F;&gt;&lt;small&gt;エラー表記で止める&lt;&#x2F;small&gt;&quot;]
+OK --&gt;|&quot;はい&quot;| ANY
+ANY --&gt;|&quot;なし&quot;| NOUP[&quot;NO_UPDATES&quot;]
+ANY --&gt;|&quot;あり&quot;| IMP
+IMP --&gt; AI
+AI --&gt; FINAL
+FINAL --&gt;|&quot;安全に進められる&quot;| READY[&quot;PATCH_READY&lt;br&#x2F;&gt;&lt;small&gt;当てる&lt;&#x2F;small&gt;&quot;]
+FINAL --&gt;|&quot;削除・メジャー等&quot;| STOP[&quot;停止&lt;br&#x2F;&gt;&lt;small&gt;手動確認&lt;&#x2F;small&gt;&quot;]
+FINAL --&gt;|&quot;重要だが削除なし&quot;| MAINT[&quot;MAINTENANCE_REQUIRED&lt;br&#x2F;&gt;&lt;small&gt;条件付きで当てる&lt;&#x2F;small&gt;&quot;]
+
+style BLOCKED fill:#991b1b,stroke:#ef4444,color:#fff
+style READY fill:#166534,stroke:#22c55e,color:#fff
+style STOP fill:#991b1b,stroke:#ef4444,color:#fff
+
+</code>
+</pre>
+
+<h2 id="適用-—-pve2から始めて、pve1へ進む"><a href="#適用-—-pve2から始めて、pve1へ進む" class="headerlink" title="適用 — pve2から始めて、pve1へ進む"></a>適用 — pve2から始めて、pve1へ進む</h2><p>本番適用は、pve2から始めます。</p>
+<p>pve2を先行検証ノードとして扱い、pve2が正常に戻ってからpve1へ進みます。pve2のpost-healthcheckがNGなら、pve1には触りません。両方壊すのを防ぐための順序制約です。</p>
+<p>流れはこうです。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">pve2:</span><br><span class="line">  退避 → パッチ適用 → healthcheck → 復帰</span><br><span class="line"></span><br><span class="line">pve1:</span><br><span class="line">  退避 → パッチ適用 → healthcheck → 復帰</span><br></pre></td></tr></table></figure>
+
+<p>実装上も、<code>proxmox_patch_weekly_full.yml</code> でこの順番にplaybookを呼んでいます。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">import_playbook:</span> <span class="string">proxmox_evacuate_node.yml</span></span><br><span class="line">  <span class="attr">vars:</span></span><br><span class="line">    <span class="attr">target_node:</span> <span class="string">pve2</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="attr">import_playbook:</span> <span class="string">proxmox_patch_apply_node.yml</span></span><br><span class="line">  <span class="attr">vars:</span></span><br><span class="line">    <span class="attr">target_node:</span> <span class="string">pve2</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="attr">import_playbook:</span> <span class="string">proxmox_restore_vm_placement.yml</span></span><br><span class="line">  <span class="attr">vars:</span></span><br><span class="line">    <span class="attr">target_node:</span> <span class="string">pve2</span></span><br></pre></td></tr></table></figure>
+
+<p>pve2の適用とヘルスチェックが終わってから、pve1側へ進みます。</p>
+<h3 id="図3-—-片ノードずつ"><a href="#図3-—-片ノードずつ" class="headerlink" title="図3 — 片ノードずつ"></a>図3 — 片ノードずつ</h3><pre>
+<code class="mermaid">
+flowchart TB
+
+subgraph pve2run[&quot;pve2 の番&quot;]
+    E2[&quot;退避&lt;br&#x2F;&gt;&lt;small&gt;VMをpve1へ移す&lt;&#x2F;small&gt;&quot;] --&gt; P2[&quot;パッチ + 再起動&quot;]
+    P2 --&gt; H2[&quot;ヘルスチェック&quot;]
+    H2 --&gt; R2[&quot;復帰&lt;br&#x2F;&gt;&lt;small&gt;VMを戻す&lt;&#x2F;small&gt;&quot;]
+end
+
+subgraph pve1run[&quot;pve1 の番&quot;]
+    E1[&quot;退避&lt;br&#x2F;&gt;&lt;small&gt;VMをpve2へ移す&lt;&#x2F;small&gt;&quot;] --&gt; P1[&quot;パッチ + 再起動&quot;]
+    P1 --&gt; H1[&quot;ヘルスチェック&quot;]
+    H1 --&gt; R1[&quot;復帰&quot;]
+end
+
+H2 --&gt;|&quot;OKなら次へ&quot;| E1
+H2 -.-&gt;|&quot;NGなら止める&quot;| STOP[&quot;停止・通知&lt;br&#x2F;&gt;&lt;small&gt;pve1には手を付けない&lt;&#x2F;small&gt;&quot;]
+
+style STOP fill:#991b1b,stroke:#ef4444,color:#fff
+
+</code>
+</pre>
+
+
+<p>退避はHA管理VMの移動です。Firewallも認証サーバも、ここで一緒に移ります。</p>
+<p>ここは意図的にオフラインマイグレーションにしています。パッチでQEMUのバージョンが変わる可能性がある以上、新旧バージョンのQEMUをまたいでオンラインマイグレーションをするのは避けたいからです。</p>
+<p>動いたまま無停止で移すよりも、一度止めて確実に移す方を選びました。移動のたびに数十秒止まるのは、その結果です。</p>
+<p>なので、厳密には完全な無停止ではありません。HA管理VMは移動のときに停止→移動→起動になります。</p>
+<p>ただし、クラスタ全体を止めてメンテナンスするわけではありません。片方のノードを処理している間、もう片方がVMを受けます。私の環境では、完全なオンラインマイグレーションよりも、短い停止を許容して確実に移す方を選びました。</p>
+<p>復帰は「元の配置に戻す」だけです。戻せなくても致命ではありません。どちらのノードでも動くからです。ただ、平常時の配置に戻っていた方が、次の運用が分かりやすくなります。</p>
+<h2 id="片側しか生きていないときは、無理に進めない"><a href="#片側しか生きていないときは、無理に進めない" class="headerlink" title="片側しか生きていないときは、無理に進めない"></a>片側しか生きていないときは、無理に進めない</h2><p>通常はpve2 → pve1の順に処理します。</p>
+<p>ただし、現実の運用では、片方のノードが到達不能だったり、ヘルスチェックでNGになることもあります。その場合、以前のように「両方そろっていないから全部中止」とすると、片側だけ安全に処理できる場面でも止まってしまいます。</p>
+<p>一方で、片側しか生きていない状態で、VMを無人で止めてまでパッチを強行するのも危険です。</p>
+<p>そのため、現在の実装では、到達不能または不健全なノードは今回の対象から外します。ただし、適用対象が1ノードだけになった場合、そのノードにrunning guestが残っていれば自動適用は見送ります。退避先がないからです。</p>
+<p>つまり、考え方はこうです。</p>
+<ul>
+<li>両方とも健全なら、pve2 → pve1でローリング適用する</li>
+<li>片方が不健全なら、そのノードは今回の対象から外す</li>
+<li>片方だけが対象でも、running guestが残っていれば自動適用しない</li>
+<li>両方とも使えない、または判断できない場合は止める</li>
+</ul>
+<p>壊れているときほど、静かに成功扱いにしない。<br>ここはかなり大事にしています。</p>
+<h2 id="実装はGitに置く"><a href="#実装はGitに置く" class="headerlink" title="実装はGitに置く"></a>実装はGitに置く</h2><p>この仕組みは、すべてrepoに置いています。</p>
+<p>読みどころはこのあたりです。</p>
+<ul>
+<li><code>roles/proxmox_patch_dryrun</code></li>
+<li><code>roles/proxmox_patch_apply_node</code></li>
+<li><code>playbooks/proxmox_patch_weekly_full.yml</code></li>
+<li><code>scripts/codex-classify.sh</code></li>
+</ul>
+<p>dry-runで何を集めるか。<br>何を重要コンポーネントとみなすか。<br>AIに何を読ませるか。<br>AIの出力をどう検証するか。<br>どのステータスなら自動適用するか。<br>どのステータスなら止めるか。</p>
+<p>こうした判断を、できるだけGit上に残しています。</p>
+<p>もちろん、すべてを完全にコード化できるわけではありません。ですが、「なぜそう動くのか」をあとから読める形にしておくと、運用はかなり楽になります。</p>
+<h2 id="運用してみて"><a href="#運用してみて" class="headerlink" title="運用してみて"></a>運用してみて</h2><p>一番効いたのは、退避や再起動をAnsible化したことではありません。</p>
+<p>何を重要とみなすか。<br>何なら自動で進めるか。<br>何なら人間に戻すか。</p>
+<p>これを先に決めて、コードにしたことです。</p>
+<p>毎週のパッチ適用で一番つらいのは、実はコマンドを打つことではなく、「これは今当てていいのか」と毎回考えることでした。そこを機械に渡せる形まで分解できると、運用はかなり軽くなります。</p>
+<p>実装はAIにかなり手伝ってもらっています。私が手でコードを書くことはほとんどありません。</p>
+<p>ただし、AIに任せているのは実装や調査、changelogの読み取り、日本語レポートの作成です。人間が決めるのはポリシーです。</p>
+<p>どこまで自動で進めるのか。<br>何が来たら止めるのか。<br>失敗したとき、どちら側に倒すのか。<br>通知だけでよいのか、ジョブ自体を失敗させるのか。</p>
+<p>こういう基準を先に決めておくと、AIはかなり使いやすくなります。</p>
+<p>最初は要求事項を書いていました。実装が増えるほど、個別のお願いよりも、ポリシーとして残す方が効くようになります。結局のところ、自動化で大事なのは「何をしたいか」よりも、「何をしてはいけないか」を明確にすることでした。</p>
+<p>AIに任せる範囲を広げるほど、人間の判断が不要になるわけではありません。むしろ、人間が判断すべき場所を狭く、濃くしていく感じです。</p>
+<p>このブログでAIについて何度か書いていますが、考え方は同じです。AIを信じるのではなく、雑用を減らし、人間が本当に見るべき判断に集中できるようにする。</p>
+<p>Proxmoxの週次パッチも、その一例です。</p>
+<p>repoはこちらです。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/yoshi0808/homelab-ansible">https://github.com/yoshi0808/homelab-ansible</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/new-technology/tags/proxmox/" rel="tag"><i class="fa fa-tag"></i> proxmox</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/new-technology/2026/09/05/ai-devops/" rel="prev" title="AIに本番を任せるための設計 — プロンプトは期待でしかなかった">
+                  <i class="fa fa-angle-left"></i> AIに本番を任せるための設計 — プロンプトは期待でしかなかった
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2020 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">阿部　吉伸(Yoshinobu ABE)</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div><script src="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.umd.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/simple-gdpr@1.1.5/dist/simplegdpr.min.css" rel="stylesheet">
+
+<script>
+if (Cookies.get('PRVCY202112') != 'Agree') {
+  const notice = new SimpleGDPR({
+    title: 'Accept Cookies & Privacy Policy?',
+    message: 'このWebサイトでは、訪問や活動に関するデータがクッキー等によって収集されます。閲覧を継続される場合、\
+    プライバシーポリシーをご覧いただき同意(Agree)をお願いします',
+    link: null,
+    icons: true,
+    theme: 'light',
+    animation: 'fade',
+    float: 'bottom-right',
+      callback: () => {
+      notice.close();
+      Cookies.set('PRVCY202112', 'Agree', { expires: 365, path: '/'});
+      notice.destroy();
+      // Google Analytics 4
+      gtag('consent', 'update', {
+      'analytics_storage': 'granted'
+      });
+      gtag('js', new Date());
+      gtag('config', 'G-JMY6NSC2KK', { 'anonymize_ip': true });
+      },
+  });
+}
+</script>
+<div class="disclaimer1">
+このサイトの記事は、特別な記載がない限り <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ja">クリエイティブ・コモンズ BY-NC-SA ライセンス</a>で保護されています</div>
+
+
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/yoshi0808" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

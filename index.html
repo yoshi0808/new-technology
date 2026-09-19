@@ -199,7 +199,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/new-technology/archives/">
-          <span class="site-state-item-count">111</span>
+          <span class="site-state-item-count">112</span>
           <span class="site-state-item-name">ポスト</span>
         </a>
       </div>
@@ -241,6 +241,104 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2026/09/19/proxmox-patches/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/new-technology/images/yoshi.png">
+      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="New technologies in our life">
+      <meta itemprop="description" content="IT">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | New technologies in our life">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/new-technology/2026/09/19/proxmox-patches/" class="post-title-link" itemprop="url">2ノードProxmoxを毎週自動パッチする</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">投稿日</span>
+      
+
+      <time title="作成日：2026-09-19 03:00:00 / 修正日：11:20:29" itemprop="dateCreated datePublished" datetime="2026-09-19T03:00:00+09:00">2026-09-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">カテゴリ</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/AI/" itemprop="url" rel="index"><span itemprop="name">AI</span></a>
+        </span>
+          、
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/new-technology/categories/AI/Ansible/" itemprop="url" rel="index"><span itemprop="name">Ansible</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <img src="/new-technology/2026/09/19/proxmox-patches/Title.png" class="" width="1024" title="alt">
+
+<p class="onepoint">この記事で実現すること</p>
+
+<p>Proxmoxのパッチ適用は、単体ならそこまで難しくありません。GUIで更新を確認して、適用して、必要なら再起動する。それだけです。</p>
+<p>ただし、2ノードクラスタで、Firewallや認証サーバをVMとして載せていると話が変わります。</p>
+<p>片方ずつ当てたい。<br>VMは事前に逃がしたい。<br>quorumは壊したくない。<br>失敗したら、もう片方には進みたくない。<br>そして、毎週これを手でやりたくない。</p>
+<p>ということで、Proxmoxの週次パッチ適用をAnsibleで自動化しました。</p>
+<p>今回の記事は、その仕組みの話です。<br>単に <code>apt upgrade</code> を自動実行する話ではありません。dry-runで更新候補を集め、重要コンポーネントを判定し、changelogをAIに読ませ、最後はAnsible側のルールで適用可否を決めます。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/new-technology/2026/09/19/proxmox-patches/#more" rel="contents">
+                続きを読む &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1071,93 +1169,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/new-technology/2026/05/31/proxmox92/#more" rel="contents">
-                続きを読む &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://yoshi0808.github.io/new-technology/2026/05/16/Sophos%20Migration/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/new-technology/images/yoshi.png">
-      <meta itemprop="name" content="阿部　吉伸(Yoshinobu ABE)">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="New technologies in our life">
-      <meta itemprop="description" content="IT">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | New technologies in our life">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/new-technology/2026/05/16/Sophos%20Migration/" class="post-title-link" itemprop="url">Sophos FirewallをESXiからProxmoxに移行</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">投稿日</span>
-
-      <time title="作成日：2026-05-16 01:37:13" itemprop="dateCreated datePublished" datetime="2026-05-16T01:37:13+09:00">2026-05-16</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">編集日</span>
-      <time title="修正日：2026-05-20 19:13:50" itemprop="dateModified" datetime="2026-05-20T19:13:50+09:00">2026-05-20</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <img src="/new-technology/2026/05/16/Sophos%20Migration/Title.png" class="" title="alt">
-
-<p class="onepoint">この記事で実現すること</p>
-
-<p>これまで使ってきたESXiからいよいよProxmoxに移行します。私の環境で最も大切なVMはSophos Firewallですが、移行の過程、チューニングした項目を記録に残します。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/new-technology/2026/05/16/Sophos%20Migration/#more" rel="contents">
                 続きを読む &raquo;
               </a>
             </div>
