@@ -28,8 +28,11 @@
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/11/14/passkey_operations/Title.png">
 <meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/11/14/passkey_operations/atkey.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/11/14/passkey_operations/pocketkeybio.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/11/14/passkey_operations/win_passkey.png">
+<meta property="og:image" content="https://yoshi0808.github.io/new-technology/2026/11/14/passkey_operations/win_passkey2.png">
 <meta property="article:published_time" content="2026-11-14T02:00:00.000Z">
-<meta property="article:modified_time" content="2026-11-14T11:05:54.313Z">
+<meta property="article:modified_time" content="2026-11-15T02:19:33.564Z">
 <meta property="article:author" content="阿部　吉伸(Yoshinobu ABE)">
 <meta property="article:tag" content="bitwarden">
 <meta property="article:tag" content="yubikey">
@@ -192,7 +195,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E6%AD%A3%E3%82%A2%E3%82%AF%E3%82%BB%E3%82%B9%E3%81%AE%E5%BA%83%E3%81%8C%E3%82%8A"><span class="nav-number">1.</span> <span class="nav-text">不正アクセスの広がり</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Apple%E3%82%84Google%E3%82%82%E7%8B%99%E3%82%8F%E3%82%8C%E3%81%A6%E3%81%84%E3%82%8B"><span class="nav-number">2.</span> <span class="nav-text">AppleやGoogleも狙われている</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E3%83%91%E3%82%B9%E3%82%AD%E3%83%BC%E3%81%AF%E4%BD%95%E3%82%92%E5%AE%88%E3%81%A3%E3%81%A6%E3%81%8F%E3%82%8C%E3%82%8B%E3%81%AE%E3%81%8B"><span class="nav-number">3.</span> <span class="nav-text">パスキーは何を守ってくれるのか</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%91%E3%82%B9%E3%82%AD%E3%83%BC%E3%81%A8FIDO2"><span class="nav-number">3.1.</span> <span class="nav-text">パスキーとFIDO2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%91%E3%82%B9%E3%82%AD%E3%83%BC%E3%81%8C%E3%81%82%E3%81%A3%E3%81%A6%E3%82%82%E3%80%81%E5%BC%B1%E3%81%84%E8%AA%8D%E8%A8%BC%E7%B5%8C%E8%B7%AF%E3%81%8C%E6%AE%8B%E3%81%A3%E3%81%A6%E3%81%84%E3%82%8B"><span class="nav-number">3.2.</span> <span class="nav-text">パスキーがあっても、弱い認証経路が残っている</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SMS%E8%AA%8D%E8%A8%BC%E3%81%AB%E3%82%82%E3%83%AA%E3%82%B9%E3%82%AF%E3%81%8C%E3%81%82%E3%82%8B"><span class="nav-number">3.3.</span> <span class="nav-text">SMS認証にもリスクがある</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B1%BA%E6%B8%88%E6%83%85%E5%A0%B1%E3%82%92%E4%BF%9D%E5%AD%98%E3%81%99%E3%82%8B%E5%BF%85%E8%A6%81%E3%81%8C%E3%81%82%E3%82%8B%E3%81%8B"><span class="nav-number">3.4.</span> <span class="nav-text">決済情報を保存する必要があるか</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Apple%E3%83%BBGoogle%E3%81%B8%E3%81%AE%E4%BE%9D%E5%AD%98%E3%82%92%E3%81%A9%E3%81%86%E8%80%83%E3%81%88%E3%82%8B%E3%81%8B"><span class="nav-number">4.</span> <span class="nav-text">Apple・Googleへの依存をどう考えるか</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8C%E6%9C%9F%E5%9E%8B%E3%83%91%E3%82%B9%E3%82%AD%E3%83%BC%E3%81%AE%E4%BE%BF%E5%88%A9%E3%81%95"><span class="nav-number">4.1.</span> <span class="nav-text">同期型パスキーの便利さ</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A7%98%E5%AF%86%E9%8D%B5%E3%81%8C%E5%8F%96%E3%82%8A%E5%87%BA%E3%81%9B%E3%81%AA%E3%81%8F%E3%81%A6%E3%82%82%E3%80%81%E4%B8%8D%E6%AD%A3%E5%88%A9%E7%94%A8%E3%81%95%E3%82%8C%E3%82%8B%E5%8F%AF%E8%83%BD%E6%80%A7%E3%81%AF%E3%81%82%E3%82%8B"><span class="nav-number">4.2.</span> <span class="nav-text">秘密鍵が取り出せなくても、不正利用される可能性はある</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%95%E3%82%A3%E3%83%83%E3%82%B7%E3%83%B3%E3%82%B0%E3%82%82%E5%A4%89%E3%82%8F%E3%81%A3%E3%81%A6%E3%81%8D%E3%81%A6%E3%81%84%E3%82%8B"><span class="nav-number">4.3.</span> <span class="nav-text">フィッシングも変わってきている</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AI%E3%82%B5%E3%83%BC%E3%83%93%E3%82%B9%E3%81%AA%E3%81%A9%E3%81%B8%E3%81%AE%E8%A2%AB%E5%AE%B3%E6%8B%A1%E5%A4%A7"><span class="nav-number">4.4.</span> <span class="nav-text">AIサービスなどへの被害拡大</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E3%83%AD%E3%82%B0%E3%82%A4%E3%83%B3%E5%BE%8C%E3%81%AE%E3%82%BB%E3%83%83%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%82%E7%8B%99%E3%82%8F%E3%82%8C%E3%82%8B"><span class="nav-number">5.</span> <span class="nav-text">ログイン後のセッションも狙われる</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%82%BB%E3%83%83%E3%82%B7%E3%83%A7%E3%83%B3Cookie%E3%81%A8%E3%81%AF%E4%BD%95%E3%81%8B"><span class="nav-number">5.1.</span> <span class="nav-text">セッションCookieとは何か</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Infostealer%E3%81%A8%E8%AA%8D%E8%A8%BC%E6%83%85%E5%A0%B1%E3%81%AE%E5%A3%B2%E8%B2%B7"><span class="nav-number">5.2.</span> <span class="nav-text">Infostealerと認証情報の売買</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A9%E7%94%A8%E8%80%85%E3%81%AB%E3%81%A7%E3%81%8D%E3%82%8B%E3%81%93%E3%81%A8"><span class="nav-number">5.3.</span> <span class="nav-text">利用者にできること</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%89%A9%E7%90%86%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3%E3%82%AD%E3%83%BC%E3%82%92%E4%BD%BF%E3%81%86"><span class="nav-number">6.</span> <span class="nav-text">物理セキュリティキーを使う</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8C%E6%9C%9F%E5%9E%8B%E3%83%91%E3%82%B9%E3%82%AD%E3%83%BC%E3%81%A8%E3%81%AE%E9%81%95%E3%81%84"><span class="nav-number">6.1.</span> <span class="nav-text">同期型パスキーとの違い</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B4%9B%E5%A4%B1%E3%81%A8%E6%95%85%E9%9A%9C%E3%81%B8%E3%81%AE%E5%82%99%E3%81%88"><span class="nav-number">6.2.</span> <span class="nav-text">紛失と故障への備え</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#FIDO2%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3%E3%82%AD%E3%83%BC%E3%82%92%E5%AE%9F%E9%9A%9B%E3%81%AB%E6%AF%94%E8%BC%83%E3%81%99%E3%82%8B"><span class="nav-number">7.</span> <span class="nav-text">FIDO2セキュリティキーを実際に比較する</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#FIDO2%E7%89%A9%E7%90%86%E3%82%AD%E3%83%BC%E3%81%A8%E3%81%97%E3%81%A6%E5%B0%8E%E5%85%A5%E3%81%97%E3%81%9F%E8%A3%BD%E5%93%81"><span class="nav-number">7.1.</span> <span class="nav-text">FIDO2物理キーとして導入した製品</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iPhone%E3%81%AENFC%E8%AA%8D%E8%AD%98%E3%81%AF%E8%A3%BD%E5%93%81%E3%81%AB%E3%82%88%E3%81%A3%E3%81%A6%E9%81%95%E3%81%86"><span class="nav-number">7.2.</span> <span class="nav-text">iPhoneのNFC認識は製品によって違う</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ATKey-Card-NFC%E3%82%92iPhone%E3%81%A7%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B%E3%82%B3%E3%83%84"><span class="nav-number">7.2.1.</span> <span class="nav-text">ATKey.Card NFCをiPhoneで使用するコツ</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%87%E7%B4%8B%E8%AA%8D%E8%A8%BC%E4%BB%98%E3%81%8D%E8%A3%BD%E5%93%81%E3%81%AF%E3%81%A9%E3%81%86%E3%81%8B"><span class="nav-number">7.3.</span> <span class="nav-text">指紋認証付き製品はどうか</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Windows%E3%81%A7%E3%81%AFNFC%E3%83%AA%E3%83%BC%E3%83%80%E3%83%BC%E3%82%82%E5%88%A9%E7%94%A8%E3%81%A7%E3%81%8D%E3%82%8B"><span class="nav-number">7.4.</span> <span class="nav-text">WindowsではNFCリーダーも利用できる</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#YubiKey%E3%81%AE%E6%96%B0%E6%97%A7%E3%83%95%E3%82%A1%E3%83%BC%E3%83%A0%E3%82%A6%E3%82%A7%E3%82%A2"><span class="nav-number">7.5.</span> <span class="nav-text">YubiKeyの新旧ファームウェア</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%85%E8%A6%81%E3%81%AA%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3"><span class="nav-number">7.6.</span> <span class="nav-text">必要なアプリケーション</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9F%E9%9A%9B%E3%81%AB%E4%BD%BF%E3%81%A3%E3%81%A6%E3%81%BF%E3%81%A6"><span class="nav-number">7.7.</span> <span class="nav-text">実際に使ってみて</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Google%E3%82%A2%E3%82%AB%E3%82%A6%E3%83%B3%E3%83%88%E3%81%AB%E7%89%A9%E7%90%86%E3%82%AD%E3%83%BC%E3%82%92%E7%99%BB%E9%8C%B2%E3%81%99%E3%82%8B"><span class="nav-number">7.8.</span> <span class="nav-text">Googleアカウントに物理キーを登録する</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Apple-Account%E3%81%AB%E7%89%A9%E7%90%86%E3%82%AD%E3%83%BC%E3%82%92%E7%99%BB%E9%8C%B2%E3%81%99%E3%82%8B"><span class="nav-number">7.9.</span> <span class="nav-text">Apple Accountに物理キーを登録する</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Bitwarden%E3%81%A8%E7%89%A9%E7%90%86%E3%82%AD%E3%83%BC%E3%82%92%E4%BD%BF%E3%81%84%E5%88%86%E3%81%91%E3%82%8B"><span class="nav-number">8.</span> <span class="nav-text">Bitwardenと物理キーを使い分ける</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%99%E3%81%B9%E3%81%A6%E3%81%AE%E3%82%B5%E3%83%BC%E3%83%93%E3%82%B9%E3%82%92%E7%89%A9%E7%90%86%E3%82%AD%E3%83%BC%E3%81%AB%E3%81%99%E3%82%8B%E5%BF%85%E8%A6%81%E3%81%AF%E3%81%AA%E3%81%84"><span class="nav-number">8.1.</span> <span class="nav-text">すべてのサービスを物理キーにする必要はない</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bitwarden%E3%81%AE%E5%88%A9%E4%BE%BF%E6%80%A7%E3%82%92%E6%B4%BB%E7%94%A8%E3%81%99%E3%82%8B"><span class="nav-number">8.2.</span> <span class="nav-text">Bitwardenの利便性を活用する</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bitwarden%E8%87%AA%E8%BA%AB%E3%82%82%E7%89%A9%E7%90%86%E3%82%AD%E3%83%BC%E3%81%A7%E4%BF%9D%E8%AD%B7%E3%81%99%E3%82%8B"><span class="nav-number">8.3.</span> <span class="nav-text">Bitwarden自身も物理キーで保護する</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bitwarden%E3%81%AEPRF%E5%BE%A9%E5%8F%B7%E3%81%AB%E9%81%95%E3%81%84%E3%81%8C%E3%81%82%E3%81%A3%E3%81%9F"><span class="nav-number">8.4.</span> <span class="nav-text">BitwardenのPRF復号に違いがあった</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8F%BE%E5%9C%A8%E3%81%AE%E9%81%8B%E7%94%A8"><span class="nav-number">8.5.</span> <span class="nav-text">現在の運用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%81%8B%E7%94%A8%E3%81%97%E3%81%A6%E3%81%BF%E3%81%A6"><span class="nav-number">9.</span> <span class="nav-text">運用してみて</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B3%87%E6%96%99"><span class="nav-number">10.</span> <span class="nav-text">参考資料</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E6%AD%A3%E3%82%A2%E3%82%AF%E3%82%BB%E3%82%B9%E3%81%AE%E5%BA%83%E3%81%8C%E3%82%8A"><span class="nav-number">1.</span> <span class="nav-text">不正アクセスの広がり</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Apple%E3%82%84Google%E3%82%82%E7%8B%99%E3%82%8F%E3%82%8C%E3%81%A6%E3%81%84%E3%82%8B"><span class="nav-number">2.</span> <span class="nav-text">AppleやGoogleも狙われている</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E3%83%91%E3%82%B9%E3%82%AD%E3%83%BC%E3%81%AF%E4%BD%95%E3%82%92%E5%AE%88%E3%81%A3%E3%81%A6%E3%81%8F%E3%82%8C%E3%82%8B%E3%81%AE%E3%81%8B"><span class="nav-number">3.</span> <span class="nav-text">パスキーは何を守ってくれるのか</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%91%E3%82%B9%E3%82%AD%E3%83%BC%E3%81%A8FIDO2"><span class="nav-number">3.1.</span> <span class="nav-text">パスキーとFIDO2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%91%E3%82%B9%E3%82%AD%E3%83%BC%E3%81%8C%E3%81%82%E3%81%A3%E3%81%A6%E3%82%82%E3%80%81%E5%BC%B1%E3%81%84%E8%AA%8D%E8%A8%BC%E7%B5%8C%E8%B7%AF%E3%81%8C%E6%AE%8B%E3%81%A3%E3%81%A6%E3%81%84%E3%82%8B"><span class="nav-number">3.2.</span> <span class="nav-text">パスキーがあっても、弱い認証経路が残っている</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SMS%E8%AA%8D%E8%A8%BC%E3%81%AB%E3%82%82%E3%83%AA%E3%82%B9%E3%82%AF%E3%81%8C%E3%81%82%E3%82%8B"><span class="nav-number">3.3.</span> <span class="nav-text">SMS認証にもリスクがある</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B1%BA%E6%B8%88%E6%83%85%E5%A0%B1%E3%82%92%E4%BF%9D%E5%AD%98%E3%81%99%E3%82%8B%E5%BF%85%E8%A6%81%E3%81%8C%E3%81%82%E3%82%8B%E3%81%8B"><span class="nav-number">3.4.</span> <span class="nav-text">決済情報を保存する必要があるか</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Apple%E3%83%BBGoogle%E3%81%B8%E3%81%AE%E4%BE%9D%E5%AD%98%E3%82%92%E3%81%A9%E3%81%86%E8%80%83%E3%81%88%E3%82%8B%E3%81%8B"><span class="nav-number">4.</span> <span class="nav-text">Apple・Googleへの依存をどう考えるか</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8C%E6%9C%9F%E5%9E%8B%E3%83%91%E3%82%B9%E3%82%AD%E3%83%BC%E3%81%AE%E4%BE%BF%E5%88%A9%E3%81%95"><span class="nav-number">4.1.</span> <span class="nav-text">同期型パスキーの便利さ</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A7%98%E5%AF%86%E9%8D%B5%E3%81%8C%E5%8F%96%E3%82%8A%E5%87%BA%E3%81%9B%E3%81%AA%E3%81%8F%E3%81%A6%E3%82%82%E3%80%81%E4%B8%8D%E6%AD%A3%E5%88%A9%E7%94%A8%E3%81%95%E3%82%8C%E3%82%8B%E5%8F%AF%E8%83%BD%E6%80%A7%E3%81%AF%E3%81%82%E3%82%8B"><span class="nav-number">4.2.</span> <span class="nav-text">秘密鍵が取り出せなくても、不正利用される可能性はある</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%95%E3%82%A3%E3%83%83%E3%82%B7%E3%83%B3%E3%82%B0%E3%82%82%E5%A4%89%E3%82%8F%E3%81%A3%E3%81%A6%E3%81%8D%E3%81%A6%E3%81%84%E3%82%8B"><span class="nav-number">4.3.</span> <span class="nav-text">フィッシングも変わってきている</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AI%E3%82%B5%E3%83%BC%E3%83%93%E3%82%B9%E3%81%AA%E3%81%A9%E3%81%B8%E3%81%AE%E8%A2%AB%E5%AE%B3%E6%8B%A1%E5%A4%A7"><span class="nav-number">4.4.</span> <span class="nav-text">AIサービスなどへの被害拡大</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E3%83%AD%E3%82%B0%E3%82%A4%E3%83%B3%E5%BE%8C%E3%81%AE%E3%82%BB%E3%83%83%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%82%E7%8B%99%E3%82%8F%E3%82%8C%E3%82%8B"><span class="nav-number">5.</span> <span class="nav-text">ログイン後のセッションも狙われる</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%82%BB%E3%83%83%E3%82%B7%E3%83%A7%E3%83%B3Cookie%E3%81%A8%E3%81%AF%E4%BD%95%E3%81%8B"><span class="nav-number">5.1.</span> <span class="nav-text">セッションCookieとは何か</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Infostealer%E3%81%A8%E8%AA%8D%E8%A8%BC%E6%83%85%E5%A0%B1%E3%81%AE%E5%A3%B2%E8%B2%B7"><span class="nav-number">5.2.</span> <span class="nav-text">Infostealerと認証情報の売買</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A9%E7%94%A8%E8%80%85%E3%81%AB%E3%81%A7%E3%81%8D%E3%82%8B%E3%81%93%E3%81%A8"><span class="nav-number">5.3.</span> <span class="nav-text">利用者にできること</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%89%A9%E7%90%86%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3%E3%82%AD%E3%83%BC%E3%82%92%E4%BD%BF%E3%81%86"><span class="nav-number">6.</span> <span class="nav-text">物理セキュリティキーを使う</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8C%E6%9C%9F%E5%9E%8B%E3%83%91%E3%82%B9%E3%82%AD%E3%83%BC%E3%81%A8%E3%81%AE%E9%81%95%E3%81%84"><span class="nav-number">6.1.</span> <span class="nav-text">同期型パスキーとの違い</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B4%9B%E5%A4%B1%E3%81%A8%E6%95%85%E9%9A%9C%E3%81%B8%E3%81%AE%E5%82%99%E3%81%88"><span class="nav-number">6.2.</span> <span class="nav-text">紛失と故障への備え</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#FIDO2%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3%E3%82%AD%E3%83%BC%E3%82%92%E5%AE%9F%E9%9A%9B%E3%81%AB%E6%AF%94%E8%BC%83%E3%81%99%E3%82%8B"><span class="nav-number">7.</span> <span class="nav-text">FIDO2セキュリティキーを実際に比較する</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#FIDO2%E7%89%A9%E7%90%86%E3%82%AD%E3%83%BC%E3%81%A8%E3%81%97%E3%81%A6%E5%B0%8E%E5%85%A5%E3%81%97%E3%81%9F%E8%A3%BD%E5%93%81"><span class="nav-number">7.1.</span> <span class="nav-text">FIDO2物理キーとして導入した製品</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iPhone%E3%81%AENFC%E8%AA%8D%E8%AD%98%E3%81%AF%E8%A3%BD%E5%93%81%E3%81%AB%E3%82%88%E3%81%A3%E3%81%A6%E9%81%95%E3%81%86"><span class="nav-number">7.2.</span> <span class="nav-text">iPhoneのNFC認識は製品によって違う</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%87%E7%B4%8B%E8%AA%8D%E8%A8%BC%E4%BB%98%E3%81%8D%E3%82%AB%E3%83%BC%E3%83%89-ATKey-Card-NFC"><span class="nav-number">7.2.1.</span> <span class="nav-text">指紋認証付きカード　ATKey.Card NFC</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%87%E7%B4%8B%E8%AA%8D%E8%A8%BC%E4%BB%98%E3%81%8DUSB%E6%8E%A5%E7%B6%9A-ACS-PokectKey%C2%B1-BIO"><span class="nav-number">7.3.</span> <span class="nav-text">指紋認証付きUSB接続　ACS PokectKey± BIO</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PC%E3%81%A7%E3%81%AFNFC%E3%83%AA%E3%83%BC%E3%83%80%E3%83%BC%E3%82%82%E5%88%A9%E7%94%A8%E3%81%A7%E3%81%8D%E3%82%8B"><span class="nav-number">7.4.</span> <span class="nav-text">PCではNFCリーダーも利用できる</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#YubiKey%E3%81%AE%E6%96%B0%E6%97%A7%E3%83%95%E3%82%A1%E3%83%BC%E3%83%A0%E3%82%A6%E3%82%A7%E3%82%A2"><span class="nav-number">7.5.</span> <span class="nav-text">YubiKeyの新旧ファームウェア</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%85%E8%A6%81%E3%81%AA%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3"><span class="nav-number">7.6.</span> <span class="nav-text">必要なアプリケーション</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9F%E9%9A%9B%E3%81%AB%E4%BD%BF%E3%81%A3%E3%81%A6%E3%81%BF%E3%81%A6"><span class="nav-number">7.7.</span> <span class="nav-text">実際に使ってみて</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%83%91%E3%82%B9%E3%82%AD%E3%83%BC%E3%81%AE%E7%99%BB%E9%8C%B2%E5%85%88%E3%81%AB%E6%B3%A8%E6%84%8F%E3%81%99%E3%82%8B"><span class="nav-number">7.8.</span> <span class="nav-text">パスキーの登録先に注意する</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Google%E3%82%A2%E3%82%AB%E3%82%A6%E3%83%B3%E3%83%88%E3%81%AB%E7%89%A9%E7%90%86%E3%82%AD%E3%83%BC%E3%82%92%E7%99%BB%E9%8C%B2%E3%81%99%E3%82%8B"><span class="nav-number">7.9.</span> <span class="nav-text">Googleアカウントに物理キーを登録する</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Apple-Account%E3%81%AB%E7%89%A9%E7%90%86%E3%82%AD%E3%83%BC%E3%82%92%E7%99%BB%E9%8C%B2%E3%81%99%E3%82%8B"><span class="nav-number">7.10.</span> <span class="nav-text">Apple Accountに物理キーを登録する</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Bitwarden%E3%81%A8%E7%89%A9%E7%90%86%E3%82%AD%E3%83%BC%E3%82%92%E4%BD%BF%E3%81%84%E5%88%86%E3%81%91%E3%82%8B"><span class="nav-number">8.</span> <span class="nav-text">Bitwardenと物理キーを使い分ける</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%81%99%E3%81%B9%E3%81%A6%E3%81%AE%E3%82%B5%E3%83%BC%E3%83%93%E3%82%B9%E3%82%92%E7%89%A9%E7%90%86%E3%82%AD%E3%83%BC%E3%81%AB%E3%81%99%E3%82%8B%E5%BF%85%E8%A6%81%E3%81%AF%E3%81%AA%E3%81%84"><span class="nav-number">8.1.</span> <span class="nav-text">すべてのサービスを物理キーにする必要はない</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bitwarden%E3%81%AE%E5%88%A9%E4%BE%BF%E6%80%A7%E3%82%92%E6%B4%BB%E7%94%A8%E3%81%99%E3%82%8B"><span class="nav-number">8.2.</span> <span class="nav-text">Bitwardenの利便性を活用する</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bitwarden%E8%87%AA%E8%BA%AB%E3%82%82%E7%89%A9%E7%90%86%E3%82%AD%E3%83%BC%E3%81%A7%E4%BF%9D%E8%AD%B7%E3%81%99%E3%82%8B"><span class="nav-number">8.3.</span> <span class="nav-text">Bitwarden自身も物理キーで保護する</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bitwarden%E3%81%AEPRF%E5%BE%A9%E5%8F%B7%E3%81%AB%E9%81%95%E3%81%84%E3%81%8C%E3%81%82%E3%81%A3%E3%81%9F"><span class="nav-number">8.4.</span> <span class="nav-text">BitwardenのPRF復号に違いがあった</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E8%A6%81%E3%81%AA%E8%AA%8D%E8%A8%BC%E7%B5%8C%E8%B7%AF%E3%81%AE%E5%89%8A%E9%99%A4%E3%81%A8%E3%83%AA%E3%82%AB%E3%83%90%E3%83%AA%E3%83%BC%E6%89%8B%E6%AE%B5%E3%81%AE%E7%A2%BA%E4%BF%9D"><span class="nav-number">8.5.</span> <span class="nav-text">不要な認証経路の削除とリカバリー手段の確保</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8F%BE%E5%9C%A8%E3%81%AE%E9%81%8B%E7%94%A8"><span class="nav-number">8.6.</span> <span class="nav-text">現在の運用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%81%8B%E7%94%A8%E3%81%97%E3%81%A6%E3%81%BF%E3%81%A6"><span class="nav-number">9.</span> <span class="nav-text">運用してみて</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B3%87%E6%96%99"><span class="nav-number">10.</span> <span class="nav-text">参考資料</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -287,9 +290,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">投稿日</span>
-      
 
-      <time title="作成日：2026-11-14 11:00:00 / 修正日：20:05:54" itemprop="dateCreated datePublished" datetime="2026-11-14T11:00:00+09:00">2026-11-14</time>
+      <time title="作成日：2026-11-14 11:00:00" itemprop="dateCreated datePublished" datetime="2026-11-14T11:00:00+09:00">2026-11-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">編集日</span>
+      <time title="修正日：2026-11-15 11:19:33" itemprop="dateModified" datetime="2026-11-15T11:19:33+09:00">2026-11-15</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -454,7 +463,9 @@
 <p>例えば、英語のアルファベットと見た目が似ているキリル文字を混ぜることで、正規サイトのURLに見せかける手法です。IDNホモグラフ攻撃と呼ばれています。</p>
 <p>ただし、こうした攻撃がフィッシング全体の大部分を占めているわけではありません。また、正しく実装されたパスキーであれば、偽ドメインに対するフィッシング耐性があります。</p>
 <p>一方、アカウントの復旧手続きを装って認証コードを入力させたり、正規のサポートを装って操作を誘導したりする手法にも注意が必要です。</p>
-<p>攻撃者は、必ずしも暗号技術やパスキーそのものを突破する必要はありません。利用者をだまして、別の認証経路や復旧手続きを悪用することもできます。</p>
+<p>多くのWebサービスでは、ユーザーがパスワードを忘れた場合などに、登録されたメールアドレスへ認証コードや再設定用のリンクを送る仕組みが用意されています。</p>
+<p>もしメールだけでパスワードの再設定や認証情報の変更ができるのであれば、そこが最も弱い認証経路になり得ます。</p>
+<p>そのため、アカウント復旧に利用するメールアドレスの保護は非常に重要です。AppleやGoogleのメールアカウントを登録している場合には、それらのアカウント自体を確実に守る必要があります。</p>
 <p>GoogleやAppleなどの認証基盤を守るには、パスキーを設定するだけでなく、アカウント復旧の仕組みや信頼済み端末の管理も含めて考える必要があります。</p>
 <h2 id="AIサービスなどへの被害拡大"><a href="#AIサービスなどへの被害拡大" class="headerlink" title="AIサービスなどへの被害拡大"></a>AIサービスなどへの被害拡大</h2><p>AppleやGoogleのアカウントが狙われる理由の一つは、そこに多くの機能が紐付いていることです。メールを奪われれば、他サービスのアカウント復旧に悪用されるかもしれません。クラウドに保存した情報が流出する可能性もあります。</p>
 <p>また、AIサービスのアカウントやAPIキー、課金可能なセッションが悪用されれば、高額な従量課金につながる場合があります。</p>
@@ -525,13 +536,9 @@
 <p>スウェーデンで創業したセキュリティ企業で、YubiKeyを開発・販売しています。FIDO2だけでなく、OpenPGPやPIVなどにも対応する製品を提供しています。OpenPGPはこのブログでもその派生版のGnuPGとして取り上げていますが、暗号化や署名のために使う製品であり、SSHやGitHubの署名に使います。PIVは日本にはあまり馴染みがありませんが、個人証明用としてのIDカード用途の標準規格です。</p>
 <p>物理セキュリティキーではかなり代表的なメーカーですが、比較的高価です。また足元は品薄の状況が続いています。</p>
 <p><strong>AuthenTrend（オーセン・トレンド）</strong></p>
-<p>台湾の認証機器メーカーです。特に指紋認証を搭載したFIDO2セキュリティキーを開発しています。</p>
-<p>USB型のATKey.Proや、カード型のATKey.Card NFCなどを提供しています。</p>
+<p>台湾の認証機器メーカーです。特に指紋認証を搭載したFIDO2セキュリティキーを開発しています。<br>USB型のATKey.Proや、カード型のATKey.Card NFCなどを提供しています。<br>国内では、日本情報システム株式会社が取り扱っています。</p>
 <p><strong>ACS（Advanced Card Systems）</strong></p>
-<p>香港に本拠を置く、1995年創業のスマートカード・カードリーダーのメーカーです。日本の営業所もあります。</p>
-<p>ICカードやNFCリーダーなどを長年開発しており、FIDO2対応のPocketKeyシリーズも提供しています。</p>
-<p>今回購入したPocketKey NFCカードは、非常に安価な製品です。</p>
-<p>各製品の比較は以下のとおりです。</p>
+<p>香港に本拠を置く、1995年創業のスマートカード・カードリーダーのメーカーです。日本の営業所もあります。<br>ICカードやNFCリーダーなどを長年開発しており、FIDO2対応のPocketKeyシリーズも提供しています。<br>今回購入したPocketKey NFCカードは、非常に安価な製品です。<br>各製品の比較は以下のとおりです。</p>
 <table>
 <thead>
 <tr>
@@ -575,30 +582,30 @@
 <td>ACS PocketKey Card</td>
 <td>NFC</td>
 <td>カード型、PIN認証</td>
-<td>1,991円円</td>
+<td>1,991円</td>
 </tr>
 <tr>
 <td>AuthenTrend ATKey.Card NFC</td>
 <td>NFC &#x2F; 接触式ICカード</td>
 <td>指紋認証付きカード型</td>
-<td>約9,000円</td>
+<td>9,044円</td>
 </tr>
 <tr>
 <td>ACS PocketKey+ BIO</td>
 <td>USB-C &#x2F; NFC</td>
 <td>指紋認証、USB接続時に利用</td>
-<td>8,800円（購入価格）</td>
+<td>8,800円</td>
 </tr>
 </tbody></table>
-<p>※価格は2026年11月時点の参考価格です。販売店や時期によって異なります。ATKey.Card NFCは国内販売情報を参考にしています。また、ACSは楽天市場に公式販売店として出店されています。ATKey.Cardは直販サイトがなかったのでAmazonで購入し、AhthenTrendのSecurity Desktopアプリケーションでシリアル番号を確認しています。このようなセキュリティ製品については可能な限り公式サイトで購入されることをお勧めします。</p>
+<p>※価格は2026年11月時点の参考価格です。販売店や時期によって異なります。ATKey.Card NFCは私が実際に購入した価格を記載しています。また、ACSは楽天市場に公式販売店として出店されています。ATKey.Cardは直販サイトがなかったので楽天市場の日本情報システム取扱製品として購入し、AhthenTrendのSecurity Desktopアプリケーションでシリアル番号を確認しています。このようなセキュリティ製品については可能な限り公式サイトや公式が紹介している取扱店・販売店で購入されることをお勧めします。</p>
 <p>なお、YubiKeyはモデル名が同じでもファームウェアの世代が異なる場合があります。今回利用している5C NFCは5.8、以前からMacで利用している5C Nanoは5.2.7、今回、USBハブを噛ませてmacOSで使ったYubiKey Bioは5.5.6です。</p>
 <p>Windows、Mac、iPhoneで利用し、FIDO2認証、NFCの読み取りやすさ、指紋認証などを確認しました。</p>
 <p>製品仕様を見れば、対応する認証方式は分かります。</p>
 <p>しかし、NFCの認識率や日常の操作性は、実際に使ってみないと分からない部分が多くありました。</p>
 <p>特に、価格が高い製品ほど使いやすいとは限らなかったのが、今回の検証で印象に残った点です。</p>
 <p>なお、Yubico製品の価格は日本公式オンラインストアに掲載されている税込価格を参考にしています（2026年11月14日時点）。現在、一部のYubiKey製品は品薄となっており、日本公式ストアでも在庫切れが案内されています。</p>
-<p>購入する場合は、まず日本公式ストアを確認するとよいと思います。在庫がない場合には、Yubicoのグローバルストアも選択肢になります。</p>
-<p>ただし、グローバルストアの価格は米ドル表示で、日本への配送には送料や輸入時の税金・手数料が発生する場合があります。私は家族・知人のためのSecurityKey6本とオプション品をグローバルストアから購入してみましたが、Yubicoへの支払い代金は30,000円程度でした（米ドルでPayPal決済）。そこに加え、Fedexより消費税の10％の3,000円に加え手数料1,900円を請求されました。1週間足らずで届きました。国内よりはほんの少しだけ廉価でしょうか、より安く購入できるとは限りませんが日本が品薄な現時点では参考にしていただければと思います。</p>
+<p>購入する場合は、まず日本公式ストアを確認してみてください。在庫がない場合には、Yubicoのグローバルストアも選択肢になります。</p>
+<p>ただし、グローバルストアの価格は米ドル表示で、日本への配送には送料や輸入時の税金・手数料が発生する場合があります。私は家族・知人のためのSecurityKey6本とオプション品をグローバルストアから購入してみましたが、Yubicoへの支払い代金は30,000円程度でした（米ドルでPayPal決済）。そこに加え、Fedexより消費税の10％の3,000円に加え手数料1,900円を請求されました。1週間足らずで届きました。国内よりはほんの少しだけ廉価でしょうか、より安く購入できるとは限りませんが日本が品薄な現時点では参考になるでしょう。</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://yubico.jp/">Yubico日本公式オンラインストア</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.yubico.com/store/">Yubicoグローバルストア</a></li>
@@ -607,7 +614,8 @@
 <ul>
 <li><a target="_blank" rel="noopener" href="https://yubico.jp/">Yubico日本公式ストア</a></li>
 <li><a target="_blank" rel="noopener" href="https://authentrend.com/">AuthenTrend公式サイト</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.acs-japan.jp/">ACS公式サイト</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.njs-net.co.jp/product/hardware/atkey/">日本情報システム ATKey</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.acs-japan.jp/">ACS公式サイト(日本)</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.acs-japan.jp/products/600/">ACS PocketKey NFCカード製品仕様</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.acs-japan.jp/products/666/">ACS PocketKey+ Bio製品仕様</a></li>
 </ul>
@@ -615,31 +623,31 @@
 <p>YubiKey 5C NFCは、USB-Cに直接接続すれば安定して利用できます。</p>
 <p>一方、NFCではiPhoneの読み取り位置を意識する必要がありました。特に、最初の読み取りに失敗すると、操作をやり直した方が早い場合があります。特に上下左右の方向も大事です。慣れてしまえば、スマホでYubiKeyを使う場合は、NFCでかざす方が楽です。</p>
 <p>ACS PocketKey Cardは、非常に安定していました。カードをかざす位置や方向にあまり神経質にならず、すぐに認識されます。財布に入れられることを考えると、これは強みです。</p>
-<p>ATKey.Cardは、かなり位置に気を使いました。慣れてしまえば特に気になりませんが、コツを得るまでは少し時間がかかります。</p>
-<h3 id="ATKey-Card-NFCをiPhoneで使用するコツ"><a href="#ATKey-Card-NFCをiPhoneで使用するコツ" class="headerlink" title="ATKey.Card NFCをiPhoneで使用するコツ"></a>ATKey.Card NFCをiPhoneで使用するコツ</h3><p>ATKey.Card NFCは、iPhoneでの読み取り位置に少しコツが必要でした。</p>
+<p>FIDO2のパスキー認証では、サービス側が本人確認を要求する場合、通常のYubiKeyではPIN入力が必要になります。<br>USB接続の場合、キーを挿入し、PINを入力して再び本体に触れるという操作になります。NFCの場合も、読み取り、PIN入力、再度の読み取りが必要になる場合があります。</p>
+<h3 id="指紋認証付きカード-ATKey-Card-NFC"><a href="#指紋認証付きカード-ATKey-Card-NFC" class="headerlink" title="指紋認証付きカード　ATKey.Card NFC"></a>指紋認証付きカード　ATKey.Card NFC</h3><p>ATKey.Card NFCは、iPhoneでの読み取り位置に少しコツが必要でした。</p>
+<p>NFCの場合は微弱な電気によってチップの小さなコンピューターを稼働させます。そのため、ATKey.Cardでも感じたことですが、非接触ながら、まずしっかりとNFC部分のアンテナに安定させてくっつけた状態で、それから指紋認証のために指を当てることになります。電力供給が安定しないと指紋認証が難しいようなのです。</p>
 <p>私の環境では、写真のようにカードをiPhoneの上端にしっかりと固定し、右側の指紋センサー部分を外に出した状態にすると安定しました。</p>
 <p>まずカードを左手で固定し、NFCの読み取り状態を安定させます。そのまま右手の親指をカード右下の指紋センサーに当てて認証します。</p>
 <p>先に指紋センサーを押そうとするよりも、NFCの読み取り位置を決めてから指紋認証する方が確実でした。</p>
 <p>慣れてしまえば難しい操作ではありませんが、最初はカードの位置と指を当てる順番を意識するとよいと思います。</p>
-<img src="/new-technology/2026/11/14/passkey_operations/atkey.png" class="" width="360" title="alt">
+<img src="/new-technology/2026/11/14/passkey_operations/atkey.png" class="" width="240" title="alt">
 
-<p>なお、PaSoRiのようなかざすタイプのNFCリーダーで指紋認証タイプのカードを使うのはなかなか難しいです。PaSoRiとカードとを指で挟んで持ち上げてから指紋認証することになり、これはカードを差し込むタイプの方が良さそうではあります。</p>
-<h2 id="指紋認証付き製品はどうか"><a href="#指紋認証付き製品はどうか" class="headerlink" title="指紋認証付き製品はどうか"></a>指紋認証付き製品はどうか</h2><p>ATKey.CardやACS PocketKey+ BIOは、指紋認証に対応しています。</p>
-<p>FIDO2のパスキー認証では、サービス側が本人確認を要求する場合、通常のYubiKeyではPIN入力が必要になります。<br>USB接続の場合、キーを挿入し、PINを入力して本体に触れるという操作になります。NFCの場合も、読み取り、PIN入力、再度の読み取りが必要になる場合があります。</p>
-<p>指紋認証付きの製品なら、このPIN入力を指紋認証に置き換えられます。</p>
-<p>タッチ（挿入）→PIN入力→タッチという流れですが、この操作の手間を減らせるだけでなく、公共の場所でPINを入力しなくて済むこともメリットです。</p>
-<p>ただし、指紋認証が利用できる接続方式には注意が必要です。</p>
-<p>ACS PocketKey+ BIOは、USB接続時に指紋認証を利用できますが、NFC接続時には指紋認証を利用できません。PIN入力になります。</p>
-<p>NFCの場合は微弱な電気によってチップの小さなコンピューターを稼働させます。そのため、ATKey.Cardでも感じたことですが、非接触ながら、まずしっかりとNFC部分のアンテナに安定させてくっつけた状態で、それから指紋認証のために指を当てることになります。電力供給が安定しないと指紋認証が難しいようなのです。</p>
-<p>しかし、外出中にPINを入力しなくて良いというのは安全面で安心です。証券などの金融のスマホアプリはログインの都度物理キーによるパスキー認証が必要ですので正直いうと手間が掛かります。このときUSB-CにPocketKey± Bioを親指で押し込んで挿してそのまま親指の指紋認証と流れる作業でログインが完了するのは明らかに楽です。私はキーホルダーに繋げて外出時には持ち歩いています。</p>
 <p>ATKey.Cardは指紋認証にコツが要るのは上記で述べた通りですが、財布に入れて持ち運びできるのは強みです。</p>
+<p>なお、PaSoRiのようなかざすタイプのNFCリーダーで指紋認証タイプのカードを使うのはなかなか難しいです。PaSoRiとカードとを指で挟んで持ち上げてから指紋認証することになり、これはカードを差し込むタイプの方が良さそうではあります。</p>
+<h2 id="指紋認証付きUSB接続-ACS-PokectKey±-BIO"><a href="#指紋認証付きUSB接続-ACS-PokectKey±-BIO" class="headerlink" title="指紋認証付きUSB接続　ACS PokectKey± BIO"></a>指紋認証付きUSB接続　ACS PokectKey± BIO</h2><img src="/new-technology/2026/11/14/passkey_operations/pocketkeybio.png" class="" width="360" title="alt">
+
+<p>ACS PocketKey+ BIOは、PCやスマホのUSB-Cに挿して指紋認証で使います。</p>
+<p>指紋認証付きの製品なら、このPIN入力を指紋認証に置き換えられます。公共の場所でPINを入力しなくて済むこともメリットです。</p>
+<p>ただし、PocketKey+ BIOはNFC接続時には指紋認証を利用できません。PIN入力になります。指紋認証にはUSB接続が必要です。</p>
+<p>証券などの金融のスマホアプリにおいて、物理キーによるパスキー認証が必要な状態にしておくと、正直いうとPIN入力したり2回かざすのは手間です。このときUSB-CにPocketKey± Bioを親指で押し込んで挿してそのまま親指の指紋認証と流れる作業でログインが完了するのは明らかに楽です。私はキーホルダーに繋げて外出時には持ち歩いています。</p>
 <p>一方、YubiKey Bioは指紋センサーを押す際、USB端子に対して横方向の力が加わるため、差込口への負荷が気になりました。<br>PocketKey+ BIOは、USB-C端子を差し込む方向にそのまま親指で押して指紋認証できるため、この点でも使いやすいと感じました。</p>
 <p>出典：</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://www.acs-japan.jp/products/666/pocketkey%2B-bio-fido%C2%AE-%E8%AA%8D%E5%AE%9A%E6%8C%87%E7%B4%8B%E8%AA%8D%E8%A8%BC%E5%AF%BE%E5%BF%9C-usb-%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3%E3%82%AD%E3%83%BC/">ACS：PocketKey+ Bio製品情報</a></li>
 </ul>
-<h2 id="WindowsではNFCリーダーも利用できる"><a href="#WindowsではNFCリーダーも利用できる" class="headerlink" title="WindowsではNFCリーダーも利用できる"></a>WindowsではNFCリーダーも利用できる</h2><p>Windowsでは、SonyのPaSoRiを利用してNFC対応セキュリティキーを読み取っています。カード型のキーをリーダーにかざすだけで認証できるため、USB端子へ抜き差しする必要がありません。</p>
+<h2 id="PCではNFCリーダーも利用できる"><a href="#PCではNFCリーダーも利用できる" class="headerlink" title="PCではNFCリーダーも利用できる"></a>PCではNFCリーダーも利用できる</h2><p>私はWindowsでは、SonyのPaSoRiを利用してNFC対応セキュリティキーを読み取っています。従来からマイナカードで確定申告などをされている方はNFCリーダーをお持ちの方も多いのではないでしょうか。カード型のキーをリーダーにかざすだけで認証できるため、USB端子へ抜き差しする必要がありません。</p>
 <p>ただし、NFCリーダー、ドライバ、OS、認証器の組み合わせによって動作が異なる場合があります。私の環境でも、PaSoRiの最新ドライバやUSB接続周りを調整する必要がありました。一度安定してしまえば、カード型のセキュリティキーを利用するうえで便利な構成です。</p>
+<p>なお、どの物理キーで認証させるかを判定するためにOSからパスキーを求められてからNFCリーダーにカードやデバイスをかざす必要があります。PCに常に接続されているNFCリーダー特有のお作法です。</p>
 <h2 id="YubiKeyの新旧ファームウェア"><a href="#YubiKeyの新旧ファームウェア" class="headerlink" title="YubiKeyの新旧ファームウェア"></a>YubiKeyの新旧ファームウェア</h2><p>YubiKey 5シリーズは、ファームウェアの世代によって機能が異なります。</p>
 <p>今回利用している5C Nanoは5.2.7ですが、FIDO2には対応しています。BitwardenやGoogleなどのパスキー認証にも利用できました。一方、新しい5.8ではCTAP2.3への対応など、FIDO2関連の機能が拡張されています。保存できるパスキーの数も、古い世代の25件から、5.7以降では100件に増えています。</p>
 <p>モデル名が同じでも、ファームウェアの世代によって機能や脆弱性への対応が異なります。</p>
@@ -653,6 +661,17 @@
 <p>指紋認証が便利でも、NFCの認識が不安定なら操作に時間がかかります。<br>安価なカードでも、安定して認識され、必要な機能が動作すれば十分に使えます。特にACS PocketKey Cardは2,000円弱と廉価です。バックアップ用途としても良いのではないでしょうか。</p>
 <p>YubiKey 5シリーズは機能が豊富で、GPGによる署名や暗号化などにも利用できます。しかし、一般的なFIDO2認証だけが目的なら、こうした機能は必要ありません。YubicoのSecurity Keyシリーズで十分ですし、ACSなどの製品も選択肢になります。</p>
 <p>今回の比較を通じて、価格の高い製品が必ずしも自分の用途に適しているとは限らないと感じました。<br>YubiKeyが品薄の場合でも、必ずしも同じ製品にこだわる必要はないと思います。</p>
+<h2 id="パスキーの登録先に注意する"><a href="#パスキーの登録先に注意する" class="headerlink" title="パスキーの登録先に注意する"></a>パスキーの登録先に注意する</h2><p>物理セキュリティキーを使い始めるときに、注意しておきたいことがあります。</p>
+<p>パスキーの登録時には、Windows Hello、Appleのパスワードアプリ、Bitwarden、物理セキュリティキーなど、複数の保存先が表示される場合があります。</p>
+<p>例えば、YubiKeyを挿してパスキー登録を行ったとしても、その後のパスキーの保存先としてWindows Helloや他のパスワードマネージャーを選択してしまうと、新しい秘密鍵はYubiKeyには保存されません。</p>
+<p>物理キーをPCに挿したからといっても、パスキーの秘密鍵を保存する場所は、必ずユーザーが明示的に指定する必要があるのです。</p>
+<p>特に物理セキュリティキーを使い始めたばかりの場合、YubiKeyを操作したことで、パスキーもYubiKeyに登録されたと思い込んでしまう可能性があります。</p>
+<img src="/new-technology/2026/11/14/passkey_operations/win_passkey.png" class="" width="360" title="alt">
+
+<p><strong>重要なのは、パスキーの登録が成功したかどうかだけではなく、秘密鍵がどこに保存されたかを確認することです。</strong></p>
+<img src="/new-technology/2026/11/14/passkey_operations/win_passkey2.png" class="" width="360" title="alt">
+
+<p>登録後は、サービス側のパスキー一覧画面などで確認したり、物理キーを使って複数デバイスでログインできることを確かめておくことをお勧めします。物理キーの管理ソフトウェア、Yubikey Authenticatorなどでパスキー登録情報を確認できます。</p>
 <h2 id="Googleアカウントに物理キーを登録する"><a href="#Googleアカウントに物理キーを登録する" class="headerlink" title="Googleアカウントに物理キーを登録する"></a>Googleアカウントに物理キーを登録する</h2><p>GoogleアカウントでFIDO2対応セキュリティキーにパスキーを登録する具体的方法です。</p>
 <ol>
 <li>Googleアカウントの「パスキーとセキュリティキー」の設定画面を開きます。</li>
@@ -759,6 +778,24 @@
 <p>出典：</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://bitwarden.com/help/login-with-passkeys/">Bitwarden：Log in &amp; Unlock with Passkeys</a></li>
+</ul>
+<h2 id="不要な認証経路の削除とリカバリー手段の確保"><a href="#不要な認証経路の削除とリカバリー手段の確保" class="headerlink" title="不要な認証経路の削除とリカバリー手段の確保"></a>不要な認証経路の削除とリカバリー手段の確保</h2><p>物理セキュリティキーを登録した後は、それまで利用していた認証方法を確認しておくことをお勧めします。パスキーを登録しても、パスワードやSMSによる認証など、従来のログイン方法が残っている場合があります。せっかくフィッシング耐性のある認証方式を導入しても、SMSによる2要素認証など弱い認証経路が残っていれば、そこを攻撃者に狙われる可能性があります。</p>
+<p>例えばGoogleアカウントでは、「セキュリティ」の設定から登録済みのパスキー、セキュリティキー、2段階認証の方法などを確認できます。</p>
+<p>不要な認証方法は整理したいところですが、すべて削除することが必ずしもベストではありません。物理キーを紛失したり故障させたりした場合に備えて、予備のキーとアカウント復旧手段を確保しておく必要があります。理想は復旧コードや復旧キーを別途保管しておくことです。しかし、物理キー以外のワンタイムパスワード（OTP）まで片っ端から削除すると、物理セキュリティキーが使えないときにログインできなくなる可能性があります。紛失や故障だけでなく、単に持ち歩いていない場合もあります。</p>
+<p>OTPはパスキーと異なり、フィッシング耐性がないため攻撃対象になり得ますが、利便性や復旧性を考えれば、OTPを残すことにも合理性があります。</p>
+<p>余談ですが、OTPの管理としてGoogle Authenticatorを利用する場合は<strong>アカウント無しで利用</strong>しましょう。アカウントに紐づけてクラウド同期をしてしまうと結果弱点になりえます。</p>
+<p>加えて、再設定用のメールアカウントを設定できます。こちらもリスクがあるからと削除してしまうと第3者からログインされた場合の通知を受け取ることが難しくなります。例えばApple、Googleと相互にメールアドレスを登録しておき、その両アカウントは物理キーでしっかりと守ることも検討しましょう。</p>
+<p>Googleでは通常の2段階認証を利用している場合、8桁のバックアップコードを発行できます。これを安全な場所に保管しておけば、認証器が利用できなくなったときの備えになります。ただし、高度な保護機能を利用している場合には、このバックアップコードは利用できません。</p>
+<p>Apple Accountでは仕組みが異なり、物理セキュリティキーを登録しても、信頼済み端末などの管理が引き続き重要になります。また、任意で28文字の復旧キーを設定できますが、これを紛失するとアカウントを復旧できなくなる可能性があります。</p>
+<p><strong>重要なのは、弱い認証経路を可能な範囲で減らしながら、自分自身がアカウントを失わないための復旧手段を確保することです。</strong></p>
+<p>復旧コードや復旧キーは、そのアカウントにアクセスできなくなっても取り出せる、安全な場所に保管する必要があります。</p>
+<p>認証を強化することと、万が一の復旧に備えることは、セットで考えておきたいと思います。</p>
+<p>出典：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://support.google.com/accounts/answer/185834?hl=ja">Google：2段階認証に関する問題の解決</a></li>
+<li><a target="_blank" rel="noopener" href="https://support.google.com/accounts/answer/185839?hl=ja">Google：2段階認証</a></li>
+<li><a target="_blank" rel="noopener" href="https://support.apple.com/ja-jp/109345">Apple：Apple Accountの復旧キーを設定する</a></li>
+<li><a target="_blank" rel="noopener" href="https://support.apple.com/ja-jp/102637">Apple：Apple Accountのセキュリティキーについて</a></li>
 </ul>
 <h2 id="現在の運用"><a href="#現在の運用" class="headerlink" title="現在の運用"></a>現在の運用</h2><p>現在は、重要なサービスの認証に物理セキュリティキーを使い、それ以外の認証情報をBitwardenにまとめています。</p>
 <p>普段持ち歩くキーと、自宅に保管する予備のキーを分けています。</p>
